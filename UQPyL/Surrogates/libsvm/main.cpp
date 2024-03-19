@@ -89,15 +89,16 @@ PYBIND11_MODULE(libsvm, m)
     m.def("svm_fit", &fit, "svm_fit");
     m.def("svm_predict", &predict, "svm_predict");
     py::class_<Parameter>(m, "Parameter")
-        .def(py::init<int, int, int, float, float, float, float, float ,float>())
+        .def(py::init<int, int, int, int, float, float, float, float, float ,float>())
         .def_readwrite("svm_type", &Parameter::svm_type)
         .def_readwrite("kernel_type", &Parameter::kernel_type)
         .def_readwrite("degree", &Parameter::degree)
+        .def_readwrite("maxIter",&Parameter::max_Iter)
         .def_readwrite("gamma", &Parameter::gamma)
         .def_readwrite("coef0", &Parameter::coef0)
         .def_readwrite("C", &Parameter::C)
         .def_readwrite("nu", &Parameter::nu)
         .def_readwrite("p", &Parameter::p)
-        .def_readwrite("eps", &Parameter::eps)
-        .def_readwrite("maxIter",&Parameter::max_Iter);
+        .def_readwrite("eps", &Parameter::eps);
+        
 }       
