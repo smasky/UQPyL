@@ -13,6 +13,7 @@
 #endif
 
 int libsvm_version = LIBSVM_VERSION;
+int MAX_I=10000;
 typedef float Qfloat;
 typedef signed char schar;
 #ifndef min
@@ -562,7 +563,7 @@ void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,
 	// optimization step
 
 	int iter = 0;
-	int max_iter = max(10000000, l>INT_MAX/100 ? INT_MAX : 100*l); //10000000
+	int max_iter = MAX_I; //10000000 max(10000000, l>INT_MAX/100 ? INT_MAX : 100*l)
 	int counter = min(l,1000)+1;
 
 	while(iter < max_iter)
@@ -2181,7 +2182,7 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 	svm_model *model = Malloc(svm_model,1);
 	model->param = *param;
 	model->free_sv = 0;	// XXX
-
+	MAX_I=param->max_Iter;
 	if(param->svm_type == ONE_CLASS ||
 	   param->svm_type == EPSILON_SVR ||
 	   param->svm_type == NU_SVR)
@@ -2372,7 +2373,7 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 		info("Total nSV = %d\n",total_sv);
 
 		model->l = total_sv;
-		model->SV = Malloc(svm_node *,total_sv);
+		model->SV = Malloc(svm_node *,total_sv); 
 		model->sv_indices = Malloc(int,total_sv);
 		p = 0;
 		for(i=0;i<l;i++)

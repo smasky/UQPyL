@@ -34,6 +34,7 @@ struct svm_parameter
 	double coef0;	/* for poly/sigmoid */
 
 	/* these are for training only */
+	int max_Iter; /* the maximum iteration*/
 	double cache_size; /* in MB */
 	double eps;	/* stopping criteria */
 	double C;	/* for C_SVC, EPSILON_SVR and NU_SVR */

@@ -9,7 +9,9 @@ RBF = 2
 SIGMOID = 3
 
 class SVR(Surrogate):
-    def __init__(self, scalers=(None, None), poly_feature: PolynomialFeatures=None,
+    def __init__(self, 
+                 scalers=(None, None), 
+                 poly_feature: PolynomialFeatures=None,
                  C: float=1.0, epsilon: float=0.1, gamma: Optional[float]=0.0, coe0: float=0.0, degree: int=2,
                  kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial', 'precomputed']='rbf'):
         super().__init__(scalers, poly_feature)
@@ -46,11 +48,11 @@ class SVR(Surrogate):
         
         nu=0.5
         ## Parameter: svm_type kernel_type degree gamma coef0 C nu p eps
-        eps=0.001
-        par=Parameter(3, eval(self.kernel.upper()), self.degree, self.gamma, self.coe0, self.C, nu, self.epsilon, eps)
+        eps=0.0001
+        par=Parameter(3, eval(self.kernel.upper()), self.degree, 10000,self.gamma, self.coe0, self.C, nu, self.epsilon, eps)
         
         svm_fit(trainX, trainY.ravel(), par)
-        
+
     ###########################Attribute##############
     @property
     def C(self):

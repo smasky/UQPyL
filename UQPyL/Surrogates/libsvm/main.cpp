@@ -13,6 +13,7 @@ struct Parameter
     int svm_type;
     int kernel_type;
     int degree;
+    int max_Iter;
     float gamma;
     float coef0;
     float C;
@@ -62,6 +63,7 @@ void fit(py::array_t<double, py::array::c_style> trainX,
     Para->nu=par.nu;
     Para->p=par.p;
     Para->eps=par.eps;
+    Para->max_Iter=par.max_Iter;
     model=svm_train(Pro, Para);
 }
 
@@ -96,5 +98,6 @@ PYBIND11_MODULE(libsvm, m)
         .def_readwrite("C", &Parameter::C)
         .def_readwrite("nu", &Parameter::nu)
         .def_readwrite("p", &Parameter::p)
-        .def_readwrite("eps", &Parameter::eps);
+        .def_readwrite("eps", &Parameter::eps)
+        .def_readwrite("maxIter",&Parameter::max_Iter);
 }       
