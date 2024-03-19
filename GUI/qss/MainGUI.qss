@@ -1,0 +1,36 @@
+#MainWidget{background-color:#fff4f3ee}
+QPushButton#Switch{
+    border-radius:5px;
+    background-color:#dcf4f3ee;
+    margin-left:10px;
+    margin-right:10px;
+    padding-left:20px;
+    padding-right:20px;
+    font:18px 'Fira Code';
+    width:180px;
+    height:50px;
+    text-align:center;
+            }
+QPushButton#Switch:hover{
+    background-color:#baea8a;
+    color:black; 
+            }
+
+QWidget#TitleBar{
+    background-color:red;
+}
+
+#LeftMain{
+    border:0px, 0px;
+    margin:0px,0px;
+    background-color: #dcf4f3ee;
+    border-top:2px solid rgba(0, 0, 0, .2);
+    border-right: 1px solid rgba(0, 0, 0, .2);
+    
+}
+#RightMain{
+    border:0px, 0px;
+    margin:0px,0px;
+    border-top:2px solid rgba(0, 0, 0, .2);
+    background-color: #dcf4f3ee;
+}

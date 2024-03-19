@@ -1,0 +1,114 @@
+#view {
+    background-color: transparent;
+}
+
+QScrollArea {
+    border: none;
+    background-color: transparent;
+}
+
+
+BannerWidget > #galleryLabel {
+    font: 42px 'Segoe UI SemiBold', 'Microsoft YaHei SemiBold';
+    background-color: transparent;
+    color: black;
+}
+
+#BasicInfoCard{
+    background-color:transparent;
+    border-top:3px solid rgb(0, 0, 0);
+    border-bottom: 3px solid rgb(0, 0, 0);
+}
+
+#DecisionParaCard{
+    background-color:transparent;
+}
+
+#GPCard{
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: red;
+}
+StrongBodyLabel{
+    margin: 0px,2px;
+    font-size: 16px;
+}
+
+CaptionLabel{
+    font-size:10px,'Segoe UI', 'Microsoft YaHei SemiBold';
+}
+
+QLabel#BasicInfoLabel {
+    font: 20px 'Segoe UI SemiBold';
+    background-color: transparent;
+}
+
+PushSettingCard>#contentLabel{
+    font:15px 'Segoe UI';
+    color:rgb(73, 73, 73);
+}
+
+PushSettingCard>#titleLabel{
+    font: 18px 'Segoe UI SemiBold';
+    
+}
+
+PushSettingCard>PushButton{
+    font: 15px 'Segoe UI SemiBold';
+    
+}
+#MethodCard{
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius:15px;
+    background-color:rgba(249, 249, 249, 0.6)
+}
+
+#CardTitle{
+    font: 18px 'Segoe UI SemiBold';
+}
+
+
+MethodCard>#ContentWidget{
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    margin:0,0,0,0;
+    padding:0,0,0,0;
+}
+#bottomWidget{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+#MethodContentWidget{
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+#ChooseTitle{
+    font: 15px 'Segoe UI SemiBold'; 
+}
+#GPRightView,#RBFRightView, #SVMRightView,#MLPRightView,#PRRightView{
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius:15px;
+    background-color:rgba(249, 249, 249, 0.6)
+}
+#ModelSettingCard, #KernelSettingCard{
+    background-color:transparent;
+}
+
+#KernelView{
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius:15px;
+    background-color:rgba(249, 249, 249, 0.6)
+}
+
+#TrainParameter{
+    border-top: 2px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+#rightView{
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+
+#RBFKernelView{
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}

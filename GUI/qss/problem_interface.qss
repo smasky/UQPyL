@@ -1,0 +1,75 @@
+QScrollArea {
+    border: none;
+    background-color: transparent;
+}
+
+PivotInterface QPushButton,
+TabInterface QLabel {
+    padding-left: 10px;
+    font: 16px 'Segoe UI', 'Microsoft YaHei', 'PingFang SC';
+    color: black;
+}
+#galleryLabel {
+    font: 42px 'Segoe UI SemiBold', 'Microsoft YaHei SemiBold';
+    background-color: transparent;
+    color: black;
+    padding-left: 28px;
+}
+BodyLabel{
+    font: 16px 'Segoe UI', 'Microsoft YaHei', 'PingFang SC';
+    color:black;
+}
+
+#bottomFrame{
+    border-top:1px solid rgba(0, 0, 0, 0.15);
+}
+
+#FlowWidget{
+    border-top:1px solid rgba(0, 0, 0, 0.15);
+}
+
+#VariableView{
+    background-color:transparent;
+}
+
+#MainView{
+    border-radius: 15px;
+    background-color:rgba(249, 249, 249, 0.95) ;
+}
+#view{
+    background-color:rgba(249, 249, 249, 0.95) ;
+}
+#topbar{
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color:red;
+}
+#temp{
+    background-color:red;
+}
+
+#BuiltInParaCard, #UserParaCard, #ParameterSummary{
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius:15px;
+    background-color:rgba(249, 249, 249, 0.95)
+}
+
+#ContentWidget{
+    border-top:1px solid rgba(0, 0, 0, 0.15);
+    background-color:transparent;
+}
+
+StrongBodyLabel{
+    margin: 0px,2px;
+    font-size: 16px;
+}
+
+#frame {
+    border: 1px solid rgba(0, 0, 0, 15);
+    border-radius: 5px;
+    background-color: transparent;
+    font-size:13px;
+}
+/* PivotItem QPushButton{
+    background-color:rgba(249, 249, 249, 0.95) ;
+} */
