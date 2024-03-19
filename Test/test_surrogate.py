@@ -38,9 +38,9 @@ t_xx=pf.transform(test_X)
 
 ########################SVR###############################
 svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='linear', 
-                C=1, epsilon=0.1, degree=3)
-svr.fit(train_X, train_Y)
-P_Y=svr.predict(test_X)
+                C=100, epsilon=0.1, degree=3)
+model=svr.fit(train_X, train_Y)
+P_Y=svr.predict(model,test_X)
 print("r2_score:", r2_score(test_Y, P_Y))
 print("rank_score", rank_score(test_Y, P_Y))
 temp=1

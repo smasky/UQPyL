@@ -5,8 +5,6 @@
 
 namespace py=pybind11;
 
-svm_model* model;
-
 // svm_type kernel_type degree gamma coef0 C nu p eps
 struct Parameter
 {
@@ -23,12 +21,12 @@ struct Parameter
 };
 
 void print_null(const char *){
-
 }
 
-void fit(py::array_t<double, py::array::c_style> trainX, 
-            py::array_t<double, py::array::c_style> trainY, Parameter& par)
+svm_model* fit(py::array_t<double, py::array::c_style> trainX, 
+            py::array_t<double, py::array::c_style> trainY, Parameter& par, int i)
 {   
+    std::cout<<"begin"<<i<<std::endl;
     svm_set_print_string_function(print_null);
     py::buffer_info X=trainX.request();
     py::buffer_info Y=trainY.request();
@@ -52,7 +50,7 @@ void fit(py::array_t<double, py::array::c_style> trainX,
 
     svm_problem* Pro= new svm_problem;
     Pro->l=l;Pro->x=x;Pro->y=Ptr_y;
-
+    //***************************************
     svm_parameter* Para=new svm_parameter;
     Para->svm_type=par.svm_type;
     Para->kernel_type=par.kernel_type;
@@ -64,10 +62,13 @@ void fit(py::array_t<double, py::array::c_style> trainX,
     Para->p=par.p;
     Para->eps=par.eps;
     Para->max_Iter=par.max_Iter;
-    model=svm_train(Pro, Para);
+    //**************************************
+    svm_model* model=svm_train(Pro, Para);
+    std::cout<<"end"<<i<<std::endl;
+    return model;
 }
 
-double predict(py::array_t<double, py::array::c_style> testX){
+double predict(svm_model* model, py::array_t<double, py::array::c_style> testX){
 
     py::buffer_info X=testX.request();
     double *x_Ptr=static_cast<double *>(X.ptr);
@@ -86,8 +87,8 @@ double predict(py::array_t<double, py::array::c_style> testX){
 PYBIND11_MODULE(libsvm, m)
 {
     m.doc() = "Test module for xtensor python bindings";
-    m.def("svm_fit", &fit, "svm_fit");
-    m.def("svm_predict", &predict, "svm_predict");
+    m.def("svm_fit", &fit, py::call_guard<py::gil_scoped_release>(), "svm_fit");
+    m.def("svm_predict", &predict, py::call_guard<py::gil_scoped_release>(), "svm_predict");
     py::class_<Parameter>(m, "Parameter")
         .def(py::init<int, int, int, int, float, float, float, float, float ,float>())
         .def_readwrite("svm_type", &Parameter::svm_type)
@@ -100,5 +101,7 @@ PYBIND11_MODULE(libsvm, m)
         .def_readwrite("nu", &Parameter::nu)
         .def_readwrite("p", &Parameter::p)
         .def_readwrite("eps", &Parameter::eps);
-        
+
+    py::class_<svm_model>(m, "svm_model");
+
 }       

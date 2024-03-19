@@ -1,0 +1,352 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Windows - 10.0.19045 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+      生成启动时间为 2024/3/19 22:11:24。
+      Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+      
+      节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        正在创建目录“Debug\\CompilerIdC.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+      ClCompile:
+        C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:00.69
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/3.26.3/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+      生成启动时间为 2024/3/19 22:11:25。
+      Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+      
+      节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        正在创建目录“Debug\\CompilerIdCXX.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+      ClCompile:
+        C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\3.26.3\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:00.52
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/3.26.3/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-j3wlj8"
+      binary: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-j3wlj8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-j3wlj8
+        
+        Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_57762.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+        生成启动时间为 2024/3/19 22:11:26。
+        Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+        
+        节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-j3wlj8\\cmTC_57762.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_57762.dir\\Debug\\”。
+          正在创建目录“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-j3wlj8\\Debug\\”。
+          正在创建目录“cmTC_57762.dir\\Debug\\cmTC_57762.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_57762.dir\\Debug\\cmTC_57762.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        ClCompile:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_57762.dir\\Debug\\\\" /Fd"cmTC_57762.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.35.32217.1 版
+          CMakeCCompilerABI.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_57762.dir\\Debug\\\\" /Fd"cmTC_57762.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+        Link:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-j3wlj8\\Debug\\cmTC_57762.exe" /INCREMENTAL /ILK:"cmTC_57762.dir\\Debug\\cmTC_57762.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-j3wlj8/Debug/cmTC_57762.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-j3wlj8/Debug/cmTC_57762.lib" /MACHINE:X64  /machine:x64 cmTC_57762.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_57762.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-j3wlj8\\Debug\\cmTC_57762.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_57762.dir\\Debug\\cmTC_57762.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_57762.dir\\Debug\\cmTC_57762.tlog\\cmTC_57762.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-j3wlj8\\cmTC_57762.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.44
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-25q6sd"
+      binary: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-25q6sd"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-25q6sd
+        
+        Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_1ea76.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+        生成启动时间为 2024/3/19 22:11:26。
+        Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+        
+        节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-25q6sd\\cmTC_1ea76.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_1ea76.dir\\Debug\\”。
+          正在创建目录“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-25q6sd\\Debug\\”。
+          正在创建目录“cmTC_1ea76.dir\\Debug\\cmTC_1ea76.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_1ea76.dir\\Debug\\cmTC_1ea76.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        ClCompile:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_1ea76.dir\\Debug\\\\" /Fd"cmTC_1ea76.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.35.32217.1 版
+          CMakeCXXCompilerABI.cpp
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_1ea76.dir\\Debug\\\\" /Fd"cmTC_1ea76.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
+        Link:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-25q6sd\\Debug\\cmTC_1ea76.exe" /INCREMENTAL /ILK:"cmTC_1ea76.dir\\Debug\\cmTC_1ea76.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-25q6sd/Debug/cmTC_1ea76.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-25q6sd/Debug/cmTC_1ea76.lib" /MACHINE:X64  /machine:x64 cmTC_1ea76.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_1ea76.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-25q6sd\\Debug\\cmTC_1ea76.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_1ea76.dir\\Debug\\cmTC_1ea76.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_1ea76.dir\\Debug\\cmTC_1ea76.tlog\\cmTC_1ea76.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-25q6sd\\cmTC_1ea76.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.47
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "D:/Anaconda3/envs/SCI1/Lib/site-packages/pybind11/share/cmake/pybind11/pybind11Common.cmake:268 (check_cxx_compiler_flag)"
+      - "D:/Anaconda3/envs/SCI1/Lib/site-packages/pybind11/share/cmake/pybind11/pybind11Common.cmake:322 (_pybind11_return_if_cxx_and_linker_flags_work)"
+      - "D:/Anaconda3/envs/SCI1/Lib/site-packages/pybind11/share/cmake/pybind11/pybind11Common.cmake:366 (_pybind11_generate_lto)"
+      - "D:/Anaconda3/envs/SCI1/Lib/site-packages/pybind11/share/cmake/pybind11/pybind11Config.cmake:248 (include)"
+      - "CMakeLists.txt:11 (find_package)"
+    checks:
+      - "Performing Test HAS_MSVC_GL_LTCG"
+    directories:
+      source: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-sbrcmi"
+      binary: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-sbrcmi"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "HAS_MSVC_GL_LTCG"
+      cached: true
+      stdout: |
+        Change Dir: D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-sbrcmi
+        
+        Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_60f9d.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+        生成启动时间为 2024/3/19 22:11:29。
+        Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+        
+        节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\cmTC_60f9d.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_60f9d.dir\\Debug\\”。
+          正在创建目录“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\Debug\\”。
+          正在创建目录“cmTC_60f9d.dir\\Debug\\cmTC_60f9d.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_60f9d.dir\\Debug\\cmTC_60f9d.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        ClCompile:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D HAS_MSVC_GL_LTCG /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_60f9d.dir\\Debug\\\\" /Fd"cmTC_60f9d.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\src.cxx"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.35.32217.1 版
+          src.cxx
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D HAS_MSVC_GL_LTCG /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_60f9d.dir\\Debug\\\\" /Fd"cmTC_60f9d.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\src.cxx"
+        Link:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\Debug\\cmTC_60f9d.exe" /INCREMENTAL /ILK:"cmTC_60f9d.dir\\Debug\\cmTC_60f9d.ilk" /NOLOGO "-LTCG" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-sbrcmi/Debug/cmTC_60f9d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-sbrcmi/Debug/cmTC_60f9d.lib" /MACHINE:X64  /machine:x64 cmTC_60f9d.dir\\Debug\\src.obj
+        LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范) [D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\cmTC_60f9d.vcxproj]
+          正在生成代码
+          已完成代码的生成
+          cmTC_60f9d.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\Debug\\cmTC_60f9d.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_60f9d.dir\\Debug\\cmTC_60f9d.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_60f9d.dir\\Debug\\cmTC_60f9d.tlog\\cmTC_60f9d.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\cmTC_60f9d.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+        
+        “D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\cmTC_60f9d.vcxproj”(默认目标) (1) ->
+        (Link 目标) -> 
+          LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范) [D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-sbrcmi\\cmTC_60f9d.vcxproj]
+        
+            1 个警告
+            0 个错误
+        
+        已用时间 00:00:00.44
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Program Files/CMake/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "D:/Anaconda3/envs/SCI1/Library/lib/cmake/xtensor/xtensorConfig.cmake:72 (CHECK_CXX_COMPILER_FLAG)"
+      - "CMakeLists.txt:12 (find_package)"
+    checks:
+      - "Performing Test arch_native_supported"
+    directories:
+      source: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-zu5rrt"
+      binary: "D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-zu5rrt"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "arch_native_supported"
+      cached: true
+      stdout: |
+        Change Dir: D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-zu5rrt
+        
+        Run Build Command(s):C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_8fe0f.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.5.1+f6fdcf537 for .NET Framework
+        生成启动时间为 2024/3/19 22:11:29。
+        Included response file: C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\amd64\\MSBuild.rsp
+        
+        节点 1 上的项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\cmTC_8fe0f.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_8fe0f.dir\\Debug\\”。
+          正在创建目录“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\Debug\\”。
+          正在创建目录“cmTC_8fe0f.dir\\Debug\\cmTC_8fe0f.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_8fe0f.dir\\Debug\\cmTC_8fe0f.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        ClCompile:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D arch_native_supported /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_8fe0f.dir\\Debug\\\\" /Fd"cmTC_8fe0f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue  -march=native "D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\src.cxx"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.35.32217.1 版
+          src.cxx
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D arch_native_supported /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_8fe0f.dir\\Debug\\\\" /Fd"cmTC_8fe0f.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue  -march=native "D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\src.cxx"
+        cl : 命令行  warning D9002: 忽略未知选项“-march=native” [D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\cmTC_8fe0f.vcxproj]
+        Link:
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.35.32215\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\Debug\\cmTC_8fe0f.exe" /INCREMENTAL /ILK:"cmTC_8fe0f.dir\\Debug\\cmTC_8fe0f.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-zu5rrt/Debug/cmTC_8fe0f.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/UQ/UQPyL/Surrogates/libsvm/build3/CMakeFiles/CMakeScratch/TryCompile-zu5rrt/Debug/cmTC_8fe0f.lib" /MACHINE:X64  /machine:x64 cmTC_8fe0f.dir\\Debug\\src.obj
+          cmTC_8fe0f.vcxproj -> D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\Debug\\cmTC_8fe0f.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_8fe0f.dir\\Debug\\cmTC_8fe0f.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_8fe0f.dir\\Debug\\cmTC_8fe0f.tlog\\cmTC_8fe0f.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\cmTC_8fe0f.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+        
+        “D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\cmTC_8fe0f.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          cl : 命令行  warning D9002: 忽略未知选项“-march=native” [D:\\UQ\\UQPyL\\Surrogates\\libsvm\\build3\\CMakeFiles\\CMakeScratch\\TryCompile-zu5rrt\\cmTC_8fe0f.vcxproj]
+        
+            1 个警告
+            0 个错误
+        
+        已用时间 00:00:00.42
+        
+      exitCode: 0
+...
