@@ -8,8 +8,8 @@ POLYNOMIAL = 1
 RBF = 2
 SIGMOID = 3
 
-def Fit(trainX, trainY, para, i, q):
-    model=svm_fit(trainX, trainY, para, i)
+def Fit(trainX, trainY, para, q):
+    model=svm_fit(trainX, trainY, para)
     q.put(model)
 
 
@@ -17,8 +17,11 @@ class SVR(Surrogate):
     def __init__(self, 
                  scalers=(None, None), 
                  poly_feature: PolynomialFeatures=None,
-                 C: float=1.0, epsilon: float=0.1, gamma: Optional[float]=0.0, coe0: float=0.0, degree: int=2,
-                 kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial', 'precomputed']='rbf'):
+                 C: float=1.0, epsilon: float=0.1, 
+                 gamma: Optional[float]=0.0, 
+                 coe0: float=0.0, degree: int=2,
+                 maxIter: int=100000, eps: float=0.001,
+                 kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial']='rbf'):
         super().__init__(scalers, poly_feature)
         
         self.C=C
@@ -27,6 +30,8 @@ class SVR(Surrogate):
         self.coe0=coe0
         self.degree=degree
         self.kernel=kernel
+        self.maxIter=maxIter
+        self.eps=eps
         self.model=None
     ###############Interface Function#################
     def predict(self, predict_X: np.ndarray):
@@ -44,38 +49,24 @@ class SVR(Surrogate):
         return self.__Y_inverse_transform__(predict_Y)
         
     def fit(self, trainX: np.ndarray,  trainY: np.ndarray):
-        import threading
-        from queue import Queue
-        import time
         trainX=np.ascontiguousarray(trainX).copy()
         trainY=np.ascontiguousarray(trainY).copy()
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
         
-        _, n_feautes=trainX.shape
-        
-        nu=0.5
-        ## Parameter: svm_type kernel_type degree gamma coef0 C nu p eps
-        eps=0.0001
-        par=Parameter(3, eval(self.kernel.upper()), self.degree, 100000,self.gamma, self.coe0, self.C, nu, self.epsilon, eps)     
-        start=time.time()
-        # for i in range(12):
-        #     svm_fit(trainX, trainY.ravel(), par,i)
+        ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
+        par=Parameter(3, eval(self.kernel.upper()), self.degree, self.maxIter, self.gamma, self.coe0, self.C, 0.5, self.epsilon, self.eps)     
+        self.modelSetting=svm_fit(trainX, trainY.ravel(), par)
         # q=Queue()
         # threads=[]
         # for i in range(12):
-        #     t=threading.Thread(target=Fit, args=(trainX, trainY.ravel(), par, i, q))
+        #     t=threading.Thread(target=Fit, args=(trainX, trainY.ravel(), par, q))
         #     t.start()
         #     threads.append(t)
         # for thread in threads:
         #     thread.join()
         # res = []
         # for _ in range(12):
-        #     res.append(q.get())
-        # end=time.time()
-        # print(end-start)
-        # self.modelSetting=svm_fit(trainX, trainY.ravel(), par)
-
-        
+        #     res.append(q.get())  
     ###########################Attribute##############
     @property
     def C(self):

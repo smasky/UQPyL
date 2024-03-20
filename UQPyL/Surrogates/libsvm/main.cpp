@@ -24,9 +24,8 @@ void print_null(const char *){
 }
 
 svm_model* fit(py::array_t<double, py::array::c_style> trainX, 
-            py::array_t<double, py::array::c_style> trainY, Parameter& par, int i)
+            py::array_t<double, py::array::c_style> trainY, Parameter& par)
 {   
-    std::cout<<"begin"<<i<<std::endl;
     svm_set_print_string_function(print_null);
     py::buffer_info X=trainX.request();
     py::buffer_info Y=trainY.request();
@@ -64,7 +63,7 @@ svm_model* fit(py::array_t<double, py::array::c_style> trainX,
     Para->max_Iter=par.max_Iter;
     //**************************************
     svm_model* model=svm_train(Pro, Para);
-    std::cout<<"end"<<i<<std::endl;
+    
     return model;
 }
 
