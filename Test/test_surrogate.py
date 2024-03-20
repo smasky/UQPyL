@@ -11,6 +11,7 @@ from UQPyL.Surrogates import RBF as RBFN, GPR, LinearRegression, PolynomialRegre
 from UQPyL.Utility import PolynomialFeatures
 from UQPyL.Utility import r2_score, rank_score
 from UQPyL.Utility.scalers import MinMaxScaler, StandardScaler
+from UQPyL.Utility import GridSearch
 #Test Data
 data=loadmat('../UQPyL/Surrogates/gp.mat')
 X=data['pop']
@@ -19,8 +20,8 @@ Y=data['value']
 # X=np.loadtxt('./1225_X.txt')
 # Y=np.loadtxt('./1225_y.txt')
 
-train_X=X[0:100, :]
-train_Y=Y[0:100, 0:1]
+train_X=X[0:280, :]
+train_Y=Y[0:280, 0:1]
 test_X=X[280:, :]
 test_Y=Y[280:, 0:1]
 
@@ -37,8 +38,10 @@ t_xx=pf.transform(test_X)
 # print("rank_score", rank_score(test_Y, P_Y))
 
 ########################SVR###############################
-svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='linear', 
-                C=100, epsilon=0.1, degree=3)
+svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='rbf', 
+                C=1, epsilon=0.00001, eps=0.1, degree=2, gamma=0.06, maxIter=1000000)
+gd=GridSearch({'C':[1,10,100],'gamma':[0.1,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09]}, svr)
+gd.start(train_X, train_Y)
 model=svr.fit(train_X, train_Y)
 P_Y=svr.predict(test_X)
 print("r2_score:", r2_score(test_Y, P_Y))

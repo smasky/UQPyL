@@ -79,45 +79,33 @@ class Surrogate(metaclass=abc.ABCMeta):
             
         return X
     
-    def __Y_transform__(self,Y: np.ndarray) -> np.ndarray:
+    def __Y_transform__(self, Y: np.ndarray) -> np.ndarray:
         
         if(self.Y_scaler):
             Y=self.Y_scaler.transform(Y.reshape(-1,1))
             
         return Y
     
-    def __Y_inverse_transform__(self,Y: np.ndarray) -> np.ndarray:
-        
+    def __Y_inverse_transform__(self, Y: np.ndarray) -> np.ndarray:
+
         if(self.Y_scaler):
             Y=self.Y_scaler.inverse_transform(Y.reshape(-1,1))
             
         return Y
     
-    
-    # def __X_scale__(self, train_X: np.ndarray, method: Literal['StandardScaler','MinMaxScaler'] ="StandardScaler") -> None:
+    def set_Paras(self, Para_dicts):
         
-    #     if(method=="StandardScaler"):
-    #         self.X_scaler=StandardScaler()
-    #     elif(method=="MinMaxScaler"):
-    #         self.X_scaler=MinMaxScaler()
-    #     self.X_scaler.fit(train_X)
-    
-    # def __Y_scale__(self, train_Y: np.ndarray, method: Literal['StandardScaler','MinMaxScaler']="StandardScaler") -> None:
-        
-    #     if(method=="StandardScaler"):
-    #         self.Y_scaler=StandardScaler()
-    #     elif(method=="MinMaxScaler"):
-    #         self.Y_scaler=MinMaxScaler()
-        
-    #     self.Y_scaler.fit(train_Y)      
-    
+        for name, value in Para_dicts.items():
+            if hasattr(self, name):
+                setattr(self, name, value)
+            else:
+                raise ValueError("Cannot found this parameter! Please check")
+            
     @abc.abstractmethod
-    def fit(self,train_X: np.ndarray,train_Y: np.ndarray):
+    def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
         pass
     
-    
     @abc.abstractmethod
-    def predict(self,predict_X: np.ndarray):
+    def predict(self, predict_X: np.ndarray):
         pass
-        
-
+    

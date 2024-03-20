@@ -8,10 +8,9 @@ POLYNOMIAL = 1
 RBF = 2
 SIGMOID = 3
 
-def Fit(trainX, trainY, para, q):
-    model=svm_fit(trainX, trainY, para)
-    q.put(model)
-
+# def Fit(trainX, trainY, para, q):
+#     model=svm_fit(trainX, trainY, para)
+#     q.put(model)
 
 class SVR(Surrogate):
     def __init__(self, 
@@ -44,29 +43,20 @@ class SVR(Surrogate):
         
         for i in range(n_samples):
             x=predict_X[i, :]
-            predict_Y[i,0]=svm_predict(self.modelSetting, x)
+            predict_Y[i,0]=svm_predict(self.model, x)
             
         return self.__Y_inverse_transform__(predict_Y)
         
     def fit(self, trainX: np.ndarray,  trainY: np.ndarray):
+        
         trainX=np.ascontiguousarray(trainX).copy()
         trainY=np.ascontiguousarray(trainY).copy()
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
         
         ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
         par=Parameter(3, eval(self.kernel.upper()), self.degree, self.maxIter, self.gamma, self.coe0, self.C, 0.5, self.epsilon, self.eps)     
-        self.modelSetting=svm_fit(trainX, trainY.ravel(), par)
-        # q=Queue()
-        # threads=[]
-        # for i in range(12):
-        #     t=threading.Thread(target=Fit, args=(trainX, trainY.ravel(), par, q))
-        #     t.start()
-        #     threads.append(t)
-        # for thread in threads:
-        #     thread.join()
-        # res = []
-        # for _ in range(12):
-        #     res.append(q.get())  
+        self.model=svm_fit(trainX, trainY.ravel(), par)
+        
     ###########################Attribute##############
     @property
     def C(self):
