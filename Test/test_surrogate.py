@@ -40,8 +40,9 @@ t_xx=pf.transform(test_X)
 ########################SVR###############################
 svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='rbf', 
                 C=1, epsilon=0.00001, eps=0.1, degree=2, gamma=0.06, maxIter=1000000)
-gd=GridSearch({'C':[1,10,100],'gamma':[0.1,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09]}, svr)
-gd.start(train_X, train_Y)
+gd=GridSearch({'C':[1,5,10,50,100],'eps':[0.1,0.01,0.001,0.0001],'gamma':[0.1,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09]}, svr, CV=10)
+paras=gd.start(train_X, train_Y)
+svr.set_Paras(paras)
 model=svr.fit(train_X, train_Y)
 P_Y=svr.predict(test_X)
 print("r2_score:", r2_score(test_Y, P_Y))
