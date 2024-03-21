@@ -4,26 +4,33 @@ from typing import Dict, Literal
 import numpy as np
 import itertools
 import copy
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
-def fit_predict(evaluator, trainX, trainY, testX, testY, metric,i):
-    print("Begin{}".format(i))
-    evaluator.fit(trainX, trainY)
-    P_Y=evaluator.predict(testX)
-    time.sleep(1)
-    value=eval(metric)(testY,P_Y)
-    print("End{}".format(i))
-    return value
+def fit_predict(evaluator,dataX, dataY, train_sets, test_sets, metric):
+    
+    values=[]
+    for train_set, test_set in zip(train_sets, test_sets):
+        trainX=dataX[train_set,:];trainY=dataY[train_set,:]
+        testX=dataX[test_set,:];testY=dataY[test_set,:]
+        
+        evaluator.fit(trainX, trainY)
+        P_Y,_=evaluator.predict(testX)
+        value=eval(metric)(testY,P_Y)
+        values.append(value)
+    
+    return np.mean(values)
 
 class GridSearch():
     def __init__(self, para_grid: Dict, Evaluator, 
-                 CV: int=5, Metric: Literal["r2_score", "mse", "rank_score"]="r2_score"):
+                 CV: int=5, Metric: Literal["r2_score", "mse", "rank_score"]="r2_score",
+                 workers: int=8):
         
         self.Evaluator=Evaluator
         self.para_grid=para_grid
         self.CV=CV
         self.Metric=eval(Metric)
+        self.workers=workers
     
     def start(self, dataX, dataY):
         
@@ -33,45 +40,28 @@ class GridSearch():
         combos=itertools.product(*self.para_grid.values())
         combinations= [dict(zip(self.para_grid.keys(), combo)) for combo in combos]
         
-        Results=[]
-        trainX=dataX[train_sets[0],:];trainY=dataY[train_sets[0],:]
-        testX=dataX[test_sets[0],:];testY=dataY[test_sets[0],:]
-        a=time.time()
-        with ThreadPoolExecutor(max_workers=12) as exe:
+        # trainX=dataX[train_sets[0],:];trainY=dataY[train_sets[0],:]
+        # testX=dataX[test_sets[0],:];testY=dataY[test_sets[0],:]
+        
+        with ThreadPoolExecutor(max_workers=self.workers) as exe:
             futures={}
             i=0
             for para in combinations:
                 tempEvaluator=copy.deepcopy(self.Evaluator)
                 tempEvaluator.set_Paras(para)
-                future=exe.submit(fit_predict, tempEvaluator, trainX, trainY, testX, testY, "r2_score",i)
+                future=exe.submit(fit_predict, tempEvaluator,dataX, dataY, train_sets, test_sets, "r2_score")
                 futures[future]=para
-                i+=1
-            Res=[]
+
+            bestValue=-np.inf
+            bestPara=None
+            
             for future in as_completed(futures):
                 res=future.result()
                 para=futures[future]
-                Res.append((para,res))
-        # for para in combinations:
-        #     tempEvaluator=copy.deepcopy(self.Evaluator)
-        #     tempEvaluator.set_Paras(para)
-        #     fit_predict(tempEvaluator,trainX,trainY,testX,testY, "r2_score", 0)
-        b=time.time()
-        print(b-a)
-        a=1            
-            # for train_index, test_index in zip(train_sets, test_sets):
-            #     trainX=dataX[train_index,:];trainY=dataY[train_index,:]
-            #     testX=dataX[test_index,:];testY=dataY[test_index,:]
-            #     self.Evaluator.fit(trainX,trainY)
-            #     Predict_Y=self.Evaluator.predict(testX)
-            #     res.append(self.Metric(testY,Predict_Y))
-            # Results.append(np.mean(res))
-        
-        # Index=np.argmax(np.array(Results))
-        # print(combinations[Index])
-        # print(Results[Index])
-        
-        # return combinations[Index]
-    
+                if res>bestValue:
+                    bestPara=para   
+                    bestValue=res 
+            return bestPara, bestValue 
         
                 
                 

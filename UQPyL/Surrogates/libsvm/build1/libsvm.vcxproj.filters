@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="D:\UQ\UQPyL\Surrogates\libsvm\main.cpp">
+    <ClCompile Include="H:\UQ\UQPyL\Surrogates\libsvm\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D:\UQ\UQPyL\Surrogates\libsvm\svm.cpp">
+    <ClCompile Include="H:\UQ\UQPyL\Surrogates\libsvm\svm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="D:\UQ\UQPyL\Surrogates\libsvm\svm.h">
+    <ClInclude Include="H:\UQ\UQPyL\Surrogates\libsvm\svm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\UQ\UQPyL\Surrogates\libsvm\CMakeLists.txt" />
+    <CustomBuild Include="H:\UQ\UQPyL\Surrogates\libsvm\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{6558F14D-A6C8-34A9-BFB5-D45DF9674ECC}</UniqueIdentifier>
+      <UniqueIdentifier>{5E1894D7-9908-3AA9-823D-B2ABFE9BA7DE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{D79E03FB-DBE9-3812-A87E-DBFB5038D9FB}</UniqueIdentifier>
+      <UniqueIdentifier>{CDA169AB-6FE5-3CDA-B1D3-86F4D4D90F4C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

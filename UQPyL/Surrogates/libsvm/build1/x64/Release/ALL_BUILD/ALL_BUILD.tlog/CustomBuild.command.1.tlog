@@ -1,6 +1,6 @@
-^D:\UQ\UQPYL\SURROGATES\LIBSVM\CMAKELISTS.TXT
+^H:\UQ\UQPYL\SURROGATES\LIBSVM\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SD:/UQ/UQPyL/Surrogates/libsvm -BD:/UQ/UQPyL/Surrogates/libsvm/build1 --check-stamp-file D:/UQ/UQPyL/Surrogates/libsvm/build1/CMakeFiles/generate.stamp
+H:\Cmake\bin\cmake.exe -SH:/UQ/UQPyL/Surrogates/libsvm -BH:/UQ/UQPyL/Surrogates/libsvm/build1 --check-stamp-file H:/UQ/UQPyL/Surrogates/libsvm/build1/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

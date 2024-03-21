@@ -2,6 +2,7 @@ import numpy as np
 from scipy.linalg import LinAlgError, cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .surrogate_ABC import Surrogate, Scale_T
 from ..Utility.metrics import r2_score
@@ -235,7 +236,7 @@ class Kriging(Surrogate):
                 self.trainX=trainX
                 objs=np.zeros(thetas.shape[0])
                 for i,theta in enumerate(thetas):
-                    objs[i]=self._objFunc(np.power(np.e,theta),record=False)
+                    objs[i]=self._objFunc(np.power(np.e,theta), record=False)
                 return objs.reshape(-1,1)
             
             self.OPModel=eval(self.optimizer)(self.theta0.size, np.log(self.ub), np.log(self.lb), 50)
