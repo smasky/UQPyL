@@ -12,34 +12,35 @@ from UQPyL.Utility import PolynomialFeatures
 from UQPyL.Utility import r2_score, rank_score
 from UQPyL.Utility.scalers import MinMaxScaler, StandardScaler
 from UQPyL.Utility import GridSearch
-#Test Data
+#Test all surrogate model in UQPyL
 if __name__=='__main__':
+    XPop=np.random.random((10,10))
+    BestX=np.copy(XPop[0, :])
+    print(BestX)
+    XPop[0, 0]=100
+    print(BestX)
+    
     
     os.chdir('./Test')
-    data=loadmat('../UQPyL/Surrogates/gp.mat')
+    data=loadmat('./gp.mat')
     X=data['pop']
     Y=data['value']
-
-    # X=np.loadtxt('./1225_X.txt')
-    # Y=np.loadtxt('./1225_y.txt')
-
     train_X=X[0:280, :]
     train_Y=Y[0:280, 0:1]
     test_X=X[280:, :]
     test_Y=Y[280:, 0:1]
-
     ###########################MLP##############################
     pf=PolynomialFeatures(degree=2, include_bias=False)
-    xx=pf.transform(train_X)
-    t_xx=pf.transform(test_X)
+    train_XX=pf.transform(train_X)
+    test_XX=pf.transform(test_X)
     #########################FNN#########################
-    # fcnn=FNN(scalers=(MinMaxScaler(0,10),MinMaxScaler(0,10)), hidden_layer_sizes=[200,100],
-    #                         solver='adam', alpha=10, epoch=2000 ,activation_functions='relu')
-    # fcnn.fit(xx, train_Y)
-    # P_Y=fcnn.predict(t_xx)
-    # print("r2_score:", r2_score(test_Y, P_Y))
-    # print("rank_score", rank_score(test_Y, P_Y))
-
+    fcnn=FNN(scalers=(MinMaxScaler(0,10),MinMaxScaler(0,10)), hidden_layer_sizes=[300,150],
+                            solver='adam', learning_rate=0.1,
+                            alpha=0.0001, epoch=200 ,activation_functions='leaky_relu')
+    fcnn.fit(train_X, train_Y)
+    P_Y=fcnn.predict(test_X)
+    print("r2_score:", r2_score(test_Y, P_Y))
+    print("rank_score", rank_score(test_Y, P_Y))
     # ########################SVR###############################
     # svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='rbf', 
     #                 C=1, epsilon=0.00001, eps=0.1, degree=2, gamma=0.06, maxIter=1000000)
@@ -59,7 +60,6 @@ if __name__=='__main__':
     # # P_Y=PL.predict(test_X)
     # # print("r2_score:", r2_score(test_Y, P_Y))
     # # print("rank_score", rank_score(test_Y, P_Y))
-
     # # LLR=LinearRegression(scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)),Type='Lasso')
     # # LLR.fit(train_X, train_Y)
     # # P_Y=LLR.predict(test_X)
@@ -86,12 +86,9 @@ if __name__=='__main__':
     lb=np.ones(dims)*1
     dace_obj1 = KRG(theta, ub, lb, scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)), regression='poly1', kernel='gaussian', optimizer='Boxmin', fitMode='predictError')
     # dace_obj1.fit(train_X,train_Y)
-    
     # P_Y,ss=dace_obj1.predict(test_X)
     gd=GridSearch({'theta0':[np.random.random(dims)*10, np.random.random(dims)*100,np.random.random(dims)*1000]}, dace_obj1, CV=5)
     para, value=gd.start(train_X, train_Y)
-    
-    
     # print("r2_score:", r2_score(test_Y, P_Y))
     # print("rank_score", rank_score(test_Y, P_Y))
     # #######################RBF##########################

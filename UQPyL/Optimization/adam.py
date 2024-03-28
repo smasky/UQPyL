@@ -8,7 +8,10 @@ class Adam():
     
     """
     def __init__(self, params: list, learning_rate: float=0.001, 
-                    beta_1: float=0.9, beta_2: float=0.999, epsilon: float=1e-8,
+                    beta_1: float=0.9, beta_2: float=0.999, epsilon: float
+                    
+                    
+                    =1e-8,
                     epoch: int=2000):
         
         self.beta_1 = beta_1
