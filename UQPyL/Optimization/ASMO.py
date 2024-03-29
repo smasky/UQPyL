@@ -2,7 +2,8 @@
 from .sce_ua import SCE_UA
 from ..Experiment_Design import LHS
 import numpy as np
-lhs=LHS('center_maximin')
+from tqdm import tqdm
+lhs=LHS('center')
 class ASMO():
     '''
     evaluator: the function to evaluate the parameters
@@ -17,35 +18,38 @@ class ASMO():
         self.LB=LB; self.UB=UB
         self.NInit=NInit
         self.NInput=NInput
-        
-        if XInit is None:
-            self.XInit=(UB-LB)*lhs(NInit, NInput)+LB
-        else:
-            self.XInit=XInit
-            
-        if YInit is None:
-            self.YInit=self.evaluator(XInit)
-        else:
-            self.YInit=YInit
-    
+        self.XInit=XInit
+        self.YInit=YInit
     def run(self,maxFE=1000, Tolerate=0.001, maxTolerateTime=50, oneStep=False):
         '''
         main procedure
-        '''
+        ''' 
+        show_process=tqdm(total=maxFE)
         FE=0
         TT=0
-        XPop=self.XInit
-        YPop=self.YInit
         NInput=self.NInput
         LB=self.LB
         UB=self.UB
+            
+        if self.XInit is None:
+            self.XInit=(UB-LB)*lhs(self.NInit, NInput)+LB
+        if self.YInit is None:
+            self.YInit=self.evaluator(self.XInit)
+           
         
-        idx=np.argmin(YPop, axis=0)
+        XPop=self.XInit
+        YPop=self.YInit
+        
+        FE=YPop.shape[0]
+        show_process.update(FE)
+        
+        idx=np.argsort(YPop, axis=0)
         BestY=YPop[idx[0,0],0]
         BestX=XPop[idx[0,0],:]
         if (oneStep==False):
-            while FE>maxFE or TT>maxTolerateTime:
-            # Build surrogate model
+            while FE<maxFE and TT<maxTolerateTime:
+                show_process.update(1)
+                # Build surrogate model
                 self.surrogate.fit(XPop, YPop)
                 BestX_SM, _=SCE_UA(self.surrogate.predict, NInput, LB, UB).run()
                 
@@ -68,7 +72,7 @@ class ASMO():
             
             if TempY[0,0]<BestY:
                 BestY=np.copy(TempY)
-                BestX=np.copy(BestX_SM)    
+                BestX=np.copy(BestX_SM) 
         return BestX, BestY
             
             

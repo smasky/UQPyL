@@ -130,10 +130,10 @@ class SCE_UA():
         alpha = 1.0
         beta = 0.5
         
-        sw = s[-1,:]
+        sw = s[-1,:].reshape(1,-1)
         fw = sf[-1, 0]
         
-        ce = np.mean(s[:NSample-1,:],axis=0)
+        ce = np.mean(s[:NSample-1,:],axis=0).reshape(1,-1)
         snew = ce + alpha * (ce - sw)
         
         ibound = 0
