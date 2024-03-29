@@ -1,7 +1,8 @@
 .history
-
 .vscode
 
+
+*.json
 Test/*.pickle
 Test/*.pdf
 Test/*.eps

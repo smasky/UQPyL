@@ -29,9 +29,10 @@ class Sphere(ProblemABC):
         self.disc_var=disc_var
         self.cont_var=cont_var
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
-        
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+    def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=np.sum(X**2,axis=1).reshape(-1,1)      
         
         return F

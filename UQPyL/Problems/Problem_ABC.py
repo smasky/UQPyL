@@ -30,6 +30,8 @@ class ProblemABC(metaclass=abc.ABCMeta):
             
             self._check_bound(lb)
             self.lb=lb 
+    def _check_2d(self, X:np.ndarray):
+        return np.atleast_2d(X)
     
     def _check_bound(self,bound: np.ndarray):
         
