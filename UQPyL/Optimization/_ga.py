@@ -9,14 +9,11 @@ class GA():
     proM=None
     disM=None
     tolerate=1e-6
-    def __init__(self, problem, n_samples: int,
+    def __init__(self, dim: int, ub: np.ndarray, lb: np.ndarray, n_samples: int,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  tolerate_times: int=1000):
-        # self.__check__(dim,ub,lb)
-        
-        self.dim=problem.dim
-        self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
-        self.evaluate=problem.evaluate
+        self.__check__(dim,ub,lb)
+        self.dim=dim;self.ub=ub.reshape(1,-1);self.lb=lb.reshape(1,-1)
         
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
@@ -77,7 +74,7 @@ class GA():
         
         return Offspring
     
-    def run(self):
+    def run(self, func: Callable):
         
         best_objs=np.inf
         best_decs=None
@@ -85,13 +82,13 @@ class GA():
         iter=0
         
         decs=np.random.random((self.n_samples,self.dim))*(self.ub-self.lb)+self.lb
-        objs=self.evaluate(decs)
+        objs=func(decs)
         
         while iter<self.iterTimes:
             
             matingPool=self._tournamentSelection(decs,objs,2)
             matingDecs=self._operationGA(matingPool)
-            matingObjs=self.evaluate(matingDecs)
+            matingObjs=func(matingDecs)
             
             tempObjs=np.vstack((objs,matingObjs))
             tempDecs=np.vstack((decs,matingDecs))
@@ -113,10 +110,10 @@ class GA():
             
             return best_decs,best_objs
             
-    # def __check__(self,dim: int, ub: np.ndarray, lb: np.ndarray):
-    #     if(ub.size==lb.size and dim==ub.size):
-    #         pass
-    #     else:
-    #         raise ValueError("The dimensions should be consistent among dim, ub and lb")
+    def __check__(self,dim: int, ub: np.ndarray, lb: np.ndarray):
+        if(ub.size==lb.size and dim==ub.size):
+            pass
+        else:
+            raise ValueError("The dimensions should be consistent among dim, ub and lb")
 
         

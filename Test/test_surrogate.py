@@ -30,17 +30,17 @@ if __name__=='__main__':
     test_X=X[280:, :]
     test_Y=Y[280:, 0:1]
     ###########################MLP##############################
-    pf=PolynomialFeatures(degree=2, include_bias=False)
-    train_XX=pf.transform(train_X)
-    test_XX=pf.transform(test_X)
+    # pf=PolynomialFeatures(degree=2, include_bias=False)
+    # train_XX=pf.transform(train_X)
+    # test_XX=pf.transform(test_X)
     #########################FNN#########################
-    fcnn=FNN(scalers=(MinMaxScaler(0,10),MinMaxScaler(0,10)), hidden_layer_sizes=[300,150],
-                            solver='adam', learning_rate=0.1,
-                            alpha=0.0001, epoch=200 ,activation_functions='leaky_relu')
-    fcnn.fit(train_X, train_Y)
-    P_Y=fcnn.predict(test_X)
-    print("r2_score:", r2_score(test_Y, P_Y))
-    print("rank_score", rank_score(test_Y, P_Y))
+    # fcnn=FNN(scalers=(MinMaxScaler(0,10),MinMaxScaler(0,10)), hidden_layer_sizes=[300,150],
+    #                         solver='adam', learning_rate=0.1,
+    #                         alpha=0.0001, epoch=200 ,activation_functions='leaky_relu')
+    # fcnn.fit(train_X, train_Y)
+    # P_Y=fcnn.predict(test_X)
+    # print("r2_score:", r2_score(test_Y, P_Y))
+    # print("rank_score", rank_score(test_Y, P_Y))
     # ########################SVR###############################
     # svr=SVR(scalers=(MinMaxScaler(-1,1),MinMaxScaler(0,1)), kernel='rbf', 
     #                 C=1, epsilon=0.00001, eps=0.1, degree=2, gamma=0.06, maxIter=1000000)
@@ -81,16 +81,16 @@ if __name__=='__main__':
     # print("rank_score", rank_score(test_Y, P_Y))
     # #####################Kriging########################
     dims=30
-    theta=np.random.random(dims)*10
+    theta=np.random.random(dims)*1
     ub=np.ones(dims)*1e4
-    lb=np.ones(dims)*1
-    dace_obj1 = KRG(theta, ub, lb, scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)), regression='poly1', kernel='gaussian', optimizer='Boxmin', fitMode='predictError')
-    # dace_obj1.fit(train_X,train_Y)
-    # P_Y,ss=dace_obj1.predict(test_X)
-    gd=GridSearch({'theta0':[np.random.random(dims)*10, np.random.random(dims)*100,np.random.random(dims)*1000]}, dace_obj1, CV=5)
-    para, value=gd.start(train_X, train_Y)
-    # print("r2_score:", r2_score(test_Y, P_Y))
-    # print("rank_score", rank_score(test_Y, P_Y))
+    lb=np.ones(dims)*1e-4
+    dace_obj1 = KRG(theta, ub, lb, scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), regression='poly1', kernel='gaussian', optimizer='GA', fitMode='likelihood')
+    dace_obj1.fit(train_X,train_Y)
+    P_Y=dace_obj1.predict(test_X)
+    # gd=GridSearch({'theta0':[np.random.random(dims)*10, np.random.random(dims)*100,np.random.random(dims)*1000]}, dace_obj1, CV=5)
+    # para, value=gd.start(train_X, train_Y)
+    print("r2_score:", r2_score(test_Y, P_Y))
+    print("rank_score", rank_score(test_Y, P_Y))
     # #######################RBF##########################
     # rbf=RBFN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=Cubic())
     # rbf.fit(train_X,train_Y)

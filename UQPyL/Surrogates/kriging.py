@@ -10,6 +10,7 @@ from ..Optimization import Boxmin, GA, MP_List, EA_List
 from ..Utility.model_selections import RandSelect
 from ..Utility.scalers import Scaler
 from ..Utility.polynomial_features import PolynomialFeatures
+from ..Problems import Problem
 
 def regrpoly0(S):
     
@@ -119,7 +120,7 @@ class Kriging(Surrogate):
         
         super().__init__(scalers, poly_feature)
     ###########################Interface Function####################################
-    def predict(self,predictX: np.ndarray):
+    def predict(self,predictX: np.ndarray, only_value=True):
         
         predictX=self.__X_transform__(predictX)
         n_sample, n_feature=self.trainX.shape
@@ -144,7 +145,10 @@ class Kriging(Surrogate):
                              self.fitPar['Ft'].T @ rt - F.T)[0]
         mse = self.fitPar['sigma2'] * (1 + np.sum(u**2, axis=0) - np.sum(rt ** 2, axis=0)).T
         
-        return predictY, mse
+        if only_value:
+            return predictY
+        else:
+            return predictY, mse
     
     def fit(self, trainX: np.ndarray, trainY: np.ndarray):
         
@@ -186,10 +190,7 @@ class Kriging(Surrogate):
             self.theta=bestTheta
         elif self.optimizer in EA_List:
             ###Using Evolutionary Algorithm
-            self.OPModel=eval(self.optimizer)(self.theta0.size, np.log(self.ub), np.log(self.lb), 50)
-
             if not self.OPFunc:
-                
                 def objFunc(thetas):
                     self.trainY=trainY
                     self.trainX=trainX
@@ -197,15 +198,19 @@ class Kriging(Surrogate):
                     for i,theta in enumerate(thetas):
                         self._objFunc(np.power(np.e,theta),record=True)
                         self.theta=np.power(np.e,theta).ravel()
-                        predictY,_=self.predict(self.X_scaler.inverse_transform(testX))
+                        predictY=self.predict(self.X_scaler.inverse_transform(testX))
                         objs[i]=-1*r2_score(self.Y_scaler.inverse_transform(testY),predictY)
                     return objs.reshape(-1,1)
                 self.OPFunc=objFunc
                 
+            problem=Problem(self.OPFunc, self.theta0.size, 1, np.log(self.ub), np.log(self.lb))
+            
+            self.OPModel=eval(self.optimizer)(problem, 50)
+
             bestObj=np.inf
             bestTheta=None
             for _ in range(self.n_restart_optimize):
-                theta, obj=self.OPModel.run(self.OPFunc)
+                theta, obj=self.OPModel.run()
                 if obj<bestObj:
                     bestTheta=theta
                     bestObj=obj
@@ -238,13 +243,13 @@ class Kriging(Surrogate):
                 for i,theta in enumerate(thetas):
                     objs[i]=self._objFunc(np.power(np.e,theta), record=False)
                 return objs.reshape(-1,1)
-            
-            self.OPModel=eval(self.optimizer)(self.theta0.size, np.log(self.ub), np.log(self.lb), 50)
+            problem=Problem(objFunc, self.theta0.size, 1, np.log(self.ub), np.log(self.lb), )
+            self.OPModel=eval(self.optimizer)(problem, 50)
             
             for _ in range(self.n_restart_optimize):
                 bestObj=np.inf
                 bestTheta=None
-                theta, obj=self.OPModel.run(objFunc)
+                theta, obj=self.OPModel.run()
                 if obj<bestObj:
                     bestTheta=theta
                     bestObj=obj

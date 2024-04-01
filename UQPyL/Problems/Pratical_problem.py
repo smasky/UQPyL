@@ -1,13 +1,18 @@
 from typing import Callable
 from .Problem_ABC import ProblemABC
 import numpy as np
-class PracticalProblem(ProblemABC):
+class Problem(ProblemABC):
     '''
     Class for creating practical problem
     '''
-    def __init__(self):
+    def __init__(self, func, dim, NOutput, ub, lb):
         super().__init__()
-        self._func=None
+        self._func=func
+        self.dim=dim
+        self.NOutput=NOutput
+        self.ub=ub
+        self.lb=lb
+        
     def __check_func__(self,func):
         '''
         check the available of coupling function(algorithm and model)

@@ -6,18 +6,17 @@ from ..Experiment_Design import LHS
 lhs=LHS('center')
 
 class NSGAII():
-    def __init__(self, evaluator, NInput, NOutput, LB, UB, NInit, XInit=None, YInit=None,
+    def __init__(self, problem, NInit, XInit=None, YInit=None,
                  proC=1, disC=20, proM=1, disM=20):
-        self.evaluator=evaluator
-        self.NInput=NInput
-        self.NOutput=NOutput
-        self.LB=LB
-        self.UB=UB
+        
+        self.evaluator=problem.evaluate
+        self.NInput=problem.dim
+        self.lb=problem.lb;self.ub=problem.ub
+        self.NOutput=problem.NOutput
+        
         self.NInit=NInit
         self.XInit=XInit
         self.YInit=YInit
-        # self.NPop=NPop
-        # self.NGen=NGen
         ####GA setting
         self.proC=proC
         self.disC=disC
@@ -28,11 +27,11 @@ class NSGAII():
         
         NInput=self.NInput
         NInit=self.NInit
-        LB=self.LB
-        UB=self.UB
+        lb=self.lb
+        ub=self.ub
             
         if self.XInit is None:
-            self.XInit=(UB-LB)*lhs(self.NInit, NInput)+LB
+            self.XInit=(ub-lb)*lhs(self.NInit, NInput)+lb
         if self.YInit is None:
             self.YInit=self.evaluator(self.XInit)
         
@@ -79,8 +78,8 @@ class NSGAII():
         off2=(Parent1+Parent2)/2-beta*(Parent1-Parent2)/2
         Offspring=np.vstack((off1,off2))
         
-        Lower=np.repeat(self.LB,2*N,axis=0)
-        Upper=np.repeat(self.UB,2*N,axis=0)
+        Lower=np.repeat(self.lb,2*N,axis=0)
+        Upper=np.repeat(self.ub,2*N,axis=0)
         Site=np.random.random((2*N,D))<self.proM/D
         mu=np.random.random((2*N,D)) 
         temp=np.zeros((2*N,D),dtype=np.bool_)

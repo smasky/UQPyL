@@ -5,13 +5,14 @@ lhs=LHS('center_maximin')
 class SCE_UA():
     '''
     '''
-    def __init__(self, evaluator, NInput, LB, UB, 
+    def __init__(self, problem,
           ngs = None, kstop = 10, 
           pcento = 0.1, peps = 0.001, verbose = True, simple=True):
-        self.func=evaluator
-        self.NInput=NInput
-        self.LB=LB
-        self.UB=UB
+        self.func=problem.evaluate
+        self.NInput=problem.dim
+        self.lb=problem.lb
+        self.ub=problem.ub
+        
         self.ngs=ngs
         self.kstop=kstop
         self.pcento=pcento
@@ -20,7 +21,7 @@ class SCE_UA():
         self.simple=simple
         
         if ngs==None:
-            self.ngs=NInput
+            self.ngs=problem.dim
             
     def run(self, maxFE=50000, maxIter=3000):
         # Initialize SCE parameters:
@@ -29,10 +30,10 @@ class SCE_UA():
         nps  = self.NInput + 1
         nspl = npg
         npt  = npg * self.ngs
-        BD   = self.UB - self.LB
+        BD   = self.ub - self.lb
         
         #Initialize 
-        XPop=BD*lhs(npt, self.NInput)+self.LB
+        XPop=BD*lhs(npt, self.NInput)+self.lb
         YPop=self.func(XPop)
         FE=npt
         #Sort the population in order of increasing function values
@@ -77,7 +78,7 @@ class SCE_UA():
                     s = np.copy(cx[lcs,:])
                     sf = np.copy(cf[lcs, :])
                     
-                    snew, fnew, FE = self.cceua(self.func, s, sf, self.LB, self.UB, FE) #parallel TODO
+                    snew, fnew, FE = self.cceua(self.func, s, sf, self.lb, self.ub, FE) #parallel TODO
                     
                     # Replace the worst point in Simplex with the new point:
                     s[nps-1,:] = snew
@@ -124,7 +125,7 @@ class SCE_UA():
             return BestX, BestY, FE, nloop, List_BestX, List_BestY, List_FE
                         
                         
-    def cceua(self, func, s, sf, LB, UB, FE):
+    def cceua(self, func, s, sf, lb, ub, FE):
         
         NSample, NInput = s.shape
         alpha = 1.0
@@ -137,14 +138,14 @@ class SCE_UA():
         snew = ce + alpha * (ce - sw)
         
         ibound = 0
-        s1 = snew - LB
+        s1 = snew - lb
         if np.sum(s1 < 0) > 0:
             ibound = 1
-        s1 = UB - snew
+        s1 = ub - snew
         if np.sum(s1 < 0) > 0:
             ibound = 2
         if ibound >= 1:
-            snew = LB + np.random.random(NInput) * (UB - LB)
+            snew = lb + np.random.random(NInput) * (ub - lb)
         
         fnew=func(snew)
         FE+=1
@@ -157,7 +158,7 @@ class SCE_UA():
         
         # Both reflection and contraction have failed, attempt a random point
             if fnew[0,0] > fw:
-                snew = LB + np.random.random(NInput) * (UB - LB)
+                snew = lb + np.random.random(NInput) * (ub - lb)
                 fnew = func(snew)
                 FE += 1
 

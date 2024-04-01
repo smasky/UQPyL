@@ -47,7 +47,7 @@ class Surrogate(metaclass=abc.ABCMeta):
         self._train_y_=train_y.copy()
         
         train_x=np.atleast_2d(self._train_x_)
-        train_y=np.atleast_2d(self._train_y_)
+        train_y=np.atleast_2d(self._train_y_).reshape(-1, 1)
         
         if(train_x.shape[0]==train_y.shape[0]):
             
