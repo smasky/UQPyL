@@ -17,7 +17,7 @@ class MOASMO():
         self.Pct=Pct
         
     def run(self, maxFE=1000):
-        pct=self.Pct
+        pct=self.Pct  
         NInit=self.NInit
         N_Resample=np.floor(NInit*pct)
         UB=self.UB; LB=self.LB
