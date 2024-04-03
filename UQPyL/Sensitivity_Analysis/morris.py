@@ -1,5 +1,7 @@
 import numpy as np
+from ..Experiment_Design import LHS
 
+lhs=LHS('center')
 class Morris():
     def __init__(self, problem, N_trajectories=100, surrogate=None, XInit=None, YInit=None, 
                     num_levels=4, grid_jump=1):
@@ -22,40 +24,56 @@ class Morris():
     
     def generate_samples(self):
         """生成Morris序列样本"""
-        # levels = np.linspace(0, 1, self.num_levels + 1)
-        # samples = np.zeros((self.NSample, self.dim))
-        # for idx in range(self.NSample):
-        #     sample = []
-        #     level=np.random.choice(levels, size=self.dim, replace=True)
-        #     delta=(self.ub-self.lb)/self.grid_jump
-        #     sample.append(self.lb+level*delta)
-        #     samples[idx, :]=sample
-        # return samples
-        
-        delta = self.num_levels / (2 * self.num_levels - 2)
-        
+                
+        delta = 1/self.num_levels
+        if self.XInit is None:
+            base_list=lhs(self.N_trajectories, self.dim)
+            self.XInit=np.copy(base_list)
         sequences =[]
-        for _ in range(self.N_trajectories):
+        for j in range(self.N_trajectories):
+            base = base_list[j, :]
             sequence=[]
-            base = np.random.uniform(0, self.num_levels - 1, self.dim) / (self.num_levels - 1)
-            base = np.round(base, decimals=2)
             for i in range(self.dim):
                 perturbed = np.copy(base)
                 perturbed[i] += delta if perturbed[i] + delta <= 1 else -delta
-                perturbed = np.round(perturbed, decimals=2)
-                sequence.append(perturbed.reshape(1,-1))
+                sequence.append(perturbed)
+                base=perturbed
             sequences.append(np.array(sequence))
         
         return sequences
+    
     def analyze(self):
         
-        samples_X=self.generate_samples()
-        
+        sequences=self.generate_samples()
+        if self.YInit is None:
+            self.YInit=self.evaluate(self.XInit)
+            
         if self.surrogate:
-            self.surrogate.fit(self.XInit, self.YInit)
-            samples_Y=self.surrogate.predict(samples_X)
-        else:
-            samples_Y=self.evaluate(samples_X)
+                self.surrogate.fit(self.XInit, self.YInit)
+                
+        EE=np.zeros((self.dim, self.N_trajectories))
+        for i in range(self.N_trajectories):
+            sequence=sequences[i]
+            if self.surrogate:
+                samples_Y=self.surrogate.predict(sequence)
+            else:
+                samples_Y=self.evaluate(sequence)
+            
+            samples_Y=np.vstack((self.YInit[i,:], samples_Y))
+            sequence=np.vstack((self.XInit[i, :], sequence))
+            
+            Y_diff=np.diff(samples_Y, axis=0)
+            delta_diff=np.sum(np.diff(sequence, axis=0), axis=1).reshape(-1,1)
+            EE[:, i:i+1]=Y_diff/delta_diff
+        
+        mean_EEs = np.mean(EE, axis=1)
+        std_EEs = np.std(EE, axis=1)
+        
+        idx=np.argsort(mean_EEs)[::-1]
+        
+        return idx, mean_EEs, std_EEs
+            
+        
         
         
         

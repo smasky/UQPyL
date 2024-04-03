@@ -11,6 +11,6 @@ import matplotlib.pyplot as plt
 import os
 
 problem=Sphere(dim=15)
-
-mor=Morris(problem)
-a=mor.generate_samples()
+rbf=RBF(kernel=Cubic())
+mor=Morris(problem, surrogate=rbf)
+mor.analyze()
