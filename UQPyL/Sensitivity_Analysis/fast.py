@@ -106,6 +106,9 @@ class FAST():
             Si.append(Di/V)
             ST.append(1.0-Dt/V)
         
+        S={}
+        S['Si']=Si
+        S['ST']=ST
         return Si, ST
         
         

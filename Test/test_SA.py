@@ -6,7 +6,7 @@ from UQPyL.Experiment_Design import LHS
 from UQPyL.Optimization import SCE_UA, ASMO, NSGAII, MOASMO
 from UQPyL.Surrogates import RBF, MO_Surrogates, KRG
 from UQPyL.Surrogates.RBF_Kernel import Cubic
-from UQPyL.Sensitivity_Analysis import Morris, FAST, RBD_FAST
+from UQPyL.Sensitivity_Analysis import Morris, FAST, RBD_FAST, SOBOL
 
 import matplotlib.pyplot as plt
 import os
@@ -25,6 +25,15 @@ import os
 # fas.analyze()
 
 #RBD_FAST
-problem= Sphere(dim=2)
-rbd=RBD_FAST(problem, NSample=1000)
-rbd.analyze()
+# problem= Sphere(dim=15)
+# rbf=RBF(kernel=Cubic())
+# rbd=RBD_FAST(problem, surrogate=rbf,NSample=999)
+# rbd.analyze()
+
+
+#SOBOL
+# problem=Sphere(dim=3)
+# rbf=RBF(kernel=Cubic())
+# sob=SOBOL(problem, cal_second_order=True, NSample=8)
+# sob.analyze()
+

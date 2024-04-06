@@ -31,22 +31,25 @@ class RBD_FAST():
         if self.surrogate:
             self.YInit=self.evaluate(self.XInit)
             self.surrogate.fit(self.XInit, self.YInit)
-            Y_seq=self.surrogate.predict(self.X_seq)
+            Y_seq=self.surrogate.predict(X_seq)
         else:
             Y_seq=self.evaluate(X_seq)
         scaler=MinMaxScaler(0,1)
+        
         for i in range(self.dim):
             idx=np.argsort(X_seq[:, i])
             idx=np.concatenate([idx[::2], idx[1::2][::-1]])
             Y_tmp=scaler.fit_transform(Y_seq[idx])
-            _,Pxx=periodogram(Y_tmp)
+           
+            Pxx = np.abs(np.fft.rfft(Y_tmp[:, 0]))**2 / self.NSample / (self.NSample - 1)
+
             V=np.sum(Pxx[1:])
             D1=np.sum(Pxx[1: self.M+1])
             S1=V/D1
-            lamb=(2*self.M)/None
+            lamb=(2*self.M)/self.NSample
             S1=S1-lamb/(1-lamb)*(1-S1)
             
-            Si.append(V/D1)
+            Si.append(S1)
             
         return Si
             
