@@ -6,7 +6,7 @@ from UQPyL.Experiment_Design import LHS
 from UQPyL.Optimization import SCE_UA, ASMO, NSGAII, MOASMO
 from UQPyL.Surrogates import RBF, MO_Surrogates, KRG
 from UQPyL.Surrogates.RBF_Kernel import Cubic
-from UQPyL.Sensitivity_Analysis import Morris, FAST, RBD_FAST, SOBOL
+from UQPyL.Sensitivity_Analysis import Morris, FAST, RBD_FAST, SOBOL, DELTA_TEST
 
 import matplotlib.pyplot as plt
 import os
@@ -37,3 +37,7 @@ import os
 # sob=SOBOL(problem, cal_second_order=True, NSample=8)
 # sob.analyze()
 
+#Delta_test
+problem=Sphere(dim=15)
+delta=DELTA_TEST(problem, NSample=1000)
+delta.analyze()
