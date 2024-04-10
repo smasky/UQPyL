@@ -91,8 +91,7 @@ class LinearRegression(Surrogate):
             return self.coef_
     
     def _fit_Lasso(self, trainX: np.ndarray, trainY: np.ndarray):
-        from .Lasso_ import celer
-        from .Lasso_ import compute_norms_X_col, compute_Xw, dnorm_enet
+        from .Lasso_.lasso_fast import celer, compute_norms_X_col, compute_Xw, dnorm_enet
         
         trainX_=np.asarray(trainX, order='F')
         trainY_=np.asarray(trainY, order='F')

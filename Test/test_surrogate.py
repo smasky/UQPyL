@@ -7,10 +7,13 @@ import numpy as np
 from sklearn.neural_network import MLPRegressor
 from UQPyL.Surrogates.RBF_Kernel import Cubic, Linear, Multiquadric, Gaussian
 from UQPyL.Surrogates.GP_Kernel import RBF
-from UQPyL.Surrogates import RBF as RBFN, GPR, LinearRegression, PolynomialRegression, SVR, FNN, KRG
+from UQPyL.Surrogates import (RBF as RBFN, GPR, LinearRegression, 
+                              PolynomialRegression, SVR, FNN, KRG, MARS)
+
 from UQPyL.Utility import PolynomialFeatures
 from UQPyL.Utility import r2_score, rank_score
 from UQPyL.Utility.scalers import MinMaxScaler, StandardScaler
+
 from UQPyL.Utility import GridSearch
 #Test all surrogate model in UQPyL
 if __name__=='__main__':
@@ -29,6 +32,14 @@ if __name__=='__main__':
     train_Y=Y[0:280, 0:1]
     test_X=X[280:, :]
     test_Y=Y[280:, 0:1]
+    ############################MARS###########################
+    # mars=MARS(scalers=(MinMaxScaler(0,10),MinMaxScaler(0,10)))
+    # mars.fit(train_X, train_Y)
+    # P_Y=mars.predict(test_X)
+    # print(mars.trace())
+    # print(mars.summary())
+    # print("r2_score:", r2_score(test_Y, P_Y))
+    # print("rank_score", rank_score(test_Y, P_Y))
     ###########################MLP##############################
     # pf=PolynomialFeatures(degree=2, include_bias=False)
     # train_XX=pf.transform(train_X)
@@ -60,11 +71,11 @@ if __name__=='__main__':
     # # P_Y=PL.predict(test_X)
     # # print("r2_score:", r2_score(test_Y, P_Y))
     # # print("rank_score", rank_score(test_Y, P_Y))
-    # # LLR=LinearRegression(scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)),Type='Lasso')
-    # # LLR.fit(train_X, train_Y)
-    # # P_Y=LLR.predict(test_X)
-    # # print("r2_score:", r2_score(test_Y, P_Y))
-    # # print("rank_score", rank_score(test_Y, P_Y))
+    LLR=LinearRegression(scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)),Type='Lasso')
+    LLR.fit(train_X, train_Y)
+    P_Y=LLR.predict(test_X)
+    print("r2_score:", r2_score(test_Y, P_Y))
+    print("rank_score", rank_score(test_Y, P_Y))
     # # ################ Gaussian Process###################
     # dims=20
     # theta=np.random.random(dims)*1000

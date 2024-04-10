@@ -1,5 +1,5 @@
 import numpy as np
-from .libsvm import svm_fit, svm_predict, Parameter 
+from .SVR_ import svm_fit, svm_predict, Parameter 
 from typing import Tuple, Literal, Optional
 from .surrogate_ABC import Scale_T, Surrogate
 from ..Utility.polynomial_features import PolynomialFeatures

@@ -2,7 +2,7 @@ import numpy as np
 from ..Experiment_Design import LHS
 
 lhs=LHS('center')
-class Morris():
+class MORRIS():
     def __init__(self, problem, N_trajectories=100, surrogate=None, XInit=None, YInit=None, 
                     num_levels=4, grid_jump=1):
         self.evaluate=problem.evaluate
