@@ -65,14 +65,12 @@ class DELTA_TEST():
         
         neighbors_indices = np.argsort(distances, axis=1)[:, :self.n_neighbors]
         
-        # 计算Delta值
         deltas = []
         for i in range(len(X)):
             neighbor_deltas = (y[i] - y[neighbors_indices[i]])**2
             delta = np.mean(neighbor_deltas)
             deltas.append(delta)
         
-        # 返回平均Delta值
         return np.mean(deltas) 
 
         

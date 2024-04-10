@@ -8,6 +8,7 @@ from .support_vector_machine import SVR
 from .fully_connect_neural_network import FNN
 from .kriging import Kriging as KRG
 from .mo_surrogates import MO_Surrogates
+from .pyearth import ascii_table, apply_weights_2d, gcv
 __all__=[
     "LinearRegression",
     "PolynomialRegression",
@@ -21,4 +22,7 @@ __all__=[
     "FNN",
     "KRG",
     "MO_Surrogates",
+    "ascii_table",
+    "apply_weights_2d",
+    "gcv"
 ]
