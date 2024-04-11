@@ -6,6 +6,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
     lb=None
     disc_var=None
     cont_var=None
+    x_labels=None
     @abc.abstractmethod
     def evaluate(self,X):
         pass

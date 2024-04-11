@@ -10,7 +10,7 @@ class Sampling(metaclass=abc.ABCMeta):
         return self._generate(nt,nx)
     
     @abc.abstractmethod
-    def _generate(self,nt: int, nx: int) -> np.ndarray:
+    def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         nt: the number of sampled points
         nx: the dimensions of decision variables
@@ -20,3 +20,5 @@ class Sampling(metaclass=abc.ABCMeta):
         
         '''
         pass
+    
+    

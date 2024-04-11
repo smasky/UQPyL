@@ -4,8 +4,8 @@ import numpy as np
 from scipy.spatial.distance import cdist
 
 from ..Optimization import Binary_GA
-from .sa_base import SA_base
-class DletaTest(SA_base):
+from .sa_ABC import SA
+class Delta_Test(SA):
     def __init__(self, problem, n_neighbors=2, n_sample=1000, 
                  scale=None, lhs=None,
                  surrogate=None, n_surrogate_sample=50, 
@@ -13,13 +13,14 @@ class DletaTest(SA_base):
         
         super().__init__(problem, n_sample, 
                          scale, lhs, 
-                         surrogate, n_surrogate_sample, X_for_surrogate, Y_for_surrogate)
+                         surrogate, n_surrogate_sample, X_for_surrogate, Y_for_surrogate
+                         )
 
         self.n_neighbors=n_neighbors
          
     def analyze(self, X_sa=None, Y_sa=None):
 
-        X_sa, Y_sa=self.__check_x_y__(X_sa, Y_sa)
+        X_sa, Y_sa=self.__check_and_scale_x_y__(X_sa, Y_sa)
             
         self.X_sa=X_sa; self.Y_sa=Y_sa
         optimizer=Binary_GA(self.cal_delta, self.n_input)
@@ -31,7 +32,15 @@ class DletaTest(SA_base):
     
     def summary(self):
         
-        assert self.best_paras is not None or self.best_value is not None, "Please run analyze() first!"
+        if self.best_paras==None or self.best_value==None:
+            raise ValueError("Please run analyze() first!")
+        
+        idx=[index for index, value in enumerate(self.best_value) if value==1]
+        
+        print('The best performance parameter combinations:')
+        print(' |'.join(self.labels[idx]))
+        print(' |'.join(map(str, self.S1_score[idx])))
+         
         #TODO output the optimal variables
 
     def cal_delta(self, exclude_feature_list):
@@ -55,6 +64,4 @@ class DletaTest(SA_base):
             delta = np.mean(neighbor_deltas)
             deltas.append(delta)
         
-        return np.mean(deltas) 
-
-        
+        return np.mean(deltas)     

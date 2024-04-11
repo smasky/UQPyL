@@ -1,49 +1,44 @@
 import numpy as np
-from ..Experiment_Design import LHS
+
+
 from ..Surrogates import MARS
 from ..Utility import MinMaxScaler
+from .sa_ABC import SA
 
-lhs=LHS('center')
-class MARS_SA():
-    def __init__(self, problem, NSample=1000, 
-                       surrogate=None, NSurrogate=50, XInit=None, YInit=None):
-        self.evaluate=problem.evaluate
-        self.dim=problem.dim
-        self.ub=problem.ub; self.lb=problem.lb
-        self.surrogate=surrogate
+class MARS_SA(SA):
+    def __init__(self, problem, n_sample=100,
+                 scale=None, lhs=None, 
+                 surrogate=None, n_surrogate_sample=50, 
+                 X_for_surrogate=None, Y_for_surrogate=None):
         
-        self.NSample=NSample
-        
-        if self.surrogate:
-            if XInit is None:
-                self.XInit=lhs(NSurrogate, self.dim)*(self.ub-self.lb)+self.lb
+        super().__init__(problem, n_sample,
+                         scale, lhs,
+                         surrogate, n_surrogate_sample, X_for_surrogate, Y_for_surrogate
+                         )
     
-    def analyze(self):
+    def analyze(self, X_sa=None, Y_sa=None):
         
-        
-        X_seq=lhs(self.NSample, self.dim)*(self.ub-self.lb)+self.lb
-        if self.surrogate:
-            self.YInit=self.evaluate(self.XInit)
-            self.surrogate.fit(self.XInit, self.YInit)
-            Y_seq=self.surrogate.predict(X_seq)
-        else:
-            Y_seq=self.evaluate(X_seq)
+        X_sa, Y_sa=self.__check_and_scale_x_y__(X_sa, Y_sa)
             
         mars=MARS(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
-        mars.fit(X_seq, Y_seq)
+        mars.fit(X_sa, Y_sa)
         base_gcv=mars.gcv_
         
         Si=[]
         
-        for i in range(self.dim):
-            X_sub=np.delete(X_seq, [i], axis=1)
+        for i in range(self.n_input):
+            X_sub=np.delete(X_sa, [i], axis=1)
             mars=MARS(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
-            mars.fit(X_sub, Y_seq)
+            mars.fit(X_sub, Y_sa)
             Si.append(np.abs(base_gcv-mars.gcv_))
-
+            
         Si_sum = sum(Si)
         Si_normalized = [s/Si_sum for s in Si]
         return Si_normalized
+    
+    def summary(self):
+        pass
+        #TODO summary
         
         
         
