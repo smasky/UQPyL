@@ -1,5 +1,6 @@
 from . import RBF_Kernel
 from . import GP_Kernel
+from .surrogate_ABC import Surrogate
 from .linear_regression import LinearRegression
 from .gaussian_process import GPR
 from .radial_basis_function import RBF
@@ -22,5 +23,6 @@ __all__=[
     "FNN",
     "KRG",
     "MO_Surrogates",
-    "Earth"
+    "MARS",
+    "Surrogate"
 ]
