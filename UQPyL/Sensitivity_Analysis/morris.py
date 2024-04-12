@@ -1,7 +1,7 @@
 import numpy as np
 from .sa_ABC import SA
 class Morris(SA):
-    def __init__(self, problem, n_sample=100,
+    def __init__(self, problem, N_for_sampler=100,
                  num_levels=4, grid_jump=1,
                  scale=None, lhs=None,
                  surrogate=None, n_surrogate_sample=50,

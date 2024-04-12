@@ -6,14 +6,14 @@ from scipy.spatial.distance import cdist
 from ..Optimization import Binary_GA
 from .sa_ABC import SA
 class Delta_Test(SA):
-    def __init__(self, problem, n_neighbors=2, n_sample=1000, 
+    def __init__(self, problem, n_neighbors=2, N_within_sampler=1000, 
                  scale=None, lhs=None,
-                 surrogate=None, n_surrogate_sample=50, 
+                 surrogate=None, N_within_surrogate_sampler=50, 
                  X_for_surrogate=None, Y_for_surrogate=None):
         
-        super().__init__(problem, n_sample, 
+        super().__init__(problem, N_within_sampler, 
                          scale, lhs, 
-                         surrogate, n_surrogate_sample, X_for_surrogate, Y_for_surrogate
+                         surrogate, N_within_surrogate_sampler, X_for_surrogate, Y_for_surrogate
                          )
 
         self.n_neighbors=n_neighbors
@@ -27,7 +27,7 @@ class Delta_Test(SA):
         self.best_paras, self.best_value, history_paras, _=optimizer.run()
         
         S1_score=np.sum(history_paras, axis=0)/history_paras.shape[0]
-          
+        
         return S1_score
     
     def summary(self):

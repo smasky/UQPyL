@@ -8,14 +8,11 @@ from ..Surrogates import Surrogate
 from ..Problems import Problem
 
 class SA(metaclass=abc.ABCMeta):
-    def __init__(self, problem, n_sample, sampler: Sampling=LHS('center'),
-                 scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                 lhs: Optional[Sampling]=None,
+    def __init__(self, problem, sampler: Sampling=LHS('center'), N_within_sampler: int=10,
+                 scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  surrogate: Optional[Surrogate]=None, if_sampling_consistent: bool=False,
-                 sampler_for_surrogate: Sampling=LHS('center'), n_surrogate_sample: int=50, 
+                 sampler_for_surrogate: Sampling=LHS('center'), N_within_surrogate_sampler: int=50, 
                  X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None):
-        
-        self.n_sample=sampler
         
         if not isinstance(problem, Problem):
             raise TypeError("problem must be an instance of Problem!")
@@ -44,19 +41,24 @@ class SA(metaclass=abc.ABCMeta):
         
         if not isinstance(sampler, Sampling):
             raise TypeError("sampler must be an instance of Sampling or None!")
-                
+        self.sampler=sampler; self.N_within_sampler=N_within_sampler
+         
         if not isinstance(surrogate, Surrogate) and surrogate is not None:
             raise TypeError("surrogate must be an instance of Surrogate or None!")
         
+        self.if_sampling_consistent=if_sampling_consistent
         self.surrogate=surrogate
-        self.n_surrogate_sample=n_surrogate_sample
+        self.N_within_surrogate_sampler=N_within_surrogate_sampler
+        self.sampler_for_surrogate=sampler_for_surrogate
         
-        #TODO 
-        # if self.surrogate:
-        #     if X_for_surrogate is None:
-        #         self.X_for_surrogate=lhs(X_for_surrogate, self.dim)*(self.ub-self.lb)+self.lb
-        #         self.Y_for_surrogate=Y_for_surrogate
-    
+        if X_for_surrogate is not None:
+            if not isinstance(X_for_surrogate, np.ndarray):
+                raise TypeError("X_for_surrogate must be an instance of np.ndarray or None!")
+        
+        if Y_for_surrogate is not None:
+            if not isinstance(Y_for_surrogate, np.ndarray):
+                raise TypeError("Y_for_surrogate must be an instance of np.ndarray or None!")
+        
     def __check_and_scale_x_y__(self, X, Y):
         
         if not isinstance(X, np.ndarray) and X is not None:
@@ -66,12 +68,18 @@ class SA(metaclass=abc.ABCMeta):
             raise TypeError("Y must be an instance of np.ndarray or None!")
         
         if X==None:
-            X=self.lhs(self.n_sample, self.n_input)*(self.ub-self.lb)+self.lb
+            X=self.sampler.generate_sample(self.N_within_sampler)*(self.ub-self.lb)+self.lb
         
         if self.surrogate:
-            if Y is None:
-                if self.Y_for_surrogate is None:
-                    self.Y_for_surrogate=self.evaluate(self.X_for_surrogate)
+            if self.if_sampling_consistent:
+                self.X_for_surrogate=np.copy(X)
+            if self.X_for_surrogate is None:
+                self.X_for_surrogate=self.sampler_for_surrogate(self.N_within_surrogate_sampler)*(self.ub-self.lb)+self.lb
+            self.Y_for_surrogate=self.evaluate(self.X_for_surrogate)
+            self.surrogate.fit(self.X_for_surrogate, self.Y_for_surrogate)
+        
+        if Y is None:    
+            if self.surrogate:
                 Y=self.surrogate.predict(X)
             else:
                 Y=self.evaluate(X)
@@ -81,7 +89,9 @@ class SA(metaclass=abc.ABCMeta):
         
         if X.shape[0]!=Y.shape[0]:
             raise ValueError("The number of samples in X and Y must be the same!")
-            
+        
+        
+        #TODO 
         if self.X_scale:
             X=self.X_scale.fit_transform(X)
         
