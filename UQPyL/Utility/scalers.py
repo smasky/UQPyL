@@ -4,11 +4,11 @@ import abc
 
 class Scaler(metaclass=abc.ABCMeta):
     def __init__(self):
-        pass
+        self.fitted=False
     
     @abc.abstractmethod
     def fit(self,trainX):
-        pass
+        self.fitted=True
     
     @abc.abstractmethod
     def transform(self,trainX):
@@ -33,7 +33,8 @@ class MinMaxScaler(Scaler):
         
         self.min=np.min(trainX,axis=0)
         self.max=np.max(trainX,axis=0)
-    
+        super().fit(trainX)
+        
     def transform(self, trainX):
         trainX=np.atleast_2d(trainX)
         return (trainX-self.min)/(self.max-self.min)*(self.max_scale-self.min_scale)+self.min_scale
@@ -55,6 +56,8 @@ class StandardScaler(Scaler):
         trainX=np.atleast_2d(trainX)
         self.mu=np.mean(trainX, axis=0)
         self.sita=np.std(trainX, axis=0)
+        
+        super().fit(trainX)
         
     def transform(self, trainX):
         trainX=np.atleast_2d(trainX)

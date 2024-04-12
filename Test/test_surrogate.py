@@ -91,17 +91,17 @@ if __name__=='__main__':
     # print("r2_score:", r2_score(test_Y, P_Y))
     # print("rank_score", rank_score(test_Y, P_Y))
     # #####################Kriging########################
-    dims=30
-    theta=np.random.random(dims)*1
-    ub=np.ones(dims)*1e4
-    lb=np.ones(dims)*1e-4
-    dace_obj1 = KRG(theta, ub, lb, scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), regression='poly1', kernel='gaussian', optimizer='GA', fitMode='likelihood')
-    dace_obj1.fit(train_X,train_Y)
-    P_Y=dace_obj1.predict(test_X)
-    # gd=GridSearch({'theta0':[np.random.random(dims)*10, np.random.random(dims)*100,np.random.random(dims)*1000]}, dace_obj1, CV=5)
-    # para, value=gd.start(train_X, train_Y)
-    print("r2_score:", r2_score(test_Y, P_Y))
-    print("rank_score", rank_score(test_Y, P_Y))
+    # dims=30
+    # theta=np.random.random(dims)*1
+    # ub=np.ones(dims)*1e4
+    # lb=np.ones(dims)*1e-4
+    # dace_obj1 = KRG(theta, ub, lb, scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), regression='poly1', kernel='gaussian', optimizer='GA', fitMode='likelihood')
+    # dace_obj1.fit(train_X,train_Y)
+    # P_Y=dace_obj1.predict(test_X)
+    # # gd=GridSearch({'theta0':[np.random.random(dims)*10, np.random.random(dims)*100,np.random.random(dims)*1000]}, dace_obj1, CV=5)
+    # # para, value=gd.start(train_X, train_Y)
+    # print("r2_score:", r2_score(test_Y, P_Y))
+    # print("rank_score", rank_score(test_Y, P_Y))
     # #######################RBF##########################
     # rbf=RBFN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=Cubic())
     # rbf.fit(train_X,train_Y)

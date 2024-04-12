@@ -29,14 +29,14 @@ class Sobol(SA):
         elif skip_value<0 or not isinstance(skip_value, int):
             raise ValueError("skip value must be a positive integer!")    
         
-    def generate_samples(self):
+    def forward(self, base_sequence):
         #Sobol sequence
-        qrng=qmc.Sobol(d=2*self.n_input, scramble=self.scramble)
+        # qrng=qmc.Sobol(d=2*self.n_input, scramble=self.scramble)
         
-        if self.skip_value>0:
-            qrng.fast_forward(self.skip_value)
+        # if self.skip_value>0:
+        #     qrng.fast_forward(self.skip_value)
             
-        base_sequence=qrng.random(self.n_sample)
+        # base_sequence=qrng.random(self.n_sample)
         
         if self.cal_second_order:
             saltelli_sequence=np.zeros(((2*self.n_input+2)*self.n_input, self.n_input))
@@ -60,32 +60,32 @@ class Sobol(SA):
             
             saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
             index+=1
-        
-        saltelli_sequence=saltelli_sequence*(self.ub-self.lb)+self.lb
+             
+        # saltelli_sequence=saltelli_sequence*(self.ub-self.lb)+self.lb
         
         return saltelli_sequence
     
     def analyze(self, X_sa=None, Y_sa=None):
         
-        X_sa=self.generate_samples()
-        X_sa, Y_sa=self.__check_and_scale_x_y__(X_sa, Y_sa)
-        
-        cal_second_order=self.cal_second_order
-           
+        ##forward process
+        X_sa=self.__check_and_scale_x__(X_sa)
+        self.__prepare_surrogate__()
+        X_sa=self.forward(X_sa)
+        Y_sa=self.evaluate(X_sa)
+             
         Y_sa=(Y_sa-Y_sa.mean())/Y_sa.std()
-        A, B, AB, BA=self.separate_output_values(Y_sa, self.n_input, self.n_sample, cal_second_order)
         
-        if cal_second_order:
-            S2=[]
-        else:
-            S2=None
+        A, B, AB, BA=self.separate_output_values(Y_sa, self.n_input, self.N_within_sampler, self.cal_second_order)
         
+        S2 = [] if self.cal_second_order else None
         S1=[]; ST=[]
+        
+        #main process
         for j in range(self.n_input):
             S1.append(self.first_order(A, AB[:, j:j+1], B))
             ST.append(self.total_order(A, AB[:, j:j+1], B))
 
-        if cal_second_order:
+        if self.cal_second_order:
             for j in range(self.n_input):
                 for k in range(j+1, self.n_input):
                     S2.append(self.second_order(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))

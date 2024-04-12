@@ -17,7 +17,8 @@ class SA(metaclass=abc.ABCMeta):
         if not isinstance(problem, Problem):
             raise TypeError("problem must be an instance of Problem!")
         
-        self.evaluate=problem.evaluate;self.n_input=problem.n_input
+        self.evaluate_=problem.evaluate
+        self.n_input=problem.n_input
         self.lb=problem.lb; self.ub=problem.ub
         
         if problem.x_labels:
@@ -54,52 +55,56 @@ class SA(metaclass=abc.ABCMeta):
         if X_for_surrogate is not None:
             if not isinstance(X_for_surrogate, np.ndarray):
                 raise TypeError("X_for_surrogate must be an instance of np.ndarray or None!")
+            
+            self.X_for_surrogate=X_for_surrogate
         
         if Y_for_surrogate is not None:
             if not isinstance(Y_for_surrogate, np.ndarray):
                 raise TypeError("Y_for_surrogate must be an instance of np.ndarray or None!")
+            
+            self.Y_for_surrogate=Y_for_surrogate
         
-    def __check_and_scale_x_y__(self, X, Y):
+    def __check_and_scale_x__(self, X):
         
         if not isinstance(X, np.ndarray) and X is not None:
             raise TypeError("X must be an instance of np.ndarray or None!")
-        
-        if not isinstance(Y, np.ndarray) and Y is not None:
-            raise TypeError("Y must be an instance of np.ndarray or None!")
-        
+                
         if X==None:
             X=self.sampler.generate_sample(self.N_within_sampler)*(self.ub-self.lb)+self.lb
-        
-        if self.surrogate:
-            if self.if_sampling_consistent:
-                self.X_for_surrogate=np.copy(X)
-            if self.X_for_surrogate is None:
-                self.X_for_surrogate=self.sampler_for_surrogate(self.N_within_surrogate_sampler)*(self.ub-self.lb)+self.lb
-            self.Y_for_surrogate=self.evaluate(self.X_for_surrogate)
-            self.surrogate.fit(self.X_for_surrogate, self.Y_for_surrogate)
-        
-        if Y is None:    
-            if self.surrogate:
-                Y=self.surrogate.predict(X)
-            else:
-                Y=self.evaluate(X)
-                
-        X=np.atleast_2d(X)
-        Y=np.atleast_2d(Y)
-        
-        if X.shape[0]!=Y.shape[0]:
-            raise ValueError("The number of samples in X and Y must be the same!")
-        
-        
-        #TODO 
+            
         if self.X_scale:
             X=self.X_scale.fit_transform(X)
+            #reset Y_scale
+            self.Y_scale.fitted=False
+            
+        if self.if_sampling_consistent:
+            self.X_for_surrogate=np.copy(X)
+                
+        return X
+    
+    def __prepare_surrogate__(self):
+        
+        if self.surrogate:
+            if self.X_for_surrogate is None:
+                self.X_for_surrogate=self.sampler_for_surrogate.generate_sample(self.N_within_surrogate_sampler)*(self.ub-self.lb)+self.lb
+            self.Y_for_surrogate=self.evaluate(self.X_for_surrogate, origin=True)
+            self.surrogate.fit(self.X_for_surrogate, self.Y_for_surrogate)
+
+    def evaluate(self, X, origin=True):
+       
+        if self.surrogate:
+            Y=self.surrogate.predict(X)
+        else:
+            Y=self.evaluate_(X)
         
         if self.Y_scale:
-            Y=self.Y_scale.fit_transform(Y)
-        
-        return X, Y
-    
+            if self.Y_scale.fitted:
+                Y=self.Y_scale.transform(Y)
+            else:        
+                Y=self.Y_scale.fit_transform(Y)
+                
+        return Y
+            
     
     @abc.abstractmethod
     def anlyze(self, X_sa=None, Y_sa=None):

@@ -1,9 +1,9 @@
 import numpy as np
 from .sampler_ABC import Sampler
-from scipy.stats import qmc
+from scipy.stats.qmc import Sobol
 
 
-class Sobol_Sample(Sampler):
+class Sobol_Sequence(Sampler):
     def __init__(self):
         super().__init__()
     
@@ -11,6 +11,9 @@ class Sobol_Sample(Sampler):
         '''
             generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
         '''
+        return Sobol(d=nx).random(nt)
+
+        
         
         
         
