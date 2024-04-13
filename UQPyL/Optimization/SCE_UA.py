@@ -1,7 +1,9 @@
 #Shuffled Complex Evolution-UA
-from ..Experiment_Design import LHS
 import numpy as np
+from ..DoE import LHS
+
 lhs=LHS('center_maximin')
+
 class SCE_UA():
     '''
     '''

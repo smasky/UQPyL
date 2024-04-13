@@ -1,11 +1,11 @@
 import sys
 import numpy as np
 sys.path.append(".")
-from UQPyL.Problems import Sphere, ZDT1
-from UQPyL.Experiment_Design import LHS
-from UQPyL.Optimization import SCE_UA, ASMO, NSGAII, MOASMO
-from UQPyL.Surrogates import RBF, MO_Surrogates, KRG
-from UQPyL.Surrogates.RBF_Kernel import Cubic
+from UQPyL.problems import Sphere, ZDT1
+from UQPyL.DoE import LHS
+from UQPyL.optimization import SCE_UA, ASMO, NSGAII, MOASMO
+from UQPyL.surrogates import RBF, MO_Surrogates, KRG
+from UQPyL.surrogates.rbf_kernels import Cubic
 import matplotlib.pyplot as plt
 import os
 os.chdir('./Test')

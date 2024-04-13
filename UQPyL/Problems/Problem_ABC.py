@@ -1,5 +1,6 @@
 import abc
 import numpy as np
+from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
     dim=None
     ub=None
@@ -16,7 +17,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         return X*(self.ub-self.lb)+self.lb
     
     
-    def _set_ub_lb(self,ub: int or float or np.ndarray,lb: int or float or np.ndarray) -> None:
+    def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
         
         if (isinstance(ub,(int, float))):
             self.ub=np.ones((1,self.dim))*ub

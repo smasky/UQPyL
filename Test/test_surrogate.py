@@ -5,16 +5,16 @@ import os
 
 import numpy as np
 from sklearn.neural_network import MLPRegressor
-from UQPyL.Surrogates.RBF_Kernel import Cubic, Linear, Multiquadric, Gaussian
-from UQPyL.Surrogates.GP_Kernel import RBF
-from UQPyL.Surrogates import (RBF as RBFN, GPR, LinearRegression, 
+from UQPyL.surrogates.rbf_kernels import Cubic, Linear, Multiquadric, Gaussian
+from UQPyL.surrogates.gp_kernels import RBF
+from UQPyL.surrogates import (RBF as RBFN, GPR, LinearRegression, 
                               PolynomialRegression, SVR, FNN, KRG, MARS)
 
-from UQPyL.Utility import PolynomialFeatures
-from UQPyL.Utility import r2_score, rank_score
-from UQPyL.Utility.scalers import MinMaxScaler, StandardScaler
+from UQPyL.utility import PolynomialFeatures
+from UQPyL.utility import r2_score, rank_score
+from UQPyL.utility.scalers import MinMaxScaler, StandardScaler
 
-from UQPyL.Utility import GridSearch
+from UQPyL.utility import GridSearch
 #Test all surrogate model in UQPyL
 if __name__=='__main__':
     XPop=np.random.random((10,10))

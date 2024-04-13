@@ -1,9 +1,11 @@
 #Adaptive Surrogate Modelling-based Optimization
-from .sce_ua import SCE_UA
-from ..Experiment_Design import LHS
-from ..Problems import Problem
 import numpy as np
 from tqdm import tqdm
+
+from .sce_ua import SCE_UA
+from ..DoE import LHS
+from ..problems import Problem
+
 lhs=LHS('center')
 class ASMO():
     '''

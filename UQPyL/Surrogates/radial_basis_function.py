@@ -3,9 +3,9 @@ from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional
 
-from ..Utility.scalers import Scaler
-from ..Utility.polynomial_features import PolynomialFeatures
-from .RBF_Kernel import Kernel
+from ..utility.scalers import Scaler
+from ..utility.polynomial_features import PolynomialFeatures
+from .rbf_kernels import Kernel
 from .surrogate_ABC import Surrogate, Scale_T
 
 class RBF(Surrogate):
@@ -35,6 +35,8 @@ class RBF(Surrogate):
             return tail_matrix
         else:
             return None
+        
+###--------------------------public functions----------------------------###
 
     def fit(self,train_X: np.ndarray,train_Y: np.ndarray):
         
@@ -60,6 +62,7 @@ class RBF(Surrogate):
         self.coe_h=coe_h
         self.coe_lambda=solve[:self.n_samples,:]
         self.train_X=train_X
+        
     def predict(self, predict_X: np.ndarray):
         
         predict_X=self.__X_transform__(predict_X)

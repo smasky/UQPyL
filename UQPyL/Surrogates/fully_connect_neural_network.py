@@ -1,12 +1,17 @@
 import numpy as np
-from typing import Union, List, Literal
-from .surrogate_ABC import Surrogate, Scale_T
-from ._activation_funcs import ACTIVATIONS, DERIVATIVES, IDENTITY, RELU, TANH, LEAKY_RELU, ELU, RELU6
-from ..Utility.polynomial_features import PolynomialFeatures
-from typing import Tuple
 import scipy
 
-def square_error(true_Y, pre_Y, derivative=False):
+from typing import Union, List, Literal, Tuple
+
+from .surrogate_ABC import Surrogate, Scale_T
+from .mlp_utility._activation_funcs import (ACTIVATIONS, DERIVATIVES, IDENTITY,
+                                            RELU, TANH, LEAKY_RELU, ELU, RELU6)
+from ..utility.polynomial_features import PolynomialFeatures
+
+
+
+def square_error(true_Y: np.ndarray, pre_Y: np.ndarray, derivative: bool=False):
+    
     if not derivative:
         return np.mean(np.square(true_Y-pre_Y))/2
     else:
@@ -27,7 +32,9 @@ class FNN(Surrogate):
                  scalers=(None, None),
                  poly_feature: PolynomialFeatures=None
                  ):
+        
         super().__init__(scalers, poly_feature)
+        
         self.hidden_layer_sizes=hidden_layer_sizes
         self.layer_number=len(hidden_layer_sizes)+2
         self.solver=solver
@@ -40,18 +47,24 @@ class FNN(Surrogate):
         self.shuffle=shuffle
         self.tol=1e-1
         self._no_improvement_count=no_improvement_count
+        
         if isinstance(activation_functions, str):
+            
             self.activation_functions=[ACTIVATIONS[eval(activation_functions.upper())]]*(self.layer_number-2)
             self.derivative_functions=[DERIVATIVES[eval(activation_functions.upper())]]*(self.layer_number-2)
+        
         elif isinstance(activation_functions, list):
+            
             self.activation_functions=[ACTIVATIONS[eval(func.upper())] for func in activation_functions]
             self.derivative_functions=[DERIVATIVES[eval(func.upper())] for func in activation_functions]
             
-    def predict(self, predict_X: np.ndarray):
+###--------------------------------------public functions-----------------------------------------------###
+
+    def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         predict_X=np.array(self.__X_transform__(predict_X))
         activations=[predict_X]+[None]*(self.layer_number-1)
-        self._forward(activations)
+        self.__forward(activations)
         
         return self.__Y_inverse_transform__(activations[-1])
         
@@ -79,7 +92,7 @@ class FNN(Surrogate):
         
         self.coefs_=[]; self.intercepts_=[]
         for i in range(len(layer_units) - 1):
-            coef_init, intercept_init = self._init_coef(
+            coef_init, intercept_init = self.__init_coef(
                 layer_units[i], layer_units[i + 1], np.float32
             )
             self.coefs_.append(coef_init)
@@ -95,14 +108,16 @@ class FNN(Surrogate):
         ]
         ########################################
         if self.solver in ['adam']:
-            self._solver_gradient_descent(train_X, train_Y, activations, deltas,
+            self.__solver_gradient_descent(train_X, train_Y, activations, deltas,
                                        coef_grads, intercept_grads, layer_units)
         
         elif self.solver in ['lbfgs']:
-            self._solver_lbfgs(train_X, train_Y, activations, deltas,
+            self.__solver_lbfgs(train_X, train_Y, activations, deltas,
                                     coef_grads, intercept_grads, layer_units)
             
-    def _solver_gradient_descent(self, train_X: np.ndarray, train_Y: np.ndarray,
+#####------------------------------private functions----------------------------------------####     
+
+    def __solver_gradient_descent(self, train_X: np.ndarray, train_Y: np.ndarray,
                                   activations: List, deltas: List, coef_grads: List,
                                   intercept_grads: List, layer_units: List):
         #################################
@@ -128,7 +143,7 @@ class FNN(Surrogate):
                 np.random.shuffle(sample_idx)
             
             accumulated_loss=0.0
-            for batch_slice in self._gen_batch(n_samples, batch_size):
+            for batch_slice in self.__gen_batch(n_samples, batch_size):
                 if self.shuffle:
                     X_batch = train_X[sample_idx[batch_slice],:]
                     Y_batch = train_Y[sample_idx[batch_slice]]
@@ -138,7 +153,7 @@ class FNN(Surrogate):
                 
                 activations[0]=X_batch
                 
-                batch_loss, coef_grads, intercept_grads = self._backprop(
+                batch_loss, coef_grads, intercept_grads = self.__backprop(
                         X_batch,
                         Y_batch,
                         activations,
@@ -169,7 +184,7 @@ class FNN(Surrogate):
             if no_improvement_count>self._no_improvement_count:
                 break
             
-    def _solver_lbfgs(self, train_X: np.ndarray, train_Y: np.ndarray,
+    def __solver_lbfgs(self, train_X: np.ndarray, train_Y: np.ndarray,
                             activations: List, deltas: List, coef_grads: List,
                             intercept_grads: List, layer_units: List):
         self._coef_indptr = []
@@ -189,14 +204,14 @@ class FNN(Surrogate):
             self._intercept_indptr.append((start, end))
             start = end
             
-        packed_coef_inter =self._pack(self.coefs_, self.intercepts_)
+        packed_coef_inter =self.__pack(self.coefs_, self.intercepts_)
 
         iprint = -1
         max_fun=15000
         max_iter=20000
         tol=1e-4
         opt_res = scipy.optimize.minimize(
-            self._loss_grad_lbfgs,
+            self.__loss_grad_lbfgs,
             packed_coef_inter,
             method="L-BFGS-B",
             jac=True,
@@ -210,21 +225,21 @@ class FNN(Surrogate):
         )
         
         self.loss_ = opt_res.fun
-        self._unpack(opt_res.x)
+        self.__unpack(opt_res.x)
     
-    def _loss_grad_lbfgs(self, packed_coef_inter, X, y, 
+    def __loss_grad_lbfgs(self, packed_coef_inter, X, y, 
                          activations, deltas, coef_grads, intercept_grads):
         '''
         
         '''
-        self._unpack(packed_coef_inter)
-        loss, coef_grads, intercept_grads = self._backprop(
+        self.__unpack(packed_coef_inter)
+        loss, coef_grads, intercept_grads = self.__backprop(
             X, y, activations, deltas, coef_grads, intercept_grads
         )
-        grad = self._pack(coef_grads, intercept_grads)
+        grad = self.__pack(coef_grads, intercept_grads)
         return loss, grad
     
-    def _compute_loss_grad(self, layer_num: int, n_samples: int,activations: List, deltas: List, coef_grads: List, intercept_grads: List):
+    def __compute_loss_grad(self, layer_num: int, n_samples: int,activations: List, deltas: List, coef_grads: List, intercept_grads: List):
         
         coef_grads[layer_num] = activations[layer_num].T@deltas[layer_num]
         coef_grads[layer_num] += self.alpha * self.coefs_[layer_num]
@@ -232,10 +247,10 @@ class FNN(Surrogate):
         
         intercept_grads[layer_num] = np.mean(deltas[layer_num], 0)
             
-    def _backprop(self, X_batch: np.ndarray, Y_batch: np.ndarray, activations: List, deltas: List, coef_grads: List, intercept_grads: List):
+    def __backprop(self, X_batch: np.ndarray, Y_batch: np.ndarray, activations: List, deltas: List, coef_grads: List, intercept_grads: List):
         
         n_samples, _ =X_batch.shape
-        self._forward(activations)
+        self.__forward(activations)
         
         loss=self.loss_func(Y_batch, activations[-1])
         
@@ -249,7 +264,7 @@ class FNN(Surrogate):
         ####using square erro
         deltas[-1]=self.loss_func(Y_batch, activations[-1], derivative=True)
         
-        self._compute_loss_grad(
+        self.__compute_loss_grad(
             len(activations)-2, n_samples, activations, deltas, coef_grads, intercept_grads
         )
         
@@ -258,12 +273,12 @@ class FNN(Surrogate):
         for i in range(len(activations) - 2, 0, -1):
             deltas[i - 1] = deltas[i]@self.coefs_[i].T
             derivative_func[i-1](activations[i], deltas[i - 1])
-            self._compute_loss_grad(
+            self.__compute_loss_grad(
                 i - 1, n_samples, activations, deltas, coef_grads, intercept_grads
             )
         return loss, coef_grads, intercept_grads
     
-    def _forward(self, activations: List):
+    def __forward(self, activations: List):
         
         activations_functions=self.activation_functions
         
@@ -277,11 +292,11 @@ class FNN(Surrogate):
         
         return activations
 ##############################tool##########################
-    def _pack(self, coefs_, intercepts_):
+    def __pack(self, coefs_, intercepts_):
         """Pack the parameters into a single vector."""
         return np.hstack([l.ravel() for l in coefs_ + intercepts_])
     
-    def _unpack(self, packed_parameters):
+    def __unpack(self, packed_parameters):
         """Extract the coefficients and intercepts from packed_parameters."""
         for i in range(self.layer_number - 1):
             start, end, shape = self._coef_indptr[i]
@@ -290,7 +305,7 @@ class FNN(Surrogate):
             start, end = self._intercept_indptr[i]
             self.intercepts_[i] = packed_parameters[start:end]
     
-    def _gen_batch(self, n_samples, batch_size, min_batch_size=0):
+    def __gen_batch(self, n_samples, batch_size, min_batch_size=0):
                 
         start = 0
         for _ in range(int(n_samples // batch_size)):
@@ -302,7 +317,7 @@ class FNN(Surrogate):
         if start < n_samples:
             yield slice(start, n_samples)
             
-    def _init_coef(self, fan_in, fan_out, dtype):
+    def __init_coef(self, fan_in, fan_out, dtype):
     # Use the initialization method recommended by
     # Glorot et al.
         factor = 6.0

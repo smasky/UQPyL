@@ -1,13 +1,15 @@
 import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
-from .surrogate_ABC import Surrogate, Scale_T
-from .GP_Kernel.Kernel import RBF, Matern, Kernel
-from ..Optimization import GA, Boxmin, MP_List, EA_List
-from ..Utility.model_selections import RandSelect
-from ..Utility.metrics import r2_score
-from ..Utility.scalers import Scaler
-from ..Utility.polynomial_features import PolynomialFeatures
 from typing import Callable, Tuple, Optional, Literal
+
+from .surrogate_ABC import Surrogate, Scale_T
+from .gp_kernels.Kernel import RBF, Matern, Kernel
+from ..optimization import GA, Boxmin, MP_List, EA_List
+from ..utility.model_selections import RandSelect
+from ..utility.metrics import r2_score
+from ..utility.scalers import Scaler
+from ..utility.polynomial_features import PolynomialFeatures
+
 class GPR(Surrogate):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
@@ -22,21 +24,25 @@ class GPR(Surrogate):
         self.alpha=alpha
         self.std=False
         self.n_restarts_optimizer=n_restarts_optimizer
-        super().__init__(scalers)
-    ######################Interface Function#######################
+        
+        super().__init__(scalers=scalers, poly_feature=poly_feature)
+        
+###---------------------------------public function---------------------------------------###
     def fit(self, trainX: np.ndarray, trainY: np.ndarray):
         
         self.trainX, self.trainY=self.__check_and_scale__(trainX, trainY)
         
-        if(isinstance(self.kernel,RBF) or isinstance(self.kernel, Matern)):
+        if(isinstance(self.kernel, RBF) or isinstance(self.kernel, Matern)):
+            
             if(self.fitMode=='likelihood'):
                 self._fit_likelihood()
             elif(self.fitMode=='predictError'):
                 self._fit_predictError()
+
         else:
             self._fit_pure_likelihood()
             
-    def predict(self, predict_X: np.ndarray):
+    def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         if self.X_scaler:
             predict_X=self.X_scaler.transform(predict_X)
@@ -60,7 +66,7 @@ class GPR(Surrogate):
             return y_mean, np.sqrt(y_var)
         return self.__Y_inverse_transform__(y_mean)
     
-    ######################Private Function#######################
+###--------------------------private functions--------------------###
     def _fit_predictError(self):
         
         TotalX=self.trainX
@@ -121,7 +127,6 @@ class GPR(Surrogate):
     def _fit_pure_likelihood(self):
         
         self._objfunc(self.kernel.theta, record=True)  
-        
         
     def _fit_likelihood(self):
             

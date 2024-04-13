@@ -12,7 +12,7 @@ import os
 os.chdir('./Test/')
 sys.path.append("..")
 
-from UQPyL.Problems import PracticalProblem
+from UQPyL.problems import PracticalProblem
 import numpy as np
 
 testProblem=PracticalProblem()

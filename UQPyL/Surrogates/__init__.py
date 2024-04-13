@@ -1,5 +1,5 @@
-from . import RBF_Kernel
-from . import GP_Kernel
+from . import rbf_kernels
+from . import gp_kernels
 from .surrogate_ABC import Surrogate
 from .linear_regression import LinearRegression
 from .gaussian_process import GPR
@@ -10,19 +10,14 @@ from .fully_connect_neural_network import FNN
 from .kriging import Kriging as KRG
 from .mo_surrogates import MO_Surrogates
 from .mars import MARS
+
+kernels=["rbf_kernels", "gp_kernels"]
+surrogates=["LinearRegression", "PolynomialRegression", "RBF", "Kriging", "MLP",
+            "SVR", "GPR", "FNN", "KRG", "MARS"]
+utility=["MO_Surrogates", "Surrogate"]
+
 __all__=[
-    "LinearRegression",
-    "PolynomialRegression",
-    "RBF",
-    "RBF_Kernel",
-    "Kriging",
-    "GP_Kernel",
-    "MLP",
-    "SVR",
-    "GPR",
-    "FNN",
-    "KRG",
-    "MO_Surrogates",
-    "MARS",
-    "Surrogate"
+    kernels,
+    surrogates,
+    utility
 ]

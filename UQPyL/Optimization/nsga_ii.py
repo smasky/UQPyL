@@ -1,7 +1,7 @@
 # Non-dominated Sorting Genetic Algorithm II (NSGA-II)
-
 import numpy as np
-from ..Experiment_Design import LHS
+
+from ..DoE import LHS
 
 lhs=LHS('center')
 

@@ -1,6 +1,6 @@
 import sys
 sys.path.append(".")
-from UQPyL.Problems.Benchmarks import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbrock, 
+from UQPyL.Problems.Single_Benchmarks import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbrock, 
                          Step, Quartic, Schwefel_2_26, Rastrigin, Ackley, Griewank, 
                          Trid, Bent_Cigar, Discus, Weierstrass)
 from UQPyL.Surrogates import LinearRegression as LR, SVR, RBF

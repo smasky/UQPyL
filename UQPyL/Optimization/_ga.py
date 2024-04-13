@@ -2,6 +2,7 @@ import numpy as np
 import warnings
 import math
 from typing import Callable
+
 class GA():
     type="EA" #Evolutionary Algorithm
     proC=None

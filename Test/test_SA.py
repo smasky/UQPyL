@@ -1,12 +1,12 @@
 import sys
 import numpy as np
 sys.path.append(".")
-from UQPyL.Problems import Sphere, ZDT1, Schwefel_2_22
-from UQPyL.Experiment_Design import LHS
-from UQPyL.Optimization import SCE_UA, ASMO, NSGAII, MOASMO
-from UQPyL.Surrogates import RBF, MO_Surrogates, KRG
-from UQPyL.Surrogates.RBF_Kernel import Cubic
-from UQPyL.Sensitivity_Analysis import MORRIS, FAST, RBD_FAST, SOBOL, DELTA_TEST,  MARS_SA
+from UQPyL.problems import Sphere, ZDT1, Schwefel_2_22
+from UQPyL.DoE import LHS
+from UQPyL.optimization import SCE_UA, ASMO, NSGAII, MOASMO
+from UQPyL.surrogates import RBF, MO_Surrogates, KRG
+from UQPyL.surrogates.rbf_kernels import Cubic
+from UQPyL.sensibility import MORRIS, FAST, RBD_FAST, SOBOL, DELTA_TEST,  MARS_SA
 
 import matplotlib.pyplot as plt
 import os

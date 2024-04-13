@@ -1,16 +1,17 @@
 import numpy as np
-from .surrogate_ABC import Scale_T, Surrogate
-from .linear_regression import LinearRegression
-from ..Utility.scalers import Scaler
-from ..Utility.polynomial_features import PolynomialFeatures
 from math import comb
 from typing import Literal, Tuple, Optional
+
+from .surrogate_ABC import Scale_T, Surrogate
+from .linear_regression import LinearRegression
+from ..utility.scalers import Scaler
+from ..utility.polynomial_features import PolynomialFeatures
+
 class PolynomialRegression(LinearRegression):
     """
-    
     PolynomialRegression
-    
     """
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
                  Type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
@@ -28,7 +29,7 @@ class PolynomialRegression(LinearRegression):
         if self.poly_feature and self.poly_feature.include_bias and self.fit_intercept:
             raise ValueError("The setting ( include_bias of PolyFeature and fit_intercept ) can not be turned on together.")
         
-    #############################Interface Function#######################
+###------------------------public functions-----------------------------###
     def fit(self, trainX: np.ndarray, trainY: np.ndarray):
         
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
@@ -44,7 +45,7 @@ class PolynomialRegression(LinearRegression):
         else:
             raise ValueError('Using wrong model type!')
         
-    def predict(self, predict_X: np.ndarray):
+    def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         predict_X=self.__X_transform__(predict_X)
        
@@ -55,7 +56,7 @@ class PolynomialRegression(LinearRegression):
         
         return self.__Y_inverse_transform__(predict_Y)
     
-    #############################Private Function##########################
+###------------------------private functions-----------------------------###
     def polynomial_features(self, trainX: np.ndarray):
         
         n_samples, n_features=trainX.shape

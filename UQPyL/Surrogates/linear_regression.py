@@ -1,9 +1,11 @@
 import numpy as np
 from scipy.linalg import lstsq, solve
-from .surrogate_ABC import Surrogate, Scale_T
-from ..Utility.scalers import Scaler
-from ..Utility.polynomial_features import PolynomialFeatures
 from typing import Tuple, Literal, Optional
+
+from .surrogate_ABC import Surrogate, Scale_T
+from ..utility.scalers import Scaler
+from ..utility.polynomial_features import PolynomialFeatures
+
 class LinearRegression(Surrogate):
     '''
     LinearRegression
@@ -19,14 +21,18 @@ class LinearRegression(Surrogate):
                  fit_intercept: bool= True, alpha: float=0.1,
                  epoch: int=100, lr: float=1e-5, tl: float=1e-5):
         
-        super().__init__(scalers, poly_feature)
+        
         self.type=Type
         self.fit_intercept=fit_intercept
         self.alpha=alpha
         self.epoch=epoch
         self.lr=lr
         self.tl=tl
-    ###########################Interface Function#############################
+        
+        super().__init__(scalers, poly_feature)
+        
+###---------------------------------public function---------------------------------------###
+
     def fit(self, trainX: np.ndarray, trainY: np.ndarray):
         
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
@@ -40,16 +46,28 @@ class LinearRegression(Surrogate):
         else:
             raise ValueError('Using wrong model type!')
         
-    def predict(self, predict_X: np.ndarray):
+    # def predict(self, predict_X: np.ndarray) -> np.ndarray:
+        
+    #     predict_X=self.__X_transform__(predict_X)
+        
+    #     predict_Y=predict_X@self.coef_.T+self.intercept_
+        
+    #     return self.__Y_inverse_transform__(predict_Y)
+    
+    def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         predict_X=self.__X_transform__(predict_X)
         
-        predict_Y=predict_X@self.coef_.T+self.intercept_
+        if(self.fit_intercept):
+            predict_Y=predict_X@self.coef_+self.intercept_
+        else:
+            predict_Y=predict_X@self.coef_
         
         return self.__Y_inverse_transform__(predict_Y)
     
-    ###############################Private Function###############################
+###--------------------------private functions----------------------------###
     def _fit_Origin(self, trainX: np.ndarray, trainY: np.ndarray):
+        
         trainX_=trainX.copy()
         trainY_=trainY.copy()
         if self.fit_intercept:
@@ -91,7 +109,8 @@ class LinearRegression(Surrogate):
             return self.coef_
     
     def _fit_Lasso(self, trainX: np.ndarray, trainY: np.ndarray):
-        from .Lasso_.lasso_fast import celer, compute_norms_X_col, compute_Xw, dnorm_enet
+        
+        from .lasso_ import celer, compute_norms_X_col, compute_Xw, dnorm_enet
         
         trainX_=np.asarray(trainX, order='F')
         trainY_=np.asarray(trainY, order='F')
@@ -164,24 +183,17 @@ class LinearRegression(Surrogate):
         #     diff_w= np.array(list(map(lambda x: abs(x)<self.tl, pre_w-w)))
         #     if diff_w.all():
         #         break
+        
         if self.fit_intercept:
             self.intercept_=offsetY-np.dot(offsetX.reshape(1,-1), self.coef_)
             return self.coef_, self.intercept_
         else:
             return self.coef_
         
-    def predict(self, predict_X: np.ndarray):
-        
-        predict_X=self.__X_transform__(predict_X)
-        
-        if(self.fit_intercept):
-            predict_Y=predict_X@self.coef_+self.intercept_
-        else:
-            predict_Y=predict_X@self.coef_
-        
-        return self.__Y_inverse_transform__(predict_Y)
     
-    ############################Attribute#########################
+    
+###---------------------------Attribute----------------------------###
+
     @property
     def coef(self):
         return self.coef_

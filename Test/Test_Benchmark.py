@@ -5,12 +5,12 @@ import os
 os.chdir('./Test')
 
 
-from UQPyL.Problems.Benchmarks import (Sphere,Schwefel_1_22,Schwefel_2_22,Schwefel_2_21,
+from UQPyL.problems.Single_Benchmarks import (Sphere,Schwefel_1_22,Schwefel_2_22,Schwefel_2_21,
                                        Rosenbrock,Step,Quartic,Schwefel_2_26,Rastrigin,
                                        Ackley,Griewank,Trid,Bent_Cigar,Discus,
                                        Weierstrass)
                                     
-from UQPyL.Experiment_Design.Lhs import LHS
+from UQPyL.DoE import LHS
 import numpy as np
 
 DOE=LHS('classic')

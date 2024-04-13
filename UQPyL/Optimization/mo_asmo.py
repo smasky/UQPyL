@@ -1,10 +1,12 @@
 ### Multi-Objective Adaptive Surrogate Modelling-based Optimization
 import numpy as np
-from ..Experiment_Design import LHS
-from ..Problems import Problem
-from .nsga_ii import NSGAII
 from tqdm import tqdm
 from scipy.spatial.distance import cdist
+
+from ..DoE import LHS
+from ..problems import Problem
+from .nsga_ii import NSGAII
+
 lhs=LHS("center")
 class MOASMO():
     def __init__(self, problem, surrogates,

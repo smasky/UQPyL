@@ -1,16 +1,12 @@
 import numpy as np
-from .SVR_ import svm_fit, svm_predict, Parameter 
+from .svr_ import svm_fit, svm_predict, Parameter 
 from typing import Tuple, Literal, Optional
 from .surrogate_ABC import Scale_T, Surrogate
-from ..Utility.polynomial_features import PolynomialFeatures
+from ..utility.polynomial_features import PolynomialFeatures
 LINEAR = 0
 POLYNOMIAL = 1
 RBF = 2
 SIGMOID = 3
-
-# def Fit(trainX, trainY, para, q):
-#     model=svm_fit(trainX, trainY, para)
-#     q.put(model)
 
 class SVR(Surrogate):
     def __init__(self, 
@@ -21,6 +17,7 @@ class SVR(Surrogate):
                  coe0: float=0.0, degree: int=2,
                  maxIter: int=100000, eps: float=0.001,
                  kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial']='rbf'):
+        
         super().__init__(scalers, poly_feature)
         
         self.C=C
@@ -32,8 +29,10 @@ class SVR(Surrogate):
         self.maxIter=maxIter
         self.eps=eps
         self.model=None
-    ###############Interface Function#################
-    def predict(self, predict_X: np.ndarray):
+
+###-----------------------public functions--------------------------###
+
+    def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         predict_X=np.ascontiguousarray(predict_X).copy()
         predict_X=self.__X_transform__(predict_X)
@@ -57,7 +56,7 @@ class SVR(Surrogate):
         par=Parameter(3, eval(self.kernel.upper()), self.degree, self.maxIter, self.gamma, self.coe0, self.C, 0.5, self.epsilon, self.eps)     
         self.model=svm_fit(trainX, trainY.ravel(), par)
         
-    ###########################Attribute##############
+###-----------------------attribute--------------------------###
     @property
     def C(self):
         return self.C_

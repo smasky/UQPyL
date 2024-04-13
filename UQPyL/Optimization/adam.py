@@ -1,5 +1,6 @@
 import numpy as np
 from typing import Callable, Tuple
+
 class Adam():
     """Adam Algorithm
     Parameters

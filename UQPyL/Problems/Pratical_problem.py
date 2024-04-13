@@ -1,15 +1,16 @@
-from typing import Callable
-from .Problem_ABC import ProblemABC
 import numpy as np
+from typing import Callable
+
+from .Problem_ABC import ProblemABC
 class Problem(ProblemABC):
     '''
     Class for creating practical problem
     '''
-    def __init__(self, func, dim, NOutput, ub, lb):
+    def __init__(self, func, dim, n_output, ub, lb):
         super().__init__()
         self._func=func
         self.dim=dim
-        self.NOutput=NOutput
+        self.n_output=n_output
         self.ub=ub
         self.lb=lb
         

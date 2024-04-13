@@ -1,17 +1,18 @@
 import numpy as np
 from scipy.linalg import LinAlgError, cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
-from typing import Literal, Tuple, Optional
+from typing import Literal, Tuple, Optional, Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .surrogate_ABC import Surrogate, Scale_T
-from ..Utility.metrics import r2_score
-from ..Optimization import Boxmin, GA, MP_List, EA_List
-from ..Utility.model_selections import RandSelect
-from ..Utility.scalers import Scaler
-from ..Utility.polynomial_features import PolynomialFeatures
-from ..Problems import Problem
+from ..utility.metrics import r2_score
+from ..optimization import Boxmin, GA, MP_List, EA_List
+from ..utility.model_selections import RandSelect
+from ..utility.scalers import Scaler
+from ..utility.polynomial_features import PolynomialFeatures
+from ..problems import Problem
 
+####---------------------regression functions--------------------###
 def regrpoly0(S):
     
     n_sample, _ = S.shape
@@ -36,6 +37,7 @@ def regrpoly2(S):
         j += q;q -= 1
     return F
 
+###-------------------------kernerls---------------------------###
 def guass(theta, d):
         
     td = d * -theta
@@ -119,8 +121,10 @@ class Kriging(Surrogate):
             self.regrFunc=regrpoly2
         
         super().__init__(scalers, poly_feature)
-    ###########################Interface Function####################################
-    def predict(self,predictX: np.ndarray, only_value=True):
+        
+###-------------------------------public function-----------------------------###
+
+    def predict(self,predictX: np.ndarray, only_value=True) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
         
         predictX=self.__X_transform__(predictX)
         n_sample, n_feature=self.trainX.shape
@@ -157,7 +161,9 @@ class Kriging(Surrogate):
             self._fit_likelihood()
         elif(self.fitMode=='predictError'):
             self._fit_predict_error()
-    ##############################Private Function###############################
+            
+###-------------------private functions----------------------###
+
     def _fit_predict_error(self):
         
         TotalX=self.trainX

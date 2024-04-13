@@ -7,7 +7,7 @@ import copy
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
-def fit_predict(evaluator,dataX, dataY, train_sets, test_sets, metric):
+def fit_predict(evaluator, dataX, dataY, train_sets, test_sets, metric):
     
     values=[]
     for train_set, test_set in zip(train_sets, test_sets):
