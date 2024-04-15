@@ -3,12 +3,43 @@ import numpy as np
 from .sampler_ABC import Sampler
 
 class FAST_Sampler(Sampler):
-    def __init__(self, M):
+    '''
+    The sample technique for FAST(Fourier Amplitude Sensitivity Test) method
+    
+    Parameters:
+    M: int
+        The interference parameter, i.e., the number of harmonics to sum in the
+        Fourier series decomposition (defalut 4). 
+        But, the number of sample must be greater than 4*M**2!
+    
+    Methods:
+    __call__ or sample: Generate a sample for FAST method
+    
+    Examples:
+        >>> fast=FAST_Sampler()
+        >>> samples=fast(5, 4) or fast.sample(5,4)
+            
+    '''
+    def __init__(self, M: int=4):
         
         super().__init__()
         self.M=M
         
     def _generate(self, nt: int, nx: int) -> np.ndarray:
+        '''
+        Generate a shape of (nt*nx, nx) sample for FAST
+        
+        parameters:
+        nt: int
+            the number of sample points
+        nx: int
+            the input dimensions of sampled points
+        
+        Returns:
+        H: 2d-array
+            An n-by-samples design matrix that has been normalized so factor values
+            are uniformly spaced between zero and one.
+        '''
         
         if nt<=4*self.M**2:
             raise ValueError("the number of sample must be greater than 4*M**2!")
@@ -38,3 +69,9 @@ class FAST_Sampler(Sampler):
             X_sa[idx, :]=0.5+arsin_result.transpose()
         
         return X_sa
+    
+    def sample(self, nt: int, nx: int) -> np.ndarray:
+        
+        return self._generate(nt, nx)
+    
+    

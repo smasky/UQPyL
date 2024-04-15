@@ -14,12 +14,12 @@
             "D:\\Anaconda3\\envs\\SCI1\\lib\\site-packages\\numpy\\core\\include"
         ],
         "language": "c",
-        "name": "UQPyL.Surrogates.Mars_._util",
+        "name": "UQPyL.surrogates.mars_._util",
         "sources": [
-            "UQPyL/Surrogates/Mars_/_util.pyx"
+            "UQPyL/surrogates/mars_/_util.pyx"
         ]
     },
-    "module_name": "UQPyL.Surrogates.Mars_._util"
+    "module_name": "UQPyL.surrogates.mars_._util"
 }
 END: Cython Metadata */
 
@@ -1204,8 +1204,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__UQPyL__Surrogates__Mars____util
-#define __PYX_HAVE_API__UQPyL__Surrogates__Mars____util
+#define __PYX_HAVE__UQPyL__surrogates__mars____util
+#define __PYX_HAVE_API__UQPyL__surrogates__mars____util
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1505,7 +1505,7 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_util.pyx",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_util.pyx",
   "__init__.cython-30.pxd",
   "type.pxd",
 };
@@ -1747,7 +1747,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  */
-typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t;
+typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t;
 
 /* "_types.pxd":3
  * cimport numpy as cnp
@@ -1756,7 +1756,7 @@ typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOA
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
+typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INT_t;
 
 /* "_types.pxd":4
  * ctypedef cnp.float64_t FLOAT_t
@@ -1764,14 +1764,14 @@ typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
  * ctypedef cnp.intp_t INDEX_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t;
+typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t;
 
 /* "_types.pxd":5
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t             # <<<<<<<<<<<<<<
  */
-typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t;
+typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t;
 /* #### Code section: complex_type_declarations ### */
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX && (1) && (!0 || __cplusplus)
@@ -1836,14 +1836,14 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table;
 
-/* "UQPyL/Surrogates/Mars_/_util.pxd":23
+/* "UQPyL/surrogates/mars_/_util.pxd":23
  * cpdef str_pad(string, length)
  * 
  * cpdef ascii_table(header, data, print_header=?, print_footer=?)             # <<<<<<<<<<<<<<
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table {
   int __pyx_n;
   PyObject *print_header;
   PyObject *print_footer;
@@ -2676,26 +2676,26 @@ static CYTHON_INLINE char *__pyx_f_5numpy_7ndarray_4data_data(PyArrayObject *__p
 
 /* Module declarations from "numpy" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._types" */
+/* Module declarations from "UQPyL.surrogates.mars_._types" */
 
 /* Module declarations from "libc.math" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._util" */
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv_adjust(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table *__pyx_optional_args); /*proto*/
+/* Module declarations from "UQPyL.surrogates.mars_._util" */
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_slice(PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_1d(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv_adjust(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_ascii_table(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table *__pyx_optional_args); /*proto*/
 /* #### Code section: typeinfo ### */
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "UQPyL.Surrogates.Mars_._util"
-extern int __pyx_module_is_main_UQPyL__Surrogates__Mars____util;
-int __pyx_module_is_main_UQPyL__Surrogates__Mars____util = 0;
+#define __Pyx_MODULE_NAME "UQPyL.surrogates.mars_._util"
+extern int __pyx_module_is_main_UQPyL__surrogates__mars____util;
+int __pyx_module_is_main_UQPyL__surrogates__mars____util = 0;
 
-/* Implementation of "UQPyL.Surrogates.Mars_._util" */
+/* Implementation of "UQPyL.surrogates.mars_._util" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_enumerate;
@@ -2743,18 +2743,18 @@ static const char __pyx_k_apply_weights_2d[] = "apply_weights_2d";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_apply_weights_slice[] = "apply_weights_slice";
-static const char __pyx_k_UQPyL_Surrogates_Mars___util[] = "UQPyL.Surrogates.Mars_._util";
+static const char __pyx_k_UQPyL_surrogates_mars___util[] = "UQPyL.surrogates.mars_._util";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
-static const char __pyx_k_UQPyL_Surrogates_Mars___util_pyx[] = "UQPyL\\Surrogates\\Mars_\\_util.pyx";
+static const char __pyx_k_UQPyL_surrogates_mars___util_pyx[] = "UQPyL\\surrogates\\mars_\\_util.pyx";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 /* #### Code section: decls ### */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_column); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_string, PyObject *__pyx_v_length); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_header, PyObject *__pyx_v_data, PyObject *__pyx_v_print_header, PyObject *__pyx_v_print_footer); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_2apply_weights_slice(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_column); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_4apply_weights_1d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_6gcv(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_8gcv_adjust(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_10str_pad(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_string, PyObject *__pyx_v_length); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_12ascii_table(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_header, PyObject *__pyx_v_data, PyObject *__pyx_v_print_header, PyObject *__pyx_v_print_footer); /* proto */
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
 typedef struct {
@@ -2824,8 +2824,8 @@ typedef struct {
   #endif
   PyObject *__pyx_n_s_B;
   PyObject *__pyx_n_s_ImportError;
-  PyObject *__pyx_n_s_UQPyL_Surrogates_Mars___util;
-  PyObject *__pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx;
+  PyObject *__pyx_n_s_UQPyL_surrogates_mars___util;
+  PyObject *__pyx_kp_s_UQPyL_surrogates_mars___util_pyx;
   PyObject *__pyx_n_s__23;
   PyObject *__pyx_kp_s__3;
   PyObject *__pyx_kp_s__4;
@@ -2947,8 +2947,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_ufunc);
   Py_CLEAR(clear_module_state->__pyx_n_s_B);
   Py_CLEAR(clear_module_state->__pyx_n_s_ImportError);
-  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___util);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx);
+  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_surrogates_mars___util);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_surrogates_mars___util_pyx);
   Py_CLEAR(clear_module_state->__pyx_n_s__23);
   Py_CLEAR(clear_module_state->__pyx_kp_s__3);
   Py_CLEAR(clear_module_state->__pyx_kp_s__4);
@@ -3048,8 +3048,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_ufunc);
   Py_VISIT(traverse_module_state->__pyx_n_s_B);
   Py_VISIT(traverse_module_state->__pyx_n_s_ImportError);
-  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___util);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx);
+  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_surrogates_mars___util);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_surrogates_mars___util_pyx);
   Py_VISIT(traverse_module_state->__pyx_n_s__23);
   Py_VISIT(traverse_module_state->__pyx_kp_s__3);
   Py_VISIT(traverse_module_state->__pyx_kp_s__4);
@@ -3181,8 +3181,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #define __pyx_n_s_B __pyx_mstate_global->__pyx_n_s_B
 #define __pyx_n_s_ImportError __pyx_mstate_global->__pyx_n_s_ImportError
-#define __pyx_n_s_UQPyL_Surrogates_Mars___util __pyx_mstate_global->__pyx_n_s_UQPyL_Surrogates_Mars___util
-#define __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx __pyx_mstate_global->__pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx
+#define __pyx_n_s_UQPyL_surrogates_mars___util __pyx_mstate_global->__pyx_n_s_UQPyL_surrogates_mars___util
+#define __pyx_kp_s_UQPyL_surrogates_mars___util_pyx __pyx_mstate_global->__pyx_kp_s_UQPyL_surrogates_mars___util_pyx
 #define __pyx_n_s__23 __pyx_mstate_global->__pyx_n_s__23
 #define __pyx_kp_s__3 __pyx_mstate_global->__pyx_kp_s__3
 #define __pyx_kp_s__4 __pyx_mstate_global->__pyx_kp_s__4
@@ -4500,7 +4500,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":10
+/* "UQPyL/surrogates/mars_/_util.pyx":10
  * from libc.math cimport sqrt, log
  * 
  * cdef FLOAT_t log2(FLOAT_t x):             # <<<<<<<<<<<<<<
@@ -4508,10 +4508,10 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
  * 
  */
 
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_log2(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_x) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_r;
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_f_5UQPyL_10surrogates_5mars__5_util_log2(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_x) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_r;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":11
+  /* "UQPyL/surrogates/mars_/_util.pyx":11
  * 
  * cdef FLOAT_t log2(FLOAT_t x):
  *     return log(x) / log(2.0)             # <<<<<<<<<<<<<<
@@ -4521,7 +4521,7 @@ static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surro
   __pyx_r = (log(__pyx_v_x) / log(2.0));
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":10
+  /* "UQPyL/surrogates/mars_/_util.pyx":10
  * from libc.math cimport sqrt, log
  * 
  * cdef FLOAT_t log2(FLOAT_t x):             # <<<<<<<<<<<<<<
@@ -4534,7 +4534,7 @@ static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surro
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":13
+/* "UQPyL/surrogates/mars_/_util.pyx":13
  *     return log(x) / log(2.0)
  * 
  * cpdef apply_weights_2d(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -4542,18 +4542,18 @@ static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surro
  *     cdef INDEX_t i
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_i;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_j;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_m;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_n;
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_i;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_j;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_m;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_n;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_B;
   __Pyx_Buffer __pyx_pybuffer_B;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4561,15 +4561,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   npy_intp *__pyx_t_1;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_2;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_3;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_4;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_5;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_6;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_7;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_8;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_9;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_10;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_2;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_3;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_4;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_5;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_6;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_7;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_8;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_9;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_10;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4584,16 +4584,16 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":17
+  /* "UQPyL/surrogates/mars_/_util.pyx":17
  *     cdef INDEX_t i
  *     cdef INDEX_t j
  *     cdef INDEX_t m = B.shape[0]             # <<<<<<<<<<<<<<
@@ -4603,7 +4603,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
   __pyx_t_1 = __pyx_f_5numpy_7ndarray_5shape_shape(((PyArrayObject *)__pyx_v_B)); if (unlikely(__pyx_t_1 == ((npy_intp *)NULL) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L1_error)
   __pyx_v_m = (__pyx_t_1[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":18
+  /* "UQPyL/surrogates/mars_/_util.pyx":18
  *     cdef INDEX_t j
  *     cdef INDEX_t m = B.shape[0]
  *     cdef INDEX_t n = B.shape[1]             # <<<<<<<<<<<<<<
@@ -4613,7 +4613,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
   __pyx_t_1 = __pyx_f_5numpy_7ndarray_5shape_shape(((PyArrayObject *)__pyx_v_B)); if (unlikely(__pyx_t_1 == ((npy_intp *)NULL) && PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L1_error)
   __pyx_v_n = (__pyx_t_1[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":19
+  /* "UQPyL/surrogates/mars_/_util.pyx":19
  *     cdef INDEX_t m = B.shape[0]
  *     cdef INDEX_t n = B.shape[1]
  *     for i in range(m):             # <<<<<<<<<<<<<<
@@ -4625,7 +4625,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":20
+    /* "UQPyL/surrogates/mars_/_util.pyx":20
  *     cdef INDEX_t n = B.shape[1]
  *     for i in range(m):
  *         for j in range(n):             # <<<<<<<<<<<<<<
@@ -4637,7 +4637,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
       __pyx_v_j = __pyx_t_7;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":21
+      /* "UQPyL/surrogates/mars_/_util.pyx":21
  *     for i in range(m):
  *         for j in range(n):
  *             B[i, j] *= sqrt(weights[i])             # <<<<<<<<<<<<<<
@@ -4647,11 +4647,11 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
       __pyx_t_8 = __pyx_v_i;
       __pyx_t_9 = __pyx_v_i;
       __pyx_t_10 = __pyx_v_j;
-      *__Pyx_BufPtrStrided2d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_10, __pyx_pybuffernd_B.diminfo[1].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_weights.diminfo[0].strides)));
+      *__Pyx_BufPtrStrided2d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_10, __pyx_pybuffernd_B.diminfo[1].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_weights.diminfo[0].strides)));
     }
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":13
+  /* "UQPyL/surrogates/mars_/_util.pyx":13
  *     return log(x) / log(2.0)
  * 
  * cpdef apply_weights_2d(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -4670,7 +4670,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4683,15 +4683,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(PyAr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d = {"apply_weights_2d", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d = {"apply_weights_2d", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -4776,13 +4776,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_B), __pyx_ptype_5numpy_ndarray, 1, "B", 0))) __PYX_ERR(0, 13, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 14, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(__pyx_self, __pyx_v_B, __pyx_v_weights);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(__pyx_self, __pyx_v_B, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4799,7 +4799,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_B;
   __Pyx_Buffer __pyx_pybuffer_B;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4821,16 +4821,16 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYT
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 13, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d(((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4846,7 +4846,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYT
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_2d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4858,7 +4858,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYT
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":23
+/* "UQPyL/surrogates/mars_/_util.pyx":23
  *             B[i, j] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_slice(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -4866,17 +4866,17 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d(CYT
  *                           INDEX_t column):
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_column, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_i;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_m;
-  CYTHON_UNUSED __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_n;
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_slice(PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_column, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_i;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_m;
+  CYTHON_UNUSED __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_n;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_B;
   __Pyx_Buffer __pyx_pybuffer_B;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -4884,12 +4884,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   npy_intp *__pyx_t_1;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_2;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_3;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_4;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_5;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_6;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_7;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_2;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_3;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_4;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_5;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_6;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4904,16 +4904,16 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":28
+  /* "UQPyL/surrogates/mars_/_util.pyx":28
  *     cdef INDEX_t i
  *     cdef INDEX_t j
  *     cdef INDEX_t m = B.shape[0]             # <<<<<<<<<<<<<<
@@ -4923,7 +4923,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
   __pyx_t_1 = __pyx_f_5numpy_7ndarray_5shape_shape(((PyArrayObject *)__pyx_v_B)); if (unlikely(__pyx_t_1 == ((npy_intp *)NULL) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L1_error)
   __pyx_v_m = (__pyx_t_1[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":29
+  /* "UQPyL/surrogates/mars_/_util.pyx":29
  *     cdef INDEX_t j
  *     cdef INDEX_t m = B.shape[0]
  *     cdef INDEX_t n = B.shape[1]             # <<<<<<<<<<<<<<
@@ -4933,7 +4933,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
   __pyx_t_1 = __pyx_f_5numpy_7ndarray_5shape_shape(((PyArrayObject *)__pyx_v_B)); if (unlikely(__pyx_t_1 == ((npy_intp *)NULL) && PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L1_error)
   __pyx_v_n = (__pyx_t_1[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":30
+  /* "UQPyL/surrogates/mars_/_util.pyx":30
  *     cdef INDEX_t m = B.shape[0]
  *     cdef INDEX_t n = B.shape[1]
  *     for i in range(m):             # <<<<<<<<<<<<<<
@@ -4945,7 +4945,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":31
+    /* "UQPyL/surrogates/mars_/_util.pyx":31
  *     cdef INDEX_t n = B.shape[1]
  *     for i in range(m):
  *         B[i, column] *= sqrt(weights[i])             # <<<<<<<<<<<<<<
@@ -4955,10 +4955,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
     __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_7 = __pyx_v_column;
-    *__Pyx_BufPtrStrided2d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_7, __pyx_pybuffernd_B.diminfo[1].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_weights.diminfo[0].strides)));
+    *__Pyx_BufPtrStrided2d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_B.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_B.diminfo[0].strides, __pyx_t_7, __pyx_pybuffernd_B.diminfo[1].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_weights.diminfo[0].strides)));
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":23
+  /* "UQPyL/surrogates/mars_/_util.pyx":23
  *             B[i, j] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_slice(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -4977,7 +4977,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4990,15 +4990,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(P
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice = {"apply_weights_slice", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice = {"apply_weights_slice", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -5007,7 +5007,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ) {
   PyArrayObject *__pyx_v_B = 0;
   PyArrayObject *__pyx_v_weights = 0;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_column;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_column;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -5098,13 +5098,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_B), __pyx_ptype_5numpy_ndarray, 1, "B", 0))) __PYX_ERR(0, 23, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 24, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice(__pyx_self, __pyx_v_B, __pyx_v_weights, __pyx_v_column);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_2apply_weights_slice(__pyx_self, __pyx_v_B, __pyx_v_weights, __pyx_v_column);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5121,7 +5121,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_column) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_2apply_weights_slice(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_B, PyArrayObject *__pyx_v_weights, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_column) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_B;
   __Pyx_Buffer __pyx_pybuffer_B;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
@@ -5143,16 +5143,16 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)__pyx_v_B, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 23, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice(((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_v_weights), __pyx_v_column, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_slice(((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_v_weights), __pyx_v_column, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5168,7 +5168,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_B.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5180,7 +5180,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":33
+/* "UQPyL/surrogates/mars_/_util.pyx":33
  *         B[i, column] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_1d(cnp.ndarray[FLOAT_t, ndim=1] y,             # <<<<<<<<<<<<<<
@@ -5188,16 +5188,16 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_2apply_weights_slice
  *     cdef INDEX_t i
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_i;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_m;
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_1d(PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_i;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_m;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
   __Pyx_Buffer __pyx_pybuffer_weights;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_y;
@@ -5205,11 +5205,11 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   npy_intp *__pyx_t_1;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_2;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_3;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_4;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_5;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_6;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_2;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_3;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_4;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_5;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_6;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5224,16 +5224,16 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
   }
   __pyx_pybuffernd_y.diminfo[0].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_y.diminfo[0].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":36
+  /* "UQPyL/surrogates/mars_/_util.pyx":36
  *                        cnp.ndarray[FLOAT_t, ndim=1] weights):
  *     cdef INDEX_t i
  *     cdef INDEX_t m = y.shape[0]             # <<<<<<<<<<<<<<
@@ -5243,7 +5243,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
   __pyx_t_1 = __pyx_f_5numpy_7ndarray_5shape_shape(((PyArrayObject *)__pyx_v_y)); if (unlikely(__pyx_t_1 == ((npy_intp *)NULL) && PyErr_Occurred())) __PYX_ERR(0, 36, __pyx_L1_error)
   __pyx_v_m = (__pyx_t_1[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":37
+  /* "UQPyL/surrogates/mars_/_util.pyx":37
  *     cdef INDEX_t i
  *     cdef INDEX_t m = y.shape[0]
  *     for i in range(m):             # <<<<<<<<<<<<<<
@@ -5255,7 +5255,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":38
+    /* "UQPyL/surrogates/mars_/_util.pyx":38
  *     cdef INDEX_t m = y.shape[0]
  *     for i in range(m):
  *         y[i] *= sqrt(weights[i])             # <<<<<<<<<<<<<<
@@ -5264,10 +5264,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
  */
     __pyx_t_5 = __pyx_v_i;
     __pyx_t_6 = __pyx_v_i;
-    *__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_y.diminfo[0].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_weights.diminfo[0].strides)));
+    *__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_y.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_y.diminfo[0].strides) *= sqrt((*__Pyx_BufPtrStrided1d(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *, __pyx_pybuffernd_weights.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_weights.diminfo[0].strides)));
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":33
+  /* "UQPyL/surrogates/mars_/_util.pyx":33
  *         B[i, column] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_1d(cnp.ndarray[FLOAT_t, ndim=1] y,             # <<<<<<<<<<<<<<
@@ -5286,7 +5286,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_y.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5299,15 +5299,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(PyAr
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d = {"apply_weights_1d", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d = {"apply_weights_1d", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -5392,13 +5392,13 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_5numpy_ndarray, 1, "y", 0))) __PYX_ERR(0, 33, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_weights), __pyx_ptype_5numpy_ndarray, 1, "weights", 0))) __PYX_ERR(0, 34, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(__pyx_self, __pyx_v_y, __pyx_v_weights);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_4apply_weights_1d(__pyx_self, __pyx_v_y, __pyx_v_weights);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5415,7 +5415,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_4apply_weights_1d(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_weights) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_weights;
   __Pyx_Buffer __pyx_pybuffer_weights;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_y;
@@ -5437,16 +5437,16 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CY
   __pyx_pybuffernd_weights.rcbuffer = &__pyx_pybuffer_weights;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
   }
   __pyx_pybuffernd_y.diminfo[0].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_y.diminfo[0].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[0];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weights.rcbuffer->pybuffer, (PyObject*)__pyx_v_weights, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 33, __pyx_L1_error)
   }
   __pyx_pybuffernd_weights.diminfo[0].strides = __pyx_pybuffernd_weights.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_weights.diminfo[0].shape = __pyx_pybuffernd_weights.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d(((PyArrayObject *)__pyx_v_y), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_1d(((PyArrayObject *)__pyx_v_y), ((PyArrayObject *)__pyx_v_weights), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5462,7 +5462,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CY
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weights.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_y.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.apply_weights_1d", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5474,7 +5474,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CY
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":40
+/* "UQPyL/surrogates/mars_/_util.pyx":40
  *         y[i] *= sqrt(weights[i])
  * 
  * cpdef FLOAT_t gcv(FLOAT_t mse, FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -5482,32 +5482,32 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_4apply_weights_1d(CY
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_7gcv(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_7gcv(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_r;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_1;
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_r;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_1;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":42
+  /* "UQPyL/surrogates/mars_/_util.pyx":42
  * cpdef FLOAT_t gcv(FLOAT_t mse, FLOAT_t basis_size, FLOAT_t data_size,
  *                   FLOAT_t penalty):
  *     return mse * gcv_adjust(basis_size, data_size, penalty)             # <<<<<<<<<<<<<<
  * 
  * cpdef FLOAT_t gcv_adjust(FLOAT_t basis_size, FLOAT_t data_size,
  */
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv_adjust(__pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv_adjust(__pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
   __pyx_r = (__pyx_v_mse * __pyx_t_1);
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":40
+  /* "UQPyL/surrogates/mars_/_util.pyx":40
  *         y[i] *= sqrt(weights[i])
  * 
  * cpdef FLOAT_t gcv(FLOAT_t mse, FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -5517,32 +5517,32 @@ static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surro
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   return __pyx_r;
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_7gcv(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_7gcv(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_7gcv = {"gcv", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_7gcv, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_7gcv(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_7gcv = {"gcv", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_7gcv, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_7gcv(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -5647,11 +5647,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(__pyx_self, __pyx_v_mse, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_6gcv(__pyx_self, __pyx_v_mse, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty);
 
   /* function exit code */
   {
@@ -5664,17 +5664,17 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_6gcv(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_1;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gcv", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv(__pyx_v_mse, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv(__pyx_v_mse, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_t_2 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
@@ -5684,7 +5684,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(CYTHON_UNUSED P
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.gcv", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5692,7 +5692,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":44
+/* "UQPyL/surrogates/mars_/_util.pyx":44
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  * 
  * cpdef FLOAT_t gcv_adjust(FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -5700,37 +5700,37 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_6gcv(CYTHON_UNUSED P
  *     cdef FLOAT_t effective_parameters
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv_adjust(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_effective_parameters;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_r;
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv_adjust(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty, CYTHON_UNUSED int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_effective_parameters;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_r;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":47
+  /* "UQPyL/surrogates/mars_/_util.pyx":47
  *                          FLOAT_t penalty):
  *     cdef FLOAT_t effective_parameters
  *     effective_parameters = basis_size + penalty * (basis_size - 1) / 2.0             # <<<<<<<<<<<<<<
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )
  * 
  */
-  __pyx_v_effective_parameters = (__pyx_v_basis_size + ((__pyx_v_penalty * (__pyx_v_basis_size - 1.0)) / ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)2.0)));
+  __pyx_v_effective_parameters = (__pyx_v_basis_size + ((__pyx_v_penalty * (__pyx_v_basis_size - 1.0)) / ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)2.0)));
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":48
+  /* "UQPyL/surrogates/mars_/_util.pyx":48
  *     cdef FLOAT_t effective_parameters
  *     effective_parameters = basis_size + penalty * (basis_size - 1) / 2.0
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )             # <<<<<<<<<<<<<<
  * 
  * cpdef str_pad(string, length):
  */
-  __pyx_r = (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)1.0) / pow((1.0 - (__pyx_v_effective_parameters / __pyx_v_data_size)), 2.0));
+  __pyx_r = (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)1.0) / pow((1.0 - (__pyx_v_effective_parameters / __pyx_v_data_size)), 2.0));
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":44
+  /* "UQPyL/surrogates/mars_/_util.pyx":44
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  * 
  * cpdef FLOAT_t gcv_adjust(FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -5744,24 +5744,24 @@ static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_f_5UQPyL_10Surro
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust = {"gcv_adjust", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust = {"gcv_adjust", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -5852,11 +5852,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.gcv_adjust", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.gcv_adjust", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(__pyx_self, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_8gcv_adjust(__pyx_self, __pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty);
 
   /* function exit code */
   {
@@ -5869,17 +5869,17 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_penalty) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_8gcv_adjust(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_basis_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_data_size, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_penalty) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_1;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gcv_adjust", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv_adjust(__pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv_adjust(__pyx_v_basis_size, __pyx_v_data_size, __pyx_v_penalty, 0); if (unlikely(__pyx_t_1 == ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 44, __pyx_L1_error)
   __pyx_t_2 = PyFloat_FromDouble(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
@@ -5889,7 +5889,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(CYTHON_U
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.gcv_adjust", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.gcv_adjust", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5897,7 +5897,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(CYTHON_U
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":50
+/* "UQPyL/surrogates/mars_/_util.pyx":50
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )
  * 
  * cpdef str_pad(string, length):             # <<<<<<<<<<<<<<
@@ -5905,14 +5905,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_8gcv_adjust(CYTHON_U
  *         return string[0:length]
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_11str_pad(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_11str_pad(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__pyx_v_string, PyObject *__pyx_v_length, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad(PyObject *__pyx_v_string, PyObject *__pyx_v_length, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_v_pad = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -5925,7 +5925,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("str_pad", 1);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":51
+  /* "UQPyL/surrogates/mars_/_util.pyx":51
  * 
  * cpdef str_pad(string, length):
  *     if len(string) >= length:             # <<<<<<<<<<<<<<
@@ -5941,7 +5941,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (__pyx_t_4) {
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":52
+    /* "UQPyL/surrogates/mars_/_util.pyx":52
  * cpdef str_pad(string, length):
  *     if len(string) >= length:
  *         return string[0:length]             # <<<<<<<<<<<<<<
@@ -5955,7 +5955,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":51
+    /* "UQPyL/surrogates/mars_/_util.pyx":51
  * 
  * cpdef str_pad(string, length):
  *     if len(string) >= length:             # <<<<<<<<<<<<<<
@@ -5964,7 +5964,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":53
+  /* "UQPyL/surrogates/mars_/_util.pyx":53
  *     if len(string) >= length:
  *         return string[0:length]
  *     pad = length - len(string)             # <<<<<<<<<<<<<<
@@ -5980,7 +5980,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
   __pyx_v_pad = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":54
+  /* "UQPyL/surrogates/mars_/_util.pyx":54
  *         return string[0:length]
  *     pad = length - len(string)
  *     return string + ' ' * pad             # <<<<<<<<<<<<<<
@@ -5997,7 +5997,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":50
+  /* "UQPyL/surrogates/mars_/_util.pyx":50
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )
  * 
  * cpdef str_pad(string, length):             # <<<<<<<<<<<<<<
@@ -6009,7 +6009,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_pad);
@@ -6019,15 +6019,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(PyObject *__p
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_11str_pad(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_11str_pad(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_11str_pad = {"str_pad", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_11str_pad, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_11str_pad(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_11str_pad = {"str_pad", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_11str_pad, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_11str_pad(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -6112,11 +6112,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(__pyx_self, __pyx_v_string, __pyx_v_length);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_10str_pad(__pyx_self, __pyx_v_string, __pyx_v_length);
 
   /* function exit code */
   {
@@ -6129,7 +6129,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_string, PyObject *__pyx_v_length) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_10str_pad(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_string, PyObject *__pyx_v_length) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6138,7 +6138,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNU
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("str_pad", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(__pyx_v_string, __pyx_v_length, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad(__pyx_v_string, __pyx_v_length, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6147,7 +6147,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNU
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.str_pad", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -6155,7 +6155,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_util.pyx":56
+/* "UQPyL/surrogates/mars_/_util.pyx":56
  *     return string + ' ' * pad
  * 
  * cpdef ascii_table(header, data, print_header=True, print_footer=True):             # <<<<<<<<<<<<<<
@@ -6163,14 +6163,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_10str_pad(CYTHON_UNU
  *     header - list of strings representing the header row
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_13ascii_table(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject *__pyx_v_header, PyObject *__pyx_v_data, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table *__pyx_optional_args) {
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__5_util_ascii_table(PyObject *__pyx_v_header, PyObject *__pyx_v_data, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table *__pyx_optional_args) {
   PyObject *__pyx_v_print_header = ((PyObject *)Py_True);
   PyObject *__pyx_v_print_footer = ((PyObject *)Py_True);
   CYTHON_UNUSED Py_ssize_t __pyx_v_m;
@@ -6213,7 +6213,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     }
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":61
+  /* "UQPyL/surrogates/mars_/_util.pyx":61
  *     data - list of lists of strings representing data rows
  *     '''
  *     m = len(data)             # <<<<<<<<<<<<<<
@@ -6223,7 +6223,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_t_1 = PyObject_Length(__pyx_v_data); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
   __pyx_v_m = __pyx_t_1;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":62
+  /* "UQPyL/surrogates/mars_/_util.pyx":62
  *     '''
  *     m = len(data)
  *     n = len(header)             # <<<<<<<<<<<<<<
@@ -6233,7 +6233,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_t_1 = PyObject_Length(__pyx_v_header); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
   __pyx_v_n = __pyx_t_1;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":63
+  /* "UQPyL/surrogates/mars_/_util.pyx":63
  *     m = len(data)
  *     n = len(header)
  *     column_widths = [len(head) for head in header]             # <<<<<<<<<<<<<<
@@ -6314,7 +6314,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_v_column_widths = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":64
+  /* "UQPyL/surrogates/mars_/_util.pyx":64
  *     n = len(header)
  *     column_widths = [len(head) for head in header]
  *     for i, row in enumerate(data):             # <<<<<<<<<<<<<<
@@ -6385,7 +6385,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __pyx_t_2 = __pyx_t_5;
     __pyx_t_5 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":65
+    /* "UQPyL/surrogates/mars_/_util.pyx":65
  *     column_widths = [len(head) for head in header]
  *     for i, row in enumerate(data):
  *         for j, col in enumerate(row):             # <<<<<<<<<<<<<<
@@ -6456,7 +6456,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_5 = __pyx_t_9;
       __pyx_t_9 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":66
+      /* "UQPyL/surrogates/mars_/_util.pyx":66
  *     for i, row in enumerate(data):
  *         for j, col in enumerate(row):
  *             if len(col) > column_widths[j]:             # <<<<<<<<<<<<<<
@@ -6475,7 +6475,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       if (__pyx_t_13) {
 
-        /* "UQPyL/Surrogates/Mars_/_util.pyx":67
+        /* "UQPyL/surrogates/mars_/_util.pyx":67
  *         for j, col in enumerate(row):
  *             if len(col) > column_widths[j]:
  *                 column_widths[j] = len(col)             # <<<<<<<<<<<<<<
@@ -6488,7 +6488,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
         if (unlikely((PyObject_SetItem(__pyx_v_column_widths, __pyx_v_j, __pyx_t_12) < 0))) __PYX_ERR(0, 67, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-        /* "UQPyL/Surrogates/Mars_/_util.pyx":66
+        /* "UQPyL/surrogates/mars_/_util.pyx":66
  *     for i, row in enumerate(data):
  *         for j, col in enumerate(row):
  *             if len(col) > column_widths[j]:             # <<<<<<<<<<<<<<
@@ -6497,7 +6497,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
       }
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":65
+      /* "UQPyL/surrogates/mars_/_util.pyx":65
  *     column_widths = [len(head) for head in header]
  *     for i, row in enumerate(data):
  *         for j, col in enumerate(row):             # <<<<<<<<<<<<<<
@@ -6508,7 +6508,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":64
+    /* "UQPyL/surrogates/mars_/_util.pyx":64
  *     n = len(header)
  *     column_widths = [len(head) for head in header]
  *     for i, row in enumerate(data):             # <<<<<<<<<<<<<<
@@ -6519,7 +6519,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":69
+  /* "UQPyL/surrogates/mars_/_util.pyx":69
  *                 column_widths[j] = len(col)
  * 
  *     for j in range(n):             # <<<<<<<<<<<<<<
@@ -6587,7 +6587,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":70
+    /* "UQPyL/surrogates/mars_/_util.pyx":70
  * 
  *     for j in range(n):
  *         column_widths[j] += 1             # <<<<<<<<<<<<<<
@@ -6605,7 +6605,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":69
+    /* "UQPyL/surrogates/mars_/_util.pyx":69
  *                 column_widths[j] = len(col)
  * 
  *     for j in range(n):             # <<<<<<<<<<<<<<
@@ -6615,7 +6615,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":72
+  /* "UQPyL/surrogates/mars_/_util.pyx":72
  *         column_widths[j] += 1
  * 
  *     result = ''             # <<<<<<<<<<<<<<
@@ -6625,7 +6625,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __Pyx_INCREF(__pyx_kp_s__4);
   __pyx_v_result = __pyx_kp_s__4;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":73
+  /* "UQPyL/surrogates/mars_/_util.pyx":73
  * 
  *     result = ''
  *     if print_header:             # <<<<<<<<<<<<<<
@@ -6635,7 +6635,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_print_header); if (unlikely((__pyx_t_13 < 0))) __PYX_ERR(0, 73, __pyx_L1_error)
   if (__pyx_t_13) {
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":74
+    /* "UQPyL/surrogates/mars_/_util.pyx":74
  *     result = ''
  *     if print_header:
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -6670,7 +6670,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_2 = __pyx_t_7;
       __pyx_t_7 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":75
+      /* "UQPyL/surrogates/mars_/_util.pyx":75
  *     if print_header:
  *         for j, col_width in enumerate(column_widths):
  *             result += '-' * col_width + '-'             # <<<<<<<<<<<<<<
@@ -6688,7 +6688,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":74
+      /* "UQPyL/surrogates/mars_/_util.pyx":74
  *     result = ''
  *     if print_header:
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -6699,7 +6699,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":76
+    /* "UQPyL/surrogates/mars_/_util.pyx":76
  *         for j, col_width in enumerate(column_widths):
  *             result += '-' * col_width + '-'
  *         result += '\n'             # <<<<<<<<<<<<<<
@@ -6711,7 +6711,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":77
+    /* "UQPyL/surrogates/mars_/_util.pyx":77
  *             result += '-' * col_width + '-'
  *         result += '\n'
  *         for j, head in enumerate(header):             # <<<<<<<<<<<<<<
@@ -6782,7 +6782,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_2 = __pyx_t_7;
       __pyx_t_7 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":78
+      /* "UQPyL/surrogates/mars_/_util.pyx":78
  *         result += '\n'
  *         for j, head in enumerate(header):
  *             result += str_pad(head, column_widths[j]) + ' '             # <<<<<<<<<<<<<<
@@ -6791,7 +6791,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
       __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_column_widths, __pyx_v_j); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_5 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(__pyx_v_head, __pyx_t_7, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 78, __pyx_L1_error)
+      __pyx_t_5 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad(__pyx_v_head, __pyx_t_7, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_7 = PyNumber_Add(__pyx_t_5, __pyx_kp_s__3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 78, __pyx_L1_error)
@@ -6803,7 +6803,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":77
+      /* "UQPyL/surrogates/mars_/_util.pyx":77
  *             result += '-' * col_width + '-'
  *         result += '\n'
  *         for j, head in enumerate(header):             # <<<<<<<<<<<<<<
@@ -6814,7 +6814,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":79
+    /* "UQPyL/surrogates/mars_/_util.pyx":79
  *         for j, head in enumerate(header):
  *             result += str_pad(head, column_widths[j]) + ' '
  *         result += '\n'             # <<<<<<<<<<<<<<
@@ -6826,7 +6826,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":80
+    /* "UQPyL/surrogates/mars_/_util.pyx":80
  *             result += str_pad(head, column_widths[j]) + ' '
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -6861,7 +6861,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_2 = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":81
+      /* "UQPyL/surrogates/mars_/_util.pyx":81
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):
  *             result += '-' * col_width + '-'             # <<<<<<<<<<<<<<
@@ -6879,7 +6879,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":80
+      /* "UQPyL/surrogates/mars_/_util.pyx":80
  *             result += str_pad(head, column_widths[j]) + ' '
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -6890,7 +6890,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":83
+    /* "UQPyL/surrogates/mars_/_util.pyx":83
  *             result += '-' * col_width + '-'
  * #         result += '\n'
  *         result += '\n'             # <<<<<<<<<<<<<<
@@ -6902,7 +6902,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":73
+    /* "UQPyL/surrogates/mars_/_util.pyx":73
  * 
  *     result = ''
  *     if print_header:             # <<<<<<<<<<<<<<
@@ -6911,7 +6911,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":84
+  /* "UQPyL/surrogates/mars_/_util.pyx":84
  * #         result += '\n'
  *         result += '\n'
  *     for i, row in enumerate(data):             # <<<<<<<<<<<<<<
@@ -6982,7 +6982,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __pyx_t_2 = __pyx_t_5;
     __pyx_t_5 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":85
+    /* "UQPyL/surrogates/mars_/_util.pyx":85
  *         result += '\n'
  *     for i, row in enumerate(data):
  *         if i > 0:             # <<<<<<<<<<<<<<
@@ -6994,7 +6994,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     if (__pyx_t_13) {
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":86
+      /* "UQPyL/surrogates/mars_/_util.pyx":86
  *     for i, row in enumerate(data):
  *         if i > 0:
  *             result += '\n'             # <<<<<<<<<<<<<<
@@ -7006,7 +7006,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":85
+      /* "UQPyL/surrogates/mars_/_util.pyx":85
  *         result += '\n'
  *     for i, row in enumerate(data):
  *         if i > 0:             # <<<<<<<<<<<<<<
@@ -7015,7 +7015,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
     }
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":87
+    /* "UQPyL/surrogates/mars_/_util.pyx":87
  *         if i > 0:
  *             result += '\n'
  *         for j, item in enumerate(row):             # <<<<<<<<<<<<<<
@@ -7086,7 +7086,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_5 = __pyx_t_12;
       __pyx_t_12 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":88
+      /* "UQPyL/surrogates/mars_/_util.pyx":88
  *             result += '\n'
  *         for j, item in enumerate(row):
  *             result += str_pad(item, column_widths[j]) + ' '             # <<<<<<<<<<<<<<
@@ -7095,7 +7095,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
       __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_column_widths, __pyx_v_j); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 88, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_11 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad(__pyx_v_item, __pyx_t_12, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_11 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad(__pyx_v_item, __pyx_t_12, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 88, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __pyx_t_12 = PyNumber_Add(__pyx_t_11, __pyx_kp_s__3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 88, __pyx_L1_error)
@@ -7107,7 +7107,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_11);
       __pyx_t_11 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":87
+      /* "UQPyL/surrogates/mars_/_util.pyx":87
  *         if i > 0:
  *             result += '\n'
  *         for j, item in enumerate(row):             # <<<<<<<<<<<<<<
@@ -7118,7 +7118,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":84
+    /* "UQPyL/surrogates/mars_/_util.pyx":84
  * #         result += '\n'
  *         result += '\n'
  *     for i, row in enumerate(data):             # <<<<<<<<<<<<<<
@@ -7129,7 +7129,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":90
+  /* "UQPyL/surrogates/mars_/_util.pyx":90
  *             result += str_pad(item, column_widths[j]) + ' '
  * 
  *     if print_footer:             # <<<<<<<<<<<<<<
@@ -7139,7 +7139,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_print_footer); if (unlikely((__pyx_t_13 < 0))) __PYX_ERR(0, 90, __pyx_L1_error)
   if (__pyx_t_13) {
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":91
+    /* "UQPyL/surrogates/mars_/_util.pyx":91
  * 
  *     if print_footer:
  *         result += '\n'             # <<<<<<<<<<<<<<
@@ -7151,7 +7151,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":92
+    /* "UQPyL/surrogates/mars_/_util.pyx":92
  *     if print_footer:
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -7186,7 +7186,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __pyx_t_2 = __pyx_t_5;
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":93
+      /* "UQPyL/surrogates/mars_/_util.pyx":93
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):
  *             result += '-' * col_width + '-'             # <<<<<<<<<<<<<<
@@ -7203,7 +7203,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
       __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_util.pyx":92
+      /* "UQPyL/surrogates/mars_/_util.pyx":92
  *     if print_footer:
  *         result += '\n'
  *         for j, col_width in enumerate(column_widths):             # <<<<<<<<<<<<<<
@@ -7214,7 +7214,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_util.pyx":90
+    /* "UQPyL/surrogates/mars_/_util.pyx":90
  *             result += str_pad(item, column_widths[j]) + ' '
  * 
  *     if print_footer:             # <<<<<<<<<<<<<<
@@ -7223,7 +7223,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":94
+  /* "UQPyL/surrogates/mars_/_util.pyx":94
  *         for j, col_width in enumerate(column_widths):
  *             result += '-' * col_width + '-'
  *     return result             # <<<<<<<<<<<<<<
@@ -7233,7 +7233,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __pyx_r = __pyx_v_result;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":56
+  /* "UQPyL/surrogates/mars_/_util.pyx":56
  *     return string + ' ' * pad
  * 
  * cpdef ascii_table(header, data, print_header=True, print_footer=True):             # <<<<<<<<<<<<<<
@@ -7250,7 +7250,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_column_widths);
@@ -7269,16 +7269,16 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(PyObject 
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_13ascii_table(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table, "\n    header - list of strings representing the header row\n    data - list of lists of strings representing data rows\n    ");
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table = {"ascii_table", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table(PyObject *__pyx_self, 
+PyDoc_STRVAR(__pyx_doc_5UQPyL_10surrogates_5mars__5_util_12ascii_table, "\n    header - list of strings representing the header row\n    data - list of lists of strings representing data rows\n    ");
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__5_util_13ascii_table = {"ascii_table", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__5_util_13ascii_table, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_5UQPyL_10surrogates_5mars__5_util_12ascii_table};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__5_util_13ascii_table(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -7393,11 +7393,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table(__pyx_self, __pyx_v_header, __pyx_v_data, __pyx_v_print_header, __pyx_v_print_footer);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__5_util_12ascii_table(__pyx_self, __pyx_v_header, __pyx_v_data, __pyx_v_print_header, __pyx_v_print_footer);
 
   /* function exit code */
   {
@@ -7410,11 +7410,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_header, PyObject *__pyx_v_data, PyObject *__pyx_v_print_header, PyObject *__pyx_v_print_footer) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__5_util_12ascii_table(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_header, PyObject *__pyx_v_data, PyObject *__pyx_v_print_header, PyObject *__pyx_v_print_footer) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table __pyx_t_2;
+  struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -7423,7 +7423,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table(CYTHON
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.print_header = __pyx_v_print_header;
   __pyx_t_2.print_footer = __pyx_v_print_footer;
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table(__pyx_v_header, __pyx_v_data, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_ascii_table(__pyx_v_header, __pyx_v_data, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7432,7 +7432,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__5_util_12ascii_table(CYTHON
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._util.ascii_table", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7458,8 +7458,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
   __Pyx_StringTabEntry __pyx_string_tab[] = {
     {&__pyx_n_s_B, __pyx_k_B, sizeof(__pyx_k_B), 0, 0, 1, 1},
     {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
-    {&__pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_k_UQPyL_Surrogates_Mars___util, sizeof(__pyx_k_UQPyL_Surrogates_Mars___util), 0, 0, 1, 1},
-    {&__pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_k_UQPyL_Surrogates_Mars___util_pyx, sizeof(__pyx_k_UQPyL_Surrogates_Mars___util_pyx), 0, 0, 1, 0},
+    {&__pyx_n_s_UQPyL_surrogates_mars___util, __pyx_k_UQPyL_surrogates_mars___util, sizeof(__pyx_k_UQPyL_surrogates_mars___util), 0, 0, 1, 1},
+    {&__pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_k_UQPyL_surrogates_mars___util_pyx, sizeof(__pyx_k_UQPyL_surrogates_mars___util_pyx), 0, 0, 1, 0},
     {&__pyx_n_s__23, __pyx_k__23, sizeof(__pyx_k__23), 0, 0, 1, 1},
     {&__pyx_kp_s__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 0, 1, 0},
     {&__pyx_kp_s__4, __pyx_k__4, sizeof(__pyx_k__4), 0, 0, 1, 0},
@@ -7543,7 +7543,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":13
+  /* "UQPyL/surrogates/mars_/_util.pyx":13
  *     return log(x) / log(2.0)
  * 
  * cpdef apply_weights_2d(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -7553,9 +7553,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_B, __pyx_n_s_weights); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_apply_weights_2d, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_apply_weights_2d, 13, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 13, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":23
+  /* "UQPyL/surrogates/mars_/_util.pyx":23
  *             B[i, j] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_slice(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
@@ -7565,9 +7565,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__10 = PyTuple_Pack(3, __pyx_n_s_B, __pyx_n_s_weights, __pyx_n_s_column); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_apply_weights_slice, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_apply_weights_slice, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 23, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":33
+  /* "UQPyL/surrogates/mars_/_util.pyx":33
  *         B[i, column] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_1d(cnp.ndarray[FLOAT_t, ndim=1] y,             # <<<<<<<<<<<<<<
@@ -7577,9 +7577,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__12 = PyTuple_Pack(2, __pyx_n_s_y, __pyx_n_s_weights); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_apply_weights_1d, 33, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_apply_weights_1d, 33, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 33, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":40
+  /* "UQPyL/surrogates/mars_/_util.pyx":40
  *         y[i] *= sqrt(weights[i])
  * 
  * cpdef FLOAT_t gcv(FLOAT_t mse, FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -7589,9 +7589,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__14 = PyTuple_Pack(4, __pyx_n_s_mse, __pyx_n_s_basis_size, __pyx_n_s_data_size, __pyx_n_s_penalty); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_gcv, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_gcv, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 40, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":44
+  /* "UQPyL/surrogates/mars_/_util.pyx":44
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  * 
  * cpdef FLOAT_t gcv_adjust(FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
@@ -7601,9 +7601,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__16 = PyTuple_Pack(3, __pyx_n_s_basis_size, __pyx_n_s_data_size, __pyx_n_s_penalty); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_gcv_adjust, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_gcv_adjust, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 44, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":50
+  /* "UQPyL/surrogates/mars_/_util.pyx":50
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )
  * 
  * cpdef str_pad(string, length):             # <<<<<<<<<<<<<<
@@ -7613,9 +7613,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__18 = PyTuple_Pack(2, __pyx_n_s_string, __pyx_n_s_length); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_str_pad, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_str_pad, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 50, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":56
+  /* "UQPyL/surrogates/mars_/_util.pyx":56
  *     return string + ' ' * pad
  * 
  * cpdef ascii_table(header, data, print_header=True, print_footer=True):             # <<<<<<<<<<<<<<
@@ -7625,7 +7625,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__20 = PyTuple_Pack(4, __pyx_n_s_header, __pyx_n_s_data, __pyx_n_s_print_header, __pyx_n_s_print_footer); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___util_pyx, __pyx_n_s_ascii_table, 56, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___util_pyx, __pyx_n_s_ascii_table, 56, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 56, __pyx_L1_error)
   __pyx_tuple__22 = PyTuple_Pack(2, Py_True, Py_True); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
@@ -7683,14 +7683,14 @@ static int __Pyx_modinit_function_export_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("log2", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_log2, "__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("apply_weights_2d", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("apply_weights_slice", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_slice, "PyObject *(PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("apply_weights_1d", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_1d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("gcv", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv, "__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("gcv_adjust", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv_adjust, "__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("str_pad", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_str_pad, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("ascii_table", (void (*)(void))__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_ascii_table, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table *__pyx_optional_args)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("log2", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_log2, "__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("apply_weights_2d", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("apply_weights_slice", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_slice, "PyObject *(PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("apply_weights_1d", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_1d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("gcv", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv, "__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("gcv_adjust", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv_adjust, "__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("str_pad", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_str_pad, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("ascii_table", (void (*)(void))__pyx_f_5UQPyL_10surrogates_5mars__5_util_ascii_table, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table *__pyx_optional_args)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -8018,14 +8018,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_UQPyL__Surrogates__Mars____util) {
+  if (__pyx_module_is_main_UQPyL__surrogates__mars____util) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "UQPyL.Surrogates.Mars_._util")) {
-      if (unlikely((PyDict_SetItemString(modules, "UQPyL.Surrogates.Mars_._util", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "UQPyL.surrogates.mars_._util")) {
+      if (unlikely((PyDict_SetItemString(modules, "UQPyL.surrogates.mars_._util", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -8046,7 +8046,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":7
+  /* "UQPyL/surrogates/mars_/_util.pyx":7
  * # cython: profile = False
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -8058,92 +8058,92 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_2) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":13
+  /* "UQPyL/surrogates/mars_/_util.pyx":13
  *     return log(x) / log(2.0)
  * 
  * cpdef apply_weights_2d(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
  *                        cnp.ndarray[FLOAT_t, ndim=1] weights):
  *     cdef INDEX_t i
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_1apply_weights_2d, 0, __pyx_n_s_apply_weights_2d, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_1apply_weights_2d, 0, __pyx_n_s_apply_weights_2d, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__9)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_apply_weights_2d, __pyx_t_2) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":23
+  /* "UQPyL/surrogates/mars_/_util.pyx":23
  *             B[i, j] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_slice(cnp.ndarray[FLOAT_t, ndim=2] B,             # <<<<<<<<<<<<<<
  *                           cnp.ndarray[FLOAT_t, ndim=1] weights,
  *                           INDEX_t column):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_3apply_weights_slice, 0, __pyx_n_s_apply_weights_slice, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_3apply_weights_slice, 0, __pyx_n_s_apply_weights_slice, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__11)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_apply_weights_slice, __pyx_t_2) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":33
+  /* "UQPyL/surrogates/mars_/_util.pyx":33
  *         B[i, column] *= sqrt(weights[i])
  * 
  * cpdef apply_weights_1d(cnp.ndarray[FLOAT_t, ndim=1] y,             # <<<<<<<<<<<<<<
  *                        cnp.ndarray[FLOAT_t, ndim=1] weights):
  *     cdef INDEX_t i
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_5apply_weights_1d, 0, __pyx_n_s_apply_weights_1d, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_5apply_weights_1d, 0, __pyx_n_s_apply_weights_1d, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_apply_weights_1d, __pyx_t_2) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":40
+  /* "UQPyL/surrogates/mars_/_util.pyx":40
  *         y[i] *= sqrt(weights[i])
  * 
  * cpdef FLOAT_t gcv(FLOAT_t mse, FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
  *                   FLOAT_t penalty):
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_7gcv, 0, __pyx_n_s_gcv, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_7gcv, 0, __pyx_n_s_gcv, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_gcv, __pyx_t_2) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":44
+  /* "UQPyL/surrogates/mars_/_util.pyx":44
  *     return mse * gcv_adjust(basis_size, data_size, penalty)
  * 
  * cpdef FLOAT_t gcv_adjust(FLOAT_t basis_size, FLOAT_t data_size,             # <<<<<<<<<<<<<<
  *                          FLOAT_t penalty):
  *     cdef FLOAT_t effective_parameters
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_9gcv_adjust, 0, __pyx_n_s_gcv_adjust, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_9gcv_adjust, 0, __pyx_n_s_gcv_adjust, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_gcv_adjust, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":50
+  /* "UQPyL/surrogates/mars_/_util.pyx":50
  *     return 1.0 / ( ( (1.0 - (effective_parameters / data_size)) ** 2 ) )
  * 
  * cpdef str_pad(string, length):             # <<<<<<<<<<<<<<
  *     if len(string) >= length:
  *         return string[0:length]
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_11str_pad, 0, __pyx_n_s_str_pad, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_11str_pad, 0, __pyx_n_s_str_pad, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_str_pad, __pyx_t_2) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":56
+  /* "UQPyL/surrogates/mars_/_util.pyx":56
  *     return string + ' ' * pad
  * 
  * cpdef ascii_table(header, data, print_header=True, print_footer=True):             # <<<<<<<<<<<<<<
  *     '''
  *     header - list of strings representing the header row
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__5_util_13ascii_table, 0, __pyx_n_s_ascii_table, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__5_util_13ascii_table, 0, __pyx_n_s_ascii_table, NULL, __pyx_n_s_UQPyL_surrogates_mars___util, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__22);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ascii_table, __pyx_t_2) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_util.pyx":1
+  /* "UQPyL/surrogates/mars_/_util.pyx":1
  * # distutils: language = c             # <<<<<<<<<<<<<<
  * # cython: cdivision = True
  * # cython: boundscheck = False
@@ -8160,7 +8160,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init UQPyL.Surrogates.Mars_._util", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init UQPyL.surrogates.mars_._util", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -8174,7 +8174,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init UQPyL.Surrogates.Mars_._util");
+    PyErr_SetString(PyExc_ImportError, "init UQPyL.surrogates.mars_._util");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

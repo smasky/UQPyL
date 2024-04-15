@@ -133,7 +133,7 @@ class ZDT3(ProblemABC):
     
     def get_PF(self):
         
-        R=self.get_optimum(100)
+        R=self.get_optimum(300)
         
         return R
 

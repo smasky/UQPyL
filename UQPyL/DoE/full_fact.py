@@ -1,44 +1,57 @@
 import numpy as np
-from typing import Literal
+from typing import Union
+from itertools import product
 
-from .sampler_ABC import Sampling
+from .sampler_ABC import Sampler
 
-class FFD(Sampling):
+class FFD(Sampler):
     '''
     Full Factorial Design
     
-    parameters:
-    levels: 2d-array 
-        the sampled number of each dimension
+    Methods:
+    __call__ or sample: Generate a Latin-hypercube design
     
-    return:
-    H: 2d-array
-    An n-by-samples design matrix between zero and one.
+    Examples:
+        >>> ffd=FFD()
+        >>> samples=ffd(3, [2,3,4]) or samples=ffd.sample(3, [2,3,4])
     '''
     
-    def __call__(self, levels:np.ndarray) -> np.ndarray:
+    def __call__(self, nx: int, levels: Union[np.ndarray, int, list]) -> np.ndarray:
         
-        return self._generate(levels)
+        return self._generate(nx, levels)
     
-    def _generate(self,levels: np.ndarray) -> np.ndarray:
+    def _generate(self, nx: int, levels: Union[np.ndarray, int, list]) -> np.ndarray:
+
+        if isinstance(levels, int):
+            levels = [levels]*nx
+        elif isinstance(levels, np.ndarray):
+            levels = levels.ravel().tolist()
         
-        levels=np.array(levels,dtype=np.int32).reshape(1,-1)
+        if len(levels)!=nx:
+            raise ValueError('The length of levels should be equal to nx or 1')
         
-        nx=levels.shape[1]
-        nt=np.prod(levels)
+        factor_levels = [np.linspace(0, 1, num=level + 1)[:level] for level in levels]
+               
+        factor_combinations = list(product(*factor_levels))
+       
+        H = np.array(factor_combinations)
         
-        H=np.zeros((nt,nx))
-        level_repeat = 1
-        range_repeat = np.prod(levels)
-        for i in range(nx):
-            range_repeat = int(range_repeat/levels[0,i])
-            lvl = []
-            for j in range(levels[0,i]):
-                lvl += [j]*level_repeat
-            rng = lvl*range_repeat
-            level_repeat *= levels[0,i]
-            H[:, i] = rng
+        return H
+    
+    def sample(self, nx: int, levels: Union[np.ndarray, int, list]) -> np.ndarray:
+        '''
+        Parameters:
+        nx: int
+            The number of input dimensions
         
-        return H/levels
+        levels: Union[np.ndarray, int, list]
+            The levels for each input dimension
+            
+        Returns:
+        H: 2d-array
+            An n-by-samples design matrix between zero and one.        
+        '''
+        
+        return self._generate(nx, levels)
         
         

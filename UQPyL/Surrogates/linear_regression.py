@@ -66,6 +66,7 @@ class LinearRegression(Surrogate):
         return self.__Y_inverse_transform__(predict_Y)
     
 ###--------------------------private functions----------------------------###
+
     def _fit_Origin(self, trainX: np.ndarray, trainY: np.ndarray):
         
         trainX_=trainX.copy()
@@ -83,7 +84,6 @@ class LinearRegression(Surrogate):
         
     def _fit_Ridge(self, trainX: np.ndarray, trainY: np.ndarray):
         
-        # w = inv(X^t X + alpha*Id) * X.T y
         trainX_=trainX.copy()
         trainY_=trainY.copy()
         
@@ -190,8 +190,6 @@ class LinearRegression(Surrogate):
         else:
             return self.coef_
         
-    
-    
 ###---------------------------Attribute----------------------------###
 
     @property

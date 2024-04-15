@@ -13,12 +13,12 @@
         "include_dirs": [
             "D:\\Anaconda3\\envs\\SCI1\\lib\\site-packages\\numpy\\core\\include"
         ],
-        "name": "UQPyL.Surrogates.Mars_._types",
+        "name": "UQPyL.surrogates.mars_._types",
         "sources": [
-            "UQPyL/Surrogates/Mars_/_types.pyx"
+            "UQPyL/surrogates/mars_/_types.pyx"
         ]
     },
-    "module_name": "UQPyL.Surrogates.Mars_._types"
+    "module_name": "UQPyL.surrogates.mars_._types"
 }
 END: Cython Metadata */
 
@@ -1203,8 +1203,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__UQPyL__Surrogates__Mars____types
-#define __PYX_HAVE_API__UQPyL__Surrogates__Mars____types
+#define __PYX_HAVE__UQPyL__surrogates__mars____types
+#define __PYX_HAVE_API__UQPyL__surrogates__mars____types
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1504,7 +1504,7 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "__init__.cython-30.pxd",
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_types.pyx",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_types.pyx",
   "type.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
@@ -1704,37 +1704,37 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "UQPyL/Surrogates/Mars_/_types.pxd":2
+/* "UQPyL/surrogates/mars_/_types.pxd":2
  * cimport numpy as cnp
  * ctypedef cnp.float64_t FLOAT_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  */
-typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t;
+typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t;
 
-/* "UQPyL/Surrogates/Mars_/_types.pxd":3
+/* "UQPyL/surrogates/mars_/_types.pxd":3
  * cimport numpy as cnp
  * ctypedef cnp.float64_t FLOAT_t
  * ctypedef cnp.int_t INT_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
+typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INT_t;
 
-/* "UQPyL/Surrogates/Mars_/_types.pxd":4
+/* "UQPyL/surrogates/mars_/_types.pxd":4
  * ctypedef cnp.float64_t FLOAT_t
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t;
+typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t;
 
-/* "UQPyL/Surrogates/Mars_/_types.pxd":5
+/* "UQPyL/surrogates/mars_/_types.pxd":5
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t             # <<<<<<<<<<<<<<
  */
-typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t;
+typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t;
 /* #### Code section: complex_type_declarations ### */
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX && (1) && (!0 || __cplusplus)
@@ -2261,14 +2261,14 @@ static CYTHON_INLINE char *__pyx_f_5numpy_7ndarray_4data_data(PyArrayObject *__p
 
 /* Module declarations from "numpy" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._types" */
+/* Module declarations from "UQPyL.surrogates.mars_._types" */
 /* #### Code section: typeinfo ### */
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "UQPyL.Surrogates.Mars_._types"
-extern int __pyx_module_is_main_UQPyL__Surrogates__Mars____types;
-int __pyx_module_is_main_UQPyL__Surrogates__Mars____types = 0;
+#define __Pyx_MODULE_NAME "UQPyL.surrogates.mars_._types"
+extern int __pyx_module_is_main_UQPyL__surrogates__mars____types;
+int __pyx_module_is_main_UQPyL__surrogates__mars____types = 0;
 
-/* Implementation of "UQPyL.Surrogates.Mars_._types" */
+/* Implementation of "UQPyL.surrogates.mars_._types" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_ImportError;
 /* #### Code section: string_decls ### */
@@ -4318,14 +4318,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_UQPyL__Surrogates__Mars____types) {
+  if (__pyx_module_is_main_UQPyL__surrogates__mars____types) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(1, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "UQPyL.Surrogates.Mars_._types")) {
-      if (unlikely((PyDict_SetItemString(modules, "UQPyL.Surrogates.Mars_._types", __pyx_m) < 0))) __PYX_ERR(1, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "UQPyL.surrogates.mars_._types")) {
+      if (unlikely((PyDict_SetItemString(modules, "UQPyL.surrogates.mars_._types", __pyx_m) < 0))) __PYX_ERR(1, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4346,7 +4346,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":1
+  /* "UQPyL/surrogates/mars_/_types.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * FLOAT = np.float64
  * INT = np.int32
@@ -4356,7 +4356,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":2
+  /* "UQPyL/surrogates/mars_/_types.pyx":2
  * import numpy as np
  * FLOAT = np.float64             # <<<<<<<<<<<<<<
  * INT = np.int32
@@ -4370,7 +4370,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_FLOAT, __pyx_t_3) < 0) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":3
+  /* "UQPyL/surrogates/mars_/_types.pyx":3
  * import numpy as np
  * FLOAT = np.float64
  * INT = np.int32             # <<<<<<<<<<<<<<
@@ -4385,7 +4385,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_INT, __pyx_t_2) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":4
+  /* "UQPyL/surrogates/mars_/_types.pyx":4
  * FLOAT = np.float64
  * INT = np.int32
  * INDEX = np.intp             # <<<<<<<<<<<<<<
@@ -4399,7 +4399,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_INDEX, __pyx_t_3) < 0) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":5
+  /* "UQPyL/surrogates/mars_/_types.pyx":5
  * INT = np.int32
  * INDEX = np.intp
  * BOOL = np.uint8             # <<<<<<<<<<<<<<
@@ -4412,7 +4412,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_BOOL, __pyx_t_2) < 0) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_types.pyx":1
+  /* "UQPyL/surrogates/mars_/_types.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * FLOAT = np.float64
  * INT = np.int32
@@ -4430,7 +4430,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init UQPyL.Surrogates.Mars_._types", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init UQPyL.surrogates.mars_._types", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -4444,7 +4444,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init UQPyL.Surrogates.Mars_._types");
+    PyErr_SetString(PyExc_ImportError, "init UQPyL.surrogates.mars_._types");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

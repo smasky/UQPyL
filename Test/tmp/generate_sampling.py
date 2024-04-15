@@ -1,6 +1,6 @@
 import sys
 sys.path.append(".")
-from UQPyL.Experiment_Design import LHS
+from UQPyL.DoE import LHS
 from UQPyL.Problems.Single_Benchmarks import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbrock, 
                          Step, Quartic, Schwefel_2_26, Rastrigin, Ackley, Griewank, 
                          Trid, Bent_Cigar, Discus, Weierstrass)

@@ -14,12 +14,12 @@
             "D:\\Anaconda3\\envs\\SCI1\\lib\\site-packages\\numpy\\core\\include"
         ],
         "language": "c",
-        "name": "UQPyL.Surrogates.Mars_._qr",
+        "name": "UQPyL.surrogates.mars_._qr",
         "sources": [
-            "UQPyL/Surrogates/Mars_/_qr.pyx"
+            "UQPyL/surrogates/mars_/_qr.pyx"
         ]
     },
-    "module_name": "UQPyL.Surrogates.Mars_._qr"
+    "module_name": "UQPyL.surrogates.mars_._qr"
 }
 END: Cython Metadata */
 
@@ -1204,8 +1204,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__UQPyL__Surrogates__Mars____qr
-#define __PYX_HAVE_API__UQPyL__Surrogates__Mars____qr
+#define __PYX_HAVE__UQPyL__surrogates__mars____qr
+#define __PYX_HAVE_API__UQPyL__surrogates__mars____qr
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1507,10 +1507,10 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_qr.pyx",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_qr.pyx",
   "<stringsource>",
   "__init__.cython-30.pxd",
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_qr.pxd",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_qr.pxd",
   "type.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
@@ -1852,7 +1852,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  */
-typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t;
+typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t;
 
 /* "_types.pxd":3
  * cimport numpy as cnp
@@ -1861,7 +1861,7 @@ typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOA
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
+typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INT_t;
 
 /* "_types.pxd":4
  * ctypedef cnp.float64_t FLOAT_t
@@ -1869,14 +1869,14 @@ typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
  * ctypedef cnp.intp_t INDEX_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t;
+typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t;
 
 /* "_types.pxd":5
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t             # <<<<<<<<<<<<<<
  */
-typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t;
+typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t;
 
 /* "scipy/linalg/cython_lapack.pxd":15
  * # The original libraries should be linked directly.
@@ -1941,8 +1941,8 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 /* #### Code section: type_declarations ### */
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder;
 struct __pyx_array_obj;
 struct __pyx_MemviewEnum_obj;
 struct __pyx_memoryview_obj;
@@ -2056,36 +2056,36 @@ typedef int __pyx_t_5scipy_6linalg_13cython_lapack_zselect1(__pyx_t_double_compl
  */
 typedef int __pyx_t_5scipy_6linalg_13cython_lapack_zselect2(__pyx_t_double_complex *, __pyx_t_double_complex *);
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":4
+/* "UQPyL/surrogates/mars_/_qr.pxd":4
  * from ._types cimport FLOAT_t, INT_t, INDEX_t, BOOL_t
  * 
  * cdef class UpdatingQT:             # <<<<<<<<<<<<<<
  *     cdef readonly int m
  *     cdef readonly int max_n
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_vtab;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_vtab;
   int m;
   int max_n;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *householder;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *householder;
   int k;
   __Pyx_memviewslice Q_t;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t zero_tol;
   __Pyx_memviewslice dependent_cols;
 };
 
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":17
+/* "UQPyL/surrogates/mars_/_qr.pxd":17
  *     cpdef void reset(UpdatingQT self)
  * 
  * cdef class Householder:             # <<<<<<<<<<<<<<
  *     cdef readonly int k
  *     cdef readonly int m
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_vtab;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_vtab;
   int k;
   int m;
   int max_n;
@@ -2094,7 +2094,7 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder {
   __Pyx_memviewslice tau;
   __Pyx_memviewslice beta;
   __Pyx_memviewslice work;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t zero_tol;
 };
 
 
@@ -2175,7 +2175,7 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":12
+/* "UQPyL/surrogates/mars_/_qr.pyx":12
  * from ._types import BOOL, FLOAT
  * 
  * cdef class UpdatingQT:             # <<<<<<<<<<<<<<
@@ -2183,16 +2183,16 @@ struct __pyx_memoryviewslice_obj {
  *                  int k, FLOAT_t[::1, :] Q_t, FLOAT_t zero_tol, BOOL_t[::1] dependent_cols):
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT {
-  void (*update_qt)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int, int __pyx_skip_dispatch);
-  void (*update)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, __Pyx_memviewslice, int __pyx_skip_dispatch);
-  void (*downdate)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch);
-  void (*reset)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT {
+  void (*update_qt)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int, int __pyx_skip_dispatch);
+  void (*update)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+  void (*downdate)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch);
+  void (*reset)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
 
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":87
+/* "UQPyL/surrogates/mars_/_qr.pyx":87
  *         self.k = 0
  * 
  * cdef class Householder:             # <<<<<<<<<<<<<<
@@ -2200,17 +2200,17 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx
  *     def __init__(Householder self, int k, int m, int max_n,
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder {
-  void (*downdate)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch);
-  void (*reset)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch);
-  int (*update_from_column)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
-  int (*update_v_t)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch);
-  void (*left_apply)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
-  void (*left_apply_transpose)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
-  void (*right_apply)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
-  void (*right_apply_transpose)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder {
+  void (*downdate)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch);
+  void (*reset)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch);
+  int (*update_from_column)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+  int (*update_v_t)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch);
+  void (*left_apply)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+  void (*left_apply_transpose)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+  void (*right_apply)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
+  void (*right_apply_transpose)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_Householder;
 
 
 /* "View.MemoryView":114
@@ -3131,8 +3131,8 @@ static int __pyx_slices_overlap(__Pyx_memviewslice *slice1,
                                 int ndim, size_t itemsize);
 
 /* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(const char *itemp, PyObject *obj);
+static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(const char *itemp, PyObject *obj);
 
 /* IsLittleEndian.proto */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void);
@@ -3158,20 +3158,20 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *, int writable_flag);
 
 /* MemviewDtypeToObject.proto */
-static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(const char *itemp);
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(const char *itemp, PyObject *obj);
+static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(const char *itemp);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(const char *itemp, PyObject *obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *, int writable_flag);
 
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
@@ -3370,18 +3370,18 @@ static CYTHON_INLINE npy_intp *__pyx_f_5numpy_7ndarray_5shape_shape(PyArrayObjec
 static CYTHON_INLINE npy_intp *__pyx_f_5numpy_7ndarray_7strides_strides(PyArrayObject *__pyx_v_self); /* proto*/
 static CYTHON_INLINE npy_intp __pyx_f_5numpy_7ndarray_4size_size(PyArrayObject *__pyx_v_self); /* proto*/
 static CYTHON_INLINE char *__pyx_f_5numpy_7ndarray_4data_data(PyArrayObject *__pyx_v_self); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_column(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c, int __pyx_skip_dispatch); /* proto*/
-static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update_qt(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_from_column(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_v_t(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from "cython.view" */
 
@@ -3407,7 +3407,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
 
 /* Module declarations from "numpy" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._types" */
+/* Module declarations from "UQPyL.surrogates.mars_._types" */
 
 /* Module declarations from "scipy.linalg.cython_lapack" */
 static void (*__pyx_f_5scipy_6linalg_13cython_lapack_dlarfb)(char *, char *, char *, char *, int *, int *, int *, __pyx_t_5scipy_6linalg_13cython_lapack_d *, int *, __pyx_t_5scipy_6linalg_13cython_lapack_d *, int *, __pyx_t_5scipy_6linalg_13cython_lapack_d *, int *, __pyx_t_5scipy_6linalg_13cython_lapack_d *, int *); /*proto*/
@@ -3419,7 +3419,7 @@ static void (*__pyx_f_5scipy_6linalg_11cython_blas_dcopy)(int *, __pyx_t_5scipy_
 
 /* Module declarations from "libc.math" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._qr" */
+/* Module declarations from "UQPyL.surrogates.mars_._qr" */
 static PyObject *__pyx_collections_abc_Sequence = 0;
 static PyObject *generic = 0;
 static PyObject *strided = 0;
@@ -3428,8 +3428,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, PyObject *); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Householder__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, PyObject *); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, PyObject *); /*proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_Householder__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_Py_ssize_t(Py_ssize_t *, Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_Py_ssize_t(Py_ssize_t *, Py_ssize_t); /*proto*/
 static int __pyx_array_allocate_buffer(struct __pyx_array_obj *); /*proto*/
@@ -3467,14 +3467,14 @@ static void __pyx_memoryview_slice_assign_scalar(__Pyx_memviewslice *, int, size
 static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize_t *, int, size_t, void *); /*proto*/
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t = { "BOOL_t", NULL, sizeof(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t), { 0 }, 0, __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t) ? 'U' : 'I', __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t = { "BOOL_t", NULL, sizeof(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t), { 0 }, 0, __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t) ? 'U' : 'I', __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t), 0 };
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "UQPyL.Surrogates.Mars_._qr"
-extern int __pyx_module_is_main_UQPyL__Surrogates__Mars____qr;
-int __pyx_module_is_main_UQPyL__Surrogates__Mars____qr = 0;
+#define __Pyx_MODULE_NAME "UQPyL.surrogates.mars_._qr"
+extern int __pyx_module_is_main_UQPyL__surrogates__mars____qr;
+int __pyx_module_is_main_UQPyL__surrogates__mars____qr = 0;
 
-/* Implementation of "UQPyL.Surrogates.Mars_._qr" */
+/* Implementation of "UQPyL.surrogates.mars_._qr" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_print;
 static PyObject *__pyx_builtin_range;
@@ -3641,7 +3641,7 @@ static const char __pyx_k_pyx_unpickle_UpdatingQT[] = "__pyx_unpickle_UpdatingQT
 static const char __pyx_k_pyx_unpickle_Householder[] = "__pyx_unpickle_Householder";
 static const char __pyx_k_Dimension_d_is_not_direct[] = "Dimension %d is not direct";
 static const char __pyx_k_Index_out_of_bounds_axis_d[] = "Index out of bounds (axis %d)";
-static const char __pyx_k_UQPyL_Surrogates_Mars___qr[] = "UQPyL.Surrogates.Mars_._qr";
+static const char __pyx_k_UQPyL_surrogates_mars___qr[] = "UQPyL.surrogates.mars_._qr";
 static const char __pyx_k_UpdatingQT___reduce_cython[] = "UpdatingQT.__reduce_cython__";
 static const char __pyx_k_Householder___reduce_cython[] = "Householder.__reduce_cython__";
 static const char __pyx_k_Step_may_not_be_zero_axis_d[] = "Step may not be zero (axis %d)";
@@ -3650,7 +3650,7 @@ static const char __pyx_k_UpdatingQT___setstate_cython[] = "UpdatingQT.__setstat
 static const char __pyx_k_Householder___setstate_cython[] = "Householder.__setstate_cython__";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_Householder_update_from_column[] = "Householder.update_from_column";
-static const char __pyx_k_UQPyL_Surrogates_Mars___qr_pyx[] = "UQPyL\\Surrogates\\Mars_\\_qr.pyx";
+static const char __pyx_k_UQPyL_surrogates_mars___qr_pyx[] = "UQPyL\\surrogates\\mars_\\_qr.pyx";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_All_dimensions_preceding_dimensi[] = "All dimensions preceding dimension %d must be indexed and not sliced";
@@ -3715,46 +3715,46 @@ static void __pyx_memoryviewslice___pyx_pf_15View_dot_MemoryView_16_memoryviewsl
 static PyObject *__pyx_pf___pyx_memoryviewslice___reduce_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf___pyx_memoryviewslice_2__setstate_cython__(CYTHON_UNUSED struct __pyx_memoryviewslice_obj *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_m, int __pyx_v_max_n, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_householder, int __pyx_v_k, __Pyx_memviewslice __pyx_v_Q_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol, __Pyx_memviewslice __pyx_v_dependent_cols); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_qt(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_v_k, int __pyx_v_m, int __pyx_v_max_n, __Pyx_memviewslice __pyx_v_V, __Pyx_memviewslice __pyx_v_T, __Pyx_memviewslice __pyx_v_tau, __Pyx_memviewslice __pyx_v_beta, __Pyx_memviewslice __pyx_v_work, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_from_column(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update_v_t(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Householder(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static int __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_m, int __pyx_v_max_n, struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_householder, int __pyx_v_k, __Pyx_memviewslice __pyx_v_Q_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol, __Pyx_memviewslice __pyx_v_dependent_cols); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_4update_qt(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_6update(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_10reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_12__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_v_k, int __pyx_v_m, int __pyx_v_max_n, __Pyx_memviewslice __pyx_v_V, __Pyx_memviewslice __pyx_v_T, __Pyx_memviewslice __pyx_v_tau, __Pyx_memviewslice __pyx_v_beta, __Pyx_memviewslice __pyx_v_work, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_6reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8update_from_column(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_10update_v_t(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_12left_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_14left_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_16right_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_18right_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_20__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_22__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_2__pyx_unpickle_Householder(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_Householder(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_array(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_Enum(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_memoryview(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3835,15 +3835,15 @@ typedef struct {
   #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
-  PyObject *__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
-  PyObject *__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+  PyObject *__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
+  PyObject *__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder;
   PyObject *__pyx_type___pyx_array;
   PyObject *__pyx_type___pyx_MemviewEnum;
   PyObject *__pyx_type___pyx_memoryview;
   PyObject *__pyx_type___pyx_memoryviewslice;
   #endif
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder;
   PyTypeObject *__pyx_array_type;
   PyTypeObject *__pyx_MemviewEnum_type;
   PyTypeObject *__pyx_memoryview_type;
@@ -3897,8 +3897,8 @@ typedef struct {
   PyObject *__pyx_kp_s_Step_may_not_be_zero_axis_d;
   PyObject *__pyx_n_s_T;
   PyObject *__pyx_n_s_TypeError;
-  PyObject *__pyx_n_s_UQPyL_Surrogates_Mars___qr;
-  PyObject *__pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx;
+  PyObject *__pyx_n_s_UQPyL_surrogates_mars___qr;
+  PyObject *__pyx_kp_s_UQPyL_surrogates_mars___qr_pyx;
   PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
   PyObject *__pyx_n_s_UpdatingQT;
   PyObject *__pyx_n_s_UpdatingQT___reduce_cython;
@@ -4152,10 +4152,10 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_flexible);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_character);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_ufunc);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
-  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
-  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
+  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
+  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder);
   Py_CLEAR(clear_module_state->__pyx_array_type);
   Py_CLEAR(clear_module_state->__pyx_type___pyx_array);
   Py_CLEAR(clear_module_state->__pyx_MemviewEnum_type);
@@ -4213,8 +4213,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_Step_may_not_be_zero_axis_d);
   Py_CLEAR(clear_module_state->__pyx_n_s_T);
   Py_CLEAR(clear_module_state->__pyx_n_s_TypeError);
-  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___qr);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx);
+  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_surrogates_mars___qr);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_surrogates_mars___qr_pyx);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Unable_to_convert_item_to_object);
   Py_CLEAR(clear_module_state->__pyx_n_s_UpdatingQT);
   Py_CLEAR(clear_module_state->__pyx_n_s_UpdatingQT___reduce_cython);
@@ -4446,10 +4446,10 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_flexible);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_character);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_ufunc);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
-  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
-  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
+  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
+  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder);
   Py_VISIT(traverse_module_state->__pyx_array_type);
   Py_VISIT(traverse_module_state->__pyx_type___pyx_array);
   Py_VISIT(traverse_module_state->__pyx_MemviewEnum_type);
@@ -4507,8 +4507,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_Step_may_not_be_zero_axis_d);
   Py_VISIT(traverse_module_state->__pyx_n_s_T);
   Py_VISIT(traverse_module_state->__pyx_n_s_TypeError);
-  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___qr);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx);
+  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_surrogates_mars___qr);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_surrogates_mars___qr_pyx);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Unable_to_convert_item_to_object);
   Py_VISIT(traverse_module_state->__pyx_n_s_UpdatingQT);
   Py_VISIT(traverse_module_state->__pyx_n_s_UpdatingQT___reduce_cython);
@@ -4781,15 +4781,15 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
-#define __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT __pyx_mstate_global->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT
-#define __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder __pyx_mstate_global->__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder
+#define __pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT __pyx_mstate_global->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT
+#define __pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder __pyx_mstate_global->__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder
 #define __pyx_type___pyx_array __pyx_mstate_global->__pyx_type___pyx_array
 #define __pyx_type___pyx_MemviewEnum __pyx_mstate_global->__pyx_type___pyx_MemviewEnum
 #define __pyx_type___pyx_memoryview __pyx_mstate_global->__pyx_type___pyx_memoryview
 #define __pyx_type___pyx_memoryviewslice __pyx_mstate_global->__pyx_type___pyx_memoryviewslice
 #endif
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder
 #define __pyx_array_type __pyx_mstate_global->__pyx_array_type
 #define __pyx_MemviewEnum_type __pyx_mstate_global->__pyx_MemviewEnum_type
 #define __pyx_memoryview_type __pyx_mstate_global->__pyx_memoryview_type
@@ -4843,8 +4843,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_Step_may_not_be_zero_axis_d __pyx_mstate_global->__pyx_kp_s_Step_may_not_be_zero_axis_d
 #define __pyx_n_s_T __pyx_mstate_global->__pyx_n_s_T
 #define __pyx_n_s_TypeError __pyx_mstate_global->__pyx_n_s_TypeError
-#define __pyx_n_s_UQPyL_Surrogates_Mars___qr __pyx_mstate_global->__pyx_n_s_UQPyL_Surrogates_Mars___qr
-#define __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx __pyx_mstate_global->__pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx
+#define __pyx_n_s_UQPyL_surrogates_mars___qr __pyx_mstate_global->__pyx_n_s_UQPyL_surrogates_mars___qr
+#define __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx __pyx_mstate_global->__pyx_kp_s_UQPyL_surrogates_mars___qr_pyx
 #define __pyx_kp_s_Unable_to_convert_item_to_object __pyx_mstate_global->__pyx_kp_s_Unable_to_convert_item_to_object
 #define __pyx_n_s_UpdatingQT __pyx_mstate_global->__pyx_n_s_UpdatingQT
 #define __pyx_n_s_UpdatingQT___reduce_cython __pyx_mstate_global->__pyx_n_s_UpdatingQT___reduce_cython
@@ -20141,7 +20141,7 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":13
+/* "UQPyL/surrogates/mars_/_qr.pyx":13
  * 
  * cdef class UpdatingQT:
  *     def __init__(UpdatingQT self, int m, int max_n, Householder householder,             # <<<<<<<<<<<<<<
@@ -20150,14 +20150,14 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
  */
 
 /* Python wrapper */
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_m;
   int __pyx_v_max_n;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_householder = 0;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_householder = 0;
   int __pyx_v_k;
   __Pyx_memviewslice __pyx_v_Q_t = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol;
   __Pyx_memviewslice __pyx_v_dependent_cols = { 0, 0, { 0 }, { 0 }, { 0 } };
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
@@ -20283,11 +20283,11 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__(PyObj
     }
     __pyx_v_m = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_m == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
     __pyx_v_max_n = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_max_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 13, __pyx_L3_error)
-    __pyx_v_householder = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)values[2]);
+    __pyx_v_householder = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)values[2]);
     __pyx_v_k = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
-    __pyx_v_Q_t = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Q_t.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
+    __pyx_v_Q_t = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_Q_t.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
     __pyx_v_zero_tol = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_zero_tol == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 14, __pyx_L3_error)
-    __pyx_v_dependent_cols = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_dependent_cols.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
+    __pyx_v_dependent_cols = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_dependent_cols.memview)) __PYX_ERR(0, 14, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -20303,12 +20303,12 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__(PyObj
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_Q_t, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_dependent_cols, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_householder), __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, 1, "householder", 0))) __PYX_ERR(0, 13, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_m, __pyx_v_max_n, __pyx_v_householder, __pyx_v_k, __pyx_v_Q_t, __pyx_v_zero_tol, __pyx_v_dependent_cols);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_householder), __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, 1, "householder", 0))) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT___init__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_m, __pyx_v_max_n, __pyx_v_householder, __pyx_v_k, __pyx_v_Q_t, __pyx_v_zero_tol, __pyx_v_dependent_cols);
 
   /* function exit code */
   goto __pyx_L0;
@@ -20327,12 +20327,12 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__(PyObj
   return __pyx_r;
 }
 
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_m, int __pyx_v_max_n, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_householder, int __pyx_v_k, __Pyx_memviewslice __pyx_v_Q_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol, __Pyx_memviewslice __pyx_v_dependent_cols) {
+static int __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_m, int __pyx_v_max_n, struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_householder, int __pyx_v_k, __Pyx_memviewslice __pyx_v_Q_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol, __Pyx_memviewslice __pyx_v_dependent_cols) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":15
+  /* "UQPyL/surrogates/mars_/_qr.pyx":15
  *     def __init__(UpdatingQT self, int m, int max_n, Householder householder,
  *                  int k, FLOAT_t[::1, :] Q_t, FLOAT_t zero_tol, BOOL_t[::1] dependent_cols):
  *         self.m = m             # <<<<<<<<<<<<<<
@@ -20341,7 +20341,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
  */
   __pyx_v_self->m = __pyx_v_m;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":16
+  /* "UQPyL/surrogates/mars_/_qr.pyx":16
  *                  int k, FLOAT_t[::1, :] Q_t, FLOAT_t zero_tol, BOOL_t[::1] dependent_cols):
  *         self.m = m
  *         self.max_n = max_n             # <<<<<<<<<<<<<<
@@ -20350,7 +20350,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
  */
   __pyx_v_self->max_n = __pyx_v_max_n;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":17
+  /* "UQPyL/surrogates/mars_/_qr.pyx":17
  *         self.m = m
  *         self.max_n = max_n
  *         self.householder = householder             # <<<<<<<<<<<<<<
@@ -20363,7 +20363,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
   __Pyx_DECREF((PyObject *)__pyx_v_self->householder);
   __pyx_v_self->householder = __pyx_v_householder;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":18
+  /* "UQPyL/surrogates/mars_/_qr.pyx":18
  *         self.max_n = max_n
  *         self.householder = householder
  *         self.k = k             # <<<<<<<<<<<<<<
@@ -20372,7 +20372,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
  */
   __pyx_v_self->k = __pyx_v_k;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":19
+  /* "UQPyL/surrogates/mars_/_qr.pyx":19
  *         self.householder = householder
  *         self.k = k
  *         self.Q_t = Q_t             # <<<<<<<<<<<<<<
@@ -20383,7 +20383,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
   __PYX_INC_MEMVIEW(&__pyx_v_Q_t, 1);
   __pyx_v_self->Q_t = __pyx_v_Q_t;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":20
+  /* "UQPyL/surrogates/mars_/_qr.pyx":20
  *         self.k = k
  *         self.Q_t = Q_t
  *         self.zero_tol = zero_tol             # <<<<<<<<<<<<<<
@@ -20392,7 +20392,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
  */
   __pyx_v_self->zero_tol = __pyx_v_zero_tol;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":21
+  /* "UQPyL/surrogates/mars_/_qr.pyx":21
  *         self.Q_t = Q_t
  *         self.zero_tol = zero_tol
  *         self.dependent_cols = dependent_cols             # <<<<<<<<<<<<<<
@@ -20403,7 +20403,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
   __PYX_INC_MEMVIEW(&__pyx_v_dependent_cols, 1);
   __pyx_v_self->dependent_cols = __pyx_v_dependent_cols;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":13
+  /* "UQPyL/surrogates/mars_/_qr.pyx":13
  * 
  * cdef class UpdatingQT:
  *     def __init__(UpdatingQT self, int m, int max_n, Householder householder,             # <<<<<<<<<<<<<<
@@ -20417,7 +20417,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":23
+/* "UQPyL/surrogates/mars_/_qr.pyx":23
  *         self.dependent_cols = dependent_cols
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -20426,15 +20426,15 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT___init__(struct
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc(PyObject *__pyx_v_cls, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc(PyObject *__pyx_v_cls, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc = {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc(PyObject *__pyx_v_cls, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc = {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc(PyObject *__pyx_v_cls, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -20443,7 +20443,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ) {
   int __pyx_v_m;
   int __pyx_v_max_n;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -20534,11 +20534,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(((PyTypeObject*)__pyx_v_cls), __pyx_v_m, __pyx_v_max_n, __pyx_v_zero_tol);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_2alloc(((PyTypeObject*)__pyx_v_cls), __pyx_v_m, __pyx_v_max_n, __pyx_v_zero_tol);
 
   /* function exit code */
   {
@@ -20551,8 +20551,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_householder = 0;
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_householder = 0;
   __Pyx_memviewslice __pyx_v_Q_t = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_dependent_cols = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_r = NULL;
@@ -20571,14 +20571,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("alloc", 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":25
+  /* "UQPyL/surrogates/mars_/_qr.pyx":25
  *     @classmethod
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef Householder householder = Householder.alloc(m, max_n, zero_tol)             # <<<<<<<<<<<<<<
  *         cdef FLOAT_t[::1, :] Q_t = np.empty(shape=(max_n, m), dtype=FLOAT, order='F')
  *         cdef BOOL_t[::1] dependent_cols = np.empty(shape=max_n, dtype=BOOL, order='F')
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder), __pyx_n_s_alloc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder), __pyx_n_s_alloc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_m); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -20611,11 +20611,11 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder))))) __PYX_ERR(0, 25, __pyx_L1_error)
-  __pyx_v_householder = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_t_1);
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder))))) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_v_householder = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":26
+  /* "UQPyL/surrogates/mars_/_qr.pyx":26
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef Householder householder = Householder.alloc(m, max_n, zero_tol)
  *         cdef FLOAT_t[::1, :] Q_t = np.empty(shape=(max_n, m), dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -20652,13 +20652,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_Q_t = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":27
+  /* "UQPyL/surrogates/mars_/_qr.pyx":27
  *         cdef Householder householder = Householder.alloc(m, max_n, zero_tol)
  *         cdef FLOAT_t[::1, :] Q_t = np.empty(shape=(max_n, m), dtype=FLOAT, order='F')
  *         cdef BOOL_t[::1] dependent_cols = np.empty(shape=max_n, dtype=BOOL, order='F')             # <<<<<<<<<<<<<<
@@ -20685,13 +20685,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_dependent_cols = __pyx_t_9;
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":28
+  /* "UQPyL/surrogates/mars_/_qr.pyx":28
  *         cdef FLOAT_t[::1, :] Q_t = np.empty(shape=(max_n, m), dtype=FLOAT, order='F')
  *         cdef BOOL_t[::1] dependent_cols = np.empty(shape=max_n, dtype=BOOL, order='F')
  *         return cls(m, max_n, householder, 0, Q_t, zero_tol, dependent_cols)             # <<<<<<<<<<<<<<
@@ -20703,11 +20703,11 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_max_n); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = PyFloat_FromDouble(__pyx_v_zero_tol); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = PyTuple_New(7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
@@ -20739,7 +20739,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":23
+  /* "UQPyL/surrogates/mars_/_qr.pyx":23
  *         self.dependent_cols = dependent_cols
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -20757,7 +20757,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   __Pyx_XDECREF(__pyx_t_6);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_8, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_householder);
@@ -20768,7 +20768,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":30
+/* "UQPyL/surrogates/mars_/_qr.pyx":30
  *         return cls(m, max_n, householder, 0, Q_t, zero_tol, dependent_cols)
  * 
  *     cpdef void update_qt(UpdatingQT self, bint dependent):             # <<<<<<<<<<<<<<
@@ -20776,18 +20776,18 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_2alloc(Py
  *         # accordingly
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent, int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero;
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update_qt(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent, int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero;
   int __pyx_v_zero_int;
   int __pyx_v_N;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_y;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_y;
   int __pyx_v_incy;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -20815,7 +20815,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_qt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt)) {
         __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_dependent); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 30, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
@@ -20859,7 +20859,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":35
+  /* "UQPyL/surrogates/mars_/_qr.pyx":35
  * 
  *         # Zero out the new row of Q_t
  *         cdef FLOAT_t zero = 0.             # <<<<<<<<<<<<<<
@@ -20868,7 +20868,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
  */
   __pyx_v_zero = 0.;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":36
+  /* "UQPyL/surrogates/mars_/_qr.pyx":36
  *         # Zero out the new row of Q_t
  *         cdef FLOAT_t zero = 0.
  *         cdef int zero_int = 0             # <<<<<<<<<<<<<<
@@ -20877,7 +20877,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
  */
   __pyx_v_zero_int = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":37
+  /* "UQPyL/surrogates/mars_/_qr.pyx":37
  *         cdef FLOAT_t zero = 0.
  *         cdef int zero_int = 0
  *         cdef int N = self.m             # <<<<<<<<<<<<<<
@@ -20887,7 +20887,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_N = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":38
+  /* "UQPyL/surrogates/mars_/_qr.pyx":38
  *         cdef int zero_int = 0
  *         cdef int N = self.m
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.Q_t[self.k, 0])             # <<<<<<<<<<<<<<
@@ -20897,9 +20897,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
   if (unlikely(!__pyx_v_self->Q_t.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 38, __pyx_L1_error)}
   __pyx_t_7 = __pyx_v_self->k;
   __pyx_t_8 = 0;
-  __pyx_v_y = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->Q_t.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->Q_t.strides[1]) )))));
+  __pyx_v_y = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->Q_t.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->Q_t.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":39
+  /* "UQPyL/surrogates/mars_/_qr.pyx":39
  *         cdef int N = self.m
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.Q_t[self.k, 0])
  *         cdef int incy = self.max_n             # <<<<<<<<<<<<<<
@@ -20909,7 +20909,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
   __pyx_t_6 = __pyx_v_self->max_n;
   __pyx_v_incy = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":40
+  /* "UQPyL/surrogates/mars_/_qr.pyx":40
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.Q_t[self.k, 0])
  *         cdef int incy = self.max_n
  *         dcopy(&N, &zero, &zero_int, y, &incy)             # <<<<<<<<<<<<<<
@@ -20918,7 +20918,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
  */
   __pyx_f_5scipy_6linalg_11cython_blas_dcopy((&__pyx_v_N), (&__pyx_v_zero), (&__pyx_v_zero_int), __pyx_v_y, (&__pyx_v_incy)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":42
+  /* "UQPyL/surrogates/mars_/_qr.pyx":42
  *         dcopy(&N, &zero, &zero_int, y, &incy)
  * 
  *         if not dependent:             # <<<<<<<<<<<<<<
@@ -20928,7 +20928,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
   __pyx_t_9 = (!__pyx_v_dependent);
   if (__pyx_t_9) {
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":47
+    /* "UQPyL/surrogates/mars_/_qr.pyx":47
  *             # In general self.householder.k <= self.k + 1.
  *             # They are not necessarily equal.
  *             self.Q_t[self.k, self.householder.k - 1] = 1.             # <<<<<<<<<<<<<<
@@ -20938,9 +20938,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(struc
     if (unlikely(!__pyx_v_self->Q_t.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 47, __pyx_L1_error)}
     __pyx_t_8 = __pyx_v_self->k;
     __pyx_t_7 = (__pyx_v_self->householder->k - 1);
-    *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->Q_t.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->Q_t.strides[1]) )) = 1.;
+    *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->Q_t.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->Q_t.strides[1]) )) = 1.;
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":50
+    /* "UQPyL/surrogates/mars_/_qr.pyx":50
  * 
  *             # Apply the householder transformation
  *             self.householder.right_apply_transpose(self.Q_t[self.k:self.k+1, :])             # <<<<<<<<<<<<<<
@@ -20973,11 +20973,11 @@ __pyx_t_10.shape[1] = __pyx_v_self->Q_t.shape[1];
 __pyx_t_10.strides[1] = __pyx_v_self->Q_t.strides[1];
     __pyx_t_10.suboffsets[1] = -1;
 
-((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->right_apply_transpose(__pyx_v_self->householder, __pyx_t_10, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
+((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->right_apply_transpose(__pyx_v_self->householder, __pyx_t_10, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L1_error)
     __PYX_XCLEAR_MEMVIEW(&__pyx_t_10, 1);
     __pyx_t_10.memview = NULL; __pyx_t_10.data = NULL;
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":42
+    /* "UQPyL/surrogates/mars_/_qr.pyx":42
  *         dcopy(&N, &zero, &zero_int, y, &incy)
  * 
  *         if not dependent:             # <<<<<<<<<<<<<<
@@ -20986,7 +20986,7 @@ __pyx_t_10.strides[1] = __pyx_v_self->Q_t.strides[1];
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":52
+  /* "UQPyL/surrogates/mars_/_qr.pyx":52
  *             self.householder.right_apply_transpose(self.Q_t[self.k:self.k+1, :])
  * 
  *         self.k += 1             # <<<<<<<<<<<<<<
@@ -20995,7 +20995,7 @@ __pyx_t_10.strides[1] = __pyx_v_self->Q_t.strides[1];
  */
   __pyx_v_self->k = (__pyx_v_self->k + 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":30
+  /* "UQPyL/surrogates/mars_/_qr.pyx":30
  *         return cls(m, max_n, householder, 0, Q_t, zero_tol, dependent_cols)
  * 
  *     cpdef void update_qt(UpdatingQT self, bint dependent):             # <<<<<<<<<<<<<<
@@ -21012,21 +21012,21 @@ __pyx_t_10.strides[1] = __pyx_v_self->Q_t.strides[1];
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_10, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt = {"update_qt", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt = {"update_qt", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -21096,11 +21096,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_qt(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_dependent);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_4update_qt(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_dependent);
 
   /* function exit code */
   {
@@ -21113,7 +21113,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_qt(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_4update_qt(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_v_dependent) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21122,7 +21122,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_q
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_qt", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt(__pyx_v_self, __pyx_v_dependent, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update_qt(__pyx_v_self, __pyx_v_dependent, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -21132,7 +21132,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_q
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update_qt", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21140,7 +21140,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_q
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":55
+/* "UQPyL/surrogates/mars_/_qr.pyx":55
  * 
  * 
  *     cpdef void update(UpdatingQT self, FLOAT_t[:] x):             # <<<<<<<<<<<<<<
@@ -21148,14 +21148,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_4update_q
  *         # update_qt
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x, int __pyx_skip_dispatch) {
   int __pyx_v_dependent;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21181,9 +21181,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct _
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update)) {
         if (unlikely(!__pyx_v_x.memview)) { __Pyx_RaiseUnboundLocalError("x"); __PYX_ERR(0, 55, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_x, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_x, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -21226,17 +21226,17 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct _
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":62
+  /* "UQPyL/surrogates/mars_/_qr.pyx":62
  *         # ones (within numerical precision specified by zero_tol).
  *         cdef bint dependent
  *         dependent = self.householder.update_from_column(x)             # <<<<<<<<<<<<<<
  * 
  *         # Mark the column as independent or dependent.  This information will be needed if the
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->update_from_column(__pyx_v_self->householder, __pyx_v_x, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->update_from_column(__pyx_v_self->householder, __pyx_v_x, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
   __pyx_v_dependent = __pyx_t_7;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":66
+  /* "UQPyL/surrogates/mars_/_qr.pyx":66
  *         # Mark the column as independent or dependent.  This information will be needed if the
  *         # column is ever downdated, since we then need to not downdate householder
  *         self.dependent_cols[self.k] = dependent             # <<<<<<<<<<<<<<
@@ -21245,18 +21245,18 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct _
  */
   if (unlikely(!__pyx_v_self->dependent_cols.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 66, __pyx_L1_error)}
   __pyx_t_8 = __pyx_v_self->k;
-  *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) __pyx_v_self->dependent_cols.data) + __pyx_t_8)) )) = __pyx_v_dependent;
+  *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) __pyx_v_self->dependent_cols.data) + __pyx_t_8)) )) = __pyx_v_dependent;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":74
+  /* "UQPyL/surrogates/mars_/_qr.pyx":74
  *         # of Q_t.  The update_qt method takes care of adding the zeros if dependent. Note this means
  *         # that in general self.householder.k <= self.k.  They are not necessarily equal.
  *         self.update_qt(dependent)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self->__pyx_vtab)->update_qt(__pyx_v_self, __pyx_v_dependent, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self->__pyx_vtab)->update_qt(__pyx_v_self, __pyx_v_dependent, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":55
+  /* "UQPyL/surrogates/mars_/_qr.pyx":55
  * 
  * 
  *     cpdef void update(UpdatingQT self, FLOAT_t[:] x):             # <<<<<<<<<<<<<<
@@ -21272,21 +21272,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(struct _
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update = {"update", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update = {"update", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -21342,7 +21342,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_x = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x.memview)) __PYX_ERR(0, 55, __pyx_L3_error)
+    __pyx_v_x = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_x.memview)) __PYX_ERR(0, 55, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -21357,11 +21357,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_x, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_x);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_6update(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v_x);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_x, 1);
@@ -21375,7 +21375,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_6update(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, __Pyx_memviewslice __pyx_v_x) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21385,7 +21385,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(s
   __Pyx_RefNannySetupContext("update", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_x.memview)) { __Pyx_RaiseUnboundLocalError("x"); __PYX_ERR(0, 55, __pyx_L1_error) }
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update(__pyx_v_self, __pyx_v_x, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update(__pyx_v_self, __pyx_v_x, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 55, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -21395,7 +21395,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.update", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21403,7 +21403,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(s
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":78
+/* "UQPyL/surrogates/mars_/_qr.pyx":78
  * 
  * 
  *     cpdef void downdate(UpdatingQT self):             # <<<<<<<<<<<<<<
@@ -21411,14 +21411,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_6update(s
  *         if not self.dependent_cols[self.k]:
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch) {
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -21442,7 +21442,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_downdate); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -21483,7 +21483,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":79
+  /* "UQPyL/surrogates/mars_/_qr.pyx":79
  * 
  *     cpdef void downdate(UpdatingQT self):
  *         self.k -= 1             # <<<<<<<<<<<<<<
@@ -21492,7 +21492,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
  */
   __pyx_v_self->k = (__pyx_v_self->k - 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":80
+  /* "UQPyL/surrogates/mars_/_qr.pyx":80
  *     cpdef void downdate(UpdatingQT self):
  *         self.k -= 1
  *         if not self.dependent_cols[self.k]:             # <<<<<<<<<<<<<<
@@ -21501,19 +21501,19 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
  */
   if (unlikely(!__pyx_v_self->dependent_cols.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 80, __pyx_L1_error)}
   __pyx_t_6 = __pyx_v_self->k;
-  __pyx_t_7 = (!((*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) __pyx_v_self->dependent_cols.data) + __pyx_t_6)) ))) != 0));
+  __pyx_t_7 = (!((*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) __pyx_v_self->dependent_cols.data) + __pyx_t_6)) ))) != 0));
   if (__pyx_t_7) {
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":81
+    /* "UQPyL/surrogates/mars_/_qr.pyx":81
  *         self.k -= 1
  *         if not self.dependent_cols[self.k]:
  *             self.householder.downdate()             # <<<<<<<<<<<<<<
  * 
  *     cpdef void reset(UpdatingQT self):
  */
-    ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->downdate(__pyx_v_self->householder, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->downdate(__pyx_v_self->householder, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":80
+    /* "UQPyL/surrogates/mars_/_qr.pyx":80
  *     cpdef void downdate(UpdatingQT self):
  *         self.k -= 1
  *         if not self.dependent_cols[self.k]:             # <<<<<<<<<<<<<<
@@ -21522,7 +21522,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":78
+  /* "UQPyL/surrogates/mars_/_qr.pyx":78
  * 
  * 
  *     cpdef void downdate(UpdatingQT self):             # <<<<<<<<<<<<<<
@@ -21537,21 +21537,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(struct
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate = {"downdate", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate = {"downdate", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -21576,14 +21576,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("downdate", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "downdate", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8downdate(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21592,7 +21592,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("downdate", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_downdate(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -21602,7 +21602,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21610,7 +21610,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":83
+/* "UQPyL/surrogates/mars_/_qr.pyx":83
  *             self.householder.downdate()
  * 
  *     cpdef void reset(UpdatingQT self):             # <<<<<<<<<<<<<<
@@ -21618,14 +21618,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8downdate
  *         self.k = 0
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, int __pyx_skip_dispatch) {
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -21647,7 +21647,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -21688,16 +21688,16 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":84
+  /* "UQPyL/surrogates/mars_/_qr.pyx":84
  * 
  *     cpdef void reset(UpdatingQT self):
  *         self.householder.reset()             # <<<<<<<<<<<<<<
  *         self.k = 0
  * 
  */
-  ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->reset(__pyx_v_self->householder, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->householder->__pyx_vtab)->reset(__pyx_v_self->householder, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":85
+  /* "UQPyL/surrogates/mars_/_qr.pyx":85
  *     cpdef void reset(UpdatingQT self):
  *         self.householder.reset()
  *         self.k = 0             # <<<<<<<<<<<<<<
@@ -21706,7 +21706,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __
  */
   __pyx_v_self->k = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":83
+  /* "UQPyL/surrogates/mars_/_qr.pyx":83
  *             self.householder.downdate()
  * 
  *     cpdef void reset(UpdatingQT self):             # <<<<<<<<<<<<<<
@@ -21721,21 +21721,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(struct __
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -21760,14 +21760,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("reset", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "reset", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_10reset(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_10reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21776,7 +21776,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reset", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_reset(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -21786,7 +21786,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21794,7 +21794,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(s
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":5
+/* "UQPyL/surrogates/mars_/_qr.pxd":5
  * 
  * cdef class UpdatingQT:
  *     cdef readonly int m             # <<<<<<<<<<<<<<
@@ -21803,21 +21803,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_10reset(s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21835,7 +21835,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.m.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.m.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21843,7 +21843,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":6
+/* "UQPyL/surrogates/mars_/_qr.pxd":6
  * cdef class UpdatingQT:
  *     cdef readonly int m
  *     cdef readonly int max_n             # <<<<<<<<<<<<<<
@@ -21852,21 +21852,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m___get_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21884,7 +21884,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.max_n.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.max_n.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21892,7 +21892,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":7
+/* "UQPyL/surrogates/mars_/_qr.pxd":7
  *     cdef readonly int m
  *     cdef readonly int max_n
  *     cdef readonly Householder householder             # <<<<<<<<<<<<<<
@@ -21901,21 +21901,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 1);
@@ -21931,7 +21931,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11househo
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":8
+/* "UQPyL/surrogates/mars_/_qr.pxd":8
  *     cdef readonly int max_n
  *     cdef readonly Householder householder
  *     cdef readonly int k             # <<<<<<<<<<<<<<
@@ -21940,21 +21940,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11househo
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21972,7 +21972,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.k.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.k.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -21980,7 +21980,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":9
+/* "UQPyL/surrogates/mars_/_qr.pxd":9
  *     cdef readonly Householder householder
  *     cdef readonly int k
  *     cdef readonly FLOAT_t[::1, :] Q_t             # <<<<<<<<<<<<<<
@@ -21989,21 +21989,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k___get_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -22013,7 +22013,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___ge
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->Q_t.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 9, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 9, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22022,7 +22022,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___ge
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.Q_t.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.Q_t.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -22030,7 +22030,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___ge
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":10
+/* "UQPyL/surrogates/mars_/_qr.pxd":10
  *     cdef readonly int k
  *     cdef readonly FLOAT_t[::1, :] Q_t
  *     cdef readonly FLOAT_t zero_tol             # <<<<<<<<<<<<<<
@@ -22039,21 +22039,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t___ge
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -22071,7 +22071,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.zero_tol.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.zero_tol.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -22079,7 +22079,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":11
+/* "UQPyL/surrogates/mars_/_qr.pxd":11
  *     cdef readonly FLOAT_t[::1, :] Q_t
  *     cdef readonly FLOAT_t zero_tol
  *     cdef readonly BOOL_t[::1] dependent_cols             # <<<<<<<<<<<<<<
@@ -22088,21 +22088,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -22112,7 +22112,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14depende
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->dependent_cols.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 11, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 11, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -22121,7 +22121,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14depende
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.dependent_cols.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.dependent_cols.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -22136,15 +22136,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14depende
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -22169,14 +22169,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduce_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_12__reduce_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_12__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -22203,10 +22203,10 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduc
  *     if _dict is not None:
  */
   if (unlikely(!__pyx_v_self->Q_t.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->Q_t, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(!__pyx_v_self->dependent_cols.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->dependent_cols, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->k); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -22418,7 +22418,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduc
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -22436,15 +22436,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_12__reduc
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -22514,11 +22514,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setstate_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14__setstate_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -22531,7 +22531,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -22546,7 +22546,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setst
  *     __pyx_unpickle_UpdatingQT__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -22562,7 +22562,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setst
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.UpdatingQT.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.UpdatingQT.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -22570,7 +22570,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setst
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":89
+/* "UQPyL/surrogates/mars_/_qr.pyx":89
  * cdef class Householder:
  * 
  *     def __init__(Householder self, int k, int m, int max_n,             # <<<<<<<<<<<<<<
@@ -22579,8 +22579,8 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14__setst
  */
 
 /* Python wrapper */
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_k;
   int __pyx_v_m;
   int __pyx_v_max_n;
@@ -22589,7 +22589,7 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyOb
   __Pyx_memviewslice __pyx_v_tau = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_beta = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_work = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol;
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject* values[9] = {0,0,0,0,0,0,0,0,0};
@@ -22741,11 +22741,11 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyOb
     __pyx_v_k = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_k == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L3_error)
     __pyx_v_m = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_m == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L3_error)
     __pyx_v_max_n = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_max_n == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L3_error)
-    __pyx_v_V = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_V.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
-    __pyx_v_T = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_T.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
-    __pyx_v_tau = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_tau.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
-    __pyx_v_beta = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_beta.memview)) __PYX_ERR(0, 91, __pyx_L3_error)
-    __pyx_v_work = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[7], PyBUF_WRITABLE); if (unlikely(!__pyx_v_work.memview)) __PYX_ERR(0, 91, __pyx_L3_error)
+    __pyx_v_V = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_V.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
+    __pyx_v_T = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_T.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
+    __pyx_v_tau = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_tau.memview)) __PYX_ERR(0, 90, __pyx_L3_error)
+    __pyx_v_beta = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_beta.memview)) __PYX_ERR(0, 91, __pyx_L3_error)
+    __pyx_v_work = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[7], PyBUF_WRITABLE); if (unlikely(!__pyx_v_work.memview)) __PYX_ERR(0, 91, __pyx_L3_error)
     __pyx_v_zero_tol = __pyx_PyFloat_AsDouble(values[8]); if (unlikely((__pyx_v_zero_tol == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
@@ -22765,11 +22765,11 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyOb
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_tau, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_beta, 1);
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_work, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_k, __pyx_v_m, __pyx_v_max_n, __pyx_v_V, __pyx_v_T, __pyx_v_tau, __pyx_v_beta, __pyx_v_work, __pyx_v_zero_tol);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder___init__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_k, __pyx_v_m, __pyx_v_max_n, __pyx_v_V, __pyx_v_T, __pyx_v_tau, __pyx_v_beta, __pyx_v_work, __pyx_v_zero_tol);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_V, 1);
@@ -22787,10 +22787,10 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__(PyOb
   return __pyx_r;
 }
 
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_v_k, int __pyx_v_m, int __pyx_v_max_n, __Pyx_memviewslice __pyx_v_V, __Pyx_memviewslice __pyx_v_T, __Pyx_memviewslice __pyx_v_tau, __Pyx_memviewslice __pyx_v_beta, __Pyx_memviewslice __pyx_v_work, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol) {
+static int __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_v_k, int __pyx_v_m, int __pyx_v_max_n, __Pyx_memviewslice __pyx_v_V, __Pyx_memviewslice __pyx_v_T, __Pyx_memviewslice __pyx_v_tau, __Pyx_memviewslice __pyx_v_beta, __Pyx_memviewslice __pyx_v_work, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol) {
   int __pyx_r;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":92
+  /* "UQPyL/surrogates/mars_/_qr.pyx":92
  *                  FLOAT_t[::1, :] V, FLOAT_t[::1, :] T, FLOAT_t[::1] tau,
  *                  FLOAT_t[::1] beta, FLOAT_t[::1, :] work, FLOAT_t zero_tol):
  *         self.k = k             # <<<<<<<<<<<<<<
@@ -22799,7 +22799,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
  */
   __pyx_v_self->k = __pyx_v_k;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":93
+  /* "UQPyL/surrogates/mars_/_qr.pyx":93
  *                  FLOAT_t[::1] beta, FLOAT_t[::1, :] work, FLOAT_t zero_tol):
  *         self.k = k
  *         self.m = m             # <<<<<<<<<<<<<<
@@ -22808,7 +22808,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
  */
   __pyx_v_self->m = __pyx_v_m;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":94
+  /* "UQPyL/surrogates/mars_/_qr.pyx":94
  *         self.k = k
  *         self.m = m
  *         self.max_n = max_n             # <<<<<<<<<<<<<<
@@ -22817,7 +22817,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
  */
   __pyx_v_self->max_n = __pyx_v_max_n;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":95
+  /* "UQPyL/surrogates/mars_/_qr.pyx":95
  *         self.m = m
  *         self.max_n = max_n
  *         self.V = V             # <<<<<<<<<<<<<<
@@ -22828,7 +22828,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   __PYX_INC_MEMVIEW(&__pyx_v_V, 1);
   __pyx_v_self->V = __pyx_v_V;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":96
+  /* "UQPyL/surrogates/mars_/_qr.pyx":96
  *         self.max_n = max_n
  *         self.V = V
  *         self.T = T             # <<<<<<<<<<<<<<
@@ -22839,7 +22839,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   __PYX_INC_MEMVIEW(&__pyx_v_T, 1);
   __pyx_v_self->T = __pyx_v_T;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":97
+  /* "UQPyL/surrogates/mars_/_qr.pyx":97
  *         self.V = V
  *         self.T = T
  *         self.tau = tau             # <<<<<<<<<<<<<<
@@ -22850,7 +22850,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   __PYX_INC_MEMVIEW(&__pyx_v_tau, 1);
   __pyx_v_self->tau = __pyx_v_tau;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":98
+  /* "UQPyL/surrogates/mars_/_qr.pyx":98
  *         self.T = T
  *         self.tau = tau
  *         self.beta = beta             # <<<<<<<<<<<<<<
@@ -22861,7 +22861,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   __PYX_INC_MEMVIEW(&__pyx_v_beta, 1);
   __pyx_v_self->beta = __pyx_v_beta;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":99
+  /* "UQPyL/surrogates/mars_/_qr.pyx":99
  *         self.tau = tau
  *         self.beta = beta
  *         self.work = work             # <<<<<<<<<<<<<<
@@ -22872,7 +22872,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   __PYX_INC_MEMVIEW(&__pyx_v_work, 1);
   __pyx_v_self->work = __pyx_v_work;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":100
+  /* "UQPyL/surrogates/mars_/_qr.pyx":100
  *         self.beta = beta
  *         self.work = work
  *         self.zero_tol = zero_tol             # <<<<<<<<<<<<<<
@@ -22881,7 +22881,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
  */
   __pyx_v_self->zero_tol = __pyx_v_zero_tol;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":89
+  /* "UQPyL/surrogates/mars_/_qr.pyx":89
  * cdef class Householder:
  * 
  *     def __init__(Householder self, int k, int m, int max_n,             # <<<<<<<<<<<<<<
@@ -22894,7 +22894,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":102
+/* "UQPyL/surrogates/mars_/_qr.pyx":102
  *         self.zero_tol = zero_tol
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -22903,15 +22903,15 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder___init__(struc
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc(PyObject *__pyx_v_cls, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc(PyObject *__pyx_v_cls, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc = {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc(PyObject *__pyx_v_cls, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc = {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc(PyObject *__pyx_v_cls, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -22920,7 +22920,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ) {
   int __pyx_v_m;
   int __pyx_v_max_n;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -23011,11 +23011,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(((PyTypeObject*)__pyx_v_cls), __pyx_v_m, __pyx_v_max_n, __pyx_v_zero_tol);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_2alloc(((PyTypeObject*)__pyx_v_cls), __pyx_v_m, __pyx_v_max_n, __pyx_v_zero_tol);
 
   /* function exit code */
   {
@@ -23028,7 +23028,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_zero_tol) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_2alloc(PyTypeObject *__pyx_v_cls, int __pyx_v_m, int __pyx_v_max_n, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_zero_tol) {
   int __pyx_v_k;
   __Pyx_memviewslice __pyx_v_V = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_T = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -23054,7 +23054,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("alloc", 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":104
+  /* "UQPyL/surrogates/mars_/_qr.pyx":104
  *     @classmethod
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef int k = 0             # <<<<<<<<<<<<<<
@@ -23063,7 +23063,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
  */
   __pyx_v_k = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":105
+  /* "UQPyL/surrogates/mars_/_qr.pyx":105
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef int k = 0
  *         cdef FLOAT_t[::1, :] V = np.empty(shape=(m, max_n), dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -23100,13 +23100,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_V = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":106
+  /* "UQPyL/surrogates/mars_/_qr.pyx":106
  *         cdef int k = 0
  *         cdef FLOAT_t[::1, :] V = np.empty(shape=(m, max_n), dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1, :] T = np.empty(shape=(max_n, max_n), dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -23143,13 +23143,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_T = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":107
+  /* "UQPyL/surrogates/mars_/_qr.pyx":107
  *         cdef FLOAT_t[::1, :] V = np.empty(shape=(m, max_n), dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1, :] T = np.empty(shape=(max_n, max_n), dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1] tau = np.empty(shape=max_n, dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -23176,13 +23176,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_tau = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":108
+  /* "UQPyL/surrogates/mars_/_qr.pyx":108
  *         cdef FLOAT_t[::1, :] T = np.empty(shape=(max_n, max_n), dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1] tau = np.empty(shape=max_n, dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1] beta = np.empty(shape=max_n, dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -23209,13 +23209,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_7.memview)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_beta = __pyx_t_7;
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":109
+  /* "UQPyL/surrogates/mars_/_qr.pyx":109
  *         cdef FLOAT_t[::1] tau = np.empty(shape=max_n, dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1] beta = np.empty(shape=max_n, dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1, :] work = np.empty(shape=(m, max_n), dtype=FLOAT, order='F')             # <<<<<<<<<<<<<<
@@ -23252,13 +23252,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_work = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":110
+  /* "UQPyL/surrogates/mars_/_qr.pyx":110
  *         cdef FLOAT_t[::1] beta = np.empty(shape=max_n, dtype=FLOAT, order='F')
  *         cdef FLOAT_t[::1, :] work = np.empty(shape=(m, max_n), dtype=FLOAT, order='F')
  *         return cls(k, m, max_n, V, T, tau, beta, work, zero_tol)             # <<<<<<<<<<<<<<
@@ -23272,15 +23272,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_max_n); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_v_beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_v_beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_10 = __pyx_memoryview_fromslice(__pyx_v_work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_t_11 = PyFloat_FromDouble(__pyx_v_zero_tol); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
@@ -23320,7 +23320,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __pyx_t_11 = 0;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":102
+  /* "UQPyL/surrogates/mars_/_qr.pyx":102
  *         self.zero_tol = zero_tol
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -23342,7 +23342,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.alloc", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_V, 1);
@@ -23355,7 +23355,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":112
+/* "UQPyL/surrogates/mars_/_qr.pyx":112
  *         return cls(k, m, max_n, V, T, tau, beta, work, zero_tol)
  * 
  *     cpdef void downdate(Householder self):             # <<<<<<<<<<<<<<
@@ -23363,14 +23363,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_2alloc(P
  * 
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -23392,7 +23392,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struc
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_downdate); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -23433,7 +23433,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struc
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":113
+  /* "UQPyL/surrogates/mars_/_qr.pyx":113
  * 
  *     cpdef void downdate(Householder self):
  *         self.k -= 1             # <<<<<<<<<<<<<<
@@ -23442,7 +23442,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struc
  */
   __pyx_v_self->k = (__pyx_v_self->k - 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":112
+  /* "UQPyL/surrogates/mars_/_qr.pyx":112
  *         return cls(k, m, max_n, V, T, tau, beta, work, zero_tol)
  * 
  *     cpdef void downdate(Householder self):             # <<<<<<<<<<<<<<
@@ -23457,21 +23457,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(struc
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate = {"downdate", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate = {"downdate", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -23496,14 +23496,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("downdate", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "downdate", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdate(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4downdate(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdate(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4downdate(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -23512,7 +23512,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdat
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("downdate", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_downdate(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 112, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -23522,7 +23522,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdat
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.downdate", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -23530,7 +23530,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdat
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":115
+/* "UQPyL/surrogates/mars_/_qr.pyx":115
  *         self.k -= 1
  * 
  *     cpdef void reset(Householder self):             # <<<<<<<<<<<<<<
@@ -23538,14 +23538,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4downdat
  * 
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -23567,7 +23567,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct _
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_reset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -23608,7 +23608,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct _
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":116
+  /* "UQPyL/surrogates/mars_/_qr.pyx":116
  * 
  *     cpdef void reset(Householder self):
  *         self.k = 0             # <<<<<<<<<<<<<<
@@ -23617,7 +23617,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct _
  */
   __pyx_v_self->k = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":115
+  /* "UQPyL/surrogates/mars_/_qr.pyx":115
  *         self.k -= 1
  * 
  *     cpdef void reset(Householder self):             # <<<<<<<<<<<<<<
@@ -23632,21 +23632,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(struct _
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset = {"reset", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -23671,14 +23671,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("reset", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "reset", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_6reset(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_6reset(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -23687,7 +23687,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reset", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_reset(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -23697,7 +23697,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -23705,7 +23705,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(s
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":118
+/* "UQPyL/surrogates/mars_/_qr.pyx":118
  *         self.k = 0
  * 
  *     cpdef bint update_from_column(Householder self, FLOAT_t[:] c):             # <<<<<<<<<<<<<<
@@ -23713,18 +23713,18 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_6reset(s
  * 
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_column(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c, int __pyx_skip_dispatch) {
+static int __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_from_column(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c, int __pyx_skip_dispatch) {
   int __pyx_v_N;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_x;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_x;
   int __pyx_v_incx;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_y;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_y;
   int __pyx_v_incy;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -23753,9 +23753,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_from_column); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column)) {
         if (unlikely(!__pyx_v_c.memview)) { __Pyx_RaiseUnboundLocalError("c"); __PYX_ERR(0, 118, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_c, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_c, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -23800,7 +23800,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":122
+  /* "UQPyL/surrogates/mars_/_qr.pyx":122
  * 
  *         # Copy c into V
  *         cdef int N = self.m             # <<<<<<<<<<<<<<
@@ -23810,7 +23810,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_N = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":123
+  /* "UQPyL/surrogates/mars_/_qr.pyx":123
  *         # Copy c into V
  *         cdef int N = self.m
  *         cdef FLOAT_t * x = <FLOAT_t *> &(c[0])             # <<<<<<<<<<<<<<
@@ -23818,9 +23818,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.V[0, self.k])
  */
   __pyx_t_8 = 0;
-  __pyx_v_x = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=0 */ (__pyx_v_c.data + __pyx_t_8 * __pyx_v_c.strides[0]) )))));
+  __pyx_v_x = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=0 */ (__pyx_v_c.data + __pyx_t_8 * __pyx_v_c.strides[0]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":124
+  /* "UQPyL/surrogates/mars_/_qr.pyx":124
  *         cdef int N = self.m
  *         cdef FLOAT_t * x = <FLOAT_t *> &(c[0])
  *         cdef int incx = c.strides[0] / c.itemsize             # <<<<<<<<<<<<<<
@@ -23829,7 +23829,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
  */
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_c.strides[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_c, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_c, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -23842,7 +23842,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_incx = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":125
+  /* "UQPyL/surrogates/mars_/_qr.pyx":125
  *         cdef FLOAT_t * x = <FLOAT_t *> &(c[0])
  *         cdef int incx = c.strides[0] / c.itemsize
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.V[0, self.k])             # <<<<<<<<<<<<<<
@@ -23852,9 +23852,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 125, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_9 = __pyx_v_self->k;
-  __pyx_v_y = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_9 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_y = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_9 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":126
+  /* "UQPyL/surrogates/mars_/_qr.pyx":126
  *         cdef int incx = c.strides[0] / c.itemsize
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.V[0, self.k])
  *         cdef int incy = 1             # <<<<<<<<<<<<<<
@@ -23863,7 +23863,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
  */
   __pyx_v_incy = 1;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":127
+  /* "UQPyL/surrogates/mars_/_qr.pyx":127
  *         cdef FLOAT_t * y = <FLOAT_t *> &(self.V[0, self.k])
  *         cdef int incy = 1
  *         dcopy(&N, x, &incx, y, &incy)             # <<<<<<<<<<<<<<
@@ -23872,7 +23872,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_col
  */
   __pyx_f_5scipy_6linalg_11cython_blas_dcopy((&__pyx_v_N), __pyx_v_x, (&__pyx_v_incx), __pyx_v_y, (&__pyx_v_incy)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":130
+  /* "UQPyL/surrogates/mars_/_qr.pyx":130
  * 
  *         # Apply self to new column in V
  *         self.left_apply_transpose(self.V[:, self.k:self.k+1])             # <<<<<<<<<<<<<<
@@ -23905,22 +23905,22 @@ __pyx_t_6 = -1;
     __PYX_ERR(0, 130, __pyx_L1_error)
 }
 
-((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->__pyx_vtab)->left_apply_transpose(__pyx_v_self, __pyx_t_10, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L1_error)
+((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->__pyx_vtab)->left_apply_transpose(__pyx_v_self, __pyx_t_10, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 130, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_10, 1);
   __pyx_t_10.memview = NULL; __pyx_t_10.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":133
+  /* "UQPyL/surrogates/mars_/_qr.pyx":133
  * 
  *         # Update V and T (increments k)
  *         return self.update_v_t()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self->__pyx_vtab)->update_v_t(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self->__pyx_vtab)->update_v_t(__pyx_v_self, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L1_error)
   __pyx_r = __pyx_t_7;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":118
+  /* "UQPyL/surrogates/mars_/_qr.pyx":118
  *         self.k = 0
  * 
  *     cpdef bint update_from_column(Householder self, FLOAT_t[:] c):             # <<<<<<<<<<<<<<
@@ -23936,7 +23936,7 @@ __pyx_t_6 = -1;
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_10, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -23944,15 +23944,15 @@ __pyx_t_6 = -1;
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column = {"update_from_column", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column = {"update_from_column", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -24008,7 +24008,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_c = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_c.memview)) __PYX_ERR(0, 118, __pyx_L3_error)
+    __pyx_v_c = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_c.memview)) __PYX_ERR(0, 118, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -24023,11 +24023,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_c, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_from_column(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_c);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8update_from_column(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_c);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_c, 1);
@@ -24041,7 +24041,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_from_column(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8update_from_column(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_c) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -24052,7 +24052,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_
   __Pyx_RefNannySetupContext("update_from_column", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_c.memview)) { __Pyx_RaiseUnboundLocalError("c"); __PYX_ERR(0, 118, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_column(__pyx_v_self, __pyx_v_c, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_from_column(__pyx_v_self, __pyx_v_c, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L1_error)
   __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
@@ -24062,7 +24062,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.update_from_column", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -24070,7 +24070,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":136
+/* "UQPyL/surrogates/mars_/_qr.pyx":136
  * 
  * 
  *     cpdef bint update_v_t(Householder self):             # <<<<<<<<<<<<<<
@@ -24078,28 +24078,28 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8update_
  *         # update_from_column.  Update V and T appropriately.
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
+static int __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_v_t(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, int __pyx_skip_dispatch) {
   int __pyx_v_n;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_alpha;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_x;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_alpha;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_x;
   int __pyx_v_incx;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_tau;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_beta;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_tau;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_beta;
   int __pyx_v_dependent;
   char __pyx_v_direct;
   char __pyx_v_storev;
   int __pyx_v_k;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_V;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_V;
   int __pyx_v_ldv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_T;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_tau_arg;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_T;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_tau_arg;
   int __pyx_v_ldt;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -24127,7 +24127,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update_v_t); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t)) {
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
         __pyx_t_5 = 0;
@@ -24170,7 +24170,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":139
+  /* "UQPyL/surrogates/mars_/_qr.pyx":139
  *         # Assume relevant data has been copied into self.V correctly, as by
  *         # update_from_column.  Update V and T appropriately.
  *         cdef int n = self.m - self.k             # <<<<<<<<<<<<<<
@@ -24179,7 +24179,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_n = (__pyx_v_self->m - __pyx_v_self->k);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":140
+  /* "UQPyL/surrogates/mars_/_qr.pyx":140
  *         # update_from_column.  Update V and T appropriately.
  *         cdef int n = self.m - self.k
  *         cdef FLOAT_t alpha = self.V[self.k, self.k]             # <<<<<<<<<<<<<<
@@ -24189,9 +24189,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 140, __pyx_L1_error)}
   __pyx_t_7 = __pyx_v_self->k;
   __pyx_t_8 = __pyx_v_self->k;
-  __pyx_v_alpha = (*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )));
+  __pyx_v_alpha = (*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":141
+  /* "UQPyL/surrogates/mars_/_qr.pyx":141
  *         cdef int n = self.m - self.k
  *         cdef FLOAT_t alpha = self.V[self.k, self.k]
  *         cdef FLOAT_t* x = <FLOAT_t *> &(self.V[(self.k + 1), self.k])             # <<<<<<<<<<<<<<
@@ -24201,9 +24201,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 141, __pyx_L1_error)}
   __pyx_t_8 = (__pyx_v_self->k + 1);
   __pyx_t_7 = __pyx_v_self->k;
-  __pyx_v_x = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_x = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":142
+  /* "UQPyL/surrogates/mars_/_qr.pyx":142
  *         cdef FLOAT_t alpha = self.V[self.k, self.k]
  *         cdef FLOAT_t* x = <FLOAT_t *> &(self.V[(self.k + 1), self.k])
  *         cdef int incx = self.V.strides[0] // self.V.itemsize             # <<<<<<<<<<<<<<
@@ -24214,7 +24214,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_self->V.strides[0])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 142, __pyx_L1_error)}
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -24227,7 +24227,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_incx = __pyx_t_5;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":148
+  /* "UQPyL/surrogates/mars_/_qr.pyx":148
  * 
  *         # Compute the householder reflection
  *         dlarfg(&n, &alpha, x, &incx, &tau)             # <<<<<<<<<<<<<<
@@ -24236,7 +24236,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarfg((&__pyx_v_n), (&__pyx_v_alpha), __pyx_v_x, (&__pyx_v_incx), (&__pyx_v_tau)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":149
+  /* "UQPyL/surrogates/mars_/_qr.pyx":149
  *         # Compute the householder reflection
  *         dlarfg(&n, &alpha, x, &incx, &tau)
  *         beta = alpha             # <<<<<<<<<<<<<<
@@ -24245,7 +24245,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_beta = __pyx_v_alpha;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":156
+  /* "UQPyL/surrogates/mars_/_qr.pyx":156
  *         # will not be incremented.  UpdatingQT knows how to handle this
  *         # case, and will be informed by the return value.
  *         dependent = abs(beta) < self.zero_tol             # <<<<<<<<<<<<<<
@@ -24254,7 +24254,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_dependent = (fabs(__pyx_v_beta) < __pyx_v_self->zero_tol);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":157
+  /* "UQPyL/surrogates/mars_/_qr.pyx":157
  *         # case, and will be informed by the return value.
  *         dependent = abs(beta) < self.zero_tol
  *         if dependent:             # <<<<<<<<<<<<<<
@@ -24263,7 +24263,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   if (__pyx_v_dependent) {
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":158
+    /* "UQPyL/surrogates/mars_/_qr.pyx":158
  *         dependent = abs(beta) < self.zero_tol
  *         if dependent:
  *             return dependent             # <<<<<<<<<<<<<<
@@ -24273,7 +24273,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
     __pyx_r = __pyx_v_dependent;
     goto __pyx_L0;
 
-    /* "UQPyL/Surrogates/Mars_/_qr.pyx":157
+    /* "UQPyL/surrogates/mars_/_qr.pyx":157
  *         # case, and will be informed by the return value.
  *         dependent = abs(beta) < self.zero_tol
  *         if dependent:             # <<<<<<<<<<<<<<
@@ -24282,7 +24282,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":166
+  /* "UQPyL/surrogates/mars_/_qr.pyx":166
  *         # just the new column of T.  I'm not sure how to
  *         # do this or whether it would be faster.
  *         self.V[self.k, self.k] = 1.             # <<<<<<<<<<<<<<
@@ -24292,9 +24292,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 166, __pyx_L1_error)}
   __pyx_t_7 = __pyx_v_self->k;
   __pyx_t_8 = __pyx_v_self->k;
-  *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )) = 1.;
+  *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )) = 1.;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":167
+  /* "UQPyL/surrogates/mars_/_qr.pyx":167
  *         # do this or whether it would be faster.
  *         self.V[self.k, self.k] = 1.
  *         self.V[:self.k, self.k] = 0.             # <<<<<<<<<<<<<<
@@ -24330,7 +24330,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
 }
 
 {
-      __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_temp_scalar = 0.;
+      __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_temp_scalar = 0.;
       {
           Py_ssize_t __pyx_temp_extent_0 = __pyx_t_9.shape[0];
           Py_ssize_t __pyx_temp_stride_0 = __pyx_t_9.strides[0];
@@ -24338,7 +24338,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
           Py_ssize_t __pyx_temp_idx_0;
           __pyx_temp_pointer_0 = __pyx_t_9.data;
           for (__pyx_temp_idx_0 = 0; __pyx_temp_idx_0 < __pyx_temp_extent_0; __pyx_temp_idx_0++) {
-            *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_temp_pointer_0) = __pyx_temp_scalar;
+            *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_temp_pointer_0) = __pyx_temp_scalar;
             __pyx_temp_pointer_0 += __pyx_temp_stride_0;
           }
       }
@@ -24346,7 +24346,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_9, 1);
   __pyx_t_9.memview = NULL; __pyx_t_9.data = NULL;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":168
+  /* "UQPyL/surrogates/mars_/_qr.pyx":168
  *         self.V[self.k, self.k] = 1.
  *         self.V[:self.k, self.k] = 0.
  *         self.tau[self.k] = tau             # <<<<<<<<<<<<<<
@@ -24355,9 +24355,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   if (unlikely(!__pyx_v_self->tau.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 168, __pyx_L1_error)}
   __pyx_t_8 = __pyx_v_self->k;
-  *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->tau.data) + __pyx_t_8)) )) = __pyx_v_tau;
+  *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->tau.data) + __pyx_t_8)) )) = __pyx_v_tau;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":169
+  /* "UQPyL/surrogates/mars_/_qr.pyx":169
  *         self.V[:self.k, self.k] = 0.
  *         self.tau[self.k] = tau
  *         self.beta[self.k] = alpha             # <<<<<<<<<<<<<<
@@ -24366,9 +24366,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   if (unlikely(!__pyx_v_self->beta.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 169, __pyx_L1_error)}
   __pyx_t_8 = __pyx_v_self->k;
-  *((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->beta.data) + __pyx_t_8)) )) = __pyx_v_alpha;
+  *((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->beta.data) + __pyx_t_8)) )) = __pyx_v_alpha;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":170
+  /* "UQPyL/surrogates/mars_/_qr.pyx":170
  *         self.tau[self.k] = tau
  *         self.beta[self.k] = alpha
  *         cdef char direct = ord('F')             # <<<<<<<<<<<<<<
@@ -24377,7 +24377,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_direct = 70;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":171
+  /* "UQPyL/surrogates/mars_/_qr.pyx":171
  *         self.beta[self.k] = alpha
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')             # <<<<<<<<<<<<<<
@@ -24386,7 +24386,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_storev = 67;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":172
+  /* "UQPyL/surrogates/mars_/_qr.pyx":172
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')
  *         n = self.m             # <<<<<<<<<<<<<<
@@ -24396,7 +24396,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __pyx_t_5 = __pyx_v_self->m;
   __pyx_v_n = __pyx_t_5;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":173
+  /* "UQPyL/surrogates/mars_/_qr.pyx":173
  *         cdef char storev = ord('C')
  *         n = self.m
  *         cdef int k = self.k + 1             # <<<<<<<<<<<<<<
@@ -24405,7 +24405,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_k = (__pyx_v_self->k + 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":174
+  /* "UQPyL/surrogates/mars_/_qr.pyx":174
  *         n = self.m
  *         cdef int k = self.k + 1
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0,0])             # <<<<<<<<<<<<<<
@@ -24415,9 +24415,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 174, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_V = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_V = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":175
+  /* "UQPyL/surrogates/mars_/_qr.pyx":175
  *         cdef int k = self.k + 1
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0,0])
  *         cdef int ldv = self.m             # <<<<<<<<<<<<<<
@@ -24427,7 +24427,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __pyx_t_5 = __pyx_v_self->m;
   __pyx_v_ldv = __pyx_t_5;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":176
+  /* "UQPyL/surrogates/mars_/_qr.pyx":176
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0,0])
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0,0])             # <<<<<<<<<<<<<<
@@ -24437,9 +24437,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 176, __pyx_L1_error)}
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_T = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->T.strides[1]) )))));
+  __pyx_v_T = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->T.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":177
+  /* "UQPyL/surrogates/mars_/_qr.pyx":177
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0,0])
  *         cdef FLOAT_t * tau_arg = <FLOAT_t *> &(self.tau[0])             # <<<<<<<<<<<<<<
@@ -24448,9 +24448,9 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   if (unlikely(!__pyx_v_self->tau.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 177, __pyx_L1_error)}
   __pyx_t_8 = 0;
-  __pyx_v_tau_arg = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->tau.data) + __pyx_t_8)) )))));
+  __pyx_v_tau_arg = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->tau.data) + __pyx_t_8)) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":178
+  /* "UQPyL/surrogates/mars_/_qr.pyx":178
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0,0])
  *         cdef FLOAT_t * tau_arg = <FLOAT_t *> &(self.tau[0])
  *         cdef int ldt = self.max_n             # <<<<<<<<<<<<<<
@@ -24460,7 +24460,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __pyx_t_5 = __pyx_v_self->max_n;
   __pyx_v_ldt = __pyx_t_5;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":179
+  /* "UQPyL/surrogates/mars_/_qr.pyx":179
  *         cdef FLOAT_t * tau_arg = <FLOAT_t *> &(self.tau[0])
  *         cdef int ldt = self.max_n
  *         dlarft(&direct, &storev, &n, &k, V, &ldv, tau_arg, T, &ldt)             # <<<<<<<<<<<<<<
@@ -24469,7 +24469,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarft((&__pyx_v_direct), (&__pyx_v_storev), (&__pyx_v_n), (&__pyx_v_k), __pyx_v_V, (&__pyx_v_ldv), __pyx_v_tau_arg, __pyx_v_T, (&__pyx_v_ldt)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":181
+  /* "UQPyL/surrogates/mars_/_qr.pyx":181
  *         dlarft(&direct, &storev, &n, &k, V, &ldv, tau_arg, T, &ldt)
  * 
  *         self.k += 1             # <<<<<<<<<<<<<<
@@ -24478,7 +24478,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
  */
   __pyx_v_self->k = (__pyx_v_self->k + 1);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":183
+  /* "UQPyL/surrogates/mars_/_qr.pyx":183
  *         self.k += 1
  *         # Return beta in case the caller wants to diagnose linear dependence.
  *         return dependent             # <<<<<<<<<<<<<<
@@ -24488,7 +24488,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __pyx_r = __pyx_v_dependent;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":136
+  /* "UQPyL/surrogates/mars_/_qr.pyx":136
  * 
  * 
  *     cpdef bint update_v_t(Householder self):             # <<<<<<<<<<<<<<
@@ -24503,7 +24503,7 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.update_v_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.update_v_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -24511,15 +24511,15 @@ static int __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(stru
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t = {"update_v_t", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t = {"update_v_t", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -24544,14 +24544,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("update_v_t", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "update_v_t", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update_v_t(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_10update_v_t(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update_v_t(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_10update_v_t(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -24561,7 +24561,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("update_v_t", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_v_t(__pyx_v_self, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L1_error)
   __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
@@ -24571,7 +24571,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.update_v_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.update_v_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -24579,7 +24579,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":185
+/* "UQPyL/surrogates/mars_/_qr.pyx":185
  *         return dependent
  * 
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -24587,14 +24587,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_10update
  *         cdef char trans = ord('N')
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
   char __pyx_v_side;
   char __pyx_v_trans;
   char __pyx_v_direct;
@@ -24602,13 +24602,13 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   int __pyx_v_M;
   int __pyx_v_N;
   int __pyx_v_K;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_V;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_V;
   int __pyx_v_ldv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_T;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_T;
   int __pyx_v_ldt;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_C_arg;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_C_arg;
   int __pyx_v_ldc;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_work;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_work;
   int __pyx_v_ldwork;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -24634,9 +24634,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_left_apply); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply)) {
         if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 185, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -24679,7 +24679,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":186
+  /* "UQPyL/surrogates/mars_/_qr.pyx":186
  * 
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('L')             # <<<<<<<<<<<<<<
@@ -24688,7 +24688,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_side = 76;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":187
+  /* "UQPyL/surrogates/mars_/_qr.pyx":187
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('L')
  *         cdef char trans = ord('N')             # <<<<<<<<<<<<<<
@@ -24697,7 +24697,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_trans = 78;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":188
+  /* "UQPyL/surrogates/mars_/_qr.pyx":188
  *         cdef char side = ord('L')
  *         cdef char trans = ord('N')
  *         cdef char direct = ord('F')             # <<<<<<<<<<<<<<
@@ -24706,7 +24706,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_direct = 70;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":189
+  /* "UQPyL/surrogates/mars_/_qr.pyx":189
  *         cdef char trans = ord('N')
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')             # <<<<<<<<<<<<<<
@@ -24715,7 +24715,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_storev = 67;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":190
+  /* "UQPyL/surrogates/mars_/_qr.pyx":190
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]             # <<<<<<<<<<<<<<
@@ -24724,7 +24724,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_M = (__pyx_v_C.shape[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":191
+  /* "UQPyL/surrogates/mars_/_qr.pyx":191
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]             # <<<<<<<<<<<<<<
@@ -24733,7 +24733,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_v_N = (__pyx_v_C.shape[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":192
+  /* "UQPyL/surrogates/mars_/_qr.pyx":192
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k             # <<<<<<<<<<<<<<
@@ -24743,7 +24743,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __pyx_t_6 = __pyx_v_self->k;
   __pyx_v_K = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":193
+  /* "UQPyL/surrogates/mars_/_qr.pyx":193
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])             # <<<<<<<<<<<<<<
@@ -24753,9 +24753,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 193, __pyx_L1_error)}
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_V = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_V = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":194
+  /* "UQPyL/surrogates/mars_/_qr.pyx":194
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m             # <<<<<<<<<<<<<<
@@ -24765,7 +24765,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldv = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":195
+  /* "UQPyL/surrogates/mars_/_qr.pyx":195
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])             # <<<<<<<<<<<<<<
@@ -24775,9 +24775,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 195, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_T = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
+  __pyx_v_T = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":196
+  /* "UQPyL/surrogates/mars_/_qr.pyx":196
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n             # <<<<<<<<<<<<<<
@@ -24787,7 +24787,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __pyx_t_6 = __pyx_v_self->max_n;
   __pyx_v_ldt = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":197
+  /* "UQPyL/surrogates/mars_/_qr.pyx":197
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])             # <<<<<<<<<<<<<<
@@ -24796,9 +24796,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
+  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":198
+  /* "UQPyL/surrogates/mars_/_qr.pyx":198
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize             # <<<<<<<<<<<<<<
@@ -24807,7 +24807,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_C.strides[1])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -24820,7 +24820,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_ldc = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":199
+  /* "UQPyL/surrogates/mars_/_qr.pyx":199
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])             # <<<<<<<<<<<<<<
@@ -24830,9 +24830,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 199, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_work = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
+  __pyx_v_work = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":200
+  /* "UQPyL/surrogates/mars_/_qr.pyx":200
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])
  *         cdef int ldwork = self.m             # <<<<<<<<<<<<<<
@@ -24842,7 +24842,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldwork = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":201
+  /* "UQPyL/surrogates/mars_/_qr.pyx":201
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])
  *         cdef int ldwork = self.m
  *         print(C.shape)             # <<<<<<<<<<<<<<
@@ -24856,7 +24856,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":202
+  /* "UQPyL/surrogates/mars_/_qr.pyx":202
  *         cdef int ldwork = self.m
  *         print(C.shape)
  *         dlarfb(&side, &trans, &direct, &storev, &M, &N, &K,             # <<<<<<<<<<<<<<
@@ -24865,7 +24865,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarfb((&__pyx_v_side), (&__pyx_v_trans), (&__pyx_v_direct), (&__pyx_v_storev), (&__pyx_v_M), (&__pyx_v_N), (&__pyx_v_K), __pyx_v_V, (&__pyx_v_ldv), __pyx_v_T, (&__pyx_v_ldt), __pyx_v_C_arg, (&__pyx_v_ldc), __pyx_v_work, (&__pyx_v_ldwork)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 202, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":185
+  /* "UQPyL/surrogates/mars_/_qr.pyx":185
  *         return dependent
  * 
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -24881,21 +24881,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(str
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply = {"left_apply", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply = {"left_apply", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -24951,7 +24951,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 185, __pyx_L3_error)
+    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 185, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -24966,11 +24966,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_apply(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_12left_apply(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
@@ -24984,7 +24984,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_12left_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -24994,7 +24994,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_a
   __Pyx_RefNannySetupContext("left_apply", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 185, __pyx_L1_error) }
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 185, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -25004,7 +25004,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_a
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -25012,7 +25012,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_a
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":205
+/* "UQPyL/surrogates/mars_/_qr.pyx":205
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -25020,14 +25020,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_12left_a
  *         cdef char trans = ord('T')
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
   char __pyx_v_side;
   char __pyx_v_trans;
   char __pyx_v_direct;
@@ -25035,13 +25035,13 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   int __pyx_v_M;
   int __pyx_v_N;
   int __pyx_v_K;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_V;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_V;
   int __pyx_v_ldv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_T;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_T;
   int __pyx_v_ldt;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_C_arg;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_C_arg;
   int __pyx_v_ldc;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_work;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_work;
   int __pyx_v_ldwork;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -25067,9 +25067,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_left_apply_transpose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose)) {
         if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 205, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -25112,7 +25112,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":206
+  /* "UQPyL/surrogates/mars_/_qr.pyx":206
  * 
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('L')             # <<<<<<<<<<<<<<
@@ -25121,7 +25121,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_side = 76;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":207
+  /* "UQPyL/surrogates/mars_/_qr.pyx":207
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('L')
  *         cdef char trans = ord('T')             # <<<<<<<<<<<<<<
@@ -25130,7 +25130,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_trans = 84;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":208
+  /* "UQPyL/surrogates/mars_/_qr.pyx":208
  *         cdef char side = ord('L')
  *         cdef char trans = ord('T')
  *         cdef char direct = ord('F')             # <<<<<<<<<<<<<<
@@ -25139,7 +25139,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_direct = 70;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":209
+  /* "UQPyL/surrogates/mars_/_qr.pyx":209
  *         cdef char trans = ord('T')
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')             # <<<<<<<<<<<<<<
@@ -25148,7 +25148,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_storev = 67;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":210
+  /* "UQPyL/surrogates/mars_/_qr.pyx":210
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]             # <<<<<<<<<<<<<<
@@ -25157,7 +25157,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_M = (__pyx_v_C.shape[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":211
+  /* "UQPyL/surrogates/mars_/_qr.pyx":211
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]             # <<<<<<<<<<<<<<
@@ -25166,7 +25166,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_v_N = (__pyx_v_C.shape[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":212
+  /* "UQPyL/surrogates/mars_/_qr.pyx":212
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k             # <<<<<<<<<<<<<<
@@ -25176,7 +25176,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __pyx_t_6 = __pyx_v_self->k;
   __pyx_v_K = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":213
+  /* "UQPyL/surrogates/mars_/_qr.pyx":213
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])             # <<<<<<<<<<<<<<
@@ -25186,9 +25186,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 213, __pyx_L1_error)}
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_V = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_V = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":214
+  /* "UQPyL/surrogates/mars_/_qr.pyx":214
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m             # <<<<<<<<<<<<<<
@@ -25198,7 +25198,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldv = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":215
+  /* "UQPyL/surrogates/mars_/_qr.pyx":215
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])             # <<<<<<<<<<<<<<
@@ -25208,9 +25208,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 215, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_T = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
+  __pyx_v_T = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":216
+  /* "UQPyL/surrogates/mars_/_qr.pyx":216
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n             # <<<<<<<<<<<<<<
@@ -25220,7 +25220,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __pyx_t_6 = __pyx_v_self->max_n;
   __pyx_v_ldt = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":217
+  /* "UQPyL/surrogates/mars_/_qr.pyx":217
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])             # <<<<<<<<<<<<<<
@@ -25229,9 +25229,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
+  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":218
+  /* "UQPyL/surrogates/mars_/_qr.pyx":218
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize             # <<<<<<<<<<<<<<
@@ -25240,7 +25240,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_C.strides[1])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -25253,7 +25253,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_ldc = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":219
+  /* "UQPyL/surrogates/mars_/_qr.pyx":219
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])             # <<<<<<<<<<<<<<
@@ -25263,9 +25263,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 219, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_work = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
+  __pyx_v_work = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":220
+  /* "UQPyL/surrogates/mars_/_qr.pyx":220
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])
  *         cdef int ldwork = self.m             # <<<<<<<<<<<<<<
@@ -25275,7 +25275,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldwork = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":222
+  /* "UQPyL/surrogates/mars_/_qr.pyx":222
  *         cdef int ldwork = self.m
  * 
  *         dlarfb(&side, &trans, &direct, &storev, &M, &N, &K,             # <<<<<<<<<<<<<<
@@ -25284,7 +25284,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarfb((&__pyx_v_side), (&__pyx_v_trans), (&__pyx_v_direct), (&__pyx_v_storev), (&__pyx_v_M), (&__pyx_v_N), (&__pyx_v_K), __pyx_v_V, (&__pyx_v_ldv), __pyx_v_T, (&__pyx_v_ldt), __pyx_v_C_arg, (&__pyx_v_ldc), __pyx_v_work, (&__pyx_v_ldwork)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 222, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":205
+  /* "UQPyL/surrogates/mars_/_qr.pyx":205
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -25300,21 +25300,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_tra
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose = {"left_apply_transpose", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose = {"left_apply_transpose", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -25370,7 +25370,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 205, __pyx_L3_error)
+    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 205, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -25385,11 +25385,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_apply_transpose(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_14left_apply_transpose(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
@@ -25403,7 +25403,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_14left_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -25413,7 +25413,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_a
   __Pyx_RefNannySetupContext("left_apply_transpose", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 205, __pyx_L1_error) }
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_transpose(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply_transpose(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -25423,7 +25423,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_a
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.left_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -25431,7 +25431,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_a
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":225
+/* "UQPyL/surrogates/mars_/_qr.pyx":225
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -25439,14 +25439,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_14left_a
  *         cdef char trans = ord('N')
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
   char __pyx_v_side;
   char __pyx_v_trans;
   char __pyx_v_direct;
@@ -25454,13 +25454,13 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   int __pyx_v_M;
   int __pyx_v_N;
   int __pyx_v_K;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_V;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_V;
   int __pyx_v_ldv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_T;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_T;
   int __pyx_v_ldt;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_C_arg;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_C_arg;
   int __pyx_v_ldc;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_work;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_work;
   int __pyx_v_ldwork;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -25486,9 +25486,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_right_apply); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply)) {
         if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 225, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 225, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -25531,7 +25531,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":226
+  /* "UQPyL/surrogates/mars_/_qr.pyx":226
  * 
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('R')             # <<<<<<<<<<<<<<
@@ -25540,7 +25540,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_side = 82;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":227
+  /* "UQPyL/surrogates/mars_/_qr.pyx":227
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('R')
  *         cdef char trans = ord('N')             # <<<<<<<<<<<<<<
@@ -25549,7 +25549,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_trans = 78;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":228
+  /* "UQPyL/surrogates/mars_/_qr.pyx":228
  *         cdef char side = ord('R')
  *         cdef char trans = ord('N')
  *         cdef char direct = ord('F')             # <<<<<<<<<<<<<<
@@ -25558,7 +25558,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_direct = 70;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":229
+  /* "UQPyL/surrogates/mars_/_qr.pyx":229
  *         cdef char trans = ord('N')
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')             # <<<<<<<<<<<<<<
@@ -25567,7 +25567,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_storev = 67;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":230
+  /* "UQPyL/surrogates/mars_/_qr.pyx":230
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]             # <<<<<<<<<<<<<<
@@ -25576,7 +25576,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_M = (__pyx_v_C.shape[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":231
+  /* "UQPyL/surrogates/mars_/_qr.pyx":231
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]             # <<<<<<<<<<<<<<
@@ -25585,7 +25585,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_v_N = (__pyx_v_C.shape[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":232
+  /* "UQPyL/surrogates/mars_/_qr.pyx":232
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k             # <<<<<<<<<<<<<<
@@ -25595,7 +25595,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __pyx_t_6 = __pyx_v_self->k;
   __pyx_v_K = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":233
+  /* "UQPyL/surrogates/mars_/_qr.pyx":233
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])             # <<<<<<<<<<<<<<
@@ -25605,9 +25605,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 233, __pyx_L1_error)}
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_V = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_V = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":234
+  /* "UQPyL/surrogates/mars_/_qr.pyx":234
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m             # <<<<<<<<<<<<<<
@@ -25617,7 +25617,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldv = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":235
+  /* "UQPyL/surrogates/mars_/_qr.pyx":235
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])             # <<<<<<<<<<<<<<
@@ -25627,9 +25627,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 235, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_T = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
+  __pyx_v_T = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":236
+  /* "UQPyL/surrogates/mars_/_qr.pyx":236
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n             # <<<<<<<<<<<<<<
@@ -25639,7 +25639,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __pyx_t_6 = __pyx_v_self->max_n;
   __pyx_v_ldt = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":237
+  /* "UQPyL/surrogates/mars_/_qr.pyx":237
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])             # <<<<<<<<<<<<<<
@@ -25648,9 +25648,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
+  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":238
+  /* "UQPyL/surrogates/mars_/_qr.pyx":238
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize             # <<<<<<<<<<<<<<
@@ -25659,7 +25659,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_C.strides[1])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -25672,7 +25672,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_ldc = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":239
+  /* "UQPyL/surrogates/mars_/_qr.pyx":239
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])             # <<<<<<<<<<<<<<
@@ -25682,9 +25682,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 239, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_work = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
+  __pyx_v_work = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":240
+  /* "UQPyL/surrogates/mars_/_qr.pyx":240
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])
  *         cdef int ldwork = self.m             # <<<<<<<<<<<<<<
@@ -25694,7 +25694,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldwork = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":242
+  /* "UQPyL/surrogates/mars_/_qr.pyx":242
  *         cdef int ldwork = self.m
  * 
  *         dlarfb(&side, &trans, &direct, &storev, &M, &N, &K,             # <<<<<<<<<<<<<<
@@ -25703,7 +25703,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarfb((&__pyx_v_side), (&__pyx_v_trans), (&__pyx_v_direct), (&__pyx_v_storev), (&__pyx_v_M), (&__pyx_v_N), (&__pyx_v_K), __pyx_v_V, (&__pyx_v_ldv), __pyx_v_T, (&__pyx_v_ldt), __pyx_v_C_arg, (&__pyx_v_ldc), __pyx_v_work, (&__pyx_v_ldwork)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 242, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":225
+  /* "UQPyL/surrogates/mars_/_qr.pyx":225
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -25719,21 +25719,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(st
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply = {"right_apply", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply = {"right_apply", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -25789,7 +25789,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 225, __pyx_L3_error)
+    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 225, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -25804,11 +25804,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_apply(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_16right_apply(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
@@ -25822,7 +25822,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_apply(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_16right_apply(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -25832,7 +25832,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_
   __Pyx_RefNannySetupContext("right_apply", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 225, __pyx_L1_error) }
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -25842,7 +25842,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -25850,7 +25850,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pyx":245
+/* "UQPyL/surrogates/mars_/_qr.pyx":245
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -25858,14 +25858,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_16right_
  *         cdef char trans = ord('T')
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
+static void __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C, int __pyx_skip_dispatch) {
   char __pyx_v_side;
   char __pyx_v_trans;
   char __pyx_v_direct;
@@ -25873,13 +25873,13 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   int __pyx_v_M;
   int __pyx_v_N;
   int __pyx_v_K;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_V;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_V;
   int __pyx_v_ldv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_T;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_T;
   int __pyx_v_ldt;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_C_arg;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_C_arg;
   int __pyx_v_ldc;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *__pyx_v_work;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *__pyx_v_work;
   int __pyx_v_ldwork;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -25905,9 +25905,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_right_apply_transpose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose)) {
         if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 245, __pyx_L1_error) }
-        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
+        __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -25950,7 +25950,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":246
+  /* "UQPyL/surrogates/mars_/_qr.pyx":246
  * 
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('R')             # <<<<<<<<<<<<<<
@@ -25959,7 +25959,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_side = 82;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":247
+  /* "UQPyL/surrogates/mars_/_qr.pyx":247
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):
  *         cdef char side = ord('R')
  *         cdef char trans = ord('T')             # <<<<<<<<<<<<<<
@@ -25968,7 +25968,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_trans = 84;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":248
+  /* "UQPyL/surrogates/mars_/_qr.pyx":248
  *         cdef char side = ord('R')
  *         cdef char trans = ord('T')
  *         cdef char direct = ord('F')             # <<<<<<<<<<<<<<
@@ -25977,7 +25977,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_direct = 70;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":249
+  /* "UQPyL/surrogates/mars_/_qr.pyx":249
  *         cdef char trans = ord('T')
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')             # <<<<<<<<<<<<<<
@@ -25986,7 +25986,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_storev = 67;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":250
+  /* "UQPyL/surrogates/mars_/_qr.pyx":250
  *         cdef char direct = ord('F')
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]             # <<<<<<<<<<<<<<
@@ -25995,7 +25995,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_M = (__pyx_v_C.shape[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":251
+  /* "UQPyL/surrogates/mars_/_qr.pyx":251
  *         cdef char storev = ord('C')
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]             # <<<<<<<<<<<<<<
@@ -26004,7 +26004,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_v_N = (__pyx_v_C.shape[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":252
+  /* "UQPyL/surrogates/mars_/_qr.pyx":252
  *         cdef int M = C.shape[0]
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k             # <<<<<<<<<<<<<<
@@ -26014,7 +26014,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __pyx_t_6 = __pyx_v_self->k;
   __pyx_v_K = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":253
+  /* "UQPyL/surrogates/mars_/_qr.pyx":253
  *         cdef int N = C.shape[1]
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])             # <<<<<<<<<<<<<<
@@ -26024,9 +26024,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 253, __pyx_L1_error)}
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_V = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
+  __pyx_v_V = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->V.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_self->V.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":254
+  /* "UQPyL/surrogates/mars_/_qr.pyx":254
  *         cdef int K = self.k
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m             # <<<<<<<<<<<<<<
@@ -26036,7 +26036,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldv = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":255
+  /* "UQPyL/surrogates/mars_/_qr.pyx":255
  *         cdef FLOAT_t * V = <FLOAT_t *> &(self.V[0, 0])
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])             # <<<<<<<<<<<<<<
@@ -26046,9 +26046,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 255, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_T = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
+  __pyx_v_T = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->T.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->T.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":256
+  /* "UQPyL/surrogates/mars_/_qr.pyx":256
  *         cdef int ldv = self.m
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n             # <<<<<<<<<<<<<<
@@ -26058,7 +26058,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __pyx_t_6 = __pyx_v_self->max_n;
   __pyx_v_ldt = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":257
+  /* "UQPyL/surrogates/mars_/_qr.pyx":257
  *         cdef FLOAT_t * T = <FLOAT_t *> &(self.T[0, 0])
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])             # <<<<<<<<<<<<<<
@@ -26067,9 +26067,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_t_7 = 0;
   __pyx_t_8 = 0;
-  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
+  __pyx_v_C_arg = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_C.data) + __pyx_t_7)) ) + __pyx_t_8 * __pyx_v_C.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":258
+  /* "UQPyL/surrogates/mars_/_qr.pyx":258
  *         cdef int ldt = self.max_n
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize             # <<<<<<<<<<<<<<
@@ -26078,7 +26078,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_t_1 = PyInt_FromSsize_t((__pyx_v_C.strides[1])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_C, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -26091,7 +26091,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_ldc = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":259
+  /* "UQPyL/surrogates/mars_/_qr.pyx":259
  *         cdef FLOAT_t * C_arg = <FLOAT_t *> &(C[0, 0])
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])             # <<<<<<<<<<<<<<
@@ -26101,9 +26101,9 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 259, __pyx_L1_error)}
   __pyx_t_8 = 0;
   __pyx_t_7 = 0;
-  __pyx_v_work = ((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
+  __pyx_v_work = ((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *)(&(*((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) ( /* dim=1 */ (( /* dim=0 */ ((char *) (((__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) __pyx_v_self->work.data) + __pyx_t_8)) ) + __pyx_t_7 * __pyx_v_self->work.strides[1]) )))));
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":260
+  /* "UQPyL/surrogates/mars_/_qr.pyx":260
  *         cdef int ldc = C.strides[1] // C.itemsize
  *         cdef FLOAT_t * work = <FLOAT_t *> &(self.work[0,0])
  *         cdef int ldwork = self.m             # <<<<<<<<<<<<<<
@@ -26113,7 +26113,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __pyx_t_6 = __pyx_v_self->m;
   __pyx_v_ldwork = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":262
+  /* "UQPyL/surrogates/mars_/_qr.pyx":262
  *         cdef int ldwork = self.m
  * 
  *         dlarfb(&side, &trans, &direct, &storev, &M, &N, &K,             # <<<<<<<<<<<<<<
@@ -26122,7 +26122,7 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
  */
   __pyx_f_5scipy_6linalg_13cython_lapack_dlarfb((&__pyx_v_side), (&__pyx_v_trans), (&__pyx_v_direct), (&__pyx_v_storev), (&__pyx_v_M), (&__pyx_v_N), (&__pyx_v_K), __pyx_v_V, (&__pyx_v_ldv), __pyx_v_T, (&__pyx_v_ldt), __pyx_v_C_arg, (&__pyx_v_ldc), __pyx_v_work, (&__pyx_v_ldwork)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":245
+  /* "UQPyL/surrogates/mars_/_qr.pyx":245
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -26138,21 +26138,21 @@ static void __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_tr
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose = {"right_apply_transpose", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose = {"right_apply_transpose", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -26208,7 +26208,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_C = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_C.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
@@ -26223,11 +26223,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
   }
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_apply_transpose(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_18right_apply_transpose(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v_C);
 
   /* function exit code */
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_C, 1);
@@ -26241,7 +26241,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_apply_transpose(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_18right_apply_transpose(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, __Pyx_memviewslice __pyx_v_C) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26251,7 +26251,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_
   __Pyx_RefNannySetupContext("right_apply_transpose", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_C.memview)) { __Pyx_RaiseUnboundLocalError("C"); __PYX_ERR(0, 245, __pyx_L1_error) }
-  __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_transpose(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply_transpose(__pyx_v_self, __pyx_v_C, 1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_t_1 = __Pyx_void_to_None(NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
@@ -26261,7 +26261,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.right_apply_transpose", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26269,7 +26269,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":18
+/* "UQPyL/surrogates/mars_/_qr.pxd":18
  * 
  * cdef class Householder:
  *     cdef readonly int k             # <<<<<<<<<<<<<<
@@ -26278,21 +26278,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_18right_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26310,7 +26310,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.k.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.k.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26318,7 +26318,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":19
+/* "UQPyL/surrogates/mars_/_qr.pxd":19
  * cdef class Householder:
  *     cdef readonly int k
  *     cdef readonly int m             # <<<<<<<<<<<<<<
@@ -26327,21 +26327,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k___get
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26359,7 +26359,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.m.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.m.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26367,7 +26367,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":20
+/* "UQPyL/surrogates/mars_/_qr.pxd":20
  *     cdef readonly int k
  *     cdef readonly int m
  *     cdef readonly int max_n             # <<<<<<<<<<<<<<
@@ -26376,21 +26376,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m___get
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26408,7 +26408,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n__
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.max_n.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.max_n.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26416,7 +26416,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n__
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":21
+/* "UQPyL/surrogates/mars_/_qr.pxd":21
  *     cdef readonly int m
  *     cdef readonly int max_n
  *     cdef readonly FLOAT_t[::1, :] V             # <<<<<<<<<<<<<<
@@ -26425,21 +26425,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n__
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26449,7 +26449,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 21, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 21, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -26458,7 +26458,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.V.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.V.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26466,7 +26466,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":22
+/* "UQPyL/surrogates/mars_/_qr.pxd":22
  *     cdef readonly int max_n
  *     cdef readonly FLOAT_t[::1, :] V
  *     cdef readonly FLOAT_t[::1, :] T             # <<<<<<<<<<<<<<
@@ -26475,21 +26475,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V___get
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26499,7 +26499,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 22, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 22, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -26508,7 +26508,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.T.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.T.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26516,7 +26516,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":23
+/* "UQPyL/surrogates/mars_/_qr.pxd":23
  *     cdef readonly FLOAT_t[::1, :] V
  *     cdef readonly FLOAT_t[::1, :] T
  *     cdef readonly FLOAT_t[::1] tau             # <<<<<<<<<<<<<<
@@ -26525,21 +26525,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T___get
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26549,7 +26549,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___g
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->tau.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 23, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 23, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -26558,7 +26558,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___g
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.tau.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.tau.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26566,7 +26566,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___g
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":24
+/* "UQPyL/surrogates/mars_/_qr.pxd":24
  *     cdef readonly FLOAT_t[::1, :] T
  *     cdef readonly FLOAT_t[::1] tau
  *     cdef readonly FLOAT_t[::1] beta             # <<<<<<<<<<<<<<
@@ -26575,21 +26575,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau___g
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26599,7 +26599,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->beta.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 24, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 24, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -26608,7 +26608,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.beta.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.beta.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26616,7 +26616,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":25
+/* "UQPyL/surrogates/mars_/_qr.pxd":25
  *     cdef readonly FLOAT_t[::1] tau
  *     cdef readonly FLOAT_t[::1] beta
  *     cdef readonly FLOAT_t[::1, :] work             # <<<<<<<<<<<<<<
@@ -26625,21 +26625,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26649,7 +26649,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___
   __Pyx_RefNannySetupContext("__get__", 1);
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(3, 25, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 25, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(3, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -26658,7 +26658,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.work.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.work.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26666,7 +26666,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_qr.pxd":26
+/* "UQPyL/surrogates/mars_/_qr.pxd":26
  *     cdef readonly FLOAT_t[::1] beta
  *     cdef readonly FLOAT_t[::1, :] work
  *     cdef readonly FLOAT_t zero_tol             # <<<<<<<<<<<<<<
@@ -26675,21 +26675,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -26707,7 +26707,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_to
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.zero_tol.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.zero_tol.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -26722,15 +26722,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_to
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -26755,14 +26755,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__reduce_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_20__reduce_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_20__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -26792,13 +26792,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__redu
  *     if _dict is not None:
  */
   if (unlikely(!__pyx_v_self->T.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->T, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(!__pyx_v_self->V.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->V, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(!__pyx_v_self->beta.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->beta, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->k); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -26807,10 +26807,10 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__redu
   __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->max_n); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (unlikely(!__pyx_v_self->tau.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_self->tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_7 = __pyx_memoryview_fromslice(__pyx_v_self->tau, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   if (unlikely(!__pyx_v_self->work.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(1, 5, __pyx_L1_error)}
-  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_self->work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_8 = __pyx_memoryview_fromslice(__pyx_v_self->work, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, 0);; if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9 = PyFloat_FromDouble(__pyx_v_self->zero_tol); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
@@ -27024,7 +27024,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__redu
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -27042,15 +27042,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_20__redu
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -27120,11 +27120,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__setstate_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_22__setstate_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -27137,7 +27137,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_11Householder_22__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -27152,7 +27152,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__sets
  *     __pyx_unpickle_Householder__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Householder__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_Householder__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -27168,7 +27168,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__sets
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.Householder.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.Householder.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -27183,15 +27183,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_22__sets
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_1__pyx_unpickle_UpdatingQT(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_1__pyx_unpickle_UpdatingQT(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_1__pyx_unpickle_UpdatingQT = {"__pyx_unpickle_UpdatingQT", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_1__pyx_unpickle_UpdatingQT, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_1__pyx_unpickle_UpdatingQT(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_1__pyx_unpickle_UpdatingQT = {"__pyx_unpickle_UpdatingQT", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_1__pyx_unpickle_UpdatingQT, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_1__pyx_unpickle_UpdatingQT(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -27291,11 +27291,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_UpdatingQT", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_UpdatingQT", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -27308,7 +27308,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -27390,7 +27390,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updatin
  *     if __pyx_state is not None:
  *         __pyx_unpickle_UpdatingQT__set_state(<UpdatingQT> __pyx_result, __pyx_state)
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -27435,7 +27435,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updatin
  * cdef __pyx_unpickle_UpdatingQT__set_state(UpdatingQT __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT__set_state(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT__set_state(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -27471,7 +27471,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updatin
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_UpdatingQT", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_UpdatingQT", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -27489,14 +27489,14 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updatin
  *     if len(__pyx_state) > 7 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_UpdatingQT__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_UpdatingQT__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_5;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_5;
   int __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   int __pyx_t_8;
@@ -27518,7 +27518,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updating
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 0), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 0), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->Q_t, 0);
   __pyx_v___pyx_result->Q_t = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -27527,7 +27527,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updating
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 1), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 1), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->dependent_cols, 0);
   __pyx_v___pyx_result->dependent_cols = __pyx_t_2;
   __pyx_t_2.memview = NULL;
@@ -27536,13 +27536,13 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updating
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 2)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder))))) __PYX_ERR(1, 12, __pyx_L1_error)
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 2)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder))))) __PYX_ERR(1, 12, __pyx_L1_error)
   __pyx_t_3 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 2);
   __Pyx_INCREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->householder);
   __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->householder);
-  __pyx_v___pyx_result->householder = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_t_3);
+  __pyx_v___pyx_result->householder = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_t_3);
   __pyx_t_3 = 0;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -27654,7 +27654,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updating
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_UpdatingQT__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_UpdatingQT__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -27669,15 +27669,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Updating
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_3__pyx_unpickle_Householder(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_3__pyx_unpickle_Householder(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_3__pyx_unpickle_Householder = {"__pyx_unpickle_Householder", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_3__pyx_unpickle_Householder, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_3__pyx_unpickle_Householder(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_3__pyx_unpickle_Householder = {"__pyx_unpickle_Householder", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_3__pyx_unpickle_Householder, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_3__pyx_unpickle_Householder(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -27777,11 +27777,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_Householder", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_Householder", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Householder(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__3_qr_2__pyx_unpickle_Householder(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -27794,7 +27794,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Householder(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__3_qr_2__pyx_unpickle_Householder(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -27876,7 +27876,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Househ
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Householder__set_state(<Householder> __pyx_result, __pyx_state)
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -27921,7 +27921,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Househ
  * cdef __pyx_unpickle_Householder__set_state(Householder __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Householder__set_state(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_Householder__set_state(((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -27957,7 +27957,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Househ
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_Householder", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_Householder", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -27975,13 +27975,13 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__3_qr_2__pyx_unpickle_Househ
  *     if len(__pyx_state) > 9 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Householder__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__3_qr___pyx_unpickle_Householder__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_3;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_4;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_4;
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
   int __pyx_t_7;
@@ -28004,7 +28004,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 0), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 0), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->T, 0);
   __pyx_v___pyx_result->T = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -28013,7 +28013,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 1), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 1), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->V, 0);
   __pyx_v___pyx_result->V = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -28022,7 +28022,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->beta, 0);
   __pyx_v___pyx_result->beta = __pyx_t_2;
   __pyx_t_2.memview = NULL;
@@ -28049,7 +28049,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 6), PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->tau, 0);
   __pyx_v___pyx_result->tau = __pyx_t_2;
   __pyx_t_2.memview = NULL;
@@ -28058,7 +28058,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 7), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyTuple_GET_ITEM(__pyx_v___pyx_state, 7), PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(1, 12, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v___pyx_result->work, 0);
   __pyx_v___pyx_result->work = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -28155,17 +28155,17 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr___pyx_unpickle_Househol
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._qr.__pyx_unpickle_Householder__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._qr.__pyx_unpickle_Householder__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
 
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *p;
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *p;
   PyObject *o;
   #if CYTHON_COMPILING_IN_LIMITED_API
   allocfunc alloc_func = (allocfunc)PyType_GetSlot(t, Py_tp_alloc);
@@ -28178,9 +28178,9 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyTypeO
   }
   if (unlikely(!o)) return 0;
   #endif
-  p = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
-  p->householder = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)Py_None); Py_INCREF(Py_None);
+  p = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)o);
+  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
+  p->householder = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)Py_None); Py_INCREF(Py_None);
   p->Q_t.data = NULL;
   p->Q_t.memview = NULL;
   p->dependent_cols.data = NULL;
@@ -28188,11 +28188,11 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyTypeO
   return o;
 }
 
-static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyObject *o) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)o;
+static void __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT(PyObject *o) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely((PY_VERSION_HEX >= 0x03080000 || __Pyx_PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE)) && __Pyx_PyObject_GetSlot(o, tp_finalize, destructor)) && !__Pyx_PyObject_GC_IsFinalized(o)) {
-    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) {
+    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) {
       if (PyObject_CallFinalizerFromDealloc(o)) return;
     }
   }
@@ -28213,95 +28213,95 @@ static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyObject
   #endif
 }
 
-static int __pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)o;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)o;
   if (p->householder) {
     e = (*v)(((PyObject *)p->householder), a); if (e) return e;
   }
   return 0;
 }
 
-static int __pyx_tp_clear_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT(PyObject *o) {
+static int __pyx_tp_clear_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *)o;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *)o;
   tmp = ((PyObject*)p->householder);
-  p->householder = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)Py_None); Py_INCREF(Py_None);
+  p->householder = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_m(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1m_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_m(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1m_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_max_n(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5max_n_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_max_n(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5max_n_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_householder(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11householder_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_householder(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11householder_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_k(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1k_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_k(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1k_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_Q_t(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3Q_t_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_Q_t(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3Q_t_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_zero_tol(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_8zero_tol_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_zero_tol(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_8zero_tol_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_dependent_cols(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_dependent_cols(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_14dependent_cols_1__get__(o);
 }
 
-static PyMethodDef __pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT[] = {
-  {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+static PyMethodDef __pyx_methods_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT[] = {
+  {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT[] = {
-  {(char *)"m", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_m, 0, (char *)0, 0},
-  {(char *)"max_n", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_max_n, 0, (char *)0, 0},
-  {(char *)"householder", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_householder, 0, (char *)0, 0},
-  {(char *)"k", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_k, 0, (char *)0, 0},
-  {(char *)"Q_t", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_Q_t, 0, (char *)0, 0},
-  {(char *)"zero_tol", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_zero_tol, 0, (char *)0, 0},
-  {(char *)"dependent_cols", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_dependent_cols, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT[] = {
+  {(char *)"m", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_m, 0, (char *)0, 0},
+  {(char *)"max_n", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_max_n, 0, (char *)0, 0},
+  {(char *)"householder", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_householder, 0, (char *)0, 0},
+  {(char *)"k", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_k, 0, (char *)0, 0},
+  {(char *)"Q_t", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_Q_t, 0, (char *)0, 0},
+  {(char *)"zero_tol", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_zero_tol, 0, (char *)0, 0},
+  {(char *)"dependent_cols", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_dependent_cols, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
-static PyType_Slot __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT_slots[] = {
-  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
-  {Py_tp_traverse, (void *)__pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
-  {Py_tp_clear, (void *)__pyx_tp_clear_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
-  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
-  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
-  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__},
-  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT},
+static PyType_Slot __pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT_slots[] = {
+  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
+  {Py_tp_traverse, (void *)__pyx_tp_traverse_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
+  {Py_tp_clear, (void *)__pyx_tp_clear_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
+  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
+  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
+  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1__init__},
+  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT},
   {0, 0},
 };
-static PyType_Spec __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT_spec = {
-  "UQPyL.Surrogates.Mars_._qr.UpdatingQT",
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT),
+static PyType_Spec __pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT_spec = {
+  "UQPyL.surrogates.mars_._qr.UpdatingQT",
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
-  __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT_slots,
+  __pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT_slots,
 };
 #else
 
-static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = {
+static PyTypeObject __pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""UpdatingQT", /*tp_name*/
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT), /*tp_basicsize*/
+  "UQPyL.surrogates.mars_._qr.""UpdatingQT", /*tp_name*/
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_dealloc*/
+  __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -28328,15 +28328,15 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_traverse*/
-  __pyx_tp_clear_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_clear*/
+  __pyx_tp_traverse_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_traverse*/
+  __pyx_tp_clear_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_methods*/
+  __pyx_methods_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_getset*/
+  __pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
@@ -28344,9 +28344,9 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = {
   #if !CYTHON_USE_TYPE_SPECS
   0, /*tp_dictoffset*/
   #endif
-  __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_1__init__, /*tp_init*/
+  __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, /*tp_new*/
+  __pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -28377,10 +28377,10 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = {
   #endif
 };
 #endif
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__3_qr_Householder __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__3_qr_Householder __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder;
 
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *p;
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_Householder(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *p;
   PyObject *o;
   #if CYTHON_COMPILING_IN_LIMITED_API
   allocfunc alloc_func = (allocfunc)PyType_GetSlot(t, Py_tp_alloc);
@@ -28393,8 +28393,8 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyType
   }
   if (unlikely(!o)) return 0;
   #endif
-  p = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+  p = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)o);
+  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_Householder;
   p->V.data = NULL;
   p->V.memview = NULL;
   p->T.data = NULL;
@@ -28408,11 +28408,11 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyType
   return o;
 }
 
-static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyObject *o) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *)o;
+static void __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_Householder(PyObject *o) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely((PY_VERSION_HEX >= 0x03080000 || __Pyx_PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE)) && __Pyx_PyObject_GetSlot(o, tp_finalize, destructor)) && (!PyType_IS_GC(Py_TYPE(o)) || !__Pyx_PyObject_GC_IsFinalized(o))) {
-    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_Householder) {
+    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_Householder) {
       if (PyObject_CallFinalizerFromDealloc(o)) return;
     }
   }
@@ -28437,85 +28437,85 @@ static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_Householder(PyObjec
   #endif
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_k(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1k_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_k(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1k_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_m(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1m_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_m(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1m_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_max_n(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5max_n_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_max_n(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_5max_n_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_V(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1V_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_V(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1V_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_T(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1T_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_T(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1T_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_tau(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3tau_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_tau(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3tau_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_beta(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4beta_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_beta(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4beta_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_work(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_4work_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_work(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_4work_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_zero_tol(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_8zero_tol_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_zero_tol(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_8zero_tol_1__get__(o);
 }
 
-static PyMethodDef __pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_Householder[] = {
-  {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+static PyMethodDef __pyx_methods_5UQPyL_10surrogates_5mars__3_qr_Householder[] = {
+  {"alloc", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_Householder[] = {
-  {(char *)"k", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_k, 0, (char *)0, 0},
-  {(char *)"m", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_m, 0, (char *)0, 0},
-  {(char *)"max_n", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_max_n, 0, (char *)0, 0},
-  {(char *)"V", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_V, 0, (char *)0, 0},
-  {(char *)"T", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_T, 0, (char *)0, 0},
-  {(char *)"tau", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_tau, 0, (char *)0, 0},
-  {(char *)"beta", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_beta, 0, (char *)0, 0},
-  {(char *)"work", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_work, 0, (char *)0, 0},
-  {(char *)"zero_tol", __pyx_getprop_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_zero_tol, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_Householder[] = {
+  {(char *)"k", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_k, 0, (char *)0, 0},
+  {(char *)"m", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_m, 0, (char *)0, 0},
+  {(char *)"max_n", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_max_n, 0, (char *)0, 0},
+  {(char *)"V", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_V, 0, (char *)0, 0},
+  {(char *)"T", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_T, 0, (char *)0, 0},
+  {(char *)"tau", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_tau, 0, (char *)0, 0},
+  {(char *)"beta", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_beta, 0, (char *)0, 0},
+  {(char *)"work", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_work, 0, (char *)0, 0},
+  {(char *)"zero_tol", __pyx_getprop_5UQPyL_10surrogates_5mars__3_qr_11Householder_zero_tol, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
-static PyType_Slot __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder_slots[] = {
-  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_Householder},
-  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_Householder},
-  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_Householder},
-  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__},
-  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder},
+static PyType_Slot __pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder_slots[] = {
+  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_Householder},
+  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10surrogates_5mars__3_qr_Householder},
+  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_Householder},
+  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1__init__},
+  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_Householder},
   {0, 0},
 };
-static PyType_Spec __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder_spec = {
-  "UQPyL.Surrogates.Mars_._qr.Householder",
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder),
+static PyType_Spec __pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder_spec = {
+  "UQPyL.surrogates.mars_._qr.Householder",
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE,
-  __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder_slots,
+  __pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder_slots,
 };
 #else
 
-static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder = {
+static PyTypeObject __pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""Householder", /*tp_name*/
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder), /*tp_basicsize*/
+  "UQPyL.surrogates.mars_._qr.""Householder", /*tp_name*/
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__3_qr_Householder, /*tp_dealloc*/
+  __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__3_qr_Householder, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -28548,9 +28548,9 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder = {
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5UQPyL_10Surrogates_5Mars__3_qr_Householder, /*tp_methods*/
+  __pyx_methods_5UQPyL_10surrogates_5mars__3_qr_Householder, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5UQPyL_10Surrogates_5Mars__3_qr_Householder, /*tp_getset*/
+  __pyx_getsets_5UQPyL_10surrogates_5mars__3_qr_Householder, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
@@ -28558,9 +28558,9 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder = {
   #if !CYTHON_USE_TYPE_SPECS
   0, /*tp_dictoffset*/
   #endif
-  __pyx_pw_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_1__init__, /*tp_init*/
+  __pyx_pw_5UQPyL_10surrogates_5mars__3_qr_11Householder_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5UQPyL_10Surrogates_5Mars__3_qr_Householder, /*tp_new*/
+  __pyx_tp_new_5UQPyL_10surrogates_5mars__3_qr_Householder, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -28729,7 +28729,7 @@ static PyType_Slot __pyx_type___pyx_array_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_array_spec = {
-  "UQPyL.Surrogates.Mars_._qr.array",
+  "UQPyL.surrogates.mars_._qr.array",
   sizeof(struct __pyx_array_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_SEQUENCE,
@@ -28775,7 +28775,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""array", /*tp_name*/
+  "UQPyL.surrogates.mars_._qr.""array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -28935,7 +28935,7 @@ static PyType_Slot __pyx_type___pyx_MemviewEnum_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
-  "UQPyL.Surrogates.Mars_._qr.Enum",
+  "UQPyL.surrogates.mars_._qr.Enum",
   sizeof(struct __pyx_MemviewEnum_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -28945,7 +28945,7 @@ static PyType_Spec __pyx_type___pyx_MemviewEnum_spec = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""Enum", /*tp_name*/
+  "UQPyL.surrogates.mars_._qr.""Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -29242,7 +29242,7 @@ static PyType_Slot __pyx_type___pyx_memoryview_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryview_spec = {
-  "UQPyL.Surrogates.Mars_._qr.memoryview",
+  "UQPyL.surrogates.mars_._qr.memoryview",
   sizeof(struct __pyx_memoryview_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
@@ -29288,7 +29288,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""memoryview", /*tp_name*/
+  "UQPyL.surrogates.mars_._qr.""memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -29440,7 +29440,7 @@ static PyType_Slot __pyx_type___pyx_memoryviewslice_slots[] = {
   {0, 0},
 };
 static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
-  "UQPyL.Surrogates.Mars_._qr._memoryviewslice",
+  "UQPyL.surrogates.mars_._qr._memoryviewslice",
   sizeof(struct __pyx_memoryviewslice_obj),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC|Py_TPFLAGS_SEQUENCE,
@@ -29450,7 +29450,7 @@ static PyType_Spec __pyx_type___pyx_memoryviewslice_spec = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._qr.""_memoryviewslice", /*tp_name*/
+  "UQPyL.surrogates.mars_._qr.""_memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -29603,8 +29603,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_Step_may_not_be_zero_axis_d, __pyx_k_Step_may_not_be_zero_axis_d, sizeof(__pyx_k_Step_may_not_be_zero_axis_d), 0, 0, 1, 0},
     {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
     {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-    {&__pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_k_UQPyL_Surrogates_Mars___qr, sizeof(__pyx_k_UQPyL_Surrogates_Mars___qr), 0, 0, 1, 1},
-    {&__pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_k_UQPyL_Surrogates_Mars___qr_pyx, sizeof(__pyx_k_UQPyL_Surrogates_Mars___qr_pyx), 0, 0, 1, 0},
+    {&__pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_k_UQPyL_surrogates_mars___qr, sizeof(__pyx_k_UQPyL_surrogates_mars___qr), 0, 0, 1, 1},
+    {&__pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_k_UQPyL_surrogates_mars___qr_pyx, sizeof(__pyx_k_UQPyL_surrogates_mars___qr_pyx), 0, 0, 1, 0},
     {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
     {&__pyx_n_s_UpdatingQT, __pyx_k_UpdatingQT, sizeof(__pyx_k_UpdatingQT), 0, 0, 1, 1},
     {&__pyx_n_s_UpdatingQT___reduce_cython, __pyx_k_UpdatingQT___reduce_cython, sizeof(__pyx_k_UpdatingQT___reduce_cython), 0, 0, 1, 1},
@@ -29941,7 +29941,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(1, 1, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":23
+  /* "UQPyL/surrogates/mars_/_qr.pyx":23
  *         self.dependent_cols = dependent_cols
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -29951,9 +29951,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__24 = PyTuple_Pack(7, __pyx_n_s_cls, __pyx_n_s_m, __pyx_n_s_max_n, __pyx_n_s_zero_tol, __pyx_n_s_householder, __pyx_n_s_Q_t, __pyx_n_s_dependent_cols); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_alloc, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_alloc, 23, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 23, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":30
+  /* "UQPyL/surrogates/mars_/_qr.pyx":30
  *         return cls(m, max_n, householder, 0, Q_t, zero_tol, dependent_cols)
  * 
  *     cpdef void update_qt(UpdatingQT self, bint dependent):             # <<<<<<<<<<<<<<
@@ -29963,9 +29963,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__26 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_dependent); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_update_qt, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_update_qt, 30, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 30, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":55
+  /* "UQPyL/surrogates/mars_/_qr.pyx":55
  * 
  * 
  *     cpdef void update(UpdatingQT self, FLOAT_t[:] x):             # <<<<<<<<<<<<<<
@@ -29975,9 +29975,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__28 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_x); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_update, 55, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_update, 55, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 55, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":78
+  /* "UQPyL/surrogates/mars_/_qr.pyx":78
  * 
  * 
  *     cpdef void downdate(UpdatingQT self):             # <<<<<<<<<<<<<<
@@ -29987,16 +29987,16 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__30 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_downdate, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_downdate, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 78, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":83
+  /* "UQPyL/surrogates/mars_/_qr.pyx":83
  *             self.householder.downdate()
  * 
  *     cpdef void reset(UpdatingQT self):             # <<<<<<<<<<<<<<
  *         self.householder.reset()
  *         self.k = 0
  */
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_reset, 83, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_reset, 83, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 83, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -30019,7 +30019,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__35);
   __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(1, 16, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":102
+  /* "UQPyL/surrogates/mars_/_qr.pyx":102
  *         self.zero_tol = zero_tol
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -30029,27 +30029,27 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__37 = PyTuple_Pack(10, __pyx_n_s_cls, __pyx_n_s_m, __pyx_n_s_max_n, __pyx_n_s_zero_tol, __pyx_n_s_k, __pyx_n_s_V, __pyx_n_s_T, __pyx_n_s_tau, __pyx_n_s_beta, __pyx_n_s_work); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_alloc, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_alloc, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 102, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":112
+  /* "UQPyL/surrogates/mars_/_qr.pyx":112
  *         return cls(k, m, max_n, V, T, tau, beta, work, zero_tol)
  * 
  *     cpdef void downdate(Householder self):             # <<<<<<<<<<<<<<
  *         self.k -= 1
  * 
  */
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_downdate, 112, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_downdate, 112, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 112, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":115
+  /* "UQPyL/surrogates/mars_/_qr.pyx":115
  *         self.k -= 1
  * 
  *     cpdef void reset(Householder self):             # <<<<<<<<<<<<<<
  *         self.k = 0
  * 
  */
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_reset, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_reset, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 115, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":118
+  /* "UQPyL/surrogates/mars_/_qr.pyx":118
  *         self.k = 0
  * 
  *     cpdef bint update_from_column(Householder self, FLOAT_t[:] c):             # <<<<<<<<<<<<<<
@@ -30059,18 +30059,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__41 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_update_from_column, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_update_from_column, 118, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 118, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":136
+  /* "UQPyL/surrogates/mars_/_qr.pyx":136
  * 
  * 
  *     cpdef bint update_v_t(Householder self):             # <<<<<<<<<<<<<<
  *         # Assume relevant data has been copied into self.V correctly, as by
  *         # update_from_column.  Update V and T appropriately.
  */
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_update_v_t, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_update_v_t, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":185
+  /* "UQPyL/surrogates/mars_/_qr.pyx":185
  *         return dependent
  * 
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
@@ -30080,34 +30080,34 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__44 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_C); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_left_apply, 185, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_left_apply, 185, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 185, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":205
+  /* "UQPyL/surrogates/mars_/_qr.pyx":205
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('L')
  *         cdef char trans = ord('T')
  */
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_left_apply_transpose, 205, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_left_apply_transpose, 205, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 205, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":225
+  /* "UQPyL/surrogates/mars_/_qr.pyx":225
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('R')
  *         cdef char trans = ord('N')
  */
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_right_apply, 225, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_right_apply, 225, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 225, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":245
+  /* "UQPyL/surrogates/mars_/_qr.pyx":245
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('R')
  *         cdef char trans = ord('T')
  */
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___qr_pyx, __pyx_n_s_right_apply_transpose, 245, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___qr_pyx, __pyx_n_s_right_apply_transpose, 245, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 245, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -30218,73 +30218,73 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = &__pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT.update_qt = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update_qt;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT.update = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_update;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT.downdate = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_downdate;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT.reset = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_reset;
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT = &__pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT.update_qt = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update_qt;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT.update = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_update;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT.downdate = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_downdate;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT.reset = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_reset;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT)) __PYX_ERR(0, 12, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT_spec, __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT)) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT_spec, __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #else
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT = &__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT = &__pyx_type_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT->tp_print = 0;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT->tp_print = 0;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT->tp_dictoffset && __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT->tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT->tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT->tp_dictoffset && __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT->tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_UpdatingQT, (PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_UpdatingQT, (PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   #endif
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_Householder = &__pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.downdate = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_downdate;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.reset = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_reset;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.update_from_column = (int (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_from_column;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.update_v_t = (int (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_update_v_t;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.left_apply = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.left_apply_transpose = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_left_apply_transpose;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.right_apply = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__3_qr_Householder.right_apply_transpose = (void (*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_right_apply_transpose;
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_Householder = &__pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.downdate = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_downdate;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.reset = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_reset;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.update_from_column = (int (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_from_column;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.update_v_t = (int (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_update_v_t;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.left_apply = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.left_apply_transpose = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_left_apply_transpose;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.right_apply = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__3_qr_Householder.right_apply_transpose = (void (*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__3_qr_Householder *, __Pyx_memviewslice, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__3_qr_11Householder_right_apply_transpose;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder)) __PYX_ERR(0, 87, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder_spec, __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder)) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder_spec, __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #else
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder = &__pyx_type_5UQPyL_10Surrogates_5Mars__3_qr_Householder;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder = &__pyx_type_5UQPyL_10surrogates_5mars__3_qr_Householder;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder->tp_print = 0;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder->tp_print = 0;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder->tp_dictoffset && __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder->tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder->tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder->tp_dictoffset && __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder->tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_vtabptr_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Householder, (PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Householder, (PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
   #endif
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -30770,14 +30770,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_UQPyL__Surrogates__Mars____qr) {
+  if (__pyx_module_is_main_UQPyL__surrogates__mars____qr) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name_2, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "UQPyL.Surrogates.Mars_._qr")) {
-      if (unlikely((PyDict_SetItemString(modules, "UQPyL.Surrogates.Mars_._qr", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "UQPyL.surrogates.mars_._qr")) {
+      if (unlikely((PyDict_SetItemString(modules, "UQPyL.surrogates.mars_._qr", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -31311,7 +31311,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_7) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":6
+  /* "UQPyL/surrogates/mars_/_qr.pyx":6
  * # cython: wraparound = False
  * # cython: profile = False
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -31323,7 +31323,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_7) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":10
+  /* "UQPyL/surrogates/mars_/_qr.pyx":10
  * from scipy.linalg.cython_blas cimport dcopy
  * from libc.math cimport abs
  * from ._types import BOOL, FLOAT             # <<<<<<<<<<<<<<
@@ -31351,89 +31351,89 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":23
+  /* "UQPyL/surrogates/mars_/_qr.pyx":23
  *         self.dependent_cols = dependent_cols
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef Householder householder = Householder.alloc(m, max_n, zero_tol)
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_3alloc, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_alloc, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_3alloc, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_alloc, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_alloc, __pyx_t_4) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_alloc, __pyx_t_4) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
-  __Pyx_GetNameInClass(__pyx_t_4, (PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_alloc); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
+  __Pyx_GetNameInClass(__pyx_t_4, (PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_alloc); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_7 = __Pyx_Method_ClassMethod(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_alloc, __pyx_t_7) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_alloc, __pyx_t_7) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":30
+  /* "UQPyL/surrogates/mars_/_qr.pyx":30
  *         return cls(m, max_n, householder, 0, Q_t, zero_tol, dependent_cols)
  * 
  *     cpdef void update_qt(UpdatingQT self, bint dependent):             # <<<<<<<<<<<<<<
  *         # Assume that householder has already been updated and now Q_t needs to be updated
  *         # accordingly
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_5update_qt, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_update_qt, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_5update_qt, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_update_qt, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_update_qt, __pyx_t_7) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_update_qt, __pyx_t_7) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":55
+  /* "UQPyL/surrogates/mars_/_qr.pyx":55
  * 
  * 
  *     cpdef void update(UpdatingQT self, FLOAT_t[:] x):             # <<<<<<<<<<<<<<
  *         # Updates householder, then calls
  *         # update_qt
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_7update, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_update, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_7update, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_update, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_update, __pyx_t_7) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_update, __pyx_t_7) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":78
+  /* "UQPyL/surrogates/mars_/_qr.pyx":78
  * 
  * 
  *     cpdef void downdate(UpdatingQT self):             # <<<<<<<<<<<<<<
  *         self.k -= 1
  *         if not self.dependent_cols[self.k]:
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_9downdate, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_downdate, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_9downdate, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_downdate, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_downdate, __pyx_t_7) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_downdate, __pyx_t_7) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":83
+  /* "UQPyL/surrogates/mars_/_qr.pyx":83
  *             self.householder.downdate()
  * 
  *     cpdef void reset(UpdatingQT self):             # <<<<<<<<<<<<<<
  *         self.householder.reset()
  *         self.k = 0
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_11reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_reset, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_11reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT_reset, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_reset, __pyx_t_7) < 0) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_reset, __pyx_t_7) < 0) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef tuple state
  *     cdef object _dict
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT___reduce_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_13__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT___reduce_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_reduce_cython, __pyx_t_7) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_reduce_cython, __pyx_t_7) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
   /* "(tree fragment)":16
  *     else:
@@ -31441,147 +31441,147 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_UpdatingQT__set_state(self, __pyx_state)
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT___setstate_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_10UpdatingQT_15__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_UpdatingQT___setstate_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT, __pyx_n_s_setstate_cython, __pyx_t_7) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT, __pyx_n_s_setstate_cython, __pyx_t_7) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_UpdatingQT);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_UpdatingQT);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":102
+  /* "UQPyL/surrogates/mars_/_qr.pyx":102
  *         self.zero_tol = zero_tol
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def alloc(cls, int m, int max_n, FLOAT_t zero_tol):
  *         cdef int k = 0
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_3alloc, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_alloc, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_3alloc, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_alloc, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_alloc, __pyx_t_7) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_alloc, __pyx_t_7) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
-  __Pyx_GetNameInClass(__pyx_t_7, (PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_alloc); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
+  __Pyx_GetNameInClass(__pyx_t_7, (PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_alloc); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_4 = __Pyx_Method_ClassMethod(__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_alloc, __pyx_t_4) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_alloc, __pyx_t_4) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":112
+  /* "UQPyL/surrogates/mars_/_qr.pyx":112
  *         return cls(k, m, max_n, V, T, tau, beta, work, zero_tol)
  * 
  *     cpdef void downdate(Householder self):             # <<<<<<<<<<<<<<
  *         self.k -= 1
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_5downdate, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_downdate, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_5downdate, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_downdate, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_downdate, __pyx_t_4) < 0) __PYX_ERR(0, 112, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_downdate, __pyx_t_4) < 0) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":115
+  /* "UQPyL/surrogates/mars_/_qr.pyx":115
  *         self.k -= 1
  * 
  *     cpdef void reset(Householder self):             # <<<<<<<<<<<<<<
  *         self.k = 0
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_7reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_reset, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_7reset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_reset, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_reset, __pyx_t_4) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_reset, __pyx_t_4) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":118
+  /* "UQPyL/surrogates/mars_/_qr.pyx":118
  *         self.k = 0
  * 
  *     cpdef bint update_from_column(Householder self, FLOAT_t[:] c):             # <<<<<<<<<<<<<<
  *         # Copies c, applies self, then updates V and T
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_9update_from_column, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_update_from_column, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_9update_from_column, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_update_from_column, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_update_from_column, __pyx_t_4) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_update_from_column, __pyx_t_4) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":136
+  /* "UQPyL/surrogates/mars_/_qr.pyx":136
  * 
  * 
  *     cpdef bint update_v_t(Householder self):             # <<<<<<<<<<<<<<
  *         # Assume relevant data has been copied into self.V correctly, as by
  *         # update_from_column.  Update V and T appropriately.
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_11update_v_t, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_update_v_t, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_11update_v_t, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_update_v_t, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_update_v_t, __pyx_t_4) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_update_v_t, __pyx_t_4) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":185
+  /* "UQPyL/surrogates/mars_/_qr.pyx":185
  *         return dependent
  * 
  *     cpdef void left_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('L')
  *         cdef char trans = ord('N')
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_13left_apply, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_left_apply, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_13left_apply, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_left_apply, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_left_apply, __pyx_t_4) < 0) __PYX_ERR(0, 185, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_left_apply, __pyx_t_4) < 0) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":205
+  /* "UQPyL/surrogates/mars_/_qr.pyx":205
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void left_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('L')
  *         cdef char trans = ord('T')
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_15left_apply_transpose, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_left_apply_transpose, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_15left_apply_transpose, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_left_apply_transpose, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_left_apply_transpose, __pyx_t_4) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_left_apply_transpose, __pyx_t_4) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":225
+  /* "UQPyL/surrogates/mars_/_qr.pyx":225
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('R')
  *         cdef char trans = ord('N')
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_17right_apply, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_right_apply, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_17right_apply, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_right_apply, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_right_apply, __pyx_t_4) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_right_apply, __pyx_t_4) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":245
+  /* "UQPyL/surrogates/mars_/_qr.pyx":245
  *                V, &ldv, T, &ldt, C_arg, &ldc, work, &ldwork)
  * 
  *     cpdef void right_apply_transpose(Householder self, FLOAT_t[::1, :] C):             # <<<<<<<<<<<<<<
  *         cdef char side = ord('R')
  *         cdef char trans = ord('T')
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_19right_apply_transpose, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_right_apply_transpos, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_19right_apply_transpose, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder_right_apply_transpos, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_right_apply_transpose, __pyx_t_4) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_right_apply_transpose, __pyx_t_4) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef tuple state
  *     cdef object _dict
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_21__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder___reduce_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_21__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder___reduce_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_reduce_cython, __pyx_t_4) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_reduce_cython, __pyx_t_4) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
   /* "(tree fragment)":16
  *     else:
@@ -31589,18 +31589,18 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Householder__set_state(self, __pyx_state)
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_11Householder_23__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder___setstate_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 16, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_11Householder_23__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_Householder___setstate_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder, __pyx_n_s_setstate_cython, __pyx_t_4) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder, __pyx_n_s_setstate_cython, __pyx_t_4) < 0) __PYX_ERR(1, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__3_qr_Householder);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__3_qr_Householder);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_UpdatingQT(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_1__pyx_unpickle_UpdatingQT, 0, __pyx_n_s_pyx_unpickle_UpdatingQT, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_1__pyx_unpickle_UpdatingQT, 0, __pyx_n_s_pyx_unpickle_UpdatingQT, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_UpdatingQT, __pyx_t_4) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -31612,12 +31612,12 @@ if (!__Pyx_RefNanny) {
  *     __pyx_result.Q_t = __pyx_state[0]; __pyx_result.dependent_cols = __pyx_state[1]; __pyx_result.householder = __pyx_state[2]; __pyx_result.k = __pyx_state[3]; __pyx_result.m = __pyx_state[4]; __pyx_result.max_n = __pyx_state[5]; __pyx_result.zero_tol = __pyx_state[6]
  *     if len(__pyx_state) > 7 and hasattr(__pyx_result, '__dict__'):
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__3_qr_3__pyx_unpickle_Householder, 0, __pyx_n_s_pyx_unpickle_Householder, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__52)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__3_qr_3__pyx_unpickle_Householder, 0, __pyx_n_s_pyx_unpickle_Householder, NULL, __pyx_n_s_UQPyL_surrogates_mars___qr, __pyx_d, ((PyObject *)__pyx_codeobj__52)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Householder, __pyx_t_4) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_qr.pyx":1
+  /* "UQPyL/surrogates/mars_/_qr.pyx":1
  * # distutils: language = c             # <<<<<<<<<<<<<<
  * # cython: cdivision = True
  * # cython: boundscheck = False
@@ -31636,7 +31636,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_7);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init UQPyL.Surrogates.Mars_._qr", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init UQPyL.surrogates.mars_._qr", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -31650,7 +31650,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init UQPyL.Surrogates.Mars_._qr");
+    PyErr_SetString(PyExc_ImportError, "init UQPyL.surrogates.mars_._qr");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -36454,14 +36454,14 @@ __pyx_slices_overlap(__Pyx_memviewslice *slice1,
 }
 
 /* MemviewDtypeToObject */
-static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(const char *itemp) {
-    return (PyObject *) PyFloat_FromDouble(*(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) itemp);
+static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(const char *itemp) {
+    return (PyObject *) PyFloat_FromDouble(*(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) itemp);
 }
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(const char *itemp, PyObject *obj) {
-    __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t value = __pyx_PyFloat_AsDouble(obj);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(const char *itemp, PyObject *obj) {
+    __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t value = __pyx_PyFloat_AsDouble(obj);
     if (unlikely((value == ((npy_float64)-1)) && PyErr_Occurred()))
         return 0;
-    *(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t *) itemp = value;
+    *(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t *) itemp = value;
     return 1;
 }
 
@@ -37210,7 +37210,7 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dcd__nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW) };
@@ -37221,7 +37221,7 @@ no_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_F_CONTIG,
                                                  (PyBUF_F_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -37255,19 +37255,19 @@ __pyx_fail:
     }
 
 /* MemviewDtypeToObject */
-  static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(const char *itemp) {
-    return (PyObject *) __Pyx_PyInt_From_npy_uint8(*(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) itemp);
+  static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(const char *itemp) {
+    return (PyObject *) __Pyx_PyInt_From_npy_uint8(*(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) itemp);
 }
-static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(const char *itemp, PyObject *obj) {
-    __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t value = __Pyx_PyInt_As_npy_uint8(obj);
+static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(const char *itemp, PyObject *obj) {
+    __pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t value = __Pyx_PyInt_As_npy_uint8(obj);
     if (unlikely((value == ((npy_uint8)-1)) && PyErr_Occurred()))
         return 0;
-    *(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t *) itemp = value;
+    *(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t *) itemp = value;
     return 1;
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
@@ -37278,7 +37278,7 @@ static CYTHON_INLINE int __pyx_memview_set_nn___pyx_t_5UQPyL_10Surrogates_5Mars_
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
                                                  (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -37290,7 +37290,7 @@ __pyx_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
@@ -37301,7 +37301,7 @@ __pyx_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
                                                  (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;
@@ -37313,7 +37313,7 @@ __pyx_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
     int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
@@ -37324,7 +37324,7 @@ __pyx_fail:
     }
     retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
                                                  PyBUF_RECORDS_RO | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, stack,
+                                                 &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
         goto __pyx_fail;

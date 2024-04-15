@@ -14,12 +14,12 @@
             "D:\\Anaconda3\\envs\\SCI1\\lib\\site-packages\\numpy\\core\\include"
         ],
         "language": "c",
-        "name": "UQPyL.Surrogates.Mars_._pruning",
+        "name": "UQPyL.surrogates.mars_._pruning",
         "sources": [
-            "UQPyL/Surrogates/Mars_/_pruning.pyx"
+            "UQPyL/surrogates/mars_/_pruning.pyx"
         ]
     },
-    "module_name": "UQPyL.Surrogates.Mars_._pruning"
+    "module_name": "UQPyL.surrogates.mars_._pruning"
 }
 END: Cython Metadata */
 
@@ -1221,8 +1221,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__UQPyL__Surrogates__Mars____pruning
-#define __PYX_HAVE_API__UQPyL__Surrogates__Mars____pruning
+#define __PYX_HAVE__UQPyL__surrogates__mars____pruning
+#define __PYX_HAVE_API__UQPyL__surrogates__mars____pruning
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1523,16 +1523,16 @@ static const char *__pyx_filename;
 /* #### Code section: filename_table ### */
 
 static const char *__pyx_f[] = {
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_pruning.pyx",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_pruning.pyx",
   "__init__.cython-30.pxd",
   "contextvars.pxd",
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_pruning.pxd",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_pruning.pxd",
   "<stringsource>",
   "type.pxd",
   "bool.pxd",
   "complex.pxd",
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_basis.pxd",
-  "UQPyL\\\\Surrogates\\\\Mars_\\\\_record.pxd",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_basis.pxd",
+  "UQPyL\\\\surrogates\\\\mars_\\\\_record.pxd",
 };
 /* #### Code section: utility_code_proto_before_types ### */
 /* ForceInitThreads.proto */
@@ -1772,7 +1772,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  */
-typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t;
+typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t;
 
 /* "_types.pxd":3
  * cimport numpy as cnp
@@ -1781,7 +1781,7 @@ typedef __pyx_t_5numpy_float64_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOA
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
+typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INT_t;
 
 /* "_types.pxd":4
  * ctypedef cnp.float64_t FLOAT_t
@@ -1789,14 +1789,14 @@ typedef __pyx_t_5numpy_int_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INT_t;
  * ctypedef cnp.intp_t INDEX_t             # <<<<<<<<<<<<<<
  * ctypedef cnp.uint8_t BOOL_t
  */
-typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t;
+typedef __pyx_t_5numpy_intp_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t;
 
 /* "_types.pxd":5
  * ctypedef cnp.int_t INT_t
  * ctypedef cnp.intp_t INDEX_t
  * ctypedef cnp.uint8_t BOOL_t             # <<<<<<<<<<<<<<
  */
-typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t;
+typedef __pyx_t_5numpy_uint8_t __pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t;
 /* #### Code section: complex_type_declarations ### */
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX && (1) && (!0 || __cplusplus)
@@ -1825,26 +1825,26 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 /* #### Code section: type_declarations ### */
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration;
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
 struct __pyx_opt_args_7cpython_11contextvars_get_value;
 struct __pyx_opt_args_7cpython_11contextvars_get_value_no_default;
 
@@ -1907,11 +1907,11 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_13BasisFunction_apply;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_17RootBasisFunction_apply;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_25DataVariableBasisFunction_apply;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_24MissingnessBasisFunction_apply;
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_5Basis_transform_deriv;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_13BasisFunction_apply;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_17RootBasisFunction_apply;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_25DataVariableBasisFunction_apply;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_24MissingnessBasisFunction_apply;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_5Basis_transform_deriv;
 
 /* "_basis.pxd":51
  *     cpdef INDEX_t effective_degree(BasisFunction self)
@@ -1920,7 +1920,7 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_5Basis_transform_deriv;
  *                 cnp.ndarray[BOOL_t, ndim=2] missing,
  *                 cnp.ndarray[FLOAT_t, ndim=1] b, bint recurse= ?)
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_13BasisFunction_apply {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_13BasisFunction_apply {
   int __pyx_n;
   int recurse;
 };
@@ -1932,7 +1932,7 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_13BasisFunction_apply {
  *                 cnp.ndarray[BOOL_t, ndim=2] missing,
  *                 cnp.ndarray[FLOAT_t, ndim=1] b, bint recurse=?)
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_17RootBasisFunction_apply {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_17RootBasisFunction_apply {
   int __pyx_n;
   int recurse;
 };
@@ -1944,7 +1944,7 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_17RootBasisFunction_app
  *                 cnp.ndarray[BOOL_t, ndim=2] missing,
  *                 cnp.ndarray[FLOAT_t, ndim=1] b, bint recurse=?)
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_25DataVariableBasisFunction_apply {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_25DataVariableBasisFunction_apply {
   int __pyx_n;
   int recurse;
 };
@@ -1956,7 +1956,7 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_25DataVariableBasisFunc
  *                 cnp.ndarray[BOOL_t, ndim=2] missing,
  *                 cnp.ndarray[FLOAT_t, ndim=1] b, bint recurse=?)
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_24MissingnessBasisFunction_apply {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_24MissingnessBasisFunction_apply {
   int __pyx_n;
   int recurse;
 };
@@ -1968,18 +1968,18 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_24MissingnessBasisFunct
  *                           cnp.ndarray[BOOL_t, ndim=2] missing,
  *                           cnp.ndarray[FLOAT_t, ndim=1] b,
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_5Basis_transform_deriv {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_5Basis_transform_deriv {
   int __pyx_n;
   PyBoolObject *prezeroed_j;
 };
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table;
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table;
 
 /* "_util.pxd":23
  * cpdef str_pad(string, length)
  * 
  * cpdef ascii_table(header, data, print_header=?, print_footer=?)             # <<<<<<<<<<<<<<
  */
-struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table {
+struct __pyx_opt_args_5UQPyL_10surrogates_5mars__5_util_ascii_table {
   int __pyx_n;
   PyObject *print_header;
   PyObject *print_footer;
@@ -1992,10 +1992,10 @@ struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__5_util_ascii_table {
  *     '''Abstract.  Subclasses must implement the apply and __init__ methods.'''
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *__pyx_vtab;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *parent;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *__pyx_vtab;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *parent;
   PyObject *child_map;
   PyObject *children;
   int pruned;
@@ -2011,8 +2011,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction {
  *     cpdef bint covered(RootBasisFunction self, INDEX_t variable)
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction __pyx_base;
 };
 
 
@@ -2023,8 +2023,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction {
  * 
  *     cpdef inline FLOAT_t eval(ConstantBasisFunction self)
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction __pyx_base;
 };
 
 
@@ -2035,9 +2035,9 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction {
  *     cdef INDEX_t variable
  *     cdef readonly label
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t variable;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t variable;
   PyObject *label;
 };
 
@@ -2049,8 +2049,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction {
  *     cpdef _effective_degree(DataVariableBasisFunction self, dict data_dict, dict missing_dict)
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction __pyx_base;
 };
 
 
@@ -2061,8 +2061,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction {
  *     cdef readonly bint complement
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction __pyx_base;
   int complement;
 };
 
@@ -2074,10 +2074,10 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction {
  *     cdef FLOAT_t knot
  *     cdef INDEX_t knot_idx
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t knot;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t knot_idx;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t knot;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t knot_idx;
   int reverse;
 };
 
@@ -2089,12 +2089,12 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase {
  *     cdef FLOAT_t p
  *     cdef FLOAT_t r
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t p;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t r;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t knot_minus;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t knot_plus;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t p;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t r;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t knot_minus;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t knot_plus;
 };
 
 
@@ -2105,8 +2105,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction {
  * 
  *     cpdef _smoothed_version(HingeBasisFunction self,
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase __pyx_base;
 };
 
 
@@ -2117,8 +2117,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction {
  *     cpdef bool linear_in(LinearBasisFunction self, INDEX_t variable)
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction __pyx_base;
 };
 
 
@@ -2129,11 +2129,11 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction {
  *     '''A wrapper that provides functionality related to a set of BasisFunctions
  *     with a common RootBasisFunction ancestor.  Retains the order in which
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_vtab;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *__pyx_vtab;
   PyObject *order;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t num_variables;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t num_variables;
 };
 
 
@@ -2144,14 +2144,14 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis {
  *     cdef list iterations
  *     cdef int num_samples
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record *__pyx_vtab;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record *__pyx_vtab;
   PyObject *iterations;
   int num_samples;
   int num_variables;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t penalty;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t sst;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t penalty;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t sst;
 };
 
 
@@ -2162,9 +2162,9 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record {
  *     cdef readonly INDEX_t selected
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t selected;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t selected;
 };
 
 
@@ -2175,8 +2175,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord {
  *     cdef readonly int stopping_condition
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record __pyx_base;
   int stopping_condition;
   PyObject *xlabels;
 };
@@ -2189,11 +2189,11 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord {
  *     cdef FLOAT_t mse
  *     cdef INDEX_t size
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration *__pyx_vtab;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t mse;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t size;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration *__pyx_vtab;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t mse;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t size;
 };
 
 
@@ -2204,9 +2204,9 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration {
  *     cdef INDEX_t pruned
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t pruned;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t pruned;
 };
 
 
@@ -2217,8 +2217,8 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration {
  *     pass
  * 
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration __pyx_base;
 };
 
 
@@ -2229,11 +2229,11 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration {
  *     cdef INDEX_t parent
  *     cdef INDEX_t variable
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t parent;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t variable;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t knot;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t parent;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t variable;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t knot;
   int code;
   int no_candidates;
 };
@@ -2245,21 +2245,21 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration {
  * cdef class FirstForwardPassIteration(ForwardPassIteration):             # <<<<<<<<<<<<<<
  *     cpdef INDEX_t get_size(FirstForwardPassIteration self)
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration __pyx_base;
+struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration __pyx_base;
 };
 
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pxd":6
+/* "UQPyL/surrogates/mars_/_pruning.pxd":6
  * from ._record cimport PruningPassRecord
  * 
  * cdef class PruningPasser:             # <<<<<<<<<<<<<<
  *     cdef cnp.ndarray X
  *     cdef cnp.ndarray missing
  */
-struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser {
+struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_vtab;
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_vtab;
   PyArrayObject *X;
   PyArrayObject *missing;
   PyArrayObject *B;
@@ -2268,12 +2268,12 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser {
   int verbose;
   PyArrayObject *output_weight;
   PyObject *feature_importance;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t m;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t n;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *basis;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t penalty;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t sst;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *record;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t m;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t n;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *basis;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t penalty;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t sst;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *record;
 };
 
 
@@ -2286,29 +2286,29 @@ struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser {
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction {
-  PyObject *(*smooth)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  int (*has_knot)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  int (*is_prunable)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  int (*is_pruned)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  int (*is_splittable)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  int (*make_splittable)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  int (*make_unsplittable)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*get_children)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *(*get_coverage)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyBoolObject *(*has_linear)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyBoolObject *(*linear_in)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*_set_parent)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*_add_child)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *(*get_parent)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*prune)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*unprune)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*knots)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*effective_degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*apply)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_13BasisFunction_apply *__pyx_optional_args);
-  PyArrayObject *(*valid_knots)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyArrayObject *, PyArrayObject *, int, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int, int, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, PyArrayObject *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction {
+  PyObject *(*smooth)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  int (*has_knot)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  int (*is_prunable)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  int (*is_pruned)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  int (*is_splittable)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  int (*make_splittable)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  int (*make_unsplittable)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*get_children)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *(*get_coverage)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyBoolObject *(*has_linear)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyBoolObject *(*linear_in)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*_set_parent)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*_add_child)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *(*get_parent)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*prune)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*unprune)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*knots)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*effective_degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*apply)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_13BasisFunction_apply *__pyx_optional_args);
+  PyArrayObject *(*valid_knots)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyArrayObject *, PyArrayObject *, int, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int, int, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, PyArrayObject *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_BasisFunction;
 
 
 /* "_basis.pxd":63
@@ -2319,17 +2319,17 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction 
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction __pyx_base;
-  int (*covered)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  int (*eligible)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*variables)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction __pyx_base;
+  int (*covered)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  int (*eligible)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*variables)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction;
 
 
 /* "_basis.pxd":90
@@ -2340,12 +2340,12 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunct
  *     cpdef inline FLOAT_t eval(ConstantBasisFunction self)
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*eval)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*eval_deriv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*eval)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*eval_deriv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction;
 
 
 /* "_basis.pxd":96
@@ -2356,13 +2356,13 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisF
  *     cdef readonly label
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*variables)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*get_variable)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*variables)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*get_variable)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction;
 
 
 /* "_basis.pxd":106
@@ -2373,14 +2373,14 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisF
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction __pyx_base;
-  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  int (*covered)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  int (*eligible)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction __pyx_base;
+  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  int (*covered)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  int (*eligible)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction;
 
 
 /* "_basis.pxd":123
@@ -2391,15 +2391,15 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBa
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction __pyx_base;
-  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  int (*covered)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  int (*eligible)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction __pyx_base;
+  PyObject *(*_effective_degree)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  int (*covered)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  int (*eligible)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*apply_deriv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction;
 
 
 /* "_basis.pxd":149
@@ -2410,13 +2410,13 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBas
  *     cdef INDEX_t knot_idx
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*get_knot)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
-  int (*get_reverse)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*get_knot_idx)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*get_knot)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
+  int (*get_reverse)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*get_knot_idx)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase;
 
 
 /* "_basis.pxd":164
@@ -2427,16 +2427,16 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunc
  *     cdef FLOAT_t r
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase __pyx_base;
-  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
-  PyObject *(*get_knot_minus)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*get_knot_plus)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*_init_p_r)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*get_p)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
-  PyObject *(*get_r)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase __pyx_base;
+  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*get_knot_minus)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*get_knot_plus)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*_init_p_r)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*get_p)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
+  PyObject *(*get_r)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction;
 
 
 /* "_basis.pxd":184
@@ -2447,11 +2447,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeB
  *     cpdef _smoothed_version(HingeBasisFunction self,
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase __pyx_base;
-  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase __pyx_base;
+  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction;
 
 
 /* "_basis.pxd":190
@@ -2462,11 +2462,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunc
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction __pyx_base;
-  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction __pyx_base;
+  PyObject *(*_smoothed_version)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, PyObject *, PyObject *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction;
 
 
 /* "_basis.pxd":196
@@ -2477,18 +2477,18 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFun
  *     with a common RootBasisFunction ancestor.  Retains the order in which
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis {
-  int (*get_num_variables)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, int __pyx_skip_dispatch);
-  PyObject *(*anova_decomp)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, int __pyx_skip_dispatch);
-  PyObject *(*smooth)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, PyArrayObject *, int __pyx_skip_dispatch);
-  PyObject *(*append)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*plen)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, int __pyx_skip_dispatch);
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction *(*get)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  PyObject *(*transform)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch);
-  PyObject *(*weighted_transform)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch);
-  PyObject *(*transform_deriv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10Surrogates_5Mars__6_basis_5Basis_transform_deriv *__pyx_optional_args);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis {
+  int (*get_num_variables)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, int __pyx_skip_dispatch);
+  PyObject *(*anova_decomp)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, int __pyx_skip_dispatch);
+  PyObject *(*smooth)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, PyArrayObject *, int __pyx_skip_dispatch);
+  PyObject *(*append)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*plen)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, int __pyx_skip_dispatch);
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction *(*get)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  PyObject *(*transform)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch);
+  PyObject *(*weighted_transform)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch);
+  PyObject *(*transform_deriv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyArrayObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_5UQPyL_10surrogates_5mars__6_basis_5Basis_transform_deriv *__pyx_optional_args);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_Basis;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_Basis;
 
 
 /* "_record.pxd":5
@@ -2499,14 +2499,14 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_v
  *     cdef int num_samples
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record {
-  PyObject *(*append)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*mse)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*rsq)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*gcv)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*grsq)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record {
+  PyObject *(*append)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *, struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*mse)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*rsq)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*gcv)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*grsq)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Record;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Record;
 
 
 /* "_record.pxd":22
@@ -2517,13 +2517,13 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record *__pyx
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record __pyx_base;
-  PyObject *(*set_selected)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*get_selected)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *, int __pyx_skip_dispatch);
-  PyObject *(*roll_back)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record __pyx_base;
+  PyObject *(*set_selected)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*get_selected)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *, int __pyx_skip_dispatch);
+  PyObject *(*roll_back)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord;
 
 
 /* "_record.pxd":31
@@ -2534,11 +2534,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRe
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record __pyx_base;
-  PyObject *(*set_stopping_condition)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord *, int, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record __pyx_base;
+  PyObject *(*set_stopping_condition)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord *, int, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord;
 
 
 /* "_record.pxd":38
@@ -2549,11 +2549,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRe
  *     cdef INDEX_t size
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*get_mse)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration *, int __pyx_skip_dispatch);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*get_size)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*get_mse)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration *, int __pyx_skip_dispatch);
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*get_size)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Iteration;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Iteration;
 
 
 /* "_record.pxd":46
@@ -2564,11 +2564,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration *__
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration __pyx_base;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t (*get_pruned)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration __pyx_base;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t (*get_pruned)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration;
 
 
 /* "_record.pxd":51
@@ -2579,10 +2579,10 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIt
  * 
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration __pyx_base;
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration __pyx_base;
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration;
 
 
 /* "_record.pxd":54
@@ -2593,12 +2593,12 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningP
  *     cdef INDEX_t variable
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration __pyx_base;
-  PyObject *(*set_no_candidates)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration *, int, int __pyx_skip_dispatch);
-  PyObject *(*no_further_candidates)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration __pyx_base;
+  PyObject *(*set_no_candidates)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration *, int, int __pyx_skip_dispatch);
+  PyObject *(*no_further_candidates)(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration;
 
 
 /* "_record.pxd":65
@@ -2608,13 +2608,13 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIt
  *     cpdef INDEX_t get_size(FirstForwardPassIteration self)
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration {
-  struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration __pyx_base;
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration {
+  struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration __pyx_base;
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration *__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration;
 
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pyx":16
+/* "UQPyL/surrogates/mars_/_pruning.pyx":16
  * FEAT_IMP_CRITERIA = (GCV, RSS, NB_SUBSETS)
  * 
  * cdef class PruningPasser:             # <<<<<<<<<<<<<<
@@ -2622,11 +2622,11 @@ static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardP
  *     def __init__(PruningPasser self, Basis basis,
  */
 
-struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser {
-  PyObject *(*run)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch);
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *(*trace)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser {
+  PyObject *(*run)(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch);
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *(*trace)(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_vtabptr_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
 /* #### Code section: utility_code_proto ### */
 
 /* --- Runtime support code (head) --- */
@@ -3626,8 +3626,8 @@ static CYTHON_INLINE npy_intp __pyx_f_5numpy_7ndarray_4size_size(PyArrayObject *
 static CYTHON_INLINE char *__pyx_f_5numpy_7ndarray_4data_data(PyArrayObject *__pyx_v_self); /* proto*/
 static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4real_real(PyComplexObject *__pyx_v_self); /* proto*/
 static CYTHON_INLINE double __pyx_f_7cpython_7complex_7complex_4imag_imag(PyComplexObject *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_run(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_trace(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_run(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_trace(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from "libc.string" */
 
@@ -3719,27 +3719,27 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
 
 /* Module declarations from "numpy" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._types" */
+/* Module declarations from "UQPyL.surrogates.mars_._types" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._basis" */
+/* Module declarations from "UQPyL.surrogates.mars_._basis" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._record" */
+/* Module declarations from "UQPyL.surrogates.mars_._record" */
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._util" */
-static PyObject *(*__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d)(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
-static __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (*__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv)(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
+/* Module declarations from "UQPyL.surrogates.mars_._util" */
+static PyObject *(*__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d)(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch); /*proto*/
+static __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (*__pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv)(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch); /*proto*/
 
-/* Module declarations from "UQPyL.Surrogates.Mars_._pruning" */
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *, PyObject *); /*proto*/
+/* Module declarations from "UQPyL.surrogates.mars_._pruning" */
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *, PyObject *); /*proto*/
 /* #### Code section: typeinfo ### */
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t = { "BOOL_t", NULL, sizeof(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t), { 0 }, 0, __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t) ? 'U' : 'I', __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t = { "FLOAT_t", NULL, sizeof(__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t = { "BOOL_t", NULL, sizeof(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t), { 0 }, 0, __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t) ? 'U' : 'I', __PYX_IS_UNSIGNED(__pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t), 0 };
 /* #### Code section: before_global_var ### */
-#define __Pyx_MODULE_NAME "UQPyL.Surrogates.Mars_._pruning"
-extern int __pyx_module_is_main_UQPyL__Surrogates__Mars____pruning;
-int __pyx_module_is_main_UQPyL__Surrogates__Mars____pruning = 0;
+#define __Pyx_MODULE_NAME "UQPyL.surrogates.mars_._pruning"
+extern int __pyx_module_is_main_UQPyL__surrogates__mars____pruning;
+int __pyx_module_is_main_UQPyL__surrogates__mars____pruning = 0;
 
-/* Implementation of "UQPyL.Surrogates.Mars_._pruning" */
+/* Implementation of "UQPyL.surrogates.mars_._pruning" */
 /* #### Code section: global_var ### */
 static PyObject *__pyx_builtin_print;
 static PyObject *__pyx_builtin_range;
@@ -3839,22 +3839,22 @@ static const char __pyx_k_feature_importance_type[] = "feature_importance_type";
 static const char __pyx_k_pyx_unpickle_PruningPasser[] = "__pyx_unpickle_PruningPasser";
 static const char __pyx_k_PruningPasser___reduce_cython[] = "PruningPasser.__reduce_cython__";
 static const char __pyx_k_PruningPasser___setstate_cython[] = "PruningPasser.__setstate_cython__";
-static const char __pyx_k_UQPyL_Surrogates_Mars___pruning[] = "UQPyL\\Surrogates\\Mars_\\_pruning.pyx";
+static const char __pyx_k_UQPyL_surrogates_mars___pruning[] = "UQPyL\\surrogates\\mars_\\_pruning.pyx";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0x6607cc5, 0x6f34c16, 0xb370df4) = (B, X, basis, feature_importance, m, missing, n, output_weight, penalty, record, sample_weight, sst, verbose, y))";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
-static const char __pyx_k_UQPyL_Surrogates_Mars___pruning_2[] = "UQPyL.Surrogates.Mars_._pruning";
+static const char __pyx_k_UQPyL_surrogates_mars___pruning_2[] = "UQPyL.surrogates.mars_._pruning";
 /* #### Code section: decls ### */
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_v_basis, PyArrayObject *__pyx_v_X, PyArrayObject *__pyx_v_missing, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_sample_weight, int __pyx_v_verbose, PyObject *__pyx_v_kwargs); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2run(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4trace(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_2__set__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_4__del__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_6__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *__pyx_v_basis, PyArrayObject *__pyx_v_X, PyArrayObject *__pyx_v_missing, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_sample_weight, int __pyx_v_verbose, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_2run(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_4trace(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_2__set__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_4__del__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_6__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_8__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_get = {0, 0, 0, 0, 0};
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
@@ -3995,33 +3995,33 @@ typedef struct {
   #endif
   #if CYTHON_USE_MODULE_STATE
   #endif
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis;
   #if CYTHON_USE_MODULE_STATE
   #endif
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration;
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration;
   #if CYTHON_USE_MODULE_STATE
   #endif
   #if CYTHON_USE_MODULE_STATE
-  PyObject *__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+  PyObject *__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
   #endif
-  PyTypeObject *__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+  PyTypeObject *__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
   PyObject *__pyx_kp_s_Beginning_pruning_pass;
   PyObject *__pyx_n_s_FEAT_IMP_CRITERIA;
   PyObject *__pyx_n_s_GCV;
@@ -4035,8 +4035,8 @@ typedef struct {
   PyObject *__pyx_n_s_PruningPasser_run;
   PyObject *__pyx_n_s_PruningPasser_trace;
   PyObject *__pyx_n_s_RSS;
-  PyObject *__pyx_kp_s_UQPyL_Surrogates_Mars___pruning;
-  PyObject *__pyx_n_s_UQPyL_Surrogates_Mars___pruning_2;
+  PyObject *__pyx_kp_s_UQPyL_surrogates_mars___pruning;
+  PyObject *__pyx_n_s_UQPyL_surrogates_mars___pruning_2;
   PyObject *__pyx_n_s_X;
   PyObject *__pyx_kp_u__10;
   PyObject *__pyx_n_s__11;
@@ -4207,27 +4207,27 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_flexible);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_character);
   Py_CLEAR(clear_module_state->__pyx_ptype_5numpy_ufunc);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration);
-  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
-  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration);
+  Py_CLEAR(clear_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
+  Py_CLEAR(clear_module_state->__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
   Py_CLEAR(clear_module_state->__pyx_kp_s_Beginning_pruning_pass);
   Py_CLEAR(clear_module_state->__pyx_n_s_FEAT_IMP_CRITERIA);
   Py_CLEAR(clear_module_state->__pyx_n_s_GCV);
@@ -4241,8 +4241,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_PruningPasser_run);
   Py_CLEAR(clear_module_state->__pyx_n_s_PruningPasser_trace);
   Py_CLEAR(clear_module_state->__pyx_n_s_RSS);
-  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___pruning);
-  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___pruning_2);
+  Py_CLEAR(clear_module_state->__pyx_kp_s_UQPyL_surrogates_mars___pruning);
+  Py_CLEAR(clear_module_state->__pyx_n_s_UQPyL_surrogates_mars___pruning_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_X);
   Py_CLEAR(clear_module_state->__pyx_kp_u__10);
   Py_CLEAR(clear_module_state->__pyx_n_s__11);
@@ -4391,27 +4391,27 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_flexible);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_character);
   Py_VISIT(traverse_module_state->__pyx_ptype_5numpy_ufunc);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration);
-  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
-  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration);
+  Py_VISIT(traverse_module_state->__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
+  Py_VISIT(traverse_module_state->__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
   Py_VISIT(traverse_module_state->__pyx_kp_s_Beginning_pruning_pass);
   Py_VISIT(traverse_module_state->__pyx_n_s_FEAT_IMP_CRITERIA);
   Py_VISIT(traverse_module_state->__pyx_n_s_GCV);
@@ -4425,8 +4425,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_PruningPasser_run);
   Py_VISIT(traverse_module_state->__pyx_n_s_PruningPasser_trace);
   Py_VISIT(traverse_module_state->__pyx_n_s_RSS);
-  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_Surrogates_Mars___pruning);
-  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_Surrogates_Mars___pruning_2);
+  Py_VISIT(traverse_module_state->__pyx_kp_s_UQPyL_surrogates_mars___pruning);
+  Py_VISIT(traverse_module_state->__pyx_n_s_UQPyL_surrogates_mars___pruning_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_X);
   Py_VISIT(traverse_module_state->__pyx_kp_u__10);
   Py_VISIT(traverse_module_state->__pyx_n_s__11);
@@ -4677,33 +4677,33 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #endif
 #if CYTHON_USE_MODULE_STATE
 #endif
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis
 #if CYTHON_USE_MODULE_STATE
 #endif
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration
 #if CYTHON_USE_MODULE_STATE
 #endif
 #if CYTHON_USE_MODULE_STATE
-#define __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser __pyx_mstate_global->__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser
+#define __pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser __pyx_mstate_global->__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser
 #endif
-#define __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser __pyx_mstate_global->__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser
+#define __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser __pyx_mstate_global->__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser
 #define __pyx_kp_s_Beginning_pruning_pass __pyx_mstate_global->__pyx_kp_s_Beginning_pruning_pass
 #define __pyx_n_s_FEAT_IMP_CRITERIA __pyx_mstate_global->__pyx_n_s_FEAT_IMP_CRITERIA
 #define __pyx_n_s_GCV __pyx_mstate_global->__pyx_n_s_GCV
@@ -4717,8 +4717,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_PruningPasser_run __pyx_mstate_global->__pyx_n_s_PruningPasser_run
 #define __pyx_n_s_PruningPasser_trace __pyx_mstate_global->__pyx_n_s_PruningPasser_trace
 #define __pyx_n_s_RSS __pyx_mstate_global->__pyx_n_s_RSS
-#define __pyx_kp_s_UQPyL_Surrogates_Mars___pruning __pyx_mstate_global->__pyx_kp_s_UQPyL_Surrogates_Mars___pruning
-#define __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2 __pyx_mstate_global->__pyx_n_s_UQPyL_Surrogates_Mars___pruning_2
+#define __pyx_kp_s_UQPyL_surrogates_mars___pruning __pyx_mstate_global->__pyx_kp_s_UQPyL_surrogates_mars___pruning
+#define __pyx_n_s_UQPyL_surrogates_mars___pruning_2 __pyx_mstate_global->__pyx_n_s_UQPyL_surrogates_mars___pruning_2
 #define __pyx_n_s_X __pyx_mstate_global->__pyx_n_s_X
 #define __pyx_kp_u__10 __pyx_mstate_global->__pyx_kp_u__10
 #define __pyx_n_s__11 __pyx_mstate_global->__pyx_n_s__11
@@ -6378,7 +6378,7 @@ static CYTHON_INLINE PyObject *__pyx_f_7cpython_11contextvars_get_value_no_defau
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pyx":18
+/* "UQPyL/surrogates/mars_/_pruning.pyx":18
  * cdef class PruningPasser:
  *     '''Implements the generic pruning pass as described by Friedman, 1991.'''
  *     def __init__(PruningPasser self, Basis basis,             # <<<<<<<<<<<<<<
@@ -6387,9 +6387,9 @@ static CYTHON_INLINE PyObject *__pyx_f_7cpython_11contextvars_get_value_no_defau
  */
 
 /* Python wrapper */
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_v_basis = 0;
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *__pyx_v_basis = 0;
   PyArrayObject *__pyx_v_X = 0;
   PyArrayObject *__pyx_v_missing = 0;
   PyArrayObject *__pyx_v_y = 0;
@@ -6507,7 +6507,7 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init
       values[4] = __Pyx_Arg_VARARGS(__pyx_args, 4);
       values[5] = __Pyx_Arg_VARARGS(__pyx_args, 5);
     }
-    __pyx_v_basis = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)values[0]);
+    __pyx_v_basis = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *)values[0]);
     __pyx_v_X = ((PyArrayObject *)values[1]);
     __pyx_v_missing = ((PyArrayObject *)values[2]);
     __pyx_v_y = ((PyArrayObject *)values[3]);
@@ -6527,16 +6527,16 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init
     }
   }
   __Pyx_DECREF(__pyx_v_kwargs); __pyx_v_kwargs = 0;
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_basis), __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis, 1, "basis", 0))) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_basis), __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis, 1, "basis", 0))) __PYX_ERR(0, 18, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_X), __pyx_ptype_5numpy_ndarray, 1, "X", 0))) __PYX_ERR(0, 19, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_missing), __pyx_ptype_5numpy_ndarray, 1, "missing", 0))) __PYX_ERR(0, 20, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_5numpy_ndarray, 1, "y", 0))) __PYX_ERR(0, 21, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_sample_weight), __pyx_ptype_5numpy_ndarray, 1, "sample_weight", 0))) __PYX_ERR(0, 22, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self), __pyx_v_basis, __pyx_v_X, __pyx_v_missing, __pyx_v_y, __pyx_v_sample_weight, __pyx_v_verbose, __pyx_v_kwargs);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser___init__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self), __pyx_v_basis, __pyx_v_X, __pyx_v_missing, __pyx_v_y, __pyx_v_sample_weight, __pyx_v_verbose, __pyx_v_kwargs);
 
   /* function exit code */
   goto __pyx_L0;
@@ -6554,7 +6554,7 @@ static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init
   return __pyx_r;
 }
 
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *__pyx_v_basis, PyArrayObject *__pyx_v_X, PyArrayObject *__pyx_v_missing, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_sample_weight, int __pyx_v_verbose, PyObject *__pyx_v_kwargs) {
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser___init__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *__pyx_v_basis, PyArrayObject *__pyx_v_X, PyArrayObject *__pyx_v_missing, PyArrayObject *__pyx_v_y, PyArrayObject *__pyx_v_sample_weight, int __pyx_v_verbose, PyObject *__pyx_v_kwargs) {
   CYTHON_UNUSED PyObject *__pyx_v_y_avg = NULL;
   PyObject *__pyx_v_feature_importance_criteria = NULL;
   PyObject *__pyx_v_criterion = NULL;
@@ -6575,7 +6575,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_8;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_8;
   int __pyx_t_9;
   PyObject *(*__pyx_t_10)(PyObject *);
   int __pyx_t_11;
@@ -6601,26 +6601,26 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_pybuffernd_sample_weight.rcbuffer = &__pyx_pybuffer_sample_weight;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_X.rcbuffer->pybuffer, (PyObject*)__pyx_v_X, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_X.rcbuffer->pybuffer, (PyObject*)__pyx_v_X, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
   }
   __pyx_pybuffernd_X.diminfo[0].strides = __pyx_pybuffernd_X.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_X.diminfo[0].shape = __pyx_pybuffernd_X.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_X.diminfo[1].strides = __pyx_pybuffernd_X.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_X.diminfo[1].shape = __pyx_pybuffernd_X.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_missing.rcbuffer->pybuffer, (PyObject*)__pyx_v_missing, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_missing.rcbuffer->pybuffer, (PyObject*)__pyx_v_missing, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
   }
   __pyx_pybuffernd_missing.diminfo[0].strides = __pyx_pybuffernd_missing.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_missing.diminfo[0].shape = __pyx_pybuffernd_missing.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_missing.diminfo[1].strides = __pyx_pybuffernd_missing.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_missing.diminfo[1].shape = __pyx_pybuffernd_missing.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
   }
   __pyx_pybuffernd_y.diminfo[0].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_y.diminfo[0].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_y.diminfo[1].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_y.diminfo[1].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[1];
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sample_weight.rcbuffer->pybuffer, (PyObject*)__pyx_v_sample_weight, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sample_weight.rcbuffer->pybuffer, (PyObject*)__pyx_v_sample_weight, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(0, 18, __pyx_L1_error)
   }
   __pyx_pybuffernd_sample_weight.diminfo[0].strides = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sample_weight.diminfo[0].shape = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sample_weight.diminfo[1].strides = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sample_weight.diminfo[1].shape = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.shape[1];
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":24
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":24
  *                  cnp.ndarray[FLOAT_t, ndim=2] sample_weight, int verbose,
  *                  **kwargs):
  *         self.X = X             # <<<<<<<<<<<<<<
@@ -6633,7 +6633,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF((PyObject *)__pyx_v_self->X);
   __pyx_v_self->X = ((PyArrayObject *)__pyx_v_X);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":25
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":25
  *                  **kwargs):
  *         self.X = X
  *         self.missing = missing             # <<<<<<<<<<<<<<
@@ -6646,7 +6646,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF((PyObject *)__pyx_v_self->missing);
   __pyx_v_self->missing = ((PyArrayObject *)__pyx_v_missing);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":26
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":26
  *         self.X = X
  *         self.missing = missing
  *         self.m = self.X.shape[0]             # <<<<<<<<<<<<<<
@@ -6659,7 +6659,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->m = (__pyx_t_2[0]);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":27
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":27
  *         self.missing = missing
  *         self.m = self.X.shape[0]
  *         self.n = self.X.shape[1]             # <<<<<<<<<<<<<<
@@ -6672,7 +6672,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->n = (__pyx_t_2[1]);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":28
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":28
  *         self.m = self.X.shape[0]
  *         self.n = self.X.shape[1]
  *         self.y = y             # <<<<<<<<<<<<<<
@@ -6685,7 +6685,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF((PyObject *)__pyx_v_self->y);
   __pyx_v_self->y = ((PyArrayObject *)__pyx_v_y);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":29
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":29
  *         self.n = self.X.shape[1]
  *         self.y = y
  *         self.sample_weight = sample_weight             # <<<<<<<<<<<<<<
@@ -6698,7 +6698,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF((PyObject *)__pyx_v_self->sample_weight);
   __pyx_v_self->sample_weight = ((PyArrayObject *)__pyx_v_sample_weight);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":30
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":30
  *         self.y = y
  *         self.sample_weight = sample_weight
  *         self.verbose = verbose             # <<<<<<<<<<<<<<
@@ -6707,7 +6707,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
  */
   __pyx_v_self->verbose = __pyx_v_verbose;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":31
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":31
  *         self.sample_weight = sample_weight
  *         self.verbose = verbose
  *         self.basis = basis             # <<<<<<<<<<<<<<
@@ -6720,7 +6720,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF((PyObject *)__pyx_v_self->basis);
   __pyx_v_self->basis = __pyx_v_basis;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":32
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":32
  *         self.verbose = verbose
  *         self.basis = basis
  *         self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float64)             # <<<<<<<<<<<<<<
@@ -6770,7 +6770,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_v_self->B = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":33
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":33
  *         self.basis = basis
  *         self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float64)
  *         self.penalty = kwargs.get('penalty', 3.0)             # <<<<<<<<<<<<<<
@@ -6783,7 +6783,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_self->penalty = __pyx_t_8;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":34
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":34
  *         self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float64)
  *         self.penalty = kwargs.get('penalty', 3.0)
  *         if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -6794,7 +6794,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_t_9 = ((__pyx_t_2[1]) == 1);
   if (__pyx_t_9) {
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":35
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":35
  *         self.penalty = kwargs.get('penalty', 3.0)
  *         if sample_weight.shape[1] == 1:
  *             y_avg = np.average(self.y, weights=sample_weight[:,0], axis=0)             # <<<<<<<<<<<<<<
@@ -6826,7 +6826,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     __pyx_v_y_avg = __pyx_t_7;
     __pyx_t_7 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":34
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":34
  *         self.B = np.empty(shape=(self.m, len(self.basis) + 1), dtype=np.float64)
  *         self.penalty = kwargs.get('penalty', 3.0)
  *         if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -6836,7 +6836,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     goto __pyx_L3;
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":37
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":37
  *             y_avg = np.average(self.y, weights=sample_weight[:,0], axis=0)
  *         else:
  *             y_avg = np.average(self.y, weights=sample_weight, axis=0)             # <<<<<<<<<<<<<<
@@ -6868,7 +6868,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   }
   __pyx_L3:;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":40
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":40
  * 
  *         # feature importance
  *         feature_importance_criteria = kwargs.get("feature_importance_type", [])             # <<<<<<<<<<<<<<
@@ -6883,7 +6883,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_v_feature_importance_criteria = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":41
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":41
  *         # feature importance
  *         feature_importance_criteria = kwargs.get("feature_importance_type", [])
  *         if isinstance(feature_importance_criteria, basestring):             # <<<<<<<<<<<<<<
@@ -6893,7 +6893,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_t_9 = __Pyx_PyBaseString_Check(__pyx_v_feature_importance_criteria); 
   if (__pyx_t_9) {
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":42
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":42
  *         feature_importance_criteria = kwargs.get("feature_importance_type", [])
  *         if isinstance(feature_importance_criteria, basestring):
  *             feature_importance_criteria = [feature_importance_criteria]             # <<<<<<<<<<<<<<
@@ -6908,7 +6908,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     __Pyx_DECREF_SET(__pyx_v_feature_importance_criteria, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":41
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":41
  *         # feature importance
  *         feature_importance_criteria = kwargs.get("feature_importance_type", [])
  *         if isinstance(feature_importance_criteria, basestring):             # <<<<<<<<<<<<<<
@@ -6917,7 +6917,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":43
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":43
  *         if isinstance(feature_importance_criteria, basestring):
  *             feature_importance_criteria = [feature_importance_criteria]
  *         self.feature_importance = dict()             # <<<<<<<<<<<<<<
@@ -6932,7 +6932,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   __pyx_v_self->feature_importance = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":44
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":44
  *             feature_importance_criteria = [feature_importance_criteria]
  *         self.feature_importance = dict()
  *         for criterion in feature_importance_criteria:             # <<<<<<<<<<<<<<
@@ -6994,7 +6994,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     __Pyx_XDECREF_SET(__pyx_v_criterion, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":45
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":45
  *         self.feature_importance = dict()
  *         for criterion in feature_importance_criteria:
  *             self.feature_importance[criterion] = np.zeros((self.n,))             # <<<<<<<<<<<<<<
@@ -7043,7 +7043,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     if (unlikely((PyDict_SetItem(__pyx_v_self->feature_importance, __pyx_v_criterion, __pyx_t_1) < 0))) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":44
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":44
  *             feature_importance_criteria = [feature_importance_criteria]
  *         self.feature_importance = dict()
  *         for criterion in feature_importance_criteria:             # <<<<<<<<<<<<<<
@@ -7053,7 +7053,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":18
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":18
  * cdef class PruningPasser:
  *     '''Implements the generic pruning pass as described by Friedman, 1991.'''
  *     def __init__(PruningPasser self, Basis basis,             # <<<<<<<<<<<<<<
@@ -7079,7 +7079,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_sample_weight.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_y.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   goto __pyx_L2;
   __pyx_L0:;
@@ -7095,7 +7095,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pyx":47
+/* "UQPyL/surrogates/mars_/_pruning.pyx":47
  *             self.feature_importance[criterion] = np.zeros((self.n,))
  * 
  *     cpdef run(PruningPasser self):             # <<<<<<<<<<<<<<
@@ -7103,28 +7103,28 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser___init_
  *         # faster through the use of updating algorithms.  It is not clear that
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_run(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch) {
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_i;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_j;
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_run(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch) {
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_i;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_j;
   long __pyx_v_v;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_basis_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_pruned_basis_size;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_gcv_;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_best_iteration;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_v_best_bf_to_prune;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_best_gcv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_best_iteration_gcv;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_best_iteration_mse;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_mse0;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_v_total_weight;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_basis_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_pruned_basis_size;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_gcv_;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_best_iteration;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_v_best_bf_to_prune;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_best_gcv;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_best_iteration_gcv;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_best_iteration_mse;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_mse0;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_v_total_weight;
   PyArrayObject *__pyx_v_B = 0;
   PyArrayObject *__pyx_v_X = 0;
   PyArrayObject *__pyx_v_missing = 0;
@@ -7163,7 +7163,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_7;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_7;
   int __pyx_t_8;
   npy_intp *__pyx_t_9;
   npy_intp __pyx_t_10;
@@ -7174,20 +7174,20 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   PyObject *__pyx_t_15 = NULL;
   PyObject *__pyx_t_16 = NULL;
   PyObject *__pyx_t_17 = NULL;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_18;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_18;
   PyObject *__pyx_t_19 = NULL;
   PyObject *__pyx_t_20 = NULL;
   PyObject *__pyx_t_21 = NULL;
   PyObject *__pyx_t_22 = NULL;
   PyObject *__pyx_t_23 = NULL;
   PyObject *(*__pyx_t_24)(PyObject *);
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_25;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_26;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_27;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_28;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_29;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_25;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_26;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_27;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_28;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_29;
   int __pyx_t_30;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_31;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_31;
   PyObject *(*__pyx_t_32)(PyObject *);
   long __pyx_t_33;
   int __pyx_t_34;
@@ -7232,7 +7232,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_run); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run)) {
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -7275,7 +7275,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":55
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":55
  *         cdef INDEX_t j
  *         cdef long v
  *         cdef INDEX_t basis_size = len(self.basis)             # <<<<<<<<<<<<<<
@@ -7288,17 +7288,17 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_basis_size = __pyx_t_6;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":56
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":56
  *         cdef long v
  *         cdef INDEX_t basis_size = len(self.basis)
  *         cdef INDEX_t pruned_basis_size = self.basis.plen()             # <<<<<<<<<<<<<<
  *         cdef FLOAT_t gcv_
  *         cdef INDEX_t best_iteration
  */
-  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->plen(__pyx_v_self->basis, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_7 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->plen(__pyx_v_self->basis, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
   __pyx_v_pruned_basis_size = __pyx_t_7;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":66
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":66
  * 
  *         cdef cnp.ndarray[FLOAT_t, ndim = 2] B = (
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.B)             # <<<<<<<<<<<<<<
@@ -7309,7 +7309,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_B.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_B = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_B.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 65, __pyx_L1_error)
     } else {__pyx_pybuffernd_B.diminfo[0].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_B.diminfo[0].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_B.diminfo[1].strides = __pyx_pybuffernd_B.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_B.diminfo[1].shape = __pyx_pybuffernd_B.rcbuffer->pybuffer.shape[1];
@@ -7318,7 +7318,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_v_B = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":68
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":68
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.B)
  *         cdef cnp.ndarray[FLOAT_t, ndim = 2] X = (
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.X)             # <<<<<<<<<<<<<<
@@ -7329,7 +7329,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_X.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_X.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_X = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_X.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 67, __pyx_L1_error)
     } else {__pyx_pybuffernd_X.diminfo[0].strides = __pyx_pybuffernd_X.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_X.diminfo[0].shape = __pyx_pybuffernd_X.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_X.diminfo[1].strides = __pyx_pybuffernd_X.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_X.diminfo[1].shape = __pyx_pybuffernd_X.rcbuffer->pybuffer.shape[1];
@@ -7338,7 +7338,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_v_X = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":70
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":70
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.X)
  *         cdef cnp.ndarray[BOOL_t, ndim = 2] missing = (
  *             <cnp.ndarray[BOOL_t, ndim = 2] > self.missing)             # <<<<<<<<<<<<<<
@@ -7349,7 +7349,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_missing.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_BOOL_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_missing.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_BOOL_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_missing = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_missing.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 69, __pyx_L1_error)
     } else {__pyx_pybuffernd_missing.diminfo[0].strides = __pyx_pybuffernd_missing.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_missing.diminfo[0].shape = __pyx_pybuffernd_missing.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_missing.diminfo[1].strides = __pyx_pybuffernd_missing.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_missing.diminfo[1].shape = __pyx_pybuffernd_missing.rcbuffer->pybuffer.shape[1];
@@ -7358,7 +7358,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_v_missing = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":72
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":72
  *             <cnp.ndarray[BOOL_t, ndim = 2] > self.missing)
  *         cdef cnp.ndarray[FLOAT_t, ndim = 2] y = (
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.y)             # <<<<<<<<<<<<<<
@@ -7369,7 +7369,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_y.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_y = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_y.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 71, __pyx_L1_error)
     } else {__pyx_pybuffernd_y.diminfo[0].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_y.diminfo[0].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_y.diminfo[1].strides = __pyx_pybuffernd_y.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_y.diminfo[1].shape = __pyx_pybuffernd_y.rcbuffer->pybuffer.shape[1];
@@ -7378,7 +7378,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_v_y = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":74
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":74
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.y)
  *         cdef cnp.ndarray[FLOAT_t, ndim = 2] sample_weight = (
  *             <cnp.ndarray[FLOAT_t, ndim = 2] > self.sample_weight)             # <<<<<<<<<<<<<<
@@ -7389,7 +7389,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sample_weight.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_sample_weight.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_sample_weight = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.buf = NULL;
       __PYX_ERR(0, 73, __pyx_L1_error)
     } else {__pyx_pybuffernd_sample_weight.diminfo[0].strides = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_sample_weight.diminfo[0].shape = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_sample_weight.diminfo[1].strides = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_sample_weight.diminfo[1].shape = __pyx_pybuffernd_sample_weight.rcbuffer->pybuffer.shape[1];
@@ -7398,7 +7398,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_v_sample_weight = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":77
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":77
  *         cdef cnp.ndarray[FLOAT_t, ndim = 1] weighted_y
  * 
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -7408,7 +7408,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_t_8 = (__pyx_v_self->verbose >= 1);
   if (__pyx_t_8) {
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":78
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":78
  * 
  *         if self.verbose >= 1:
  *             print('Beginning pruning pass')             # <<<<<<<<<<<<<<
@@ -7419,7 +7419,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":77
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":77
  *         cdef cnp.ndarray[FLOAT_t, ndim = 1] weighted_y
  * 
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -7428,7 +7428,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":81
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":81
  * 
  *         # Initial solution
  *         mse = 0.             # <<<<<<<<<<<<<<
@@ -7437,7 +7437,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_v_mse = 0.;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":82
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":82
  *         # Initial solution
  *         mse = 0.
  *         mse0 = 0.             # <<<<<<<<<<<<<<
@@ -7446,7 +7446,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_v_mse0 = 0.;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":83
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":83
  *         mse = 0.
  *         mse0 = 0.
  *         total_weight = 0.             # <<<<<<<<<<<<<<
@@ -7455,7 +7455,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_v_total_weight = 0.;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":84
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":84
  *         mse0 = 0.
  *         total_weight = 0.
  *         for p in range(y.shape[1]):             # <<<<<<<<<<<<<<
@@ -7468,7 +7468,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_p = __pyx_t_12;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":85
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":85
  *         total_weight = 0.
  *         for p in range(y.shape[1]):
  *             if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -7479,7 +7479,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_8 = ((__pyx_t_9[1]) == 1);
     if (__pyx_t_8) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":86
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":86
  *         for p in range(y.shape[1]):
  *             if sample_weight.shape[1] == 1:
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])             # <<<<<<<<<<<<<<
@@ -7538,10 +7538,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer);
-        __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+        __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
         if (unlikely(__pyx_t_5 < 0)) {
           PyErr_Fetch(&__pyx_t_15, &__pyx_t_16, &__pyx_t_17);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_17);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -7556,7 +7556,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_XDECREF_SET(__pyx_v_weighted_y, ((PyArrayObject *)__pyx_t_4));
       __pyx_t_4 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":87
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":87
  *             if sample_weight.shape[1] == 1:
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])             # <<<<<<<<<<<<<<
@@ -7566,12 +7566,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __pyx_t_4 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_sample_weight), __pyx_tuple__4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 87, __pyx_L1_error)
-      __pyx_t_2 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_4), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_4), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":88
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":88
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
  *                 total_weight += np.sum(sample_weight[:,0])             # <<<<<<<<<<<<<<
@@ -7618,7 +7618,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_total_weight = __pyx_t_18;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":89
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":89
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
  *                 total_weight += np.sum(sample_weight[:,0])
  *                 mse0 += np.sum(sample_weight[:,0] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,0])) ** 2)             # <<<<<<<<<<<<<<
@@ -7723,7 +7723,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_v_mse0 = __pyx_t_18;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":85
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":85
  *         total_weight = 0.
  *         for p in range(y.shape[1]):
  *             if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -7733,7 +7733,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       goto __pyx_L6;
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":91
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":91
  *                 mse0 += np.sum(sample_weight[:,0] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,0])) ** 2)
  *             else:
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])             # <<<<<<<<<<<<<<
@@ -7804,10 +7804,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       {
         __Pyx_BufFmt_StackElem __pyx_stack[1];
         __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer);
-        __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+        __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
         if (unlikely(__pyx_t_5 < 0)) {
           PyErr_Fetch(&__pyx_t_17, &__pyx_t_16, &__pyx_t_15);
-          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+          if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
             Py_XDECREF(__pyx_t_17); Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15);
             __Pyx_RaiseBufferFallbackError();
           } else {
@@ -7822,7 +7822,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_XDECREF_SET(__pyx_v_weighted_y, ((PyArrayObject *)__pyx_t_19));
       __pyx_t_19 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":92
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":92
  *             else:
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])             # <<<<<<<<<<<<<<
@@ -7843,12 +7843,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_GOTREF(__pyx_t_19);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!(likely(((__pyx_t_19) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_19, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 92, __pyx_L1_error)
-      __pyx_t_4 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_19), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
+      __pyx_t_4 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_19), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":93
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":93
  *                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *                 total_weight += np.sum(sample_weight[:,p])             # <<<<<<<<<<<<<<
@@ -7906,7 +7906,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_total_weight = __pyx_t_18;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":94
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":94
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *                 total_weight += np.sum(sample_weight[:,p])
  *                 mse0 += np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2)             # <<<<<<<<<<<<<<
@@ -8035,7 +8035,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     }
     __pyx_L6:;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":95
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":95
  *                 total_weight += np.sum(sample_weight[:,p])
  *                 mse0 += np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2)
  *             if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -8046,7 +8046,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_8 = ((__pyx_t_9[1]) == 1);
     if (__pyx_t_8) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":96
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":96
  *                 mse0 += np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2)
  *             if sample_weight.shape[1] == 1:
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])             # <<<<<<<<<<<<<<
@@ -8056,12 +8056,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_sample_weight), __pyx_tuple__4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 96, __pyx_L1_error)
-      __pyx_t_19 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_1), 0); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 96, __pyx_L1_error)
+      __pyx_t_19 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_1), 0); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 96, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_19);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":95
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":95
  *                 total_weight += np.sum(sample_weight[:,p])
  *                 mse0 += np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2)
  *             if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -8071,7 +8071,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       goto __pyx_L7;
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":98
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":98
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
  *             else:
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])             # <<<<<<<<<<<<<<
@@ -8093,14 +8093,14 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_GOTREF(__pyx_t_19);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (!(likely(((__pyx_t_19) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_19, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 98, __pyx_L1_error)
-      __pyx_t_1 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_19), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_1 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_19), 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
     __pyx_L7:;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":99
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":99
  *             else:
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *             beta, mse_ = np.linalg.lstsq(B[:, 0:(basis_size)], weighted_y)[0:2]             # <<<<<<<<<<<<<<
@@ -8208,7 +8208,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_XDECREF_SET(__pyx_v_mse_, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":100
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":100
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *             beta, mse_ = np.linalg.lstsq(B[:, 0:(basis_size)], weighted_y)[0:2]
  *             if mse_:             # <<<<<<<<<<<<<<
@@ -8220,7 +8220,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       goto __pyx_L10;
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":103
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":103
  *                 pass
  *             else:
  *                 mse_ = np.sum(             # <<<<<<<<<<<<<<
@@ -8234,7 +8234,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":104
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":104
  *             else:
  *                 mse_ = np.sum(
  *                     (np.dot(B[:, 0:basis_size], beta) - weighted_y) ** 2)             # <<<<<<<<<<<<<<
@@ -8319,7 +8319,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     }
     __pyx_L10:;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":105
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":105
  *                 mse_ = np.sum(
  *                     (np.dot(B[:, 0:basis_size], beta) - weighted_y) ** 2)
  *             mse += mse_             # <<<<<<<<<<<<<<
@@ -8336,7 +8336,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_v_mse = __pyx_t_18;
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":109
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":109
  *         # Create the record object
  *         self.record = PruningPassRecord(
  *             self.m, self.n, self.penalty, mse0 / total_weight, pruned_basis_size, mse / total_weight)             # <<<<<<<<<<<<<<
@@ -8356,7 +8356,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_t_3 = PyFloat_FromDouble((__pyx_v_mse / __pyx_v_total_weight)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":108
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":108
  * 
  *         # Create the record object
  *         self.record = PruningPassRecord(             # <<<<<<<<<<<<<<
@@ -8383,26 +8383,26 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_t_20 = 0;
   __pyx_t_4 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord), __pyx_t_22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord), __pyx_t_22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->record);
   __Pyx_DECREF((PyObject *)__pyx_v_self->record);
-  __pyx_v_self->record = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_t_3);
+  __pyx_v_self->record = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":110
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":110
  *         self.record = PruningPassRecord(
  *             self.m, self.n, self.penalty, mse0 / total_weight, pruned_basis_size, mse / total_weight)
  *         gcv_ = self.record.gcv(0)             # <<<<<<<<<<<<<<
  *         best_gcv = gcv_
  *         best_iteration = 0
  */
-  __pyx_t_18 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->__pyx_base.gcv(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *)__pyx_v_self->record), 0, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_18 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->__pyx_base.gcv(((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *)__pyx_v_self->record), 0, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L1_error)
   __pyx_v_gcv_ = __pyx_t_18;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":111
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":111
  *             self.m, self.n, self.penalty, mse0 / total_weight, pruned_basis_size, mse / total_weight)
  *         gcv_ = self.record.gcv(0)
  *         best_gcv = gcv_             # <<<<<<<<<<<<<<
@@ -8411,7 +8411,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_v_best_gcv = __pyx_v_gcv_;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":112
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":112
  *         gcv_ = self.record.gcv(0)
  *         best_gcv = gcv_
  *         best_iteration = 0             # <<<<<<<<<<<<<<
@@ -8420,7 +8420,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_v_best_iteration = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":114
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":114
  *         best_iteration = 0
  * 
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -8430,7 +8430,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_t_8 = (__pyx_v_self->verbose >= 1);
   if (__pyx_t_8) {
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":115
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":115
  * 
  *         if self.verbose >= 1:
  *             print(self.record.partial_str(slice(-1, None, None), print_footer=False))             # <<<<<<<<<<<<<<
@@ -8451,7 +8451,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":114
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":114
  *         best_iteration = 0
  * 
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -8460,7 +8460,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":118
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":118
  * 
  *         # init feature importance
  *         prev_best_iteration_gcv = None             # <<<<<<<<<<<<<<
@@ -8470,7 +8470,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(Py_None);
   __pyx_v_prev_best_iteration_gcv = Py_None;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":119
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":119
  *         # init feature importance
  *         prev_best_iteration_gcv = None
  *         prev_best_iteration_mse = None             # <<<<<<<<<<<<<<
@@ -8480,7 +8480,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __Pyx_INCREF(Py_None);
   __pyx_v_prev_best_iteration_mse = Py_None;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":122
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":122
  * 
  *         # Prune basis functions sequentially
  *         for i in range(1, pruned_basis_size):             # <<<<<<<<<<<<<<
@@ -8492,7 +8492,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   for (__pyx_t_26 = 1; __pyx_t_26 < __pyx_t_25; __pyx_t_26+=1) {
     __pyx_v_i = __pyx_t_26;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":123
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":123
  *         # Prune basis functions sequentially
  *         for i in range(1, pruned_basis_size):
  *             first = True             # <<<<<<<<<<<<<<
@@ -8501,7 +8501,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     __pyx_v_first = 1;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":124
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":124
  *         for i in range(1, pruned_basis_size):
  *             first = True
  *             pruned_basis_size -= 1             # <<<<<<<<<<<<<<
@@ -8510,7 +8510,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     __pyx_v_pruned_basis_size = (__pyx_v_pruned_basis_size - 1);
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":127
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":127
  * 
  *             # Find the best basis function to prune
  *             for j in range(basis_size):             # <<<<<<<<<<<<<<
@@ -8522,19 +8522,19 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     for (__pyx_t_29 = 0; __pyx_t_29 < __pyx_t_28; __pyx_t_29+=1) {
       __pyx_v_j = __pyx_t_29;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":128
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":128
  *             # Find the best basis function to prune
  *             for j in range(basis_size):
  *                 bf = self.basis[j]             # <<<<<<<<<<<<<<
  *                 if bf.is_pruned():
  *                     continue
  */
-      __pyx_t_22 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_j, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 128, __pyx_L1_error)
+      __pyx_t_22 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_j, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_22);
       __Pyx_XDECREF_SET(__pyx_v_bf, __pyx_t_22);
       __pyx_t_22 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":129
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":129
  *             for j in range(basis_size):
  *                 bf = self.basis[j]
  *                 if bf.is_pruned():             # <<<<<<<<<<<<<<
@@ -8569,7 +8569,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
       if (__pyx_t_8) {
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":130
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":130
  *                 bf = self.basis[j]
  *                 if bf.is_pruned():
  *                     continue             # <<<<<<<<<<<<<<
@@ -8578,7 +8578,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         goto __pyx_L14_continue;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":129
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":129
  *             for j in range(basis_size):
  *                 bf = self.basis[j]
  *                 if bf.is_pruned():             # <<<<<<<<<<<<<<
@@ -8587,7 +8587,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       }
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":131
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":131
  *                 if bf.is_pruned():
  *                     continue
  *                 if not bf.is_prunable():             # <<<<<<<<<<<<<<
@@ -8623,7 +8623,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __pyx_t_30 = (!__pyx_t_8);
       if (__pyx_t_30) {
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":132
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":132
  *                     continue
  *                 if not bf.is_prunable():
  *                     continue             # <<<<<<<<<<<<<<
@@ -8632,7 +8632,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         goto __pyx_L14_continue;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":131
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":131
  *                 if bf.is_pruned():
  *                     continue
  *                 if not bf.is_prunable():             # <<<<<<<<<<<<<<
@@ -8641,7 +8641,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       }
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":133
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":133
  *                 if not bf.is_prunable():
  *                     continue
  *                 bf.prune()             # <<<<<<<<<<<<<<
@@ -8674,7 +8674,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       }
       __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":136
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":136
  * 
  * 
  *                 mse = 0.             # <<<<<<<<<<<<<<
@@ -8683,7 +8683,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       __pyx_v_mse = 0.;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":137
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":137
  * 
  *                 mse = 0.
  *                 for p in range(y.shape[1]):             # <<<<<<<<<<<<<<
@@ -8696,7 +8696,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
         __pyx_v_p = __pyx_t_12;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":138
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":138
  *                 mse = 0.
  *                 for p in range(y.shape[1]):
  *                     if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -8707,7 +8707,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __pyx_t_30 = ((__pyx_t_9[1]) == 1);
         if (__pyx_t_30) {
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":139
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":139
  *                 for p in range(y.shape[1]):
  *                     if sample_weight.shape[1] == 1:
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])             # <<<<<<<<<<<<<<
@@ -8766,10 +8766,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           {
             __Pyx_BufFmt_StackElem __pyx_stack[1];
             __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer);
-            __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+            __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
             if (unlikely(__pyx_t_5 < 0)) {
               PyErr_Fetch(&__pyx_t_15, &__pyx_t_16, &__pyx_t_17);
-              if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+              if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
                 Py_XDECREF(__pyx_t_15); Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_17);
                 __Pyx_RaiseBufferFallbackError();
               } else {
@@ -8784,7 +8784,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_XDECREF_SET(__pyx_v_weighted_y, ((PyArrayObject *)__pyx_t_20));
           __pyx_t_20 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":140
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":140
  *                     if sample_weight.shape[1] == 1:
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])             # <<<<<<<<<<<<<<
@@ -8794,12 +8794,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __pyx_t_20 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_sample_weight), __pyx_tuple__4); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 140, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_20);
           if (!(likely(((__pyx_t_20) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_20, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 140, __pyx_L1_error)
-          __pyx_t_4 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_20), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+          __pyx_t_4 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_20), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":138
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":138
  *                 mse = 0.
  *                 for p in range(y.shape[1]):
  *                     if sample_weight.shape[1] == 1:             # <<<<<<<<<<<<<<
@@ -8809,7 +8809,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           goto __pyx_L20;
         }
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":142
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":142
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
  *                     else:
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])             # <<<<<<<<<<<<<<
@@ -8880,10 +8880,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           {
             __Pyx_BufFmt_StackElem __pyx_stack[1];
             __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer);
-            __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
+            __pyx_t_5 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack);
             if (unlikely(__pyx_t_5 < 0)) {
               PyErr_Fetch(&__pyx_t_17, &__pyx_t_16, &__pyx_t_15);
-              if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
+              if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer, (PyObject*)__pyx_v_weighted_y, &__Pyx_TypeInfo_nn___pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) {
                 Py_XDECREF(__pyx_t_17); Py_XDECREF(__pyx_t_16); Py_XDECREF(__pyx_t_15);
                 __Pyx_RaiseBufferFallbackError();
               } else {
@@ -8898,7 +8898,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_XDECREF_SET(__pyx_v_weighted_y, ((PyArrayObject *)__pyx_t_3));
           __pyx_t_3 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":143
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":143
  *                     else:
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])             # <<<<<<<<<<<<<<
@@ -8919,14 +8919,14 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
           if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 143, __pyx_L1_error)
-          __pyx_t_20 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_3), 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 143, __pyx_L1_error)
+          __pyx_t_20 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_v_self->basis->__pyx_vtab)->weighted_transform(__pyx_v_self->basis, ((PyArrayObject *)__pyx_v_X), ((PyArrayObject *)__pyx_v_missing), ((PyArrayObject *)__pyx_v_B), ((PyArrayObject *)__pyx_t_3), 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 143, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_20);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
         }
         __pyx_L20:;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":144
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":144
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *                     beta, mse_ = np.linalg.lstsq(             # <<<<<<<<<<<<<<
@@ -8942,7 +8942,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":145
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":145
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *                     beta, mse_ = np.linalg.lstsq(
  *                         B[:, 0:pruned_basis_size], weighted_y)[0:2]             # <<<<<<<<<<<<<<
@@ -9038,7 +9038,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __pyx_L22_unpacking_done:;
         }
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":144
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":144
  *                         weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
  *                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *                     beta, mse_ = np.linalg.lstsq(             # <<<<<<<<<<<<<<
@@ -9050,7 +9050,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_XDECREF_SET(__pyx_v_mse_, __pyx_t_22);
         __pyx_t_22 = 0;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":146
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":146
  *                     beta, mse_ = np.linalg.lstsq(
  *                         B[:, 0:pruned_basis_size], weighted_y)[0:2]
  *                     if mse_:             # <<<<<<<<<<<<<<
@@ -9062,7 +9062,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           goto __pyx_L23;
         }
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":150
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":150
  * #                         mse_ /= np.sum(self.sample_weight)
  *                     else:
  *                         mse_ = np.sum((np.dot(B[:, 0:pruned_basis_size], beta) -             # <<<<<<<<<<<<<<
@@ -9120,7 +9120,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           }
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":151
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":151
  *                     else:
  *                         mse_ = np.sum((np.dot(B[:, 0:pruned_basis_size], beta) -
  *                                     weighted_y) ** 2) #/ np.sum(sample_weight)             # <<<<<<<<<<<<<<
@@ -9161,7 +9161,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         }
         __pyx_L23:;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":152
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":152
  *                         mse_ = np.sum((np.dot(B[:, 0:pruned_basis_size], beta) -
  *                                     weighted_y) ** 2) #/ np.sum(sample_weight)
  *                     mse += mse_# * output_weight[p]             # <<<<<<<<<<<<<<
@@ -9178,7 +9178,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __pyx_v_mse = __pyx_t_18;
       }
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":153
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":153
  *                                     weighted_y) ** 2) #/ np.sum(sample_weight)
  *                     mse += mse_# * output_weight[p]
  *                 gcv_ = gcv(mse / np.sum(sample_weight), pruned_basis_size, self.m, self.penalty)             # <<<<<<<<<<<<<<
@@ -9220,10 +9220,10 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_18 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_18 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_31 = __pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv(__pyx_t_18, __pyx_v_pruned_basis_size, __pyx_v_self->m, __pyx_v_self->penalty, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
+      __pyx_t_31 = __pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv(__pyx_t_18, __pyx_v_pruned_basis_size, __pyx_v_self->m, __pyx_v_self->penalty, 0); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
       __pyx_v_gcv_ = __pyx_t_31;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":155
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":155
  *                 gcv_ = gcv(mse / np.sum(sample_weight), pruned_basis_size, self.m, self.penalty)
  * 
  *                 if gcv_ <= best_iteration_gcv or first:             # <<<<<<<<<<<<<<
@@ -9240,7 +9240,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __pyx_L25_bool_binop_done:;
       if (__pyx_t_30) {
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":156
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":156
  * 
  *                 if gcv_ <= best_iteration_gcv or first:
  *                     best_iteration_gcv = gcv_             # <<<<<<<<<<<<<<
@@ -9249,7 +9249,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         __pyx_v_best_iteration_gcv = __pyx_v_gcv_;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":157
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":157
  *                 if gcv_ <= best_iteration_gcv or first:
  *                     best_iteration_gcv = gcv_
  *                     best_iteration_mse = mse             # <<<<<<<<<<<<<<
@@ -9258,7 +9258,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         __pyx_v_best_iteration_mse = __pyx_v_mse;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":158
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":158
  *                     best_iteration_gcv = gcv_
  *                     best_iteration_mse = mse
  *                     best_bf_to_prune = j             # <<<<<<<<<<<<<<
@@ -9267,7 +9267,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         __pyx_v_best_bf_to_prune = __pyx_v_j;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":159
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":159
  *                     best_iteration_mse = mse
  *                     best_bf_to_prune = j
  *                     first = False             # <<<<<<<<<<<<<<
@@ -9276,7 +9276,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         __pyx_v_first = 0;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":155
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":155
  *                 gcv_ = gcv(mse / np.sum(sample_weight), pruned_basis_size, self.m, self.penalty)
  * 
  *                 if gcv_ <= best_iteration_gcv or first:             # <<<<<<<<<<<<<<
@@ -9285,7 +9285,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       }
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":160
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":160
  *                     best_bf_to_prune = j
  *                     first = False
  *                 bf.unprune()             # <<<<<<<<<<<<<<
@@ -9320,7 +9320,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __pyx_L14_continue:;
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":163
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":163
  * 
  *             # Feature importance
  *             if i > 1:             # <<<<<<<<<<<<<<
@@ -9330,7 +9330,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_30 = (__pyx_v_i > 1);
     if (__pyx_t_30) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":167
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":167
  *                 # that basis decreased the mse and gcv relative to the previous mse and gcv
  *                 # respectively.
  *                 mse_decrease = (best_iteration_mse - prev_best_iteration_mse)             # <<<<<<<<<<<<<<
@@ -9345,7 +9345,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_XDECREF_SET(__pyx_v_mse_decrease, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":168
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":168
  *                 # respectively.
  *                 mse_decrease = (best_iteration_mse - prev_best_iteration_mse)
  *                 gcv_decrease = (best_iteration_gcv - prev_best_iteration_gcv)             # <<<<<<<<<<<<<<
@@ -9360,7 +9360,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_XDECREF_SET(__pyx_v_gcv_decrease, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":169
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":169
  *                 mse_decrease = (best_iteration_mse - prev_best_iteration_mse)
  *                 gcv_decrease = (best_iteration_gcv - prev_best_iteration_gcv)
  *                 variables = set()             # <<<<<<<<<<<<<<
@@ -9372,19 +9372,19 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_XDECREF_SET(__pyx_v_variables, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":170
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":170
  *                 gcv_decrease = (best_iteration_gcv - prev_best_iteration_gcv)
  *                 variables = set()
  *                 bf = self.basis[best_bf_to_prune]             # <<<<<<<<<<<<<<
  *                 for v in bf.variables():
  *                     variables.add(v)
  */
-      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_best_bf_to_prune, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_best_bf_to_prune, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_bf, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":171
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":171
  *                 variables = set()
  *                 bf = self.basis[best_bf_to_prune]
  *                 for v in bf.variables():             # <<<<<<<<<<<<<<
@@ -9472,7 +9472,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_v_v = __pyx_t_33;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":172
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":172
  *                 bf = self.basis[best_bf_to_prune]
  *                 for v in bf.variables():
  *                     variables.add(v)             # <<<<<<<<<<<<<<
@@ -9484,7 +9484,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __pyx_t_34 = PySet_Add(__pyx_v_variables, __pyx_t_2); if (unlikely(__pyx_t_34 == ((int)-1))) __PYX_ERR(0, 172, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":171
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":171
  *                 variables = set()
  *                 bf = self.basis[best_bf_to_prune]
  *                 for v in bf.variables():             # <<<<<<<<<<<<<<
@@ -9494,7 +9494,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":173
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":173
  *                 for v in bf.variables():
  *                     variables.add(v)
  *                 for v in variables:             # <<<<<<<<<<<<<<
@@ -9516,7 +9516,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_v_v = __pyx_t_33;
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":174
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":174
  *                     variables.add(v)
  *                 for v in variables:
  *                     if RSS in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9533,7 +9533,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         if (__pyx_t_30) {
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":175
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":175
  *                 for v in variables:
  *                     if RSS in self.feature_importance:
  *                         self.feature_importance[RSS][v] += mse_decrease             # <<<<<<<<<<<<<<
@@ -9559,7 +9559,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":174
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":174
  *                     variables.add(v)
  *                 for v in variables:
  *                     if RSS in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9568,7 +9568,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         }
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":176
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":176
  *                     if RSS in self.feature_importance:
  *                         self.feature_importance[RSS][v] += mse_decrease
  *                     if GCV in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9585,7 +9585,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
         if (__pyx_t_30) {
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":177
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":177
  *                         self.feature_importance[RSS][v] += mse_decrease
  *                     if GCV in self.feature_importance:
  *                         self.feature_importance[GCV][v] += gcv_decrease             # <<<<<<<<<<<<<<
@@ -9611,7 +9611,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":176
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":176
  *                     if RSS in self.feature_importance:
  *                         self.feature_importance[RSS][v] += mse_decrease
  *                     if GCV in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9620,7 +9620,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
         }
 
-        /* "UQPyL/Surrogates/Mars_/_pruning.pyx":178
+        /* "UQPyL/surrogates/mars_/_pruning.pyx":178
  *                     if GCV in self.feature_importance:
  *                         self.feature_importance[GCV][v] += gcv_decrease
  *                     if NB_SUBSETS in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9637,7 +9637,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
         __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
         if (__pyx_t_30) {
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":179
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":179
  *                         self.feature_importance[GCV][v] += gcv_decrease
  *                     if NB_SUBSETS in self.feature_importance:
  *                         self.feature_importance[NB_SUBSETS][v] += 1             # <<<<<<<<<<<<<<
@@ -9663,7 +9663,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-          /* "UQPyL/Surrogates/Mars_/_pruning.pyx":178
+          /* "UQPyL/surrogates/mars_/_pruning.pyx":178
  *                     if GCV in self.feature_importance:
  *                         self.feature_importance[GCV][v] += gcv_decrease
  *                     if NB_SUBSETS in self.feature_importance:             # <<<<<<<<<<<<<<
@@ -9674,7 +9674,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":163
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":163
  * 
  *             # Feature importance
  *             if i > 1:             # <<<<<<<<<<<<<<
@@ -9683,7 +9683,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":183
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":183
  *             # iteration. Now check whether this iteration is better than all
  *             # the previous ones.
  *             if best_iteration_gcv <= best_gcv:             # <<<<<<<<<<<<<<
@@ -9693,7 +9693,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_30 = (__pyx_v_best_iteration_gcv <= __pyx_v_best_gcv);
     if (__pyx_t_30) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":184
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":184
  *             # the previous ones.
  *             if best_iteration_gcv <= best_gcv:
  *                 best_gcv = best_iteration_gcv             # <<<<<<<<<<<<<<
@@ -9702,7 +9702,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       __pyx_v_best_gcv = __pyx_v_best_iteration_gcv;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":185
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":185
  *             if best_iteration_gcv <= best_gcv:
  *                 best_gcv = best_iteration_gcv
  *                 best_iteration = i             # <<<<<<<<<<<<<<
@@ -9711,7 +9711,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
       __pyx_v_best_iteration = __pyx_v_i;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":183
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":183
  *             # iteration. Now check whether this iteration is better than all
  *             # the previous ones.
  *             if best_iteration_gcv <= best_gcv:             # <<<<<<<<<<<<<<
@@ -9720,7 +9720,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":187
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":187
  *                 best_iteration = i
  * 
  *             prev_best_iteration_gcv = best_iteration_gcv             # <<<<<<<<<<<<<<
@@ -9732,7 +9732,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_DECREF_SET(__pyx_v_prev_best_iteration_gcv, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":188
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":188
  * 
  *             prev_best_iteration_gcv = best_iteration_gcv
  *             prev_best_iteration_mse = best_iteration_mse             # <<<<<<<<<<<<<<
@@ -9744,7 +9744,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_DECREF_SET(__pyx_v_prev_best_iteration_mse, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":191
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":191
  *             # Update the record and prune the selected basis function
  *             self.record.append(PruningPassIteration(
  *                 best_bf_to_prune, pruned_basis_size, best_iteration_mse / total_weight))             # <<<<<<<<<<<<<<
@@ -9758,7 +9758,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_20 = PyFloat_FromDouble((__pyx_v_best_iteration_mse / __pyx_v_total_weight)); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 191, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_20);
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":190
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":190
  *             prev_best_iteration_mse = best_iteration_mse
  *             # Update the record and prune the selected basis function
  *             self.record.append(PruningPassIteration(             # <<<<<<<<<<<<<<
@@ -9776,22 +9776,22 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_3 = 0;
     __pyx_t_2 = 0;
     __pyx_t_20 = 0;
-    __pyx_t_20 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration), __pyx_t_22, NULL); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_20 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration), __pyx_t_22, NULL); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 190, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_20);
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
-    __pyx_t_22 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->__pyx_base.append(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record *)__pyx_v_self->record), ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration *)__pyx_t_20), 0); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 190, __pyx_L1_error)
+    __pyx_t_22 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->__pyx_base.append(((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record *)__pyx_v_self->record), ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration *)__pyx_t_20), 0); if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 190, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_22);
     __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":192
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":192
  *             self.record.append(PruningPassIteration(
  *                 best_bf_to_prune, pruned_basis_size, best_iteration_mse / total_weight))
  *             self.basis[best_bf_to_prune].prune()             # <<<<<<<<<<<<<<
  * 
  *             if self.verbose >= 1:
  */
-    __pyx_t_20 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_best_bf_to_prune, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_20 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->basis), __pyx_v_best_bf_to_prune, __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_20);
     __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_20, __pyx_n_s_prune); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
@@ -9820,7 +9820,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     }
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":194
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":194
  *             self.basis[best_bf_to_prune].prune()
  * 
  *             if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -9830,7 +9830,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_30 = (__pyx_v_self->verbose >= 1);
     if (__pyx_t_30) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":195
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":195
  * 
  *             if self.verbose >= 1:
  *                 print(self.record.partial_str(slice(-1, None, None), print_header=False, print_footer=(pruned_basis_size == 1)))             # <<<<<<<<<<<<<<
@@ -9855,7 +9855,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":194
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":194
  *             self.basis[best_bf_to_prune].prune()
  * 
  *             if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -9865,18 +9865,18 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     }
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":198
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":198
  * 
  *         # Unprune the basis functions pruned after the best iteration
  *         self.record.set_selected(best_iteration)             # <<<<<<<<<<<<<<
  *         self.record.roll_back(self.basis)
  *         if self.verbose >= 1:
  */
-  __pyx_t_2 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->set_selected(__pyx_v_self->record, __pyx_v_best_iteration, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->set_selected(__pyx_v_self->record, __pyx_v_best_iteration, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":199
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":199
  *         # Unprune the basis functions pruned after the best iteration
  *         self.record.set_selected(best_iteration)
  *         self.record.roll_back(self.basis)             # <<<<<<<<<<<<<<
@@ -9885,12 +9885,12 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   __pyx_t_2 = ((PyObject *)__pyx_v_self->basis);
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_20 = ((struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->roll_back(__pyx_v_self->record, ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_t_2), 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_20 = ((struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_v_self->record->__pyx_base.__pyx_vtab)->roll_back(__pyx_v_self->record, ((struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_t_2), 0); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_20);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":200
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":200
  *         self.record.set_selected(best_iteration)
  *         self.record.roll_back(self.basis)
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -9900,7 +9900,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   __pyx_t_30 = (__pyx_v_self->verbose >= 1);
   if (__pyx_t_30) {
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":201
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":201
  *         self.record.roll_back(self.basis)
  *         if self.verbose >= 1:
  *             print(self.record.final_str())             # <<<<<<<<<<<<<<
@@ -9936,7 +9936,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":200
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":200
  *         self.record.set_selected(best_iteration)
  *         self.record.roll_back(self.basis)
  *         if self.verbose >= 1:             # <<<<<<<<<<<<<<
@@ -9945,7 +9945,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":204
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":204
  * 
  *         # normalize feature importance values
  *         for name, val in self.feature_importance.items():             # <<<<<<<<<<<<<<
@@ -9973,7 +9973,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_22);
     __pyx_t_22 = 0;
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":205
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":205
  *         # normalize feature importance values
  *         for name, val in self.feature_importance.items():
  *             if name == 'gcv':             # <<<<<<<<<<<<<<
@@ -9983,7 +9983,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __pyx_t_30 = (__Pyx_PyString_Equals(__pyx_v_name, __pyx_n_s_gcv, Py_EQ)); if (unlikely((__pyx_t_30 < 0))) __PYX_ERR(0, 205, __pyx_L1_error)
     if (__pyx_t_30) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":206
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":206
  *         for name, val in self.feature_importance.items():
  *             if name == 'gcv':
  *                 val[val < 0] = 0 # gcv can have negative feature importance correponding to an increase of gcv, set them to zero             # <<<<<<<<<<<<<<
@@ -9994,7 +9994,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       if (unlikely((PyObject_SetItem(__pyx_v_val, __pyx_t_22, __pyx_int_0) < 0))) __PYX_ERR(0, 206, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":205
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":205
  *         # normalize feature importance values
  *         for name, val in self.feature_importance.items():
  *             if name == 'gcv':             # <<<<<<<<<<<<<<
@@ -10003,7 +10003,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":207
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":207
  *             if name == 'gcv':
  *                 val[val < 0] = 0 # gcv can have negative feature importance correponding to an increase of gcv, set them to zero
  *             if val.sum() > 0:             # <<<<<<<<<<<<<<
@@ -10040,7 +10040,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
     if (__pyx_t_30) {
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":208
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":208
  *                 val[val < 0] = 0 # gcv can have negative feature importance correponding to an increase of gcv, set them to zero
  *             if val.sum() > 0:
  *                 val /= val.sum()             # <<<<<<<<<<<<<<
@@ -10077,7 +10077,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
       __Pyx_DECREF_SET(__pyx_v_val, __pyx_t_22);
       __pyx_t_22 = 0;
 
-      /* "UQPyL/Surrogates/Mars_/_pruning.pyx":207
+      /* "UQPyL/surrogates/mars_/_pruning.pyx":207
  *             if name == 'gcv':
  *                 val[val < 0] = 0 # gcv can have negative feature importance correponding to an increase of gcv, set them to zero
  *             if val.sum() > 0:             # <<<<<<<<<<<<<<
@@ -10086,7 +10086,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
  */
     }
 
-    /* "UQPyL/Surrogates/Mars_/_pruning.pyx":209
+    /* "UQPyL/surrogates/mars_/_pruning.pyx":209
  *             if val.sum() > 0:
  *                 val /= val.sum()
  *             self.feature_importance[name] = val             # <<<<<<<<<<<<<<
@@ -10101,7 +10101,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":47
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":47
  *             self.feature_importance[criterion] = np.zeros((self.n,))
  * 
  *     cpdef run(PruningPasser self):             # <<<<<<<<<<<<<<
@@ -10134,7 +10134,7 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_weighted_y.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_y.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -10167,15 +10167,15 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_ru
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run = {"run", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run = {"run", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -10200,14 +10200,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("run", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "run", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2run(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_2run(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2run(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_2run(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -10216,7 +10216,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_run(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_run(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10225,7 +10225,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10233,7 +10233,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pyx":211
+/* "UQPyL/surrogates/mars_/_pruning.pyx":211
  *             self.feature_importance[name] = val
  * 
  *     cpdef PruningPassRecord trace(PruningPasser self):             # <<<<<<<<<<<<<<
@@ -10241,15 +10241,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_2
  * 
  */
 
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_trace(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *__pyx_r = NULL;
+static struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_trace(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, int __pyx_skip_dispatch) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -10271,7 +10271,7 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_trace); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace)) {
+      if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace)) {
         __Pyx_XDECREF((PyObject *)__pyx_r);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -10296,8 +10296,8 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         }
-        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord))))) __PYX_ERR(0, 211, __pyx_L1_error)
-        __pyx_r = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_t_2);
+        if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord))))) __PYX_ERR(0, 211, __pyx_L1_error)
+        __pyx_r = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
@@ -10315,7 +10315,7 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
     #endif
   }
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":212
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":212
  * 
  *     cpdef PruningPassRecord trace(PruningPasser self):
  *         return self.record             # <<<<<<<<<<<<<<
@@ -10326,7 +10326,7 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
   __pyx_r = __pyx_v_self->record;
   goto __pyx_L0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":211
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":211
  *             self.feature_importance[name] = val
  * 
  *     cpdef PruningPassRecord trace(PruningPasser self):             # <<<<<<<<<<<<<<
@@ -10340,7 +10340,7 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
@@ -10349,15 +10349,15 @@ static struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace = {"trace", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace = {"trace", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -10382,14 +10382,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("trace", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "trace", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4trace(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_4trace(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4trace(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_4trace(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -10398,7 +10398,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("trace", 1);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_trace(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_trace(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10407,7 +10407,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.trace", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -10415,7 +10415,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4
   return __pyx_r;
 }
 
-/* "UQPyL/Surrogates/Mars_/_pruning.pxd":14
+/* "UQPyL/surrogates/mars_/_pruning.pxd":14
  *     cdef int verbose
  *     cdef cnp.ndarray output_weight
  *     cdef public dict feature_importance             # <<<<<<<<<<<<<<
@@ -10424,21 +10424,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_4
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_1__get__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance___get__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance___get__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance___get__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance___get__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 1);
@@ -10455,21 +10455,21 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1
 }
 
 /* Python wrapper */
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_2__set__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self), ((PyObject *)__pyx_v_value));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_2__set__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self), ((PyObject *)__pyx_v_value));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_2__set__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v_value) {
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_2__set__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v_value) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -10491,7 +10491,7 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18featu
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.feature_importance.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.feature_importance.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -10499,21 +10499,21 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18featu
 }
 
 /* Python wrapper */
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_5__del__(PyObject *__pyx_v_self); /*proto*/
-static int __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_5__del__(PyObject *__pyx_v_self) {
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_5__del__(PyObject *__pyx_v_self); /*proto*/
+static int __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_5__del__(PyObject *__pyx_v_self) {
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_4__del__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_4__del__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_4__del__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self) {
+static int __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_4__del__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__del__", 1);
@@ -10536,15 +10536,15 @@ static int __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18featu
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -10569,14 +10569,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_6__reduce_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_6__reduce_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_6__reduce_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_6__reduce_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -10884,7 +10884,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_6
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -10902,15 +10902,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_6
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -10980,11 +10980,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8__setstate_cython__(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_8__setstate_cython__(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -10997,7 +10997,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8__setstate_cython__(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_8__setstate_cython__(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -11012,7 +11012,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8
  *     __pyx_unpickle_PruningPasser__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(4, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -11028,7 +11028,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.PruningPasser.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.PruningPasser.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -11043,15 +11043,15 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_8
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_1__pyx_unpickle_PruningPasser(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_1__pyx_unpickle_PruningPasser(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_1__pyx_unpickle_PruningPasser = {"__pyx_unpickle_PruningPasser", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_1__pyx_unpickle_PruningPasser, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_1__pyx_unpickle_PruningPasser(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_1__pyx_unpickle_PruningPasser = {"__pyx_unpickle_PruningPasser", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_1__pyx_unpickle_PruningPasser, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_1__pyx_unpickle_PruningPasser(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -11151,11 +11151,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.__pyx_unpickle_PruningPasser", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.__pyx_unpickle_PruningPasser", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -11168,7 +11168,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -11250,7 +11250,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pr
  *     if __pyx_state is not None:
  *         __pyx_unpickle_PruningPasser__set_state(<PruningPasser> __pyx_result, __pyx_state)
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(4, 7, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser), __pyx_n_s_new); if (unlikely(!__pyx_t_3)) __PYX_ERR(4, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -11295,7 +11295,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pr
  * cdef __pyx_unpickle_PruningPasser__set_state(PruningPasser __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None) || __Pyx_RaiseUnexpectedTypeError("tuple", __pyx_v___pyx_state))) __PYX_ERR(4, 9, __pyx_L1_error)
-    __pyx_t_1 = __pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser__set_state(((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser__set_state(((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(4, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -11331,7 +11331,7 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pr
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.__pyx_unpickle_PruningPasser", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.__pyx_unpickle_PruningPasser", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -11349,12 +11349,12 @@ static PyObject *__pyx_pf_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pr
  *     if len(__pyx_state) > 14 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_PruningPasser__set_state(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_5UQPyL_10surrogates_5mars__8_pruning___pyx_unpickle_PruningPasser__set_state(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_INDEX_t __pyx_t_2;
-  __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t __pyx_t_3;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_INDEX_t __pyx_t_2;
+  __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t __pyx_t_3;
   int __pyx_t_4;
   int __pyx_t_5;
   Py_ssize_t __pyx_t_6;
@@ -11401,13 +11401,13 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pru
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(4, 12, __pyx_L1_error)
   }
-  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 2)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis))))) __PYX_ERR(4, 12, __pyx_L1_error)
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 2)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 2), __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis))))) __PYX_ERR(4, 12, __pyx_L1_error)
   __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 2);
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->basis);
   __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->basis);
-  __pyx_v___pyx_result->basis = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)__pyx_t_1);
+  __pyx_v___pyx_result->basis = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *)__pyx_t_1);
   __pyx_t_1 = 0;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -11467,13 +11467,13 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pru
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(4, 12, __pyx_L1_error)
   }
-  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 9)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 9), __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord))))) __PYX_ERR(4, 12, __pyx_L1_error)
+  if (!(likely(((PyTuple_GET_ITEM(__pyx_v___pyx_state, 9)) == Py_None) || likely(__Pyx_TypeTest(PyTuple_GET_ITEM(__pyx_v___pyx_state, 9), __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord))))) __PYX_ERR(4, 12, __pyx_L1_error)
   __pyx_t_1 = PyTuple_GET_ITEM(__pyx_v___pyx_state, 9);
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v___pyx_result->record);
   __Pyx_DECREF((PyObject *)__pyx_v___pyx_result->record);
-  __pyx_v___pyx_result->record = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)__pyx_t_1);
+  __pyx_v___pyx_result->record = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)__pyx_t_1);
   __pyx_t_1 = 0;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -11595,17 +11595,17 @@ static PyObject *__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning___pyx_unpickle_Pru
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("UQPyL.Surrogates.Mars_._pruning.__pyx_unpickle_PruningPasser__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("UQPyL.surrogates.mars_._pruning.__pyx_unpickle_PruningPasser__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser __pyx_vtable_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+static struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser __pyx_vtable_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
 
-static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *p;
+static PyObject *__pyx_tp_new_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *p;
   PyObject *o;
   #if CYTHON_COMPILING_IN_LIMITED_API
   allocfunc alloc_func = (allocfunc)PyType_GetSlot(t, Py_tp_alloc);
@@ -11618,8 +11618,8 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser
   }
   if (unlikely(!o)) return 0;
   #endif
-  p = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+  p = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)o);
+  p->__pyx_vtab = __pyx_vtabptr_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
   p->X = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->missing = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->B = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
@@ -11627,16 +11627,16 @@ static PyObject *__pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser
   p->sample_weight = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->output_weight = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   p->feature_importance = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->basis = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)Py_None); Py_INCREF(Py_None);
-  p->record = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)Py_None); Py_INCREF(Py_None);
+  p->basis = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *)Py_None); Py_INCREF(Py_None);
+  p->record = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)Py_None); Py_INCREF(Py_None);
   return o;
 }
 
-static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyObject *o) {
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)o;
+static void __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser(PyObject *o) {
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely((PY_VERSION_HEX >= 0x03080000 || __Pyx_PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE)) && __Pyx_PyObject_GetSlot(o, tp_finalize, destructor)) && !__Pyx_PyObject_GC_IsFinalized(o)) {
-    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) {
+    if (__Pyx_PyObject_GetSlot(o, tp_dealloc, destructor) == __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) {
       if (PyObject_CallFinalizerFromDealloc(o)) return;
     }
   }
@@ -11661,9 +11661,9 @@ static void __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(
   #endif
 }
 
-static int __pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)o;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)o;
   if (p->X) {
     e = (*v)(((PyObject *)p->X), a); if (e) return e;
   }
@@ -11694,9 +11694,9 @@ static int __pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(
   return 0;
 }
 
-static int __pyx_tp_clear_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyObject *o) {
+static int __pyx_tp_clear_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *)o;
+  struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *p = (struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *)o;
   tmp = ((PyObject*)p->X);
   p->X = ((PyArrayObject *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -11719,64 +11719,64 @@ static int __pyx_tp_clear_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser(PyO
   p->feature_importance = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->basis);
-  p->basis = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis *)Py_None); Py_INCREF(Py_None);
+  p->basis = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->record);
-  p->record = ((struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *)Py_None); Py_INCREF(Py_None);
+  p->record = ((struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
 
-static PyObject *__pyx_getprop_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_feature_importance(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_1__get__(o);
+static PyObject *__pyx_getprop_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_feature_importance(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_1__get__(o);
 }
 
-static int __pyx_setprop_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_feature_importance(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+static int __pyx_setprop_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_feature_importance(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
   if (v) {
-    return __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_3__set__(o, v);
+    return __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_3__set__(o, v);
   }
   else {
-    return __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_18feature_importance_5__del__(o);
+    return __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_18feature_importance_5__del__(o);
   }
 }
 
-static PyMethodDef __pyx_methods_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser[] = {
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+static PyMethodDef __pyx_methods_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser[] = {
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser[] = {
-  {(char *)"feature_importance", __pyx_getprop_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_feature_importance, __pyx_setprop_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_feature_importance, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser[] = {
+  {(char *)"feature_importance", __pyx_getprop_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_feature_importance, __pyx_setprop_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_feature_importance, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
-static PyType_Slot __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser_slots[] = {
-  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
+static PyType_Slot __pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser_slots[] = {
+  {Py_tp_dealloc, (void *)__pyx_tp_dealloc_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
   {Py_tp_doc, (void *)PyDoc_STR("Implements the generic pruning pass as described by Friedman, 1991.")},
-  {Py_tp_traverse, (void *)__pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
-  {Py_tp_clear, (void *)__pyx_tp_clear_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
-  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
-  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
-  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init__},
-  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser},
+  {Py_tp_traverse, (void *)__pyx_tp_traverse_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
+  {Py_tp_clear, (void *)__pyx_tp_clear_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
+  {Py_tp_methods, (void *)__pyx_methods_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
+  {Py_tp_getset, (void *)__pyx_getsets_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
+  {Py_tp_init, (void *)__pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_1__init__},
+  {Py_tp_new, (void *)__pyx_tp_new_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser},
   {0, 0},
 };
-static PyType_Spec __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser_spec = {
-  "UQPyL.Surrogates.Mars_._pruning.PruningPasser",
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser),
+static PyType_Spec __pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser_spec = {
+  "UQPyL.surrogates.mars_._pruning.PruningPasser",
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser),
   0,
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC,
-  __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser_slots,
+  __pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser_slots,
 };
 #else
 
-static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser = {
+static PyTypeObject __pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser = {
   PyVarObject_HEAD_INIT(0, 0)
-  "UQPyL.Surrogates.Mars_._pruning.""PruningPasser", /*tp_name*/
-  sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser), /*tp_basicsize*/
+  "UQPyL.surrogates.mars_._pruning.""PruningPasser", /*tp_name*/
+  sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_dealloc*/
+  __pyx_tp_dealloc_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -11803,15 +11803,15 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasse
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   PyDoc_STR("Implements the generic pruning pass as described by Friedman, 1991."), /*tp_doc*/
-  __pyx_tp_traverse_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_traverse*/
-  __pyx_tp_clear_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_clear*/
+  __pyx_tp_traverse_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_traverse*/
+  __pyx_tp_clear_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_methods*/
+  __pyx_methods_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_getset*/
+  __pyx_getsets_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
@@ -11819,9 +11819,9 @@ static PyTypeObject __pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasse
   #if !CYTHON_USE_TYPE_SPECS
   0, /*tp_dictoffset*/
   #endif
-  __pyx_pw_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_1__init__, /*tp_init*/
+  __pyx_pw_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, /*tp_new*/
+  __pyx_tp_new_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -11882,8 +11882,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_PruningPasser_run, __pyx_k_PruningPasser_run, sizeof(__pyx_k_PruningPasser_run), 0, 0, 1, 1},
     {&__pyx_n_s_PruningPasser_trace, __pyx_k_PruningPasser_trace, sizeof(__pyx_k_PruningPasser_trace), 0, 0, 1, 1},
     {&__pyx_n_s_RSS, __pyx_k_RSS, sizeof(__pyx_k_RSS), 0, 0, 1, 1},
-    {&__pyx_kp_s_UQPyL_Surrogates_Mars___pruning, __pyx_k_UQPyL_Surrogates_Mars___pruning, sizeof(__pyx_k_UQPyL_Surrogates_Mars___pruning), 0, 0, 1, 0},
-    {&__pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_k_UQPyL_Surrogates_Mars___pruning_2, sizeof(__pyx_k_UQPyL_Surrogates_Mars___pruning_2), 0, 0, 1, 1},
+    {&__pyx_kp_s_UQPyL_surrogates_mars___pruning, __pyx_k_UQPyL_surrogates_mars___pruning, sizeof(__pyx_k_UQPyL_surrogates_mars___pruning), 0, 0, 1, 0},
+    {&__pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_k_UQPyL_surrogates_mars___pruning_2, sizeof(__pyx_k_UQPyL_surrogates_mars___pruning_2), 0, 0, 1, 1},
     {&__pyx_n_s_X, __pyx_k_X, sizeof(__pyx_k_X), 0, 0, 1, 1},
     {&__pyx_kp_u__10, __pyx_k__10, sizeof(__pyx_k__10), 0, 1, 0, 0},
     {&__pyx_n_s__11, __pyx_k__11, sizeof(__pyx_k__11), 0, 0, 1, 1},
@@ -12009,7 +12009,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":35
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":35
  *         self.penalty = kwargs.get('penalty', 3.0)
  *         if sample_weight.shape[1] == 1:
  *             y_avg = np.average(self.y, weights=sample_weight[:,0], axis=0)             # <<<<<<<<<<<<<<
@@ -12023,7 +12023,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":78
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":78
  * 
  *         if self.verbose >= 1:
  *             print('Beginning pruning pass')             # <<<<<<<<<<<<<<
@@ -12034,7 +12034,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":99
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":99
  *             else:
  *                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
  *             beta, mse_ = np.linalg.lstsq(B[:, 0:(basis_size)], weighted_y)[0:2]             # <<<<<<<<<<<<<<
@@ -12045,7 +12045,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__6);
   __Pyx_GIVEREF(__pyx_slice__6);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":115
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":115
  * 
  *         if self.verbose >= 1:
  *             print(self.record.partial_str(slice(-1, None, None), print_footer=False))             # <<<<<<<<<<<<<<
@@ -12070,7 +12070,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":47
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":47
  *             self.feature_importance[criterion] = np.zeros((self.n,))
  * 
  *     cpdef run(PruningPasser self):             # <<<<<<<<<<<<<<
@@ -12080,16 +12080,16 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__12 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___pruning, __pyx_n_s_run, 47, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___pruning, __pyx_n_s_run, 47, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 47, __pyx_L1_error)
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":211
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":211
  *             self.feature_importance[name] = val
  * 
  *     cpdef PruningPassRecord trace(PruningPasser self):             # <<<<<<<<<<<<<<
  *         return self.record
  * 
  */
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_Surrogates_Mars___pruning, __pyx_n_s_trace, 211, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_UQPyL_surrogates_mars___pruning, __pyx_n_s_trace, 211, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 211, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -12191,35 +12191,35 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser = &__pyx_vtable_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser.run = (PyObject *(*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_run;
-  __pyx_vtable_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser.trace = (struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord *(*)(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_trace;
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser = &__pyx_vtable_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser.run = (PyObject *(*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_run;
+  __pyx_vtable_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser.trace = (struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord *(*)(struct __pyx_obj_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser *, int __pyx_skip_dispatch))__pyx_f_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_trace;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser)) __PYX_ERR(0, 16, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser_spec, __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser_spec, NULL); if (unlikely(!__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser)) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser_spec, __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #else
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser = &__pyx_type_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser = &__pyx_type_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser->tp_print = 0;
+  __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser->tp_print = 0;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser->tp_dictoffset && __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser->tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser->tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser->tp_dictoffset && __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser->tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, __pyx_vtabptr_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PruningPasser, (PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PruningPasser, (PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   #endif
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -12274,49 +12274,49 @@ static int __Pyx_modinit_type_import_code(void) {
   __pyx_ptype_5numpy_character = __Pyx_ImportType_3_0_6(__pyx_t_1, "numpy", "character", sizeof(PyObject), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(PyObject),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5numpy_character) __PYX_ERR(1, 830, __pyx_L1_error)
   __pyx_ptype_5numpy_ufunc = __Pyx_ImportType_3_0_6(__pyx_t_1, "numpy", "ufunc", sizeof(PyUFuncObject), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(PyUFuncObject),__Pyx_ImportType_CheckSize_Ignore_3_0_6); if (!__pyx_ptype_5numpy_ufunc) __PYX_ERR(1, 868, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("UQPyL.Surrogates.Mars_._basis"); if (unlikely(!__pyx_t_1)) __PYX_ERR(8, 5, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("UQPyL.surrogates.mars_._basis"); if (unlikely(!__pyx_t_1)) __PYX_ERR(8, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "BasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction) __PYX_ERR(8, 5, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_BasisFunction)) __PYX_ERR(8, 5, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "RootBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction) __PYX_ERR(8, 63, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_RootBasisFunction)) __PYX_ERR(8, 63, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "ConstantBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction) __PYX_ERR(8, 90, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_ConstantBasisFunction)) __PYX_ERR(8, 90, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "VariableBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction) __PYX_ERR(8, 96, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_VariableBasisFunction)) __PYX_ERR(8, 96, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "DataVariableBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction) __PYX_ERR(8, 106, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_DataVariableBasisFunction)) __PYX_ERR(8, 106, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "MissingnessBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction) __PYX_ERR(8, 123, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_MissingnessBasisFunction)) __PYX_ERR(8, 123, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "HingeBasisFunctionBase", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase) __PYX_ERR(8, 149, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunctionBase)) __PYX_ERR(8, 149, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "SmoothedHingeBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction) __PYX_ERR(8, 164, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_SmoothedHingeBasisFunction)) __PYX_ERR(8, 164, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "HingeBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction) __PYX_ERR(8, 184, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_HingeBasisFunction)) __PYX_ERR(8, 184, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "LinearBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction) __PYX_ERR(8, 190, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_LinearBasisFunction)) __PYX_ERR(8, 190, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._basis", "Basis", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__6_basis_Basis),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis) __PYX_ERR(8, 196, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_Basis = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__6_basis_Basis*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__6_basis_Basis); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__6_basis_Basis)) __PYX_ERR(8, 196, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "BasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_BasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction) __PYX_ERR(8, 5, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_BasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_BasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_BasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_BasisFunction)) __PYX_ERR(8, 5, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "RootBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction) __PYX_ERR(8, 63, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_RootBasisFunction)) __PYX_ERR(8, 63, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "ConstantBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction) __PYX_ERR(8, 90, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_ConstantBasisFunction)) __PYX_ERR(8, 90, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "VariableBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction) __PYX_ERR(8, 96, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_VariableBasisFunction)) __PYX_ERR(8, 96, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "DataVariableBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction) __PYX_ERR(8, 106, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_DataVariableBasisFunction)) __PYX_ERR(8, 106, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "MissingnessBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction) __PYX_ERR(8, 123, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_MissingnessBasisFunction)) __PYX_ERR(8, 123, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "HingeBasisFunctionBase", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase) __PYX_ERR(8, 149, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunctionBase)) __PYX_ERR(8, 149, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "SmoothedHingeBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction) __PYX_ERR(8, 164, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_SmoothedHingeBasisFunction)) __PYX_ERR(8, 164, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "HingeBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction) __PYX_ERR(8, 184, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_HingeBasisFunction)) __PYX_ERR(8, 184, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "LinearBasisFunction", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction) __PYX_ERR(8, 190, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_LinearBasisFunction)) __PYX_ERR(8, 190, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._basis", "Basis", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__6_basis_Basis),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis) __PYX_ERR(8, 196, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_Basis = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__6_basis_Basis*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__6_basis_Basis); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__6_basis_Basis)) __PYX_ERR(8, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("UQPyL.Surrogates.Mars_._record"); if (unlikely(!__pyx_t_1)) __PYX_ERR(9, 5, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("UQPyL.surrogates.mars_._record"); if (unlikely(!__pyx_t_1)) __PYX_ERR(9, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "Record", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Record),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record) __PYX_ERR(9, 5, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Record = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Record*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Record); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Record)) __PYX_ERR(9, 5, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "PruningPassRecord", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord) __PYX_ERR(9, 22, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassRecord)) __PYX_ERR(9, 22, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "ForwardPassRecord", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord) __PYX_ERR(9, 31, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassRecord)) __PYX_ERR(9, 31, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "Iteration", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_Iteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration) __PYX_ERR(9, 38, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Iteration = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_Iteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_Iteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_Iteration)) __PYX_ERR(9, 38, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "PruningPassIteration", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration) __PYX_ERR(9, 46, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_PruningPassIteration)) __PYX_ERR(9, 46, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "FirstPruningPassIteration", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration) __PYX_ERR(9, 51, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstPruningPassIteration)) __PYX_ERR(9, 51, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "ForwardPassIteration", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration) __PYX_ERR(9, 54, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_ForwardPassIteration)) __PYX_ERR(9, 54, __pyx_L1_error)
-  __pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.Surrogates.Mars_._record", "FirstForwardPassIteration", sizeof(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration) __PYX_ERR(9, 65, __pyx_L1_error)
-  __pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration = (struct __pyx_vtabstruct_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10Surrogates_5Mars__7_record_FirstForwardPassIteration)) __PYX_ERR(9, 65, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "Record", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Record),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record) __PYX_ERR(9, 5, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Record = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Record*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Record); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Record)) __PYX_ERR(9, 5, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "PruningPassRecord", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord) __PYX_ERR(9, 22, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassRecord)) __PYX_ERR(9, 22, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "ForwardPassRecord", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord) __PYX_ERR(9, 31, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassRecord)) __PYX_ERR(9, 31, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "Iteration", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_Iteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration) __PYX_ERR(9, 38, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Iteration = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_Iteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_Iteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_Iteration)) __PYX_ERR(9, 38, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "PruningPassIteration", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration) __PYX_ERR(9, 46, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_PruningPassIteration)) __PYX_ERR(9, 46, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "FirstPruningPassIteration", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration) __PYX_ERR(9, 51, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstPruningPassIteration)) __PYX_ERR(9, 51, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "ForwardPassIteration", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration) __PYX_ERR(9, 54, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_ForwardPassIteration)) __PYX_ERR(9, 54, __pyx_L1_error)
+  __pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration = __Pyx_ImportType_3_0_6(__pyx_t_1, "UQPyL.surrogates.mars_._record", "FirstForwardPassIteration", sizeof(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration), __PYX_GET_STRUCT_ALIGNMENT_3_0_6(struct __pyx_obj_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration),__Pyx_ImportType_CheckSize_Warn_3_0_6); if (!__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration) __PYX_ERR(9, 65, __pyx_L1_error)
+  __pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration = (struct __pyx_vtabstruct_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration*)__Pyx_GetVtable(__pyx_ptype_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration); if (unlikely(!__pyx_vtabptr_5UQPyL_10surrogates_5mars__7_record_FirstForwardPassIteration)) __PYX_ERR(9, 65, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -12342,10 +12342,10 @@ static int __Pyx_modinit_function_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("UQPyL.Surrogates.Mars_._util"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("UQPyL.surrogates.mars_._util"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction_3_0_6(__pyx_t_1, "apply_weights_2d", (void (**)(void))&__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_apply_weights_2d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction_3_0_6(__pyx_t_1, "gcv", (void (**)(void))&__pyx_f_5UQPyL_10Surrogates_5Mars__5_util_gcv, "__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10Surrogates_5Mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction_3_0_6(__pyx_t_1, "apply_weights_2d", (void (**)(void))&__pyx_f_5UQPyL_10surrogates_5mars__5_util_apply_weights_2d, "PyObject *(PyArrayObject *, PyArrayObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction_3_0_6(__pyx_t_1, "gcv", (void (**)(void))&__pyx_f_5UQPyL_10surrogates_5mars__5_util_gcv, "__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t (__pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, __pyx_t_5UQPyL_10surrogates_5mars__6_types_FLOAT_t, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -12608,14 +12608,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_UQPyL__Surrogates__Mars____pruning) {
+  if (__pyx_module_is_main_UQPyL__surrogates__mars____pruning) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "UQPyL.Surrogates.Mars_._pruning")) {
-      if (unlikely((PyDict_SetItemString(modules, "UQPyL.Surrogates.Mars_._pruning", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "UQPyL.surrogates.mars_._pruning")) {
+      if (unlikely((PyDict_SetItemString(modules, "UQPyL.surrogates.mars_._pruning", __pyx_m) < 0))) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -12636,7 +12636,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":9
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":9
  * from ._record cimport PruningPassIteration
  * from ._util cimport gcv, apply_weights_2d
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -12648,7 +12648,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_2) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":11
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":11
  * import numpy as np
  * 
  * from collections import defaultdict             # <<<<<<<<<<<<<<
@@ -12669,7 +12669,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":13
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":13
  * from collections import defaultdict
  * 
  * GCV, RSS, NB_SUBSETS = "gcv", "rss", "nb_subsets"             # <<<<<<<<<<<<<<
@@ -12689,7 +12689,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_NB_SUBSETS, __pyx_t_4) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":14
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":14
  * 
  * GCV, RSS, NB_SUBSETS = "gcv", "rss", "nb_subsets"
  * FEAT_IMP_CRITERIA = (GCV, RSS, NB_SUBSETS)             # <<<<<<<<<<<<<<
@@ -12716,42 +12716,42 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_FEAT_IMP_CRITERIA, __pyx_t_5) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":47
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":47
  *             self.feature_importance[criterion] = np.zeros((self.n,))
  * 
  *     cpdef run(PruningPasser self):             # <<<<<<<<<<<<<<
  *         # This is a totally naive implementation and could potentially be made
  *         # faster through the use of updating algorithms.  It is not clear that
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_3run, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser_run, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_3run, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser_run, NULL, __pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__13)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, __pyx_n_s_run, __pyx_t_5) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, __pyx_n_s_run, __pyx_t_5) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":211
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":211
  *             self.feature_importance[name] = val
  * 
  *     cpdef PruningPassRecord trace(PruningPasser self):             # <<<<<<<<<<<<<<
  *         return self.record
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_5trace, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser_trace, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_5trace, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser_trace, NULL, __pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, __pyx_n_s_trace, __pyx_t_5) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, __pyx_n_s_trace, __pyx_t_5) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef tuple state
  *     cdef object _dict
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser___reduce_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 1, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_7__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser___reduce_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, __pyx_n_s_reduce_cython, __pyx_t_5) < 0) __PYX_ERR(4, 1, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, __pyx_n_s_reduce_cython, __pyx_t_5) < 0) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
 
   /* "(tree fragment)":16
  *     else:
@@ -12759,23 +12759,23 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_PruningPasser__set_state(self, __pyx_state)
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser___setstate_cython, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 16, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_13PruningPasser_9__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_PruningPasser___setstate_cython, NULL, __pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser, __pyx_n_s_setstate_cython, __pyx_t_5) < 0) __PYX_ERR(4, 16, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser, __pyx_n_s_setstate_cython, __pyx_t_5) < 0) __PYX_ERR(4, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  PyType_Modified(__pyx_ptype_5UQPyL_10Surrogates_5Mars__8_pruning_PruningPasser);
+  PyType_Modified(__pyx_ptype_5UQPyL_10surrogates_5mars__8_pruning_PruningPasser);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_PruningPasser(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10Surrogates_5Mars__8_pruning_1__pyx_unpickle_PruningPasser, 0, __pyx_n_s_pyx_unpickle_PruningPasser, NULL, __pyx_n_s_UQPyL_Surrogates_Mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 1, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_5UQPyL_10surrogates_5mars__8_pruning_1__pyx_unpickle_PruningPasser, 0, __pyx_n_s_pyx_unpickle_PruningPasser, NULL, __pyx_n_s_UQPyL_surrogates_mars___pruning_2, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_5)) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_PruningPasser, __pyx_t_5) < 0) __PYX_ERR(4, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "UQPyL/Surrogates/Mars_/_pruning.pyx":1
+  /* "UQPyL/surrogates/mars_/_pruning.pyx":1
  * # distutils: language = c             # <<<<<<<<<<<<<<
  * # cython: cdivision = True
  * # cython: boundscheck = False
@@ -12795,7 +12795,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_5);
   if (__pyx_m) {
     if (__pyx_d && stringtab_initialized) {
-      __Pyx_AddTraceback("init UQPyL.Surrogates.Mars_._pruning", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init UQPyL.surrogates.mars_._pruning", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     #if !CYTHON_USE_MODULE_STATE
     Py_CLEAR(__pyx_m);
@@ -12809,7 +12809,7 @@ if (!__Pyx_RefNanny) {
     }
     #endif
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init UQPyL.Surrogates.Mars_._pruning");
+    PyErr_SetString(PyExc_ImportError, "init UQPyL.surrogates.mars_._pruning");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

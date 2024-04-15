@@ -1,10 +1,10 @@
-from . import Problems,Surrogates,Optimization
+from . import problems, surrogates, optimization
 
 __version__ = "0.3.3"
-__author__ = "Smasky"
+__author__ = "wmtSky"
 
 __all__=[
-    "Problems",
-    "Surrogates",
-    "Optimization"
+    "problems",
+    "surrogates",
+    "optimization"
 ]
