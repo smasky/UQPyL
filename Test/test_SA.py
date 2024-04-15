@@ -38,10 +38,10 @@ import os
 # rbd.analyze()
 
 # Sobol
-problem=Sphere(n_input=15)
-rbf=RBF(kernel=Cubic())
-sob=Sobol(problem, cal_second_order=True, N_within_sampler=100)
-sob.analyze()
+# problem=Sphere(n_input=15)
+# rbf=RBF(kernel=Cubic())
+# sob=Sobol(problem, surrogate=rbf, if_sampling_consistent=True, cal_second_order=False, N_within_sampler=128)
+# sob.analyze()
 
 # Delta_test
 # problem=Sphere(dim=15)

@@ -41,9 +41,9 @@ class Sobol(SA):
         #Sobol sequence
 
         if self.cal_second_order:
-            saltelli_sequence=np.zeros(((2*self.n_input+2)*self.n_input, self.n_input))
+            saltelli_sequence=np.zeros(((2*self.n_input+2)*self.N_within_sampler, self.n_input))
         else:
-            saltelli_sequence=np.zeros(((self.n_input+2)*self.n_input, self.n_input))
+            saltelli_sequence=np.zeros(((self.n_input+2)*self.N_within_sampler, self.n_input))
         
         
         index=0
@@ -62,22 +62,24 @@ class Sobol(SA):
                 index+=self.n_input
             
             saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
-            index+=2+self.n_input
+            index+=1
              
         # saltelli_sequence=saltelli_sequence*(self.ub-self.lb)+self.lb
         
         return saltelli_sequence
     
-    def analyze(self, X_sa=None, Y_sa=None):
+    def analyze(self, base_sa: np.ndarray=None, Y_sa: np.ndarray=None):
         
-        if X_sa and X_sa.shape[1]!=self.n_input*2:
+        if base_sa and base_sa.shape[1]!=self.n_input*2:
             raise ValueError("The shape[1] of X_sa must twice greater than the input dimension of the problem!")
         else:
-            X_sa=self.sampler.sample(self.N_within_sampler, self.n_input*2)
+            base_sa=self.sampler.sample(self.N_within_sampler, self.n_input*2)\
+                    *np.tile((self.ub-self.lb), (1,2))+np.tile(self.lb, (1,2))
         ##forward process
-        X_sa=self.__check_and_scale_x__(X_sa)
+        X_sa=self.__check_and_scale_x__(base_sa[:, :self.n_input])
+        X_sa=self._forward(base_sa)
         self.__prepare_surrogate__()
-        X_sa=self._forward(X_sa)
+        
         Y_sa=self.evaluate(X_sa)
              
         Y_sa=(Y_sa-Y_sa.mean())/Y_sa.std()
@@ -118,7 +120,6 @@ class Sobol(SA):
         
         return 0.5*np.mean((A-AB)**2, axis=0)/np.var(Y, axis=0)
             
-        
     def separate_output_values(self, Y_sa, D, N, cal_second_order):
         AB=np.zeros((N,D))
         BA=np.zeros((N,D)) if cal_second_order else None
