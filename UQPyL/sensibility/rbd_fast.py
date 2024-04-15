@@ -2,28 +2,27 @@
 import numpy as np
 from scipy.signal import periodogram
 from scipy.stats import norm
+from typing import Optional, Tuple
 
 from .sa_ABC import SA
-
+from ..DoE import Sampler, LHS
+from ..problems import Problem_ABC as Problem
+from ..surrogates import Surrogate
+from ..utility import Scaler
 class RBD_FAST(SA):
-    def __init__(self, problem, M=10, N_within_sampler=100,
-                 scale=None, sampler=None,
-                 surrogate=None, if_sampling_consistent=False,
-                 sampler_for_surrogate=None, N_within_surrogate_sampler=50,
-                 X_for_surrogate=None, Y_for_surrogate=None):
+    def __init__(self, problem: Problem, M: int=4, sampler: Sampler=LHS('classic'), N_within_sampler=1000, 
+                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), surrogate: Surrogate=None,
+                 if_sampling_consistent=False, sampler_for_surrogate: Sampler=LHS('classic'), N_within_surrogate_sampler: int=50,
+                 X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None):
         
-        super().__init__(problem, N_within_sampler,
-                         scale, sampler,
-                         surrogate, if_sampling_consistent,
+        super().__init__(problem, sampler, N_within_sampler,
+                         scale, surrogate, if_sampling_consistent,
                          sampler_for_surrogate, N_within_surrogate_sampler,
-                        X_for_surrogate, Y_for_surrogate
-                         )
-        
+                         X_for_surrogate, Y_for_surrogate)
         self.M=M
-
-        if self.N_within_sampler<=4*self.M**2:
+        if N_within_sampler<=4*self.M**2:
             raise ValueError("the number of sample must be greater than 4*M**2!")
-                
+        
     def analyze(self, X_sa=None, Y_sa=None):
         
         ##forward process
@@ -37,18 +36,18 @@ class RBD_FAST(SA):
             idx=np.argsort(X_sa[:, i])
             idx=np.concatenate([idx[::2], idx[1::2][::-1]])
             Y_tmp=Y_sa[idx]
-           
+            
             Pxx = np.abs(np.fft.rfft(Y_tmp[:, 0]))**2 / self.N_within_sampler / (self.N_within_sampler - 1)
 
             V=np.sum(Pxx[1:])
             D1=np.sum(Pxx[1: self.M+1])
-            S1=V/D1
+            Si=V/D1
             lamb=(2*self.M)/self.N_within_sampler
-            S1=S1-lamb/(1-lamb)*(1-S1)
+            Si=Si-lamb/(1-lamb)*(1-Si)
             
-            S1.append(S1)
+            S1.append(Si)
             
-        return S1
+        return np.array(S1)
     
     def summary(self):
         #TODO summary 

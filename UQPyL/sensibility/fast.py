@@ -16,22 +16,23 @@
     3. extend FAST
 """
 import numpy as np
+from typing import Optional, Tuple
 
 from .sa_ABC import SA
-from ..DoE import FAST_Sampler
-
+from ..DoE import FAST_Sampler, Sampler, LHS
+from ..problems import Problem_ABC as Problem
+from ..surrogates import Surrogate
+from ..utility import Scaler
 class FAST(SA):
-    def __init__(self, problem, N_within_sampler=100,
-                 scale=None, sampler=None,
-                 surrogate=None, if_sampling_consistent=False,
-                 sampler_for_surrogate=None, N_within_surrogate_sampler=50,
-                 X_for_surrogate=None, Y_for_surrogate=None):
+    def __init__(self, problem: Problem, sampler: Sampler=FAST_Sampler(M=4), N_within_sampler: int=100,
+                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), surrogate: Surrogate=None, if_sampling_consistent: bool=False,
+                 sampler_for_surrogate: Sampler=LHS('classic'), N_within_surrogate_sampler: int=50,
+                 X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None):
         
-        super().__init__(problem, N_within_sampler,
-                         scale, sampler,
-                         surrogate, if_sampling_consistent,
+        super().__init__(problem, sampler, N_within_sampler,
+                         scale, surrogate, if_sampling_consistent,
                          sampler_for_surrogate, N_within_surrogate_sampler,
-                            X_for_surrogate, Y_for_surrogate
+                         X_for_surrogate, Y_for_surrogate
                          )
 
         if not isinstance(sampler, FAST_Sampler):
@@ -46,7 +47,7 @@ class FAST(SA):
         S1=[]; ST=[]
         
         #main process
-        w_0=np.floor((self.N_within_sampler-1)/(2*self.M))
+        w_0=np.floor((self.N_within_sampler-1)/(2*self.sampler.M))
                 
         for i in range(self.n_input):
             idx=np.arange(i*self.N_within_sampler, (i+1)*self.N_within_sampler)
@@ -62,7 +63,7 @@ class FAST(SA):
             S1.append(Di/V)
             ST.append(1.0-Dt/V)
             
-        return S1, ST
+        return np.array(S1), np.array(ST)
     
     def summary(self):
         pass

@@ -11,7 +11,7 @@ from UQPyL.problems.Single_Benchmarks import (Sphere,Schwefel_1_22,Schwefel_2_22
                                        Weierstrass)
 
 from UQPyL.problems.Multi_ZDT import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
-from UQPyL.problems.Multi_DTLZ import DTLZ1, DTLZ2, DTLZ3
+from UQPyL.problems.Multi_DTLZ import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
 
 from UQPyL.DoE import LHS
 import numpy as np
@@ -112,15 +112,12 @@ Y=Problem.get_PF()
 # plt.scatter(Y[:, 0], Y[:, 1])
 # plt.show()
 
-####################ZDT3
+####################ZDT3######################
 Problem=ZDT3(15)
 Y=Problem.get_PF()
 # plt.scatter(Y[:, 0], Y[:, 1])
 # plt.show()
-
-Problem=DTLZ3(15)
-Y=Problem.get_PF()
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter3D(Y[:, 0], Y[:, 1], Y[:, 2], c=Y[:, 2], cmap='viridis')  # 可以用颜色映射cmap显示第三维度的数据
-plt.show()
+########################DTLZ################
+Problem=DTLZ1(15)
+Y=Problem.get_optimum(1000)
+######################

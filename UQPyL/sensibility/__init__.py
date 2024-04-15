@@ -1,10 +1,10 @@
-from .morris import MORRIS
+from .morris import Morris
 from .fast import FAST
 from .rbd_fast import RBD_FAST
 from .sobol import Sobol
 from .delta_test import Delta_Test
 from .mars_sa import MARS_SA
-__all__=["MORRIS",
+__all__=["Morris",
          "FAST",
          "RBD_FAST",
          "Sobol",

@@ -2,7 +2,7 @@ import abc
 import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
-    dim=None
+    n_input=None
     ub=None
     lb=None
     disc_var=None
@@ -20,14 +20,14 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
         
         if (isinstance(ub,(int, float))):
-            self.ub=np.ones((1,self.dim))*ub
+            self.ub=np.ones((1,self.n_input))*ub
         elif(isinstance(ub,np.ndarray)):
             
             self._check_bound(ub)
             self.ub=ub
             
         if (isinstance(lb,(int, float))):
-            self.lb=np.ones((1,self.dim))*lb
+            self.lb=np.ones((1,self.n_input))*lb
         elif(isinstance(lb,np.ndarray)):
             
             self._check_bound(lb)
@@ -37,6 +37,6 @@ class ProblemABC(metaclass=abc.ABCMeta):
     
     def _check_bound(self,bound: np.ndarray):
         
-        if(not bound.shape[1]==self.dim):
-            raise ValueError('the input bound is inconsistent with the input dimensions')
+        if(not bound.shape[1]==self.n_input):
+            raise ValueError('the input bound is inconsistent with the input n_inputensions')
         

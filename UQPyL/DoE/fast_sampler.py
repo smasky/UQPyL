@@ -51,7 +51,7 @@ class FAST_Sampler(Sampler):
         if max_wi>=nx-1:
             w[1:]=np.floor(np.linspace(1,max_wi, nx-1))
         else:
-            w[1:]=np.arange(nt-1)%max_wi+1
+            w[1:]=np.arange(nx-1)%max_wi+1
         
         s=(2*np.pi/nt)*np.arange(nt)
         

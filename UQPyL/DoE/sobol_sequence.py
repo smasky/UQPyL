@@ -24,7 +24,7 @@ class Sobol_Sequence(Sampler):
     
     def sample(self, nt: int, nx: int) -> np.ndarray:
         '''
-        generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
+        generate the shape of (nt, nx) and numpy array Sobol sequence. 
         
         Parameters 
         nt: int

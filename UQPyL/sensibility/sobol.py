@@ -1,65 +1,68 @@
 #Sobol
 import numpy as np
 from scipy.stats import qmc
+from typing import Optional, Tuple
 
 from .sa_ABC import SA
-
+from ..DoE import Sobol_Sequence, LHS, Sampler
+from ..problems import Problem_ABC as Problem
+from ..surrogates import Surrogate
+from ..utility import Scaler
 class Sobol(SA):
-    def __init__(self, problem, n_sample=100, scramble=True, skip_value=0, cal_second_order=False, 
-                 scale=None, lhs=None,
-                 surrogate=None, n_surrogate_sample=50, 
-                 X_for_surrogate=None, Y_for_surrogate=None):
+    def __init__(self, problem: Problem, scramble: bool=True, skip_value: int=0, cal_second_order: bool=False, 
+                 sampler: Sampler=Sobol_Sequence(), N_within_sampler: int=100,
+                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), surrogate: Surrogate=None,
+                 if_sampling_consistent: bool=False, sampler_for_surrogate: Sampler=LHS('classic'), N_within_surrogate_sampler: int=100,
+                 X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None):
         
-        super().__init__(problem, n_sample,
-                         scale, lhs,
-                         surrogate, n_surrogate_sample, X_for_surrogate, Y_for_surrogate
-                        )
+        super().__init__(problem, sampler, N_within_sampler,
+                         scale, surrogate, if_sampling_consistent,
+                         sampler_for_surrogate, N_within_surrogate_sampler,
+                         X_for_surrogate, Y_for_surrogate)
         
         self.cal_second_order=cal_second_order
         self.scramble=scramble
         self.skip_value=skip_value
             
         if skip_value>0 and isinstance(skip_value, int):
+            
             M=skip_value
+            
             if not((M&(M-1))==0 and (M!=0 and M-1!=0)):
                 raise ValueError("skip value must be a power of 2!")
             
             if self.n_sample>M:
                 raise ValueError("skip value must be greater than NSample!")
+        
         elif skip_value<0 or not isinstance(skip_value, int):
             raise ValueError("skip value must be a positive integer!")    
         
     def _forward(self, base_sequence):
         #Sobol sequence
-        # qrng=qmc.Sobol(d=2*self.n_input, scramble=self.scramble)
-        
-        # if self.skip_value>0:
-        #     qrng.fast_forward(self.skip_value)
-            
-        # base_sequence=qrng.random(self.n_sample)
-        
+
         if self.cal_second_order:
             saltelli_sequence=np.zeros(((2*self.n_input+2)*self.n_input, self.n_input))
         else:
-            saltelli_sequence=np.zeros(((self.n_input+2)*self.n_sample, self.n_input))
+            saltelli_sequence=np.zeros(((self.n_input+2)*self.n_input, self.n_input))
+        
         
         index=0
-        for i in range(self.n_sample):
+        for i in range(self.N_within_sampler):
             saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
 
             index+=1
             
-            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.self.n_input:], (self.n_input, 1))
+            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.n_input:], (self.n_input, 1))
             saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, :self.n_input]               
             index+=self.n_input
            
             if self.cal_second_order:
-                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.dim], (self.n_input, 1))
+                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.n_input], (self.n_input, 1))
                 saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, self.n_input:] 
                 index+=self.n_input
             
             saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
-            index+=1
+            index+=2+self.n_input
              
         # saltelli_sequence=saltelli_sequence*(self.ub-self.lb)+self.lb
         
@@ -67,6 +70,10 @@ class Sobol(SA):
     
     def analyze(self, X_sa=None, Y_sa=None):
         
+        if X_sa and X_sa.shape[1]!=self.n_input*2:
+            raise ValueError("The shape[1] of X_sa must twice greater than the input dimension of the problem!")
+        else:
+            X_sa=self.sampler.sample(self.N_within_sampler, self.n_input*2)
         ##forward process
         X_sa=self.__check_and_scale_x__(X_sa)
         self.__prepare_surrogate__()
