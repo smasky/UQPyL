@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: UQPyL
+Version: 0.2.0
+Summary: A package for uncertainty quantification and parameter optimization with surrogate models.
+Home-page: https://github.com/your/repo
+Author: wmtSky
+Requires-Python: >=3.6
+License-File: LICENSE.md

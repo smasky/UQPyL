@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel", "Cython==3.0.0", "numpy==1.19.5", "pybind11"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="UQPyL"
+description="A package for uncertainty quantification and parameter optimization with surrogate models."
+license = "MIT"
+authors = [
+{name="wmtSky", email="wmtsky@hhu.edu.cn"}
+]
+dependencies = [
+  "numpy>=1.20.3",
+  "scipy>=1.9.3",
+]

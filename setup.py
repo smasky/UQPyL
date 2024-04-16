@@ -38,5 +38,6 @@ setup(
     install_requires=[  # 依赖列表
         'scipy',
         'numpy',
+        'Cython'
     ]
 )

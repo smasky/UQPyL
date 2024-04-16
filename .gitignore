@@ -1,9 +1,14 @@
 .history
 .vscode
+build
+GUI
+result.json
 
-*.json
 Test/*.pickle
 Test/*.pdf
 Test/*.eps
+Test/*.txt
+Test/*.mat
+Test/Debug
 
 **/__pycache__
