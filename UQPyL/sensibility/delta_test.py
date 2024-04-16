@@ -2,21 +2,25 @@
 
 import numpy as np
 from scipy.spatial.distance import cdist
+from typing import Optional, Tuple
 
 from ..optimization import Binary_GA
 from .sa_ABC import SA
-
+from ..DoE import LHS, FAST_Sampler, Sampler
+from ..problems import Problem_ABC as Problem
+from ..utility import Scaler
+from ..surrogates import Surrogate
 class Delta_Test(SA):
-    def __init__(self, problem, n_neighbors=2, 
-                 N_within_sampler=1000, sampler=None, 
-                 scale=None,
-                 surrogate=None, if_sampling_consistent=False,
-                 sampler_for_surrogate=None, N_within_surrogate_sampler=50, 
-                 X_for_surrogate=None, Y_for_surrogate=None):
+    def __init__(self, problem: Problem, n_neighbors: int=2,
+                 sampler: Sampler=LHS('classic'), N_within_sampler=100,
+                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), surrogate: Surrogate=None, if_sampling_consistent: bool=False,
+                 sampler_for_surrogate: Sampler=None, N_within_surrogate_sampler: int=50,
+                 X_for_surrogate: np.ndarray=None, Y_for_surrogate: np.ndarray=None):
         
-        super().__init__(problem, sampler, N_within_sampler, 
-                         scale, surrogate, if_sampling_consistent, sampler_for_surrogate,
-                         N_within_surrogate_sampler, X_for_surrogate, Y_for_surrogate
+        super().__init__(problem, sampler, N_within_sampler,
+                         scale, surrogate, if_sampling_consistent,
+                         sampler_for_surrogate, N_within_surrogate_sampler,
+                         X_for_surrogate, Y_for_surrogate
                          )
 
         self.n_neighbors=n_neighbors
@@ -63,7 +67,7 @@ class Delta_Test(SA):
         distances = cdist(X, X)
         np.fill_diagonal(distances, np.inf)
         
-        neighbors_indices = np.argsort(distances, axis=1)[:, :self.N_neighbors]
+        neighbors_indices = np.argsort(distances, axis=1)[:, :self.n_neighbors]
         
         deltas = []
         for i in range(len(X)):

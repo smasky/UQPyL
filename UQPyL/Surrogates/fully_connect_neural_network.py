@@ -8,8 +8,6 @@ from .mlp_utility._activation_funcs import (ACTIVATIONS, DERIVATIVES, IDENTITY,
                                             RELU, TANH, LEAKY_RELU, ELU, RELU6)
 from ..utility.polynomial_features import PolynomialFeatures
 
-
-
 def square_error(true_Y: np.ndarray, pre_Y: np.ndarray, derivative: bool=False):
     
     if not derivative:

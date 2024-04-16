@@ -7,7 +7,7 @@ class PolynomialFeatures():
         self.include_bias=include_bias
         self.interaction_only=interaction_only
     
-    def transform(self, trainX: np.ndarray):
+    def transform(self, trainX: np.ndarray) -> np.ndarray:
         
         n_samples, n_features=trainX.shape
         

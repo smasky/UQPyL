@@ -10,7 +10,6 @@ from .surrogate_ABC import Surrogate
 from ..utility.scalers import Scaler
 from ..utility.polynomial_features import PolynomialFeatures
 
-
 class MARS(Surrogate):
 
     """

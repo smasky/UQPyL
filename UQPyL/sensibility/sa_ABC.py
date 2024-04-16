@@ -96,8 +96,11 @@ class SA(metaclass=abc.ABCMeta):
             elif self.X_for_surrogate.shape[0]<self.N_within_surrogate_sampler:
                 tmp=self.sampler_for_surrogate.sample(self.N_within_surrogate_sampler-self.X_for_surrogate.shape[0], self.n_input)*(self.ub-self.lb)+self.lb
                 self.X_for_surrogate=np.vstack((self.X_for_surrogate, tmp))
-                
-               
+            
+            elif self.X_for_surrogate.shape[0]>self.N_within_surrogate_sampler:
+                indices=np.random.choice(self.X_for_surrogate.shape[0], self.N_within_surrogate_sampler, replace=False)
+                self.X_for_surrogate=np.copy(self.X_for_surrogate[indices])
+            
             self.Y_for_surrogate=self.evaluate(self.X_for_surrogate, origin=True)
             if self.Y_scale:
                 self.surrogate.fit(self.X_for_surrogate, self.Y_scale.inverse_transform(self.Y_for_surrogate))

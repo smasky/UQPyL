@@ -29,6 +29,14 @@ extensions=cythonize(cython_extensions)+pybind11_extensions
 
 setup(
     name="UQPyL",
+    description='A package for uncertainty quantification and parameter optimization with surrogate models.',
+    version="0.2.0",
     author="wmtSky",
+    url='https://github.com/your/repo',
     ext_modules=extensions,
+    python_requires='>=3.6',  # 支持的Python版本
+    install_requires=[  # 依赖列表
+        'scipy',
+        'numpy',
+    ]
 )

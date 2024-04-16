@@ -1,22 +1,25 @@
 import numpy as np
+from typing import Optional, Tuple
 
-
-from ..surrogates import MARS
-from ..utility import MinMaxScaler
+from ..surrogates import MARS, Surrogate
+from ..utility import MinMaxScaler, Scaler
+from ..problems import Problem_ABC as Problem
+from ..DoE import LHS, Sampler
 from .sa_ABC import SA
 
+
 class MARS_SA(SA):
-    def __init__(self, problem, N_within_sampler=100,
-                 scale=None, sampler=None,
-                 surrogate=None, if_sampling_consistent=False,
-                 sampler_for_surrogate=None, N_within_surrogate_sampler=50,
+    def __init__(self, problem: Problem, 
+                 sampler: Sampler=LHS('classic'), N_within_sampler: int=100,
+                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                 surrogate: Surrogate=None, if_sampling_consistent: bool=False,
+                 sampler_for_surrogate: Sampler=None, N_within_surrogate_sampler: int=50,
                  X_for_surrogate=None, Y_for_surrogate=None):
         
-        super().__init__(problem, N_within_sampler,
-                         scale, sampler,
-                         surrogate, if_sampling_consistent,
+        super().__init__(problem, sampler, N_within_sampler,
+                         scale, surrogate, if_sampling_consistent,
                          sampler_for_surrogate, N_within_surrogate_sampler,
-                            X_for_surrogate, Y_for_surrogate
+                         X_for_surrogate, Y_for_surrogate
                          )
     
     def analyze(self, X_sa=None, Y_sa=None):
@@ -31,8 +34,6 @@ class MARS_SA(SA):
         mars=MARS(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
         mars.fit(X_sa, Y_sa)
         base_gcv=mars.gcv_
-        
-        
         
         for i in range(self.n_input):
             X_sub=np.delete(X_sa, [i], axis=1)

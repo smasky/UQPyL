@@ -6,7 +6,7 @@ from UQPyL.DoE import LHS
 from UQPyL.optimization import SCE_UA, ASMO, NSGAII, MOASMO
 from UQPyL.surrogates import RBF, MO_Surrogates, KRG
 from UQPyL.surrogates.rbf_kernels import Cubic
-from UQPyL.sensibility import Morris, FAST, RBD_FAST, Sobol, Delta_Test,  MARS_SA
+from UQPyL.sensibility import Morris, FAST, RBD_FAST, Sobol, Delta_Test,  MARS_SA, RSA
 from UQPyL.utility import MinMaxScaler
 import matplotlib.pyplot as plt
 import os
@@ -44,6 +44,19 @@ import os
 # sob.analyze()
 
 # Delta_test
-# problem=Sphere(dim=15)
-# delta=DELTA_TEST(problem, NSample=1000)
+# problem=Sphere(n_input=15)
+# rbf=RBF(kernel=Cubic())
+# delta=Delta_Test(problem, N_within_sampler=1000, surrogate=rbf, N_within_surrogate_sampler=500)
 # delta.analyze()
+
+#MARS_SA
+# problem=Sphere(n_input=15)
+# rbf=RBF(kernel=Cubic())
+# mars=MARS_SA(problem, N_within_sampler=1000)
+# mars.analyze()
+
+#RSA
+# problem=Sphere(n_input=15)
+# rbf=RBF(kernel=Cubic())
+# rsa=RSA(problem, scale=(MinMaxScaler(0,1), MinMaxScaler(0,1)),N_within_sampler=100)
+# res=rsa.analyze()

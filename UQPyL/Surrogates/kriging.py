@@ -58,7 +58,6 @@ def cubic(theta, d):
     return r
 
 K={"GAUSSIAN": guass, "EXP": exp, "CUBIC": cubic}
-
 class Kriging(Surrogate):
     """
     A Kriging implementation based on python env includes the new training method(prediction error), 

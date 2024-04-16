@@ -49,9 +49,7 @@ class GPR(Surrogate):
         
         K_trans=self.kernel(predict_X,self.trainX)
         y_mean=K_trans @ self.alpha_
-        
-        #y_mean= y_train_std * y_mean+ y_train_mean
-        
+               
         V=solve_triangular(
             self.L_, K_trans.T, lower=True
         )

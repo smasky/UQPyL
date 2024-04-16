@@ -1,11 +1,11 @@
 import numpy as np
-from typing import Literal
+from typing import Literal, Tuple
 import math
 class RandSelect():
     def __init__(self, n_test: int=5):
         self.n_test=n_test
         
-    def split(self, X: np.ndarray):
+    def split(self, X: np.ndarray) -> Tuple[list, list]:
         n_sample,_=X.shape
         n_sets=math.floor(n_sample/self.n_test)
         
@@ -26,7 +26,7 @@ class KFold():
         
         self.n_splits=n_splits
     
-    def split(self, X: np.ndarray, mode: Literal['full','single'] ='full'):
+    def split(self, X: np.ndarray, mode: Literal['full','single'] ='full') -> Tuple[list, list]:
         
         train=[];test=[]
         

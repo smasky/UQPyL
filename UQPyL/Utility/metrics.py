@@ -1,6 +1,7 @@
 import numpy as np
 import math
-def r2_score(true_Y: np.ndarray, pre_Y: np.ndarray):
+from typing import Tuple
+def r2_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     R2-score
     """
@@ -10,13 +11,13 @@ def r2_score(true_Y: np.ndarray, pre_Y: np.ndarray):
     
     return 1-SSR/SST
 
-def mse(true_Y: np.ndarray, pre_Y: np.ndarray):
+def mse(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     Mean square error
     """
     return np.mean(np.square(true_Y-pre_Y), axis=0)
 
-def rank_score(true_Y: np.ndarray, pre_Y: np.ndarray):
+def rank_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     Rank score-Kendall rank
     """
@@ -38,7 +39,7 @@ def rank_score(true_Y: np.ndarray, pre_Y: np.ndarray):
     return (nc-nd)/(n_samples*(n_samples-1))*2
 
 
-def sort_score(true_Y: np.ndarray, pre_Y: np.ndarray):
+def sort_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     Sort_score
     """
