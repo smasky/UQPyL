@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 
 import numpy
@@ -34,7 +34,7 @@ setup(
     author="wmtSky",
     url='https://github.com/your/repo',
     ext_modules=extensions,
-    python_requires='>=3.6',  # 支持的Python版本
+    python_requires='>=3.8',  # 支持的Python版本
     install_requires=[  # 依赖列表
         'scipy',
         'numpy',
