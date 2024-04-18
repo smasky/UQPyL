@@ -20,11 +20,11 @@ cython_extensions = [
     # Extension("UQPyL.surrogates.mars_._pruning", ["UQPyL/surrogates/mars_/_pruning.pyx"],include_dirs=[numpy_inc], extra_compile_args=['/w'],),
     # Extension("UQPyL.surrogates.mars_._qr", ["UQPyL/surrogates/mars_/_qr.pyx"],include_dirs=[numpy_inc], extra_compile_args=['/w'],),
     # Extension("UQPyL.surrogates.mars_._knot_search", ["UQPyL/surrogates/mars_/_knot_search.pyx"],include_dirs=[numpy_inc], extra_compile_args=['/w'],),
-    Extension('UQPyL.surrogates.lasso_.lasso_fast', sources=[Path('UQPyL/surrogates/lasso_/lasso_fast.pyx')], include_dirs=[numpy_inc], extra_compile_args=['/w'],)
+    Extension('UQPyL.surrogates.lasso_.lasso_fast', sources=[str(Path('UQPyL/surrogates/lasso_/lasso_fast.pyx'))], include_dirs=[numpy_inc], extra_compile_args=['/w'],)
 ]
 #pybind11扩展模块
 pybind11_extensions = [
-    Extension("UQPyL.surrogates.svr_.libsvm_interface", [Path("UQPyL/surrogates/svr_/libsvm_interface.cpp"), Path("UQPyL/surrogates/svr_/svm.cpp")], include_dirs=[numpy_inc, pybind11_inc]),
+    Extension("UQPyL.surrogates.svr_.libsvm_interface", [str(Path("UQPyL/surrogates/svr_/libsvm_interface.cpp")), str(Path("UQPyL/surrogates/svr_/svm.cpp"))], include_dirs=[numpy_inc, pybind11_inc]),
 ]
 
 extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 'boundscheck': False})+pybind11_extensions
