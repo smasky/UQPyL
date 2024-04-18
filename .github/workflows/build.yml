@@ -50,8 +50,8 @@ jobs:
         python setup.py build_ext --inplace
 
     - name: Build wheels with cibuildwheel
-       env:
-          CIBW_BUILD: "${{ matrix.python[0] }}-*"
+       env: 
+           CIBW_BUILD: "${{ matrix.python }}-*"
       run: |
         pip install cibuildwheel
         cibuildwheel --output-dir wheelhouse --platform windows --arch AMD64
