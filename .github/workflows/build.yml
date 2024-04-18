@@ -49,10 +49,10 @@ jobs:
     # 直接在env下设置环境变量
     - name: Set CIBW variables
       run: |
-        echo "CIBW_BUILD=${{ format('{0}-{1}*', matrix.python[0], coalesce(matrix.buildplat.manylinux_type, matrix.buildplat.os_name)) }}"
+        echo "CIBW_BUILD=${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}"
         echo "CIBW_ARCHS=${{ matrix.buildplat.arch }}"
       env:
-        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], coalesce(matrix.buildplat.manylinux_type, matrix.buildplat.os_name)) }}
+        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}
         CIBW_ARCHS: ${{ matrix.buildplat.arch }}
 
     - name: Build wheels with cibuildwheel
