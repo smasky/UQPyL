@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.11]
         buildplat:
           - platform: ubuntu-20.04
             manylinux_type: manylinux
