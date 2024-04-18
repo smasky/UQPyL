@@ -11,7 +11,7 @@ jobs:
       matrix:
         python-version: [3.8]
         buildplat:
-          - platform: ubuntu-20.04  # 更改为支持的Ubuntu LTS版本，例如20.04
+          - platform: ubuntu-20.04
             manylinux_type: manylinux
             arch: x86_64
           - platform: ubuntu-20.04
@@ -22,12 +22,13 @@ jobs:
             os_name: win
             arch: AMD64
 
-        python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
     runs-on: ${{ matrix.buildplat.platform }}
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -36,6 +37,7 @@ jobs:
 
     - name: Install common dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install Cython numpy pybind11 scipy
 
     - name: Install C++ compiler (Windows)
@@ -44,8 +46,11 @@ jobs:
       with:
         install: mingw64/mingw-w64-x86_64-gcc
 
-    # 直接在env下设置环境变量，不再使用set-env命令
+    # 直接在env下设置环境变量
     - name: Set CIBW variables
+      run: |
+        echo "CIBW_BUILD=${{ format('{0}-{1}*', matrix.python[0], coalesce(matrix.buildplat.manylinux_type, matrix.buildplat.os_name)) }}"
+        echo "CIBW_ARCHS=${{ matrix.buildplat.arch }}"
       env:
         CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], coalesce(matrix.buildplat.manylinux_type, matrix.buildplat.os_name)) }}
         CIBW_ARCHS: ${{ matrix.buildplat.arch }}
