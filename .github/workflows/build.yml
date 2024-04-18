@@ -22,7 +22,7 @@ jobs:
             os_name: win
             arch: AMD64
 
-        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+        python: [["cp36", "3.16"], ["cp37", "3.7"], ["cp38", "3.8"], ["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
     runs-on: ${{ matrix.buildplat.platform }}
 
