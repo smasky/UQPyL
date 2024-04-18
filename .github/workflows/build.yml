@@ -21,7 +21,8 @@ jobs:
             manylinux_type: ""
             os_name: win
             arch: AMD64
-        python: [["cp36", "3.6"], ["cp37", "3.7"], ["cp38", "3.8"], ["cp39", "3.9"], ["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+
+        python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
     runs-on: ${{ matrix.buildplat.platform }}
 
@@ -43,10 +44,16 @@ jobs:
       with:
         install: mingw64/mingw-w64-x86_64-gcc
 
-    - name: Build wheels
+    - name: Prepare CIBW_BUILD variable
+      id: prepare_cibuildwheel_var
+      run: |
+        echo "::set-env name=CIBW_BUILD::${{ format('{0}-{1}*', matrix.python[0], matrix.buildplat.manylinux_type) if matrix.buildplat.manylinux_type != '' else '{0}-' + matrix.buildplat.os_name + '*' }}"
+        echo "::set-env name=CIBW_ARCHS::${{ matrix.buildplat.arch }}"
+
+    - name: Build wheels with cibuildwheel
       env:
-        CIBW_BUILD: "${{ format('{0}-{1}*', matrix.python[0], matrix.buildplat.manylinux_type) if matrix.buildplat.manylinux_type != '' else '{0}-' + matrix.buildplat.os_name + '*' }}"
-        CIBW_ARCHS: "${{ matrix.buildplat.arch }}"
+        CIBW_BUILD: ${{ env.CIBW_BUILD }}
+        CIBW_ARCHS: ${{ env.CIBW_ARCHS }}
       run: |
         pip install cibuildwheel
         if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
