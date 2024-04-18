@@ -3,7 +3,7 @@ name: CI build for pypi
 on:
   push:
     branches:
-      - office
+      - master
 
 jobs:
   build:
