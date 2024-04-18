@@ -51,11 +51,9 @@ jobs:
     - name: Build wheels with cibuildwheel
       run: |
         pip install cibuildwheel
-        if [ ${{ env.PYTHON_ARCH }} == 32 ]; then
-          cibuildwheel --output-dir wheelhouse --platform windows --arch x86
-        else
-          cibuildwheel --output-dir wheelhouse --platform window --arch AMD64
-        fi
+
+        cibuildwheel --output-dir wheelhouse --platform windows --arch AMD64
+      
 
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v2
