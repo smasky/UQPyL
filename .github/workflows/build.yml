@@ -11,7 +11,7 @@ jobs:
       matrix:
         python-version: [3.8]
         os: [windows-latest]
-        architecture: [win32]
+        architecture: [win64]
 
     runs-on: ${{ matrix.os }}
 
