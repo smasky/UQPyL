@@ -1,4 +1,4 @@
-name: CI build for pypi
+name: CI build for PyPI
 
 on:
   push:
@@ -11,17 +11,20 @@ jobs:
       matrix:
         python-version: [3.8]
         buildplat:
-        # should also be able to do multi-archs on a single entry, e.g.
-        # [windows-2019, win*, "AMD64 x86"]. However, those two require a different compiler setup
-        # so easier to separate out here.
-        - [ubuntu-22.04, manylinux, x86_64]
-        - [ubuntu-22.04, musllinux, x86_64]
-        - [windows-2019, win, AMD64]
+          - platform: ubuntu-22.04
+            manylinux_type: manylinux
+            arch: x86_64
+          - platform: ubuntu-22.04
+            manylinux_type: musllinux
+            arch: x86_64
+          - platform: windows-2019
+            manylinux_type: ""
+            os_name: win
+            arch: AMD64
 
-        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+        python: [["cp36", "3.6"], ["cp37", "3.7"], ["cp38", "3.8"], ["cp39", "3.9"]["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
-
-    runs-on: ${{ matrix.buildplat[0] }}
+    runs-on: ${{ matrix.buildplat.platform }}
 
     steps:
     - uses: actions/checkout@v2
@@ -31,50 +34,27 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install Cython
+    - name: Install common dependencies
       run: |
-        pip install Cython
-
-    - name: Install Cython
-      run: |
-          pip install numpy
-          
-    - name: Install pybind11
-      run: |
-        pip install pybind11
-
-    - name: Install scipy
-      run: |
-        pip install scipy
+        pip install Cython numpy pybind11 scipy
 
     - name: Install C++ compiler (Windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.buildplat.os_name == 'win'
       uses: msys2/setup-msys2@v2
       with:
         install: mingw64/mingw-w64-x86_64-gcc
 
-    - name: Install dependencies and build package
-      run: |
-        python setup.py build_ext --inplace
-
-    - name: Build wheels with cibuildwheel
+    - name: Build wheels
       env:
-        CIBW_BUILD: ${{ matrix.python[0] }}-${{ matrix.buildplat[1] }}*
-        CIBW_ARCHS: ${{ matrix.buildplat[2] }}
-      if: matrix.os == 'windows-latest'
+        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], matrix.buildplat.manylinux_type) if matrix.buildplat.manylinux_type != '' else '{0}-' + matrix.buildplat.os_name + '*' }}
+        CIBW_ARCHS: ${{ matrix.buildplat.arch }}
       run: |
         pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse --platform windows --arch amd64
-
-    # 当os为非windows时执行此步（即Linux）
-    - name: Build wheels with cibuildwheel (Linux)
-      if: matrix.os != 'windows-latest'
-      env:
-        CIBW_BUILD: ${{ matrix.python[0] }}-${{ matrix.buildplat[1] }}*
-        CIBW_ARCHS: ${{ matrix.buildplat[2] }}
-      run: |
-        pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse --platform linux --arch x86_64
+        if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
+          cibuildwheel --output-dir wheelhouse --platform windows --arch ${{ matrix.buildplat.arch }}
+        else
+          cibuildwheel --output-dir wheelhouse --platform linux --arch ${{ matrix.buildplat.arch }} --manylinux ${{ matrix.buildplat.manylinux_type }}
+        fi
 
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v2
