@@ -11,16 +11,16 @@ jobs:
       matrix:
         python-version: [3.11]
         buildplat:
-          - platform: windows-2019
-            manylinux_type: ""
-            os_name: win
-            arch: AMD64
+          # - platform: windows-2019
+          #   manylinux_type: ""
+          #   os_name: win
+          #   arch: AMD64
           # - platform: ubuntu-20.04
           #   manylinux_type: manylinux
           #   arch: x86_64
-          # - platform: ubuntu-20.04
-          #   manylinux_type: musllinux
-          #   arch: x86_64
+          - platform: ubuntu-20.04
+            manylinux_type: musllinux
+            arch: x86_64
           
 
         python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
@@ -46,6 +46,12 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         install: mingw64/mingw-w64-x86_64-gcc
+
+    - name: Install dependencies
+      run: |
+        apk add --no-cache \
+          blas-dev \
+          lapack-dev
 
     # 直接在env下设置环境变量
     - name: Set CIBW variables
