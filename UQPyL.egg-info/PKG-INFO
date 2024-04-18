@@ -1,8 +1,7 @@
 Metadata-Version: 2.1
 Name: UQPyL
-Version: 1.0.0
+Version: 2.0.0
 Summary: A package for uncertainty quantification and parameter optimization with surrogate models.
-Home-page: https://github.com/your/repo
 Author: wmtSky
 Author-email: wmtSky <wmtsky@hhu.edu.cn>
 License: MIT License
@@ -26,5 +25,6 @@ License: MIT License
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
         SOFTWARE.
-Requires-Python: >=3.6
 License-File: LICENSE.md
+Requires-Dist: numpy>=1.20.3
+Requires-Dist: scipy>=1.10.1

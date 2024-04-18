@@ -9,14 +9,6 @@ UQPyL.egg-info/dependency_links.txt
 UQPyL.egg-info/requires.txt
 UQPyL.egg-info/top_level.txt
 UQPyL/surrogates/lasso_/lasso_fast.c
-UQPyL/surrogates/mars_/_basis.c
-UQPyL/surrogates/mars_/_forward.c
-UQPyL/surrogates/mars_/_knot_search.c
-UQPyL/surrogates/mars_/_pruning.c
-UQPyL/surrogates/mars_/_qr.c
-UQPyL/surrogates/mars_/_record.c
-UQPyL/surrogates/mars_/_types.c
-UQPyL/surrogates/mars_/_util.c
 UQPyL/surrogates/svr_/libsvm_interface.cpp
 UQPyL/surrogates/svr_/svm.cpp
 UQPyL/DoE/__init__.py

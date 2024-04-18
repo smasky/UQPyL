@@ -9,18 +9,20 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8]
         os: [windows-latest]
+        architecture: [win32]
 
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python ${{ matrix.python-version }} - ${{ matrix.architecture }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.architecture }}
 
     - name: Install Cython
       run: |
@@ -51,7 +53,11 @@ jobs:
     - name: Build wheels with cibuildwheel
       run: |
         pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse
+        if [ ${{ env.PYTHON_ARCH }} == 32 ]; then
+          cibuildwheel --output-dir wheelhouse --platform windows --arch x86
+        else
+          cibuildwheel --output-dir wheelhouse --platform window --arch AMD64
+        fi
 
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v2
