@@ -1,10 +1,17 @@
 [build-system]
-requires = ["setuptools", "wheel", "Cython", "numpy", "pybind11"]
+requires = [
+    "setuptools",
+    "wheel",
+    "Cython>=3.0.10",
+    "pybind11>=2.6",
+    "numpy",
+    "scipy",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name="UQPyL"
-version="1.0.0"
+version="2.0.0"
 description="A package for uncertainty quantification and parameter optimization with surrogate models."
 license = { file = "LICENSE.md" }
 authors = [
@@ -12,20 +19,10 @@ authors = [
 ]
 dependencies = [
   "numpy>=1.20.3",
-  "scipy>=1.9.3",
+  "scipy>=1.10.1",
 ]
 
-[tool.hatch]
-build.targets.sdist.exclude = [
-  ".history",
-  ".vscode",
-  "build",
-  "GUI",
-  "Test",
-  "UQPyL.egg-info",
-  "*.md",
-  "*.rst",
-  "*.yml",
-  "*.cff",
-  ".*",
-]
+
+[tool.setuptools]
+
+packages = ["UQPyL"]
