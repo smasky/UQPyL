@@ -10,11 +10,18 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-        os: [ubuntu-latest, windows-latest] # 添加了对Linux（Ubuntu）的支持
-        python: [ 'cp36-cp36','cp37-cp37','cp38-cp38', 'cp39-cp39', 'cp310-cp310', 'cp311-cp311', 'cp312-cp312' ] # 按照Python标识符格式列出
+        buildplat:
+        # should also be able to do multi-archs on a single entry, e.g.
+        # [windows-2019, win*, "AMD64 x86"]. However, those two require a different compiler setup
+        # so easier to separate out here.
+        - [ubuntu-22.04, manylinux, x86_64]
+        - [ubuntu-22.04, musllinux, x86_64]
+        - [windows-2019, win, AMD64]
+
+        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.buildplat[0] }}
 
     steps:
     - uses: actions/checkout@v2
@@ -52,8 +59,8 @@ jobs:
 
     - name: Build wheels with cibuildwheel
       env:
-        CIBW_BUILD: "${{ matrix.python }}-win_amd64"  # 对于Windows平台
-        CIBW_PLATFORMS: "linux_x86_64,win_amd64"  # 对于所有平台，分开指定
+        CIBW_BUILD: ${{ matrix.python[0] }}-${{ matrix.buildplat[1] }}*
+        CIBW_ARCHS: ${{ matrix.buildplat[2] }}
       if: matrix.os == 'windows-latest'
       run: |
         pip install cibuildwheel
@@ -63,8 +70,8 @@ jobs:
     - name: Build wheels with cibuildwheel (Linux)
       if: matrix.os != 'windows-latest'
       env:
-        CIBW_BUILD: "${{ matrix.python }}"
-        CIBUILDWHEEL_ENVIRONMENT: "CC=gcc"  # 对于Linux环境，可能需要设置编译器
+        CIBW_BUILD: ${{ matrix.python[0] }}-${{ matrix.buildplat[1] }}*
+        CIBW_ARCHS: ${{ matrix.buildplat[2] }}
       run: |
         pip install cibuildwheel
         cibuildwheel --output-dir wheelhouse --platform linux --arch x86_64
