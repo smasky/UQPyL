@@ -51,7 +51,7 @@ jobs:
 
     - name: Build wheels with cibuildwheel
       env:
-        CIBW_BUILD: "${{ matrix.python }}-cp${{ matrix.python-version }}-*"
+        CIBW_BUILD: "${{ matrix.python }}-*"
       run: |
         pip install cibuildwheel
         cibuildwheel --output-dir wheelhouse --platform windows --arch AMD64
