@@ -57,7 +57,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse --platform ${{ matrix.os }} --arch amd64
+        cibuildwheel --output-dir wheelhouse --platform windows --arch amd64
 
     # 当os为非windows时执行此步（即Linux）
     - name: Build wheels with cibuildwheel (Linux)
@@ -67,7 +67,7 @@ jobs:
         CIBUILDWHEEL_ENVIRONMENT: "CC=gcc"  # 对于Linux环境，可能需要设置编译器
       run: |
         pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse --platform ${{ matrix.os }} --arch x86_64
+        cibuildwheel --output-dir wheelhouse --platform linux --arch x86_64
 
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v2
