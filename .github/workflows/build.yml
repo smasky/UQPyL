@@ -64,7 +64,7 @@ jobs:
         if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
           cibuildwheel --output-dir wheelhouse --platform windows --arch ${{ matrix.buildplat.arch }}
         else
-          cibuildwheel --output-dir wheelhouse --platform linux --arch ${{ matrix.buildplat.arch }} --manylinux ${{ matrix.buildplat.manylinux_type }}
+          cibuildwheel --output-dir wheelhouse --platform linux --arch ${{ matrix.buildplat.arch }}
         fi
 
     - name: Save Wheel Package as Artifact
