@@ -1,11 +1,12 @@
 [build-system]
 requires = [
     "setuptools",
-    "wheel",
-    "Cython>=3.0.10",
-    "pybind11>=2.6",
-    "numpy",
     "scipy",
+    "wheel",
+    "Cython",
+    "pybind11",
+    "numpy",
+    
 ]
 build-backend = "setuptools.build_meta"
 
@@ -18,8 +19,8 @@ authors = [
 {name="wmtSky", email="wmtsky@hhu.edu.cn"}
 ]
 dependencies = [
-  "numpy>=1.20.3",
-  "scipy>=1.10.1",
+  "numpy",
+  "scipy",
 ]
 
 
