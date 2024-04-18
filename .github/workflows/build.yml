@@ -11,7 +11,9 @@ jobs:
       matrix:
         python-version: [3.8]
         os: [windows-latest]
-        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+        python: [ 'cp310', 'cp311', 'cp312' ] # 直接列出 Python 标识符
+      env:
+        CIBW_BUILD: "${{ matrix.python[0] }}-*"
 
     runs-on: ${{ matrix.os }}
 
@@ -50,11 +52,8 @@ jobs:
         python setup.py build_ext --inplace
 
     - name: Build wheels with cibuildwheel
-       env:
-           CIBW_BUILD: ${{ matrix.python[0] }}-*
       run: |
         pip install cibuildwheel
-
         cibuildwheel --output-dir wheelhouse --platform windows --arch AMD64
       
 
