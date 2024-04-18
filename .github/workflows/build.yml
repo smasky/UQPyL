@@ -47,12 +47,12 @@ jobs:
       with:
         install: mingw64/mingw-w64-x86_64-gcc
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          libblas-dev \
-          liblapack-dev
+    # - name: Install system dependencies
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y --no-install-recommends \
+    #       libblas-dev \
+    #       liblapack-dev
 
     # 直接在env下设置环境变量
     - name: Set CIBW variables
