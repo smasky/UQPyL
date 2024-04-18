@@ -1,0 +1,60 @@
+name: CI build for pypi
+
+on:
+  push:
+    branches:
+      - office
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+        os: [windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Cython
+      run: |
+        pip install Cython
+
+    - name: Install Cython
+      run: |
+          pip install numpy
+          
+    - name: Install pybind11
+      run: |
+        pip install pybind11
+
+    - name: Install scipy
+      run: |
+        pip install scipy
+
+    - name: Install C++ compiler (Windows)
+      if: matrix.os == 'windows-latest'
+      uses: msys2/setup-msys2@v2
+      with:
+        install: mingw64/mingw-w64-x86_64-gcc
+
+    - name: Install dependencies and build package
+      run: |
+        python setup.py build_ext --inplace
+
+    - name: Build wheels with cibuildwheel
+      run: |
+        pip install cibuildwheel
+        cibuildwheel --output-dir wheelhouse
+
+    - name: Save Wheel Package as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: wheelhouse
+        path: wheelhouse/*.whl
