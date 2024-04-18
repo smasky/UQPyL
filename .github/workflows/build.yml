@@ -10,8 +10,9 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-        os: [windows-latest]
-        python: [ 'cp310', 'cp311', 'cp312' ] # 直接列出 Python 标识符
+        os: [ubuntu-latest, windows-latest] # 添加了对Linux（Ubuntu）的支持
+        python: [ 'cp36-cp36','cp37-cp37','cp38-cp38', 'cp39-cp39', 'cp310-cp310', 'cp311-cp311', 'cp312-cp312' ] # 按照Python标识符格式列出
+
 
     runs-on: ${{ matrix.os }}
 
@@ -51,11 +52,22 @@ jobs:
 
     - name: Build wheels with cibuildwheel
       env:
-        CIBW_BUILD: "${{ matrix.python }}-*"
+        CIBW_BUILD: "${{ matrix.python }}-win_amd64"  # 对于Windows平台
+        CIBW_PLATFORMS: "linux_x86_64,win_amd64"  # 对于所有平台，分开指定
+      if: matrix.os == 'windows-latest'
       run: |
         pip install cibuildwheel
-        cibuildwheel --output-dir wheelhouse --platform windows --arch AMD64
-      
+        cibuildwheel --output-dir wheelhouse --platform ${{ matrix.os }} --arch amd64
+
+    # 当os为非windows时执行此步（即Linux）
+    - name: Build wheels with cibuildwheel (Linux)
+      if: matrix.os != 'windows-latest'
+      env:
+        CIBW_BUILD: "${{ matrix.python }}"
+        CIBUILDWHEEL_ENVIRONMENT: "CC=gcc"  # 对于Linux环境，可能需要设置编译器
+      run: |
+        pip install cibuildwheel
+        cibuildwheel --output-dir wheelhouse --platform ${{ matrix.os }} --arch x86_64
 
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v2
