@@ -26,7 +26,8 @@ jobs:
         python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
     runs-on: ${{ matrix.buildplat.platform }}
-
+    container:
+      image: alpine:latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -47,11 +48,13 @@ jobs:
       with:
         install: mingw64/mingw-w64-x86_64-gcc
 
-    - name: Install dependencies
+    - name: Update package index and install basic build tools
       run: |
+        apk update
         apk add --no-cache \
-          blas-dev \
-          lapack-dev
+          build-base \
+          lapack-dev \
+          openblas-dev
 
     # 直接在env下设置环境变量
     - name: Set CIBW variables
