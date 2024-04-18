@@ -57,8 +57,8 @@ jobs:
 
     - name: Build wheels with cibuildwheel
       env:
-        CIBW_BUILD: ${{ env.CIBW_BUILD }}
-        CIBW_ARCHS: ${{ env.CIBW_ARCHS }}
+        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}
+        CIBW_ARCHS: ${{ matrix.buildplat.arch }}
       run: |
         pip install cibuildwheel
         if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
