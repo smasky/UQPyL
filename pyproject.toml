@@ -12,13 +12,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name="UQPyL"
-version="2.0.8"
 description="A package for uncertainty quantification and parameter optimization with surrogate models."
 license = { file = "LICENSE.md" }
-authors = [
-{name="wmtSky", email="wmtsky@hhu.edu.cn"}
-]
 dependencies = [
   "numpy",
   "scipy",
 ]
+version="2.0.1"
