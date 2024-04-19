@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from distutils.core import setup, Extension, find_packages
 from Cython.Build import cythonize
 from pathlib import Path
 
@@ -43,4 +43,5 @@ setup(
     author="wmtSky",
     # ... 其他常规setup参数 ...
     ext_modules=extensions,  # 如果有自定义的编译行为
+    packages=find_packages()
 )
