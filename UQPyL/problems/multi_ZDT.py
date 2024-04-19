@@ -122,7 +122,8 @@ class ZDT3(ProblemABC):
     def get_optimum(self, N):
         
         from .utility_functions._NDsort import NDSort
-        R=np.zeros((N,self.n_output))
+        
+        R=np.zeros((N, self.n_output))
         R[:,0]=np.linspace(0,1,N)
         R[:,1]=1 - np.sqrt(R[:,0]) - R[:, 0] * np.sin(10 * np.pi * R[:, 0])
         
