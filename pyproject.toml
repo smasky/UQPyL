@@ -12,6 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name="UQPyL"
+version="2.0.1"
 dependencies = [
   "numpy",
   "scipy",
