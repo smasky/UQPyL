@@ -105,8 +105,8 @@ jobs:
 
       - name: Install common dependencies
         run: |
-        python -m pip install --upgrade pip
-        pip install Cython numpy pybind11 scipy
+          python -m pip install --upgrade pip
+          pip install Cython numpy pybind11 scipy
 
       - name: Create source distribution
         run: python setup.py sdist  # 假设您的项目有一个setup.py文件
