@@ -29,6 +29,8 @@ jobs:
 
     runs-on: ${{ matrix.buildplat.platform }}
 
+    if: startsWith(github.ref, 'refs/tags/v')
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
