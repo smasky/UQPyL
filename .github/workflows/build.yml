@@ -35,10 +35,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: List files in repository
-    #   shell: bash
-    #   run: |
-    #     ls -R .
+    - name: List files in repository
+      shell: bash
+      run: |
+        ls -R .
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
