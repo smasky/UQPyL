@@ -111,22 +111,23 @@ jobs:
       - name: Create source distribution
         run: python setup.py sdist  # 假设您的项目有一个setup.py文件
 
-      - name: Archive source code
+      - name: Move source distribution to specific directory
         run: |
-          tar -czf source_code.tar.gz dist/*  # 打包dist目录下的源码包
+          mkdir dist_sources
+          mv dist/*.tar.gz dist_sources/  # 移动生成的源码包到新的目录
 
-      - name: Upload source archive as artifact
+      - name: Upload source distribution as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: source-code
-          path: source_code.tar.gz
+          name: source-distribution
+          path: dist_sources/*
 
   deploy_to_testpypi:
-    needs: [build, package_source]  # 确保依赖于生成wheel和源码包的作业完成
+    needs: [build, package_source]
     runs-on: ubuntu-latest
     env:
-      TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}  # 使用GitHub Secrets存储的TestPyPI用户名
-      TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}  # 使用GitHub Secrets存储的TestPyPI API Token
+      TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+      TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
 
     steps:
       - name: Download Wheel Package Artifact
@@ -135,13 +136,13 @@ jobs:
           name: wheelhouse
           path: ./wheelhouse
 
-      - name: Download Source Code Artifact
+      - name: Download Source Distribution Artifact
         uses: actions/download-artifact@v2
         with:
-          name: source-code
-          path: ./source_code
+          name: source-distribution
+          path: ./source_distribution
 
       - name: Publish to TestPyPI
         run: |
           pip install twine
-          twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl source_code/source_code.tar.gz
+          twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl source_distribution/*.tar.gz
