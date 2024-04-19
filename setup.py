@@ -40,7 +40,6 @@ extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 
 # )
 setup(
     name="UQPyL",
-    version="2.0.0",
     author="wmtSky",
     # ... 其他常规setup参数 ...
     ext_modules=extensions,  # 如果有自定义的编译行为

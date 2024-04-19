@@ -2,10 +2,10 @@ name: CI build for PyPI
 
 on:
   push:
-    branches:
-      - master
-    # tags:
-    #   - 'v*'
+    # branches:
+    #   - master
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -35,11 +35,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: List files in repository
-      shell: bash
-      run: |
-        ls -R .
-      
+    # - name: List files in repository
+    #   shell: bash
+    #   run: |
+    #     ls -R .
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
