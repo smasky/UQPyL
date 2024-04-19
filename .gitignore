@@ -3,6 +3,8 @@
 build
 GUI
 result.json
+dist
+
 
 Test/*.pickle
 Test/*.pdf

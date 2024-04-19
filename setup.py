@@ -46,6 +46,9 @@ setup(
     # ... 其他常规setup参数 ...
     ext_modules=extensions,  # 如果有自定义的编译行为
     packages=find_packages(),
+    description="A python package for parameter uncertainty quantification and optimization",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",  # 如果是Markdown格式
     classifiers=[
         # 添加适合的类目，例如
         'Programming Language :: Python :: 3.6',
