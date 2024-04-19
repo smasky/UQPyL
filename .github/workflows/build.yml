@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.11]
+        python-version: [3.10]
         buildplat:
           - platform: windows-2019
             manylinux_type: ""
@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.buildplat.platform }}
 
     if: startsWith(github.ref, 'refs/tags/v')
-    
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
