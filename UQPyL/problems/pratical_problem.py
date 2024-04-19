@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable
 
-from .Problem_ABC import ProblemABC
+from .problem_ABC import ProblemABC
 class Problem(ProblemABC):
     '''
     Class for creating practical problem

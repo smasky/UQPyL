@@ -2,7 +2,7 @@ import numpy as np
 import itertools
 from typing import Union
 
-from .Problem_ABC import ProblemABC
+from .problem_ABC import ProblemABC
 
 ##----------------Reference-------------------#
 # K. Deb, L. Thiele, M. Laumanns, and E. Zitzler, Scalable test problems

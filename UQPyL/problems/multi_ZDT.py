@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 
-from .Problem_ABC import ProblemABC
+from .problem_ABC import ProblemABC
 ##-----------Reference------------------##
 # E. Zitzler, K. Deb, and L. Thiele, Comparison of multiobjective
 # evolutionary algorithms: Empirical results, Evolutionary computation,
