@@ -45,5 +45,17 @@ setup(
     author_email="wmtsky@hhu.edu.cn",
     # ... 其他常规setup参数 ...
     ext_modules=extensions,  # 如果有自定义的编译行为
-    packages=find_packages()
+    packages=find_packages(),
+    classifiers=[
+        # 添加适合的类目，例如
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+    ],
 )
