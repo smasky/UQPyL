@@ -145,4 +145,4 @@ jobs:
       - name: Publish to TestPyPI
         run: |
           pip install twine
-          twine upload --repository-url https://test.pypi.org/legacy/ wheelhouse/*.whl source_distribution/*.tar.gz
+          twine upload --repository-url https://upload.pypi.org/  wheelhouse/*.whl source_distribution/*.tar.gz
