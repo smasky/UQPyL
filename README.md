@@ -18,7 +18,7 @@ The **main characteristics** of UQPyL includes:
   **Citing in your work:** **#TODO** <br>
 
 # Included Methods and Algorithms
-**Sensibility Analysis:**
+**Sensibility Analysis:** (all methods support for surrogate models)
 - Sobol'
 - Delta_Test
 - Extent FAST
@@ -27,14 +27,14 @@ The **main characteristics** of UQPyL includes:
 - Morris
 - RSA
 
-**Optimization Algorithms:**
+**Optimization Algorithms:** (* indicates the use of surrogate models)
 - SCE-UA
 - GA
 - NSGA-II
+- AMSMO*
 - MO_ASMO*
 - MASTO* #TODO
 - AMSMO* #TODO
-
 
 # Installation
 
