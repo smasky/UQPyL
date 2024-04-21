@@ -18,9 +18,22 @@ The **main characteristics** of UQPyL includes:
   **Citing in your work:** **#TODO** <br>
 
 # Included Methods and Algorithms
+**Sensibility Analysis:**
+- Sobol'
+- Delta_Test
+- Extent FAST
+- RBD_FAST
+- Mars
+- Morris
+- RSA
 
-
-
+**Optimization Algorithms:**
+- SCE-UA
+- GA
+- NSGA-II
+- MO_ASMO*
+- MASTO* #TODO
+- AMSMO* #TODO
 
 
 # Installation
