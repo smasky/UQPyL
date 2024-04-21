@@ -1,35 +1,44 @@
 # Uncertainty Quantification Python Laboratory <br> (UQPyL)
 
-**UQPyL:** The **Uncertainty Quantification Python Laboratory** provide a comprehensive workflow for parameter **uncertainty quantification** and **optimization** in computational numerical simulations. **UQPyL** offers an extensive suite of advanced methodologies(Sobol', Delta Test, EFAST, et al.) and algorithms (NSGA-II, ASMO, MO-ASMO, et al.). In summary, UQPyL consists of four core modules: 
-- Design of Experiments (DoE) 
-- Sensibility Analysis 
-- Optimization
-- Surrogate models
+**UQPyL:** The **Uncertainty Quantification Python Laboratory** provide comprehensive workflows tailored to the **Uncertainty Quantification** and **Optimization** of model inputs within computational numerical simulations and their associated applications (e.g. model calibration, resource scheduling, product design). 
 
-The surrogate models Module can help to solve computational expensive problems caused by intensive numerical simulations.**
+The **main characteristics** of UQPyL includes:
 
-Once you have clearly defined the problem you aim to address, you can employ all pre-prepared methods and algorithms to complete following task:
-* Uncertainty Quantification (UQ)
-* Parameter Optimization
+1. Incorporation of widely adopted sensitivity analysis methodologies and optimization algorithms.
 
-Moreover, the versatility of UQPyL allows researchers to craft their own methods or algorithms by incorporating its diverse range of surrogate models. Consequently, users can:
-- Evaluate the effectiveness of their custom-designed algorithms
-- Compare different methods and algorithms under specific problem scenarios
+2. Integration of diverse surrogate models equipped with tunable to solving computational expensive problems.
 
-  **Website:** http://www.uq-pyl.com/ (**#TODO** it need to update now.) <br>
+3. Provision of a comprehensive suite of benchmark problems and practical case studies, enabling users to quick start.
+
+4. A modular and extensible architecture that encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
+
+ **Website:** http://www.uq-pyl.com/ (**#TODO** it need to update now.) <br>
   **Source Code:** https://github.com/smasky/UQPyL/ <br> 
   **Documentation:** **#TODO** <br>
   **Citing in your work:** **#TODO** <br>
 
+# Included Methods and Algorithms
+
+
+
+
+
 # Installation
 
-` pip install UQPyL ` (Recommend)
+Recommend (PyPi or Conda):
 
-or
+```
+pip install UQPyL
 
-` git clone https://github.com/smasky/UQPyL.git `
+conda install UQPyL
+```
 
-` cd UQPyL` and ` pip install . `
+And also:
+
+```
+git clone https://github.com/smasky/UQPyL.git 
+pip install . 
+```
 
 
 # Call for Contributions
