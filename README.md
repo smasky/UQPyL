@@ -4,7 +4,7 @@
 
 The **main characteristics** of UQPyL includes:
 
-1. Incorporation of widely adopted sensitivity analysis methodologies and optimization algorithms.
+1. Implementation of widely used sensitivity analysis methodologies and optimization algorithms.
 
 2. Integration of diverse surrogate models equipped with tunable to solving computational expensive problems.
 
