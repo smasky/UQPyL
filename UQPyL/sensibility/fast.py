@@ -20,7 +20,7 @@ from typing import Optional, Tuple
 
 from .sa_ABC import SA
 from ..DoE import FAST_Sampler, Sampler, LHS
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..surrogates import Surrogate
 from ..utility import Scaler
 class FAST(SA):
@@ -38,14 +38,14 @@ class FAST(SA):
         if not isinstance(sampler, FAST_Sampler):
             raise TypeError("FAST only support for the FAST_Sampler, please check!")
         
-    def analyze(self, X_sa=None, Y_sa=None):
+    def analyze(self, X_sa=None, Y_sa=None, verbose=False):
         
         ##forward process
         X_sa=self.__check_and_scale_x__(X_sa)
         self.__prepare_surrogate__()
         Y_sa=self.evaluate(X_sa)  
         S1=[]; ST=[]
-        
+        self.Y=Y_sa
         #main process
         w_0=np.floor((self.N_within_sampler-1)/(2*self.sampler.M))
                 
@@ -53,21 +53,45 @@ class FAST(SA):
             idx=np.arange(i*self.N_within_sampler, (i+1)*self.N_within_sampler)
             Y_sub=Y_sa[idx]
             #fft
-            f=np.fft.fft(Y_sub)
-            Sp = np.power(np.absolute(f[np.arange(1, np.ceil((self.N_within_sampler-1)/2), dtype=np.int32)-1])/self.N_within_sampler, 2) #TODO 1-(NS-1)/2
-
+            f=np.fft.fft(Y_sub.ravel())
+            # Sp = np.power(np.absolute(f[np.arange(1, np.ceil((self.N_within_sampler-1)/2), dtype=np.int32)-1])/self.N_within_sampler, 2) #TODO 1-(NS-1)/2
+            N=self.N_within_sampler
+            Sp = np.power(np.absolute(f[np.arange(1, np.ceil(N / 2), dtype=np.int32)]) / N, 2)
             V=2.0*np.sum(Sp)
             Di=2.0*np.sum(Sp[np.int32(np.arange(1, self.sampler.M+1, dtype=np.int32)*w_0-1)]) #pw<=(NS-1)/2 w_0=(NS-1)/M
             Dt=2.0*np.sum(Sp[np.arange(np.floor(w_0/2.0), dtype=np.int32)])
             
             S1.append(Di/V)
             ST.append(1.0-Dt/V)
-            
-        return np.array(S1), np.array(ST)
+        
+        Si={'S1':np.array(S1), 'ST':np.array(ST)}
+        self.Si=Si
+        
+        if verbose:
+            self.summary()
+        
+        return Si
     
     def summary(self):
-        pass
-        #TODO summary the result of FAST
+        
+        if self.Si is None:
+            raise ValueError("Please run analyze method first!")
+        
+        print("FAST Sensitivity Analysis")
+        print("-------------------------------------------------")
+        print("Input Dimension: %d" % self.n_input)
+        print("-------------------------------------------------")
+        print("First Order Sensitivity Indices: ")
+        print("-------------------------------------------------")
+        for label, value in zip(self.x_labels, self.Si['S1']):
+            print(f"{label}: {value:.4f}")
+        print("-------------------------------------------------")
+        print("Total Order Sensitivity Indices: ")
+        print("-------------------------------------------------")
+        for i in range(self.n_input):
+           print(f"{self.x_labels[i]}: {self.Si['ST'][i]:.4f}")
+        print("-------------------------------------------------")
+        print("-------------------------------------------------")
         
         
         

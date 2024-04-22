@@ -8,6 +8,7 @@ from ..surrogates import Surrogate
 from ..problems import ProblemABC as Problem
 
 class SA(metaclass=abc.ABCMeta):
+    Si=None
     def __init__(self, problem, sampler: Sampler=LHS('classic'), N_within_sampler: int=100,
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  surrogate: Optional[Surrogate]=None, if_sampling_consistent: bool=False,
@@ -20,6 +21,7 @@ class SA(metaclass=abc.ABCMeta):
         self.evaluate_=problem.evaluate
         self.n_input=problem.n_input
         self.lb=problem.lb; self.ub=problem.ub
+        self.x_labels=problem.x_labels
         
         if problem.x_labels:
             self.labels=problem.x_labels

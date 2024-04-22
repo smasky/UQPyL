@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 from ..optimization import Binary_GA
 from .sa_ABC import SA
 from ..DoE import LHS, FAST_Sampler, Sampler
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..utility import Scaler
 from ..surrogates import Surrogate
 class Delta_Test(SA):

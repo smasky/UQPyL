@@ -30,7 +30,7 @@ class FFD(Sampler):
         if len(levels)!=nx:
             raise ValueError('The length of levels should be equal to nx or 1')
         
-        factor_levels = [np.linspace(0, 1, num=level + 1)[:level] for level in levels]
+        factor_levels = [np.linspace(0, 1, num=level)[:level] for level in levels]
                
         factor_combinations = list(product(*factor_levels))
        

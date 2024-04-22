@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 
 from .sa_ABC import SA
 from ..DoE import Sobol_Sequence, LHS, Sampler
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..surrogates import Surrogate
 from ..utility import Scaler
 class Sobol(SA):
@@ -37,38 +37,8 @@ class Sobol(SA):
         elif skip_value<0 or not isinstance(skip_value, int):
             raise ValueError("skip value must be a positive integer!")    
         
-    def _forward(self, base_sequence):
-        #Sobol sequence
-
-        if self.cal_second_order:
-            saltelli_sequence=np.zeros(((2*self.n_input+2)*self.N_within_sampler, self.n_input))
-        else:
-            saltelli_sequence=np.zeros(((self.n_input+2)*self.N_within_sampler, self.n_input))
-        
-        
-        index=0
-        for i in range(self.N_within_sampler):
-            saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
-
-            index+=1
-            
-            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.n_input:], (self.n_input, 1))
-            saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, :self.n_input]               
-            index+=self.n_input
-           
-            if self.cal_second_order:
-                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.n_input], (self.n_input, 1))
-                saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, self.n_input:] 
-                index+=self.n_input
-            
-            saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
-            index+=1
-             
-        # saltelli_sequence=saltelli_sequence*(self.ub-self.lb)+self.lb
-        
-        return saltelli_sequence
-    
-    def analyze(self, base_sa: np.ndarray=None, Y_sa: np.ndarray=None):
+#-------------------------Public Functions--------------------------------#
+    def analyze(self, base_sa: np.ndarray=None, Y_sa: np.ndarray=None, verbose: bool=False):
         
         if base_sa and base_sa.shape[1]!=self.n_input*2:
             raise ValueError("The shape[1] of X_sa must twice greater than the input dimension of the problem!")
@@ -81,7 +51,9 @@ class Sobol(SA):
         self.__prepare_surrogate__()
         
         Y_sa=self.evaluate(X_sa)
-             
+        
+        self.Y=Y_sa
+          
         Y_sa=(Y_sa-Y_sa.mean())/Y_sa.std()
         
         A, B, AB, BA=self.separate_output_values(Y_sa, self.n_input, self.N_within_sampler, self.cal_second_order)
@@ -93,13 +65,76 @@ class Sobol(SA):
         for j in range(self.n_input):
             S1.append(self.first_order(A, AB[:, j:j+1], B))
             ST.append(self.total_order(A, AB[:, j:j+1], B))
-
+        
+        S2=np.full((self.n_input, self.n_input), np.nan)
         if self.cal_second_order:
             for j in range(self.n_input):
                 for k in range(j+1, self.n_input):
-                    S2.append(self.second_order(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
-                    
-        return S1, S2, ST
+                    S2[j,k]=(self.second_order(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
+        
+        self.Si={'S1':np.array(S1).ravel(), 'S2': S2, 'ST': np.array(ST).ravel()}
+        
+        if verbose:
+            self.summary()
+        
+        return self.Si
+
+    def summary(self):
+        if self.Si is None:
+            raise ValueError("The sensitivity analysis has not been performed yet!")
+        
+        print("Sobol Sensitivity Analysis")
+        print("-------------------------------------------------")
+        print("Input Dimension: %d" % self.n_input)
+        print("-------------------------------------------------")
+        print("First Order Sensitivity Indices: ")
+        print("-------------------------------------------------")
+        for label, value in zip(self.x_labels, self.Si['S1']):
+            print(f"{label}: {value:.4f}")
+        if self.cal_second_order:
+            print("-------------------------------------------------")
+            print("Second Order Sensitivity Indices: ")
+            print("-------------------------------------------------")
+            for i in range(self.n_input):
+                for j in range(i+1, self.n_input):
+                    print(f"{self.x_labels[i]}-{self.x_labels[j]}: {self.Si['S2'][i, j]:.4f}")
+        print("-------------------------------------------------")
+        print("Total Order Sensitivity Indices: ")
+        print("-------------------------------------------------")
+        for i in range(self.n_input):
+           print(f"{self.x_labels[i]}: {self.Si['ST'][i]:.4f}")
+        print("-------------------------------------------------")
+        print("-------------------------------------------------")
+
+#-------------------------Private Functions--------------------------------#
+    def _forward(self, base_sequence):
+        #Sobol sequence
+
+        if self.cal_second_order:
+            saltelli_sequence=np.zeros(((2*self.n_input+2)*self.N_within_sampler, self.n_input))
+        else:
+            saltelli_sequence=np.zeros(((self.n_input+2)*self.N_within_sampler, self.n_input))
+        
+        index=0
+        for i in range(self.N_within_sampler):
+            
+            saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
+
+            index+=1
+            
+            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.n_input], (self.n_input, 1))
+            saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, self.n_input:]               
+            index+=self.n_input
+           
+            if self.cal_second_order:
+                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.n_input:], (self.n_input, 1))
+                saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, :self.n_input] 
+                index+=self.n_input
+            
+            saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
+            index+=1
+             
+        return saltelli_sequence
     
     def second_order(self, A, AB1, AB2, BA, B):
         Y=np.r_[A,B]

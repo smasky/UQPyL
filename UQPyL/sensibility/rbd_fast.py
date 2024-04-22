@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 
 from .sa_ABC import SA
 from ..DoE import Sampler, LHS
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..surrogates import Surrogate
 from ..utility import Scaler
 class RBD_FAST(SA):

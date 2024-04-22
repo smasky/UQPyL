@@ -11,12 +11,7 @@ class ZDT1(ProblemABC):
     
     def __init__(self, n_input:int =30, n_output: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
         if n_output!=2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
@@ -53,12 +48,7 @@ class ZDT2(ProblemABC):
     
     def __init__(self, n_input:int =30, n_output: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
         if n_output!=2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
@@ -95,12 +85,7 @@ class ZDT3(ProblemABC):
     
     def __init__(self, n_input:int =30, n_output: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
         if n_output!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -142,12 +127,7 @@ class ZDT4(ProblemABC):
     
     def __init__(self, n_input:int =30, n_output: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
        
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
         if n_output!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -184,12 +164,7 @@ class ZDT6(ProblemABC):
     
     def __init__(self, n_input:int =30, n_output: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
         if n_output!=2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")

@@ -3,7 +3,7 @@ from typing import Optional, Tuple
 
 from ..surrogates import MARS, Surrogate
 from ..utility import MinMaxScaler, Scaler
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..DoE import LHS, Sampler
 from .sa_ABC import SA
 

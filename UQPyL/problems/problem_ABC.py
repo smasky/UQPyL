@@ -2,12 +2,18 @@ import abc
 import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
-    n_input=None
-    ub=None
-    lb=None
-    disc_var=None
-    cont_var=None
-    x_labels=None
+
+    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], disc_var=None, cont_var=None, x_labels=None):
+        
+        self.n_input=n_input
+        self.n_output=n_output
+        self._set_ub_lb(ub,lb)
+        self.disc_var=disc_var
+        self.cont_var=cont_var
+        
+        if x_labels is None:
+            self.x_labels=['x_'+str(i) for i in range(1,n_input+1)]
+    
     @abc.abstractmethod
     def evaluate(self,X):
         pass

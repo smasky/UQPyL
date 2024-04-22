@@ -34,12 +34,8 @@ class DTLZ1(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
-        self.disc_var=disc_var
-        self.cont_var=cont_var
         if n_output!=3:
             raise ValueError("DTLZ1 is a three-objective optimization problem")
     
@@ -119,13 +115,9 @@ class DTLZ2(ProblemABC):
         Continuous variables of the problem.
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+           
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
         if n_output!=3:
             raise ValueError("DTLZ2 is a three-objective optimization problem")
     
@@ -199,12 +191,8 @@ class DTLZ3(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+         
         if n_output!=3:
             raise ValueError("DTLZ3 is a three-objective optimization problem")
     
@@ -274,12 +262,8 @@ class DTLZ4(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
-        self.disc_var=disc_var
-        self.cont_var=cont_var
         if n_output!=3:
             raise ValueError("DTLZ4 is a three-objective optimization problem")
     
@@ -353,12 +337,8 @@ class DTLZ5(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
-        
-        self.disc_var=disc_var
-        self.cont_var=cont_var
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+         
         if n_output!=3:
             raise ValueError("DTLZ5 is a three-objective optimization problem")
     
@@ -434,12 +414,8 @@ class DTLZ6(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
-        self.disc_var=disc_var
-        self.cont_var=cont_var
         if n_output!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
     
@@ -513,12 +489,8 @@ class DTLZ7(ProblemABC):
     '''
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        self.n_input=n_input
-        self.n_output=n_output
-        self._set_ub_lb(ub,lb)
+        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
         
-        self.disc_var=disc_var
-        self.cont_var=cont_var
         if n_output!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
         
@@ -566,12 +538,3 @@ class DTLZ7(ProblemABC):
         '''
         #TODO 
         pass
-
-
-    
-
-    
-        
-        
-
-        

@@ -1,0 +1,100 @@
+'''
+Examples for using DOE methods:
+    - Full factorial design (FFD)
+    - Latin hypercube sampling (LHS)
+    - Sobol Sequence
+    - Random Design
+    - The sample method for Fourier Amplitude Sensitivity Test 
+'''
+#temple
+import sys
+sys.path.append(".")
+from scipy.io import loadmat
+print(sys.path)
+import os
+os.chdir('./examples')
+
+from UQPyL.DoE import FFD
+from UQPyL.DoE import LHS
+from UQPyL.DoE import Random
+
+from UQPyL.DoE import Sobol_Sequence
+from UQPyL.DoE import FAST_Sampler
+
+#################Full factorial design (FFD)#################
+print("#################Full factorial design (FFD)#################")
+# Create an instance of the FFD class
+ffd=FFD()
+
+# Generate a full factorial design with 2 levels for each of the 3 variables
+# There are two ways:
+
+X1=ffd.sample(3, 3) #Recommend this way
+print(X1)
+
+# X2=ffd(3, 3)
+# print(X2)
+
+#################Latin Hypercube Sampling (LHS)#################
+print('#################Latin Hypercube Sampling (LHS)#################')
+# Create an instance of the LHS class
+# Noted that the default criterion is 'classic', but has 'center', 'center_maximin', 'maximin',  'correlation'
+
+lhs=LHS('classic') #You also can use lhs=LHS('center'), lhs=LHS('maximin) ....
+
+# Generate a latin hypercube sampling with 3 samples and 3 variables
+X3=lhs.sample(3, 3) #Recommend this way
+print(X3)
+
+# Also use following way:
+# X4=lhs(3, 3)
+# print(X4)
+
+#################Random Design#################
+print("#################Random Design#################")
+# Create an instance of the Random class
+rad=Random()
+
+# Generate a random design with 3 samples and 3 variables
+X5=rad.sample(3,3)
+print(X5)
+
+# Also use following way:
+# X6=rad(3, 3)
+# print(X6)
+
+#################Sobol Sequence#################
+print("#################Sobol Sequence#################")
+
+# Create an instance of the Sobol_Sequence class
+sobol=Sobol_Sequence()
+
+# Generate a Sobol sequence with 8 samples and 3 variables
+X7=sobol.sample(81, 2) #Recommend this way
+print(X7)
+
+
+#################The sample method for Fourier Amplitude Sensitivity Test#################
+print('#################The sample method for Fourier Amplitude Sensitivity Test#################')
+
+# Generate a FAST sampling with 81 samples and 2 variables
+fast_sampler=FAST_Sampler(M=4)
+X8=fast_sampler.sample(81, 2)
+print(X8)
+
+
+# Visually show the samples of Sobol and FAST sampling
+import matplotlib.pyplot as plt
+# 假设X7和X8是二维数组，其中第一列是x坐标，第二列是y坐标
+x7 = X7[:, 0]; y7 = X7[:, 1]
+x8 = X8[:, 0]; y8 = X8[:, 1]
+fig, axs = plt.subplots(1, 2)
+
+axs[0].scatter(x7, y7)
+axs[0].set_title('Sobol Sequence')
+
+axs[1].scatter(x8, y8)
+axs[1].set_title('FAST Sampling')
+
+plt.show()
+

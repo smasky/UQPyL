@@ -2,7 +2,7 @@ import numpy as np
 
 from .sampler_ABC import Sampler
 
-class RANDOM(Sampler):
+class Random(Sampler):
     '''
     Random Design
     

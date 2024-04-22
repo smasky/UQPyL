@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 from .sa_ABC import SA
 from ..utility import MinMaxScaler, Scaler
 from ..DoE import LHS, Sampler
-from ..problems import Problem_ABC as Problem
+from ..problems import ProblemABC as Problem
 from ..surrogates import Surrogate
 class Morris(SA):
     def __init__(self, problem: Problem, num_levels: int=4, grid_jump: int=1,
