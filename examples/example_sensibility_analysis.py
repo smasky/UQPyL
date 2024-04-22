@@ -52,10 +52,10 @@ class Ishigami(ProblemABC):
 
 #Create an instance of the Ishigami class
 problem=Ishigami(4, 1, np.pi, -1*np.pi)
-#x1 0.3199   S2: x1_x3 0.25
-#x2 0.4424
-#x3 0.0
-#x4 0.0
+#S1: x1 0.3199   S2: x1_x3 0.25
+#    x2 0.4424
+#    x3 0.0
+#    x4 0.0
 
 
 ################Sobol################
@@ -70,12 +70,16 @@ fast1=FAST(problem=problem, N_within_sampler=1000) #Using FAST Sampler
 Si=fast1.analyze(verbose=True)
 a=1
 
-
-
-# Y=fast1.Y
-
-# from SALib.analyze import fast
-# from SALib.sample import fast_sampler
+##############RBD_FAST##############
+print("##############RBD_FAST##############")
+rbd=RBD_FAST(problem=problem, N_within_sampler=1000) #Using LHS Sampler
+Si=rbd.analyze()
+rbd.summary()
+a=1
+# Y=rbd.Y
+# X=rbd.X
+# from SALib.analyze import rbd_fast
+# from SALib.sample import latin
 # from SALib.test_functions import Ishigami
 
 # from SALib import ProblemSpec
@@ -90,10 +94,10 @@ a=1
 #             }
 #         )
 
-# samples=fast_sampler.sample(sp, 1000)
+# samples=latin.sample(sp, 1000)
 # # Y=problem.evaluate(samples)
-# Si = fast.analyze(
-#     sp, Y[:,0],conf_level=0.95, print_to_console=True
+# Si = rbd_fast.analyze(
+#     sp, X, Y[:,0],conf_level=0.95, print_to_console=True
 # )
 # a=1
 
