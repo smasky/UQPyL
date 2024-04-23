@@ -25,13 +25,21 @@ from UQPyL.sensibility import Delta_Test
 from UQPyL.sensibility import Morris
 from UQPyL.sensibility import RSA
 from UQPyL.sensibility import MARS_SA
+from UQPyL.DoE import FFD
+from UQPyL.DoE import Morris_Sequence
 
 import numpy as np
 
+
+
+morr=Morris_Sequence(num_levels=5)
+x=morr.sample(100,3)
 ##################Prepare the data##################
 #Here we construct Ishigami-Homma problem for sensibility_analysis
 from UQPyL.problems import ProblemABC
 #We should inherit the superclass ProblemABC
+#Like following:
+
 class Ishigami(ProblemABC):
     def __init__(self, n_input, n_output, ub, lb, A=7.0, B=0.1):
         '''
@@ -51,7 +59,7 @@ class Ishigami(ProblemABC):
         return Y.reshape(-1,1)
 
 #Create an instance of the Ishigami class
-problem=Ishigami(4, 1, np.pi, -1*np.pi)
+problem=Ishigami(3, 1, np.pi, -1*np.pi)
 #S1: x1 0.3199   S2: x1_x3 0.25
 #    x2 0.4424
 #    x3 0.0
@@ -75,31 +83,15 @@ print("##############RBD_FAST##############")
 rbd=RBD_FAST(problem=problem, N_within_sampler=1000) #Using LHS Sampler
 Si=rbd.analyze()
 rbd.summary()
-a=1
-# Y=rbd.Y
-# X=rbd.X
-# from SALib.analyze import rbd_fast
-# from SALib.sample import latin
-# from SALib.test_functions import Ishigami
 
-# from SALib import ProblemSpec
 
-# sp = ProblemSpec(
-#             {
-#                 "names": ["x1", "x2", "x3"],
-#                 "groups": None,
-#                 "bounds": [[-np.pi, np.pi]] * 3,
-#                 "num_vars":3,
-#                 "dists":['unif']*3,
-#             }
-#         )
+#############Morris#############
+print("#############Morris#############")
+mor=Morris(problem=problem, N_within_sampler=1000, num_levels=5) #Using Morris Sampler
+Si=mor.analyze()
+mor.summary()
 
-# samples=latin.sample(sp, 1000)
-# # Y=problem.evaluate(samples)
-# Si = rbd_fast.analyze(
-#     sp, X, Y[:,0],conf_level=0.95, print_to_console=True
-# )
-# a=1
+
 
 
 
