@@ -13,8 +13,11 @@ class Morris(SA):
             the problem you want to analyse
         scaler: Tuple[Scaler, Scaler], default=(None, None)
             used for scaling X or Y
-            
-        following parameters derived from Objective problem
+        num_levels (p): int, default=4, recommended value: 4 to 10
+                each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
+                Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
+        
+        Following parameters derived from the variable 'problem'
         n_input: the input number of the problem
         ub: the upper bound of the problem
         lb: the lower bound of the problem
@@ -25,32 +28,33 @@ class Morris(SA):
         
     Examples:
         >>> mor_method=Morris_Sequence(problem)
-        >>> X, Y=mor_method.sample(100, 4)
+        >>> X=mor_method.sample(100, 4)
+        >>> Y=problem.evaluate(X)
         >>> mor_method.analyze(X, Y)
     
     Reference:
         [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, Technometrics, 33:2, 161-174
     '''
-    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
+    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                       num_levels: int=4):
           
         super().__init__(problem, scalers)
-    
-    def sample(self, num_trajectory: int=500, num_levels: int=4) -> np.ndarray:
+        self.num_levels=num_levels
+        
+    def sample(self, num_trajectory: int=500) -> np.ndarray:
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
         Parameters:  
             num_trajectory: int, default=500, recommend value: 500 to 1000
                 The number of trajectories. In general, the size of each trajectory is n_input+1 
-            num_levels (p): int, default=4, recommended value: 4 to 10
-                each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
-                Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
+            
         Returns:
             samples: np.ndarray
                 Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
         
         '''
-        nt=num_trajectory; nx=self.n_input
+        nt=num_trajectory; nx=self.n_input; num_levels=self.num_levels
         
         X=np.zeros((nt*(nx+1), nx))
         
@@ -163,7 +167,7 @@ class Morris(SA):
         return B_star
         
     def _default_sample(self):
-        return self.sample(500, 4)
+        return self.sample(500)
         
         
         

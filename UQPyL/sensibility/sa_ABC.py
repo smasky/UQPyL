@@ -43,7 +43,7 @@ class SA(metaclass=abc.ABCMeta):
         if not isinstance(X, np.ndarray) and X is not None:
             raise TypeError("X must be an instance of np.ndarray or None!")
         elif X is None:
-            X=self.default_sample()*(self.ub-self.lb)+self.lb
+            X=self._default_sample()*(self.ub-self.lb)+self.lb
          
         X=np.atleast_2d(X)
             

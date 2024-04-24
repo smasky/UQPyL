@@ -16,7 +16,7 @@ class Sobol(SA):
         scaler: Tuple[Scaler, Scaler], default=(None, None)
             used for scaling X or Y
             
-        following parameters derived from Objective problem
+        Following parameters derived from the variable 'problem'
         n_input: the input number of the problem
         ub: the upper bound of the problem
         lb: the lower bound of the problem
@@ -25,17 +25,26 @@ class Sobol(SA):
         sample: Generate a sample for sobol' analysis
         analyze: perform sobol analyze from the X and Y you provided.
     
-    Reference:
-    [1] 
-    [2]
+    Examples:
+        >>> sob_method=Sobol(problem)
+        >>> X=sob_method.sample(500)
+        >>> Y=problem.evaluate(X)
+        >>> sob_method.analyze(X,Y)
     
+    Reference:
+    [1] I. M. Sobol', Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates, 
+                      Mathematics and Computers in Simulation, vol. 55, no. 1, pp. 271–280, Feb. 2001, 
+                      doi: 10.1016/S0378-4754(00)00270-6.
+    [2] A. Saltelli et al, Variance based sensitivity analysis of model output. Design and estimator for the total sensitivity index, 
+                           Computer Physics Communications, vol. 181, no. 2, pp. 259–270, Feb. 2010, 
+                           doi: 10.1016/j.cpc.2009.09.018.
+    [3] SALib, https://github.com/SALib/SALib
     '''
-    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                ):
+    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
         
         super().__init__(problem, scalers)
                     
-#-------------------------Public Functions--------------------------------#
+    #-------------------------Public Functions--------------------------------#
     def sample(self, N: int=500, skip_value: int=0, scramble: bool=True,
                     cal_second_order: bool=False) -> np.ndarray:
         '''
@@ -46,6 +55,7 @@ class Sobol(SA):
                     the number of based X
                 cal_second_order: bool default=False
                     the switch to calculate second order or not
+                
             Returns:
                 X: np.ndarray
                     if cal_second_order
@@ -161,6 +171,9 @@ class Sobol(SA):
         return self.Si
 
     def summary(self):
+        '''
+            print analysis summary
+        '''
         if self.Si is None:
             raise ValueError("The sensitivity analysis has not been performed yet!")
         
@@ -187,7 +200,7 @@ class Sobol(SA):
         print("-------------------------------------------------")
         print("-------------------------------------------------")
 
-#-------------------------Private Functions--------------------------------#
+    #-------------------------Private Functions--------------------------------#
     def _default_sample(self):
         return self.sample(500, self.cal_second_order)
         
