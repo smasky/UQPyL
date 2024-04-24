@@ -2,96 +2,101 @@ import numpy as np
 from typing import Optional, Tuple
 
 from .sa_ABC import SA
-from ..utility import MinMaxScaler, Scaler
-from ..DoE import Sampler, Morris_Sequence, LHS
+from ..utility import Scaler
 from ..problems import ProblemABC as Problem
-from ..surrogates import Surrogate
 class Morris(SA):
-    def __init__(self, problem: Problem, num_levels: int=4, extend: bool=False,
-                 sampler: Sampler=Morris_Sequence(4), N_within_sampler: int=100,
-                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                 surrogate: Surrogate=None, if_sampling_consistent: bool=False, 
-                 sampler_for_surrogate: Sampler=LHS('classic'), N_within_surrogate_sampler: int=50,
-                 X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None
-                ):
-        
-        if not isinstance(sampler, Morris_Sequence):
-            raise TypeError("problem must use Morris_Sequence !")
-        
-        sampler.num_levels=num_levels
-        
-        super().__init__(problem, sampler, N_within_sampler,
-                         scale, surrogate, if_sampling_consistent,
-                         sampler_for_surrogate, N_within_surrogate_sampler,
-                         X_for_surrogate, Y_for_surrogate
-                         )
-        
-        self.num_levels=num_levels
-        self.extend=extend
-        
-    def _forward(self, X_base):
-        
-        """生成Morris序列样本"""
-        from UQPyL.DoE import FFD
-        
-        ffd=FFD()
-        candidate=ffd.sample(self.n_input, self.num_levels)
-        inds=np.random.choice(np.arange(0, candidate.shape[0]), self.N_within_sampler, replace=True)
-        
-        X_base=candidate[inds, :]
-        
-        scale=MinMaxScaler(0,1)
-        X_base=scale.fit_transform(X_base)
-        delta = np.floor(self.num_levels/2)/(self.num_levels-1)
-        
-        X_sa = np.zeros((self.N_within_sampler, self.n_input + 1, self.n_input))
-        for i in range(self.N_within_sampler):
-            X_sa[i, 0, :] = X_base[i, :]
+    '''
+    Morris analysis
+    ------------------------------------------------------
+    Parameters:
+        problem: Problem
+            the problem you want to analyse
+        scaler: Tuple[Scaler, Scaler], default=(None, None)
+            used for scaling X or Y
             
-            sequence=np.random.choice(np.arange(0, self.n_input), self.n_input, replace=False)
-            
-            for j in range(1, self.n_input + 1):
-                X_sa[i, j, :] = X_sa[i, j - 1, :]
-                ind=sequence[j-1]
-                if self.extend:
-                    # Original Morris method: only positive increments
-                    X_sa[i, j, ind] += delta if X_sa[i, j, ind] + delta <= 1 else -delta
-                else:
-                    # Extended Morris method: symmetric changes
-                    direction=np.random.choice([-1, 1])
-                    if direction>0:
-                        X_sa[i, j, ind] +=  delta if X_sa[i, j, ind] + delta<= 1 else -delta
-                    else:
-                        X_sa[i, j, ind] -=  delta if X_sa[i, j, ind] - delta> 0 else -delta
-        X_sa = X_sa.reshape(self.N_within_sampler * (self.n_input + 1), self.n_input)
-        X_sa = np.clip(X_sa, 0, 1)  # Ensure values are not outside the boundaries
-                
-        return scale.inverse_transform(X_sa)
+        following parameters derived from Objective problem
+        n_input: the input number of the problem
+        ub: the upper bound of the problem
+        lb: the lower bound of the problem
     
-    def analyze(self, X_sa: Optional[np.ndarray]=None, Y_sa: Optional[np.ndarray]=None, verbose=False) -> Tuple[np.ndarray, np.ndarray]:
+    Methods:
+        sample: Generate a sample for morris analysis
+        analyze: perform morris analyze from the X and Y you provided.
+        
+    Examples:
+        >>> mor_method=Morris_Sequence(problem)
+        >>> X, Y=mor_method.sample(100, 4)
+        >>> mor_method.analyze(X, Y)
+    
+    Reference:
+        [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, Technometrics, 33:2, 161-174
+    '''
+    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
+          
+        super().__init__(problem, scalers)
+    
+    def sample(self, num_trajectory: int=500, num_levels: int=4) -> np.ndarray:
         '''
+        Generate a sample for Morris analysis
+        ---------------------------------------
+        Parameters:  
+            num_trajectory: int, default=500, recommend value: 500 to 1000
+                The number of trajectories. In general, the size of each trajectory is n_input+1 
+            num_levels (p): int, default=4, recommended value: 4 to 10
+                each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
+                Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
+        Returns:
+            samples: np.ndarray
+                Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
+        
         '''
-        X_sa=self.__check_and_scale_x__(X_sa)
-        self.__prepare_surrogate__()
-        # X_sa=self._forward(X_base)
-        # X_sa=X_sa*(self.ub-self.lb)+self.lb
-        Y_sa=self.evaluate(X_sa)
-        self.Y=Y_sa; self.X=X_sa
-                   
-        EE=np.zeros((self.n_input, self.N_within_sampler))
+        nt=num_trajectory; nx=self.n_input
+        
+        X=np.zeros((nt*(nx+1), nx))
+        
+        for i in range(nt):
+            X[i*(nx+1):(i+1)*(nx+1), :]=self._generate_trajectory(nx, num_levels)
+        
+        return X
+        
+    def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, verbose: bool=False) -> dict:
+        '''
+            Perform morris analysis
+            
+            Noted that if the X and Y is None, sample(500, 4) is used for generate data 
+                       and use the method problem.evaluate to evaluate them.
+            
+            -------------------------
+            Parameters:
+                X: np.ndarray
+                    the input data
+                Y: np.ndarray
+                    the result data
+                verbose: bool
+                    the switch to print analysis summary or not
+
+            Returns:
+                Si: dict
+                    The type of Si is dict. And it contain 'mu', 'mu_star', 'sigma' key value.
+        '''
+        n_input=self.n_input; num_trajectory=int(X.shape[0]/(n_input+1))
+        
+        X, Y=self.__check_and_scale_xy__(X, Y)
+
+        EE=np.zeros((n_input, num_trajectory))
         
         for i in range(self.N_within_sampler):
-            X_sub=X_sa[i*(self.n_input+1):(i+1)*(self.n_input+1), :]
-            Y_sub=Y_sa[i*(self.n_input+1):(i+1)*(self.n_input+1), :]
+            X_sub=X[i*(n_input+1):(i+1)*(n_input+1), :]
+            Y_sub=Y[i*(n_input+1):(i+1)*(n_input+1), :]
 
             Y_diff=np.diff(Y_sub, axis=0)
             
-            inds = list(np.argmax(np.diff(X_sub, axis=0) != 0, axis=1))
-            new_ind=[inds.index(i) for i in range(len(inds))]
+            tmp_indice = list(np.argmax(np.diff(X_sub, axis=0) != 0, axis=1))
+            indice=[tmp_indice.index(i) for i in range(len(tmp_indice))]
             delta_diff=np.sum(np.diff(X_sub, axis=0), axis=1).reshape(-1,1)
             ee=Y_diff/delta_diff
-            EE[:, i:i+1]=ee[new_ind]
-                    
+            EE[:, i:i+1]=ee[indice]
+            
         mu = np.mean(EE, axis=1)
         mu_star= np.mean(np.abs(EE), axis=1)
         sigma = np.std(EE, axis=1, ddof=1)
@@ -99,9 +104,15 @@ class Morris(SA):
         Si={'mu':mu, 'mu_star': mu_star, 'sigma': sigma}
         self.Si=Si
         
+        if verbose:
+            self.summary()
+        
         return Si
     
     def summary(self):
+        '''
+            print analysis summary
+        '''
         print('Morris Sensitivity Analysis')
         print("-------------------------------------------------")
         print("Input Dimension: %d" % self.n_input)
@@ -122,9 +133,37 @@ class Morris(SA):
         for label, value in zip(self.x_labels, self.Si['sigma']):
             print(f"{label}: {value:.4f}")
         print("-------------------------------------------------")
-            
+    #-------------------------Private Function-------------------------------------#
+    def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
+        '''
+            Generate a random trajectory from Reference[1]
+        '''
+        delta=num_levels/(2*(num_levels-1))
         
+        B=np.tril(np.ones([nx + 1, nx], dtype=int), -1)
         
+        # from paper[1] page 164
+        D_star = np.diag(np.random.choice([-1, 1], nx)) #step1
+        J=np.ones((nx+1, nx))
+        
+        levels_grids=np.linspace(0, 1-delta, int(num_levels / 2))
+        x_star=np.random.choice(levels_grids, nx).reshape(1,-1) #step2
+        
+        P_star=np.zeros((nx,nx))
+        cols = np.random.choice(nx, nx, replace=False)
+        P_star[np.arange(nx), cols]=1 #step3
+        
+        element_a = J[0, :] * x_star
+        element_b = P_star.T
+        element_c = np.matmul(2.0 * B, element_b)
+        element_d = np.matmul((element_c - J), D_star)
+
+        B_star = element_a + (delta / 2.0) * (element_d + J)
+    
+        return B_star
+        
+    def _default_sample(self):
+        return self.sample(500, 4)
         
         
         

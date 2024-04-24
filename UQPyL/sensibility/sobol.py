@@ -4,26 +4,58 @@ from scipy.stats import qmc
 from typing import Optional, Tuple
 
 from .sa_ABC import SA
-from ..DoE import Sobol_Sequence, LHS, Sampler
 from ..problems import ProblemABC as Problem
-from ..surrogates import Surrogate
 from ..utility import Scaler
 class Sobol(SA):
-    def __init__(self, problem: Problem, scramble: bool=True, skip_value: int=0, cal_second_order: bool=False, 
-                 sampler: Sampler=Sobol_Sequence(), N_within_sampler: int=100,
-                 scale: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), surrogate: Surrogate=None,
-                 if_sampling_consistent: bool=False, sampler_for_surrogate: Sampler=LHS('classic'), N_within_surrogate_sampler: int=100,
-                 X_for_surrogate: Optional[np.ndarray]=None, Y_for_surrogate: Optional[np.ndarray]=None):
-        
-        super().__init__(problem, sampler, N_within_sampler,
-                         scale, surrogate, if_sampling_consistent,
-                         sampler_for_surrogate, N_within_surrogate_sampler,
-                         X_for_surrogate, Y_for_surrogate)
-        
-        self.cal_second_order=cal_second_order
-        self.scramble=scramble
-        self.skip_value=skip_value
+    '''
+    Sobol' sensibility analysis
+    --------------------------
+    Parameters:
+        problem: Problem
+            the problem you want to analyse
+        scaler: Tuple[Scaler, Scaler], default=(None, None)
+            used for scaling X or Y
             
+        following parameters derived from Objective problem
+        n_input: the input number of the problem
+        ub: the upper bound of the problem
+        lb: the lower bound of the problem
+    
+    Methods:
+        sample: Generate a sample for sobol' analysis
+        analyze: perform sobol analyze from the X and Y you provided.
+    
+    Reference:
+    [1] 
+    [2]
+    
+    '''
+    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                ):
+        
+        super().__init__(problem, scalers)
+                    
+#-------------------------Public Functions--------------------------------#
+    def sample(self, N: int=500, skip_value: int=0, scramble: bool=True,
+                    cal_second_order: bool=False) -> np.ndarray:
+        '''
+            Generate Sobol_sequence using Saltelli's sampling technique in [2]
+            ----------------------
+            Parameters:
+                N: int default=500
+                    the number of based X
+                cal_second_order: bool default=False
+                    the switch to calculate second order or not
+            Returns:
+                X: np.ndarray
+                    if cal_second_order
+                        the size of X is (N*(n_input+2), n_input)
+                    else
+                        the size of X is (N*(2*n_input+2), n_input)
+        '''
+        n_input=self.n_input; self.cal_second_order=cal_second_order
+        
+        M=None
         if skip_value>0 and isinstance(skip_value, int):
             
             M=skip_value
@@ -31,46 +63,95 @@ class Sobol(SA):
             if not((M&(M-1))==0 and (M!=0 and M-1!=0)):
                 raise ValueError("skip value must be a power of 2!")
             
-            if self.n_sample>M:
-                raise ValueError("skip value must be greater than NSample!")
+            if N>M:
+                raise ValueError("skip value must be greater than N you set!")
         
         elif skip_value<0 or not isinstance(skip_value, int):
-            raise ValueError("skip value must be a positive integer!")    
+            raise ValueError("skip value must be a positive integer!")
         
-#-------------------------Public Functions--------------------------------#
-    def analyze(self, base_sa: np.ndarray=None, Y_sa: np.ndarray=None, verbose: bool=False):
+        sampler=qmc.Sobol(n_input, scramble=scramble)
         
-        if base_sa and base_sa.shape[1]!=self.n_input*2:
-            raise ValueError("The shape[1] of X_sa must twice greater than the input dimension of the problem!")
+        if M:
+            sampler.fast_forward(M)
+        
+        base_sequence=sampler.random(N)
+        
+        if cal_second_order:
+            saltelli_sequence=np.zeros(((2*n_input+2)*N, n_input))
         else:
-            base_sa=self.sampler.sample(self.N_within_sampler, self.n_input*2)\
-                    *np.tile((self.ub-self.lb), (1,2))+np.tile(self.lb, (1,2))
-        ##forward process
-        X_sa=self.__check_and_scale_x__(base_sa[:, :self.n_input])
-        X_sa=self._forward(base_sa)
-        self.__prepare_surrogate__()
+            saltelli_sequence=np.zeros(((n_input+2)*N, n_input))
         
-        Y_sa=self.evaluate(X_sa)
+        base_sequence=qmc.Sobol(N, n_input, )
         
-        self.Y=Y_sa
-          
-        Y_sa=(Y_sa-Y_sa.mean())/Y_sa.std()
+        index=0
+        for i in range(self.N_within_sampler):
+            
+            saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
+
+            index+=1
+            
+            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.n_input], (self.n_input, 1))
+            saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, self.n_input:]               
+            index+=self.n_input
+           
+            if self.cal_second_order:
+                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.n_input:], (self.n_input, 1))
+                saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, :self.n_input] 
+                index+=self.n_input
+            
+            saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
+            index+=1
         
-        A, B, AB, BA=self.separate_output_values(Y_sa, self.n_input, self.N_within_sampler, self.cal_second_order)
+        X=saltelli_sequence
+         
+        return X
+     
+    def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, 
+                      cal_second_order: bool= False, verbose: bool=False):
+        '''
+            Perform sobol' analyze
+            Noted that if the X and Y is None, sample(500) is used for generate data 
+                       and use the method problem.evaluate to evaluate them.
+            In Sobol method, we recommend to indicate X at least.
+        -------------------------
+            Parameters:
+                X: np.ndarray
+                    the input data
+                Y: np.ndarray
+                    the result data
+                cal_second_order: bool default=False
+                    the switch to calculate second order or not
+                verbose: bool
+                    the switch to print analysis summary or not
+            Returns:
+                Si: dict
+                    The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
+        '''
+        X, Y=self.__check_and_scale_xy__(X, Y)
         
-        S2 = [] if self.cal_second_order else None
+        n_input=self.n_input
+        
+        if self.cal_second_order:
+            N=int(X.shape[0]/(2*self.n_input+2))
+        else:
+            N=int(X.shape[0]/(self.n_input+2))
+        
+        Y=(Y-Y.mean())/Y.std()
+        
+        A, B, AB, BA=self._separate_output_values(Y, n_input, N, cal_second_order)
+        
+        S2 = [] if cal_second_order else None
         S1=[]; ST=[]
         
-        #main process
         for j in range(self.n_input):
-            S1.append(self.first_order(A, AB[:, j:j+1], B))
-            ST.append(self.total_order(A, AB[:, j:j+1], B))
+            S1.append(self._first_order(A, AB[:, j:j+1], B))
+            ST.append(self._total_order(A, AB[:, j:j+1], B))
         
         S2=np.full((self.n_input, self.n_input), np.nan)
         if self.cal_second_order:
             for j in range(self.n_input):
                 for k in range(j+1, self.n_input):
-                    S2[j,k]=(self.second_order(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
+                    S2[j,k]=(self._second_order(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
         
         self.Si={'S1':np.array(S1).ravel(), 'S2': S2, 'ST': np.array(ST).ravel()}
         
@@ -107,36 +188,10 @@ class Sobol(SA):
         print("-------------------------------------------------")
 
 #-------------------------Private Functions--------------------------------#
-    def _forward(self, base_sequence):
-        #Sobol sequence
-
-        if self.cal_second_order:
-            saltelli_sequence=np.zeros(((2*self.n_input+2)*self.N_within_sampler, self.n_input))
-        else:
-            saltelli_sequence=np.zeros(((self.n_input+2)*self.N_within_sampler, self.n_input))
+    def _default_sample(self):
+        return self.sample(500, self.cal_second_order)
         
-        index=0
-        for i in range(self.N_within_sampler):
-            
-            saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
-
-            index+=1
-            
-            saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, :self.n_input], (self.n_input, 1))
-            saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, self.n_input:]               
-            index+=self.n_input
-           
-            if self.cal_second_order:
-                saltelli_sequence[index:index+self.n_input,:]=np.tile(base_sequence[i, self.n_input:], (self.n_input, 1))
-                saltelli_sequence[index:index+self.n_input,:][np.diag_indices(self.n_input)]=base_sequence[i, :self.n_input] 
-                index+=self.n_input
-            
-            saltelli_sequence[index,:]=base_sequence[i, self.n_input:self.n_input*2]
-            index+=1
-             
-        return saltelli_sequence
-    
-    def second_order(self, A, AB1, AB2, BA, B):
+    def _second_order(self, A, AB1, AB2, BA, B):
         Y=np.r_[A,B]
         
         Vjk=np.mean(BA*AB2- A*B, axis=0)/np.var(Y, axis=0)
@@ -145,17 +200,17 @@ class Sobol(SA):
         
         return Vjk-Sj-Sk
        
-    def first_order(self, A, AB, B):
+    def _first_order(self, A, AB, B):
         Y=np.r_[A,B]
         
         return np.mean(B*(AB-A), axis=0)/np.var(Y, axis=0)
     
-    def total_order(self, A, AB, B):
+    def _total_order(self, A, AB, B):
         Y=np.r_[A,B]
         
         return 0.5*np.mean((A-AB)**2, axis=0)/np.var(Y, axis=0)
             
-    def separate_output_values(self, Y_sa, D, N, cal_second_order):
+    def _separate_output_values(self, Y_sa, D, N, cal_second_order):
         AB=np.zeros((N,D))
         BA=np.zeros((N,D)) if cal_second_order else None
         
@@ -173,4 +228,5 @@ class Sobol(SA):
         
         return A, B, AB, BA
                 
-        
+    def default_sample(self):
+        return self.sample(500)

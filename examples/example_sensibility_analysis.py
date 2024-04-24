@@ -87,11 +87,40 @@ rbd.summary()
 
 #############Morris#############
 print("#############Morris#############")
-mor=Morris(problem=problem, N_within_sampler=1000, num_levels=5) #Using Morris Sampler
+mor=Morris(problem=problem, N_within_sampler=1000, num_levels=6) #Using Morris Sampler
 Si=mor.analyze()
 mor.summary()
 
 
+
+
+
+
+Y=mor.Y
+X=mor.X
+from SALib.analyze import morris
+from SALib.sample.morris import sample
+from SALib.test_functions import Ishigami
+
+from SALib import ProblemSpec
+
+sp = ProblemSpec(
+            {
+                "names": ["x1", "x2", "x3"],
+                "groups": None,
+                "bounds": [[-np.pi, np.pi]] * 3,
+                "num_vars":3,
+                "dists":['unif']*3,
+            }
+        )
+
+samples=sample(sp, 1000, num_levels=6, optimal_trajectories=4)
+
+Y=problem.evaluate(samples)
+Si = morris.analyze(
+    sp, samples, Y[:,0],conf_level=0.95, print_to_console=True, scaled=False
+)
+a=1
 
 
 
