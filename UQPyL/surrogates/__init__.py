@@ -7,7 +7,7 @@ from .radial_basis_function import RBF
 from .polynomial_regression import PolynomialRegression
 from .support_vector_machine import SVR
 from .fully_connect_neural_network import FNN
-from .kriging import Kriging as KRG
+from .kriging import KRG
 from .mo_surrogates import MO_Surrogates
 from .mars import MARS
 

@@ -5,6 +5,7 @@ from typing import Literal, Tuple, Optional, Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .surrogate_ABC import Surrogate, Scale_T
+from .krg_kernels import Krg_Kernel
 from ..utility.metrics import r2_score
 from ..optimization import Boxmin, GA, MP_List, EA_List
 from ..utility.model_selections import RandSelect
@@ -38,28 +39,28 @@ def regrpoly2(S):
     return F
 
 ###-------------------------kernerls---------------------------###
-def guass(theta, d):
+# def guass(theta, d):
         
-    td = d * -theta
-    r = np.exp(np.sum(d * td, axis=1))
+#     td = d * -theta
+#     r = np.exp(np.sum(d * td, axis=1))
     
-    return r
+#     return r
 
-def exp(theta, d):
-    td= -theta
-    r= np.exp(np.sum(d*td, axis=1))
+# def exp(theta, d):
+#     td= -theta
+#     r= np.exp(np.sum(d*td, axis=1))
     
-    return r
-def cubic(theta, d):
-    td=np.sum(d*theta, axis=1)
-    ones=np.ones(td.shape)
-    td=np.minimum(ones, td)
-    r=1-3*td**2+2*td**3
-    return r
+#     return r
+# def cubic(theta, d):
+#     td=np.sum(d*theta, axis=1)
+#     ones=np.ones(td.shape)
+#     td=np.minimum(ones, td)
+#     r=1-3*td**2+2*td**3
+#     return r
 
-K={"GAUSSIAN": guass, "EXP": exp, "CUBIC": cubic}
+# K={"GAUSSIAN": guass, "EXP": exp, "CUBIC": cubic}
 
-class Kriging(Surrogate):
+class KRG(Surrogate):
     """
     A Kriging implementation based on python env includes the new training method(prediction error), 
     from the DACE toolbox(MATLAB).
@@ -94,24 +95,24 @@ class Kriging(Surrogate):
             *'MaxminScaler'
             
     """
-    def __init__(self, theta0: np.ndarray, ub: np.ndarray, lb: np.ndarray,
+    def __init__(self, kernel: Krg_Kernel,
                  regression: Literal['poly0','poly1','poly2']='poly0',
                  optimizer: Literal['Boxmin', 'GA'] = 'Boxmin', 
                  fitMode: Literal['likelihood', 'predictError']='likelihood',
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
-                 kernel: Literal['gaussian', 'exp', 'cubic']='gaussian',
                  n_restart_optimize: int=1):
         
         self.regression=regression
         self.optimizer=optimizer
         self.fitMode=fitMode
-        self.theta0=theta0
-        self.ub=ub
-        self.lb=lb
         self.n_restart_optimize=n_restart_optimize
         self.OPFunc=None
-        self.kernelFunc=K[kernel.upper()]
+        
+        if not isinstance(kernel, Krg_Kernel):
+            raise ValueError("The kernel must be the instance of Krg_Kernel")
+        
+        self.kernel=kernel
         
         if(regression=='poly0'):
             self.regrFunc=regrpoly0
@@ -130,15 +131,20 @@ class Kriging(Surrogate):
         n_sample, n_feature=self.trainX.shape
         n_pre,_=predictX.shape
         
+        
+        
+        #TODO
         dx = np.zeros((n_pre * n_sample, n_feature))
         kk = np.arange(n_sample)
 
         for k in np.arange(n_pre):
             dx[kk, :] = predictX[k, :] - self.trainX
             kk = kk + n_sample
+        ####################
         
         F=self.regrFunc(predictX)
-        r = np.reshape(self.kernelFunc(self.theta, dx),(n_sample, n_pre), order='F')
+        self.kernel.theta=self.fitPar['theta'] #TODO
+        r = np.reshape(self.kernel(self.kernel.theta, dx),(n_sample, n_pre), order='F')
         sy = F @ self.fitPar['beta'] + (self.fitPar['gamma'] @ r).T
         
         predictY=self.__Y_inverse_transform__(sy)
@@ -157,6 +163,11 @@ class Kriging(Surrogate):
     def fit(self, trainX: np.ndarray, trainY: np.ndarray):
         
         self.trainX, self.trainY=self.__check_and_scale__(trainX, trainY)
+        
+        _, n_feature=self.trainX.shape
+        self.kernel.n_input=n_feature
+        self.theta0=self.kernel.theta
+        
         if(self.fitMode=='likelihood'):
             self._fit_likelihood()
         elif(self.fitMode=='predictError'):
@@ -178,7 +189,7 @@ class Kriging(Surrogate):
         
         if self.optimizer in MP_List: 
             ###Using Mathematical Programming
-            self.OPModel=eval(self.optimizer)(self.theta0, self.ub, self.lb)
+            self.OPModel=eval(self.optimizer)(self.theta0, self.kernel.ub, self.kernel.lb)
 
             #Wrap _objFunc
             if not self.OPFunc:
@@ -186,14 +197,15 @@ class Kriging(Surrogate):
                     self.trainY=trainY
                     self.trainX=trainX
                     self._objFunc(theta,record=True)
-                    self.theta=theta
+                    self.kernel.theta=theta
                     predictY,_=self.predict(self.X_scaler.inverse_transform(testX))
                     obj=-1*r2_score(self.Y_scaler.inverse_transform(testY),predictY)
                     return obj
                 
                 self.OPFunc=objFunc
             bestTheta, obj=self.OPModel.run(self.OPFunc)
-            self.theta=bestTheta
+            self.kernel.theta=bestTheta
+            
         elif self.optimizer in EA_List:
             ###Using Evolutionary Algorithm
             if not self.OPFunc:
@@ -203,13 +215,13 @@ class Kriging(Surrogate):
                     objs=np.zeros(thetas.shape[0])
                     for i,theta in enumerate(thetas):
                         self._objFunc(np.power(np.e,theta),record=True)
-                        self.theta=np.power(np.e,theta).ravel()
+                        self.kernel.theta=np.power(np.e,theta).ravel()
                         predictY=self.predict(self.X_scaler.inverse_transform(testX))
                         objs[i]=-1*r2_score(self.Y_scaler.inverse_transform(testY),predictY)
                     return objs.reshape(-1,1)
                 self.OPFunc=objFunc
                 
-            problem=Problem(self.OPFunc, self.theta0.size, 1, np.log(self.ub), np.log(self.lb))
+            problem=Problem(self.OPFunc, self.theta0.size, 1, np.log(self.kernel.ub), np.log(self.kernel.lb))
             
             self.OPModel=eval(self.optimizer)(problem, 50)
 
@@ -220,14 +232,14 @@ class Kriging(Surrogate):
                 if obj<bestObj:
                     bestTheta=theta
                     bestObj=obj
-            self.theta=np.power(np.e,bestTheta).ravel()
+            self.kernel.theta=np.power(np.e,bestTheta).ravel()
         #reset
         self.OPFunc=None
         self.trainY=TotalY
         self.trainX=TotalX
         self.F, self.D=self._initialize(self.trainX)
-        self._objFunc(self.theta,record=True)
-               
+        self._objFunc(self.kernel.theta,record=True)
+        
     def _fit_likelihood(self):
         
         trainX=self.trainX
@@ -236,9 +248,9 @@ class Kriging(Surrogate):
         
         if self.optimizer in MP_List:
             ###Using Mathematical Programming
-            self.OPModel=eval(self.optimizer)(self.theta0, self.ub, self.lb)
+            self.OPModel=eval(self.optimizer)(self.theta0, self.kernel.theta_ub, self.kernel.theta_lb)
             bestTheta, _ =self.OPModel.run(self._objFunc)
-            self.theta=bestTheta
+            self.kernel.theta=bestTheta
             
         elif self.optimizer in EA_List:
             ###Using Evolutionary Algorithm
@@ -249,7 +261,7 @@ class Kriging(Surrogate):
                 for i,theta in enumerate(thetas):
                     objs[i]=self._objFunc(np.power(np.e,theta), record=False)
                 return objs.reshape(-1,1)
-            problem=Problem(objFunc, self.theta0.size, 1, np.log(self.ub), np.log(self.lb), )
+            problem=Problem(objFunc, self.theta0.size, 1, np.log(self.kernel.theta_ub), np.log(self.kernel.theta_lb), )
             self.OPModel=eval(self.optimizer)(problem, 50)
             
             for _ in range(self.n_restart_optimize):
@@ -260,9 +272,9 @@ class Kriging(Surrogate):
                     bestTheta=theta
                     bestObj=obj
                     
-            self.theta=np.power(np.e,bestTheta)
+            self.kernel.theta=np.power(np.e,bestTheta)
         # Record coef
-        self._objFunc(self.theta,record=True)
+        self._objFunc(self.kernel.theta,record=True)
         
     def _initialize(self, trainX: np.ndarray):
         
@@ -283,7 +295,7 @@ class Kriging(Surrogate):
         obj=np.inf
         
         m=self.F.shape[0]
-        r=self.kernelFunc(theta, self.D)
+        r=self.kernel(self.D)
         
         mu = (10 + m) * np.spacing(1)
         R = np.triu(np.ones((m, m)), 1)

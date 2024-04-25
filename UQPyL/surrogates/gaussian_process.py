@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
-from typing import Callable, Tuple, Optional, Literal
+from typing import Tuple, Optional, Literal
 
-from .surrogate_ABC import Surrogate, Scale_T
-from .gp_kernels.Kernel import RBF, Matern, Kernel
+from .surrogate_ABC import Surrogate
+from .gp_kernels import RBF, Matern, Gp_Kernel
 from ..optimization import GA, Boxmin, MP_List, EA_List
 from ..utility.model_selections import RandSelect
 from ..utility.metrics import r2_score
@@ -12,11 +12,14 @@ from ..utility.polynomial_features import PolynomialFeatures
 
 class GPR(Surrogate):
     
-    def __init__(self, kernel: Kernel, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+    def __init__(self, kernel: Gp_Kernel, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
-                optimizer: Literal['Boxmin', 'GA']='Boxmin', n_restarts_optimizer: int=1,
-                fitMode: Literal['likelihood', 'predictError']='likelihood',
+                 optimizer: Literal['Boxmin', 'GA']='Boxmin', n_restarts_optimizer: int=1,
+                 fitMode: Literal['likelihood', 'predictError']='likelihood',
                  alpha: float=1e-10):
+        
+        if not isinstance(kernel, Gp_Kernel):
+            raise TypeError("Variable kernel must be an instance of Gp_Kernel!")
         
         self.optimizer=optimizer
         self.fitMode=fitMode

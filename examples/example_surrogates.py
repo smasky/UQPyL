@@ -19,6 +19,7 @@ os.chdir('./examples')
 #Evaluation Metrics
 from UQPyL.utility.metrics import r2_score
 from UQPyL.utility.metrics import rank_score
+
 #Scaling for X and Y
 from UQPyL.utility.scalers import MinMaxScaler
 
@@ -41,10 +42,18 @@ Y_test=problem.evaluate(X_test, unit=True)
 
 ############3. kriging (KRG)#################
 print("#################kriging (KRG)#################")
-from UQPyL.surrogates.kriging import Kriging
+from UQPyL.surrogates.kriging import KRG
+from UQPyL.surrogates.krg_kernels import Guass_Kernel
 
-krg=Kriging()
-
+guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1)
+krg=KRG(kernel=guass)
+krg.fit(X_train,Y_train)
+Y_predict=krg.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
 
 ############2. gaussian_process (GP)#################
 print("#################gaussian_process (GP)#################")
