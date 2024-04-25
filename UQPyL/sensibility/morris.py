@@ -32,8 +32,11 @@ class Morris(SA):
         >>> Y=problem.evaluate(X)
         >>> mor_method.analyze(X, Y)
     
-    Reference:
-        [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, Technometrics, 33:2, 161-174
+    References:
+        [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, 
+                                 Technometrics, 33:2, 161-174
+                                 doi: 10.2307/1269043
+        [2] SALib, https://github.com/SALib/SALib
     '''
     def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                        num_levels: int=4):
@@ -61,7 +64,7 @@ class Morris(SA):
         for i in range(nt):
             X[i*(nx+1):(i+1)*(nx+1), :]=self._generate_trajectory(nx, num_levels)
         
-        return X
+        return self.transform_into_problem(X)
         
     def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, verbose: bool=False) -> dict:
         '''
@@ -89,7 +92,9 @@ class Morris(SA):
 
         EE=np.zeros((n_input, num_trajectory))
         
-        for i in range(self.N_within_sampler):
+        N=int(X.shape[0]/self.num_levels)
+        
+        for i in range(N):
             X_sub=X[i*(n_input+1):(i+1)*(n_input+1), :]
             Y_sub=Y[i*(n_input+1):(i+1)*(n_input+1), :]
 

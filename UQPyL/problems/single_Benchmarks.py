@@ -26,6 +26,13 @@ class Sphere(ProblemABC):
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
+        '''
+            Parameters:
+                X: np.ndarray
+                    the input data
+                unit: bool, default=False
+                    whether to transform X to the bound
+        '''
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))

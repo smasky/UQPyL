@@ -18,9 +18,14 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def evaluate(self,X):
         pass
     
-    def _unit_X_transform_to_bound(self,X):
+    def _unit_X_transform_to_bound(self, X):
         
-        return X*(self.ub-self.lb)+self.lb
+        X_min=X.min(axis=0)
+        X_max=X.max(axis=0)
+        
+        X_scaled=(X - X_min) / (X_max - X_min)
+        
+        return X_scaled*(self.ub-self.lb)+self.lb
     
     
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:

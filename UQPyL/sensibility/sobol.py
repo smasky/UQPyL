@@ -31,7 +31,7 @@ class Sobol(SA):
         >>> Y=problem.evaluate(X)
         >>> sob_method.analyze(X,Y)
     
-    Reference:
+    References:
     [1] I. M. Sobol', Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates, 
                       Mathematics and Computers in Simulation, vol. 55, no. 1, pp. 271–280, Feb. 2001, 
                       doi: 10.1016/S0378-4754(00)00270-6.
@@ -40,19 +40,20 @@ class Sobol(SA):
                            doi: 10.1016/j.cpc.2009.09.018.
     [3] SALib, https://github.com/SALib/SALib
     '''
-    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
+    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                       cal_second_order: bool=False):
         
         super().__init__(problem, scalers)
+        self.cal_second_order=cal_second_order
                     
     #-------------------------Public Functions--------------------------------#
-    def sample(self, N: int=500, skip_value: int=0, scramble: bool=True,
-                    cal_second_order: bool=False) -> np.ndarray:
+    def sample(self, N: int=500, skip_value: int=0, scramble: bool=True) -> np.ndarray:
         '''
             Generate Sobol_sequence using Saltelli's sampling technique in [2]
             ----------------------
             Parameters:
-                N: int default=500
-                    the number of based X
+                N: int default=512
+                    the number of base sequence. Noted that N should be power of 2.
                 cal_second_order: bool default=False
                     the switch to calculate second order or not
                 
@@ -63,7 +64,7 @@ class Sobol(SA):
                     else
                         the size of X is (N*(2*n_input+2), n_input)
         '''
-        n_input=self.n_input; self.cal_second_order=cal_second_order
+        n_input=self.n_input; cal_second_order=self.cal_second_order
         
         M=None
         if skip_value>0 and isinstance(skip_value, int):
@@ -79,7 +80,7 @@ class Sobol(SA):
         elif skip_value<0 or not isinstance(skip_value, int):
             raise ValueError("skip value must be a positive integer!")
         
-        sampler=qmc.Sobol(n_input, scramble=scramble)
+        sampler=qmc.Sobol(n_input*2, scramble=scramble)
         
         if M:
             sampler.fast_forward(M)
@@ -91,10 +92,10 @@ class Sobol(SA):
         else:
             saltelli_sequence=np.zeros(((n_input+2)*N, n_input))
         
-        base_sequence=qmc.Sobol(N, n_input, )
+        base_sequence=sampler.random(N)
         
         index=0
-        for i in range(self.N_within_sampler):
+        for i in range(N):
             
             saltelli_sequence[index, :]=base_sequence[i, :self.n_input]
 
@@ -114,13 +115,12 @@ class Sobol(SA):
         
         X=saltelli_sequence
          
-        return X
+        return self.transform_into_problem(X)
      
-    def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, 
-                      cal_second_order: bool= False, verbose: bool=False):
+    def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, verbose: bool=False):
         '''
             Perform sobol' analyze
-            Noted that if the X and Y is None, sample(500) is used for generate data 
+            Noted that if the X and Y is None, sample(512) is used for generate data 
                        and use the method problem.evaluate to evaluate them.
             In Sobol method, we recommend to indicate X at least.
         -------------------------
@@ -139,7 +139,7 @@ class Sobol(SA):
         '''
         X, Y=self.__check_and_scale_xy__(X, Y)
         
-        n_input=self.n_input
+        n_input=self.n_input; cal_second_order=self.cal_second_order 
         
         if self.cal_second_order:
             N=int(X.shape[0]/(2*self.n_input+2))
@@ -208,8 +208,8 @@ class Sobol(SA):
         Y=np.r_[A,B]
         
         Vjk=np.mean(BA*AB2- A*B, axis=0)/np.var(Y, axis=0)
-        Sj=self.first_order(A, AB1, B)
-        Sk=self.first_order(A, AB2, B)
+        Sj=self._first_order(A, AB1, B)
+        Sk=self._first_order(A, AB2, B)
         
         return Vjk-Sj-Sk
        

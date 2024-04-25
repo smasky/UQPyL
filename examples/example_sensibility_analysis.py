@@ -1,12 +1,12 @@
 '''
     Examples for using sensibility analysis methods:
-    - Sobol
-    - extended Fourier Amplitude Sensitivity Test (eFAST)
-    - Random Balance Designs - Fourier Amplitude Sensitivity Test (RBD-FAST)
-    - Delta_test (DT)
-    - Morris
-    - Regional Sensitivity Analysis (RSA)
-    - Multivariate Adaptive Regression Splines-Sensibility Analysis (MARS-SA)
+    - 1. Sobol
+    - 2. extended Fourier Amplitude Sensitivity Test (eFAST)
+    - 3. Random Balance Designs - Fourier Amplitude Sensitivity Test (RBD-FAST)
+    - 4. Morris
+    - 5. Regional Sensitivity Analysis (RSA)
+    - 6. Multivariate Adaptive Regression Splines-Sensibility Analysis (MARS-SA)
+    - 7. Delta_test (DT)
 '''
 
 #tmp
@@ -25,15 +25,8 @@ from UQPyL.sensibility import Delta_Test
 from UQPyL.sensibility import Morris
 from UQPyL.sensibility import RSA
 from UQPyL.sensibility import MARS_SA
-from UQPyL.DoE import FFD
-from UQPyL.DoE import Morris_Sequence
 
 import numpy as np
-
-
-
-morr=Morris_Sequence(num_levels=5)
-x=morr.sample(100,3)
 ##################Prepare the data##################
 #Here we construct Ishigami-Homma problem for sensibility_analysis
 from UQPyL.problems import ProblemABC
@@ -65,64 +58,53 @@ problem=Ishigami(3, 1, np.pi, -1*np.pi)
 #    x3 0.0
 #    x4 0.0
 
+################1. Sobol#################
+print("################1.Sobol################")
+sobol_method=Sobol(problem=problem, cal_second_order=True) #Using Sobol Sequence and saltelli_sequence
+X=sobol_method.sample(512)
+Y=problem.evaluate(X)
+Si=sobol_method.analyze(X, Y, verbose=True)
 
-################Sobol################
-print("################Sobol################")
-sobol1=Sobol(problem=problem, N_within_sampler=1024, cal_second_order=True) #Using Sobol Sequence and saltelli_sequence
-Si=sobol1.analyze(verbose=True)
+################2. FAST##################
+print("################2.FAST################")
+fast_method=FAST(problem=problem, M=4)
+X=fast_method.sample(500)
+Y=problem.evaluate(X)
+Si=fast_method.analyze(X, Y, verbose=True)
 
+###############3. RBD_FAST#################
+print("##############3.RBD_FAST##############")
+rbd_method=RBD_FAST(problem=problem, M=4)
+X=rbd_method.sample(1000)
+Y=problem.evaluate(X)
+Si=rbd_method.analyze(X, Y, verbose=True)
 
-################FAST################
-print("################FAST################")
-fast1=FAST(problem=problem, N_within_sampler=1000) #Using FAST Sampler
-Si=fast1.analyze(verbose=True)
-a=1
+################4. Morris###################
+print("#############4.Morris#############")
+morris_method=Morris(problem=problem, num_levels=4) #Using Morris Sampler
+X=morris_method.sample(500)
+Y=problem.evaluate(X)
+Si=morris_method.analyze(X, Y, verbose=True)
 
-##############RBD_FAST##############
-print("##############RBD_FAST##############")
-rbd=RBD_FAST(problem=problem, N_within_sampler=1000) #Using LHS Sampler
-Si=rbd.analyze()
-rbd.summary()
-
-
-#############Morris#############
-print("#############Morris#############")
-mor=Morris(problem=problem, N_within_sampler=1000, num_levels=6) #Using Morris Sampler
-Si=mor.analyze()
-mor.summary()
-
-
-
-
-
-
-Y=mor.Y
-X=mor.X
-from SALib.analyze import morris
-from SALib.sample.morris import sample
-from SALib.test_functions import Ishigami
-
-from SALib import ProblemSpec
-
-sp = ProblemSpec(
-            {
-                "names": ["x1", "x2", "x3"],
-                "groups": None,
-                "bounds": [[-np.pi, np.pi]] * 3,
-                "num_vars":3,
-                "dists":['unif']*3,
-            }
-        )
-
-samples=sample(sp, 1000, num_levels=6, optimal_trajectories=4)
-
-Y=problem.evaluate(samples)
-Si = morris.analyze(
-    sp, samples, Y[:,0],conf_level=0.95, print_to_console=True, scaled=False
-)
-a=1
+################5. RSA###################
+print("#############5.RSA#############")
+rsa_method=RSA(problem=problem, n_region=20)
+X=rsa_method.sample(1000)
+Y=problem.evaluate(X)
+Si=rsa_method.analyze(X, Y, verbose=True)
 
 
+#################6. MARS_SA################
+print("#############6.MARS_SA#############")
+mars_method=MARS_SA(problem=problem)
+X=mars_method.sample(1000)
+Y=problem.evaluate(X)
+Si=mars_method.analyze(X, Y, verbose=True)
 
-                                                
-        
+##################7. Delta_Test################
+print('#############7.Delta_Test#############')
+delta_method=Delta_Test(problem=problem)
+X=delta_method.sample(1000)
+Y=problem.evaluate(X)
+Si=delta_method.analyze(X, Y, verbose=True)
+

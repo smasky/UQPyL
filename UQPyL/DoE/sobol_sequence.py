@@ -6,21 +6,36 @@ from .sampler_ABC import Sampler
 class Sobol_Sequence(Sampler):
     '''
     Sobol Sequence
+    ------------------------------------------------
+    Parameters:
+    scramble: bool default=True
+        the switch to scramble the sequence or not
+    skip_value: int default=0
+        the number of skipped points for Sobol sequence
     
     Methods:
     __call__ or sample: generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
     
+    Examples:
+        >>> sobol_seq=Sobol_Sequence(skip_value=128)
+        >>> sobol_seq.sample(64, 4)
     '''
-    def __init__(self):
+    def __init__(self, scramble: bool=True, skip_value: int=0):
         
         super().__init__()
+        
+        self.scramble=scramble
+        self.skip_value=skip_value
     
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
         '''
         
-        return Sobol(d=nx).random(nt)
+        sampler=Sobol(d=nx, scramble=self.scramble)
+        X=sampler.random(nt+self.skip_value)
+        
+        return X[self.skip_value:, :]
     
     def sample(self, nt: int, nx: int) -> np.ndarray:
         '''

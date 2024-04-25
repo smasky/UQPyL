@@ -31,6 +31,7 @@ class MARS_SA(SA):
             [1] J. H. Friedman, Multivariate Adaptive Regression Splines, 
                                 The Annals of Statistics, vol. 19, no. 1, pp. 1-67, Mar. 1991, 
                                 doi: 10.1214/aos/1176347963.
+            [2] SALib, https://github.com/SALib/SALib
     '''
     def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
         

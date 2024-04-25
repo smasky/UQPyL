@@ -35,7 +35,7 @@ class RBD_FAST(SA):
             >>> Y=problem.evaluate(X)
             >>> rbd_method.analyze(X, Y)
             
-        Reference:
+        References:
             [1] S. Tarantola et al, Random balance designs for the estimation of first order global sensitivity indices, 
                                     Reliability Engineering & System Safety, vol. 91, no. 6, pp. 717-727, Jun. 2006,
                                     doi: 10.1016/j.ress.2005.06.003.
@@ -44,7 +44,7 @@ class RBD_FAST(SA):
                                     doi: 10.1016/j.ress.2012.06.010.
     '''
     def __init__(self, problem: Problem,scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                       M: int=10):
+                       M: int=4):
         
         super().__init__(problem, scalers)
         self.M=M
@@ -69,7 +69,7 @@ class RBD_FAST(SA):
         if N<=4*self.M**2:
             raise ValueError("the number of sample must be greater than 4*M**2!")
         
-        return X
+        return self.transform_into_problem(X)
     
     def analyze(self, X: np.ndarray=None, Y: np.ndarray=None, verbose: bool=False):
         '''
@@ -88,6 +88,7 @@ class RBD_FAST(SA):
         '''
         
         X, Y=self.__check_and_scale_xy__(X, Y)
+        n_input=self.n_input
         
         S1=np.zeros(n_input); n_input=self.n_input
         

@@ -19,9 +19,7 @@ import numpy as np
 from typing import Optional, Tuple
 
 from .sa_ABC import SA
-from ..DoE import FAST_Sampler, Sampler, LHS
 from ..problems import ProblemABC as Problem
-from ..surrogates import Surrogate
 from ..utility import Scaler
 class FAST(SA):
     def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
@@ -53,7 +51,7 @@ class FAST(SA):
             >>> fast_method=FAST(problem)
             >>> X=fast_method.sample()
         
-        Reference:
+        References:
             [1] Cukier et, al, A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output
                                Technometrics, 41(1):39-56,
                                doi: 10.1063/1.1680571
@@ -65,6 +63,8 @@ class FAST(SA):
     
         super().__init__(problem, scalers)
 
+        self.M=M
+        
     def sample(self, N: int=500) -> np.ndarray:
         '''
             Generate FAST sequence, this technique from paper [2]
@@ -100,13 +100,13 @@ class FAST(SA):
             w_tmp[i]=w[0]
             idx=list(range(i))+list(range(i+1,n_input))
             w_tmp[idx]=w[1:]
-            idx=range(i*N, (i+1)*n_input)   
+            idx=range(i*N, (i+1)*N)   
             phi=2*np.pi*np.random.rand()    
             sin_result=np.sin(w_tmp[:,None]*s+phi)
             arsin_result=(1/np.pi)*np.arcsin(sin_result) #saltelli formula
             X[idx, :]=0.5+arsin_result.transpose()
         
-        return X
+        return self.transform_into_problem(X)
         
     def analyze(self, X: np.ndarray=None, Y: np.ndarray=None, verbose: bool=False) -> dict:
         '''

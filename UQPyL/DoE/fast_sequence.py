@@ -2,7 +2,7 @@ import numpy as np
 
 from .sampler_ABC import Sampler
 
-class FAST_Sampler(Sampler):
+class FAST_Sequence(Sampler):
     '''
     The sample technique for FAST(Fourier Amplitude Sensitivity Test) method
     
@@ -16,9 +16,9 @@ class FAST_Sampler(Sampler):
     __call__ or sample: Generate a sample for FAST method
     
     Examples:
-        >>> fast=FAST_Sampler()
-        >>> samples=fast(5, 4) or fast.sample(5,4)
-            
+        >>> fast_seq=FAST_Sequence()
+        >>> samples=fast_seq(5, 4) or fast_seq.sample(5,4)
+    
     '''
     def __init__(self, M: int=4):
         

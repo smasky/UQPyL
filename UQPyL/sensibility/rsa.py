@@ -9,6 +9,38 @@ from ..utility import Scaler
 from ..surrogates import Surrogate
 
 class RSA(SA):
+    '''
+        Regonal Sensitivity Analysis
+        ---------------------------
+        Parameters:
+            problem: Problem
+                the problem you want to analyse
+            n_region: int, default=20
+                the number of region you want to divide
+            scaler: Tuple[Scaler, Scaler], default=(None, None)
+                used for scaling X or Y
+             
+            Following parameters derived from the variable 'problem'
+            n_input: the input number of the problem
+            ub: the upper bound of the problem
+            lb: the lower bound of the problem
+        
+        Methods:
+            sample: Generate a sample for RSA analysis
+            analyze: perform RSA analyze from the X and Y you provided.
+        
+        Examples:
+            >>>rsa_method=RSA(problem)
+            >>>X=rsa_method.sample(500)
+            >>>Y=problem.evaluate(X)
+            >>>Si=rsa_method.analyze(X, Y)
+        
+        References:
+            [1] F. Pianosi et al., Sensitivity analysis of environmental models: A systematic review with practical workflow, 
+                                   Environmental Modelling & Software, vol. 79, pp. 214-232, May 2016, 
+                                   doi: 10.1016/j.envsoft.2016.02.008.
+            [2] SALib, https://github.com/SALib/SALib
+    '''
     def __init__(self, problem: Problem, n_region: int=20,
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
         

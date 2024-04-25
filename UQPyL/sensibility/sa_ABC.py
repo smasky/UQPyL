@@ -43,7 +43,7 @@ class SA(metaclass=abc.ABCMeta):
         if not isinstance(X, np.ndarray) and X is not None:
             raise TypeError("X must be an instance of np.ndarray or None!")
         elif X is None:
-            X=self._default_sample()*(self.ub-self.lb)+self.lb
+            X=self._default_sample()
          
         X=np.atleast_2d(X)
             
@@ -53,7 +53,7 @@ class SA(metaclass=abc.ABCMeta):
         if not isinstance(Y, np.ndarray) and Y is not None:
             raise TypeError("Y must be an instance of np.ndarray or None!")
         elif Y is None:
-            Y=self.evaluate_(self.X_)
+            Y=self.evaluate_(X)
 
         if self.Y_scale:
             Y=self.Y_scale.fit_transform(Y)
@@ -80,7 +80,11 @@ class SA(metaclass=abc.ABCMeta):
                 self.Y_scale.fitted=True
                 
         return Y
-                
+    
+    def transform_into_problem(self, X):
+        
+        return X*(self.ub-self.lb)+self.lb
+    
     @abc.abstractmethod
     def analyze(self, X_sa=None, Y_sa=None):
         pass

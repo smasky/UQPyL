@@ -25,7 +25,7 @@ class RBF(Kernel):
         RBF kernel
     """
     def __init__(self, length_scale: Union[float, np.ndarray]=1.0,
-                 l_ub: Union[float, np.ndarray]=1e5,l_lb: Union[float, np.ndarray]=1e-5):
+                 l_ub: Union[float, np.ndarray]=1e5, l_lb: Union[float, np.ndarray]=1e-5):
         
         super().__init__()
         

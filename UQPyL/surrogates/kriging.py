@@ -58,6 +58,7 @@ def cubic(theta, d):
     return r
 
 K={"GAUSSIAN": guass, "EXP": exp, "CUBIC": cubic}
+
 class Kriging(Surrogate):
     """
     A Kriging implementation based on python env includes the new training method(prediction error), 
@@ -91,7 +92,7 @@ class Kriging(Surrogate):
     Scale_type: the normalized method, containing:
             *'StandardScaler'
             *'MaxminScaler'
-    
+            
     """
     def __init__(self, theta0: np.ndarray, ub: np.ndarray, lb: np.ndarray,
                  regression: Literal['poly0','poly1','poly2']='poly0',

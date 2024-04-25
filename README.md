@@ -20,21 +20,31 @@ The **main characteristics** of UQPyL includes:
 # Included Methods and Algorithms
 **Sensibility Analysis:** (all methods support for surrogate models)
 - Sobol'
-- Delta_Test
-- Extent FAST
-- RBD_FAST
-- Mars
+- Delta_test (DT)
+- extended Fourier Amplitude Sensitivity Test (eFAST)
+- Random Balance Designs - Fourier Amplitude Sensitivity Test
+- Multivariate Adaptive Regression Splines-Sensibility Analysis (MARS-SA)
 - Morris
-- RSA
+- Regional Sensitivity Analysis (RSA)
 
 **Optimization Algorithms:** (* indicates the use of surrogate models)
 - SCE-UA
-- GA
-- NSGA-II
+- Genetic Algorithm (GA)
+- Non-dominated Sorting Genetic Algorithm-II (NSGA-II)
 - AMSMO*
 - MO_ASMO*
 - MASTO* #TODO
 - AMSMO* #TODO
+
+**Surrogate Models:**
+- Full connect neural network (FNN)
+- Kriging (KRG)
+- Gaussian Process (GP)
+- Linear Regression (LR)
+- Polynomial Regression (PR)
+- Radial Basis Function (RBF)
+- Support Vector Machine (SVM)
+- Multivariate Adaptive Regression Splines (MARS)
 
 # Installation
 

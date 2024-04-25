@@ -12,11 +12,11 @@ from ..utility.polynomial_features import PolynomialFeatures
 
 class GPR(Surrogate):
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+    def __init__(self, kernel: Kernel, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
                 optimizer: Literal['Boxmin', 'GA']='Boxmin', n_restarts_optimizer: int=1,
                 fitMode: Literal['likelihood', 'predictError']='likelihood',
-                kernel: Optional[Kernel]=None, alpha: float=1e-10):
+                 alpha: float=1e-10):
         
         self.optimizer=optimizer
         self.fitMode=fitMode

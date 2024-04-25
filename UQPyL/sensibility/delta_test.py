@@ -6,10 +6,9 @@ from typing import Optional, Tuple
 
 from ..optimization import Binary_GA
 from .sa_ABC import SA
-from ..DoE import LHS, FAST_Sampler, Sampler
+from ..DoE import LHS, Sampler
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler
-from ..surrogates import Surrogate
 class Delta_Test(SA):
     def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
                        n_neighbors: int=2):
@@ -39,9 +38,10 @@ class Delta_Test(SA):
                 >>> Y=problem.evaluate(X)
                 >>> delta_method.analyze(X, Y)
                 
-            Reference:
+            References:
                 [1] E. Eirola et al, Using the Delta Test for Variable Selection, 
                                      Artificial Neural Networks, 2008.
+                [2] SALib, https://github.com/SALib/SALib
         '''
         super().__init__(problem, scalers)
 
@@ -84,15 +84,15 @@ class Delta_Test(SA):
         '''
         X, Y=self.__check_and_scale_xy__(X, Y)
         
+        n_input=self.n_input
         ##main process
         self.X_=X; self.Y_=Y
-        optimizer=Binary_GA(self._cal_delta, self.n_input)
+        optimizer=Binary_GA(self._cal_delta, self.n_input, population_size=n_input*2)
         best_paras, self.best_value, history_paras, _=optimizer.run()
         
-        S1_score=np.sum(history_paras, axis=0)/history_paras.shape[0]
+        S1_score=np.sum(history_paras, axis=0)/len(history_paras)
         
-        HSP_inds=[index for index, value in enumerate(best_paras) if value==1]
-        HSP_paras=self.labels[HSP_inds]
+        HSP_paras=[self.labels[index] for index, value in enumerate(best_paras) if value==1]
         
         Si={'S1': S1_score, 'HSP':HSP_paras}
         self.Si=Si
