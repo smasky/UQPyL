@@ -1,7 +1,7 @@
 import numpy as np
 from .svr_ import svm_fit, svm_predict, Parameter 
-from typing import Tuple, Literal, Optional
-from .surrogate_ABC import Scale_T, Surrogate
+from typing import Literal, Optional
+from .surrogate_ABC import Surrogate
 from ..utility.polynomial_features import PolynomialFeatures
 LINEAR = 0
 POLYNOMIAL = 1
