@@ -40,6 +40,67 @@ X_test=lhs.sample(50, 10)
 Y_test=problem.evaluate(X_test, unit=True)
 ###########################################
 
+#############1. full_connect_neural_network (FNN)#################
+print("#################full_connect_neural_network (FNN)#################")
+from UQPyL.surrogates import FNN
+#use 0-1 MinMaxScaler to normalize data
+fnn=FNN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)),hidden_layer_sizes=[16,32,64,32,16,8], 
+        activation_functions='relu', solver='adam', alpha=0.001)
+fnn.fit(X_train,Y_train)
+Y_predict=fnn.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+
+r2=r2_score(Y_test, Y_predict)
+print('r2:', r2)
+#use rank_score to validate the Y_predict and Y_test
+
+oe=rank_score(Y_test, Y_predict)
+print('rank_score:', oe)
+
+############2. gaussian_process (GP)#################
+print("#################gaussian_process (GP)#################")
+from UQPyL.surrogates.gaussian_process import GPR
+# we should construct a kernel for GPR
+from UQPyL.surrogates.gp_kernels import RBF
+rbf_kernel=RBF()
+gp=GPR(kernel=rbf_kernel,scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
+gp.fit(X_train,Y_train)
+Y_predict=gp.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+
+############3. kriging (KRG)#################
+print("#################kriging (KRG)#################")
+from UQPyL.surrogates.kriging import KRG
+from UQPyL.surrogates.krg_kernels import Guass_Kernel
+
+#use guassian kernel, there two fit mode: 'predictError' and 'likelihood'
+#use predictError here
+guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+krg=KRG(kernel=guass, optimizer='Boxmin', fitMode='predictError')
+krg.fit(X_train,Y_train)
+Y_predict=krg.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+#use likehood here
+guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+krg=KRG(kernel=guass, optimizer='GA', fitMode='likelihood')
+krg.fit(X_train,Y_train)
+Y_predict=krg.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+
+
+
 ############4. linear regression (LR)#######
 print('############4. linear regression (LR)#######')
 from UQPyL.surrogates.linear_regression import LinearRegression
@@ -96,63 +157,39 @@ print(r2)
 rank=rank_score(Y_test, Y_predict)
 print(rank)
 
-############3. kriging (KRG)#################
-print("#################kriging (KRG)#################")
-from UQPyL.surrogates.kriging import KRG
-from UQPyL.surrogates.krg_kernels import Guass_Kernel
 
-#use guassian kernel, there two fit mode: 'predictError' and 'likelihood'
-#use predictError here
-guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
-krg=KRG(kernel=guass, optimizer='Boxmin', fitMode='predictError')
-krg.fit(X_train,Y_train)
-Y_predict=krg.predict(X_test)
-#use R-square to validate the Y_predict and Y_test
-r2=r2_score(Y_test, Y_predict)
-print(r2)
-rank=rank_score(Y_test, Y_predict)
-print(rank)
-#use likehood here
-guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
-krg=KRG(kernel=guass, optimizer='GA', fitMode='likelihood')
-krg.fit(X_train,Y_train)
-Y_predict=krg.predict(X_test)
-#use R-square to validate the Y_predict and Y_test
+############6. radial basis function (RBF)############
+print('############6. radial basis function (RBF)############')
+from UQPyL.surrogates.radial_basis_function import RBF
+from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Multiquadric, Linear, Thin_plate_spline
+#use Cubic as example
+cubic=Cubic()
+rbf=RBF(kernel=cubic)
+rbf.fit(X_train, Y_train)
+Y_predict=rbf.predict(X_test)
 r2=r2_score(Y_test, Y_predict)
 print(r2)
 rank=rank_score(Y_test, Y_predict)
 print(rank)
 
-############2. gaussian_process (GP)#################
-print("#################gaussian_process (GP)#################")
-from UQPyL.surrogates.gaussian_process import GPR
-# we should construct a kernel for GPR
-from UQPyL.surrogates.gp_kernels import RBF
-rbf_kernel=RBF()
-gp=GPR(kernel=rbf_kernel,scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
-gp.fit(X_train,Y_train)
-Y_predict=gp.predict(X_test)
-#use R-square to validate the Y_predict and Y_test
+############7. support vector machine (SVM)#################
+print('############7. support vector machine (SVM)############')
+from UQPyL.surrogates import SVR
+svm=SVR(scalers=(MinMaxScaler(0,10), MinMaxScaler(0,10)), kernel='linear', C=1.0, eps=0.00001)
+svm.fit(X_train, Y_train)
+Y_predict=svm.predict(X_test)
 r2=r2_score(Y_test, Y_predict)
 print(r2)
 rank=rank_score(Y_test, Y_predict)
 print(rank)
 
-
-#############1. full_connect_neural_network (FNN)#################
-print("#################full_connect_neural_network (FNN)#################")
-from UQPyL.surrogates import FNN
-#use 0-1 MinMaxScaler to normalize data
-fnn=FNN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)),hidden_layer_sizes=[16,32,64,32,16,8], 
-        activation_functions='relu', solver='adam', alpha=0.001)
-fnn.fit(X_train,Y_train)
-Y_predict=fnn.predict(X_test)
-#use R-square to validate the Y_predict and Y_test
-
+############8. multivariate adaptive regression splines (MARS)###########
+print('############8. multivariate adaptive regression splines (MARS)############')
+from UQPyL.surrogates.mars import MARS
+mars=MARS()
+mars.fit(X_train, Y_train)
+Y_predict=mars.predict(X_test)
 r2=r2_score(Y_test, Y_predict)
-print('r2:', r2)
-#use rank_score to validate the Y_predict and Y_test
-
-oe=rank_score(Y_test, Y_predict)
-print('rank_score:', oe)
-
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
