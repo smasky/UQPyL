@@ -17,12 +17,12 @@ class LinearRegression(Surrogate):
     '''
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
-                 Type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
+                 loss_type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
                  fit_intercept: bool= True, alpha: float=0.1,
                  epoch: int=100, lr: float=1e-5, tl: float=1e-5):
         
         
-        self.type=Type
+        self.loss_type=loss_type
         self.fit_intercept=fit_intercept
         self.alpha=alpha
         self.epoch=epoch
@@ -37,11 +37,11 @@ class LinearRegression(Surrogate):
         
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
         
-        if self.type=='Origin':
+        if self.loss_type=='Origin':
             self._fit_Origin(trainX, trainY)
-        elif self.type=='Ridge':
+        elif self.loss_type=='Ridge':
             self._fit_Ridge(trainX, trainY)
-        elif self.type=='Lasso':
+        elif self.loss_type=='Lasso':
             self._fit_Lasso(trainX, trainY)
         else:
             raise ValueError('Using wrong model type!')
@@ -62,7 +62,7 @@ class LinearRegression(Surrogate):
             predict_Y=predict_X@self.coef_+self.intercept_
         else:
             predict_Y=predict_X@self.coef_
-        
+        predict_Y=predict_Y.reshape(-1,1)
         return self.__Y_inverse_transform__(predict_Y)
     
 ###--------------------------private functions----------------------------###

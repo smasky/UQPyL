@@ -92,6 +92,12 @@ class Surrogate(metaclass=abc.ABCMeta):
             Y=self.Y_scaler.inverse_transform(Y.reshape(-1,1))
             
         return Y
+    def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
+        
+        if(self.X_scaler):
+            X=self.X_scaler.inverse_transform(X)
+        
+        return X
     
     def set_Paras(self, Para_dicts):
         

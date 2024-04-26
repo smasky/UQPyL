@@ -3,7 +3,7 @@ import numpy as np
 from typing import Union
 
 class Krg_Kernel():
-    _n_input=None
+    _n_input=1
     def __init__(self, theta: Union[float, np.ndarray]=1, 
                  theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5,
                  heterogeneous: bool=True
@@ -17,13 +17,15 @@ class Krg_Kernel():
     def __check_array__(self, value):
         
         if isinstance(value, (float, int)):
-            tmp=np.ones(self.n_input)
-            value_=np.full(tmp, value)
+            value_=np.ones(self.n_input)
+            value_.fill(value)
         elif isinstance(value, np.ndarray):
             if value.ndim>1:
                 value_=value.ravel()
                 if value_.shape[0]!=self.n_input:
                     raise ValueError("Please make sure the shape of value")
+            else:
+                value_=value 
         else:
             raise ValueError("Please make sure the type of value")
 
@@ -68,8 +70,8 @@ class Krg_Kernel():
             raise ValueError("Please the type of value is int")
         
         if self.heterogenous:
-            if self.theta.shape[0]==1:
-                self.theta = np.resize(self.theta, (value, 1)) 
-                self.theta_lb = np.resize(self.theta_lb, (value, 1))
-                self.theta_ub = np.resize(self.theta_ub, (value, 1))
-        self._n_input=value
+            # if self.theta.shape[0]==1:
+            self.theta = np.resize(self.theta, value) 
+            self.theta_lb = np.resize(self.theta_lb, value)
+            self.theta_ub = np.resize(self.theta_ub, value)
+            self._n_input=value 

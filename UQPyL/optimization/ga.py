@@ -14,7 +14,7 @@ class GA():
                  tolerate_times: int=1000):
         # self.__check__(dim,ub,lb)
         
-        self.dim=problem.dim
+        self.dim=problem.n_input
         self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
         self.evaluate=problem.evaluate
         

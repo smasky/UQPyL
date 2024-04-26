@@ -143,8 +143,8 @@ class KRG(Surrogate):
         ####################
         
         F=self.regrFunc(predictX)
-        self.kernel.theta=self.fitPar['theta'] #TODO
-        r = np.reshape(self.kernel(self.kernel.theta, dx),(n_sample, n_pre), order='F')
+        # self.kernel.theta=self.fitPar['theta'] #TODO
+        r = np.reshape(self.kernel(dx),(n_sample, n_pre), order='F')
         sy = F @ self.fitPar['beta'] + (self.fitPar['gamma'] @ r).T
         
         predictY=self.__Y_inverse_transform__(sy)
@@ -189,7 +189,7 @@ class KRG(Surrogate):
         
         if self.optimizer in MP_List: 
             ###Using Mathematical Programming
-            self.OPModel=eval(self.optimizer)(self.theta0, self.kernel.ub, self.kernel.lb)
+            self.OPModel=eval(self.optimizer)(self.theta0, self.kernel.theta_ub, self.kernel.theta_lb)
 
             #Wrap _objFunc
             if not self.OPFunc:
@@ -198,8 +198,8 @@ class KRG(Surrogate):
                     self.trainX=trainX
                     self._objFunc(theta,record=True)
                     self.kernel.theta=theta
-                    predictY,_=self.predict(self.X_scaler.inverse_transform(testX))
-                    obj=-1*r2_score(self.Y_scaler.inverse_transform(testY),predictY)
+                    predictY=self.predict(self.__X_inverse_transform__(testX))
+                    obj=-1*r2_score(self.__Y_inverse_transform__(testY),predictY)
                     return obj
                 
                 self.OPFunc=objFunc
@@ -216,12 +216,13 @@ class KRG(Surrogate):
                     for i,theta in enumerate(thetas):
                         self._objFunc(np.power(np.e,theta),record=True)
                         self.kernel.theta=np.power(np.e,theta).ravel()
-                        predictY=self.predict(self.X_scaler.inverse_transform(testX))
-                        objs[i]=-1*r2_score(self.Y_scaler.inverse_transform(testY),predictY)
+                        #TODO
+                        predictY=self.predict(self.__X_inverse_transform__(testX))
+                        objs[i]=-1*r2_score(self.__Y_inverse_transform__(testY),predictY)
                     return objs.reshape(-1,1)
                 self.OPFunc=objFunc
                 
-            problem=Problem(self.OPFunc, self.theta0.size, 1, np.log(self.kernel.ub), np.log(self.kernel.lb))
+            problem=Problem(self.OPFunc, self.theta0.size, 1, np.log(self.kernel.theta_ub), np.log(self.kernel.theta_lb))
             
             self.OPModel=eval(self.optimizer)(problem, 50)
 
@@ -295,6 +296,9 @@ class KRG(Surrogate):
         obj=np.inf
         
         m=self.F.shape[0]
+        #set theta to kernel
+        self.kernel.theta=theta
+        
         r=self.kernel(self.D)
         
         mu = (10 + m) * np.spacing(1)

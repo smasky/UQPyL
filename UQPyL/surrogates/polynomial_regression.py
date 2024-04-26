@@ -14,13 +14,13 @@ class PolynomialRegression(LinearRegression):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
-                 Type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
+                 loss_type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
                  interaction_only: bool=False,
                  degree: int=2, fit_intercept: bool=True,
                  alpha: float=0.6, epoch: int=100, lr: float=1e-6, tl: float=1e-4):
         
         super().__init__(scalers=scalers, poly_feature=poly_feature,
-                         Type=Type, fit_intercept=fit_intercept, alpha=alpha,
+                         loss_type=loss_type, fit_intercept=fit_intercept, alpha=alpha,
                          epoch=epoch, lr=lr, tl=tl)
         
         self.degree=degree
@@ -34,26 +34,26 @@ class PolynomialRegression(LinearRegression):
         
         trainX, trainY=self.__check_and_scale__(trainX, trainY)
         
-        # self.outTrainX_=self.polynomial_features(trainX)
+        trainX_=self.polynomial_features(trainX)
         
-        if self.type=='Origin':
-            self._fit_Origin(trainX, trainY)
-        elif self.type=='Ridge':
-            self._fit_Ridge(trainX, trainY)
-        elif self.type=='Lasso':
-            self._fit_Lasso(trainX, trainY)
+        if self.loss_type=='Origin':
+            self._fit_Origin(trainX_, trainY)
+        elif self.loss_type=='Ridge':
+            self._fit_Ridge(trainX_, trainY)
+        elif self.loss_type=='Lasso':
+            self._fit_Lasso(trainX_, trainY)
         else:
             raise ValueError('Using wrong model type!')
         
     def predict(self, predict_X: np.ndarray) -> np.ndarray:
         
         predict_X=self.__X_transform__(predict_X)
-       
+        predict_X_=self.polynomial_features(predict_X)
         if self.fit_intercept:
-            predict_Y=predict_X@self.coef_+self.intercept_
+            predict_Y=predict_X_@self.coef_+self.intercept_
         else:
-            predict_Y=predict_X@self.coef_
-        
+            predict_Y=predict_X_@self.coef_
+        predict_Y=predict_Y.reshape(-1,1)
         return self.__Y_inverse_transform__(predict_Y)
     
 ###------------------------private functions-----------------------------###

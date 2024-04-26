@@ -40,13 +40,81 @@ X_test=lhs.sample(50, 10)
 Y_test=problem.evaluate(X_test, unit=True)
 ###########################################
 
+############4. linear regression (LR)#######
+print('############4. linear regression (LR)#######')
+from UQPyL.surrogates.linear_regression import LinearRegression
+#There three types: 'Origin', 'Lasso', 'Ridge'
+# Main difference is the loss function
+# Origin
+lr=LinearRegression(loss_type='Origin')
+lr.fit(X_train, Y_train)
+Y_predict=lr.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+# Ridge
+lr=LinearRegression(loss_type='Ridge')
+lr.fit(X_train, Y_train)
+Y_predict=lr.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+#Lasso
+lr=LinearRegression(loss_type='Lasso')
+lr.fit(X_train, Y_train)
+Y_predict=lr.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+
+############5. polynomial regression (PR)####
+print('############5. polynomial regression (PR)####')
+from UQPyL.surrogates.polynomial_regression import PolynomialRegression
+#degree=2 default. degree=1 is linear regression
+# there are three types: 'Origin', 'Lasso', 'Ridge'
+pr=PolynomialRegression(degree=2, loss_type='Lasso')
+pr.fit(X_train, Y_train)
+Y_predict=pr.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+# there are three types: 'Origin', 'Lasso', 'Ridge'
+pr=PolynomialRegression(degree=2, loss_type='Ridge')
+pr.fit(X_train, Y_train)
+Y_predict=pr.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+
 ############3. kriging (KRG)#################
 print("#################kriging (KRG)#################")
 from UQPyL.surrogates.kriging import KRG
 from UQPyL.surrogates.krg_kernels import Guass_Kernel
 
-guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1)
-krg=KRG(kernel=guass)
+#use guassian kernel, there two fit mode: 'predictError' and 'likelihood'
+#use predictError here
+guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+krg=KRG(kernel=guass, optimizer='Boxmin', fitMode='predictError')
+krg.fit(X_train,Y_train)
+Y_predict=krg.predict(X_test)
+#use R-square to validate the Y_predict and Y_test
+r2=r2_score(Y_test, Y_predict)
+print(r2)
+rank=rank_score(Y_test, Y_predict)
+print(rank)
+#use likehood here
+guass=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+krg=KRG(kernel=guass, optimizer='GA', fitMode='likelihood')
 krg.fit(X_train,Y_train)
 Y_predict=krg.predict(X_test)
 #use R-square to validate the Y_predict and Y_test

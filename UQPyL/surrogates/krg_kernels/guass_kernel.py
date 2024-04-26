@@ -6,9 +6,11 @@ from .base_kernel import Krg_Kernel
 class Guass_Kernel(Krg_Kernel):
     
     def __init__(self, theta: Union[float, np.ndarray]=1, 
-                 theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5):
+                 theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5,
+                 heterogeneous: bool=True
+                 ):
         
-        super().__init__(theta, theta_lb, theta_ub)
+        super().__init__(theta, theta_lb, theta_ub, heterogeneous)
     
     def __call__(self, D: np.ndarray):
         '''
