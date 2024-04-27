@@ -48,6 +48,6 @@ class ProblemABC(metaclass=abc.ABCMeta):
     
     def _check_bound(self,bound: np.ndarray):
         
-        if(not bound.shape[0]==self.n_input):
+        if(not bound.shape[1]==self.n_input):
             raise ValueError('the input bound is inconsistent with the input n_inputensions')
         

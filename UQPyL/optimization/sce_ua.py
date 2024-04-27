@@ -8,24 +8,29 @@ class SCE_UA():
     '''
     '''
     def __init__(self, problem,
-          ngs = None, kstop = 10, 
-          pcento = 0.1, peps = 0.001, verbose = True, simple=True):
+          ngs: int= None, kstop: int= 10, 
+          pcento: float = 0.1, peps: float= 0.001, 
+          maxFE: int= 50000, maxIter: int= 1000,
+          verbose: bool= False):
+        
         self.func=problem.evaluate
-        self.NInput=problem.dim
+        self.NInput=problem.n_input
         self.lb=problem.lb
         self.ub=problem.ub
+        
+        self.maxFE=maxFE
+        self.maxIter=maxIter
         
         self.ngs=ngs
         self.kstop=kstop
         self.pcento=pcento
         self.peps=peps
         self.verbose=verbose
-        self.simple=simple
         
         if ngs==None:
-            self.ngs=problem.dim
+            self.ngs=problem.n_input
             
-    def run(self, maxFE=50000, maxIter=3000):
+    def run(self):
         # Initialize SCE parameters:
         NInput=self.NInput
         npg  = 2 * self.NInput + 1
@@ -60,7 +65,7 @@ class SCE_UA():
         cf=np.zeros((npg,1))
         ngs=self.ngs
         
-        while FE<maxFE and gnrng>self.peps and criter_change>self.pcento and nloop<maxIter:
+        while FE<self.maxFE and gnrng>self.peps and criter_change>self.pcento and nloop<self.maxIter:
             nloop+=1
             
             for igs in range(ngs):
@@ -120,12 +125,17 @@ class SCE_UA():
             if nloop >= self.kstop:
                 criter_change = np.abs(criter[nloop-1] - criter[nloop-self.kstop])*100
                 criter_change /= np.mean(np.abs(criter[nloop-self.kstop:nloop]))
-                
-        if self.simple:
-            return BestX, BestY
-        else:
-            return BestX, BestY, FE, nloop, List_BestX, List_BestY, List_FE
-                        
+        
+        Result={}
+        Result['best_decs']=BestX
+        Result['best_obj']=BestY
+        Result['history_decs']=List_BestX
+        Result['history_objs']=List_BestY
+        Result['FEs']=FE
+        Result['iters']=nloop
+        
+        return Result
+            
                         
     def cceua(self, func, s, sf, lb, ub, FE):
         

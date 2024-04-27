@@ -18,7 +18,7 @@ class ASMO():
     def __init__(self, problem, surrogate, NInit=50, XInit=None, YInit=None):
         self.evaluator=problem.evaluate
         self.lb=problem.lb; self.ub=problem.ub
-        self.NInput=problem.dim
+        self.NInput=problem.n_input
         
         self.surrogate=surrogate
         self.NInit=NInit
@@ -56,7 +56,8 @@ class ASMO():
                 show_process.update(1)
                 # Build surrogate model
                 self.surrogate.fit(XPop, YPop)
-                BestX_SM, _=SCE_UA(self.subProblem).run()
+                res=SCE_UA(self.subProblem).run()
+                BestX_SM=res['best_decs']
                 
                 TempY=self.evaluator(BestX_SM)
                 FE+=1

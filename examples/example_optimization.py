@@ -23,5 +23,28 @@ from UQPyL.problems import Sphere
 
 problem=Sphere(n_input=30, ub=100, lb=-100)
 ga=GA(problem, n_samples=50)
-temp=ga.run()
-a=1
+res=ga.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_decs'])
+print('FE:', res['FEs'])
+
+################2. SCE-UA - Single objective################
+print('################2. SCE-UA - Single objective################')
+from UQPyL.optimization import SCE_UA
+problem=Sphere(n_input=30, ub=100, lb=-100)
+sce=SCE_UA(problem)
+res=sce.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_decs'])
+print('FE:', res['FEs'])
+
+
+################3. ASMO - Single-objective################
+print('################3. ASMO - Single-objective################')
+from UQPyL.optimization import ASMO
+from UQPyL.surrogates import RBF
+from UQPyL.surrogates.rbf_kernels import Cubic
+problem=Sphere(n_input=30, ub=100, lb=-100)
+rbf=RBF(kernel=Cubic())
+asmo=ASMO(problem, rbf, NInit=50)
+res=asmo.run(maxFE=1000)
