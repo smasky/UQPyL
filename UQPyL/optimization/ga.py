@@ -6,7 +6,7 @@ class GA():
     '''
         Genetic Algorithm
         -------------------------------
-        Parameters:
+        Attributes:
             problem: Problem
                 the problem you want to solve, including the following attributes:
                 n_input: int
@@ -124,7 +124,7 @@ class GA():
                   
             iter+=1
         
-        Result['best_decs']=best_decs
+        Result['best_dec']=best_decs
         Result['best_obj']=best_objs
         Result['history_decs']=np.vstack(history_decs)
         Result['history_objs']=np.array(history_objs).reshape(-1,1)

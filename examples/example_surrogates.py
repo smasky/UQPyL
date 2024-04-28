@@ -44,7 +44,8 @@ Y_test=problem.evaluate(X_test, unit=True)
 print("#################full_connect_neural_network (FNN)#################")
 from UQPyL.surrogates import FNN
 #use 0-1 MinMaxScaler to normalize data
-fnn=FNN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)),hidden_layer_sizes=[16,32,64,32,16,8], 
+fnn=FNN(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)),
+        hidden_layer_sizes=[16,32,64,32,16,8], 
         activation_functions='relu', solver='adam', alpha=0.001)
 fnn.fit(X_train,Y_train)
 Y_predict=fnn.predict(X_test)
@@ -103,7 +104,7 @@ print(rank)
 
 ############4. linear regression (LR)#######
 print('############4. linear regression (LR)#######')
-from UQPyL.surrogates.linear_regression import LinearRegression
+from UQPyL.surrogates import LinearRegression
 #There three types: 'Origin', 'Lasso', 'Ridge'
 # Main difference is the loss function
 # Origin

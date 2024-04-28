@@ -5,50 +5,56 @@ from scipy.spatial.distance import cdist
 
 from ..DoE import LHS
 from ..problems import Problem
+
 from .nsga_ii import NSGAII
 
 lhs=LHS("center")
 class MOASMO():
-    def __init__(self, problem, surrogates,
-                 Pct=0.2, NInit=50, NPop=100, XInit=None, YInit=None,
+    def __init__(self, problem: Problem, surrogates,
+                 Pct: float=0.2, n_init: int=50, n_pop: int=100, 
+                 maxFEs: int=1000, maxIter: int=100,
+                 x_init: int=None, y_init: int=None,
                  advance_infilling=False):
-        self.evaluator=problem.evaluate
+        self.evaluate=problem.evaluate
         self.lb=problem.lb; self.ub=problem.ub
-        self.NInput=problem.dim
-        self.NOutput=problem.NOutput
+        self.n_input=problem.n_input
+        self.n_output=problem.n_output
         
+        self.maxFEs=maxFEs
+        self.maxIter=maxIter
         self.surrogates=surrogates
-        self.NInit=NInit
-        self.XInit=XInit
-        self.YInit=YInit
+        self.n_init=n_init
+        self.x_init=x_init
+        self.y_init=y_init
         self.Pct=Pct
-        self.NPop=NPop
+        self.n_pop=n_pop
         self.advance_infilling=advance_infilling
-        self.subProblem=Problem(self.surrogates.predict, self.NInput, self.NOutput, self.ub, self.lb)
+        self.subProblem=Problem(self.surrogates.predict, self.n_input, self.n_output, self.ub, self.lb)
         
-    def run(self, maxFE=1000):
+    def run(self):
         
-        show_process=tqdm(total=maxFE)
+        maxFEs=self.maxFEs
+        show_process=tqdm(total=maxFEs)
         pct=self.Pct  
-        NInit=self.NInit
-        N_Resample=int(np.floor(NInit*pct))
+        n_init=self.n_init
+        N_Resample=int(np.floor(n_init*pct))
         ub=self.ub; lb=self.lb
         
-        if self.XInit is None:
-            self.XInit=(ub-lb)*lhs(self.NInit, self.NInput)+lb
+        if self.x_init is None:
+            self.x_init=(ub-lb)*lhs(self.n_init, self.n_input)+lb
             
-        if self.YInit is None:
-            self.YInit=self.evaluator(self.XInit)
+        if self.y_init is None:
+            self.y_init=self.evaluate(self.x_init)
         
-        FE=NInit
-        XPop=self.XInit
-        YPop=self.YInit
+        FE=n_init
+        XPop=self.x_init
+        YPop=self.y_init
         show_process.update(FE)
-        while FE<maxFE:
+        while FE<maxFEs:
             #build surrogate
             self.surrogates.fit(XPop, YPop)
             
-            nsga_ii=NSGAII(self.subProblem, self.NPop)
+            nsga_ii=NSGAII(self.subProblem, self.n_pop)
             #main optimization
             BestX, BestY, FrontNo, CrowdDis=nsga_ii.run()
 
@@ -92,7 +98,7 @@ class MOASMO():
             FE+=BestX.shape[0]
             show_process.update(BestX.shape[0])
             
-            BestY=self.evaluator(BestX)
+            BestY=self.evaluate(BestX)
             XPop=np.vstack((XPop,BestX))
             YPop=np.vstack((YPop,BestY))
         

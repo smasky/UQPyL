@@ -1,100 +1,157 @@
 # Non-dominated Sorting Genetic Algorithm II (NSGA-II)
 import numpy as np
+import math
+from typing import Optional
 
 from ..DoE import LHS
-
-lhs=LHS('center')
+from ..problems import Problem
+lhs=LHS('classic')
 
 class NSGAII():
-    def __init__(self, problem, NInit, XInit=None, YInit=None,
-                 proC=1, disC=20, proM=1, disM=20):
+    '''
+    Non-dominated Sorting Genetic Algorithm II
+    ------------------------------------------------
+    Attributes:
+        problem: Problem
+            the problem you want to solve, including the following attributes:
+            n_input: int
+                the input number of the problem
+            ub: 1d-np.ndarray or float
+                the upper bound of the problem
+            lb: 1d-np.ndarray or float
+                the lower bound of the problem
+            evaluate: Callable
+                the function to evaluate the input
+        n_samples: int, default=50
+            the number of samples for each generation
+        x_init: np.ndarray, default=None
+            the initial input
+        y_init: np.ndarray, default=None
+            the initial output
+        proC: float, default=1
+            the probability of crossover
+        disC: float, default=20
+            the distribution index of crossover
+        proM: float, default=1
+            the probability of mutation
+        disM: float, default=20
+            the distribution index of mutation
+        maxFEs: int, default=50000
+            the maximum number of function evaluations
+        maxIters: int, default=1000
+            the maximum number of iterations
+    Methods:
+        run: run the NSGA-II
         
-        self.evaluator=problem.evaluate
-        self.NInput=problem.dim
+    References:
+        [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
+    '''
+    def __init__(self, problem: Problem, n_samples: int=50, x_init: Optional[np.ndarray]=None, y_init: Optional[np.ndarray]=None,
+                 proC=1, disC=20, proM=1, disM=20,
+                 maxFEs: int=50000, maxIters: int=1000
+                 ):
+        #problem setting
+        self.evaluate=problem.evaluate
+        self.n_input=problem.n_input
         self.lb=problem.lb;self.ub=problem.ub
-        self.NOutput=problem.NOutput
+        self.n_output=problem.n_output
         
-        self.NInit=NInit
-        self.XInit=XInit
-        self.YInit=YInit
-        ####GA setting
+        #initial setting
+        self.n_samples=n_samples
+        self.x_init=x_init
+        self.y_init=y_init
+        
+        #GA setting
         self.proC=proC
         self.disC=disC
         self.proM=proM
         self.disM=disM
-    
-    def run(self, maxFE=100000):
         
-        NInput=self.NInput
-        NInit=self.NInit
+        #termination setting
+        self.maxFEs=maxFEs
+        self.maxIters=maxIters
+    #-------------------------Public Functions------------------------#
+    def run(self):
+        
+        maxFEs=self.maxFEs
+        maxIters=self.maxIters
+        
+        n_input=self.n_input
         lb=self.lb
         ub=self.ub
-            
-        if self.XInit is None:
-            self.XInit=(ub-lb)*lhs(self.NInit, NInput)+lb
-        if self.YInit is None:
-            self.YInit=self.evaluator(self.XInit)
         
-        XPop=self.XInit
-        YPop=self.YInit
+        if self.x_init is None:
+            self.x_init=(ub-lb)*lhs(self.n_samples, n_input)+lb
+        if self.y_init is None:
+            self.y_init=self.evaluate(self.x_init)
+        
+        XPop=self.x_init
+        YPop=self.y_init
+        
         FE=YPop.shape[0]
+        Iter=0
         
-        _,_, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.NInit)
+        _, _, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
         
-        while FE<maxFE:
+        while FE<maxFEs and Iter<maxIters:
             
-            SelectIndex=self.TournamentSelection(2, NInit, FrontNo, -CrowdDis)
+            SelectIndex=self.TournamentSelection(2, self.n_samples, FrontNo, -CrowdDis)
             XOffSpring=self._operationGA(XPop[SelectIndex,:])
-            YOffSpring=self.evaluator(XOffSpring)
+            YOffSpring=self.evaluate(XOffSpring)
+            
+            XPop=np.vstack((XPop, XOffSpring))
+            YPop=np.vstack((YPop, YOffSpring))
+            
+            XPop, YPop, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
+            
+            #Update the termination criteria
             FE+=YOffSpring.shape[0]
+            Iter+=1
             
-            XPop=np.vstack((XPop,XOffSpring))
-            YPop=np.vstack((YPop,YOffSpring))
-            
-            XPop, YPop, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.NInit)
         idx=np.where(FrontNo==1.0)
+        
         return XPop[idx], YPop[idx], FrontNo[idx], CrowdDis[idx]
     
+    #-------------------------Private Functions--------------------------#
     def _operationGA(self,decs: np.ndarray):
         '''
             GA Operation
         '''
         n_samples=decs.shape[0]
-        Parent1=decs[:np.floor(n_samples/2).astype(int),:]
-        Parent2=decs[np.floor(n_samples/2).astype(int):np.floor(n_samples/2).astype(int)*2,:]
+        parent1=decs[:math.floor(n_samples/2),:]
+        parent2=decs[math.floor(n_samples/2):math.floor(n_samples/2)*2,:]
         
-        N,D=Parent1.shape
+        n, d = parent1.shape
+        beta = np.zeros_like(parent1)
+        mu = np.random.rand(n, d)
+
+        beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (self.disC + 1))
+        beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (self.disC + 1))
+        beta = beta * (-1) ** np.random.randint(0, 2, size=(n, d))
+        beta[np.random.rand(n, d) < 0.5] = 1
+        beta[np.repeat(np.random.rand(n, 1) > self.proC, d, axis=1)] = 1
+
+        offspring = np.concatenate(( (parent1 + parent2) / 2 + beta * (parent1 - parent2) / 2,
+                              (parent1 + parent2) / 2 - beta * (parent1 - parent2) / 2 ), axis=0)
+
+        lower = np.repeat(self.lb, 2 * n, axis=0)
+        upper = np.repeat(self.ub, 2 * n, axis=0)
+        site = np.random.rand(2 * n, d) < self.proM / d
+        mu = np.random.rand(2 * n, d)
         
-        beta=np.zeros((N,D))
-        mu=np.random.random((N,D))
+        temp = site & (mu <= 0.5)
+        offspring = np.clip(offspring, lower, upper)
+        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
+        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (np.power(2 * mu[temp] + t1, 1 / (self.disM + 1)) - 1)
         
-        beta[mu<=0.5]=np.power(2*mu[mu<=0.5],1/(self.disC+1))
-        beta[mu>0.5]=np.power(2-2*mu[mu>0.5],-1/(self.disC+1))
-        beta=beta*np.power(-1,np.random.randint(0,high=2,size=(N,D)))
-        beta[np.random.random((N,D))<0.5]=1
-        beta[np.repeat(np.random.random((N,1))>self.proC,D,axis=1)]=1
+        temp = site & (mu > 0.5)
+        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
+        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
         
-        off1=(Parent1+Parent2)/2+beta*(Parent1-Parent2)/2
-        off2=(Parent1+Parent2)/2-beta*(Parent1-Parent2)/2
-        Offspring=np.vstack((off1,off2))
-        
-        Lower=np.repeat(self.lb,2*N,axis=0)
-        Upper=np.repeat(self.ub,2*N,axis=0)
-        Site=np.random.random((2*N,D))<self.proM/D
-        mu=np.random.random((2*N,D)) 
-        temp=np.zeros((2*N,D),dtype=np.bool_)
-        temp[Site * mu<=0.5]=1
-        Offspring=np.minimum(np.maximum(Offspring,Lower),Upper)
-        
-        t1=(1-2*mu[temp])*np.power(1-(Offspring[temp]-Lower[temp])/(Upper[temp]-Lower[temp]),self.disM+1)
-        Offspring[temp]=Offspring[temp]+(Upper[temp]-Lower[temp])*(np.power(2*mu[temp]+t1,1/(self.disM+1))-1)
-        
-        temp=np.zeros((2*N,D),dtype=np.bool_);temp[Site * mu>0.5]=1
-        t2=2*(mu[temp]-0.5)*np.power(1-(Upper[temp]-Offspring[temp])/(Upper[temp]-Lower[temp]),self.disM+1)
-        
-        Offspring[temp]=Offspring[temp]+(Upper[temp]-Lower[temp])*(1-np.power(2*(1-mu[temp])+t2,1/(self.disM+1)))
-        
+        return offspring
+
         return Offspring
+        
     
     def TournamentSelection(self, K, N, fitness1, fitness2):
         """
@@ -115,20 +172,29 @@ class NSGAII():
         
         # Combine the fitness values and sort candidates based on fitness1, then fitness2
         # fitness_combined = np.hstack([fitness1, fitness2])
-        ranks = np.lexsort((fitness2.ravel(), fitness1.ravel()))
+        rankIndex = np.lexsort((fitness2.ravel(), fitness1.ravel())).reshape(-1,1)
+        rank=np.argsort(rankIndex,axis=0).ravel()
         
+        tourSelection=np.random.randint(0,high=fitness1.shape[0],size=(N,K))
+
+        winner_indices_in_tournament = np.argmin(rank[tourSelection], axis=1).ravel()
+        winners_original_order = tourSelection[np.arange(N), winner_indices_in_tournament]
+        # winner=np.min(rank[tourSelection,:].ravel().reshape(fitness1.shape[0],2),axis=1)
+        # winIndex=rankIndex[winner]
+        
+        return winners_original_order.ravel()
         # Conduct the tournament
-        selected_indices = []
-        for _ in range(N):
-            # Randomly pick K candidates
-            candidates_indices = np.random.choice(range(len(fitness1)), K, replace=False)
-            candidates_ranks = ranks[candidates_indices]
+        # selected_indices = []
+        # for _ in range(N):
+        #     # Randomly pick K candidates
+        #     candidates_indices = np.random.choice(range(len(fitness1)), K, replace=False)
+        #     candidates_ranks = ranks[candidates_indices]
             
-            # Select the candidate with the best (lowest) rank
-            best_candidate_index = candidates_indices[np.argmin(candidates_ranks)]
-            selected_indices.append(best_candidate_index)
+        #     # Select the candidate with the best (lowest) rank
+        #     best_candidate_index = candidates_indices[np.argmin(candidates_ranks)]
+        #     selected_indices.append(best_candidate_index)
         
-        return np.array(selected_indices)
+        # return np.array(selected_indices)
 
     def EnvironmentalSelection(self, XPop, YPop, N):
         # 非支配排序
@@ -154,35 +220,32 @@ class NSGAII():
         
         return NextXPop, NextYPop, NextFrontNo, NextCrowdDis
         
-    def CrowdingDistance(self, YPop, FrontNo):
-        N, M = YPop.shape
+    def CrowdingDistance(self, PopObj, FrontNo):
+        N, M = PopObj.shape
+
+        # 如果未提供FrontNo，默认所有解决方案属于同一前沿
+        if FrontNo is None:
+            FrontNo = np.ones(N)
+        
         CrowdDis = np.zeros(N)
-        Fronts = np.unique(FrontNo[FrontNo != np.inf])
+        Fronts = np.setdiff1d(np.unique(FrontNo), np.inf)
         
         for f in Fronts:
             Front = np.where(FrontNo == f)[0]
-            Fmax = np.max(YPop[Front, :], axis=0)
-            Fmin = np.min(YPop[Front, :], axis=0)
-            D = np.zeros((len(Front), M))
+            Fmax = np.max(PopObj[Front, :], axis=0)
+            Fmin = np.min(PopObj[Front, :], axis=0)
             
             for i in range(M):
-                order = np.argsort(YPop[Front, i])
-                sortedFront = Front[order]
-                D[:, i] = np.inf  # Initialize distances to infinity
+                # 对第i个目标排序，获取排序后的索引
+                Rank = np.argsort(PopObj[Front, i])
+                CrowdDis[Front[Rank[0]]] = np.inf
+                CrowdDis[Front[Rank[-1]]] = np.inf
                 
-                # Edge points always have infinite distance
-                D[0, i] = np.inf
-                D[-1, i] = np.inf
-                
-                # Compute crowding distance for each point
                 for j in range(1, len(Front) - 1):
-                    if (Fmax[i] - Fmin[i]) > 0:
-                        D[j, i] = (YPop[sortedFront[j + 1], i] - YPop[sortedFront[j - 1], i]) / (Fmax[i] - Fmin[i])
-            
-            # Sum up the distances for all objectives
-            CrowdDis[Front] = np.sum(D, axis=1)
-    
+                    CrowdDis[Front[Rank[j]]] += (PopObj[Front[Rank[j+1]], i] - PopObj[Front[Rank[j-1]], i]) / (Fmax[i] - Fmin[i])
+                        
         return CrowdDis
+        
 
     def NDSort(self, YPop, NSort):
         '''
