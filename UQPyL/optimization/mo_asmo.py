@@ -5,12 +5,53 @@ from scipy.spatial.distance import cdist
 
 from ..DoE import LHS
 from ..problems import Problem
-
+from ..surrogates import Mo_Surrogates
 from .nsga_ii import NSGAII
 
 lhs=LHS("center")
 class MOASMO():
-    def __init__(self, problem: Problem, surrogates,
+    '''
+    Multi-Objective Adaptive Surrogate Modelling-based Optimization
+    -----------------------------------------------------------------
+    Attributes:
+        problem: Problem
+        the problem you want to solve, including the following attributes:
+            n_input: int
+                the input number of the problem
+            ub: 1d-np.ndarray or float
+                the upper bound of the problem
+            lb: 1d-np.ndarray or float
+                the lower bound of the problem
+            evaluate: Callable
+                the function to evaluate the input
+        surrogates: Surrogates
+            the surrogates you want to use, you should implement Mo_Surrogate class
+        Pct: float, default=0.2
+            the percentage of the population to be selected for infilling
+        n_init: int, default=50
+            the number of initial samples
+        n_pop: int, default=100
+            the number of population for evolution optimizer
+        maxFEs: int, default=1000
+            the maximum number of function evaluations
+        maxIter: int, default=100
+            the maximum number of iterations
+        x_init: 2d-np.ndarray, default=None
+            the initial input samples
+        y_init: 2d-np.ndarray, default=None
+            the initial output samples
+        advance_infilling: bool, default=False
+            the switch to use advanced infilling or not
+            
+    Methods:
+        run()
+            run the optimization
+    
+    References:
+        [1] W. Gong et al., Multiobjective adaptive surrogate modeling-based optimization for parameter estimation of large, complex geophysical models, 
+                            Water Resour. Res., vol. 52, no. 3, pp. 1984–2008, Mar. 2016, doi: 10.1002/2015WR018230.
+    '''
+    def __init__(self, problem: Problem, surrogates: Mo_Surrogates,
                  Pct: float=0.2, n_init: int=50, n_pop: int=100, 
                  maxFEs: int=1000, maxIter: int=100,
                  x_init: int=None, y_init: int=None,

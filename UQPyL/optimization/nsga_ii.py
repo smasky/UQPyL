@@ -46,7 +46,8 @@ class NSGAII():
     References:
         [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
     '''
-    def __init__(self, problem: Problem, n_samples: int=50, x_init: Optional[np.ndarray]=None, y_init: Optional[np.ndarray]=None,
+    def __init__(self, problem: Problem, n_samples: int=50, 
+                 x_init: Optional[np.ndarray]=None, y_init: Optional[np.ndarray]=None,
                  proC=1, disC=20, proM=1, disM=20,
                  maxFEs: int=50000, maxIters: int=1000
                  ):

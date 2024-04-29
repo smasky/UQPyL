@@ -53,31 +53,48 @@ import numpy as np
 # print('FE:', res['FEs'])
 
 #############4. NSGA-II - Multi-objective#################
-print('#############4. NSGA-II - Multi-objective#################')
-from UQPyL.optimization import NSGAII
-from UQPyL.problems import ZDT1
-problem=ZDT1(n_input=30)
-optimum=problem.get_optimum(100)
-nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
-res=nsga.run()
-import matplotlib.pyplot as plt
-y=res[1]
+# print('#############4. NSGA-II - Multi-objective#################')
+# from UQPyL.optimization import NSGAII
+# from UQPyL.problems import ZDT3
+# problem=ZDT3(n_input=30)
+# optimum=problem.get_optimum(100)
+# nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
+# res=nsga.run()
+# import matplotlib.pyplot as plt
+# y=res[1]
 # plt.scatter(y[:,0], y[:,1])
 # plt.show()
 
 #############5. MO_ASMO - Multi-objective#################
 from UQPyL.optimization import MOASMO
 from UQPyL.problems import ZDT1
-from UQPyL.surrogates import RBF
-from UQPyL.surrogates import MO_Surrogates
+from UQPyL.surrogates import RBF, KRG
+from UQPyL.surrogates import Mo_Surrogates
 from UQPyL.surrogates.rbf_kernels import Cubic
+from UQPyL.surrogates.krg_kernels import Guass_Kernel
+import matplotlib.pyplot as plt
 
 rbf1=RBF(kernel=Cubic())
 rbf2=RBF(kernel=Cubic())
-mo_surr=MO_Surrogates(2,[rbf1, rbf2])
+guass1=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+guass2=Guass_Kernel(theta=1e-3, theta_lb=1e-5, theta_ub=1, heterogeneous=True)
+krg1=KRG(kernel=guass1)
+krg2=KRG(kernel=guass2)
+mo_surr=Mo_Surrogates(2,[krg1, krg2])
 problem=ZDT1(n_input=30)
-mo_amso=MOASMO(problem=problem, surrogates=mo_surr, maxFEs=300)
+mo_amso=MOASMO(problem=problem, surrogates=mo_surr, maxFEs=300, advance_infilling=False)
 res=mo_amso.run()
 y=res[1]
-plt.scatter(y[:,0], y[:,1])
+fig, axs = plt.subplots(1, 2) 
+axs[0].scatter(y[:,0], y[:,1], color='b')
+axs[0].set_title('Advanced')
+rbf1=RBF(kernel=Cubic())
+rbf2=RBF(kernel=Cubic())
+mo_surr=Mo_Surrogates(2,[rbf1, rbf2])
+problem=ZDT1(n_input=30)
+mo_amso=MOASMO(problem=problem, surrogates=mo_surr, maxFEs=300, advance_infilling=False)
+res=mo_amso.run()
+yy=res[1]
+axs[1].scatter(yy[:,0], yy[:,1], color='r')
+axs[1].set_title('Origin')
 plt.show()
