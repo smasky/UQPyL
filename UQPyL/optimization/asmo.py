@@ -25,7 +25,7 @@ class ASMO():
                     the function to evaluate the input
             surrogate: Surrogate
                 the surrogate model you want to use
-            NInit: int, default=50
+            n_init: int, default=50
                 Number of initial samples for surrogate modelling
     '''
     def __init__(self, problem: Problem, surrogate: Surrogate, 
@@ -97,6 +97,7 @@ class ASMO():
             BestX_SM=res['best_decs']
             
             TempY=self.evaluate(BestX_SM)
+            
             fe+=1
             XPop=np.vstack((XPop,BestX_SM))
             YPop=np.vstack((YPop,TempY))

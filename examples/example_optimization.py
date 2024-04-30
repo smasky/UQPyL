@@ -4,7 +4,8 @@
     - 2. SCE-UA - Single objective
     - 3. ASMO - Single-objective
     - 4. NSGA-II - Multi-objective
-    - 5. MO_ASMO - Multi-objective
+    - 5. MOEAD/D - Multi-objective
+    - 6. MO_ASMO - Multi-objective
 '''
 #tmp
 import sys
@@ -61,9 +62,22 @@ import numpy as np
 # nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
 # res=nsga.run()
 # import matplotlib.pyplot as plt
-# y=res[1]
+# y=res['pareto_y']
 # plt.scatter(y[:,0], y[:,1])
 # plt.show()
+
+#############5. MOEAD - Multi-objective#################
+print('#############5. MOEAD - Multi-objective#################')
+from UQPyL.optimization import MOEA_D
+from UQPyL.problems import ZDT6
+problem=ZDT6(n_input=30)
+optimum=problem.get_PF()
+moead=MOEA_D(problem, aggregation_type='TCH',maxFEs=50000, maxIters=1000)
+_, res=moead.run()
+import matplotlib.pyplot as plt
+plt.scatter(res[:,0], res[:,1])
+plt.plot(optimum[:,0], optimum[:,1], 'r')
+plt.show()
 
 #############5. MO_ASMO - Multi-objective#################
 from UQPyL.optimization import MOASMO

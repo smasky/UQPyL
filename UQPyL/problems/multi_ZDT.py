@@ -188,7 +188,7 @@ class ZDT6(ProblemABC):
         min=0.280775
         R=np.zeros((N,self.n_output))
         R[:,0]=np.linspace(min,1,N)
-        R[:,1]=1-np.sqrt(R[:,0])
+        R[:,1]=1-R[:,0]**2
         
         return R
     

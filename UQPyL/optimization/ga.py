@@ -52,19 +52,22 @@ class GA():
                  maxFEs: int=50000,
                  maxTolerateTimes: int=1000,
                  tolerate=1e-6):
-        
+        #problem setting
+        self.evaluate=problem.evaluate
         self.n_input=problem.n_input
         self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
-        self.evaluate=problem.evaluate
         
+        #algorithm setting
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
-        self.tolerate=1e-6
-        self.maxTolerateTimes=maxTolerateTimes
+        self.tolerate=tolerate
         self.n_samples=n_samples
+        
+        #termination setting
+        self.maxTolerateTimes=maxTolerateTimes
         self.maxIterTimes=maxIterTimes
         self.maxFEs=maxFEs
-        self.tolerate=tolerate
+        
     #--------------------------Public Functions--------------------------#
     def run(self) -> dict:
         '''
@@ -77,34 +80,34 @@ class GA():
                         the decision variables of the best solution
                     best_objs: 2d-np.ndarray
                         the objective values of the best solution
-                    history_decs: 2d-np.ndarray
+                    history_best_decs: 2d-np.ndarray
                         the best decision variables of each iteration
-                    history_objs: 2d-np.ndarray
+                    history_best_objs: 2d-np.ndarray
                         the best objective values of each iteration
-                    iter: int
+                    iters: int
                         the iteration times of the Genetic Algorithm
-                    fe: int
+                    FEs: int
                         the function evaluations of the Genetic Algorithm
         '''
         best_objs=np.inf
         best_decs=None
         time=1
         iter=0
-        fe=0
+        FEs=0
         
         decs=np.random.random((self.n_samples,self.n_input))*(self.ub-self.lb)+self.lb
         objs=self.evaluate(decs)
-        fe+=objs.shape[0]
+        FEs+=objs.shape[0]
         
         history_decs=[]
         history_objs=[]
         Result={}
-        while iter<self.maxIterTimes and fe<self.maxFEs and time<=self.maxTolerateTimes:
+        while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
             
             matingPool=self._tournamentSelection(decs,objs,2)
             matingDecs=self._operationGA(matingPool)
             matingObjs=self.evaluate(matingDecs)
-            fe+=matingObjs.shape[0]
+            FEs+=matingObjs.shape[0]
             
             tempObjs=np.vstack((objs,matingObjs))
             tempDecs=np.vstack((decs,matingDecs))
@@ -126,10 +129,10 @@ class GA():
         
         Result['best_dec']=best_decs
         Result['best_obj']=best_objs
-        Result['history_decs']=np.vstack(history_decs)
-        Result['history_objs']=np.array(history_objs).reshape(-1,1)
+        Result['history_best_decs']=np.vstack(history_decs)
+        Result['history_best_objs']=np.array(history_objs).reshape(-1,1)
         Result['iters']=iter
-        Result['FEs']=fe
+        Result['FEs']=FEs
         
         return Result
     #--------------------Private Functions--------------------# 
@@ -181,9 +184,4 @@ class GA():
         t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
         offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
         
-        return offspring
-    
-    
-            
-
-        
+        return offspring        

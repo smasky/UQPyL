@@ -5,6 +5,7 @@ from typing import Optional
 
 from ..DoE import LHS
 from ..problems import Problem
+
 lhs=LHS('classic')
 
 class NSGAII():
@@ -71,6 +72,7 @@ class NSGAII():
         #termination setting
         self.maxFEs=maxFEs
         self.maxIters=maxIters
+        
     #-------------------------Public Functions------------------------#
     def run(self):
         
@@ -94,6 +96,9 @@ class NSGAII():
         
         _, _, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
         
+        history_pareto_x=[]
+        history_pareto_y=[]
+        
         while FE<maxFEs and Iter<maxIters:
             
             SelectIndex=self.TournamentSelection(2, self.n_samples, FrontNo, -CrowdDis)
@@ -105,13 +110,25 @@ class NSGAII():
             
             XPop, YPop, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
             
+            idx=np.where(FrontNo==1.0)
+            pareto_x=XPop[idx]
+            pareto_y=YPop[idx]
+            history_pareto_x.append(pareto_x)
+            history_pareto_y.append(pareto_y)
+            
             #Update the termination criteria
             FE+=YOffSpring.shape[0]
             Iter+=1
-            
-        idx=np.where(FrontNo==1.0)
         
-        return XPop[idx], YPop[idx], FrontNo[idx], CrowdDis[idx]
+        idx=np.where(FrontNo==1.0)
+        Result={}
+        Result['pareto_x']=XPop[idx]
+        Result['pareto_y']=YPop[idx]
+        Result['crowdDis']=CrowdDis[idx]
+        Result['history_pareto_x']=history_pareto_x
+        Result['history_pareto_y']=history_pareto_y
+        
+        return Result
     
     #-------------------------Private Functions--------------------------#
     def _operationGA(self,decs: np.ndarray):
@@ -150,9 +167,6 @@ class NSGAII():
         offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
         
         return offspring
-
-        return Offspring
-        
     
     def TournamentSelection(self, K, N, fitness1, fitness2):
         """

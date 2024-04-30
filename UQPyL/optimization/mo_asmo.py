@@ -56,13 +56,13 @@ class MOASMO():
                  maxFEs: int=1000, maxIter: int=100,
                  x_init: int=None, y_init: int=None,
                  advance_infilling=False):
+        #problem setting
         self.evaluate=problem.evaluate
         self.lb=problem.lb; self.ub=problem.ub
         self.n_input=problem.n_input
         self.n_output=problem.n_output
         
-        self.maxFEs=maxFEs
-        self.maxIter=maxIter
+        #algorithm setting
         self.surrogates=surrogates
         self.n_init=n_init
         self.x_init=x_init
@@ -72,13 +72,16 @@ class MOASMO():
         self.advance_infilling=advance_infilling
         self.subProblem=Problem(self.surrogates.predict, self.n_input, self.n_output, self.ub, self.lb)
         
+        #termination setting
+        self.maxFEs=maxFEs
+        self.maxIter=maxIter
     def run(self):
         
         maxFEs=self.maxFEs
         show_process=tqdm(total=maxFEs)
         pct=self.Pct  
         n_init=self.n_init
-        N_Resample=int(np.floor(n_init*pct))
+        n_infilling=int(np.floor(n_init*pct))
         ub=self.ub; lb=self.lb
         
         if self.x_init is None:
@@ -97,17 +100,20 @@ class MOASMO():
             
             nsga_ii=NSGAII(self.subProblem, self.n_pop)
             #main optimization
-            BestX, BestY, FrontNo, CrowdDis=nsga_ii.run()
-
+            Result=nsga_ii.run()
+            BestX=Result['pareto_X']
+            BestY=Result['pareto_Y']
+            CrowdDis=Result['crowdDis']
+            
             if self.advance_infilling==False:
                 #Origin version
-                if BestY.shape[0]>N_Resample:
-                    idx=CrowdDis.argsort()[::-1][:N_Resample]
+                if BestY.shape[0]>n_infilling:
+                    idx=CrowdDis.argsort()[::-1][:n_infilling]
                     BestX=np.copy(BestX[idx])
                     BestY=np.copy(BestY[idx])
             else:
                 #Advanced version Using crowding-based strategy
-                if BestY.shape[0]>N_Resample:
+                if BestY.shape[0]>n_infilling:
                     
                     Known_FrontNo, _ =nsga_ii.NDSort(YPop, YPop.shape[0])
                     Unknown_FrontNo, _=nsga_ii.NDSort(BestY, BestY.shape[0])
@@ -117,7 +123,7 @@ class MOASMO():
 
                     added_points_Y=[]
                     added_points_X=[]
-                    for _ in range(N_Resample):
+                    for _ in range(n_infilling):
                         
                         if len(added_points_Y)==0:
                             distances = cdist(Unknown_best_Y, Known_best_Y)

@@ -1,6 +1,9 @@
 import numpy as np
 
 class Binary_GA():
+    '''
+        Binary_GA for Delta Test
+    '''
     def __init__(self, evaluate, n_features, population_size=50, n_generations=100, crossover_rate=0.7, mutation_rate=0.01):
         self.population_size = population_size
         self.n_generations = n_generations

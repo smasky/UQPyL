@@ -47,23 +47,25 @@ class SCE_UA():
           pcento: float = 0.1, peps: float= 0.001, 
           maxFE: int= 50000, maxIter: int= 1000):
         
+        #problem setting
         self.func=problem.evaluate
         self.NInput=problem.n_input
         self.lb=problem.lb
         self.ub=problem.ub
         
-        self.maxFE=maxFE
-        self.maxIter=maxIter
-        
+        #algorithm setting
         self.kstop=kstop
         self.pcento=pcento
         self.peps=peps
-        
         if ngs==0:
             self.ngs=problem.n_input
         else:
             self.ngs=ngs
-            
+        
+        #termination setting
+        self.maxFE=maxFE
+        self.maxIter=maxIter
+        
     def run(self):
         '''
             Run the SCE-UA optimization algorithm
@@ -165,8 +167,8 @@ class SCE_UA():
         Result={}
         Result['best_dec']=BestX
         Result['best_obj']=BestY
-        Result['history_decs']=List_BestX
-        Result['history_objs']=List_BestY
+        Result['history_decs']=np.vstack(List_BestX)
+        Result['history_objs']=np.array(List_BestY).reshape(-1,1)
         Result['FEs']=FE
         Result['iters']=nloop
         
