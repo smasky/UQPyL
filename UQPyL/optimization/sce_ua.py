@@ -6,7 +6,7 @@ lhs=LHS('center_maximin')
 
 class SCE_UA():
     '''
-        Shuffled Complex Evolution (SCE-UA) method
+        Shuffled Complex Evolution (SCE-UA) method <Single>
         ----------------------------------------------
         Attributes:
             problem: Problem

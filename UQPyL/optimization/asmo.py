@@ -10,7 +10,7 @@ from ..surrogates import Surrogate
 lhs=LHS('classic')
 class ASMO():
     '''
-        Adaptive Surrogate Modelling-based Optimization
+        Adaptive Surrogate Modelling-based Optimization <Single> <Surrogate>
         ----------------------------------------------
         Attributes:
             problem: Problem

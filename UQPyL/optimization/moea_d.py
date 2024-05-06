@@ -12,7 +12,7 @@ lhs=LHS('classic')
 
 class MOEA_D():
     '''
-        Multi_objective Evolutionary Algorithm based on Decomposition
+        Multi_objective Evolutionary Algorithm based on Decomposition <Multi-objective>
         -------------------------------------------
         Parameters:
             problem: Problem

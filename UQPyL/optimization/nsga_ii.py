@@ -10,7 +10,7 @@ lhs=LHS('classic')
 
 class NSGAII():
     '''
-    Non-dominated Sorting Genetic Algorithm II
+    Non-dominated Sorting Genetic Algorithm II <Multi-objective>
     ------------------------------------------------
     Attributes:
         problem: Problem

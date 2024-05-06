@@ -11,7 +11,7 @@ from .nsga_ii import NSGAII
 lhs=LHS("center")
 class MOASMO():
     '''
-    Multi-Objective Adaptive Surrogate Modelling-based Optimization
+    Multi-Objective Adaptive Surrogate Modelling-based Optimization <Multi-objective> <Surrogate>
     -----------------------------------------------------------------
     Attributes:
         problem: Problem

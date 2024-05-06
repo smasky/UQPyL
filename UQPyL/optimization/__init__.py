@@ -7,6 +7,7 @@ from .nsga_ii import NSGAII
 from .moea_d import MOEA_D  
 from .mo_asmo import MOASMO
 from ._binary_ga import Binary_GA
+from .pso import PSO
 __all__=[
     'GA',
     'Boxmin',
@@ -16,7 +17,8 @@ __all__=[
     'NSGAII',
     'MOASMO',
     'MOEA_D',
-    'Binary_GA'
+    'Binary_GA',
+    'PSO'
          ]
 
 MP_List=['Boxmin']

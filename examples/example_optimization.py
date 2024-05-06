@@ -18,29 +18,41 @@ os.chdir('./examples')
 import numpy as np
 
 ################1. Genetic Algorithm (GA) - Single objective################
-# print('################1. Genetic Algorithm (GA) - Single objective################')
-# from UQPyL.optimization import GA
-# from UQPyL.problems import Sphere
+print('################1. Genetic Algorithm (GA) - Single objective################')
+from UQPyL.optimization import GA
+from UQPyL.problems import Sphere
 
-# problem=Sphere(n_input=30, ub=100, lb=-100)
-# ga=GA(problem, n_samples=50)
-# res=ga.run()
-# print('Best objective:', res['best_obj'])
-# print('Best decisions:', res['best_dec'])
-# print('FE:', res['FEs'])
+problem=Sphere(n_input=30, ub=100, lb=-100)
+ga=GA(problem, n_samples=50)
+res=ga.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_dec'])
+print('FE:', res['FEs'])
 
 ################2. SCE-UA - Single objective################
-# print('################2. SCE-UA - Single objective################')
-# from UQPyL.optimization import SCE_UA
-# problem=Sphere(n_input=30, ub=100, lb=-100)
-# sce=SCE_UA(problem)
-# res=sce.run()
-# print('Best objective:', res['best_obj'])
-# print('Best decisions:', res['best_dec'])
-# print('FE:', res['FEs'])
+print('################2. SCE-UA - Single objective################')
+from UQPyL.optimization import SCE_UA
+problem=Sphere(n_input=30, ub=100, lb=-100)
+sce=SCE_UA(problem)
+res=sce.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_dec'])
+print('FE:', res['FEs'])
+
+###############3. PSO - Single objective################
+print('###############3. PSO - Single objective################')
+from UQPyL.optimization import PSO
+from UQPyL.problems import Sphere
+problem=Sphere(n_input=30, ub=100, lb=-100)
+pso=PSO(problem, n_sample=50, w=0.5, c1=1.5, c2=1.5)
+res=pso.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_decs'])
+print('FE:', res['FEs'])
 
 
-################3. ASMO - Single-objective################
+
+################3. ASMO - Single-objective - Surrogate-assisted################
 # print('################3. ASMO - Single-objective################')
 # from UQPyL.optimization import ASMO
 # from UQPyL.surrogates import RBF
@@ -72,14 +84,14 @@ from UQPyL.optimization import MOEA_D
 from UQPyL.problems import ZDT6
 problem=ZDT6(n_input=30)
 optimum=problem.get_PF()
-moead=MOEA_D(problem, aggregation_type='TCH',maxFEs=50000, maxIters=1000)
+moead=MOEA_D(problem, aggregation_type='TCH_M',maxFEs=50000, maxIters=1000)
 _, res=moead.run()
 import matplotlib.pyplot as plt
 plt.scatter(res[:,0], res[:,1])
 plt.plot(optimum[:,0], optimum[:,1], 'r')
 plt.show()
 
-#############5. MO_ASMO - Multi-objective#################
+#############5. MO_ASMO - Multi-objective - Surrogate-assisted#################
 from UQPyL.optimization import MOASMO
 from UQPyL.problems import ZDT1
 from UQPyL.surrogates import RBF, KRG

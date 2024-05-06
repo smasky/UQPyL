@@ -1,10 +1,11 @@
 import numpy as np
 import math
-from typing import Callable
 
+from ..problems import Problem
+from ..DoE import LHS
 class GA():
     '''
-        Genetic Algorithm
+        Genetic Algorithm <Single>
         -------------------------------
         Attributes:
             problem: Problem
@@ -95,7 +96,8 @@ class GA():
         iter=0
         FEs=0
         
-        decs=np.random.random((self.n_samples,self.n_input))*(self.ub-self.lb)+self.lb
+        lhs=LHS('classic')
+        decs=(lhs(self.n_samples,self.n_input))*(self.ub-self.lb)+self.lb
         objs=self.evaluate(decs)
         FEs+=objs.shape[0]
         
