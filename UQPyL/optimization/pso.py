@@ -96,8 +96,8 @@ class PSO():
         objs=self.evaluate(decs)
         FEs+=objs.shape[0]
         
-        history_decs=[]
-        history_objs=[]
+        history_best_decs={}
+        history_best_objs={}
         Result={}
         
         P_best_decs=np.copy(decs)
@@ -120,16 +120,16 @@ class PSO():
             G_best_dec=np.copy(P_best_decs[ind])      
             G_best_obj=np.copy(P_best_objs[ind])
             
-            history_decs.append(G_best_dec)
-            history_objs.append(G_best_obj)
-            
             iter+=1
             FEs+=objs.shape[0]
-        
+            
+            history_best_decs[FEs]=G_best_dec
+            history_best_objs[FEs]=G_best_obj
+            
         Result['best_decs']=G_best_dec
         Result['best_obj']=G_best_obj[0]
-        Result['history_best_decs']=np.vstack(history_decs)
-        Result['history_best_objs']=np.array(history_objs).reshape(-1,1)
+        Result['history_best_decs']=history_best_decs
+        Result['history_best_objs']=history_best_objs
         Result['iters']=iter
         Result['FEs']=FEs
         

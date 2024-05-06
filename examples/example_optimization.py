@@ -2,10 +2,11 @@
     Example of using optimization algorithms:
     - 1. Genetic Algorithm (GA) - Single objective
     - 2. SCE-UA - Single objective
-    - 3. ASMO - Single-objective
-    - 4. NSGA-II - Multi-objective
-    - 5. MOEAD/D - Multi-objective
-    - 6. MO_ASMO - Multi-objective
+    - 3. PSO - Single objective
+    - 4. ASMO - Single-objective - Surrogate
+    - 5. NSGA-II - Multi-objective
+    - 6. MOEAD/D - Multi-objective
+    - 7. MO_ASMO - Multi-objective - Surrogate
 '''
 #tmp
 import sys
@@ -28,6 +29,13 @@ res=ga.run()
 print('Best objective:', res['best_obj'])
 print('Best decisions:', res['best_dec'])
 print('FE:', res['FEs'])
+ 
+import matplotlib.pyplot as plt
+FEs_objs=res['history_best_objs']
+FEs=list(FEs_objs.keys())
+objs=list(FEs_objs.values())
+plt.plot(FEs, np.log10(objs))
+
 
 ################2. SCE-UA - Single objective################
 print('################2. SCE-UA - Single objective################')
@@ -38,6 +46,12 @@ res=sce.run()
 print('Best objective:', res['best_obj'])
 print('Best decisions:', res['best_dec'])
 print('FE:', res['FEs'])
+
+objs=res['history_best_objs']
+FEs_objs=res['history_best_objs']
+FEs=list(FEs_objs.keys())
+objs=list(FEs_objs.values())
+plt.plot(FEs, np.log10(objs))
 
 ###############3. PSO - Single objective################
 print('###############3. PSO - Single objective################')
@@ -50,8 +64,16 @@ print('Best objective:', res['best_obj'])
 print('Best decisions:', res['best_decs'])
 print('FE:', res['FEs'])
 
+objs=res['history_best_objs']
+FEs_objs=res['history_best_objs']
+FEs=list(FEs_objs.keys())
+objs=list(FEs_objs.values())
+plt.plot(FEs, np.log10(objs))
 
-
+plt.title('Best Objective Over Iterations')
+plt.xlabel('Function Evbaluations')
+plt.ylabel('Best Objective (log10)')
+plt.show()
 ################3. ASMO - Single-objective - Surrogate-assisted################
 # print('################3. ASMO - Single-objective################')
 # from UQPyL.optimization import ASMO

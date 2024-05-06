@@ -48,7 +48,7 @@ class SCE_UA():
           maxFE: int= 50000, maxIter: int= 1000):
         
         #problem setting
-        self.func=problem.evaluate
+        self.evaluate=problem.evaluate
         self.NInput=problem.n_input
         self.lb=problem.lb
         self.ub=problem.ub
@@ -80,8 +80,8 @@ class SCE_UA():
         
         #Initialize 
         XPop=BD*lhs(npt, self.NInput)+self.lb
-        YPop=self.func(XPop)
-        FE=npt
+        YPop=self.evaluate(XPop)
+        FEs=npt
         #Sort the population in order of increasing function values
         idx=np.argsort(YPop, axis=0)
         YPop=YPop[idx[:,0]]
@@ -92,9 +92,12 @@ class SCE_UA():
         BestY=np.copy(YPop[0, 0])
         # WorstX=np.copy(XPop[-1, :])
         # WorstY=np.copy(YPop[0, 0])
-        List_BestX=[BestX]
-        List_BestY=[BestY]
-        List_FE=[FE]
+        history_best_decs={}
+        history_best_objs={}
+        
+        history_best_decs[FEs]=BestX
+        history_best_objs[FEs]=BestY
+        
         #Setup Setting
         gnrng = np.exp(np.mean(np.log((np.max(XPop,axis=0)-np.min(XPop,axis=0))/BD)))
         nloop=0
@@ -104,7 +107,7 @@ class SCE_UA():
         cf=np.zeros((npg,1))
         ngs=self.ngs
         
-        while FE<self.maxFE and gnrng>self.peps and criter_change>self.pcento and nloop<self.maxIter:
+        while FEs<self.maxFE and gnrng>self.peps and criter_change>self.pcento and nloop<self.maxIter:
             nloop+=1
             
             for igs in range(ngs):
@@ -124,7 +127,7 @@ class SCE_UA():
                     s = np.copy(cx[lcs,:])
                     sf = np.copy(cf[lcs, :])
                     
-                    snew, fnew, FE = self.cceua(self.func, s, sf, self.lb, self.ub, FE) #parallel TODO
+                    snew, fnew, FEs = self.cceua(self.evaluate, s, sf, self.lb, self.ub, FEs) #parallel TODO
                     
                     # Replace the worst point in Simplex with the new point:
                     s[nps-1,:] = snew
@@ -153,9 +156,8 @@ class SCE_UA():
             BestX=np.copy(XPop[0, :])
             BestY=np.copy(YPop[0, 0])
 
-            List_BestX.append(BestX)
-            List_BestY.append(BestY)
-            List_FE.append(FE)
+            history_best_decs[FEs]=BestX
+            history_best_objs[FEs]=BestY
             
             gnrng = np.exp(np.mean(np.log((np.max(XPop,axis=0)-np.min(XPop,axis=0))/BD)))
             
@@ -167,9 +169,9 @@ class SCE_UA():
         Result={}
         Result['best_dec']=BestX
         Result['best_obj']=BestY
-        Result['history_decs']=np.vstack(List_BestX)
-        Result['history_objs']=np.array(List_BestY).reshape(-1,1)
-        Result['FEs']=FE
+        Result['history_best_decs']=history_best_decs
+        Result['history_best_objs']=history_best_objs
+        Result['FEs']=FEs
         Result['iters']=nloop
         
         return Result

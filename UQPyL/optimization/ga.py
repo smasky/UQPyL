@@ -101,15 +101,15 @@ class GA():
         objs=self.evaluate(decs)
         FEs+=objs.shape[0]
         
-        history_decs=[]
-        history_objs=[]
+        history_decs={}
+        history_objs={}
         Result={}
         while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
             
             matingPool=self._tournamentSelection(decs,objs,2)
             matingDecs=self._operationGA(matingPool)
             matingObjs=self.evaluate(matingDecs)
-            FEs+=matingObjs.shape[0]
+            
             
             tempObjs=np.vstack((objs,matingObjs))
             tempDecs=np.vstack((decs,matingDecs))
@@ -124,15 +124,16 @@ class GA():
             else:
                 time+=1
             
-            history_decs.append(best_decs)
-            history_objs.append(best_objs)
-                  
             iter+=1
-        
+            FEs+=matingObjs.shape[0]
+            
+            history_decs[FEs]=best_decs
+            history_objs[FEs]=best_objs
+                  
         Result['best_dec']=best_decs
         Result['best_obj']=best_objs
-        Result['history_best_decs']=np.vstack(history_decs)
-        Result['history_best_objs']=np.array(history_objs).reshape(-1,1)
+        Result['history_best_decs']=history_decs
+        Result['history_best_objs']=history_objs
         Result['iters']=iter
         Result['FEs']=FEs
         
