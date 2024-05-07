@@ -3,9 +3,9 @@ from typing import Union
 
 class Gp_Kernel():
     def __init__(self):
-        self._theta=None
-        self._theta_ub=None
-        self._theta_lb=None
+        self._theta={}
+        self._theta_ub={}
+        self._theta_lb={}
     
     def __check_array__(self, value: Union[float,np.ndarray]):
         
