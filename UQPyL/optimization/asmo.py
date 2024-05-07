@@ -94,7 +94,7 @@ class ASMO():
         else:
             self.surrogate.fit(XPop, YPop)
             res=SCE_UA(self.subProblem).run()
-            BestX_SM=res['best_decs']
+            BestX_SM=res['best_dec']
             
             TempY=self.evaluate(BestX_SM)
             

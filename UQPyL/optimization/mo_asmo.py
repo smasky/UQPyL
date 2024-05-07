@@ -101,8 +101,8 @@ class MOASMO():
             nsga_ii=NSGAII(self.subProblem, self.n_pop)
             #main optimization
             Result=nsga_ii.run()
-            BestX=Result['pareto_X']
-            BestY=Result['pareto_Y']
+            BestX=Result['pareto_x']
+            BestY=Result['pareto_y']
             CrowdDis=Result['crowdDis']
             
             if self.advance_infilling==False:
