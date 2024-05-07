@@ -71,6 +71,8 @@ class ASMO():
         idx=np.argsort(YPop, axis=0)
         BestY=YPop[idx[0,0],0]
         BestX=XPop[idx[0,0],:]
+        history_best_decs={}
+        history_best_objs={}
         # history_BestY=[]; history_BestX=[]
         # history_BestX.append(BestX)
         # history_BestY.append(BestY)
@@ -105,8 +107,10 @@ class ASMO():
             if TempY[0,0]<BestY:
                 BestY=np.copy(TempY)
                 BestX=np.copy(BestX_SM)
+                history_best_decs[fe]=BestX
+                history_best_objs[fe]=BestY
         
-        Result={'best_dec':BestX, 'best_obj':BestY, 'FE':fe}
+        Result={'best_dec':BestX, 'best_obj':BestY, 'history_best_decs': history_best_decs, 'history_best_objs':history_best_objs ,'FE':fe}
         
         return Result
             
