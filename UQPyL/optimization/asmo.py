@@ -3,6 +3,7 @@ from tqdm import tqdm
 from typing import Optional
 
 from .sce_ua import SCE_UA
+from .pso import PSO
 from ..DoE import LHS
 from ..problems import Problem
 from ..surrogates import Surrogate
@@ -46,11 +47,11 @@ class ASMO():
         #construct optimization problem to combine surrogate and algorithm
         self.subProblem=Problem(self.surrogate.predict, self.n_input, 1, self.ub, self.lb)
         
-    def run(self,maxFE=1000, Tolerate=0.001, maxTolerateTime=50, oneStep=False):
+    def run(self, oneStep=False):
         '''
         main procedure
         ''' 
-        show_process=tqdm(total=maxFE)
+        show_process=tqdm(total=self.maxFE)
         FE=0
         TT=0
         n_input=self.n_input
@@ -65,8 +66,8 @@ class ASMO():
         XPop=self.x_init
         YPop=self.y_init
         
-        fe=YPop.shape[0]
-        show_process.update(fe)
+        FE=YPop.shape[0]
+        show_process.update(FE)
         ###
         idx=np.argsort(YPop, axis=0)
         BestY=YPop[idx[0,0],0]
@@ -78,11 +79,11 @@ class ASMO():
         # history_BestY.append(BestY)
         
         if (oneStep==False):
-            while fe<self.maxFE and TT<self.maxTolerateTime:
+            while FE<self.maxFE and TT<self.maxTolerateTime:
                 show_process.update(1)
                 # Build surrogate model
                 self.surrogate.fit(XPop, YPop)
-                res=SCE_UA(self.subProblem).run()
+                res=PSO(self.subProblem).run()
                 BestX_SM=res['best_dec']
                 
                 TempY=self.evaluate(BestX_SM)
@@ -91,8 +92,10 @@ class ASMO():
                 YPop=np.vstack((YPop,TempY))
                 
                 if TempY[0,0]<BestY:
-                    BestY=np.copy(TempY)
+                    BestY=np.copy(TempY[0,0])
                     BestX=np.copy(BestX_SM)
+                    history_best_decs[FE]=BestX
+                    history_best_objs[FE]=BestY
         else:
             self.surrogate.fit(XPop, YPop)
             res=SCE_UA(self.subProblem).run()
@@ -100,17 +103,17 @@ class ASMO():
             
             TempY=self.evaluate(BestX_SM)
             
-            fe+=1
+            FE+=1
             XPop=np.vstack((XPop,BestX_SM))
             YPop=np.vstack((YPop,TempY))
             
             if TempY[0,0]<BestY:
                 BestY=np.copy(TempY)
                 BestX=np.copy(BestX_SM)
-                history_best_decs[fe]=BestX
-                history_best_objs[fe]=BestY
+                history_best_decs[FE]=BestX
+                history_best_objs[FE]=BestY
         
-        Result={'best_dec':BestX, 'best_obj':BestY, 'history_best_decs': history_best_decs, 'history_best_objs':history_best_objs ,'FE':fe}
+        Result={'best_dec':BestX, 'best_obj':BestY, 'history_best_decs': history_best_decs, 'history_best_objs':history_best_objs ,'FE':FE}
         
         return Result
             
