@@ -1,4 +1,4 @@
-from .metrics import r2_score, mse, rank_score
+from .metrics import r_square, mse, rank_score
 from .model_selections import KFold
 from typing import Dict, Literal
 import numpy as np
@@ -23,7 +23,7 @@ def fit_predict(evaluator, dataX, dataY, train_sets, test_sets, metric):
 
 class GridSearch():
     def __init__(self, para_grid: Dict, Evaluator, 
-                 CV: int=5, Metric: Literal["r2_score", "mse", "rank_score"]="r2_score",
+                 CV: int=5, Metric: Literal["r_square", "mse", "rank_score"]="r_square",
                  workers: int=8):
         
         self.Evaluator=Evaluator
@@ -49,7 +49,7 @@ class GridSearch():
             for para in combinations:
                 tempEvaluator=copy.deepcopy(self.Evaluator)
                 tempEvaluator.set_Paras(para)
-                future=exe.submit(fit_predict, tempEvaluator,dataX, dataY, train_sets, test_sets, "r2_score")
+                future=exe.submit(fit_predict, tempEvaluator,dataX, dataY, train_sets, test_sets, "r_square")
                 futures[future]=para
 
             bestValue=-np.inf

@@ -59,9 +59,11 @@ class Schwefel_2_22(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=np.sum(np.abs(X),axis=1).reshape(-1,1)+np.prod(np.abs(X),axis=1).reshape(-1,1)
         return F
 
@@ -85,10 +87,12 @@ class Schwefel_1_22(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         F=0
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         X=X**2
         for d in range(self.n_input):
             F+=np.sum(X[:,:d],axis=1).reshape(-1,1)
@@ -113,9 +117,11 @@ class Schwefel_2_21(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         X=np.abs(X)
         F=np.max(X,axis=1).reshape(-1,1)
         return F
@@ -139,9 +145,11 @@ class Rosenbrock(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))    
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))    
         Temp1=100*np.square(X[:,1:]-np.square(X[:,:-1]))
         Temp2=np.square(X[:,:-1]-1)
         F=np.sum(Temp1+Temp2,axis=1).reshape(-1,1)
@@ -166,9 +174,11 @@ class Step(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))     
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))     
         F=np.sum(np.square(np.floor(X)+0.5),axis=1).reshape(-1,1)
         
         return F
@@ -192,9 +202,11 @@ class Quartic(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))  
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))  
         Temp=np.linspace(1,self.n_input,self.n_input)*np.power(X,4)
         F=np.sum(Temp,axis=1).reshape(-1,1)+np.random.random((Temp.shape[0],1))          
         return F
@@ -218,9 +230,11 @@ class Schwefel_2_26(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
         Temp=np.sin(np.sqrt(np.abs(X)))*X
         F=np.sum(Temp,axis=1).reshape(-1,1)*-1         
         return F
@@ -244,9 +258,11 @@ class Rastrigin(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=np.sum(np.square(X)-10*np.cos(2*np.pi*X)+10,axis=1).reshape(-1,1)
         return F
 
@@ -270,9 +286,11 @@ class Ackley(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
         Temp1=np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.n_input)*-0.2)*-20
         Temp2=np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.n_input)*-1+20+np.e  
         F=(Temp1+Temp2).reshape(-1,1)
@@ -297,9 +315,11 @@ class Griewank(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
         I=np.sqrt(np.atleast_2d(np.linspace(1,self.n_input,self.n_input)))
         F=np.sum(np.square(X), axis=1).reshape(-1,1)/4000-np.prod(np.cos(X/I),axis=1).reshape(-1,1)+1     
         return F
@@ -327,9 +347,11 @@ class Trid(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=np.sum(np.square(X-1),axis=1).reshape(-1,1)-np.sum(X[:,1:]*X[:,:-1],axis=1).reshape(-1,1)
         return F
 
@@ -352,9 +374,11 @@ class Bent_Cigar(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=((X[:,0]**2)+np.sum(np.square(X[:,1:]),axis=1)*(10**6)).reshape(-1,1)
         return F
     
@@ -377,9 +401,11 @@ class Discus(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
     
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         F=(X[:,0]**2*(10**6)+np.sum(np.square(X[:,1:]),axis=1)).reshape(-1,1)
         return F
     
@@ -406,9 +432,11 @@ class Weierstrass(ProblemABC):
         
         super().__init__(n_input,1,ub,lb,disc_var,cont_var)
         
-    def evaluate(self, X: np.ndarray) -> np.ndarray:
+    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_2d(X)
+        if unit:
+            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         K=np.atleast_2d(np.linspace(1,self.kMax,self.kMax))
         aK=np.power(self.a,K)
         bK=np.power(self.b,K)

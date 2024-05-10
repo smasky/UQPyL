@@ -6,7 +6,7 @@ from .surrogate_ABC import Surrogate
 from .gp_kernels import RBF, Matern, Gp_Kernel
 from ..optimization import GA, Boxmin, MP_List, EA_List
 from ..utility.model_selections import RandSelect
-from ..utility.metrics import r2_score
+from ..utility.metrics import r_square
 from ..utility.scalers import Scaler
 from ..utility.polynomial_features import PolynomialFeatures
 
@@ -88,7 +88,7 @@ class GPR(Surrogate):
                 self.trainY=trainY
                 self._objfunc(theta, record=True)
                 predictY=self.predict(self.X_scaler.inverse_transform(testX))
-                return -1*r2_score(self.Y_scaler.inverse_transform(testY), predictY)
+                return -1*r_square(self.Y_scaler.inverse_transform(testY), predictY)
             bestTheta, bestObj=self.OPModel.run(objFunc)
             
         elif self.optimizer in EA_List:
@@ -103,7 +103,7 @@ class GPR(Surrogate):
                 for i, theta in enumerate(thetas):
                     self._objfunc(np.power(np.e,theta),record=True)
                     predictY=self.predict(self.X_scaler.inverse_transform(testX))
-                    objs[i]=-1*r2_score(self.Y_scaler.inverse_transform(testY), predictY)
+                    objs[i]=-1*r_square(self.Y_scaler.inverse_transform(testY), predictY)
                 return objs.reshape(-1,1)
             
             self.OPFunc=objFunc

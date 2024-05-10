@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .surrogate_ABC import Surrogate, Scale_T
 from .krg_kernels import Krg_Kernel
-from ..utility.metrics import r2_score
+from ..utility.metrics import r_square
 from ..optimization import Boxmin, GA, MP_List, EA_List
 from ..utility.model_selections import RandSelect
 from ..utility.scalers import Scaler
@@ -199,7 +199,7 @@ class KRG(Surrogate):
                     self._objFunc(theta,record=True)
                     self.kernel.theta=theta
                     predictY=self.predict(self.__X_inverse_transform__(testX))
-                    obj=-1*r2_score(self.__Y_inverse_transform__(testY),predictY)
+                    obj=-1*r_square(self.__Y_inverse_transform__(testY),predictY)
                     return obj
                 
                 self.OPFunc=objFunc
@@ -218,7 +218,7 @@ class KRG(Surrogate):
                         self.kernel.theta=np.power(np.e,theta).ravel()
                         #TODO
                         predictY=self.predict(self.__X_inverse_transform__(testX))
-                        objs[i]=-1*r2_score(self.__Y_inverse_transform__(testY),predictY)
+                        objs[i]=-1*r_square(self.__Y_inverse_transform__(testY),predictY)
                     return objs.reshape(-1,1)
                 self.OPFunc=objFunc
                 

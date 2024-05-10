@@ -1,7 +1,6 @@
 import numpy as np
-import math
-from typing import Tuple
-def r2_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
+
+def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     R2-score
     """
