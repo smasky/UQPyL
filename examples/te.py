@@ -77,7 +77,7 @@ def _set_paras(file_path, name, value, mode, origin_value=None):
 paras_files = pd.read_csv('SWAT_paras_files.txt', sep=' ', names=['parameter', 'file'],  index_col='parameter')
 
 
-work_path="D:\SiHuRiver\model\FuTIanSi001\Scenarios\Test\TxtInOut"
+work_path="H:\SiHuRiver\model\FuTIanSi001\Scenarios\Test\TxtInOut"
 HRU_suffix=["chm", "gw", "hru", "mgt", "sdr", "sep", "sol"]
 Watershed_suffiex=["pnd", "rte", "sub", "swq", "wgn", "wus"]
 
@@ -112,49 +112,72 @@ paras_values=paras_values.ravel()
 
 default_values=pd.DataFrame(columns=['para_name', 'file_name', 'value'])
 
-for i in range(num_paras):
-    para_name=paras_list[i]
-    file_suffix=paras_files.loc[para_name, 'file']
+# for i in range(num_paras):
+#     para_name=paras_list[i]
+#     file_suffix=paras_files.loc[para_name, 'file']
     
-    if file_suffix in HRU_suffix:
-        for sub in total_sub_list:
-            file_name=sub+"."+file_suffix
-            file_path=os.path.join(work_path, file_name)
-            if file_suffix=='sol':
-                default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras_for_sol(file_path, para_name)]
-            else:
-                default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
-    elif file_suffix in Watershed_suffiex:
-        for sub in watershed_list:
-            file_name=sub+"."+file_suffix
-            file_path=os.path.join(work_path, file_name)
-            default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
-    elif file_suffix=="bsn":
-        file_path=os.path.join(work_path, "basins."+file_suffix)
-        default_values.loc[len(default_values)]=[para_name, "basins."+file_suffix, _get_default_paras(file_path, para_name)]
+#     if file_suffix in HRU_suffix:
+#         for sub in total_sub_list:
+#             file_name=sub+"."+file_suffix
+#             file_path=os.path.join(work_path, file_name)
+#             if file_suffix=='sol':
+#                 default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras_for_sol(file_path, para_name)]
+#             else:
+#                 default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
+#     elif file_suffix in Watershed_suffiex:
+#         for sub in watershed_list:
+#             file_name=sub+"."+file_suffix
+#             file_path=os.path.join(work_path, file_name)
+#             default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
+#     elif file_suffix=="bsn":
+#         file_path=os.path.join(work_path, "basins."+file_suffix)
+#         default_values.loc[len(default_values)]=[para_name, "basins."+file_suffix, _get_default_paras(file_path, para_name)]
 
-default_values.to_excel('default_values.xlsx', index=True)
+# default_values.to_excel('default_values.xlsx', index=True)
 
-for i in range(num_paras):
-    para_name=paras_list[i]
-    mode=paras_infos.loc[para_name, 'mode']
-    value=paras_values[i]
-    file_suffix=paras_files.loc[para_name, 'file']
+# for i in range(num_paras):
+#     para_name=paras_list[i]
+#     mode=paras_infos.loc[para_name, 'mode']
+#     value=paras_values[i]
+#     file_suffix=paras_files.loc[para_name, 'file']
     
-    if file_suffix in HRU_suffix:
-        for sub in total_sub_list:
-            file_name=sub+"."+file_suffix
-            file_path=os.path.join(work_path, file_name)
-            if file_suffix=='sol':
-                _set_paras_for_sol(file_path, para_name, value, mode, str.split(default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0]))
-            else:
-                _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
-    elif file_suffix in Watershed_suffiex:
-        for sub in watershed_list:
-            file_name=sub+"."+file_suffix
-            file_path=os.path.join(work_path, sub+"."+file_suffix)
-            _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
-    elif file_suffix=="bsn":
-        file_name="basins."+file_suffix
-        file_path=os.path.join(work_path, file_name)
-        _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
+#     if file_suffix in HRU_suffix:
+#         for sub in total_sub_list:
+#             file_name=sub+"."+file_suffix
+#             file_path=os.path.join(work_path, file_name)
+#             if file_suffix=='sol':
+#                 _set_paras_for_sol(file_path, para_name, value, mode, str.split(default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0]))
+#             else:
+#                 _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
+#     elif file_suffix in Watershed_suffiex:
+#         for sub in watershed_list:
+#             file_name=sub+"."+file_suffix
+#             file_path=os.path.join(work_path, sub+"."+file_suffix)
+#             _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
+#     elif file_suffix=="bsn":
+#         file_name="basins."+file_suffix
+#         file_path=os.path.join(work_path, file_name)
+#         _set_paras(file_path, para_name, value, mode, default_values.loc[(default_values['para_name'] == para_name) & (default_values['file_name'] == file_name), 'value'].values[0])
+        
+############################evaluation##################
+file_name="output.rch"
+file_path=os.path.join(work_path, file_name)
+begin_ind=0
+with open(file_path, "r") as f:
+    lines=f.readlines()
+    for i, line in enumerate(lines):
+        match = re.search(r".*FLOW_OUTcms.*", line)
+        if match:
+            begin_ind=i
+            break
+colspecs = [
+    (7, 11),  # RCH
+    (22, 26), # MON
+    (52, 62), # FLOW_OUTcms
+]
+name_list=['RCH', 'MON', 'FLOW_OUTcms']
+
+df = pd.read_fwf(file_path, colspecs=colspecs, header=None, names=['RCH', 'MON', 'FLOW_OUTcms'], skiprows=begin_ind+1)
+df_rch_40 = df.query('RCH == 40')
+flow_outcms_np = df_rch_40['FLOW_OUTcms'].to_numpy()
+
