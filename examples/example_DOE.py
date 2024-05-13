@@ -10,7 +10,6 @@ Examples for using DOE methods:
 import sys
 sys.path.append(".")
 from scipy.io import loadmat
-print(sys.path)
 import os
 os.chdir('./examples')
 
