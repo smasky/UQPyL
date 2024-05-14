@@ -249,7 +249,7 @@ class SWAT_CUP(Problem):
                 subprocess.run(self.exe_path, cwd=self.work_path,stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 simulation_data=self._get_simulation_data()
                 rch_flows=simulation_data.query('RCH=={}'.format(self.rch_id))['FLOW_OUTcms'].to_numpy()
-                Y[i,0]=r_square(self.observed_data, rch_flows[self.begin_calibration-1:self.end_calibration])
+                Y[i,0]=-r_square(self.observed_data, rch_flows[self.begin_calibration-1:self.end_calibration])
             except:
                 Y[i,0]=-np.inf
         return Y
@@ -334,40 +334,46 @@ class SWAT_CUP(Problem):
         self.lb= paras_infos['low_bound'].values
         self.ub= paras_infos['up_bound'].values
         paras_list=paras_infos.index.tolist()
+        self.x_labels=paras_list
         num_paras=paras_infos.shape[0]
         self.n_input=num_paras
         ##generate default_values
-        default_values=pd.DataFrame(columns=['para_name', 'file_name', 'value'])
-
-        for i in range(num_paras):
-            para_name=paras_list[i]
-            file_suffix=self.paras_files.loc[para_name, 'file']
-            
-            if file_suffix in self.HRU_suffix:
-                for sub in self.total_sub_list:
-                    file_name=sub+"."+file_suffix
-                    file_path=os.path.join(self.work_path, file_name)
-                    if file_suffix=='sol':
-                        default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras_for_sol(file_path, para_name)]
-                    else:
-                        default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
-            elif file_suffix in self.Watershed_suffiex:
-                for sub in self.watershed_list:
-                    file_name=sub+"."+file_suffix
-                    file_path=os.path.join(self.work_path, file_name)
-                    default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
-            elif file_suffix=="bsn":
-                file_path=os.path.join(self.work_path, "basins."+file_suffix)
-                default_values.loc[len(default_values)]=[para_name, "basins."+file_suffix, _get_default_paras(file_path, para_name)]
-
         default_values_path=os.path.join(self.work_path, 'default_values.xlsx')
-        default_values.to_excel(default_values_path, index=True)
+        if not os.path.exists(default_values_path):
+            default_values=pd.DataFrame(columns=['para_name', 'file_name', 'value'])
+
+            for i in range(num_paras):
+                para_name=paras_list[i]
+                file_suffix=self.paras_files.loc[para_name, 'file']
+                
+                if file_suffix in self.HRU_suffix:
+                    for sub in self.total_sub_list:
+                        file_name=sub+"."+file_suffix
+                        file_path=os.path.join(self.work_path, file_name)
+                        if file_suffix=='sol':
+                            default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras_for_sol(file_path, para_name)]
+                        else:
+                            default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
+                elif file_suffix in self.Watershed_suffiex:
+                    for sub in self.watershed_list:
+                        file_name=sub+"."+file_suffix
+                        file_path=os.path.join(self.work_path, file_name)
+                        default_values.loc[len(default_values)]=[para_name, file_name, _get_default_paras(file_path, para_name)]
+                elif file_suffix=="bsn":
+                    file_path=os.path.join(self.work_path, "basins."+file_suffix)
+                    default_values.loc[len(default_values)]=[para_name, "basins."+file_suffix, _get_default_paras(file_path, para_name)]
+
+            
+            default_values.to_excel(default_values_path, index=True)
+        else:
+            default_values=pd.read_excel(default_values_path, index_col=0)
         self.default_values=default_values
         self.paras_infos=paras_infos
         self.paras_list=paras_list
     def _initial(self):
         Watershed={}
         
+        NYSKIP=0
         #read control file fig.cio
         with open(os.path.join(self.work_path, "file.cio"), "r") as f:
             lines=f.readlines()
@@ -387,7 +393,12 @@ class SWAT_CUP(Problem):
                 match4 = re.search(r"(\s*)(\d+)(\s*.*IDAL.*)", line)
                 if match4:
                     end_day=int(match4.group(2))
-        self.begin_date=datetime(begin_year, 1, 1) + timedelta(begin_day - 1)
+                    
+                match5 = re.search(r"(\s*)(\d+)(\s*.*NYSKIP.*)", line)
+                if match5:
+                    NYSKIP=int(match5.group(2))
+                    
+        self.begin_date=datetime(begin_year+NYSKIP, 1, 1) + timedelta(begin_day - 1)
         self.end_date=datetime(begin_year+num_years-1, 1, 1) + timedelta(end_day - 1)
         self.simulation_days=(self.end_date-self.begin_date).days+1
             
@@ -422,14 +433,56 @@ swat_pro=SWAT_CUP(work_path="D:\SiHuRiver\model\FuTIanSi001\Scenarios\Test\TxtIn
                     observe_file_name="observed.txt",
                     swat_exe_path="swat_64rel.exe",
                     rch_id=40)
+problem=swat_pro
+print("################1.Sobol################")
+from UQPyL.sensibility import Sobol
+sobol_method=Sobol(problem=problem, cal_second_order=False) #Using Sobol Sequence and saltelli_sequence
+X=sobol_method.sample(32)
+Y=problem.evaluate(X)
+Si=sobol_method.analyze(X, Y, verbose=True)
 
-from UQPyL.DoE import LHS
-from UQPyL.optimization import PSO
-# lhs=LHS(criterion='classic', problem=swat_pro)
-# X=lhs.sample(50, swat_pro.n_input, random_seed=1)
-# Y=swat_pro.evaluate(X)
-pso=PSO(problem=swat_pro,n_sample=50, maxFEs=1000000, maxIterTimes=10000)
-pso.run()
+################2. FAST##################
+print("################2.FAST################")
+from UQPyL.sensibility import FAST
+fast_method=FAST(problem=problem, M=4)
+X=fast_method.sample(64)
+Y=problem.evaluate(X)
+Si=fast_method.analyze(X, Y, verbose=True)
+
+print("#############4.Morris#############")
+from UQPyL.sensibility import Morris
+morris_method=Morris(problem=problem, num_levels=4) #Using Morris Sampler
+X=morris_method.sample(64)
+Y=problem.evaluate(X)
+Si=morris_method.analyze(X, Y, verbose=True)
+
+print("#############6.MARS_SA#############")
+from UQPyL.sensibility import MARS_SA
+mars_method=MARS_SA(problem=problem)
+X=mars_method.sample(64*26)
+Y=problem.evaluate(X)
+Si=mars_method.analyze(X, Y, verbose=True)
+
+
+# simulation_data=swat_pro._get_simulation_data()
+# rch_flows=simulation_data.query('RCH=={}'.format(swat_pro.rch_id))['FLOW_OUTcms'].to_numpy()
+# res=r_square(swat_pro.observed_data, rch_flows[swat_pro.begin_calibration-1:swat_pro.end_calibration])
+# print(res)
+# import matplotlib.pyplot as plt
+# plt.plot(swat_pro.observed_data)
+# plt.plot(rch_flows[swat_pro.begin_calibration-1:swat_pro.end_calibration])
+# plt.show()
+
+
+
+# from UQPyL.DoE import LHS
+# from UQPyL.optimization import GA
+# # lhs=LHS(criterion='classic', problem=swat_pro)
+# # X=lhs.sample(50, swat_pro.n_input, random_seed=1)
+# # Y=swat_pro.evaluate(X)
+# ga=GA(problem=swat_pro,n_samples=50, maxFEs=1000000, maxIterTimes=10000)
+# ga.run()
+
         
 
 
