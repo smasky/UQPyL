@@ -94,7 +94,7 @@ class Morris(SA):
         
         N=int(X.shape[0]/self.num_levels)
         
-        for i in range(N):
+        for i in range(num_trajectory):
             X_sub=X[i*(n_input+1):(i+1)*(n_input+1), :]
             Y_sub=Y[i*(n_input+1):(i+1)*(n_input+1), :]
 

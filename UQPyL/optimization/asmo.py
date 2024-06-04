@@ -113,7 +113,7 @@ class ASMO():
                 history_best_decs[FE]=BestX
                 history_best_objs[FE]=BestY
         
-        Result={'best_dec':BestX, 'best_obj':BestY, 'history_best_decs': history_best_decs, 'history_best_objs':history_best_objs ,'FE':FE}
+        Result={'best_dec':BestX, 'best_obj':BestY, 'history_best_decs': history_best_decs, 'history_best_objs':history_best_objs ,'FEs':FE}
         
         return Result
             

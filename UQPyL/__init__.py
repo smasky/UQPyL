@@ -1,6 +1,6 @@
 from . import problems, surrogates, optimization, sensibility, DoE, utility
 
-__version__ = "2.0.4"
+__version__ = "2.0.5"
 __author__ = "wmtSky"
 
 __all__=[

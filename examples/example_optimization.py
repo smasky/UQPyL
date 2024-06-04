@@ -8,34 +8,31 @@
     - 6. MOEAD/D - Multi-objective
     - 7. MO_ASMO - Multi-objective - Surrogate
 '''
-#tmp
+#--------------tmp-------------------#
 import sys
 sys.path.append(".")
-from scipy.io import loadmat
-print(sys.path)
 import os
 os.chdir('./examples')
-#
+#-----------tmp--------------------#
 import numpy as np
 
 ################1. Genetic Algorithm (GA) - Single objective################
-# print('################1. Genetic Algorithm (GA) - Single objective################')
-# from UQPyL.optimization import GA
-# from UQPyL.problems import Sphere
+print('################1. Genetic Algorithm (GA) - Single objective################')
+from UQPyL.optimization import GA
+from UQPyL.problems import Sphere
 
-# problem=Sphere(n_input=30, ub=100, lb=-100)
-# ga=GA(problem, n_samples=50)
-# res=ga.run()
-# print('Best objective:', res['best_obj'])
-# print('Best decisions:', res['best_dec'])
-# print('FE:', res['FEs'])
- 
+problem=Sphere(n_input=30, ub=100, lb=-100)
+ga=GA(problem, n_samples=50)
+res=ga.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_dec'])
+print('FE:', res['FEs'])
+
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']
 # FEs=list(FEs_objs.keys())
 # objs=list(FEs_objs.values())
 # plt.plot(FEs, np.log10(objs))
-
 
 ################2. SCE-UA - Single objective################
 # print('################2. SCE-UA - Single objective################')
@@ -83,7 +80,7 @@ from UQPyL.problems import Sphere
 problem=Sphere(n_input=30, ub=100, lb=-100)
 rbf=RBF(kernel=Cubic())
 asmo=ASMO(problem, rbf, n_init=50)
-res=asmo.run(maxFE=1000)
+res=asmo.run()
 print('Best objective:', res['best_obj'])
 print('Best decisions:', res['best_dec'])
 print('FE:', res['FEs'])
