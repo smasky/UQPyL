@@ -79,7 +79,7 @@ class FAST(SA):
         '''
         n_input=self.n_input; M=self.M
         
-        if N<=4*M**2:
+        if N<4*M**2:
             raise ValueError("the number of sample must be greater than 4*M**2!")
         
         w=np.zeros(n_input)
