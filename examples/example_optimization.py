@@ -15,6 +15,7 @@ import os
 os.chdir('./examples')
 #-----------tmp--------------------#
 import numpy as np
+import matplotlib.pyplot as plt
 
 ################1. Genetic Algorithm (GA) - Single objective################
 print('################1. Genetic Algorithm (GA) - Single objective################')
@@ -35,21 +36,21 @@ print('FE:', res['FEs'])
 # plt.plot(FEs, np.log10(objs))
 
 ################2. SCE-UA - Single objective################
-# print('################2. SCE-UA - Single objective################')
-# from UQPyL.optimization import SCE_UA
-# problem=Sphere(n_input=30, ub=100, lb=-100)
-# sce=SCE_UA(problem)
-# res=sce.run()
-# print('Best objective:', res['best_obj'])
-# print('Best decisions:', res['best_dec'])
-# print('FE:', res['FEs'])
+print('################2. SCE-UA - Single objective################')
+from UQPyL.optimization import SCE_UA
+problem=Sphere(n_input=30, ub=100, lb=-100)
+sce=SCE_UA(problem)
+res=sce.run()
+print('Best objective:', res['best_obj'])
+print('Best decisions:', res['best_dec'])
+print('FE:', res['FEs'])
 
-# objs=res['history_best_objs']
-# FEs_objs=res['history_best_objs']
-# FEs=list(FEs_objs.keys())
-# objs=list(FEs_objs.values())
-# plt.plot(FEs, np.log10(objs))
-
+objs=res['history_best_objs']
+FEs_objs=res['history_best_objs']
+FEs=list(FEs_objs.keys())
+objs=list(FEs_objs.values())
+plt.plot(FEs, objs)
+plt.show()
 ###############3. PSO - Single objective################
 # print('###############3. PSO - Single objective################')
 # from UQPyL.optimization import PSO
@@ -72,18 +73,18 @@ print('FE:', res['FEs'])
 # plt.ylabel('Best Objective (log10)')
 # plt.show()
 ################3. ASMO - Single-objective - Surrogate-assisted################
-print('################3. ASMO - Single-objective################')
-from UQPyL.optimization import ASMO
-from UQPyL.surrogates import RBF
-from UQPyL.surrogates.rbf_kernels import Cubic
-from UQPyL.problems import Sphere
-problem=Sphere(n_input=30, ub=100, lb=-100)
-rbf=RBF(kernel=Cubic())
-asmo=ASMO(problem, rbf, n_init=50)
-res=asmo.run()
-print('Best objective:', res['best_obj'])
-print('Best decisions:', res['best_dec'])
-print('FE:', res['FEs'])
+# print('################3. ASMO - Single-objective################')
+# from UQPyL.optimization import ASMO
+# from UQPyL.surrogates import RBF
+# from UQPyL.surrogates.rbf_kernels import Cubic
+# from UQPyL.problems import Sphere
+# problem=Sphere(n_input=30, ub=100, lb=-100)
+# rbf=RBF(kernel=Cubic())
+# asmo=ASMO(problem, rbf, n_init=50)
+# res=asmo.run()
+# print('Best objective:', res['best_obj'])
+# print('Best decisions:', res['best_dec'])
+# print('FE:', res['FEs'])
 
 #############4. NSGA-II - Multi-objective#################
 # print('#############4. NSGA-II - Multi-objective#################')
