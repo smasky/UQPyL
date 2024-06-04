@@ -37,14 +37,14 @@ def _set_paras_for_sol(file_path, name, value, mode, origin_value=None):
             match = re.search(pattern, line)
             if match:
                 numbers=re.findall(r"\d+\.\d+", line)
-                for i, number in enumerate(numbers):
+                for j, number in enumerate(numbers):
                     if mode=='r':
-                        value=float(origin_value[i])*(1+value)
+                        value=float(origin_value[j])*(1+value)
                     elif mode=='a':
-                        value=float(origin_value[i])+value
-                    line=line.replace(str(number), "{:.2f}".format(value))
-                    lines[i]=line
-                    break
+                        value=float(origin_value[j])+value
+                line=line.replace(str(number), "{:.2f}".format(value))
+                lines[i]=line
+                break
         f.seek(0)
         f.writelines(lines)
         f.truncate()
@@ -63,7 +63,7 @@ def _set_paras(file_path, name, value, mode, origin_value=None):
                 elif mode=='a':
                     value=origin_value+value
                     
-                new_text = re.sub(pattern,  match.group(1)+"{}".format(value)+match.group(3), line)
+                new_text = re.sub(pattern,  match.group(1)+"{:.2f}".format(value)+match.group(3), line)
                 lines[i]=new_text
                 # origin_value=match.group(2)    
                 # if re.fullmatch(r'\-?\d+', origin_value) is not None and re.fullmatch(r'\-?\d+', str(value)) is not None: 
@@ -434,34 +434,34 @@ swat_pro=SWAT_CUP(work_path="D:\SiHuRiver\model\FuTIanSi001\Scenarios\Test\TxtIn
                     swat_exe_path="swat_64rel.exe",
                     rch_id=40)
 problem=swat_pro
-print("################1.Sobol################")
-from UQPyL.sensibility import Sobol
-sobol_method=Sobol(problem=problem, cal_second_order=False) #Using Sobol Sequence and saltelli_sequence
-X=sobol_method.sample(32)
-Y=problem.evaluate(X)
-Si=sobol_method.analyze(X, Y, verbose=True)
+# print("################1.Sobol################")
+# from UQPyL.sensibility import Sobol
+# sobol_method=Sobol(problem=problem, cal_second_order=False) #Using Sobol Sequence and saltelli_sequence
+# X=sobol_method.sample(32)
+# Y=problem.evaluate(X)
+# Si=sobol_method.analyze(X, Y, verbose=True)
 
 ################2. FAST##################
 print("################2.FAST################")
 from UQPyL.sensibility import FAST
 fast_method=FAST(problem=problem, M=4)
-X=fast_method.sample(64)
+X=fast_method.sample(128)
 Y=problem.evaluate(X)
 Si=fast_method.analyze(X, Y, verbose=True)
 
-print("#############4.Morris#############")
-from UQPyL.sensibility import Morris
-morris_method=Morris(problem=problem, num_levels=4) #Using Morris Sampler
-X=morris_method.sample(64)
-Y=problem.evaluate(X)
-Si=morris_method.analyze(X, Y, verbose=True)
+# print("#############4.Morris#############")
+# from UQPyL.sensibility import Morris
+# morris_method=Morris(problem=problem, num_levels=4) #Using Morris Sampler
+# X=morris_method.sample(64)
+# Y=problem.evaluate(X)
+# Si=morris_method.analyze(X, Y, verbose=True)
 
-print("#############6.MARS_SA#############")
-from UQPyL.sensibility import MARS_SA
-mars_method=MARS_SA(problem=problem)
-X=mars_method.sample(64*26)
-Y=problem.evaluate(X)
-Si=mars_method.analyze(X, Y, verbose=True)
+# print("#############6.MARS_SA#############")
+# from UQPyL.sensibility import MARS_SA
+# mars_method=MARS_SA(problem=problem)
+# X=mars_method.sample(64*26)
+# Y=problem.evaluate(X)
+# Si=mars_method.analyze(X, Y, verbose=True)
 
 
 # simulation_data=swat_pro._get_simulation_data()
