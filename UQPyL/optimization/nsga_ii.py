@@ -6,8 +6,6 @@ from typing import Optional
 from ..DoE import LHS
 from ..problems import Problem
 
-lhs=LHS('classic')
-
 class NSGAII():
     '''
     Non-dominated Sorting Genetic Algorithm II <Multi-objective>
@@ -53,6 +51,7 @@ class NSGAII():
                  maxFEs: int=50000, maxIters: int=1000
                  ):
         #problem setting
+        self.problem=problem
         self.evaluate=problem.evaluate
         self.n_input=problem.n_input
         self.lb=problem.lb;self.ub=problem.ub
@@ -80,14 +79,13 @@ class NSGAII():
         maxIters=self.maxIters
         
         n_input=self.n_input
-        lb=self.lb
-        ub=self.ub
         
+        lhs=LHS('classic', problem=self.problem)
         if self.x_init is None:
-            self.x_init=(ub-lb)*lhs(self.n_samples, n_input)+lb
+            self.x_init=lhs(self.n_samples, n_input)
         if self.y_init is None:
             self.y_init=self.evaluate(self.x_init)
-        
+
         XPop=self.x_init
         YPop=self.y_init
         
@@ -103,6 +101,7 @@ class NSGAII():
             
             SelectIndex=self.TournamentSelection(2, self.n_samples, FrontNo, -CrowdDis)
             XOffSpring=self._operationGA(XPop[SelectIndex,:])
+            XOffSpring=self.problem._discrete_variable_transform(XOffSpring)
             YOffSpring=self.evaluate(XOffSpring)
             
             XPop=np.vstack((XPop, XOffSpring))
@@ -293,5 +292,3 @@ class NSGAII():
         FrontNo = FrontNo[indices]
 
         return FrontNo, MaxFNo
-        
-        

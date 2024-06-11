@@ -21,9 +21,9 @@ class Sphere(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None, disc_range=None, cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(n_input,1,ub,lb,disc_var, disc_range, cont_var)
     
     def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
         '''

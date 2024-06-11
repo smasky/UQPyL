@@ -12,14 +12,18 @@ sys.path.append(".")
 from scipy.io import loadmat
 import os
 os.chdir('./examples')
-
+import numpy as np
 from UQPyL.DoE import FFD
 from UQPyL.DoE import LHS
 from UQPyL.DoE import Random
 
 from UQPyL.DoE import Sobol_Sequence
 from UQPyL.DoE import FAST_Sequence
-
+############################test#############################
+from UQPyL.problems import Sphere
+pro=Sphere(n_input=5, ub=100, lb=-100, disc_var=np.array([0, 0, 1, 1, 1]), disc_range=[0, 0, [2,5,7], [1,3,2], [0,1]])
+lhs=LHS(problem=pro)
+a=lhs.sample(100, 5)
 #################1. Full factorial design (FFD)#################
 print("#################Full factorial design (FFD)#################")
 # Create an instance of the FFD class

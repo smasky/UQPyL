@@ -182,9 +182,9 @@ class LHS(Sampler):
             X=Sampling_method(nt, nx, self.random_state)
         
         #rescale the samples
-        if self.problem is not None:
-            X=X*(self.problem.ub-self.problem.lb)+self.problem.lb
-            
+        # if self.problem is not None:
+        #     X=X*(self.problem.ub-self.problem.lb)+self.problem.lb
+        X=self.rescale_to_problems(X)  
         return X
     
     def sample(self, nt: int, nx:int, random_seed: Optional[int]=None) -> np.ndarray:

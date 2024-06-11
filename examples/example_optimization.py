@@ -16,18 +16,18 @@ os.chdir('./examples')
 #-----------tmp--------------------#
 import numpy as np
 import matplotlib.pyplot as plt
-
-################1. Genetic Algorithm (GA) - Single objective################
-print('################1. Genetic Algorithm (GA) - Single objective################')
-from UQPyL.optimization import GA
 from UQPyL.problems import Sphere
+################1. Genetic Algorithm (GA) - Single objective################
+# print('################1. Genetic Algorithm (GA) - Single objective################')
+# from UQPyL.optimization import GA
+# from UQPyL.problems import Sphere
 
-problem=Sphere(n_input=30, ub=100, lb=-100)
-ga=GA(problem, n_samples=50)
-res=ga.run()
-print('Best objective:', res['best_obj'])
-print('Best decisions:', res['best_dec'])
-print('FE:', res['FEs'])
+# problem=Sphere(n_input=30, ub=100, lb=-100)
+# ga=GA(problem, n_samples=50)
+# res=ga.run()
+# print('Best objective:', res['best_obj'])
+# print('Best decisions:', res['best_dec'])
+# print('FE:', res['FEs'])
 
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']
@@ -36,21 +36,21 @@ print('FE:', res['FEs'])
 # plt.plot(FEs, np.log10(objs))
 
 ################2. SCE-UA - Single objective################
-print('################2. SCE-UA - Single objective################')
-from UQPyL.optimization import SCE_UA
-problem=Sphere(n_input=30, ub=100, lb=-100)
-sce=SCE_UA(problem)
-res=sce.run()
-print('Best objective:', res['best_obj'])
-print('Best decisions:', res['best_dec'])
-print('FE:', res['FEs'])
+# print('################2. SCE-UA - Single objective################')
+# from UQPyL.optimization import SCE_UA
+# problem=Sphere(n_input=30, ub=100, lb=-100)
+# sce=SCE_UA(problem)
+# res=sce.run()
+# print('Best objective:', res['best_obj'])
+# print('Best decisions:', res['best_dec'])
+# print('FE:', res['FEs'])
 
-objs=res['history_best_objs']
-FEs_objs=res['history_best_objs']
-FEs=list(FEs_objs.keys())
-objs=list(FEs_objs.values())
-plt.plot(FEs, objs)
-plt.show()
+# objs=res['history_best_objs']
+# FEs_objs=res['history_best_objs']
+# FEs=list(FEs_objs.keys())
+# objs=list(FEs_objs.values())
+# plt.plot(FEs, objs)
+# plt.show()
 ###############3. PSO - Single objective################
 # print('###############3. PSO - Single objective################')
 # from UQPyL.optimization import PSO
@@ -87,17 +87,17 @@ plt.show()
 # print('FE:', res['FEs'])
 
 #############4. NSGA-II - Multi-objective#################
-# print('#############4. NSGA-II - Multi-objective#################')
-# from UQPyL.optimization import NSGAII
-# from UQPyL.problems import ZDT3
-# problem=ZDT3(n_input=30)
-# optimum=problem.get_optimum(100)
-# nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
-# res=nsga.run()
-# import matplotlib.pyplot as plt
-# y=res['pareto_y']
-# plt.scatter(y[:,0], y[:,1])
-# plt.show()
+print('#############4. NSGA-II - Multi-objective#################')
+from UQPyL.optimization import NSGAII
+from UQPyL.problems import ZDT3
+problem=ZDT3(n_input=30)
+optimum=problem.get_optimum(100)
+nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
+res=nsga.run()
+import matplotlib.pyplot as plt
+y=res['pareto_y']
+plt.scatter(y[:,0], y[:,1])
+plt.show()
 
 #############5. MOEAD - Multi-objective#################
 # print('#############5. MOEAD - Multi-objective#################')

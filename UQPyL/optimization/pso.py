@@ -1,5 +1,5 @@
 import numpy as np
-import math
+from tqdm import tqdm
 
 from ..problems import Problem
 from ..DoE import LHS
@@ -107,6 +107,8 @@ class PSO():
         G_best_obj=np.copy(P_best_objs[ind])
         vel=np.copy(decs)
         
+        show_process=tqdm(total=self.maxIterTimes, desc="Particle Swarm Optimization")
+        
         while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
             decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec, self.w)
             decs=self._randomParticle(decs)
@@ -122,6 +124,8 @@ class PSO():
             
             iter+=1
             FEs+=objs.shape[0]
+            
+            show_process.update(1)
             
             history_best_decs[FEs]=G_best_dec
             history_best_objs[FEs]=G_best_obj
