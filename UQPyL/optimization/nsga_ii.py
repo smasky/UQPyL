@@ -101,7 +101,7 @@ class NSGAII():
             
             SelectIndex=self.TournamentSelection(2, self.n_samples, FrontNo, -CrowdDis)
             XOffSpring=self._operationGA(XPop[SelectIndex,:])
-            XOffSpring=self.problem._discrete_variable_transform(XOffSpring)
+            
             YOffSpring=self.evaluate(XOffSpring)
             
             XPop=np.vstack((XPop, XOffSpring))
@@ -193,22 +193,8 @@ class NSGAII():
 
         winner_indices_in_tournament = np.argmin(rank[tourSelection], axis=1).ravel()
         winners_original_order = tourSelection[np.arange(N), winner_indices_in_tournament]
-        # winner=np.min(rank[tourSelection,:].ravel().reshape(fitness1.shape[0],2),axis=1)
-        # winIndex=rankIndex[winner]
         
         return winners_original_order.ravel()
-        # Conduct the tournament
-        # selected_indices = []
-        # for _ in range(N):
-        #     # Randomly pick K candidates
-        #     candidates_indices = np.random.choice(range(len(fitness1)), K, replace=False)
-        #     candidates_ranks = ranks[candidates_indices]
-            
-        #     # Select the candidate with the best (lowest) rank
-        #     best_candidate_index = candidates_indices[np.argmin(candidates_ranks)]
-        #     selected_indices.append(best_candidate_index)
-        
-        # return np.array(selected_indices)
 
     def EnvironmentalSelection(self, XPop, YPop, N):
         # 非支配排序

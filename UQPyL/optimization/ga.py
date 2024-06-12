@@ -96,9 +96,14 @@ class GA():
         iter=0
         FEs=0
         
-        lhs=LHS('classic')
-        decs=(lhs(self.n_samples,self.n_input))*(self.ub-self.lb)+self.lb
-        objs=self.evaluate(decs)
+        lhs=LHS('classic', problem=self.problem)
+        if self.x_init is None:
+            self.x_init=lhs(self.n_samples, self.n_input)
+        if self.y_init is None:
+            self.y_init=self.evaluate(self.x_init)
+        decs=self.x_init
+        objs=self.y_init
+        
         FEs+=objs.shape[0]
         
         history_decs={}

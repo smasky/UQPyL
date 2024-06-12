@@ -84,9 +84,9 @@ class MOASMO():
         n_infilling=int(np.floor(n_init*pct))
         ub=self.ub; lb=self.lb
         
+        lhs=LHS('classic', problem=self.problem)
         if self.x_init is None:
-            self.x_init=(ub-lb)*lhs(self.n_init, self.n_input)+lb
-            
+            self.x_init=lhs(self.n_samples, self.n_input)
         if self.y_init is None:
             self.y_init=self.evaluate(self.x_init)
         

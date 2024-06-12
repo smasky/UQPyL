@@ -2,8 +2,6 @@
 import numpy as np
 from ..DoE import LHS
 
-lhs=LHS('center_maximin')
-
 class SCE_UA():
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>
@@ -78,9 +76,15 @@ class SCE_UA():
         npt  = npg * self.ngs
         BD   = self.ub - self.lb
         
-        #Initialize 
-        XPop=BD*lhs(npt, self.NInput)+self.lb
-        YPop=self.evaluate(XPop)
+        #Initialize
+        lhs=LHS('classic', problem=self.problem)
+        if self.x_init is None:
+            self.x_init=lhs(self.n_samples, self.n_input)
+        if self.y_init is None:
+            self.y_init=self.evaluate(self.x_init)
+         
+        XPop=self.x_init
+        YPop=self.y_init
         FEs=npt
         #Sort the population in order of increasing function values
         idx=np.argsort(YPop, axis=0)

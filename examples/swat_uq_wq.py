@@ -69,6 +69,7 @@ class SWAT_UQ():
         """
         evaluate the objective within X
         """
+        X=self._discrete_variable_transform(X)
         n=X.shape[0]
         Y=np.zeros((n,3))
         
