@@ -37,6 +37,7 @@ class Sampler(metaclass=abc.ABCMeta):
                     else:
                         tmp_X[:, i]=disc_range[i][indices]
             return tmp_X
+        return X
     @abc.abstractmethod
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
