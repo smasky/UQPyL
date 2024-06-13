@@ -45,6 +45,7 @@ class MOEA_D():
             self.n_input=problem.n_input
             self.lb=problem.lb; self.ub=problem.ub
             self.n_output=problem.n_output
+            self.problem=problem
             
             #inital setting
             self.n_samples=n_samples
