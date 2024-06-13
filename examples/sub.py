@@ -22,8 +22,8 @@ benchmarks={1: Sphere, 2: Schwefel_2_22, 3: Schwefel_1_22, 4: Schwefel_2_21, 5: 
             6: Rosenbrock, 7:Step, 8: Quartic, 9:Rastrigin, 10:Ackley, 11:Griewank, 12:Trid, 
             13:Bent_Cigar, 14: Discus, 15:Weierstrass}
 
-dimensions=[5, 15, 30, 50]
-samples=[100, 300, 500]
+dimensions=[5, 10, 20, 30, 40, 50]
+samples=[100, 200, 300, 400, 500]
 # columns = ['problem', 'surrogate', 'dimensions', 'samples', 'r_square', 'rank_score']
 database = pd.read_excel("./database.xlsx", index_col=0)
 #----------------------RBF-----------------------------#
@@ -31,29 +31,27 @@ from UQPyL.surrogates import RBF
 from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
 
 index=0
-for id, func in benchmarks.items():
-    for dim in dimensions:
-        for sample in samples:
-            for time in range(20):
-                
-                problem=func(dim)
-                lhs=LHS('classic', problem=problem)
-                
-                train_X=lhs.sample(sample, problem.n_input, random_seed=seed_train[index, time])
-                train_Y=problem.evaluate(train_X)
-                
-                test_X=lhs.sample(50, problem.n_input, random_seed=seed_test[index, time])
-                test_Y=problem.evaluate(test_X)
+dim=30
+sample=100
+time=18
+index=15
+   
+problem=Sphere(dim, 100, -100)
+lhs=LHS('classic', problem=problem)
 
-                surrogate=RBF(kernel=Thin_plate_spline())
-                surrogate.fit(train_X, train_Y)
-                pre_Y=surrogate.predict(test_X)
-                r2=r_square(test_Y, pre_Y)
-                rank=rank_score(test_Y, pre_Y)
-                
-                database.loc[len(database)]=[problem.__class__.__name__, 'RBF-TPS', index, time,dim, sample, r2, rank]
-        index+=1
-database.to_excel("./database.xlsx")
+train_X=lhs.sample(sample, problem.n_input, random_seed=seed_train[index, time+1])
+train_Y=problem.evaluate(train_X)
+
+test_X=lhs.sample(int(sample/2), problem.n_input, random_seed=seed_test[index, time])
+test_Y=problem.evaluate(test_X)
+
+surrogate=RBF(kernel=Cubic())
+surrogate.fit(train_X, train_Y)
+pre_Y=surrogate.predict(test_X)
+r2=r_square(test_Y, pre_Y)
+rank=rank_score(test_Y, pre_Y)
+print(r2, rank)
+
             
 
 
