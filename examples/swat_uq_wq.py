@@ -124,10 +124,10 @@ class SWAT_UQ():
         
         cost=0
         for i, j in enumerate(range(0,10,2)):
-            cost+=420*(input_x[j]*input_x[j+1])*input_x[20+i]
+            cost+=420*(input_x[j]*input_x[j+1])*input_x[15+i]
         weight=[15248, 30259, 7253, 20759, 32553]
-        for i, j in enumerate(range(10,20,2)):
-            cost+=6000*weight[i]/input_x[j]*input_x[25+i]*input_x[j+1]
+        for i, j in enumerate(range(10,15,1)):
+            cost+=6000*weight[i]/input_x[j]*input_x[20+i]
         return cost
     
     def _set_values(self, work_path, paras_values):
@@ -313,7 +313,7 @@ swat_cup=SWAT_UQ(work_path=file_path,
                     observed_file_name="observed.txt",
                     swat_exe_name="swat_681.exe",
                     special_paras_file="special_paras.txt",
-                    max_workers=10, num_parallel=5)
-from UQPyL.optimization import NSGAII
-nsga=NSGAII(swat_cup, n_samples=100)
-nsga.run()
+                    max_workers=10, num_parallel=7)
+from UQPyL.optimization import NSGAII, MOEA_D
+moea=MOEA_D(swat_cup, n_samples=200)
+moea.run()

@@ -29,20 +29,20 @@ database = pd.read_excel("./database.xlsx", index_col=0)
 #----------------------RBF-----------------------------#
 from UQPyL.surrogates import RBF
 from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
-
+from UQPyL.utility import MinMaxScaler
 index=0
-dim=30
+dim=50
 sample=100
-time=18
-index=15
+time=2
+index=7
    
-problem=Sphere(dim, 100, -100)
+problem=Schwefel_2_22(dim)
 lhs=LHS('classic', problem=problem)
 
-train_X=lhs.sample(sample, problem.n_input, random_seed=seed_train[index, time+1])
+train_X=lhs.sample(sample, problem.n_input, random_seed=seed_train[index, time])
 train_Y=problem.evaluate(train_X)
 
-test_X=lhs.sample(int(sample/2), problem.n_input, random_seed=seed_test[index, time])
+test_X=lhs.sample(50, problem.n_input, random_seed=seed_test[index, time])
 test_Y=problem.evaluate(test_X)
 
 surrogate=RBF(kernel=Cubic())

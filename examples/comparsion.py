@@ -45,13 +45,13 @@ for id, func in benchmarks.items():
                 test_X=lhs.sample(50, problem.n_input, random_seed=seed_test[index, time])
                 test_Y=problem.evaluate(test_X)
 
-                surrogate=RBF(kernel=Thin_plate_spline())
+                surrogate=RBF(kernel=Gaussian())
                 surrogate.fit(train_X, train_Y)
                 pre_Y=surrogate.predict(test_X)
                 r2=r_square(test_Y, pre_Y)
                 rank=rank_score(test_Y, pre_Y)
                 
-                database.loc[len(database)]=[problem.__class__.__name__, 'RBF-TPS', index, time,dim, sample, r2, rank]
+                database.loc[len(database)]=[problem.__class__.__name__, 'RBF-GASS', index, time,dim, sample, r2, rank]
         index+=1
 database.to_excel("./database.xlsx")
             
