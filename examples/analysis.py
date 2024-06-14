@@ -11,9 +11,8 @@ dimensions=[5, 15, 30, 50]
 samples=[100, 300, 500]
 
 for sur in surrogate:
-    for key, func in benchmarks.items():
-            res=database[(database['surrogate'] == sur) & (database['problem'] == func)]['r_square'].to_numpy()
-            res[res<0]=0
-            count_zero=np.sum(res==0)
-            print(sur, func, "mean:", np.mean(res), "std:", np.std(res), "counts:", count_zero/240)
+    for dim in dimensions:
+        for sample in samples:
+            res=database[(database['surrogate'] == sur) & (database['dimensions'] == dim) & (database['samples'] == sample)]['rank_score'].to_numpy()
+            print(sur, "dim:", dim,"sample:", sample,"mean:", np.mean(res), "std:", np.std(res))
             

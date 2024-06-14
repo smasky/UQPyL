@@ -23,7 +23,7 @@ benchmarks={1: Sphere, 2: Schwefel_2_22, 3: Schwefel_1_22, 4: Schwefel_2_21, 5: 
             13:Bent_Cigar, 14: Discus, 15:Weierstrass}
 
 dimensions=[5, 15, 30, 50]
-samples=[100, 300, 500]
+samples=[50, 150, 300, 500]
 # columns = ['problem', 'surrogate', 'dimensions', 'samples', 'r_square', 'rank_score']
 database = pd.read_excel("./database.xlsx", index_col=0)
 #----------------------RBF-----------------------------#
@@ -42,7 +42,7 @@ for id, func in benchmarks.items():
                 train_X=lhs.sample(sample, problem.n_input, random_seed=seed_train[index, time])
                 train_Y=problem.evaluate(train_X)
                 
-                test_X=lhs.sample(50, problem.n_input, random_seed=seed_test[index, time])
+                test_X=lhs.sample(sample, problem.n_input, random_seed=seed_test[index, time])
                 test_Y=problem.evaluate(test_X)
 
                 surrogate=RBF(kernel=Gaussian())
