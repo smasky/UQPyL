@@ -53,14 +53,14 @@ class ProblemABC(metaclass=abc.ABCMeta):
         elif(isinstance(ub,np.ndarray)):
             
             self._check_bound(ub)
-            self.ub=ub
+            self.ub=ub.reshape(1, -1)
             
         if (isinstance(lb,(int, float))):
             self.lb=np.ones((1,self.n_input))*lb
         elif(isinstance(lb,np.ndarray)):
             
             self._check_bound(lb)
-            self.lb=lb
+            self.lb=lb.reshape(1, -1)
             
     def _check_2d(self, X:np.ndarray):
         return np.atleast_2d(X)

@@ -45,8 +45,9 @@ class PSO():
             [4] Y. Shi and R. C. Eberhart, A modified particle swarm optimizer, in Proceedings of the IEEE Congress on Evolutionary Computation, 1998.
         
     '''
-    def __init__(self, problem: Problem, n_sample: int=50,
+    def __init__(self, problem: Problem, n_samples: int=50,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,
+                    x_init=None, y_init=None,
                     maxIterTimes: int=1000,
                     maxFEs: int=50000,
                     maxTolerateTimes: int=1000,
@@ -55,10 +56,15 @@ class PSO():
             self.evaluate=problem.evaluate
             self.n_input=problem.n_input
             self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
+            self.problem=problem
             
             #algorithm setting
             self.w=w;self.c1=c1;self.c2=c2
-            self.n_sample=n_sample
+            self.n_samples=n_samples
+            
+            #
+            self.x_init=x_init
+            self.y_init=y_init
             
             #termination setting
             self.maxIterTimes=maxIterTimes

@@ -14,10 +14,10 @@ class RBF(Surrogate):
     '''    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
-                 kernel: Optional[Kernel]=None):
+                 kernel: Optional[Kernel]=None, C_smooth: int=0):
         
         super().__init__(scalers, poly_feature)
-        
+        self.C_smooth=C_smooth
         if (isinstance(kernel,Kernel)):
             self.kernel=kernel
         else:
@@ -42,7 +42,7 @@ class RBF(Surrogate):
         
         train_X, train_Y=self.__check_and_scale__(train_X,train_Y)
         
-        A_Matrix=self.kernel.get_A_Matrix(train_X)
+        A_Matrix=self.kernel.get_A_Matrix(train_X)+self.C_smooth
         P, L, U=lu(a=A_Matrix)
         L=np.dot(P,L)
         degree=self.kernel.get_degree(self.n_features)
@@ -79,15 +79,3 @@ class RBF(Surrogate):
                 temp2=temp2+np.repeat(self.coe_h[-1:,:],temp1.shape[0],axis=0)
         
         return self.__Y_inverse_transform__(temp1+temp2)
-            
-                
-            
-            
-            
-            
-            
-
-
-
-        
-        

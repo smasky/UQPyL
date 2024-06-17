@@ -48,6 +48,7 @@ class GA():
     '''
     type="EA" #Evolutionary Algorithm
     def __init__(self, problem, n_samples: int=50,
+                 x_init=None, y_init=None,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  maxIterTimes: int=1000,
                  maxFEs: int=50000,
@@ -57,12 +58,17 @@ class GA():
         self.evaluate=problem.evaluate
         self.n_input=problem.n_input
         self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
+        self.problem=problem
         
         #algorithm setting
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
         self.tolerate=tolerate
         self.n_samples=n_samples
+        
+        #
+        self.x_init=x_init
+        self.y_init=y_init
         
         #termination setting
         self.maxTolerateTimes=maxTolerateTimes
@@ -135,7 +141,7 @@ class GA():
             history_decs[FEs]=best_decs
             history_objs[FEs]=best_objs
                   
-        Result['best_dec']=best_decs
+        Result['best_decs']=best_decs
         Result['best_obj']=best_objs
         Result['history_best_decs']=history_decs
         Result['history_best_objs']=history_objs
