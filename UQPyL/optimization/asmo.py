@@ -4,6 +4,7 @@ from typing import Optional
 
 from .sce_ua import SCE_UA
 from .pso import PSO
+from .ga import GA
 from ..DoE import LHS
 from ..problems import Problem
 from ..surrogates import Surrogate
@@ -37,7 +38,7 @@ class ASMO():
         self.lb=problem.lb; self.ub=problem.ub
         self.n_input=problem.n_input
         self.maxFE=maxFE; self.maxTolerateTime=maxTolerateTime
-        
+        self.problem=problem
         #surrogate setting
         self.surrogate=surrogate
         self.n_init=n_init
@@ -60,7 +61,7 @@ class ASMO():
             
         lhs=LHS('classic', problem=self.problem)
         if self.x_init is None:
-            self.x_init=lhs(self.n_samples, n_input)
+            self.x_init=lhs.sample(self.n_init, n_input,11)
         if self.y_init is None:
             self.y_init=self.evaluate(self.x_init)
            
@@ -78,16 +79,17 @@ class ASMO():
         # history_BestY=[]; history_BestX=[]
         # history_BestX.append(BestX)
         # history_BestY.append(BestY)
-        
+        history_best_decs[self.n_init]=BestX
+        history_best_objs[self.n_init]=BestY
         if (oneStep==False):
             while FE<self.maxFE and TT<self.maxTolerateTime:
                 show_process.update(1)
                 # Build surrogate model
                 self.surrogate.fit(XPop, YPop)
-                res=PSO(self.subProblem).run()
-                BestX_SM=res['best_dec']
+                res=GA(self.subProblem).run()
+                BestX_SM=res['best_decs']
                 
-                TempY=self.evaluate(BestX_SM)
+                TempY=self.evaluate(BestX_SM.reshape(1,-1))
                 FE+=1
                 XPop=np.vstack((XPop,BestX_SM))
                 YPop=np.vstack((YPop,TempY))

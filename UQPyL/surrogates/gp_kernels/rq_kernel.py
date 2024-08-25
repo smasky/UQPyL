@@ -28,18 +28,18 @@ class RationalQuadratic(Gp_Kernel):
         self.l_ub=l_ub; self.l_lb=l_lb
         self.alpha=alpha
         self.alpha_ub=alpha_ub;self.alpha_lb=alpha_lb
-   
+
     def __call__(self, trainX: np.ndarray, trainY: Optional[np.ndarray]=None):
         
         if trainY is None:
-            dists=squareform(pdist(trainX, metric="sqeuclidean"))
-            tmp= dists / (2*self.alpha* self.length_scale**2)
+            dists=squareform(pdist(trainX/self.length_scale, metric="sqeuclidean"))
+            tmp= dists / (2*self.alpha)
             base=1 + tmp
             K=base**-self.alpha
             np.fill_diagonal(K,1)
         else:
-            dists=cdist(trainX, trainY, metric="sqeuclidean")
-            K= (1+dists / (2* self.alpha * self.length_scale**2)) ** -self.alpha
+            dists=cdist(trainX* self.length_scale, trainY, metric="sqeuclidean")
+            K= (1+dists / (2* self.alpha )) ** -self.alpha
         
         return K
     #################################Attributes##########3########################

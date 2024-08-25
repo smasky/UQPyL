@@ -99,7 +99,7 @@ class PSO():
         
         lhs=LHS('classic', problem=self.problem)
         if self.x_init is None:
-            self.x_init=lhs(self.n_samples, self.n_input)
+            self.x_init=lhs.sample(self.n_samples, self.n_input)
         if self.y_init is None:
             self.y_init=self.evaluate(self.x_init)
         
@@ -119,7 +119,7 @@ class PSO():
         G_best_obj=np.copy(P_best_objs[ind])
         vel=np.copy(decs)
         
-        show_process=tqdm(total=self.maxIterTimes, desc="Particle Swarm Optimization")
+        # show_process=tqdm(total=self.maxIterTimes, desc="Particle Swarm Optimization")
         
         while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
             decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec, self.w)
@@ -137,7 +137,7 @@ class PSO():
             iter+=1
             FEs+=objs.shape[0]
             
-            show_process.update(1)
+            # show_process.update(1)
             
             history_best_decs[FEs]=G_best_dec
             history_best_objs[FEs]=G_best_obj

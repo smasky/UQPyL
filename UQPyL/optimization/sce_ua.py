@@ -50,6 +50,7 @@ class SCE_UA():
         self.NInput=problem.n_input
         self.lb=problem.lb
         self.ub=problem.ub
+        self.problem=problem
         
         #algorithm setting
         self.kstop=kstop
@@ -63,7 +64,8 @@ class SCE_UA():
         #termination setting
         self.maxFE=maxFE
         self.maxIter=maxIter
-        
+        self.x_init=None
+        self.y_init=None
     def run(self):
         '''
             Run the SCE-UA optimization algorithm
@@ -79,7 +81,7 @@ class SCE_UA():
         #Initialize
         lhs=LHS('classic', problem=self.problem)
         if self.x_init is None:
-            self.x_init=lhs(self.n_samples, self.n_input)
+            self.x_init=lhs(npt, NInput)
         if self.y_init is None:
             self.y_init=self.evaluate(self.x_init)
          

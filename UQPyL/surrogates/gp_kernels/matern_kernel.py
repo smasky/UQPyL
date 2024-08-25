@@ -46,6 +46,7 @@ class Matern(Gp_Kernel):
             K=np.exp(-dists)
         elif self.nu==1.5:
             K=dists*np.sqrt(3)
+            K=(1.0+K)* np.exp(-K)
         elif self.nu==2.5:
             K=dists*np.sqrt(5)
             K=(1.0+K+K**2/3.0) * np.exp(-K)

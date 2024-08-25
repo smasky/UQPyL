@@ -61,6 +61,7 @@ problem=Ishigami(3, 1, np.pi, -1*np.pi)
 ################1. Sobol#################
 print("################1.Sobol################")
 from UQPyL.sensibility import Sobol
+problem=Ishigami(3, 1, np.pi, -1*np.pi)
 sobol_method=Sobol(problem=problem, cal_second_order=True) #Using Sobol Sequence and saltelli_sequence
 X=sobol_method.sample(512)
 Y=problem.evaluate(X)

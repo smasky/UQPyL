@@ -15,8 +15,8 @@ class Sampler(metaclass=abc.ABCMeta):
         if self.problem is not None:
             disc_var=self.problem.disc_var
             disc_range=self.problem.disc_range
-            lb=self.problem.lb
-            ub=self.problem.ub
+            lb=self.problem.lb.reshape(1,-1)
+            ub=self.problem.ub.reshape(1,-1)
             
             tmp_X=np.empty_like(X)
             # for continuous variables

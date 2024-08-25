@@ -29,7 +29,6 @@ class SVR(Surrogate):
         self.maxIter=maxIter
         self.eps=eps
         self.model=None
-
 ###-----------------------public functions--------------------------###
 
     def predict(self, predict_X: np.ndarray) -> np.ndarray:

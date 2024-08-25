@@ -2,11 +2,12 @@ import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Tuple, Optional, Literal
 
+from ..problems import Problem
 from .surrogate_ABC import Surrogate
-from .gp_kernels import RBF, Matern, Gp_Kernel
+from .gp_kernels import RBF, Matern, Gp_Kernel, RationalQuadratic
 from ..optimization import GA, Boxmin, MP_List, EA_List
 from ..utility.model_selections import RandSelect
-from ..utility.metrics import r_square
+from ..utility.metrics import r_square, rank_score
 from ..utility.scalers import Scaler
 from ..utility.polynomial_features import PolynomialFeatures
 
@@ -35,7 +36,7 @@ class GPR(Surrogate):
         
         self.trainX, self.trainY=self.__check_and_scale__(trainX, trainY)
         
-        if(isinstance(self.kernel, RBF) or isinstance(self.kernel, Matern)):
+        if(isinstance(self.kernel, RBF) or isinstance(self.kernel, Matern) or isinstance(self.kernel, RationalQuadratic)):
             
             if(self.fitMode=='likelihood'):
                 self._fit_likelihood()
@@ -88,12 +89,10 @@ class GPR(Surrogate):
                 self.trainY=trainY
                 self._objfunc(theta, record=True)
                 predictY=self.predict(self.X_scaler.inverse_transform(testX))
-                return -1*r_square(self.Y_scaler.inverse_transform(testY), predictY)
+                return -1*rank_score(self.Y_scaler.inverse_transform(testY), predictY)
             bestTheta, bestObj=self.OPModel.run(objFunc)
             
         elif self.optimizer in EA_List:
-            
-            self.OPModel=eval(self.optimizer)(self.kernel.theta.size, np.log(self.kernel.theta_ub), np.log(self.kernel.theta_lb), 50)
             
             def objFunc(thetas):
                 self.trainX=trainX
@@ -103,20 +102,25 @@ class GPR(Surrogate):
                 for i, theta in enumerate(thetas):
                     self._objfunc(np.power(np.e,theta),record=True)
                     predictY=self.predict(self.X_scaler.inverse_transform(testX))
-                    objs[i]=-1*r_square(self.Y_scaler.inverse_transform(testY), predictY)
+                    objs[i]=-1*rank_score(self.Y_scaler.inverse_transform(testY), predictY)
                 return objs.reshape(-1,1)
             
-            self.OPFunc=objFunc
-            bestObj=np.inf
-            bestTheta=None
-            for _ in range(self.n_restarts_optimizer):
-                theta, obj=self.OPModel.run(self.OPFunc)
-                if obj<bestObj:
-                    bestTheta=theta
-                    bestObj=obj
-                    
-            bestTheta, bestObj=self.OPModel.run(objFunc)
+            problem=Problem(objFunc, self.kernel.length_scale.shape[0], 1, np.log(self.kernel.l_ub), np.log(self.kernel.l_lb))
+            self.OPModel=eval(self.optimizer)(problem, n_samples=100, maxFEs=20000)
+            res=self.OPModel.run()
+            bestTheta=res['best_decs']
             bestTheta=np.power(np.e,bestTheta).ravel()
+            # self.OPFunc=objFuncs
+            # bestObj=np.inf
+            # bestTheta=None
+            # for _ in range(self.n_restarts_optimizer):
+            #     theta, obj=self.OPModel.run(self.OPFunc)
+            #     if obj<bestObj:
+            #         bestTheta=theta
+            #         bestObj=obj
+                    
+            # bestTheta, bestObj=self.OPModel.run(objFunc)
+            # bestTheta=np.power(np.e,bestTheta).ravel()
         
         self.trainX=TotalX
         self.trainY=TotalY
@@ -132,18 +136,22 @@ class GPR(Surrogate):
     def _fit_likelihood(self):
             
         if self.optimizer in MP_List:
-            self.OPModel=eval(self.optimizer)(self.kernel.theta, self.kernel.theta_ub, self.kernel.theta_lb)
+            # self.OPModel=eval(self.optimizer)(self.kernel.theta, self.kernel.theta_ub, self.kernel.theta_lb)
+            # bestTheta, bestObj=self.OPModel.run(lambda theta:-self._objfunc(theta))
+            self.OPModel=eval(self.optimizer)(self.kernel.length_scale, self.kernel.l_ub, self.kernel.l_lb)
             bestTheta, bestObj=self.OPModel.run(lambda theta:-self._objfunc(theta))
         elif self.optimizer in EA_List:
             
-            self.OPModel=eval(self.optimizer)(self.kernel.theta.size, np.log(self.kernel.theta_ub), np.log(self.kernel.theta_lb), 50)
             def objFunc(thetas):
                 objs=np.zeros(thetas.shape[0])
                 for i,theta in enumerate(thetas):
-                    objs[i]=self._objfunc(np.power(np.e,theta), record=True)
+                    objs[i]=-self._objfunc(np.power(np.e,theta), record=False)
                 return objs.reshape((-1,1))
             
-            bestTheta, bestObj=self.OPModel.run(objFunc)
+            problem=Problem(objFunc, self.kernel.length_scale.shape[0], 1, np.log(self.kernel.l_ub), np.log(self.kernel.l_lb))
+            self.OPModel=eval(self.optimizer)(problem, n_samples=100, maxFEs=20000)
+            res=self.OPModel.run()
+            bestTheta=res['best_decs']
             bestTheta=np.power(np.e,bestTheta).ravel()
             
         #Prepare for prediction
@@ -154,7 +162,7 @@ class GPR(Surrogate):
         """
             log_marginal_likelihood
         """
-        self.kernel.theta=theta
+        self.kernel.length_scale=theta
         
         K=self.kernel(self.trainX)
         K[np.diag_indices_from(K)]+=self.alpha

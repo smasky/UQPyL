@@ -26,7 +26,7 @@ benchmarks={1: Sphere, 2: Schwefel_2_22, 3: Schwefel_1_22, 4: Schwefel_2_21, 5: 
 dimensions=[10, 20, 30, 50]
 samples=[100, 200, 300, 500]
 # columns = ['problem', 'surrogate', 'dimensions', 'samples', 'r_square', 'rank_score']
-database = pd.read_excel("./database.xlsx", index_col=0)
+# database = pd.read_excel("./database.xlsx", index_col=0)
 #----------------------RBF-----------------------------#
 from UQPyL.surrogates import RBF
 from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
@@ -86,7 +86,10 @@ class rbf_optimization(ProblemABC):
                     tmp_X[:, i]=disc_range[i][indices]
         return tmp_X
     
-       
+index=1
+dim=[10]
+samples=[200]
+benchmarks={ 15:Weierstrass}
 for id, func in benchmarks.items():
     for dim in dimensions:
         for sample in samples:
@@ -105,14 +108,25 @@ for id, func in benchmarks.items():
                 test_X_=train_X[selected_indices]
                 test_Y_=train_Y[selected_indices]
                 
-                ga=GA(problem=rbf_optimization(RBF(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=Cubic()), train_x=train_X_, train_y=train_Y_, test_x=test_X_, test_y=test_Y_), n_samples=50, maxFEs=1000)
-                res=ga.run()
-                kernel=eval(kernels[int(res["best_decs"][0,0])])()
-                surrogate=RBF(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel)
-                surrogate.C_smooth=res["best_decs"][0,1]
-                
                 test_X=lhs.sample(sample, problem.n_input, random_seed=seed_test[index, time])
                 test_Y=problem.evaluate(test_X)
+                
+                scores=[]
+                for sur in kernels:
+                    surrogate=RBF(kernel=eval(sur)())
+                    surrogate.fit(train_X, train_Y)
+                    pre_=surrogate.predict(test_X)
+                    rank=rank_score(pre_, test_Y)
+                    scores.append(rank)
+                
+                a=1    
+                # ga=GA(problem=rbf_optimization(RBF(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=Cubic()), train_x=train_X_, train_y=train_Y_, test_x=test_X_, test_y=test_Y_), n_samples=50, maxFEs=1000)
+                # res=ga.run()
+                # kernel=eval(kernels[int(res["best_decs"][0,0])])()
+                # surrogate=RBF(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel)
+                # surrogate.C_smooth=res["best_decs"][0,1]
+                
+                
 
                 surrogate.fit(train_X, train_Y)
                 pre_Y=surrogate.predict(test_X)
