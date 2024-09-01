@@ -3,18 +3,20 @@ import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
 
-    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], disc_var=None, disc_range=None, cont_var=None, x_labels=None):
+    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None):
         
         self.n_input=n_input
         self.n_output=n_output
         self._set_ub_lb(ub,lb)
-        if disc_var is None:
-            self.disc_var=[0]*n_input
-            self.disc_range=[0]*n_input
+        if var_type is None:
+            self.var_type=np.array([0]*n_input)
         else:
-            self.disc_var=disc_var
-            self.disc_range=disc_range
-        self.cont_var=cont_var
+            self.var_type=np.array(var_type)
+        
+        if var_set is None:
+            self.var_set={}
+        else:
+            self.var_set=var_set
         
         if x_labels is None:
             self.x_labels=['x_'+str(i) for i in range(1,n_input+1)]
@@ -23,18 +25,20 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def evaluate(self,X):
         pass
     
-    def _discrete_variable_transform(self, X):
-        if self.disc_var is not None:
-            for i in range(self.n_input):
-                if self.disc_var[i]==1:
-                    num_interval=len(self.disc_range[i])
-                    bins=np.linspace(self.lb[i], self.ub[i], num_interval+1)
-                    indices = np.digitize(X[:, i], bins[1:])
+    def _transform_special_parameters(self, X):
+        
+        int_indice=np.where(self.var_type==1)[0]
+        if int_indice.size>0:
+            X[:, int_indice]=np.round(X[:, int_indice])
+        
+        if self.var_set is not None:
+            for index, set in self.var_set.items():
+                num_interval=len(set)
+                bins=np.linspace(self.lb[index], self.ub[index], num_interval+1)
+                indices = np.digitize(X[:, index], bins) - 1
+                X[:, index]=np.array([set[i] for i in indices])
                     
-                    if isinstance(self.disc_range[i], list):
-                        X[:, i]=np.array(self.disc_range[i])[indices]
-                    else:
-                        X[:, i]=self.disc_range[i][indices]
+        return X
     
     def _unit_X_transform_to_bound(self, X):
         
@@ -42,8 +46,9 @@ class ProblemABC(metaclass=abc.ABCMeta):
         X_max=X.max(axis=0)
         
         X_scaled=(X - X_min) / (X_max - X_min)
-        
-        return X_scaled*(self.ub-self.lb)+self.lb
+        X_scaled=X_scaled*(self.ub-self.lb)+self.lb
+        X_scaled=self._transform_special_parameters(X_scaled)
+        return X_scaled
     
     
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
@@ -51,14 +56,12 @@ class ProblemABC(metaclass=abc.ABCMeta):
         if (isinstance(ub,(int, float))):
             self.ub=np.ones((1,self.n_input))*ub
         elif(isinstance(ub,np.ndarray)):
-            
             self._check_bound(ub)
             self.ub=ub.reshape(1, -1)
             
         if (isinstance(lb,(int, float))):
             self.lb=np.ones((1,self.n_input))*lb
         elif(isinstance(lb,np.ndarray)):
-            
             self._check_bound(lb)
             self.lb=lb.reshape(1, -1)
             

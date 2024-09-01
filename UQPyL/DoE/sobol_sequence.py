@@ -26,7 +26,8 @@ class Sobol_Sequence(Sampler):
         
         self.scramble=scramble
         self.skip_value=skip_value
-    
+        
+    @Sampler.rescale
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 

@@ -24,7 +24,8 @@ class FAST_Sequence(Sampler):
         
         super().__init__()
         self.M=M
-        
+    
+    @Sampler.rescale
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         Generate a shape of (nt*nx, nx) sample for FAST

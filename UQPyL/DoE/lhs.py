@@ -151,6 +151,7 @@ class LHS(Sampler):
         #initial random state
         self.random_state=np.random.RandomState()
         
+    @Sampler.rescale    
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         Generate a Latin-hypercube design
@@ -181,10 +182,6 @@ class LHS(Sampler):
         else:
             X=Sampling_method(nt, nx, self.random_state)
         
-        #rescale the samples
-        # if self.problem is not None:
-        #     X=X*(self.problem.ub-self.problem.lb)+self.problem.lb
-        X=self.rescale_to_problems(X)  
         return X
     
     def sample(self, nt: int, nx:int, random_seed: Optional[int]=None) -> np.ndarray:
