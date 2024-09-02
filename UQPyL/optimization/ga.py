@@ -3,7 +3,8 @@ import math
 
 from ..problems import Problem
 from ..DoE import LHS
-class GA():
+from .optimizer import Optimizer, debugDecorator_1   
+class GA(Optimizer):
     '''
         Genetic Algorithm <Single>
         -------------------------------
@@ -46,27 +47,28 @@ class GA():
             [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
             [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
     '''
+    name="Genetic Algorithm"
     type="EA" #Evolutionary Algorithm
-    def __init__(self, problem, n_samples: int=50,
+    def __init__(self, problem, nInit: int=50, nPop: int=50,
                  x_init=None, y_init=None,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  maxIterTimes: int=1000,
                  maxFEs: int=50000,
                  maxTolerateTimes: int=1000,
-                 tolerate=1e-6):
+                 tolerate=1e-6,
+                 verbose=False):
         #problem setting
         self.evaluate=problem.evaluate
         self.n_input=problem.n_input
         self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
-        self.problem=problem
         
         #algorithm setting
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
         self.tolerate=tolerate
-        self.n_samples=n_samples
+        self.nInit=nInit
+        self.nPop=nPop
         
-        #
         self.x_init=x_init
         self.y_init=y_init
         
@@ -75,82 +77,59 @@ class GA():
         self.maxIterTimes=maxIterTimes
         self.maxFEs=maxFEs
         
-    #--------------------------Public Functions--------------------------#
-    def run(self) -> dict:
-        '''
-            Run the Genetic Algorithm
-            -------------------------------
-            Returns:
-                Result: dict
-                    the result of the Genetic Algorithm, including the following keys:
-                    best_decs: 2d-np.ndarray
-                        the decision variables of the best solution
-                    best_objs: 2d-np.ndarray
-                        the objective values of the best solution
-                    history_best_decs: 2d-np.ndarray
-                        the best decision variables of each iteration
-                    history_best_objs: 2d-np.ndarray
-                        the best objective values of each iteration
-                    iters: int
-                        the iteration times of the Genetic Algorithm
-                    FEs: int
-                        the function evaluations of the Genetic Algorithm
-        '''
-        best_objs=np.inf
-        best_decs=None
-        time=1
-        iter=0
-        FEs=0
+        #setting record
+        setting={}
+        setting["nPop"]=nPop
+        setting["nInit"]=nInit
+        setting["proC"]=proC
+        setting["disC"]=disC
+        setting["proM"]=proM
+        setting["proC"]=proC
+        setting["maxFEs"]=maxFEs
+        setting["maxIterTimes"]=maxIterTimes
+        setting["maxTolerateTimes"]=maxTolerateTimes
+        self.setting=setting
         
-        lhs=LHS('classic', problem=self.problem)
-        if self.x_init is None:
-            self.x_init=lhs(self.n_samples, self.n_input)
-        if self.y_init is None:
-            self.y_init=self.evaluate(self.x_init)
-        decs=self.x_init
-        objs=self.y_init
+        super().__init__(problem=problem, maxFEs=maxFEs, maxIter=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose)
+    #--------------------Public Functions---------------------#
+    @debugDecorator_1  
+    def run(self, xInit=None, yInit=None):
         
-        FEs+=objs.shape[0]
+        if xInit is None:
+            lhs=LHS('classic', problem=self.problem)
+            xInit=lhs.sample(self.nInit, self.n_input)
         
-        history_decs={}
-        history_objs={}
-        Result={}
-        while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
-            
-            matingPool=self._tournamentSelection(decs,objs,2)
-            matingDecs=self._operationGA(matingPool)
-            matingObjs=self.evaluate(matingDecs)
-            
-            
-            tempObjs=np.vstack((objs,matingObjs))
-            tempDecs=np.vstack((decs,matingDecs))
-            rank=np.argsort(tempObjs,axis=0)
-            decs=tempDecs[rank[:self.n_samples,0],:]
-            objs=tempObjs[rank[:self.n_samples,0],:]
-            
-            if(abs(best_objs-np.min(objs))>self.tolerate):
-                best_objs=np.min(objs)
-                best_decs=decs[np.argmin(objs,axis=0),:]
-                time=0
-            else:
-                time+=1
-            
-            iter+=1
-            FEs+=matingObjs.shape[0]
-            
-            history_decs[FEs]=best_decs
-            history_objs[FEs]=best_objs
-                  
-        Result['best_decs']=best_decs
-        Result['best_obj']=best_objs
-        Result['history_best_decs']=history_decs
-        Result['history_best_objs']=history_objs
-        Result['iters']=iter
-        Result['FEs']=FEs
+        if yInit is None:
+            yInit=self.evaluate(xInit)
         
-        return Result
+        # sorted_indices=np.argsort(self.yInit.ravel())
+        # objs=self.yInit[sorted_indices[:self.nPop], :]
+        # decs=self.xInit[sorted_indices[:self.nPop], :]
+        self.database.update(xInit, yInit)
+        decs=xInit; objs=yInit
+        
+        while self.checkLoopCriteria():
+            decs, objs=self.evolve(decs, objs)
+            self.database.update(decs, objs)
+            
     #--------------------Private Functions--------------------# 
-    def _tournamentSelection(self,decs: np.ndarray, objs: np.ndarray, K: int=2):
+    def evolve(self, decs, objs):
+        
+        matingPool=self._tournamentSelection(decs,objs,2)
+        matingDecs=self._operationGA(matingPool)
+        matingObjs=self.evaluate(matingDecs)
+        self.FEs+=matingDecs.shape[0]
+        
+        decs=np.vstack((decs,matingDecs))
+        objs=np.vstack((objs,matingObjs))
+        sorted_indices=np.argsort(objs.ravel())
+        objs=objs[sorted_indices[:self.nPop], :]
+        decs=decs[sorted_indices[:self.nPop], :]
+        
+        return decs, objs
+        
+    def _tournamentSelection(self, decs: np.ndarray, objs: np.ndarray, K: int=2):
         '''
             K-tournament selection
         '''

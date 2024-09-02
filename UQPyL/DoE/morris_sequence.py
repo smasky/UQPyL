@@ -25,7 +25,6 @@ class Morris_Sequence(Sampler):
         super().__init__()
         self.num_levels=num_levels
         
-    @Sampler.rescale
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         Generate a shape of (nt*nx, nx) sample for FAST

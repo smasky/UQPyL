@@ -3,7 +3,7 @@ import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
 
-    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None):
+    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None, y_labels=None):
         
         self.n_input=n_input
         self.n_output=n_output
@@ -20,7 +20,10 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         if x_labels is None:
             self.x_labels=['x_'+str(i) for i in range(1,n_input+1)]
-    
+
+        if y_labels is None:
+            self.y_labels=['y_'+str(i) for i in range(1,n_output+1)]
+        
     @abc.abstractmethod
     def evaluate(self,X):
         pass

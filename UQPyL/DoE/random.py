@@ -13,7 +13,6 @@ class Random(Sampler):
         >>> random=RANDOM()
         >>> random(10,10) or random.sample(10,10)
     '''
-    
     def _generate(self,nt: int, nx: int) -> np.ndarray:
         
         H=np.random.random((nt,nx))

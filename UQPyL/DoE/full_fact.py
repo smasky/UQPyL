@@ -20,7 +20,6 @@ class FFD(Sampler):
         
         return self._generate(nx, levels)
     
-    @Sampler.rescale
     def _generate(self, nx: int, levels: Union[np.ndarray, int, list]) -> np.ndarray:
 
         if isinstance(levels, int):

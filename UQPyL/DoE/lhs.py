@@ -4,7 +4,7 @@ from scipy.spatial.distance import pdist
 
 from ..problems import Problem
 
-from .sampler_ABC import Sampler
+from .sampler_ABC import Sampler, decoratorRescale
 
 # from ._lhs import _lhs_classic, _lhs_centered, _lhs_correlate, _lhs_maximin, _lhs_centered_maximin
 
@@ -151,7 +151,7 @@ class LHS(Sampler):
         #initial random state
         self.random_state=np.random.RandomState()
         
-    @Sampler.rescale    
+        
     def _generate(self, nt: int, nx: int) -> np.ndarray:
         '''
         Generate a Latin-hypercube design
@@ -184,6 +184,7 @@ class LHS(Sampler):
         
         return X
     
+    @decoratorRescale
     def sample(self, nt: int, nx:int, random_seed: Optional[int]=None) -> np.ndarray:
         '''
         Generate a Latin-hypercube design
