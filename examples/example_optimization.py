@@ -21,8 +21,8 @@ from UQPyL.optimization import GA, PSO
 from UQPyL.problems import Sphere
 
 problem=Sphere(n_input=30, ub=100, lb=-100)
-ga=PSO(problem, nInit=50, nPop=50, verbose=True)
-res=ga.run()
+ga=GA(nInit=50, nPop=50, verbose=True)
+res=ga.run(problem)
 a=1
 
 # import matplotlib.pyplot as plt

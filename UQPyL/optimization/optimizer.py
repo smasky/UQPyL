@@ -7,7 +7,99 @@ from datetime import datetime
 from prettytable import PrettyTable
 
 from ..DoE import LHS
+from ..problems import ProblemABC
 
+class Population():
+    def __init__(self, decs=None, objs=None):
+        
+        self.decs=decs
+        self.objs=objs
+        if decs is not None:
+            self.nPop, self.D=decs.shape
+        else:
+            self.nPop=0; self.D=0
+        if objs is None:
+            self.evaluated=None
+                
+    def __add__(self, otherPop):
+        
+        self.checkSameStatus(otherPop)
+        return Population(self.decs+otherPop.decs)
+    
+    def __mul__(self, number):
+        
+        return Population(self.decs*number)
+    
+    def __rmul__(self, number):
+        
+        return Population(self.decs*number)
+    
+    def __truediv__(self, number):
+        
+        return Population(self.decs/number)
+    
+    def __sub__(self, otherPop):
+        
+        self.checkSameStatus(otherPop)
+        return Population(self.decs-otherPop.decs)
+    
+    def add(self, decs, objs):
+        
+        otherPop=Population(decs, objs)
+        self.add(otherPop)
+    
+    def checkSameStatus(self, otherPop):
+        if self.evaluated != otherPop.evaluated:
+            raise Exception("The population evaluation status is different.")
+    
+    def checkEvaluated(self):
+        
+        if self.evaluate is False:
+            raise Exception("The population is not evaluated yet.")
+    
+    def initialize(self, decs, objs):
+        
+        self.decs=decs
+        self.objs=objs
+        self.nPop, self.D=decs.shape
+           
+    def getTop(self, k):
+        
+        args=np.argsort(self.objs.ravel())
+        a=Population(self.decs[args[:k], :], 1)
+        return Population(self.decs[args[:k], :], self.objs[args[:k], :])
+    
+    def argsort(self):
+        args=np.argsort(self.objs.ravel())
+        return args
+    
+    def clip(self, lb, ub):
+        self.decs=np.clip(self.decs, lb, ub)
+    
+    def size(self):
+        return self.nPop, self.D
+    
+    def evaluate(self, problem):
+        self.objs=problem.evaluate(self.decs)
+        self.evaluated=True
+    def add(self, otherPop):
+        
+        if self.decs is None:
+            self.decs=np.vstack((self.decs, otherPop.decs))
+            self.objs=np.vstack((self.objs, otherPop.objs))
+        else:
+            self.decs=otherPop.decs
+            self.objs=otherPop.objs
+            
+        self.nPop=self.decs.shape[0]
+
+    def __getitem__(self, index):
+        
+        return Population(self.decs[index, :])
+    
+    def __len__(self):
+        return self.nPop
+    
 def verboseForUpdate (func):
     
         @functools.wraps(func)
@@ -20,6 +112,7 @@ def verboseForUpdate (func):
                 spacing=int((total_width-len(title))/2)
                 print("="*spacing+title+"="*spacing)
                 verboseSolutions(self.database.bestDec, self.database.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
+        
         return wrapper
            
 def verboseForRun (func):
@@ -37,7 +130,7 @@ def verboseForRun (func):
             suffix=datetime.now().strftime("%m%d_%H%M%S")
             file=f"log_{self.name}_{suffix}.txt"
             self.log_file = open(file, 'w')
-            sys.stdout = Tee(self.verbose, self.logFlag, sys.stdout, self.log_file)
+            sys.stdout = Debug(self.verbose, self.logFlag, sys.stdout, self.log_file)
             
         if self.verbose or self.logFlag:
             title=self.name+" Setting"
@@ -83,7 +176,7 @@ def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
         table.add_row(values[i*cols:end])
         print(table)
 
-class Tee(object):
+class Debug(object):
     def __init__(self, verbose, logFlag, sysOut, fileOut):
         self.sysOut=sysOut
         self.fileOut=fileOut
@@ -116,8 +209,9 @@ class Database():
         self.historyObjs={}
         self.historyFEs={}
         
-    def update(self, decs, objs, FEs, Iters):
+    def update(self, pop, FEs, Iters):
         
+        decs=pop.decs; objs=pop.objs
         if self.bestObj==None or np.min(objs)<self.bestObj:
             ind=np.where(objs==np.min(objs))
             self.bestDec=decs[ind[0][0], :]
@@ -145,10 +239,11 @@ class Optimizer():
     tolerateTimes=0;maxTolerateTimes=None;tolerate=1e-6
     bestDec=None; bestObj=None; appearFEs=None
     historyBestDecs={}; historyBestObjs={}
-    
-    def __init__(self, problem, maxFEs, maxIter, maxTolerateTimes, tolerate, 
+    setting={}; problem=None
+    def __init__(self, maxFEs, maxIter, maxTolerateTimes, tolerate, 
                  verbose=True, verboseFreq=10,
                  logFlag=True):
+        
         self.maxFEs=maxFEs
         self.maxIter=maxIter
         self.maxTolerateTimes=maxTolerateTimes
@@ -158,20 +253,24 @@ class Optimizer():
         self.verboseFreq=verboseFreq
         self.logFlag=logFlag
 
-        self.problem=problem
         self.database=Database()
-        
-        # self.log_file = open('log.txt', 'w')
-        # sys.stdout = Tee(sys.stdout, self.log_file)
     
-    def evaluate(self, decs):
+    def initialize(self):
         
-        objs=self.problem.evaluate(decs)
-        self.FEs+=decs.shape[0]
+        lhs=LHS('classic', problem=self.problem)
+        xInit=lhs(self.nInit, self.problem.n_input)
+        pop=Population(xInit)
+        self.evaluate(pop); 
+            
+        return pop
+    
+    def evaluate(self, pop):
         
-        return objs
+        pop.evaluate(self.problem)
+        self.FEs+=pop.nPop
     
     def checkTermination(self):
+        
         if self.FEs<=self.maxFEs:
             if self.iters<=self.maxIter:
                 if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
@@ -180,5 +279,6 @@ class Optimizer():
         return False
     
     @verboseForUpdate
-    def update(self, decs, objs):
-        self.database.update(decs, objs, self.FEs, self.iters)
+    def record(self, pop):
+        
+        self.database.update(pop, self.FEs, self.iters)

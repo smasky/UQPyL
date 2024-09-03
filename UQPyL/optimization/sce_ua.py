@@ -1,8 +1,8 @@
 #Shuffled Complex Evolution-UA
 import numpy as np
 from ..DoE import LHS
-
-class SCE_UA():
+from .optimizer import Optimizer, verboseForRun
+class SCE_UA(Optimizer):
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>
         ----------------------------------------------
@@ -40,17 +40,19 @@ class SCE_UA():
             [3] Duan, Q., Sorooshian, S., & Gupta, V. K. (1994). A shuffled complex evolution approach for effective and efficient global minimization. Journal of optimization theory and applications, 76(3), 501-521.
                 
     '''
-    def __init__(self, problem,
+    def __init__(self, problem, 
           ngs: int= 0, kstop: int= 10, 
           pcento: float = 0.1, peps: float= 0.001, 
-          maxFE: int= 50000, maxIter: int= 1000):
+          maxFE: int= 50000, 
+          maxIterTimes: int= 1000, 
+          maxTolerateTimes: int= 1000,
+          tolerate=1e-6,
+          verbose=True,
+          logFlag=False):
         
         #problem setting
-        self.evaluate=problem.evaluate
-        self.NInput=problem.n_input
-        self.lb=problem.lb
-        self.ub=problem.ub
-        self.problem=problem
+        self.n_input=problem.n_input
+        self.lb=problem.lb.reshape(1,-1);self.ub=problem.ub.reshape(1,-1)
         
         #algorithm setting
         self.kstop=kstop
@@ -61,55 +63,56 @@ class SCE_UA():
         else:
             self.ngs=ngs
         
-        #termination setting
-        self.maxFE=maxFE
-        self.maxIter=maxIter
-        self.x_init=None
-        self.y_init=None
-    def run(self):
-        '''
-            Run the SCE-UA optimization algorithm
-        '''
+        #setting record
+        setting={}
+        setting["ngs"]=ngs
+        setting["kstop"]=kstop
+        setting["pcento"]=pcento
+        setting["peps"]=peps
+        setting["maxFE"]=maxFE
+        setting["maxIterTimes"]=maxIterTimes
+        setting["maxTolerateTimes"]=maxTolerateTimes
+        self.setting=setting
+        
+        super().__init__(problem, maxFE, maxIterTimes, 
+                         maxTolerateTimes, tolerate, 
+                         verbose=verbose, logFlag=logFlag)
+    
+    @verboseForRun
+    def run(self, xInit=None, yInit=None):
+        
         # Initialize SCE parameters:
-        NInput=self.NInput
-        npg  = 2 * self.NInput + 1
-        nps  = self.NInput + 1
+        n_input=self.n_input
+        npg  = 2 * n_input + 1
+        nps  = n_input + 1
+        
         nspl = npg
         npt  = npg * self.ngs
         BD   = self.ub - self.lb
         
         #Initialize
         lhs=LHS('classic', problem=self.problem)
-        if self.x_init is None:
-            self.x_init=lhs(npt, NInput)
-        if self.y_init is None:
-            self.y_init=self.evaluate(self.x_init)
+        if xInit is None:
+            xInit=lhs(npt, n_input)
+        if yInit is None:
+            yInit=self.evaluate(xInit)
          
-        XPop=self.x_init
-        YPop=self.y_init
-        FEs=npt
+        decs=xInit
+        objs=yInit
+        
         #Sort the population in order of increasing function values
-        idx=np.argsort(YPop, axis=0)
-        YPop=YPop[idx[:,0]]
-        XPop=XPop[idx[:,0],:]
+        idx=np.argsort(objs, axis=0)
+        objs=objs[idx[:,0]]
+        decs=decs[idx[:,0],:]
         
-        #Record
-        BestX=np.copy(XPop[0, :])
-        BestY=np.copy(YPop[0, 0])
-        # WorstX=np.copy(XPop[-1, :])
-        # WorstY=np.copy(YPop[0, 0])
-        history_best_decs={}
-        history_best_objs={}
-        
-        history_best_decs[FEs]=BestX
-        history_best_objs[FEs]=BestY
+        self.update(decs, objs)
         
         #Setup Setting
-        gnrng = np.exp(np.mean(np.log((np.max(XPop,axis=0)-np.min(XPop,axis=0))/BD)))
+        gnrng = np.exp(np.mean(np.log((np.max(decs,axis=0)-np.min(decs,axis=0))/BD)))
         nloop=0
         criter=[]
         criter_change = 1e+5
-        cx=np.zeros((npg, NInput))
+        cx=np.zeros((npg, n_input))
         cf=np.zeros((npg,1))
         ngs=self.ngs
         

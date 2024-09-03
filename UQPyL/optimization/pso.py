@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 
 from ..problems import Problem
 from ..DoE import LHS
@@ -47,7 +46,6 @@ class PSO(Optimizer):
     '''
     name="Particle Swarm Optimization"
     def __init__(self, problem: Problem, nInit: int=50, nPop: int=50,
-                    x_init=None, y_init=None,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,
                     maxIterTimes: int=1000,
                     maxFEs: int=50000,
@@ -64,10 +62,6 @@ class PSO(Optimizer):
             self.tolerate=tolerate
             self.nInit=nInit
             self.nPop=nPop
-            
-            #
-            self.x_init=x_init
-            self.y_init=y_init
             
             #termination setting
             self.maxIterTimes=maxIterTimes
@@ -87,30 +81,11 @@ class PSO(Optimizer):
             self.setting=setting
             
             super().__init__(problem=problem, maxFEs=maxFEs, maxIter=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose, logFlag=logFlag)
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
+                         verbose=verbose, logFlag=logFlag)
     
     @verboseForRun
-    def run(self, xInit=None, yInit=None) -> dict:
-        '''
-            Run the Particle Swarm Optimization
-            -------------------------------
-            Returns:
-                Result: dict
-                    the result of the Particle Swarm Optimization, including the following keys:
-                    decs: np.ndarray
-                        the best decision of the Particle Swarm Optimization
-                    objs: np.ndarray
-                        the best objective value of the Particle Swarm Optimization
-                    history_decs: np.ndarray
-                        the history of the decision of the Particle Swarm Optimization
-                    history_objs: np.ndarray
-                        the history of the objective value of the Particle Swarm Optimization
-                    iters: int
-                        the iteration times of the Particle Swarm Optimization
-                    FEs: int
-                        the function evaluations of the Particle Swarm Optimization
-        '''
-        
+    def run(self, xInit=None, yInit=None):
         
         if xInit is None:
             lhs=LHS('classic', problem=self.problem)
@@ -124,7 +99,7 @@ class PSO(Optimizer):
     
         self.update(xInit, yInit)
         
-        #Init vel and orien
+        #Init vel and orient
         P_best_decs=np.copy(decs)
         P_best_objs=np.copy(objs)
         ind=np.argmin(P_best_objs)
@@ -132,20 +107,20 @@ class PSO(Optimizer):
         vel=np.copy(decs)
         
         while self.checkTermination():
-            decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec, self.w)
+            decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec)
             decs=self._randomParticle(decs)
             objs=self.evaluate(decs)
             
             replace=np.where(objs<P_best_objs)[0]
-            P_best_decs[replace]=np.copy(decs[replace])
-            P_best_objs[replace]=np.copy(objs[replace])
+            P_best_decs[replace]=decs[replace]
+            P_best_objs[replace]=objs[replace]
             
-            ind=np.argmin(P_best_objs)
-            G_best_dec=np.copy(P_best_decs[ind])      
+            indices=np.argmin(P_best_objs)
+            G_best_dec=P_best_decs[indices]      
             
             self.update(decs, objs)
       
-    def _operationPSO(self, decs, vel, P_best_decs, G_best_dec, w):
+    def _operationPSO(self, decs, vel, P_best_decs, G_best_dec):
         
         N, D=decs.shape
         
@@ -154,12 +129,11 @@ class PSO(Optimizer):
         r1=np.random.rand(N,D)
         r2=np.random.rand(N,D)
         
-        offVel=w*PatricleVel+self.c1*r1*(P_best_decs-decs)+self.c2*r2*(G_best_dec-decs)
+        offVel=self.w*PatricleVel+self.c1*r1*(P_best_decs-decs)+self.c2*r2*(G_best_dec-decs)
         offDecs=decs+offVel
         
         offDecs = np.clip(offDecs, self.lb, self.ub)
         return offDecs, offVel
-    
     
     def _randomParticle(self, decs):
         
@@ -168,5 +142,5 @@ class PSO(Optimizer):
         cols_to_mutate = np.random.choice(decs.shape[1], size=n_to_reinit, replace=False)
 
         decs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.lb[0, cols_to_mutate], self.ub[0, cols_to_mutate], size=n_to_reinit)
-                
+        
         return decs
