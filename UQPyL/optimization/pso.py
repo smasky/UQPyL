@@ -2,7 +2,7 @@ import numpy as np
 
 from ..problems import Problem
 from ..DoE import LHS
-from .optimizer import Optimizer, verboseForRun
+from .optimizer import Optimizer, Population, verboseForRun
 class PSO(Optimizer):
     '''
         Particle Swarm Optimization
@@ -44,103 +44,95 @@ class PSO(Optimizer):
             [4] Y. Shi and R. C. Eberhart, A modified particle swarm optimizer, in Proceedings of the IEEE Congress on Evolutionary Computation, 1998.
         
     '''
-    name="Particle Swarm Optimization"
-    def __init__(self, problem: Problem, nInit: int=50, nPop: int=50,
+    name= "Particle Swarm Optimization"
+    type= "EA" #Evolutionary Algorithm
+    target= "Single"
+    def __init__(self, nInit: int=50, nPop: int=50,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,
                     maxIterTimes: int=1000,
                     maxFEs: int=50000,
-                    maxTolerateTimes: int=1000,
-                    tolerate=1e-6,
-                    verbose=True,
-                    logFlag=False):
-            #problem setting
-            self.n_input=problem.n_input
-            self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
+                    maxTolerateTimes: int=1000, tolerate: float=1e-6,
+                    verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
             
-            #algorithm setting
+            #user-define setting
             self.w=w;self.c1=c1;self.c2=c2
             self.tolerate=tolerate
             self.nInit=nInit
             self.nPop=nPop
-            
-            #termination setting
-            self.maxIterTimes=maxIterTimes
-            self.maxFEs=maxFEs
-            self.maxTolerateTimes=maxTolerateTimes
-            
+             
             #setting record
-            setting={}
-            setting["nPop"]=nPop
-            setting["nInit"]=nInit
-            setting["w"]=w
-            setting["c1"]=c1
-            setting["c2"]=c2
-            setting["maxFEs"]=maxFEs
-            setting["maxIterTimes"]=maxIterTimes
-            setting["maxTolerateTimes"]=maxTolerateTimes
-            self.setting=setting
+            self.setting["nPop"]=nPop
+            self.setting["nInit"]=nInit
+            self.setting["w"]=w
+            self.setting["c1"]=c1
+            self.setting["c2"]=c2
             
-            super().__init__(problem=problem, maxFEs=maxFEs, maxIter=maxIterTimes, 
+            super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
                          verbose=verbose, logFlag=logFlag)
     
     @verboseForRun
-    def run(self, xInit=None, yInit=None):
+    def run(self, problem, xInit=None, yInit=None):
         
-        if xInit is None:
-            lhs=LHS('classic', problem=self.problem)
-            xInit=lhs.sample(self.nInit, self.n_input)
+        self.problem=problem
         
-        if yInit is None:
-            yInit=self.evaluate(xInit)
+        if xInit is not None:
+            if yInit is not None:
+                pop=Population(xInit, yInit)
+            else:
+                pop=Population(xInit)
+                self.evaluate(pop)
+        else:
+            pop=self.initialize()
         
-        decs=xInit
-        objs=yInit
-    
-        self.update(xInit, yInit)
+        pop=pop.getTop(self.nPop)
+        
+        self.record(pop)
         
         #Init vel and orient
-        P_best_decs=np.copy(decs)
-        P_best_objs=np.copy(objs)
-        ind=np.argmin(P_best_objs)
-        G_best_dec=np.copy(P_best_decs[ind])      
-        vel=np.copy(decs)
+        pBestPop=pop
+        gBestPop=pop[pop.argsort()[0:1]]
+        vel=pop.decs
+        
         
         while self.checkTermination():
-            decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec)
-            decs=self._randomParticle(decs)
-            objs=self.evaluate(decs)
             
-            replace=np.where(objs<P_best_objs)[0]
-            P_best_decs[replace]=decs[replace]
-            P_best_objs[replace]=objs[replace]
+            pop, vel=self._operationPSO(pop, vel, pBestPop, gBestPop)
+            pop=self._randomParticle(pop)
+            self.evaluate(pop)
             
-            indices=np.argmin(P_best_objs)
-            G_best_dec=P_best_decs[indices]      
+            replace=np.where(pop.objs<pBestPop.objs)[0]
+            pBestPop.replace(replace, pop)
+            gBestPop=pBestPop[pBestPop.argsort()[0:1]]
             
-            self.update(decs, objs)
-      
-    def _operationPSO(self, decs, vel, P_best_decs, G_best_dec):
-        
-        N, D=decs.shape
-        
-        PatricleVel=vel
-        
-        r1=np.random.rand(N,D)
-        r2=np.random.rand(N,D)
-        
-        offVel=self.w*PatricleVel+self.c1*r1*(P_best_decs-decs)+self.c2*r2*(G_best_dec-decs)
-        offDecs=decs+offVel
-        
-        offDecs = np.clip(offDecs, self.lb, self.ub)
-        return offDecs, offVel
+            self.record(pop)
+            
+        return self.result
     
-    def _randomParticle(self, decs):
+    def _operationPSO(self, pop, vel, pBestPop, gBestPop):
         
-        n_to_reinit = int(0.1 * decs.shape[0])
-        rows_to_mutate = np.random.choice(decs.shape[0], size=n_to_reinit, replace=False)
-        cols_to_mutate = np.random.choice(decs.shape[1], size=n_to_reinit, replace=False)
+        n, d=pop.size()
+        
+        particleVel=vel
+        
+        r1=np.random.rand(n, d)
+        r2=np.random.rand(n, d)
+        
+        a=(gBestPop-pop)*self.c2*r2
+        offVel=self.w*particleVel+(pBestPop.decs-pop.decs)*self.c1*r1+(gBestPop.decs-pop.decs)*self.c2*r2
+        offSpring=pop+offVel
+        
+        offSpring.clip(self.problem.lb, self.problem.ub)
+        
+        return offSpring, offVel
+    
+    def _randomParticle(self, pop):
+        
+        n, d=pop.size()
+        n_to_reinit = int(0.1 * n)
+        rows_to_mutate = np.random.choice(n, size=n_to_reinit, replace=False)
+        cols_to_mutate = np.random.choice(d, size=n_to_reinit, replace=False)
 
-        decs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.lb[0, cols_to_mutate], self.ub[0, cols_to_mutate], size=n_to_reinit)
+        pop.decs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.problem.lb[0, cols_to_mutate], self.problem.ub[0, cols_to_mutate], size=n_to_reinit)
         
-        return decs
+        return pop

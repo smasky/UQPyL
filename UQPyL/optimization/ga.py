@@ -1,7 +1,6 @@
 import numpy as np
 import math
 
-from ..problems import Problem
 from ..DoE import LHS
 from .optimizer import Optimizer, Population, verboseForRun
 class GA(Optimizer):
@@ -47,27 +46,22 @@ class GA(Optimizer):
             [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
             [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
     '''
-    name="Genetic Algorithm"
-    type="EA" #Evolutionary Algorithm
+    name= "Genetic Algorithm"
+    type= "EA" #Evolutionary Algorithm
+    target= "Single"
     def __init__(self, nInit: int=50, nPop: int=50,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  maxIterTimes: int=1000,
                  maxFEs: int=50000,
-                 maxTolerateTimes: int=1000,
-                 tolerate=1e-6, verbose=True, logFlag=False):
+                 maxTolerateTimes: int=1000, tolerate: float=1e-6, 
+                 verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
         
-        #algorithm setting
+        #user-define setting
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
-        self.tolerate=tolerate
         self.nInit=nInit
         self.nPop=nPop
-        
-        #termination setting
-        self.maxTolerateTimes=maxTolerateTimes
-        self.maxIterTimes=maxIterTimes
-        self.maxFEs=maxFEs
-        
+                
         #setting record
         self.setting["nPop"]=nPop
         self.setting["nInit"]=nInit
@@ -75,19 +69,24 @@ class GA(Optimizer):
         self.setting["disC"]=disC
         self.setting["proM"]=proM
         self.setting["proC"]=proC
-        self.setting["maxFEs"]=maxFEs
-        self.setting["maxIterTimes"]=maxIterTimes
-        self.setting["maxTolerateTimes"]=maxTolerateTimes
+
         
-        super().__init__(maxFEs=maxFEs, maxIter=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose, logFlag=logFlag)
+        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
     #--------------------Public Functions---------------------#
     @verboseForRun  
-    def run(self, problem, pop=None):
+    def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem
         
-        if pop is None:
+        if xInit is not None:
+            if yInit is not None:
+                pop=Population(xInit, yInit)
+            else:
+                pop=Population(xInit)
+                self.evaluate(pop)
+        else:
             pop=self.initialize()
         
         pop=pop.getTop(self.nPop)
@@ -96,21 +95,16 @@ class GA(Optimizer):
         
         while self.checkTermination():
             
-            pop=self.evolve(pop)
+            matingPool=self._tournamentSelection(pop, 2)
+            offspring=self._operationGA(matingPool)
+            self.evaluate(offspring)
+            
+            pop=pop.merge(offspring)
+            pop=pop.getTop(self.nPop)
             self.record(pop)
             
-        return self.database
-    #--------------------Private Functions--------------------# 
-    def evolve(self, pop):
-        
-        matingPool=self._tournamentSelection(pop, 2)
-        offspring=self._operationGA(matingPool)
-        
-        pop=pop.add(offspring)
-        pop=pop.getTop(self.nPop)
-        
-        return pop
-        
+        return self.result
+    #--------------------Private Functions--------------------#         
     def _tournamentSelection(self, pop, K: int=2):
         '''
             K-tournament selection
@@ -143,24 +137,23 @@ class GA(Optimizer):
         beta[np.random.rand(n, d) < 0.5] = 1
         beta[np.repeat(np.random.rand(n, 1) > self.proC, d, axis=1)] = 1
 
-        off1=(parent1 + parent2) / 2 + beta * (parent1 - parent2) / 2
-        off2=(parent1 + parent2) / 2 - beta * (parent1 - parent2) / 2 
-        offspring=off1.add(off2)
-
-        lower = np.repeat(self.lb, 2 * n, axis=0)
-        upper = np.repeat(self.ub, 2 * n, axis=0)
+        off1=(parent1 + parent2) / 2 + (parent1 - parent2) * beta / 2
+        off2=(parent1 + parent2) / 2 - (parent1 - parent2) * beta / 2 
+        offspring=off1.merge(off2)
+        
+        lower = np.repeat(self.problem.lb, 2 * n, axis=0)
+        upper = np.repeat(self.problem.ub, 2 * n, axis=0)
         site = np.random.rand(2 * n, d) < self.proM / d
         mu = np.random.rand(2 * n, d)
         
         offspring.clip(lower, upper)
         temp = site & (mu <= 0.5)
-        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
-        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (np.power(2 * mu[temp] + t1, 1 / (self.disM + 1)) - 1)
+        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring.decs[temp] - lower[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
+        
+        offspring.decs[temp] = offspring.decs[temp] + (upper[temp] - lower[temp]) * (np.power(2 * mu[temp] + t1, 1 / (self.disM + 1)) - 1)
         
         temp = site & (mu > 0.5)
-        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
-        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
-        
-        self.evaluate(offspring)
+        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring.decs[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
+        offspring.decs[temp] = offspring.decs[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
         
         return offspring

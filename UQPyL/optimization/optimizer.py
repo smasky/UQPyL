@@ -22,8 +22,9 @@ class Population():
             self.evaluated=None
                 
     def __add__(self, otherPop):
-        
-        self.checkSameStatus(otherPop)
+        # self.checkSameStatus(otherPop)
+        if isinstance(otherPop, np.ndarray):
+            return Population(self.decs+otherPop)
         return Population(self.decs+otherPop.decs)
     
     def __mul__(self, number):
@@ -40,14 +41,14 @@ class Population():
     
     def __sub__(self, otherPop):
         
-        self.checkSameStatus(otherPop)
+        # self.checkSameStatus(otherPop)
         return Population(self.decs-otherPop.decs)
     
     def add(self, decs, objs):
         
         otherPop=Population(decs, objs)
         self.add(otherPop)
-    
+
     def checkSameStatus(self, otherPop):
         if self.evaluated != otherPop.evaluated:
             raise Exception("The population evaluation status is different.")
@@ -76,6 +77,10 @@ class Population():
     def clip(self, lb, ub):
         self.decs=np.clip(self.decs, lb, ub)
     
+    def replace(self, index, pop):
+        self.decs[index, :]=pop.decs[index, :]
+        self.objs[index, :]=pop.objs[index, :]
+        
     def size(self):
         return self.nPop, self.D
     
@@ -84,7 +89,7 @@ class Population():
         self.evaluated=True
     def add(self, otherPop):
         
-        if self.decs is None:
+        if self.decs is not None:
             self.decs=np.vstack((self.decs, otherPop.decs))
             self.objs=np.vstack((self.objs, otherPop.objs))
         else:
@@ -92,9 +97,17 @@ class Population():
             self.objs=otherPop.objs
             
         self.nPop=self.decs.shape[0]
-
+    
+    def merge(self, otherPop):
+        self.add(otherPop)
+        return self
+    
     def __getitem__(self, index):
-        
+        if isinstance(index, np.ndarray):
+            if index.ndim==1:
+                return Population(self.decs[index, :])
+            else:
+                return Population(self.decs[index])
         return Population(self.decs[index, :])
     
     def __len__(self):
@@ -111,7 +124,7 @@ def verboseForUpdate (func):
                 title="FEs: "+str(self.FEs)+" | Iters: "+str(self.iters)
                 spacing=int((total_width-len(title))/2)
                 print("="*spacing+title+"="*spacing)
-                verboseSolutions(self.database.bestDec, self.database.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
+                verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
         
         return wrapper
            
@@ -154,10 +167,10 @@ def verboseForRun (func):
             print("Time:  "+format_duration(endTime-startTime))
             print(f"Used FEs:    {self.FEs}  |  Iters:  {self.iters}")
             print(f"Best Objs and Best Decision with the FEs")
-            verboseSolutions(self.database.bestDec, self.database.bestObj, self.problem.x_labels, self.problem.y_labels, self.database.appearFEs, self.database.appearIters, total_width)
+            verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.result.appearFEs, self.result.appearIters, total_width)
         if self.logFlag:
             self.log_file.close()
-        return self.database
+        return self.result
     return wrapper
 
 def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
@@ -197,7 +210,7 @@ class Debug(object):
         if self.verbose:
             self.sysOut.flush()
 
-class Database():
+class Result():
     def __init__(self):
         self.bestDec=None
         self.bestObj=None
@@ -237,23 +250,24 @@ class Optimizer():
     FEs=0;maxFEs=0
     iters=0;maxIter=0
     tolerateTimes=0;maxTolerateTimes=None;tolerate=1e-6
-    bestDec=None; bestObj=None; appearFEs=None
-    historyBestDecs={}; historyBestObjs={}
     setting={}; problem=None
-    def __init__(self, maxFEs, maxIter, maxTolerateTimes, tolerate, 
+    def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
                  verbose=True, verboseFreq=10,
                  logFlag=True):
         
         self.maxFEs=maxFEs
-        self.maxIter=maxIter
+        self.maxIter=maxIterTimes
         self.maxTolerateTimes=maxTolerateTimes
         self.tolerate=tolerate
+        self.setting["maxFEs"]=maxFEs
+        self.setting["maxIterTimes"]=maxIterTimes
+        self.setting["maxTolerateTimes"]=maxTolerateTimes
         
         self.verbose=verbose
         self.verboseFreq=verboseFreq
         self.logFlag=logFlag
 
-        self.database=Database()
+        self.result=Result()
     
     def initialize(self):
         
@@ -281,4 +295,4 @@ class Optimizer():
     @verboseForUpdate
     def record(self, pop):
         
-        self.database.update(pop, self.FEs, self.iters)
+        self.result.update(pop, self.FEs, self.iters)

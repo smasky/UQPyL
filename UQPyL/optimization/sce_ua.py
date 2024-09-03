@@ -1,7 +1,7 @@
 #Shuffled Complex Evolution-UA
 import numpy as np
 from ..DoE import LHS
-from .optimizer import Optimizer, verboseForRun
+from .optimizer import Optimizer, Population, verboseForRun
 class SCE_UA(Optimizer):
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>
@@ -43,88 +43,68 @@ class SCE_UA(Optimizer):
     def __init__(self, problem, 
           ngs: int= 0, kstop: int= 10, 
           pcento: float = 0.1, peps: float= 0.001, 
-          maxFE: int= 50000, 
+          maxFEs: int= 50000, 
           maxIterTimes: int= 1000, 
-          maxTolerateTimes: int= 1000,
-          tolerate=1e-6,
-          verbose=True,
-          logFlag=False):
-        
-        #problem setting
-        self.n_input=problem.n_input
-        self.lb=problem.lb.reshape(1,-1);self.ub=problem.ub.reshape(1,-1)
+          maxTolerateTimes: int= 1000, tolerate: float=1e-6,
+          verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
         
         #algorithm setting
         self.kstop=kstop
         self.pcento=pcento
         self.peps=peps
-        if ngs==0:
-            self.ngs=problem.n_input
-        else:
-            self.ngs=ngs
+
+        self.ngs=ngs
         
         #setting record
-        setting={}
-        setting["ngs"]=ngs
-        setting["kstop"]=kstop
-        setting["pcento"]=pcento
-        setting["peps"]=peps
-        setting["maxFE"]=maxFE
-        setting["maxIterTimes"]=maxIterTimes
-        setting["maxTolerateTimes"]=maxTolerateTimes
-        self.setting=setting
+        self.setting["ngs"]=ngs
+        self.setting["kstop"]=kstop
+        self.setting["pcento"]=pcento
+        self.setting["peps"]=peps 
         
-        super().__init__(problem, maxFE, maxIterTimes, 
-                         maxTolerateTimes, tolerate, 
-                         verbose=verbose, logFlag=logFlag)
+        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
     
     @verboseForRun
-    def run(self, xInit=None, yInit=None):
+    def run(self, problem, xInit=None, yInit=None):
         
+        self.problem=problem
+        if self.ngs==0:
+            self.ngs=problem.n_input
         # Initialize SCE parameters:
-        n_input=self.n_input
-        npg  = 2 * n_input + 1
-        nps  = n_input + 1
+        npg  = 2 * self.problem.n_input + 1
+        nps  = self.problem.n_input + 1
         
         nspl = npg
-        npt  = npg * self.ngs
-        BD   = self.ub - self.lb
+        self.nInit  = npg * self.ngs
+        BD  = self.problem.ub - self.problem.lb
         
-        #Initialize
-        lhs=LHS('classic', problem=self.problem)
-        if xInit is None:
-            xInit=lhs(npt, n_input)
-        if yInit is None:
-            yInit=self.evaluate(xInit)
-         
-        decs=xInit
-        objs=yInit
+        if xInit is not None:
+            if yInit is not None:
+                pop=Population(xInit, yInit)
+            else:
+                pop=Population(xInit)
+                self.evaluate(pop)
+        else:
+            pop=self.initialize()
         
         #Sort the population in order of increasing function values
-        idx=np.argsort(objs, axis=0)
-        objs=objs[idx[:,0]]
-        decs=decs[idx[:,0],:]
-        
-        self.update(decs, objs)
+        idx=pop.argsort()
+        pop=pop[idx]
+                
+        self.record(pop)
         
         #Setup Setting
-        gnrng = np.exp(np.mean(np.log((np.max(decs,axis=0)-np.min(decs,axis=0))/BD)))
-        nloop=0
+        gnrng = np.exp(np.mean(np.log((np.max(pop.decs,axis=0)-np.min(pop.decs,axis=0))/BD)))
         criter=[]
         criter_change = 1e+5
-        cx=np.zeros((npg, n_input))
-        cf=np.zeros((npg,1))
-        ngs=self.ngs
-        
-        while FEs<self.maxFE and gnrng>self.peps and criter_change>self.pcento and nloop<self.maxIter:
-            nloop+=1
+
+        while self.checkTermination() and gnrng>self.peps and criter_change>self.pcento:
             
-            for igs in range(ngs):
+            for igs in range(self.ngs):
                 # Partition the population into complexes (sub-populations)
-                k1 = np.linspace(0, npg-1, npg, dtype=np.int64)
-                k2 = k1 * ngs + igs
-                cx[k1, :]=np.copy(XPop[k2, :])
-                cf[k1, :]=np.copy(YPop[k2, :])
+                idx = np.linspace(0, npg-1, npg, dtype=np.int64) * self.ngs + igs
+                igsPop=pop[idx]
                 
                 # Evolve sub-population igs for nspl steps
                 for _ in range(nspl):

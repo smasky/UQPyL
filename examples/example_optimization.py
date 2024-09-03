@@ -25,6 +25,8 @@ ga=GA(nInit=50, nPop=50, verbose=True)
 res=ga.run(problem)
 a=1
 
+
+
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']
 # FEs=list(FEs_objs.keys())
@@ -83,17 +85,17 @@ a=1
 # print('FE:', res['FEs'])
 
 #############4. NSGA-II - Multi-objective#################
-print('#############4. NSGA-II - Multi-objective#################')
-from UQPyL.optimization import NSGAII
-from UQPyL.problems import ZDT3
-problem=ZDT3(n_input=30)
-optimum=problem.get_optimum(100)
-nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
-res=nsga.run()
-import matplotlib.pyplot as plt
-y=res['pareto_y']
-plt.scatter(y[:,0], y[:,1])
-plt.show()
+# print('#############4. NSGA-II - Multi-objective#################')
+# from UQPyL.optimization import NSGAII
+# from UQPyL.problems import ZDT3
+# problem=ZDT3(n_input=30)
+# optimum=problem.get_optimum(100)
+# nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
+# res=nsga.run()
+# import matplotlib.pyplot as plt
+# y=res['pareto_y']
+# plt.scatter(y[:,0], y[:,1])
+# plt.show()
 
 #############5. MOEAD - Multi-objective#################
 # print('#############5. MOEAD - Multi-objective#################')
