@@ -3,7 +3,7 @@ import math
 
 from ..problems import Problem
 from ..DoE import LHS
-from .optimizer import Optimizer, debugDecorator_1   
+from .optimizer import Optimizer, verboseForRun 
 class GA(Optimizer):
     '''
         Genetic Algorithm <Single>
@@ -56,9 +56,9 @@ class GA(Optimizer):
                  maxFEs: int=50000,
                  maxTolerateTimes: int=1000,
                  tolerate=1e-6,
-                 verbose=False):
+                 verbose=True,
+                 logFlag=False):
         #problem setting
-        self.evaluate=problem.evaluate
         self.n_input=problem.n_input
         self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
         
@@ -91,9 +91,9 @@ class GA(Optimizer):
         self.setting=setting
         
         super().__init__(problem=problem, maxFEs=maxFEs, maxIter=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose)
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose, logFlag=logFlag)
     #--------------------Public Functions---------------------#
-    @debugDecorator_1  
+    @verboseForRun  
     def run(self, xInit=None, yInit=None):
         
         if xInit is None:
@@ -102,17 +102,14 @@ class GA(Optimizer):
         
         if yInit is None:
             yInit=self.evaluate(xInit)
-        
-        # sorted_indices=np.argsort(self.yInit.ravel())
-        # objs=self.yInit[sorted_indices[:self.nPop], :]
-        # decs=self.xInit[sorted_indices[:self.nPop], :]
-        self.database.update(xInit, yInit)
+            
+        self.update(xInit, yInit)
         decs=xInit; objs=yInit
         
-        while self.checkLoopCriteria():
+        while self.checkTermination():
             decs, objs=self.evolve(decs, objs)
-            self.database.update(decs, objs)
-            
+            self.update(decs, objs)
+        return self.database
     #--------------------Private Functions--------------------# 
     def evolve(self, decs, objs):
         

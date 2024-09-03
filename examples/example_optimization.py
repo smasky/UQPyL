@@ -17,15 +17,13 @@ import matplotlib.pyplot as plt
 from UQPyL.problems import Sphere
 ################1. Genetic Algorithm (GA) - Single objective################
 print('################1. Genetic Algorithm (GA) - Single objective################')
-from UQPyL.optimization import GA
+from UQPyL.optimization import GA, PSO
 from UQPyL.problems import Sphere
 
 problem=Sphere(n_input=30, ub=100, lb=-100)
-ga=GA(problem, nInit=50, nPop=50, verbose=True)
+ga=PSO(problem, nInit=50, nPop=50, verbose=True)
 res=ga.run()
-print('Best objective:', res['best_obj'])
-print('Best decisions:', res['best_dec'])
-print('FE:', res['FEs'])
+a=1
 
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']

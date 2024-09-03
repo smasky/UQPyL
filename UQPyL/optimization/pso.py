@@ -3,8 +3,8 @@ from tqdm import tqdm
 
 from ..problems import Problem
 from ..DoE import LHS
-
-class PSO():
+from .optimizer import Optimizer, verboseForRun
+class PSO(Optimizer):
     '''
         Particle Swarm Optimization
         -----------------------------
@@ -45,22 +45,25 @@ class PSO():
             [4] Y. Shi and R. C. Eberhart, A modified particle swarm optimizer, in Proceedings of the IEEE Congress on Evolutionary Computation, 1998.
         
     '''
-    def __init__(self, problem: Problem, n_samples: int=50,
-                    w: float=0.1, c1: float=0.5, c2: float=0.5,
+    name="Particle Swarm Optimization"
+    def __init__(self, problem: Problem, nInit: int=50, nPop: int=50,
                     x_init=None, y_init=None,
+                    w: float=0.1, c1: float=0.5, c2: float=0.5,
                     maxIterTimes: int=1000,
                     maxFEs: int=50000,
                     maxTolerateTimes: int=1000,
-                    tolerate=1e-6):
+                    tolerate=1e-6,
+                    verbose=True,
+                    logFlag=False):
             #problem setting
-            self.evaluate=problem.evaluate
             self.n_input=problem.n_input
             self.ub=problem.ub.reshape(1,-1);self.lb=problem.lb.reshape(1,-1)
-            self.problem=problem
             
             #algorithm setting
             self.w=w;self.c1=c1;self.c2=c2
-            self.n_samples=n_samples
+            self.tolerate=tolerate
+            self.nInit=nInit
+            self.nPop=nPop
             
             #
             self.x_init=x_init
@@ -70,9 +73,24 @@ class PSO():
             self.maxIterTimes=maxIterTimes
             self.maxFEs=maxFEs
             self.maxTolerateTimes=maxTolerateTimes
-            self.tolerate=tolerate
+            
+            #setting record
+            setting={}
+            setting["nPop"]=nPop
+            setting["nInit"]=nInit
+            setting["w"]=w
+            setting["c1"]=c1
+            setting["c2"]=c2
+            setting["maxFEs"]=maxFEs
+            setting["maxIterTimes"]=maxIterTimes
+            setting["maxTolerateTimes"]=maxTolerateTimes
+            self.setting=setting
+            
+            super().__init__(problem=problem, maxFEs=maxFEs, maxIter=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, verbose=verbose, logFlag=logFlag)
     
-    def run(self) -> dict:
+    @verboseForRun
+    def run(self, xInit=None, yInit=None) -> dict:
         '''
             Run the Particle Swarm Optimization
             -------------------------------
@@ -93,35 +111,27 @@ class PSO():
                         the function evaluations of the Particle Swarm Optimization
         '''
         
-        time=1
-        iter=0
-        FEs=0
         
-        lhs=LHS('classic', problem=self.problem)
-        if self.x_init is None:
-            self.x_init=lhs.sample(self.n_samples, self.n_input)
-        if self.y_init is None:
-            self.y_init=self.evaluate(self.x_init)
+        if xInit is None:
+            lhs=LHS('classic', problem=self.problem)
+            xInit=lhs.sample(self.nInit, self.n_input)
         
-        decs=self.x_init
-        objs=self.y_init
+        if yInit is None:
+            yInit=self.evaluate(xInit)
         
-        FEs+=objs.shape[0]
+        decs=xInit
+        objs=yInit
+    
+        self.update(xInit, yInit)
         
-        history_best_decs={}
-        history_best_objs={}
-        Result={}
-        
+        #Init vel and orien
         P_best_decs=np.copy(decs)
         P_best_objs=np.copy(objs)
         ind=np.argmin(P_best_objs)
         G_best_dec=np.copy(P_best_decs[ind])      
-        G_best_obj=np.copy(P_best_objs[ind])
         vel=np.copy(decs)
         
-        # show_process=tqdm(total=self.maxIterTimes, desc="Particle Swarm Optimization")
-        
-        while iter<self.maxIterTimes and FEs<self.maxFEs and time<=self.maxTolerateTimes:
+        while self.checkTermination():
             decs, vel=self._operationPSO(decs, vel, P_best_decs, G_best_dec, self.w)
             decs=self._randomParticle(decs)
             objs=self.evaluate(decs)
@@ -132,25 +142,9 @@ class PSO():
             
             ind=np.argmin(P_best_objs)
             G_best_dec=np.copy(P_best_decs[ind])      
-            G_best_obj=np.copy(P_best_objs[ind])
             
-            iter+=1
-            FEs+=objs.shape[0]
-            
-            # show_process.update(1)
-            
-            history_best_decs[FEs]=G_best_dec
-            history_best_objs[FEs]=G_best_obj
-            
-        Result['best_decs']=G_best_dec
-        Result['best_obj']=G_best_obj[0]
-        Result['history_best_decs']=history_best_decs
-        Result['history_best_objs']=history_best_objs
-        Result['iters']=iter
-        Result['FEs']=FEs
-        
-        return Result
-            
+            self.update(decs, objs)
+      
     def _operationPSO(self, decs, vel, P_best_decs, G_best_dec, w):
         
         N, D=decs.shape
