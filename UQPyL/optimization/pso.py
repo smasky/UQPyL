@@ -91,7 +91,7 @@ class PSO(Optimizer):
         
         #Init vel and orient
         pBestPop=pop
-        gBestPop=pop[pop.argsort()[0:1]]
+        gBestPop=pop[pop.argsort()[0]]
         vel=pop.decs
         
         
@@ -102,8 +102,8 @@ class PSO(Optimizer):
             self.evaluate(pop)
             
             replace=np.where(pop.objs<pBestPop.objs)[0]
-            pBestPop.replace(replace, pop)
-            gBestPop=pBestPop[pBestPop.argsort()[0:1]]
+            pBestPop.replace(replace, pop[replace])
+            gBestPop=pBestPop[pBestPop.argsort()[0]]
             
             self.record(pop)
             

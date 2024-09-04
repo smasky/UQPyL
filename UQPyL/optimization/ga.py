@@ -91,7 +91,7 @@ class GA(Optimizer):
         
         pop=pop.getTop(self.nPop)
         
-        self.record(pop) #TODO
+        self.record(pop) 
         
         while self.checkTermination():
             

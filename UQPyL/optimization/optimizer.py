@@ -27,6 +27,12 @@ class Population():
             return Population(self.decs+otherPop)
         return Population(self.decs+otherPop.decs)
     
+    def __sub__(self, otherPop):
+        
+        if isinstance(otherPop, np.ndarray):
+            return Population(self.decs-otherPop)
+        return Population(self.decs-otherPop.decs)
+    
     def __mul__(self, number):
         
         return Population(self.decs*number)
@@ -38,11 +44,6 @@ class Population():
     def __truediv__(self, number):
         
         return Population(self.decs/number)
-    
-    def __sub__(self, otherPop):
-        
-        # self.checkSameStatus(otherPop)
-        return Population(self.decs-otherPop.decs)
     
     def add(self, decs, objs):
         
@@ -78,8 +79,8 @@ class Population():
         self.decs=np.clip(self.decs, lb, ub)
     
     def replace(self, index, pop):
-        self.decs[index, :]=pop.decs[index, :]
-        self.objs[index, :]=pop.objs[index, :]
+        self.decs[index, :]=pop.decs
+        self.objs[index, :]=pop.objs
         
     def size(self):
         return self.nPop, self.D
@@ -103,13 +104,16 @@ class Population():
         return self
     
     def __getitem__(self, index):
-        if isinstance(index, np.ndarray):
-            if index.ndim==1:
-                return Population(self.decs[index, :])
-            else:
-                return Population(self.decs[index])
-        return Population(self.decs[index, :])
-    
+        if isinstance(index, (slice, list, np.ndarray)):
+            decs = self.decs[index]
+            objs = self.objs[index] if self.objs is not None else None
+        elif isinstance(index, (int, np.integer)):
+            decs = self.decs[index:index+1]
+            objs = self.objs[index:index+1] if self.objs is not None else None
+        else:
+            raise TypeError("Index must be int, slice, list, or ndarray")
+        return Population(decs, objs)
+
     def __len__(self):
         return self.nPop
     
@@ -272,7 +276,7 @@ class Optimizer():
     def initialize(self):
         
         lhs=LHS('classic', problem=self.problem)
-        xInit=lhs(self.nInit, self.problem.n_input)
+        xInit=lhs.sample(self.nInit, self.problem.n_input)
         pop=Population(xInit)
         self.evaluate(pop); 
             
