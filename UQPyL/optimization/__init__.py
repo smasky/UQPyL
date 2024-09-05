@@ -9,6 +9,7 @@ from .mo_asmo import MOASMO
 from ._binary_ga import Binary_GA
 from .pso import PSO
 from .ml_sce_ua import ML_SCE_UA
+from .csa import CSA
 __all__=[
     'GA',
     'Boxmin',
@@ -20,7 +21,8 @@ __all__=[
     'MOEA_D',
     'Binary_GA',
     'PSO',
-    'ML_SCE_UA'
+    'ML_SCE_UA',
+    'CSA'
          ]
 
 MP_List=['Boxmin']

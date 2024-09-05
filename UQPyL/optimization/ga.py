@@ -1,7 +1,6 @@
 import numpy as np
 import math
 
-from ..DoE import LHS
 from .optimizer import Optimizer, Population, verboseForRun
 class GA(Optimizer):
     '''

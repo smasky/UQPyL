@@ -12,25 +12,28 @@ from ..problems import ProblemABC
 class Population():
     def __init__(self, decs=None, objs=None):
         
-        self.decs=decs
-        self.objs=objs
+        self.decs=np.copy(decs)
+        self.objs=np.copy(objs)
+        
         if decs is not None:
             self.nPop, self.D=decs.shape
         else:
             self.nPop=0; self.D=0
         if objs is None:
             self.evaluated=None
-                
+       
     def __add__(self, otherPop):
         # self.checkSameStatus(otherPop)
         if isinstance(otherPop, np.ndarray):
             return Population(self.decs+otherPop)
+        
         return Population(self.decs+otherPop.decs)
     
     def __sub__(self, otherPop):
         
         if isinstance(otherPop, np.ndarray):
             return Population(self.decs-otherPop)
+        
         return Population(self.decs-otherPop.decs)
     
     def __mul__(self, number):
@@ -51,6 +54,7 @@ class Population():
         self.add(otherPop)
 
     def checkSameStatus(self, otherPop):
+        
         if self.evaluated != otherPop.evaluated:
             raise Exception("The population evaluation status is different.")
     
@@ -64,30 +68,37 @@ class Population():
         self.decs=decs
         self.objs=objs
         self.nPop, self.D=decs.shape
-           
+        
     def getTop(self, k):
         
         args=np.argsort(self.objs.ravel())
-        a=Population(self.decs[args[:k], :], 1)
+
         return Population(self.decs[args[:k], :], self.objs[args[:k], :])
     
     def argsort(self):
+        
         args=np.argsort(self.objs.ravel())
+        
         return args
     
     def clip(self, lb, ub):
+        
         self.decs=np.clip(self.decs, lb, ub)
     
     def replace(self, index, pop):
+        
         self.decs[index, :]=pop.decs
         self.objs[index, :]=pop.objs
         
     def size(self):
+        
         return self.nPop, self.D
     
     def evaluate(self, problem):
+        
         self.objs=problem.evaluate(self.decs)
         self.evaluated=True
+        
     def add(self, otherPop):
         
         if self.decs is not None:
@@ -100,10 +111,13 @@ class Population():
         self.nPop=self.decs.shape[0]
     
     def merge(self, otherPop):
+        
         self.add(otherPop)
+        
         return self
     
     def __getitem__(self, index):
+        
         if isinstance(index, (slice, list, np.ndarray)):
             decs = self.decs[index]
             objs = self.objs[index] if self.objs is not None else None
@@ -112,6 +126,7 @@ class Population():
             objs = self.objs[index:index+1] if self.objs is not None else None
         else:
             raise TypeError("Index must be int, slice, list, or ndarray")
+        
         return Population(decs, objs)
 
     def __len__(self):
@@ -194,6 +209,7 @@ def verboseForRun (func):
     return wrapper
 
 def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
+    
     heads=["FEs"]+["Iters"]+y_labels+x_labels
     values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
     rows=int(len(heads))//10+1
@@ -210,13 +226,16 @@ def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
         print(table)
 
 class Debug(object):
+    
     def __init__(self, verbose, logFlag, sysOut, fileOut):
+        
         self.sysOut=sysOut
         self.fileOut=fileOut
         self.logFlag=logFlag
         self.verbose=verbose
         
     def write(self, obj):
+        
         if self.logFlag:
             self.fileOut.write(obj)
             self.fileOut.flush()
@@ -225,6 +244,7 @@ class Debug(object):
             self.sysOut.flush()
         
     def flush(self):
+        
         if self.logFlag:
             self.fileOut.flush()
         if self.verbose:
@@ -232,6 +252,7 @@ class Debug(object):
 
 class Result():
     def __init__(self):
+        
         self.bestDec=None
         self.bestObj=None
         self.appearFEs=None
@@ -244,7 +265,7 @@ class Result():
         
     def update(self, pop, FEs, Iters):
         
-        decs=pop.decs; objs=pop.objs
+        decs=np.copy(pop.decs); objs=np.copy(pop.objs)
         if self.bestObj==None or np.min(objs)<self.bestObj:
             ind=np.where(objs==np.min(objs))
             self.bestDec=decs[ind[0][0], :]
@@ -259,6 +280,7 @@ class Result():
         self.historyBestObjs[FEs]=self.bestObj
     
     def reset(self):
+        
         self.bestDec=None; self.bestObj=None
         self.appearFEs=None; self.appearIters=None
         self.historyBestDecs={}; self.historyBestObjs={}

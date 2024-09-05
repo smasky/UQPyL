@@ -116,10 +116,9 @@ class PSO(Optimizer):
         
         particleVel=vel
         
-        r1=np.random.rand(n, d)
-        r2=np.random.rand(n, d)
+        r1=np.random.random((n, d))
+        r2=np.random.random((n, d))
         
-        a=(gBestPop-pop)*self.c2*r2
         offVel=self.w*particleVel+(pBestPop.decs-pop.decs)*self.c1*r1+(gBestPop.decs-pop.decs)*self.c2*r2
         offSpring=pop+offVel
         

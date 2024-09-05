@@ -17,14 +17,14 @@ import matplotlib.pyplot as plt
 from UQPyL.problems import Sphere
 ################1. Genetic Algorithm (GA) - Single objective################
 print('################1. Genetic Algorithm (GA) - Single objective################')
-from UQPyL.optimization import GA, PSO, SCE_UA, ML_SCE_UA
-from UQPyL.problems import Sphere, Rastrigin
+from UQPyL.optimization import GA, PSO, SCE_UA, ML_SCE_UA, CSA
+from UQPyL.problems import Sphere, Rastrigin, Rosenbrock
 
 problem=Rastrigin(n_input=30, ub=100, lb=-100)
-sce=SCE_UA(ngs=5, verbose=True)
-pso=PSO(nInit=50, nPop=50)
+sce=SCE_UA(ngs=5, verbose=True, maxFEs=50000, maxIterTimes=1000)
+pso=GA(nInit=50, nPop=50, maxFEs=50000, maxIterTimes=1000)
+csa=CSA(verboseFreq=10)
 res=pso.run(problem)
-
 
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']

@@ -34,9 +34,10 @@ class Sphere(ProblemABC):
                     whether to transform X to the bound
         '''
         X=self._check_2d(X)
+        
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        F=np.sum(X**2,axis=1).reshape(-1,1)      
+        F=np.sum(X**2, axis=1).reshape(-1,1)      
         
         return F
 
@@ -148,6 +149,7 @@ class Rosenbrock(ProblemABC):
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
+        
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))    
         Temp1=100*np.square(X[:,1:]-np.square(X[:,:-1]))
@@ -263,6 +265,7 @@ class Rastrigin(ProblemABC):
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+       
         F=np.sum(np.square(X)-10*np.cos(2*np.pi*X)+10,axis=1).reshape(-1,1)
         return F
 

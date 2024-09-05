@@ -91,7 +91,6 @@ class ML_SCE_UA(Optimizer):
                     #Execute CCE for simplex
                     sNew= self.cce(sPop, bPop)
                     igsPop.replace(innerIdx[-1], sNew)
-                    
                     # igsPop=igsPop[igsPop.argsort()]
                     
                 # End of Inner Loop for Competitive Evolution of Simplexes

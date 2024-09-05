@@ -153,7 +153,6 @@ class SCE_UA(Optimizer):
         # Both reflection and contraction have failed, attempt a random point
             if sNew.objs[0] > sWorst.objs[0]:
                 sNew.decs = self.problem.lb + np.random.random(d) * (self.problem.ub - self.problem.lb)
-                sNew.clip(self.problem.lb, self.problem.ub)
                 self.evaluate(sNew)
         # END OF CCE
         return sNew
