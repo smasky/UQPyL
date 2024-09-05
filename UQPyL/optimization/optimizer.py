@@ -131,10 +131,25 @@ def verboseForUpdate (func):
                 verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
         
         return wrapper
-           
+
+def verboseSetting(al):
+    
+    total_width=os.get_terminal_size().columns
+    if al.verbose or al.logFlag:
+        
+        title=al.name+" Setting"
+        spacing=int((total_width-len(title))/2)
+        print("="*spacing+title+"="*spacing)
+        keys=al.setting.keys()
+        values=al.setting.values()
+        table=PrettyTable(keys)
+        table.add_row(values)
+        print(table)
+    
 def verboseForRun (func):
     
     def format_duration(seconds):
+        
         days, seconds = divmod(seconds, 86400)
         hours, seconds = divmod(seconds, 3600) 
         minutes, seconds = divmod(seconds, 60) 
@@ -142,6 +157,7 @@ def verboseForRun (func):
     
     @functools.wraps(func)
     def wrapper(self, *args, **kwargs):
+        
         total_width=os.get_terminal_size().columns
         if self.logFlag:
             suffix=datetime.now().strftime("%m%d_%H%M%S")
@@ -251,14 +267,12 @@ class Result():
     
 class Optimizer():
     
-    FEs=0;maxFEs=0
-    iters=0;maxIter=0
-    tolerateTimes=0;maxTolerateTimes=None;tolerate=1e-6
-    setting={}; problem=None
-    def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+    def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes=None, tolerate=1e-6, 
                  verbose=True, verboseFreq=10,
                  logFlag=True):
         
+        self.setting={}
+        self.problem=None
         self.maxFEs=maxFEs
         self.maxIter=maxIterTimes
         self.maxTolerateTimes=maxTolerateTimes

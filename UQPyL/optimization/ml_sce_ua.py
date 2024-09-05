@@ -1,39 +1,17 @@
-#Shuffled Complex Evolution-UA
+#M&L Shuffled Complex Evolution-UA
+
 import numpy as np
-import random
 from .optimizer import Optimizer, Population, verboseForRun, verboseSetting
-class SCE_UA(Optimizer):
-    '''
-        Shuffled Complex Evolution (SCE-UA) method <Single>
-        ----------------------------------------------
-        Attributes:
-            problem: Problem
-                    the problem you want to solve, including the following attributes:
-                    n_input: int
-                        the input number of the problem
-                    ub: 1d-np.ndarray or float
-                        the upper bound of the problem
-                    lb: 1d-np.ndarray or float
-                        the lower bound of the problem
-                    evaluate: Callable
-                        the function to evaluate the input
-            ngs: int, default=0
-                Number of complexes (sub-populations), the value 0 means ngs=n_input
-            maxFE: int, default=50000
-                Maximum number of function evaluations
-            maxIter: int, default=1000
-                Maximum number of iterations
-        Methods:
-            run:
-                Run the optimization algorithm
-        
+
+class ML_SCE_UA(Optimizer):
+    """
         References:
             [1] Duan, Q., Sorooshian, S., & Gupta, V. K. (1992). Effective and efficient global optimization for conceptual rainfall-runoff models. Water Resources Research, 28(4), 1015-1031.
             [2] Duan, Q., Gupta, V. K., & Sorooshian, S. (1994). Optimal use of the SCE-UA global optimization method for calibrating watershed models. Journal of Hydrology, 158(3-4), 265-284.
             [3] Duan, Q., Sorooshian, S., & Gupta, V. K. (1994). A shuffled complex evolution approach for effective and efficient global minimization. Journal of optimization theory and applications, 76(3), 501-521.
-                
-    '''
-    name="SCE-UA"
+            [4] Muttil N , Liong S Y (2006).Improved robustness and efficiency of the SCE-UA model-calibrating algorithm. Advances in Geosciences.
+    """
+    name="ML-SCE-UA"
     type="EA"
     def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7,
           maxFEs: int= 50000, 
@@ -47,7 +25,7 @@ class SCE_UA(Optimizer):
         
         #algorithm setting
         self.ngs=ngs
-        self.npg=npg
+        self.npg=2 * ngs + 1
         self.nps=nps
         self.nspl=nspl
         
@@ -69,11 +47,10 @@ class SCE_UA(Optimizer):
                 self.ngs=15
         
         # Initialize SCE parameters:
-        npg  = 2*self.ngs + 1
+        npg  = 2 * self.ngs + 1
         nps  = self.ngs + 1
-        nspl = npg
+        nspl = self.npg
         self.nInit  = npg * self.ngs
-        
         BD  = self.problem.ub - self.problem.lb
         
         if self.verbose or self.logFlag:
@@ -96,29 +73,26 @@ class SCE_UA(Optimizer):
         self.record(pop)
         
         while self.checkTermination():
-            
+
             for igs in range(self.ngs):
                 # Partition the population into complexes (sub-populations)
-                
                 outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * self.ngs + igs
-                igsPop = pop[outerIdx]
+                igsPop=pop[outerIdx]
                 
                 # Evolve sub-population igs for nspl steps
                 for _ in range(nspl):
                     # Select simplex by sampling the complex according to a linear
                     # Compute Probability distribution and random choose
-                    
-                    p = 2*(npg+1-np.linspace(1, npg, npg))/((npg+1)*npg)
-                    innerIdx = np.random.choice(npg, nps, p=p, replace=False)
+                    p=2*(npg+1-np.linspace(1, npg, npg))/((npg+1)*npg)
+                    innerIdx=np.random.choice(npg, nps, p=p, replace=False)
                     innerIdx = np.sort(innerIdx)
                     sPop = igsPop[innerIdx]
-                    
+                    bPop= igsPop[0]
                     #Execute CCE for simplex
-                    sNew = self.cce(sPop)
+                    sNew= self.cce(sPop, bPop)
                     igsPop.replace(innerIdx[-1], sNew)
                     
-                    # idx=igsPop.argsort()
-                    # igsPop=igsPop[idx]
+                    # igsPop=igsPop[igsPop.argsort()]
                     
                 # End of Inner Loop for Competitive Evolution of Simplexes
                 pop.replace(outerIdx, igsPop)
@@ -131,43 +105,27 @@ class SCE_UA(Optimizer):
             
         return self.result
                      
-    def cce(self, sPop):
+    def cce(self, sPop, bPop):
         
         n, d = sPop.size()
         alpha = 1.0
         beta = 0.5
-        
+        sita = 0.2
         sWorst=sPop[-1:]
         ce=np.mean(sPop[:n].decs, axis=0).reshape(1, -1)
         
-        sNew=(sWorst-ce) * alpha * -1 + ce
+        sNew=((sWorst-ce) * alpha * -1 + ce )*(1-sita)+bPop*sita
         sNew.clip(self.problem.lb, self.problem.ub)
         
         self.evaluate(sNew)
         
         if sNew.objs[0] > sWorst.objs[0]:
-            sNew=sWorst + (sNew-sWorst) * beta
-            sNew.clip(self.problem.lb, self.problem.ub)
+            sNew=(sWorst + (sNew-sWorst) * beta)*(1-sita)+bPop*sita
             self.evaluate(sNew)
         
         # Both reflection and contraction have failed, attempt a random point
             if sNew.objs[0] > sWorst.objs[0]:
                 sNew.decs = self.problem.lb + np.random.random(d) * (self.problem.ub - self.problem.lb)
-                sNew.clip(self.problem.lb, self.problem.ub)
                 self.evaluate(sNew)
         # END OF CCE
         return sNew
-            
-        
-                
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

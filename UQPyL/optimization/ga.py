@@ -56,6 +56,10 @@ class GA(Optimizer):
                  maxTolerateTimes: int=1000, tolerate: float=1e-6, 
                  verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
         
+        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
+        
         #user-define setting
         self.proC=proC;self.disC=disC
         self.proM=proM;self.disM=disM
@@ -68,17 +72,15 @@ class GA(Optimizer):
         self.setting["proC"]=proC
         self.setting["disC"]=disC
         self.setting["proM"]=proM
-        self.setting["proC"]=proC
+        self.setting["disM"]=disM
 
         
-        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
     #--------------------Public Functions---------------------#
     @verboseForRun  
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem
+        self.FEs=0; self.iters=0; self.tolerateTimes=0
         
         if xInit is not None:
             if yInit is not None:

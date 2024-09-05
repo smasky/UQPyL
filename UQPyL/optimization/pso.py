@@ -53,6 +53,10 @@ class PSO(Optimizer):
                     maxFEs: int=50000,
                     maxTolerateTimes: int=1000, tolerate: float=1e-6,
                     verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
+        
+            super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
+                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
             
             #user-define setting
             self.w=w;self.c1=c1;self.c2=c2
@@ -66,15 +70,12 @@ class PSO(Optimizer):
             self.setting["w"]=w
             self.setting["c1"]=c1
             self.setting["c2"]=c2
-            
-            super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, logFlag=logFlag)
-    
+                
     @verboseForRun
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem
+        self.FEs=0; self.iters=0; self.tolerateTimes=0
         
         if xInit is not None:
             if yInit is not None:
