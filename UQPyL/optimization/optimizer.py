@@ -8,7 +8,7 @@ from prettytable import PrettyTable
 
 from ..DoE import LHS
 from ..problems import ProblemABC
-
+from ..utility import Verbose
 class Population():
     def __init__(self, decs=None, objs=None):
         
@@ -132,123 +132,123 @@ class Population():
     def __len__(self):
         return self.nPop
     
-def verboseForUpdate (func):
+# def verboseForUpdate (func):
     
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
+#         @functools.wraps(func)
+#         def wrapper(self, *args, **kwargs):
             
-            func(self, *args, **kwargs)
-            if self.verbose and self.iters%self.verboseFreq==0:
-                total_width=os.get_terminal_size().columns
-                title="FEs: "+str(self.FEs)+" | Iters: "+str(self.iters)
-                spacing=int((total_width-len(title))/2)
-                print("="*spacing+title+"="*spacing)
-                verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
+#             func(self, *args, **kwargs)
+#             if self.verbose and self.iters%self.verboseFreq==0:
+#                 total_width=os.get_terminal_size().columns
+#                 title="FEs: "+str(self.FEs)+" | Iters: "+str(self.iters)
+#                 spacing=int((total_width-len(title))/2)
+#                 print("="*spacing+title+"="*spacing)
+#                 verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.FEs, self.iters, total_width)
         
-        return wrapper
+#         return wrapper
 
-def verboseSetting(al):
+# def verboseSetting(al):
     
-    total_width=os.get_terminal_size().columns
-    if al.verbose or al.logFlag:
+#     total_width=os.get_terminal_size().columns
+#     if al.verbose or al.logFlag:
         
-        title=al.name+" Setting"
-        spacing=int((total_width-len(title))/2)
-        print("="*spacing+title+"="*spacing)
-        keys=al.setting.keys()
-        values=al.setting.values()
-        table=PrettyTable(keys)
-        table.add_row(values)
-        print(table)
+#         title=al.name+" Setting"
+#         spacing=int((total_width-len(title))/2)
+#         print("="*spacing+title+"="*spacing)
+#         keys=al.setting.keys()
+#         values=al.setting.values()
+#         table=PrettyTable(keys)
+#         table.add_row(values)
+#         print(table)
     
-def verboseForRun (func):
+# def verboseForRun (func):
     
-    def format_duration(seconds):
+#     def format_duration(seconds):
         
-        days, seconds = divmod(seconds, 86400)
-        hours, seconds = divmod(seconds, 3600) 
-        minutes, seconds = divmod(seconds, 60) 
-        return f"{days} day | {hours} hour | {minutes} minute | {seconds: .2f} second"
+#         days, seconds = divmod(seconds, 86400)
+#         hours, seconds = divmod(seconds, 3600) 
+#         minutes, seconds = divmod(seconds, 60) 
+#         return f"{days} day | {hours} hour | {minutes} minute | {seconds: .2f} second"
     
-    @functools.wraps(func)
-    def wrapper(self, *args, **kwargs):
+#     @functools.wraps(func)
+#     def wrapper(self, *args, **kwargs):
         
-        total_width=os.get_terminal_size().columns
-        if self.logFlag:
-            suffix=datetime.now().strftime("%m%d_%H%M%S")
-            file=f"log_{self.name}_{suffix}.txt"
-            self.log_file = open(file, 'w')
-            sys.stdout = Debug(self.verbose, self.logFlag, sys.stdout, self.log_file)
+#         total_width=os.get_terminal_size().columns
+#         if self.logFlag:
+#             suffix=datetime.now().strftime("%m%d_%H%M%S")
+#             file=f"log_{self.name}_{suffix}.txt"
+#             self.log_file = open(file, 'w')
+#             sys.stdout = Debug(self.verbose, self.logFlag, sys.stdout, self.log_file)
             
-        if self.verbose or self.logFlag:
-            title=self.name+" Setting"
-            spacing=int((total_width-len(title))/2)
-            print("="*spacing+title+"="*spacing)
+#         if self.verbose or self.logFlag:
+#             title=self.name+" Setting"
+#             spacing=int((total_width-len(title))/2)
+#             print("="*spacing+title+"="*spacing)
             
-            keys=self.setting.keys()
-            values=self.setting.values()
-            table=PrettyTable(keys)
-            table.add_row(values)
-            print(table)
+#             keys=self.setting.keys()
+#             values=self.setting.values()
+#             table=PrettyTable(keys)
+#             table.add_row(values)
+#             print(table)
         
-        startTime=time.time()
-        func(self, *args, **kwargs)
-        endTime=time.time()
+#         startTime=time.time()
+#         func(self, *args, **kwargs)
+#         endTime=time.time()
         
-        if self.verbose:
-            title="Conclusion"
-            spacing=int((total_width-len(title))/2)
-            print("="*spacing+title+"="*spacing)
-            print("Time:  "+format_duration(endTime-startTime))
-            print(f"Used FEs:    {self.FEs}  |  Iters:  {self.iters}")
-            print(f"Best Objs and Best Decision with the FEs")
-            verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.result.appearFEs, self.result.appearIters, total_width)
-        if self.logFlag:
-            self.log_file.close()
-        return self.result
-    return wrapper
+#         if self.verbose:
+#             title="Conclusion"
+#             spacing=int((total_width-len(title))/2)
+#             print("="*spacing+title+"="*spacing)
+#             print("Time:  "+format_duration(endTime-startTime))
+#             print(f"Used FEs:    {self.FEs}  |  Iters:  {self.iters}")
+#             print(f"Best Objs and Best Decision with the FEs")
+#             verboseSolutions(self.result.bestDec, self.result.bestObj, self.problem.x_labels, self.problem.y_labels, self.result.appearFEs, self.result.appearIters, total_width)
+#         if self.logFlag:
+#             self.log_file.close()
+#         return self.result
+#     return wrapper
 
-def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
+# def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
     
-    heads=["FEs"]+["Iters"]+y_labels+x_labels
-    values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
-    rows=int(len(heads))//10+1
-    cols=10
-    for i in range(rows):
-        if (i+1)*cols<len(heads):
-            end=(i+1)*cols
-        else:
-            end=len(heads)
-        table=PrettyTable(heads[i*cols:end])
-        table.max_width=int(width/(cols+4))
-        table.min_width=int(width/(cols+4))
-        table.add_row(values[i*cols:end])
-        print(table)
+#     heads=["FEs"]+["Iters"]+y_labels+x_labels
+#     values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
+#     rows=int(len(heads))//10+1
+#     cols=10
+#     for i in range(rows):
+#         if (i+1)*cols<len(heads):
+#             end=(i+1)*cols
+#         else:
+#             end=len(heads)
+#         table=PrettyTable(heads[i*cols:end])
+#         table.max_width=int(width/(cols+4))
+#         table.min_width=int(width/(cols+4))
+#         table.add_row(values[i*cols:end])
+#         print(table)
 
-class Debug(object):
+# class Debug(object):
     
-    def __init__(self, verbose, logFlag, sysOut, fileOut):
+#     def __init__(self, verbose, logFlag, sysOut, fileOut):
         
-        self.sysOut=sysOut
-        self.fileOut=fileOut
-        self.logFlag=logFlag
-        self.verbose=verbose
+#         self.sysOut=sysOut
+#         self.fileOut=fileOut
+#         self.logFlag=logFlag
+#         self.verbose=verbose
         
-    def write(self, obj):
+#     def write(self, obj):
         
-        if self.logFlag:
-            self.fileOut.write(obj)
-            self.fileOut.flush()
-        if self.verbose:
-            self.sysOut.write(obj)
-            self.sysOut.flush()
+#         if self.logFlag:
+#             self.fileOut.write(obj)
+#             self.fileOut.flush()
+#         if self.verbose:
+#             self.sysOut.write(obj)
+#             self.sysOut.flush()
         
-    def flush(self):
+#     def flush(self):
         
-        if self.logFlag:
-            self.fileOut.flush()
-        if self.verbose:
-            self.sysOut.flush()
+#         if self.logFlag:
+#             self.fileOut.flush()
+#         if self.verbose:
+#             self.sysOut.flush()
 
 class Result():
     def __init__(self):
@@ -308,7 +308,7 @@ class Optimizer():
         self.logFlag=logFlag
 
         self.result=Result()
-    
+        
     def initialize(self):
         
         lhs=LHS('classic', problem=self.problem)
@@ -332,7 +332,10 @@ class Optimizer():
                     return True
         return False
     
-    @verboseForUpdate
+    def setProblem(self, problem):
+        self.problem=problem
+    
+    @Verbose.decoratorRecord
     def record(self, pop):
         
         self.result.update(pop, self.FEs, self.iters)

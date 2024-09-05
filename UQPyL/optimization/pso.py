@@ -2,7 +2,7 @@ import numpy as np
 
 from ..problems import Problem
 from ..DoE import LHS
-from .optimizer import Optimizer, Population, verboseForRun
+from .optimizer import Optimizer, Population, Verbose
 class PSO(Optimizer):
     '''
         Particle Swarm Optimization
@@ -71,7 +71,7 @@ class PSO(Optimizer):
             self.setting["c1"]=c1
             self.setting["c2"]=c2
                 
-    @verboseForRun
+    @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem

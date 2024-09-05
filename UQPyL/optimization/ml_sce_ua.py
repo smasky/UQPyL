@@ -1,7 +1,7 @@
 #M&L Shuffled Complex Evolution-UA
 
 import numpy as np
-from .optimizer import Optimizer, Population, verboseForRun, verboseSetting
+from .optimizer import Optimizer, Population, Verbose
 
 class ML_SCE_UA(Optimizer):
     """
@@ -35,7 +35,7 @@ class ML_SCE_UA(Optimizer):
         self.setting["nps"]=nps
         self.setting["nspl"]=nspl
         
-    @verboseForRun
+    @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem
@@ -54,8 +54,8 @@ class ML_SCE_UA(Optimizer):
         BD  = self.problem.ub - self.problem.lb
         
         if self.verbose or self.logFlag:
-            print("When invoking the problem, the new setting is:")
-            verboseSetting(self)
+            Verbose.output("When invoking the problem, the new setting is:")
+            Verbose.verboseSetting(self)
         
         if xInit is not None:
             if yInit is not None:

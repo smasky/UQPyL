@@ -3,7 +3,7 @@ import numpy as np
 import math
 import copy
 
-from .optimizer import Optimizer, Population, verboseForRun
+from .optimizer import Optimizer, Population, Verbose
 class CSA(Optimizer):
     """
     Cooperative Search Algorithm (CSA) <Single>
@@ -49,7 +49,7 @@ class CSA(Optimizer):
         self.setting["nPop"]=nPop
     
     #------------------Public Function------------------#
-    @verboseForRun  
+    @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem

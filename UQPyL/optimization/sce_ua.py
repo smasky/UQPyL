@@ -1,7 +1,7 @@
 #Shuffled Complex Evolution-UA
 import numpy as np
 import random
-from .optimizer import Optimizer, Population, verboseForRun, verboseSetting
+from .optimizer import Optimizer, Population, Verbose
 class SCE_UA(Optimizer):
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>
@@ -57,10 +57,9 @@ class SCE_UA(Optimizer):
         self.setting["nps"]=nps
         self.setting["nspl"]=nspl
         
-    @verboseForRun
+    @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
-        
-        self.problem=problem
+            
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
         if self.ngs==0:
@@ -74,11 +73,9 @@ class SCE_UA(Optimizer):
         nspl = npg
         self.nInit  = npg * self.ngs
         
-        BD  = self.problem.ub - self.problem.lb
+        self.setProblem(problem)
         
-        if self.verbose or self.logFlag:
-            print("When invoking the problem, the new setting is:")
-            verboseSetting(self)
+        BD  = self.problem.ub - self.problem.lb
         
         if xInit is not None:
             if yInit is not None:

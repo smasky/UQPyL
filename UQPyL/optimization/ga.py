@@ -1,7 +1,7 @@
 import numpy as np
 import math
 
-from .optimizer import Optimizer, Population, verboseForRun
+from .optimizer import Optimizer, Population, Verbose
 class GA(Optimizer):
     '''
         Genetic Algorithm <Single>
@@ -75,7 +75,7 @@ class GA(Optimizer):
 
         
     #--------------------Public Functions---------------------#
-    @verboseForRun  
+    @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
         self.problem=problem
