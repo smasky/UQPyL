@@ -1,9 +1,9 @@
-#M&L Shuffled Complex Evolution-UA
+# M&L Shuffled Complex Evolution-UA <Single>
 
 import numpy as np
-from .optimizer import Optimizer, Population, Verbose
+from .algorithm import Algorithm, Population, Verbose
 
-class ML_SCE_UA(Optimizer):
+class ML_SCE_UA(Algorithm):
     """
         References:
             [1] Duan, Q., Sorooshian, S., & Gupta, V. K. (1992). Effective and efficient global optimization for conceptual rainfall-runoff models. Water Resources Research, 28(4), 1015-1031.
@@ -13,45 +13,49 @@ class ML_SCE_UA(Optimizer):
     """
     name="ML-SCE-UA"
     type="EA"
-    def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7,
-          maxFEs: int= 50000, 
-          maxIterTimes: int= 1000, 
-          maxTolerateTimes: int= 1000, tolerate: float=1e-6,
-          verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
+    def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7, 
+                alpha: float=1.0, beta: float=0.5, sita: float=0.2,
+                maxFEs: int= 50000, 
+                maxIterTimes: int= 1000, 
+                maxTolerateTimes: int= 1000, tolerate: float=1e-6,
+                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
                          verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
         
         #algorithm setting
-        self.ngs=ngs
-        self.npg=2 * ngs + 1
-        self.nps=nps
-        self.nspl=nspl
-        
-        #setting record
-        self.setting["ngs"]=ngs
-        self.setting["npg"]=npg
-        self.setting["nps"]=nps
-        self.setting["nspl"]=nspl
+        self.setParameters('ngs', ngs)
+        self.setParameters('npg', npg)
+        self.setParameters('nps', nps)
+        self.setParameters('nspl', nspl)
+        self.setParameters('alpha', alpha)
+        self.setParameters('beta', beta)
+        self.setParameters('sita', sita)
         
     @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
-        self.problem=problem
+        #Parameter Setting
+        ngs, npg, nps, nspl = self.getParaValue('ngs', 'npg', 'nps', 'nspl')
+        alpha, beta, sita = self.getParaValue('alpha', 'beta', 'sita')
+        #Problem
+        self.setProblem(problem)
+        
+        #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
-        if self.ngs==0:
-            self.ngs=problem.n_input 
-            if self.ngs>15:
-                self.ngs=15
+        
+        if ngs==0:
+            ngs=problem.n_input 
+            if ngs>15:
+                ngs=15
         
         # Initialize SCE parameters:
-        npg  = 2 * self.ngs + 1
-        nps  = self.ngs + 1
-        nspl = self.npg
-        self.nInit  = npg * self.ngs
-        BD  = self.problem.ub - self.problem.lb
+        npg  = 2 * ngs + 1
+        nps  = ngs + 1
+        nspl = npg
+        nInit  = npg * ngs
         
         if self.verbose or self.logFlag:
             Verbose.output("When invoking the problem, the new setting is:")
@@ -64,7 +68,7 @@ class ML_SCE_UA(Optimizer):
                 pop=Population(xInit)
                 self.evaluate(pop)
         else:
-            pop=self.initialize()
+            pop=self.initialize(nInit)
         
         #Sort the population in order of increasing function values
         idx=pop.argsort()
@@ -74,9 +78,9 @@ class ML_SCE_UA(Optimizer):
         
         while self.checkTermination():
 
-            for igs in range(self.ngs):
+            for igs in range(ngs):
                 # Partition the population into complexes (sub-populations)
-                outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * self.ngs + igs
+                outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * ngs + igs
                 igsPop=pop[outerIdx]
                 
                 # Evolve sub-population igs for nspl steps
@@ -89,7 +93,7 @@ class ML_SCE_UA(Optimizer):
                     sPop = igsPop[innerIdx]
                     bPop= igsPop[0]
                     #Execute CCE for simplex
-                    sNew= self.cce(sPop, bPop)
+                    sNew= self.cce(sPop, bPop, alpha, beta, sita)
                     igsPop.replace(innerIdx[-1], sNew)
                     # igsPop=igsPop[igsPop.argsort()]
                     
@@ -104,12 +108,10 @@ class ML_SCE_UA(Optimizer):
             
         return self.result
                      
-    def cce(self, sPop, bPop):
+    def cce(self, sPop, bPop, alpha, beta, sita):
         
         n, d = sPop.size()
-        alpha = 1.0
-        beta = 0.5
-        sita = 0.2
+        
         sWorst=sPop[-1:]
         ce=np.mean(sPop[:n].decs, axis=0).reshape(1, -1)
         

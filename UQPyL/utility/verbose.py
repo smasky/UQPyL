@@ -37,8 +37,8 @@ class Verbose():
             title=al.name+" Setting"
             spacing=int((total_width-len(title))/2)
             Verbose.output("="*spacing+title+"="*spacing)
-            keys=al.setting.keys()
-            values=al.setting.values()
+            keys=al.setting.keys
+            values=al.setting.values
             table=PrettyTable(keys)
             table.add_row(values)
             Verbose.output(table)    
@@ -108,8 +108,8 @@ class Verbose():
                 spacing=int((total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 
-                keys=obj.setting.keys()
-                values=obj.setting.values()
+                keys=obj.setting.keys
+                values=obj.setting.values
                 table=PrettyTable(keys)
                 table.add_row(values)
                 Verbose.output(table)

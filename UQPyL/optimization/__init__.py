@@ -10,6 +10,7 @@ from ._binary_ga import Binary_GA
 from .pso import PSO
 from .ml_sce_ua import ML_SCE_UA
 from .csa import CSA
+from .de import DE
 __all__=[
     'GA',
     'Boxmin',
@@ -22,7 +23,8 @@ __all__=[
     'Binary_GA',
     'PSO',
     'ML_SCE_UA',
-    'CSA'
+    'CSA',
+    'DE'
          ]
 
 MP_List=['Boxmin']

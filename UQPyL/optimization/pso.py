@@ -1,9 +1,11 @@
+# Particle Swarm Optimization <Single>
+
 import numpy as np
 
 from ..problems import Problem
 from ..DoE import LHS
-from .optimizer import Optimizer, Population, Verbose
-class PSO(Optimizer):
+from .algorithm import Algorithm, Population, Verbose
+class PSO(Algorithm):
     '''
         Particle Swarm Optimization
         -----------------------------
@@ -59,24 +61,26 @@ class PSO(Optimizer):
                          verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
             
             #user-define setting
-            self.w=w;self.c1=c1;self.c2=c2
-            self.tolerate=tolerate
-            self.nInit=nInit
-            self.nPop=nPop
-             
-            #setting record
-            self.setting["nPop"]=nPop
-            self.setting["nInit"]=nInit
-            self.setting["w"]=w
-            self.setting["c1"]=c1
-            self.setting["c2"]=c2
+            self.setParameters('w', w)
+            self.setParameters('c1', c1)
+            self.setParameters('c2', c2)
+            self.setParameters('nInit', nInit)
+            self.setParameters('nPop', nPop)
                 
     @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
+        #Initialization
+        #Parameter Setting
+        w, c1, c2 = self.getParaValue('w', 'c1', 'c2')
+        nInit, nPop = self.getParaValue('nInit', 'nPop')
+        #Problem 
         self.problem=problem
+        
+        #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
+        #Population Generation
         if xInit is not None:
             if yInit is not None:
                 pop=Population(xInit, yInit)
@@ -84,21 +88,21 @@ class PSO(Optimizer):
                 pop=Population(xInit)
                 self.evaluate(pop)
         else:
-            pop=self.initialize()
+            pop=self.initialize(nInit)
+            
+        pop=pop.getTop(nPop)
         
-        pop=pop.getTop(self.nPop)
-        
+        #Record result
         self.record(pop)
         
         #Init vel and orient
-        pBestPop=pop
-        gBestPop=pop[pop.argsort()[0]]
-        vel=pop.decs
-        
+        pBestPop=pop #Personal best 
+        gBestPop=pop[pop.argsort()[0]] #Global Best
+        vel=pop.decs #Velocity
         
         while self.checkTermination():
             
-            pop, vel=self._operationPSO(pop, vel, pBestPop, gBestPop)
+            pop, vel=self._operationPSO(pop, vel, pBestPop, gBestPop, w, c1, c2)
             pop=self._randomParticle(pop)
             self.evaluate(pop)
             
@@ -110,7 +114,7 @@ class PSO(Optimizer):
             
         return self.result
     
-    def _operationPSO(self, pop, vel, pBestPop, gBestPop):
+    def _operationPSO(self, pop, vel, pBestPop, gBestPop, w, c1, c2):
         
         n, d=pop.size()
         
@@ -119,7 +123,8 @@ class PSO(Optimizer):
         r1=np.random.random((n, d))
         r2=np.random.random((n, d))
         
-        offVel=self.w*particleVel+(pBestPop.decs-pop.decs)*self.c1*r1+(gBestPop.decs-pop.decs)*self.c2*r2
+        offVel=w*particleVel+(pBestPop.decs-pop.decs)*c1*r1+(gBestPop.decs-pop.decs)*c2*r2
+        
         offSpring=pop+offVel
         
         offSpring.clip(self.problem.lb, self.problem.ub)

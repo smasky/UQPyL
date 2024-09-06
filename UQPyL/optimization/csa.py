@@ -3,8 +3,9 @@ import numpy as np
 import math
 import copy
 
-from .optimizer import Optimizer, Population, Verbose
-class CSA(Optimizer):
+from .algorithm import Algorithm, Population
+from ..utility import Verbose
+class CSA(Algorithm):
     """
     Cooperative Search Algorithm (CSA) <Single>
     -------------------------------------------------
@@ -37,24 +38,28 @@ class CSA(Optimizer):
                          verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
         
         #user-define setting
-        self.alpha=alpha
-        self.beta=beta
-        self.M=M
-        self.nInit=nInit; self.nPop=nPop
-        #record
-        self.setting["alpha"]=self.alpha
-        self.setting["beta"]=self.beta
-        self.setting["M"]=self.M
-        self.setting["nInit"]=nInit
-        self.setting["nPop"]=nPop
-    
+        self.setParameters('alpha', alpha)
+        self.setParameters('beta', beta)
+        self.setParameters('M', M)
+        self.setParameters('nInit', nInit)
+        self.setParameters('nPop', nPop)
+           
     #------------------Public Function------------------#
     @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
+        #Initialization
+        #Parameter Setting
+        alpha, beta, M = self.getParaValue('alpha', 'beta', 'M')
+        nInit, nPop = self.getParaValue('nInit', 'nPop')
+        
+        #Problem
         self.problem=problem
+        
+        #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
+        #Population Generation
         if xInit is not None:
             if yInit is not None:
                 pop=Population(xInit, yInit)
@@ -62,19 +67,19 @@ class CSA(Optimizer):
                 pop=Population(xInit)
                 self.evaluate(pop)
         else:
-            pop=self.initialize()
+            pop=self.initialize(nInit)
         
-        pop=pop.getTop(self.nPop)
+        pop=pop.getTop(nPop)
         
         #Initial directors and supervisors
-        pBest=copy.deepcopy(pop)
+        pBest=copy.deepcopy(pop) #personal Best
         
-        gBest=pBest[pBest.argsort()[:self.M]]
+        gBest=pBest[pBest.argsort()[:M]] #global Best
     
         while self.checkTermination():
             
             #Team communication operator
-            uPop=self.teamCommunicationOperator(pop, pBest, gBest)
+            uPop=self.teamCommunicationOperator(pop, pBest, gBest, alpha, beta)
             
             #Reflective learning operator 
             vPop=self.reflectiveLearningOperator(uPop)
@@ -87,11 +92,11 @@ class CSA(Optimizer):
             self.record(newPop)
 
             #Update person best and global best
-            tmp=newPop[newPop.argsort()[:self.M]]
+            tmp=newPop[newPop.argsort()[:M]]
             pBest=Population(decs=np.where(newPop.objs<pBest.objs, newPop.decs, pBest.decs), objs=np.minimum(newPop.objs, pBest.objs) )
             # gBest=pBest[pBest.argsort()[:self.M]]
             gBest.add(tmp)
-            gBest=gBest[gBest.argsort()[:self.M]]
+            gBest=gBest[gBest.argsort()[:M]]
             pop=copy.deepcopy(newPop)
             
         return self.result
@@ -118,52 +123,29 @@ class CSA(Optimizer):
         seed=np.random.random((n,d))
         p=np.where(gailv<seed, t3, t4)
         
+        
         vPop=Population(decs=np.where(pop.decs>=c_n, r, p))
         vPop.clip(self.problem.lb, self.problem.ub)
         return vPop
     
-    def teamCommunicationOperator(self, pop, pBest, gBest):
+    def teamCommunicationOperator(self, pop, pBest, gBest, alpha, beta):
         
         n, d=pop.size()
         
-        ind=np.random.randint(0, self.M, (n,d))
+        M, _=gBest.size()
+        ind=np.random.randint(0, M, (n,d))
         
         A=np.log(1.0/np.random.random((n, d)))*(gBest.decs[ind, np.arange(d)]-pop.decs)
         
-        B=self.alpha*np.random.random((n, d))*(np.mean(gBest.decs, axis=0)-pop.decs)
+        B=alpha*np.random.random((n, d))*(np.mean(gBest.decs, axis=0)-pop.decs)
         
-        C=self.beta*np.random.random((n, d))*(np.mean(pBest.decs, axis=0)-pop.decs)
+        C=beta*np.random.random((n, d))*(np.mean(pBest.decs, axis=0)-pop.decs)
         
         uPop=pop+A+B+C
         uPop.clip(self.problem.lb, self.problem.ub)
         
         return uPop
 
-    # def tCO(self, pop, pBest, gBest):
-    #     ave_pbest=np.mean(pBest.decs, axis=0)
-    #     ave_gbest=np.mean(gBest.decs, axis=0)
-    #     n, d=pop.size()
-        
-    #     gBestP=gBest.decs
-    #     decs=pop.decs
-    #     new_decs=np.zeros(shape=decs.shape)
-    #     for i in range(n):
-    #         for j in range(d):
-    #             alpha=0.10
-    #             beta=0.15
-                
-    #             A=np.log(1.0/self.Phi(0,1))*(gBestP[np.random.randint(0, self.M), j]-decs[i,j])
-
-    #             B=alpha*self.Phi(0,1)*(ave_gbest[j]-decs[i,j])
-                
-    #             C=beta*self.Phi(0,1)*(ave_pbest[j]-decs[i,j])
-                
-    #             new_decs[i,j]=decs[i,j]+A+B+C
-        
-    #     new_decs.clip(self.problem.lb, self.problem.ub)
-        
-    #     return Population(decs=new_decs)
-                
     def Phi(self, num1, num2):
         if num1<num2:
             o=num1+np.random.random(1)*abs(num1-num2)

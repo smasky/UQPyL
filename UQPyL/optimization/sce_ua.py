@@ -1,8 +1,8 @@
 #Shuffled Complex Evolution-UA
 import numpy as np
 import random
-from .optimizer import Optimizer, Population, Verbose
-class SCE_UA(Optimizer):
+from .algorithm import Algorithm, Population, Verbose
+class SCE_UA(Algorithm):
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>
         ----------------------------------------------
@@ -36,47 +36,48 @@ class SCE_UA(Optimizer):
     name="SCE-UA"
     type="EA"
     def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7,
-          maxFEs: int= 50000, 
-          maxIterTimes: int= 1000, 
-          maxTolerateTimes: int= 1000, tolerate: float=1e-6,
-          verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
+                alpha: float=1.0, beta: float=0.5,
+                maxFEs: int= 50000, 
+                maxIterTimes: int= 1000, 
+                maxTolerateTimes: int= 1000, tolerate: float=1e-6,
+                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
                          verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
         
         #algorithm setting
-        self.ngs=ngs
-        self.npg=npg
-        self.nps=nps
-        self.nspl=nspl
-        
-        #setting record
-        self.setting["ngs"]=ngs
-        self.setting["npg"]=npg
-        self.setting["nps"]=nps
-        self.setting["nspl"]=nspl
+        self.setParameters('ngs', ngs)
+        self.setParameters('npg', npg)
+        self.setParameters('nps', nps)
+        self.setParameters('nspl', nspl)
+        self.setParameters('alpha', alpha)
+        self.setParameters('beta', beta)
         
     @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
-            
-        self.FEs=0; self.iters=0; self.tolerateTimes=0
         
-        if self.ngs==0:
-            self.ngs=problem.n_input 
-            if self.ngs>15:
-                self.ngs=15
-        
-        # Initialize SCE parameters:
-        npg  = 2*self.ngs + 1
-        nps  = self.ngs + 1
-        nspl = npg
-        self.nInit  = npg * self.ngs
-        
+        #Parameter Setting
+        ngs, npg, nps, nspl = self.getParaValue('nps', 'npg', 'nps', 'nspl')
+        alpha, beta = self.getParaValue('alpha', 'beta')
         self.setProblem(problem)
         
-        BD  = self.problem.ub - self.problem.lb
+        #Termination Condition Setting
+        self.FEs=0; self.iters=0; self.tolerateTimes=0
         
+        #Parameter
+        if ngs==0:
+            ngs=problem.n_input 
+            if ngs>15:
+                ngs=15
+        
+        # Initialize SCE parameters:
+        npg  = 2*ngs + 1
+        nps  = ngs + 1
+        nspl = npg
+        nInit  = npg * ngs
+        
+        #Population Generation
         if xInit is not None:
             if yInit is not None:
                 pop=Population(xInit, yInit)
@@ -84,20 +85,20 @@ class SCE_UA(Optimizer):
                 pop=Population(xInit)
                 self.evaluate(pop)
         else:
-            pop=self.initialize()
+            pop=self.initialize(nInit)
         
         #Sort the population in order of increasing function values
         idx=pop.argsort()
         pop=pop[idx]
-                 
+        #Record
         self.record(pop)
         
         while self.checkTermination():
             
-            for igs in range(self.ngs):
+            for igs in range(ngs):
                 # Partition the population into complexes (sub-populations)
                 
-                outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * self.ngs + igs
+                outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * ngs + igs
                 igsPop = pop[outerIdx]
                 
                 # Evolve sub-population igs for nspl steps
@@ -111,7 +112,7 @@ class SCE_UA(Optimizer):
                     sPop = igsPop[innerIdx]
                     
                     #Execute CCE for simplex
-                    sNew = self.cce(sPop)
+                    sNew = self.cce(sPop, alpha, beta)
                     igsPop.replace(innerIdx[-1], sNew)
                     
                     # idx=igsPop.argsort()
@@ -128,12 +129,10 @@ class SCE_UA(Optimizer):
             
         return self.result
                      
-    def cce(self, sPop):
+    def cce(self, sPop, alpha, beta):
         
         n, d = sPop.size()
-        alpha = 1.0
-        beta = 0.5
-        
+
         sWorst=sPop[-1:]
         ce=np.mean(sPop[:n].decs, axis=0).reshape(1, -1)
         

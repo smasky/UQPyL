@@ -1,8 +1,10 @@
+# Genetic Algorithm <Single>
+
 import numpy as np
 import math
 
-from .optimizer import Optimizer, Population, Verbose
-class GA(Optimizer):
+from .algorithm import Algorithm, Population, Verbose
+class GA(Algorithm):
     '''
         Genetic Algorithm <Single>
         -------------------------------
@@ -60,27 +62,29 @@ class GA(Optimizer):
                          verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
         
         #user-define setting
-        self.proC=proC;self.disC=disC
-        self.proM=proM;self.disM=disM
-        self.nInit=nInit
-        self.nPop=nPop
-                
-        #setting record
-        self.setting["nPop"]=nPop
-        self.setting["nInit"]=nInit
-        self.setting["proC"]=proC
-        self.setting["disC"]=disC
-        self.setting["proM"]=proM
-        self.setting["disM"]=disM
-
+        self.setParameters('proC', proC)
+        self.setParameters('disC', disC)
+        self.setParameters('proM', proM)
+        self.setParameters('disM', disM)
+        self.setParameters('nInit', nInit)
+        self.setParameters('nPop', nPop)
         
     #--------------------Public Functions---------------------#
     @Verbose.decoratorRun
     def run(self, problem, xInit=None, yInit=None):
         
+        #Initialization
+        #Parameter Setting
+        proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
+        nInit, nPop = self.getParaValue('nInit', 'nPop')
+        
+        #Problem
         self.problem=problem
+        
+        #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
+        #Population Generation
         if xInit is not None:
             if yInit is not None:
                 pop=Population(xInit, yInit)
@@ -88,20 +92,21 @@ class GA(Optimizer):
                 pop=Population(xInit)
                 self.evaluate(pop)
         else:
-            pop=self.initialize()
+            pop=self.initialize(nInit)
         
-        pop=pop.getTop(self.nPop)
+        pop=pop.getTop(nPop)
         
+        #Record
         self.record(pop) 
         
         while self.checkTermination():
             
             matingPool=self._tournamentSelection(pop, 2)
-            offspring=self._operationGA(matingPool)
+            offspring=self._operationGA(matingPool, proC, disC, proM, disM)
             self.evaluate(offspring)
             
             pop=pop.merge(offspring)
-            pop=pop.getTop(self.nPop)
+            pop=pop.getTop(nPop)
             self.record(pop)
             
         return self.result
@@ -119,12 +124,13 @@ class GA(Optimizer):
         
         return pop[winnerIndex]
         
-    def _operationGA(self, matingPool):
+    def _operationGA(self, matingPool, proC, disC, proM, disM ):
         '''
             GA Operation: crossover and mutation
         '''
-        n_samples=len(matingPool)
         
+        n_samples=len(matingPool)
+        # Crossover
         parent1=matingPool[:math.floor(n_samples/2)]
         parent2=matingPool[math.floor(n_samples/2):math.floor(n_samples/2)*2]
         
@@ -132,29 +138,29 @@ class GA(Optimizer):
         beta = np.zeros(shape=(n,d))
         mu = np.random.rand(n, d)
 
-        beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (self.disC + 1))
-        beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (self.disC + 1))
+        beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (disC + 1))
+        beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (disC + 1))
         beta = beta * (-1) ** np.random.randint(0, 2, size=(n, d))
         beta[np.random.rand(n, d) < 0.5] = 1
-        beta[np.repeat(np.random.rand(n, 1) > self.proC, d, axis=1)] = 1
+        beta[np.repeat(np.random.rand(n, 1) > proC, d, axis=1)] = 1
 
         off1=(parent1 + parent2) / 2 + (parent1 - parent2) * beta / 2
         off2=(parent1 + parent2) / 2 - (parent1 - parent2) * beta / 2 
         offspring=off1.merge(off2)
         
+        # Polynomial mutation
         lower = np.repeat(self.problem.lb, 2 * n, axis=0)
         upper = np.repeat(self.problem.ub, 2 * n, axis=0)
-        site = np.random.rand(2 * n, d) < self.proM / d
+        sita = np.random.rand(2 * n, d) < proM / d
         mu = np.random.rand(2 * n, d)
         
         offspring.clip(lower, upper)
-        temp = site & (mu <= 0.5)
-        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring.decs[temp] - lower[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
+        temp = sita & (mu <= 0.5)        
+        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring.decs[temp] - lower[temp]) / (upper[temp] - lower[temp]), disM + 1)
+        offspring.decs[temp] = offspring.decs[temp] + (np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1) *(upper[temp] - lower[temp])
         
-        offspring.decs[temp] = offspring.decs[temp] + (upper[temp] - lower[temp]) * (np.power(2 * mu[temp] + t1, 1 / (self.disM + 1)) - 1)
-        
-        temp = site & (mu > 0.5)
-        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring.decs[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
-        offspring.decs[temp] = offspring.decs[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
+        temp = sita & (mu > 0.5)
+        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring.decs[temp]) / (upper[temp] - lower[temp]), disM + 1)
+        offspring.decs[temp] = offspring.decs[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (disM + 1)))
         
         return offspring
