@@ -2,13 +2,13 @@ import numpy as np
 from scipy import sparse
 from typing import Tuple, Optional
 
-from .mars_._forward import ForwardPasser
-from .mars_._pruning import PruningPasser, FEAT_IMP_CRITERIA
-from .mars_._util import ascii_table, apply_weights_2d, gcv
-from .mars_._types import BOOL
-from .surrogate_ABC import Surrogate
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
+from .core._forward import ForwardPasser
+from .core._pruning import PruningPasser, FEAT_IMP_CRITERIA
+from .core._util import ascii_table, apply_weights_2d, gcv
+from .core._types import BOOL
+from ..surrogate_ABC import Surrogate
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
 
 class MARS(Surrogate):
 

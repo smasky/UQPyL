@@ -2,14 +2,14 @@ import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Tuple, Optional, Literal
 
-from ..problems import Problem
-from .surrogate_ABC import Surrogate
-from .gp_kernels import RBF, Matern, Gp_Kernel, RationalQuadratic
-from ..optimization import GA, Boxmin, MP_List, EA_List
-from ..utility.model_selections import RandSelect
-from ..utility.metrics import r_square, rank_score
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
+from .kernels import RBF, Matern, Gp_Kernel, RationalQuadratic
+from ...problems import Problem
+from ..surrogate_ABC import Surrogate
+from ...optimization import GA, Boxmin, MP_List, EA_List
+from ...utility.model_selections import RandSelect
+from ...utility.metrics import r_square, rank_score
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
 
 class GPR(Surrogate):
     

@@ -1,0 +1,2 @@
+from .ZDT import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
+from .DTLZ import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6
