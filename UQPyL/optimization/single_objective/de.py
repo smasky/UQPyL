@@ -1,10 +1,9 @@
 # Differential Evolution <Single>
 
 import numpy as np
-from copy import deepcopy
 
-from .algorithm import Algorithm, Population
-from ..utility import Verbose
+from ..algorithm import Algorithm, Population
+from ...utility import Verbose
 
 class DE(Algorithm):
     """
@@ -65,7 +64,7 @@ class DE(Algorithm):
         
         #DE
         sita = np.random.random((n,d)) < cr
-        offspring = deepcopy(pop1)
+        offspring = pop1.copy()
         offspring.decs[sita]= pop1.decs[sita] + (pop2.decs[sita] - pop3.decs[sita])*f
         
         return offspring

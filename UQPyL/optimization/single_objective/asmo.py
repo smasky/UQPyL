@@ -1,3 +1,4 @@
+# Adaptive Surrogate Modelling-based Optimization <Single> <Surrogate>
 import numpy as np
 from tqdm import tqdm
 from typing import Optional
@@ -5,9 +6,9 @@ from typing import Optional
 from .sce_ua import SCE_UA
 from .pso import PSO
 from .ga import GA
-from ..DoE import LHS
-from ..problems import Problem
-from ..surrogates import Surrogate
+from ...DoE import LHS
+from ...problems import Problem
+from ...surrogates import Surrogate
 
 lhs=LHS('classic')
 class ASMO():

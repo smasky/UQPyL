@@ -1,10 +1,8 @@
 # Cooperation search algorithm <Single>
 import numpy as np
-import math
-import copy
 
-from .algorithm import Algorithm, Population
-from ..utility import Verbose
+from ..algorithm import Algorithm, Population
+from ...utility import Verbose
 class CSA(Algorithm):
     """
     Cooperative Search Algorithm (CSA) <Single>
@@ -72,7 +70,7 @@ class CSA(Algorithm):
         pop=pop.getTop(nPop)
         
         #Initial directors and supervisors
-        pBest=copy.deepcopy(pop) #personal Best
+        pBest=pop.copy() #personal Best
         
         gBest=pBest[pBest.argsort()[:M]] #global Best
     
@@ -97,7 +95,7 @@ class CSA(Algorithm):
             # gBest=pBest[pBest.argsort()[:self.M]]
             gBest.add(tmp)
             gBest=gBest[gBest.argsort()[:M]]
-            pop=copy.deepcopy(newPop)
+            pop=newPop.copy()
             
         return self.result
     

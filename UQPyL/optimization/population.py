@@ -1,5 +1,5 @@
 import numpy as np
-
+import copy
 class Population():
     def __init__(self, decs=None, objs=None):
         
@@ -38,6 +38,10 @@ class Population():
     def __truediv__(self, number):
         
         return Population(self.decs/number)
+    
+    def copy(self):
+        
+        return copy.deepcopy(self)
     
     def add(self, decs, objs):
         

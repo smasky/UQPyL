@@ -1,6 +1,7 @@
 import numpy as np
 
 from .population import Population
+from .result import Result
 from ..DoE import LHS
 from ..utility import Verbose
 
@@ -9,8 +10,8 @@ class Algorithm():
     This is a baseclass for algorithms
     """
     def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10,
-                 logFlag=True):
+                 verbose=True, verboseFreq=10, logFlag=True,
+                 optMax=False):
         
         self.setting=Setting()
         self.result=Result()
@@ -25,6 +26,7 @@ class Algorithm():
         self.verboseFreq=verboseFreq
         self.logFlag=logFlag
 
+        self.optMax=False
     def initialize(self, nInit):
         
         lhs=LHS('classic', problem=self.problem)
@@ -38,7 +40,8 @@ class Algorithm():
         
         pop.evaluate(self.problem)
         self.FEs+=pop.nPop
-    
+
+        
     def checkTermination(self):
         
         if self.FEs<=self.maxFEs:

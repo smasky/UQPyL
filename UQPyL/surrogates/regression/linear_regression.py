@@ -2,25 +2,25 @@ import numpy as np
 from scipy.linalg import lstsq, solve
 from typing import Tuple, Literal, Optional
 
-from .surrogate_ABC import Surrogate, Scale_T
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
+from ..surrogate_ABC import Surrogate, Scale_T
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
 
 class LinearRegression(Surrogate):
     '''
     LinearRegression
     
-    Support three type:
-    'Origin'-------'Least Square Method'
-    'Ridge'--------'Ridge'
-    'Lasso'--------'Lasso'
+    Support three version:
+    'Origin'-------'Least Square Method'----Ordinary Loss Function
+    'Ridge'--------'Ridge'----with L2 regularization
+    'Lasso'--------'Lasso'----with L1 regularization
     '''
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  poly_feature: PolynomialFeatures=None,
                  loss_type: Literal['Origin', 'Ridge', 'Lasso']='Origin',
                  fit_intercept: bool= True, alpha: float=0.1,
                  epoch: int=100, lr: float=1e-5, tl: float=1e-5):
-        
         
         self.loss_type=loss_type
         self.fit_intercept=fit_intercept
@@ -110,7 +110,7 @@ class LinearRegression(Surrogate):
     
     def _fit_Lasso(self, trainX: np.ndarray, trainY: np.ndarray):
         
-        from .lasso_ import celer, compute_norms_X_col, compute_Xw, dnorm_enet
+        from .lasso import celer, compute_norms_X_col, compute_Xw, dnorm_enet
         
         trainX_=np.asarray(trainX, order='F')
         trainY_=np.asarray(trainY, order='F')
