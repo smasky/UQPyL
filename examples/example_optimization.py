@@ -16,16 +16,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from UQPyL.problems import Sphere
 ################1. Genetic Algorithm (GA) - Single objective################
-print('################1. Genetic Algorithm (GA) - Single objective################')
-from UQPyL.optimization import GA, PSO, SCE_UA, ML_SCE_UA, CSA, DE
-from UQPyL.problems import Sphere, Rastrigin, Rosenbrock
+# print('################1. Genetic Algorithm (GA) - Single objective################')
+# from UQPyL.optimization import GA, PSO, SCE_UA, ML_SCE_UA, CSA, DE, ABC
+# from UQPyL.problems import Sphere, Rastrigin, Rosenbrock
 
-problem=Sphere(n_input=30, ub=100, lb=-100)
-sce=ML_SCE_UA(ngs=5, verbose=True, maxFEs=50000, maxIterTimes=1000)
-pso=GA(nInit=50, nPop=50, maxFEs=50000, maxIterTimes=1000, logFlag=True)
-csa=CSA(verboseFreq=10)
-de=DE(nInit=50, nPop=50, verbose=True)
-res=de.run(problem)
+# problem=Sphere(n_input=30, ub=100, lb=-100)
+# sce=ML_SCE_UA(ngs=5, verbose=True, maxFEs=50000, maxIterTimes=1000)
+# pso=GA(nInit=50, nPop=50, maxFEs=50000, maxIterTimes=1000, logFlag=True)
+# csa=CSA(verboseFreq=10)
+# de=DE(nInit=50, nPop=50, verbose=True)
+# abc=ABC(nInit=50, nPop=50, maxFEs=50000, maxIterTimes=1000, logFlag=False)
+# res=abc.run(problem)
 
 # import matplotlib.pyplot as plt
 # FEs_objs=res['history_best_objs']
@@ -85,13 +86,13 @@ res=de.run(problem)
 # print('FE:', res['FEs'])
 
 #############4. NSGA-II - Multi-objective#################
-# print('#############4. NSGA-II - Multi-objective#################')
-# from UQPyL.optimization import NSGAII
-# from UQPyL.problems import ZDT3
-# problem=ZDT3(n_input=30)
-# optimum=problem.get_optimum(100)
-# nsga=NSGAII(problem, maxFEs=10000, maxIters=1000, n_samples=50)
-# res=nsga.run()
+print('#############4. NSGA-II - Multi-objective#################')
+from UQPyL.optimization import NSGAII
+from UQPyL.problems import ZDT3
+problem=ZDT3(n_input=30)
+optimum=problem.get_optimum(100)
+nsga=NSGAII(maxFEs=10000, maxIterTimes=1000)
+res=nsga.run(problem)
 # import matplotlib.pyplot as plt
 # y=res['pareto_y']
 # plt.scatter(y[:,0], y[:,1])

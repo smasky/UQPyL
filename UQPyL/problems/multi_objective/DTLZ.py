@@ -2,7 +2,7 @@ import numpy as np
 import itertools
 from typing import Union
 
-from .problem_ABC import ProblemABC
+from ..problem_ABC import ProblemABC
 
 ##----------------Reference-------------------#
 # K. Deb, L. Thiele, M. Laumanns, and E. Zitzler, Scalable test problems
@@ -74,7 +74,7 @@ class DTLZ1(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from .utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions._uniformPoint import uniformPoint
         R,_= uniformPoint(N, self.n_output)
         R=R/2
         
@@ -150,7 +150,7 @@ class DTLZ2(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from .utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions._uniformPoint import uniformPoint
         R, _ = uniformPoint(N, self.n_output)
         R = R / np.tile(np.sqrt(np.sum(R ** 2, axis=1)).reshape(-1, 1), (1, self.n_output))
         
@@ -221,7 +221,7 @@ class DTLZ3(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from .utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions._uniformPoint import uniformPoint
         R, _ =uniformPoint(N, self.n_output)
         R /= np.sqrt(np.sum(R**2, axis=1))[:, np.newaxis]
         
@@ -297,7 +297,7 @@ class DTLZ4(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from .utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions._uniformPoint import uniformPoint
         R, _ = uniformPoint(N, self.n_output)
         R /= np.sqrt(np.sum(R**2, axis=1))[:, np.newaxis]
         return R
@@ -521,7 +521,7 @@ class DTLZ7(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from .utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions._uniformPoint import uniformPoint
         interval = [0, 0.251412, 0.631627, 0.859401]
         median = (interval[1] - interval[0]) / (interval[3] - interval[2] + interval[1] - interval[0])
         

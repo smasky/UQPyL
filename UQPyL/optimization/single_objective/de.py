@@ -12,9 +12,8 @@ class DE(Algorithm):
     [1] Storn R , Price K .Differential Evolution (1997). A Simple and Efficient Heuristic for global Optimization over Continuous Spaces[J].
         Journal of Global Optimization, 11(4):341-359.DOI:10.1023/A:1008202821328.
     """
-    name= "Differential Evolution"
-    type= "EA" #Evolutionary Algorithm
-    target= "Single"
+    name = "Differential Evolution"
+    type = "Single"
     def __init__(self, cr: float=0.9, f: float=0.5,
                  nInit: int=50, nPop: int=50,
                  maxFEs: int = 50000, 

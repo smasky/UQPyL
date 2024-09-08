@@ -4,14 +4,14 @@ from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional, Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from .surrogate_ABC import Surrogate, Scale_T
-from .krg_kernels import Krg_Kernel
-from ..utility.metrics import r_square
-from ..optimization import Boxmin, GA, MP_List, EA_List
-from ..utility.model_selections import RandSelect
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
-from ..problems import Problem
+from ..surrogate_ABC import Surrogate, Scale_T
+from .kernels import Krg_Kernel
+from ...utility.metrics import r_square
+from ...optimization import Boxmin, GA, MP_List, EA_List
+from ...utility.model_selections import RandSelect
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
+from ...problems import ProblemABC as Problem
 
 ####---------------------regression functions--------------------###
 def regrpoly0(S):

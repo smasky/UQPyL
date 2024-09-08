@@ -18,7 +18,7 @@ from UQPyL.problems import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21,
 from UQPyL.utility.metrics import r_square, rank_score
 
 from UQPyL.surrogates import RBF
-from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
+from UQPyL.surrogates.rbf.kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
 
 benchmark_list=[Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbrock,
                 Step, Quartic, Schwefel_2_26, Rastrigin, Ackley, Griewank, 

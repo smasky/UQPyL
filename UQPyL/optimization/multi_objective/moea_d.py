@@ -4,9 +4,9 @@ import math
 from typing import Optional, Literal
 from scipy.spatial import distance
 
-from ..DoE import LHS
-from ..problems import Problem
-from .utility_functions._uniformPoint import _NBI 
+from ...DoE import LHS
+from ...problems import ProblemABC as Problem
+from ..utility_functions._uniformPoint import _NBI 
 
 class MOEA_D():
     '''

@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 
-from .problem_ABC import ProblemABC
+from ..problem_ABC import ProblemABC
 ##-----------Reference------------------##
 # E. Zitzler, K. Deb, and L. Thiele, Comparison of multiobjective
 # evolutionary algorithms: Empirical results, Evolutionary computation,
@@ -106,7 +106,7 @@ class ZDT3(ProblemABC):
     
     def get_optimum(self, N):
         
-        from .utility_functions._NDsort import NDSort
+        from ..utility_functions._NDsort import NDSort
         
         R=np.zeros((N, self.n_output))
         R[:,0]=np.linspace(0,1,N)

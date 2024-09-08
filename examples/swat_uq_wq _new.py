@@ -317,7 +317,7 @@ from UQPyL.DoE import LHS
 # X_=np.array([30.0, 1000.0, 40.0, 1, 1])
 # Y=swat_cup.evaluate(X_.reshape(1,-1))
 from UQPyL.optimization import NSGAII, MOEA_D
-from UQPyL.problems.multi_DTLZ import DTLZ2
+from UQPyL.problems.multi_objective.DTLZ import DTLZ2
 dtlz=DTLZ2(n_input=15)
 moea=NSGAII(dtlz, n_samples=50)
 res=moea.run()

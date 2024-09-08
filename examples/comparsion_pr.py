@@ -28,7 +28,7 @@ dimensions=[10, 20, 30, 50]
 samples=[100, 200, 300, 500]
 
 from UQPyL.surrogates import RBF
-from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
+from UQPyL.surrogates.rbf.kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
 from UQPyL.problems import Problem, ProblemABC
 from UQPyL.optimization import GA
 kernels=["Lasso","Origin", "Ridge"]

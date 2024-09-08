@@ -21,9 +21,8 @@ class CSA(Algorithm):
     References:
         [1]	Z. Feng, W. Niu, and S. Liu (2021), Cooperation search algorithm: A novel metaheuristic evolutionary intelligence algorithm for numerical optimization and engineering optimization problems, Appl. Soft. Comput., vol. 98, p. 106734, Jan.  doi: 10.1016/j.asoc.2020.106734.
     """
-    name="Cooperative Search Algorithm"
-    type="EA" #Evolutionary Algorithm
-    target="Single"
+    name = "Cooperative Search Algorithm"
+    type = "Single" 
     def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
                  nInit: int = 50, nPop: int = 50,
                  maxIterTimes: int=1000,

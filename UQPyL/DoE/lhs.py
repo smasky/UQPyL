@@ -2,7 +2,7 @@ import numpy as np
 from typing import Literal, Optional
 from scipy.spatial.distance import pdist
 
-from ..problems import Problem
+from ..problems import ProblemABC as Problem
 
 from .sampler_ABC import Sampler, decoratorRescale
 

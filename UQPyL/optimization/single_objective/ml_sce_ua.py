@@ -1,7 +1,7 @@
 # M&L Shuffled Complex Evolution-UA <Single>
 
 import numpy as np
-from .algorithm import Algorithm, Population, Verbose
+from ..algorithm import Algorithm, Population, Verbose
 
 class ML_SCE_UA(Algorithm):
     """
@@ -12,7 +12,7 @@ class ML_SCE_UA(Algorithm):
             [4] Muttil N , Liong S Y (2006).Improved robustness and efficiency of the SCE-UA model-calibrating algorithm. Advances in Geosciences.
     """
     name="ML-SCE-UA"
-    type="EA"
+    type="Single"
     def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7, 
                 alpha: float=1.0, beta: float=0.5, sita: float=0.2,
                 maxFEs: int= 50000, 

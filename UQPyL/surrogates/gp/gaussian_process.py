@@ -3,7 +3,7 @@ from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Tuple, Optional, Literal
 
 from .kernels import RBF, Matern, Gp_Kernel, RationalQuadratic
-from ...problems import Problem
+from ...problems import ProblemABC as Problem
 from ..surrogate_ABC import Surrogate
 from ...optimization import GA, Boxmin, MP_List, EA_List
 from ...utility.model_selections import RandSelect

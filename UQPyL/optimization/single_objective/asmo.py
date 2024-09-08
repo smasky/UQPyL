@@ -7,7 +7,7 @@ from .sce_ua import SCE_UA
 from .pso import PSO
 from .ga import GA
 from ...DoE import LHS
-from ...problems import Problem
+from ...problems import ProblemABC as Problem
 from ...surrogates import Surrogate
 
 lhs=LHS('classic')

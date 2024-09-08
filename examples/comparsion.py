@@ -29,7 +29,7 @@ samples=[100, 200, 300, 500]
 # database = pd.read_excel("./database.xlsx", index_col=0)
 #----------------------RBF-----------------------------#
 from UQPyL.surrogates import RBF
-from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
+from UQPyL.surrogates.rbf.kernels import Cubic, Gaussian, Linear, Multiquadric, Thin_plate_spline
 from UQPyL.optimization import PSO, GA
 from UQPyL.problems import Problem, ProblemABC
 kernels=["Cubic", "Gaussian", "Linear", "Multiquadric", "Thin_plate_spline"]

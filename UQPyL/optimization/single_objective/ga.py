@@ -3,7 +3,7 @@
 import numpy as np
 import math
 
-from .algorithm import Algorithm, Population, Verbose
+from ..algorithm import Algorithm, Population, Verbose
 class GA(Algorithm):
     '''
         Genetic Algorithm <Single>
@@ -47,9 +47,8 @@ class GA(Algorithm):
             [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
             [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
     '''
-    name= "Genetic Algorithm"
-    type= "EA" #Evolutionary Algorithm
-    target= "Single"
+    name = "Genetic Algorithm"
+    type = "Single"
     def __init__(self, nInit: int=50, nPop: int=50,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  maxIterTimes: int=1000,

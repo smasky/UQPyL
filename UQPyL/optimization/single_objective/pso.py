@@ -2,9 +2,9 @@
 
 import numpy as np
 
-from ..problems import Problem
-from ..DoE import LHS
-from .algorithm import Algorithm, Population, Verbose
+from ...problems import ProblemABC as Problem
+from ...DoE import LHS
+from ..algorithm import Algorithm, Population, Verbose
 class PSO(Algorithm):
     '''
         Particle Swarm Optimization
@@ -47,8 +47,7 @@ class PSO(Algorithm):
         
     '''
     name= "Particle Swarm Optimization"
-    type= "EA" #Evolutionary Algorithm
-    target= "Single"
+    type= "Single" 
     def __init__(self, nInit: int=50, nPop: int=50,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,
                     maxIterTimes: int=1000,

@@ -1,8 +1,9 @@
 import numpy as np
-from .svr_ import svm_fit, svm_predict, Parameter 
 from typing import Literal, Optional
-from .surrogate_ABC import Surrogate
-from ..utility.polynomial_features import PolynomialFeatures
+
+from .core import svm_fit, svm_predict, Parameter 
+from ..surrogate_ABC import Surrogate
+from ...utility.polynomial_features import PolynomialFeatures
 LINEAR = 0
 POLYNOMIAL = 1
 RBF = 2

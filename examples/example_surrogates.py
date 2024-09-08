@@ -60,7 +60,7 @@ print('rank_score:', oe)
 
 ############2. gaussian_process (GP)#################
 print("#################gaussian_process (GP)#################")
-from UQPyL.surrogates.gaussian_process import GPR
+from UQPyL.surrogates.gp.gaussian_process import GPR
 # we should construct a kernel for GPR
 from UQPyL.surrogates.gp_kernels import RBF
 rbf_kernel=RBF()
@@ -137,7 +137,7 @@ print(rank)
 
 ############5. polynomial regression (PR)####
 print('############5. polynomial regression (PR)####')
-from UQPyL.surrogates.polynomial_regression import PolynomialRegression
+from UQPyL.surrogates.regression.polynomial_regression import PolynomialRegression
 #degree=2 default. degree=1 is linear regression
 # there are three types: 'Origin', 'Lasso', 'Ridge'
 pr=PolynomialRegression(degree=2, loss_type='Lasso')
@@ -161,8 +161,8 @@ print(rank)
 
 ############6. radial basis function (RBF)############
 print('############6. radial basis function (RBF)############')
-from UQPyL.surrogates.radial_basis_function import RBF
-from UQPyL.surrogates.rbf_kernels import Cubic, Gaussian, Multiquadric, Linear, Thin_plate_spline
+from UQPyL.surrogates.rbf.radial_basis_function import RBF
+from UQPyL.surrogates.rbf.kernels import Cubic, Gaussian, Multiquadric, Linear, Thin_plate_spline
 #use Cubic as example
 cubic=Cubic()
 rbf=RBF(kernel=cubic)
@@ -186,7 +186,7 @@ print(rank)
 
 ############8. multivariate adaptive regression splines (MARS)###########
 print('############8. multivariate adaptive regression splines (MARS)############')
-from UQPyL.surrogates.mars import MARS
+from UQPyL.surrogates.mars.mars import MARS
 mars=MARS()
 mars.fit(X_train, Y_train)
 Y_predict=mars.predict(X_test)

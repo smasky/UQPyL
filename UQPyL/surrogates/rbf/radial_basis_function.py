@@ -3,10 +3,10 @@ from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional
 
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
-from .rbf_kernels import Kernel
-from .surrogate_ABC import Surrogate, Scale_T
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
+from .kernels import Kernel
+from ..surrogate_ABC import Surrogate, Scale_T
 
 class RBF(Surrogate):
     '''

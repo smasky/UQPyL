@@ -3,9 +3,9 @@ import numpy as np
 from tqdm import tqdm
 from scipy.spatial.distance import cdist
 
-from ..DoE import LHS
-from ..problems import Problem
-from ..surrogates import Mo_Surrogates
+from ...DoE import LHS
+from ...problems import ProblemABC as Problem
+from ...surrogates import Mo_Surrogates
 from .nsga_ii import NSGAII
 
 lhs=LHS("center")

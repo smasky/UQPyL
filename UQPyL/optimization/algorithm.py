@@ -49,6 +49,7 @@ class Algorithm():
                 if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
                     self.iters+=1
                     return True
+                
         return False
     
     def setProblem(self, problem):

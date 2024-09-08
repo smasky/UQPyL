@@ -2,10 +2,10 @@ import numpy as np
 from math import comb
 from typing import Literal, Tuple, Optional
 
-from .surrogate_ABC import Scale_T, Surrogate
+from ..surrogate_ABC import Scale_T, Surrogate
 from .linear_regression import LinearRegression
-from ..utility.scalers import Scaler
-from ..utility.polynomial_features import PolynomialFeatures
+from ...utility.scalers import Scaler
+from ...utility.polynomial_features import PolynomialFeatures
 
 class PolynomialRegression(LinearRegression):
     """

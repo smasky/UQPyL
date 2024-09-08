@@ -6,7 +6,7 @@ from .regression.polynomial_regression import PolynomialRegression
 from .svr.support_vector_machine import SVR
 from .fnn.fully_connect_neural_network import FNN
 from .kriging import KRG
-from .mars.mars import MARS
+# from .mars.mars import MARS
 
 kernels=["rbf_kernels", "gp_kernels"]
 surrogates=["LinearRegression", "PolynomialRegression", "RBF", "Kriging", "MLP",

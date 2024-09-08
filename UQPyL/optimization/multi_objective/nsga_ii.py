@@ -3,10 +3,13 @@ import numpy as np
 import math
 from typing import Optional
 
-from ..DoE import LHS
-from ..problems import Problem
+from ..utility_functions import NDSort, crowdingDistance
+from ...DoE import LHS
+from ..algorithm import Algorithm
+from ..population import Population
+from ...problems import ProblemABC  as Problem
 
-class NSGAII():
+class NSGAII(Algorithm):
     '''
     Non-dominated Sorting Genetic Algorithm II <Multi-objective>
     ------------------------------------------------
@@ -45,128 +48,63 @@ class NSGAII():
     References:
         [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
     '''
-    def __init__(self, problem: Problem, n_samples: int=50, 
-                 x_init: Optional[np.ndarray]=None, y_init: Optional[np.ndarray]=None,
-                 proC=1, disC=20, proM=1, disM=20,
-                 maxFEs: int=50000, maxIters: int=1000
-                 ):
-        #problem setting
-        self.problem=problem
-        self.evaluate=problem.evaluate
-        self.n_input=problem.n_input
-        self.lb=problem.lb;self.ub=problem.ub
-        self.n_output=problem.n_output
+    name = "Nondominated Sorting Genetic Algorithm II"
+    type = "Multi"
+    def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
+                 nInit: int =50, nPop: int =50,
+                 maxFEs: int = 50000, 
+                 maxIterTimes: int = 1000, 
+                 maxTolerateTimes=None, tolerate=1e-6, 
+                 verbose=True, verboseFreq=10, logFlag=True):
         
-        #initial setting
-        self.n_samples=n_samples
-        self.x_init=x_init
-        self.y_init=y_init
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
         
-        #GA setting
-        self.proC=proC
-        self.disC=disC
-        self.proM=proM
-        self.disM=disM
-        
-        #termination setting
-        self.maxFEs=maxFEs
-        self.maxIters=maxIters
+        self.setParameters('proC', proC)
+        self.setParameters('disC', disC)
+        self.setParameters('proM', proM)
+        self.setParameters('disM', disM)
+        self.setParameters('nInit', nInit)
+        self.setParameters('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    def run(self):
+    def run(self, problem, xInit=None, yInit=None):
         
-        maxFEs=self.maxFEs
-        maxIters=self.maxIters
-        
-        n_input=self.n_input
-        
-        lhs=LHS('classic', problem=self.problem)
-        if self.x_init is None:
-            self.x_init=lhs(self.n_samples, n_input)
-        if self.y_init is None:
-            self.y_init=self.evaluate(self.x_init)
-
-        XPop=self.x_init
-        YPop=self.y_init
-        
-        FE=YPop.shape[0]
-        Iter=0
-        
-        _, _, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
-        
-        history_pareto_x=[]
-        history_pareto_y=[]
-        
-        while FE<maxFEs and Iter<maxIters:
+        #Parameter Setting
+        proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
+        nInit, nPop=self.getParaValue('nInit', 'nPop')
+        #Problem
+        self.setProblem(problem)
+        #Termination Condition Setting
+        self.FEs=0; self.iters=0
+        #Population Generation
+        if xInit is not None:
+            pop = Population(xInit, yInit) if yInit is not None else Population(xInit)
+            if yInit is None:
+                self.evaluate(pop)
+        else:
+            pop = self.initialize(nInit)
             
-            SelectIndex=self.TournamentSelection(2, self.n_samples, FrontNo, -CrowdDis)
-            XOffSpring=self._operationGA(XPop[SelectIndex,:])
-            
-            YOffSpring=self.evaluate(XOffSpring)
-            
-            XPop=np.vstack((XPop, XOffSpring))
-            YPop=np.vstack((YPop, YOffSpring))
-            
-            XPop, YPop, FrontNo, CrowdDis=self.EnvironmentalSelection(XPop, YPop, self.n_samples)
-            
-            idx=np.where(FrontNo==1.0)
-            pareto_x=XPop[idx]
-            pareto_y=YPop[idx]
-            history_pareto_x.append(pareto_x)
-            history_pareto_y.append(pareto_y)
-            
-            #Update the termination criteria
-            FE+=YOffSpring.shape[0]
-            Iter+=1
+        pop=pop.getTop(nPop)
         
-        idx=np.where(FrontNo==1.0)
-        Result={}
-        Result['pareto_x']=XPop[idx]
-        Result['pareto_y']=YPop[idx]
-        Result['crowdDis']=CrowdDis[idx]
-        Result['history_pareto_x']=history_pareto_x
-        Result['history_pareto_y']=history_pareto_y
+        _, frontNo, CrowdDis=self.EnvironmentalSelection(pop, nPop)
         
-        return Result
+        while self.checkTermination():
+            
+            selectIdx=self.TournamentSelection(2, nPop, frontNo, -CrowdDis)
+            
+            offspring=self._operationGA(pop[selectIdx], proC, disC, proM, disM)
+            
+            self.evaluate(offspring)
+            
+            pop.merge(offspring)
+            
+            pop, frontNo, CrowdDis=self.EnvironmentalSelection(pop, nPop)
+            
+            self.record(pop)
+            
+        return self.result
     
     #-------------------------Private Functions--------------------------#
-    def _operationGA(self,decs: np.ndarray):
-        '''
-            GA Operation
-        '''
-        n_samples=decs.shape[0]
-        parent1=decs[:math.floor(n_samples/2),:]
-        parent2=decs[math.floor(n_samples/2):math.floor(n_samples/2)*2,:]
-        
-        n, d = parent1.shape
-        beta = np.zeros_like(parent1)
-        mu = np.random.rand(n, d)
-
-        beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (self.disC + 1))
-        beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (self.disC + 1))
-        beta = beta * (-1) ** np.random.randint(0, 2, size=(n, d))
-        beta[np.random.rand(n, d) < 0.5] = 1
-        beta[np.repeat(np.random.rand(n, 1) > self.proC, d, axis=1)] = 1
-
-        offspring = np.concatenate(( (parent1 + parent2) / 2 + beta * (parent1 - parent2) / 2,
-                              (parent1 + parent2) / 2 - beta * (parent1 - parent2) / 2 ), axis=0)
-
-        lower = np.repeat(self.lb, 2 * n, axis=0)
-        upper = np.repeat(self.ub, 2 * n, axis=0)
-        site = np.random.rand(2 * n, d) < self.proM / d
-        mu = np.random.rand(2 * n, d)
-        
-        temp = site & (mu <= 0.5)
-        offspring = np.clip(offspring, lower, upper)
-        t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
-        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (np.power(2 * mu[temp] + t1, 1 / (self.disM + 1)) - 1)
-        
-        temp = site & (mu > 0.5)
-        t2 = 2 * (mu[temp] - 0.5) * np.power(1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]), self.disM + 1)
-        offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (self.disM + 1)))
-        
-        return offspring
-    
     def TournamentSelection(self, K, N, fitness1, fitness2):
         """
         Perform K-tournament selection based on two fitness criteria.
@@ -196,85 +134,24 @@ class NSGAII():
         
         return winners_original_order.ravel()
 
-    def EnvironmentalSelection(self, XPop, YPop, N):
+    def EnvironmentalSelection(self, pop, n):
         # 非支配排序
-        FrontNo, MaxFNo = self.NDSort(YPop, N)
+        frontNo, maxFNo = self.NDSort(pop.objs, n)
         
         # 初始化下一代的选择
-        Next = FrontNo < MaxFNo
+        next = frontNo < maxFNo
         
         # 计算拥挤距离
-        CrowdDis = self.CrowdingDistance(YPop, FrontNo)
+        crowdDis = self.CrowdingDistance(pop.objs, frontNo)
         
         # 选择最后一前沿基于拥挤距离的个体
-        Last = np.where(FrontNo == MaxFNo)[0]
-        Rank = np.argsort(-CrowdDis[Last])
-        NumSelected = N - np.sum(Next)
-        Next[Last[Rank[:NumSelected]]] = True
+        last = np.where(frontNo == maxFNo)[0]
+        rank = np.argsort(-crowdDis[last])
+        numSelected = n - np.sum(next)
+        next[last[rank[:numSelected]]] = True
         
-        # 创建下一代
-        NextXPop = np.copy(XPop[Next,:])
-        NextYPop=np.copy(YPop[Next,:])
-        NextFrontNo = np.copy(FrontNo[Next])
-        NextCrowdDis = np.copy(CrowdDis[Next])
+        nextPop=pop[next]
+        nextFrontNo=frontNo[next]
+        nextCrowdDis=np.copy(crowdDis[next])
         
-        return NextXPop, NextYPop, NextFrontNo, NextCrowdDis
-        
-    def CrowdingDistance(self, PopObj, FrontNo):
-        N, M = PopObj.shape
-
-        # 如果未提供FrontNo，默认所有解决方案属于同一前沿
-        if FrontNo is None:
-            FrontNo = np.ones(N)
-        
-        CrowdDis = np.zeros(N)
-        Fronts = np.setdiff1d(np.unique(FrontNo), np.inf)
-        
-        for f in Fronts:
-            Front = np.where(FrontNo == f)[0]
-            Fmax = np.max(PopObj[Front, :], axis=0)
-            Fmin = np.min(PopObj[Front, :], axis=0)
-            
-            for i in range(M):
-                # 对第i个目标排序，获取排序后的索引
-                Rank = np.argsort(PopObj[Front, i])
-                CrowdDis[Front[Rank[0]]] = np.inf
-                CrowdDis[Front[Rank[-1]]] = np.inf
-                
-                for j in range(1, len(Front) - 1):
-                    CrowdDis[Front[Rank[j]]] += (PopObj[Front[Rank[j+1]], i] - PopObj[Front[Rank[j-1]], i]) / (Fmax[i] - Fmin[i])
-                        
-        return CrowdDis
-        
-
-    def NDSort(self, YPop, NSort):
-        '''
-            Non-dominated Sorting
-        '''
-        
-        PopObj, indices = np.unique(YPop, axis=0, return_inverse=True)
-       
-        Table = np.bincount(indices)
-        N, M = PopObj.shape
-        FrontNo = np.inf * np.ones(N)
-        MaxFNo = 0
-
-        while np.sum(Table[FrontNo < np.inf]) < min(NSort, len(indices)):
-            MaxFNo += 1
-            for i in range(N):
-                if FrontNo[i] == np.inf:
-                    Dominated = False
-                    for j in range(i-1, -1, -1):
-                        if FrontNo[j] == MaxFNo:
-                            m = 1
-                            while m < M and PopObj[i, m] >= PopObj[j, m]:
-                                m += 1
-                            Dominated = m == M
-                            if Dominated or M == 2:
-                                break
-                    if not Dominated:
-                        FrontNo[i] = MaxFNo
-
-        FrontNo = FrontNo[indices]
-
-        return FrontNo, MaxFNo
+        return nextPop, nextFrontNo, nextCrowdDis
