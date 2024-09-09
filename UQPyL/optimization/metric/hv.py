@@ -11,6 +11,7 @@ def HV(pop, refPoint=None):
         fmin=np.min(np.vstack((popObjs, np.zeros((1,m)))), axis=0)
         fmax=np.max(np.vstack((popObjs, np.ones((1,m)))), axis=0)
         popObjs = (popObjs - fmin)/(fmax - fmin)/1.1
+        
     if m < 4:    
         pl=popObjs[np.lexsort(popObjs.T[::-1])]
         

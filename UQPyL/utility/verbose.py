@@ -53,7 +53,31 @@ class Verbose():
         return f"{days} day | {hours} hour | {minutes} minute | {seconds: .2f} second"
     
     @staticmethod
-    def verboseSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
+    def verboseMultiSolutions(dec, obj, FEs, Iters, width):
+        nDecs=dec.shape[0]
+        if len(obj)==1:
+            y_labels=["HV"]
+        else:
+            y_labels=["HV", "IGD"]
+        
+        heads=["FEs"]+["Iters"]+y_labels+["Num_Non-dominated_Solution"]
+        values=[FEs, Iters]+[ format(item, ".4f") for item in obj]+[nDecs]
+        rows=int(len(heads))//10+1
+        cols=10
+        for i in range(rows):
+            if (i+1)*cols<len(heads):
+                end=(i+1)*cols
+            else:
+                end=len(heads)
+            table=PrettyTable(heads[i*cols:end])
+            table.max_width=int(width/(cols+4))
+            table.min_width=int(width/(cols+4))
+            table.add_row(values[i*cols:end])
+            
+            Verbose.output(table)
+    
+    @staticmethod
+    def verboseSingleSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
         
         heads=["FEs"]+["Iters"]+y_labels+x_labels
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
@@ -84,8 +108,10 @@ class Verbose():
                 title="FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
                 spacing=int((total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
-                Verbose.verboseSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, total_width)
-        
+                if obj.problem.nOutput==1:
+                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, total_width)
+                else:
+                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, total_width)
         return wrapper
     
     @staticmethod
@@ -126,8 +152,10 @@ class Verbose():
                 Verbose.output("Time:  "+Verbose.formatTime(totalTime))
                 Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}")
                 Verbose.output(f"Best Objs and Best Decision with the FEs")
-                Verbose.verboseSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, total_width)
-            
+                if obj.problem.nOutput==1:
+                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, total_width)
+                else:
+                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, total_width)
             if obj.logFlag:
                 Verbose.logFile.close()
                 

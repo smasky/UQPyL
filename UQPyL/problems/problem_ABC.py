@@ -6,7 +6,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None, y_labels=None):
         
         self.n_input=n_input
-        self.n_output=n_output
+        self.nOutput=n_output
         self._set_ub_lb(ub,lb)
         if var_type is None:
             self.var_type=np.array([0]*n_input)
@@ -26,6 +26,9 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
     @abc.abstractmethod
     def evaluate(self,X):
+        pass
+    
+    def getOptimum(self):
         pass
     
     def _transform_special_parameters(self, X):

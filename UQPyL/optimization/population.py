@@ -12,7 +12,7 @@ class Population():
             self.nPop, self.D=decs.shape
         else:
             self.nPop=0; self.D=0
-        if objs is None:
+        if objs is not None:
             self.nOutput=objs.shape[1]
             self.evaluated=None
        
@@ -80,8 +80,8 @@ class Population():
                 return Population(decs, obj)
             else:
                 frontNo, _=NDSort(self)
-                objs=self.objs(frontNo==1)
-                decs=self.decs(frontNo==1)
+                objs=self.objs[frontNo==1]
+                decs=self.decs[frontNo==1]
                 return Population(decs, objs)
         else:
             if self.nOutput==1:
@@ -93,7 +93,7 @@ class Population():
                 indices = np.lexsort((-crowDis, frontNo))
                 objs=self.objs[indices[:k]]
                 decs=self.decs[indices[:k]]
-                return Population[decs, objs]
+                return Population(decs, objs)
             
     def argsort(self):
         
@@ -117,6 +117,7 @@ class Population():
     def evaluate(self, problem):
         
         self.objs=problem.evaluate(self.decs)
+        self.nOutput=self.objs.shape[1]
         self.evaluated=True
         
     def add(self, otherPop):

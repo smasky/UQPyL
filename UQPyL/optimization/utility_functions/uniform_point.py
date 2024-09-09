@@ -4,7 +4,7 @@ from scipy.special import comb
 from itertools import combinations
 from numpy import linspace, meshgrid, hstack, ceil
 
-def _grid(N: int, M: int):
+def grid(N: int, M: int):
     
     gap = np.linspace(0, 1, int(np.ceil(N ** (1 / M))))
 
@@ -15,7 +15,7 @@ def _grid(N: int, M: int):
     N=W.shape[0]
     return W, N
 
-def _NBI(N: int, M:int):
+def NBI(N: int, M:int):
     '''
         N: int
             the number of samples
@@ -47,7 +47,7 @@ def _NBI(N: int, M:int):
 def uniformPoint(N: int, M: int, method: Literal['NBI', 'grid']='NBI'):
 
     if method=='NBI':
-        return _NBI(N, M)
+        return NBI(N, M)
     elif method=='grid':
-        return _grid(N, M)
+        return grid(N, M)
     

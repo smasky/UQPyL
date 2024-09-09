@@ -14,7 +14,7 @@ class Algorithm():
                  optMax=False):
         
         self.setting=Setting()
-        self.result=Result()
+        self.result=Result(self)
         
         self.problem=None
         self.maxFEs=maxFEs
@@ -58,8 +58,10 @@ class Algorithm():
     @Verbose.decoratorRecord
     def record(self, pop):
         
-        self.result.update(pop, self.FEs, self.iters)
-
+        if self.problem.nOutput==1:
+            self.result.update(pop, self.FEs, self.iters)
+        else:
+            self.result.update(pop, self.FEs, self.iters, 1)
     def setParameters(self, key, value):
         
         self.setting.setParameter(key, value)
@@ -88,5 +90,8 @@ class Setting():
         values=[]
         for arg in args:
             values.append(self.dicts[arg])
-                
-        return tuple(values)
+        
+        if len(args)>1:
+            return tuple(values)
+        else:
+            return values[0]
