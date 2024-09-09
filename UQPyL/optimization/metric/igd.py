@@ -9,6 +9,6 @@ def IGD(pop, optimum):
     
     minDist=np.min(distances, axis=1)
     
-    igd=np.sum(minDist)
+    igd=np.mean(minDist)
     
     return igd

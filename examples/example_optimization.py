@@ -87,19 +87,17 @@ from UQPyL.problems import Sphere
 
 #############4. NSGA-II - Multi-objective#################
 print('#############4. NSGA-II - Multi-objective#################')
-from UQPyL.optimization import NSGAII, MOEAD
+from UQPyL.optimization import NSGAII, MOEAD, RVEA
 from UQPyL.problems import ZDT3, ZDT1
 problem=ZDT3(n_input=30)
 optimum=problem.getOptimum(100)
-nsga=MOEAD(maxFEs=50000, maxIterTimes=1000, aggregation="TCH_M")
+nsga=RVEA(maxFEs=50000, maxIterTimes=1000)
 res=nsga.run(problem)
 import matplotlib.pyplot as plt
 y=res.bestObj
 plt.scatter(y[:,0], y[:,1])
-# plt.scatter(optimum[:,0], optimum[:,1], color='r')
+plt.scatter(optimum[:,0], optimum[:,1], color='r')
 plt.show()
-
-
 #############5. MOEAD - Multi-objective#################
 # print('#############5. MOEAD - Multi-objective#################')
 # from UQPyL.optimization import MOEA_D

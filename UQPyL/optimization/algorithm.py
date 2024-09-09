@@ -40,7 +40,6 @@ class Algorithm():
         
         pop.evaluate(self.problem)
         self.FEs+=pop.nPop
-
         
     def checkTermination(self):
         
@@ -62,6 +61,7 @@ class Algorithm():
             self.result.update(pop, self.FEs, self.iters)
         else:
             self.result.update(pop, self.FEs, self.iters, 1)
+            
     def setParameters(self, key, value):
         
         self.setting.setParameter(key, value)

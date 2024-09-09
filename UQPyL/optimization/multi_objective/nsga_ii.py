@@ -107,16 +107,13 @@ class NSGAII(Algorithm):
     
     #-------------------------Private Functions--------------------------#
     def environmentalSelection(self, pop, n):
-        # 非支配排序
+       
         frontNo, maxFNo = NDSort(pop, n)
         
-        # 初始化下一代的选择
         next = frontNo < maxFNo
         
-        # 计算拥挤距离
         crowdDis = crowdingDistance(pop, frontNo)
         
-        # 选择最后一前沿基于拥挤距离的个体
         last = np.where(frontNo == maxFNo)[0]
         rank = np.argsort(-crowdDis[last])
         numSelected = n - np.sum(next)

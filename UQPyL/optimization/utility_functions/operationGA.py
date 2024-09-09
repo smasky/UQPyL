@@ -24,6 +24,7 @@ def operationGA(matingPool, ub, lb, proC=1, disC=20, proM=1, disM=20):
         off1=(parent1 + parent2) / 2 + (parent1 - parent2) * beta / 2
         off2=(parent1 + parent2) / 2 - (parent1 - parent2) * beta / 2 
         offspring=off1.merge(off2)
+        offspring.clip(lb, ub)
         
         # Polynomial mutation
         lower = np.repeat(lb, 2 * n, axis=0)
@@ -31,7 +32,6 @@ def operationGA(matingPool, ub, lb, proC=1, disC=20, proM=1, disM=20):
         sita = np.random.rand(2 * n, d) < proM / d
         mu = np.random.rand(2 * n, d)
         
-        offspring.clip(lower, upper)
         temp = sita & (mu <= 0.5)        
         t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring.decs[temp] - lower[temp]) / (upper[temp] - lower[temp]), disM + 1)
         offspring.decs[temp] = offspring.decs[temp] + (np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1) *(upper[temp] - lower[temp])

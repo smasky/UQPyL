@@ -5,12 +5,13 @@ from scipy.spatial.distance import cdist, pdist, squareform
 from ..utility_functions import uniformPoint, operationGA
 from ..algorithm import Algorithm
 from ..population import Population
-
-class REVA(Algorithm):
+from ...utility import Verbose
+class RVEA(Algorithm):
     """
     Reference vector guided evolutionary algorithm (RVEA) <Multi>
     """
-    
+    name="Reference vector guided evolutionary algorithm (RVEA)"
+    type="Multi"
     def __init__(self, alpha: float=2.0, fr: float=0.1,
                 nInit: int=50, nPop: int=50,
                 maxFEs: int = 50000, 
@@ -24,7 +25,8 @@ class REVA(Algorithm):
         self.setParameters('fr', fr)
         self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
-        
+    
+    @Verbose.decoratorRun 
     def run(self, problem, xInit=None, yInit=None):
         
         #Parameters setting
@@ -44,21 +46,45 @@ class REVA(Algorithm):
         
         pop=pop.getTop(nPop)
         V0, N=uniformPoint(nPop, problem.nOutput)
-        V = V0
+        V = np.copy(V0)
         
         while self.checkTermination():
-            matingPool=np.random.randint(0, N, N)
-            offspring = operationGA(matingPool, problem.ub, problem.lb)
+            
+            matingPool=np.random.randint(0, len(pop), N)
+            
+            offspring = operationGA(pop[matingPool], problem.ub, problem.lb)
+            
+            self.evaluate(offspring)
+            
+            pop = self.environmentalSelection(pop.merge(offspring), V, (self.FEs/self.maxFEs)**alpha)
+            
+            condition= not (np.ceil(self.FEs / N) % np.ceil(fr * self.maxFEs / N))
+            
+            if condition:
+                V = self.updateReferenceVector(pop, V0)
+            
+            self.record(pop)
+        
+        return self.result
     
-    def environmentalSelection(self, pop, V, rate):
+    def updateReferenceVector(self, pop, V):
+        
+        scaling_factors = np.max(pop.objs, axis=0) - np.min(pop.objs, axis=0)
+        
+        V = V * scaling_factors
+        
+        return V
+    
+    def environmentalSelection(self, pop, V, theta):
         popObjs=pop.objs
-        n, m=pop.size()
+        
+        m=pop.nOutput
         
         nV=V.shape[0]
         
         popObjs=popObjs - np.min(popObjs, axis=0)
         
-        cosine=1-squareform(pdist(V, metric='cosine'))
+        cosine=1-cdist(V, V, metric='cosine')
         
         np.fill_diagonal(cosine, 0)
         
@@ -68,8 +94,26 @@ class REVA(Algorithm):
         
         associate = np.argmin(angle, axis=1)
         
+        next = np.ones(nV, dtype=np.int32)*-1
         
+        for i in np.unique(associate):
+            current1 = np.where(associate == i)[0]
+            # current2 = np.where(associate == i)[0]
             
-        
+            if len(current1) > 0:
+                # Calculate the APD value for each solution
+                APD = (1 + m * theta * angle[current1, i] / gamma[i]) * np.sqrt(np.sum(popObjs[current1, :]**2, axis=1))
+                # Select the one with the minimum APD value
+                best = np.argmin(APD)
+                next[i] = current1[best]
+                
+            # elif len(current2) > 0:
+            #     # Select the one with the minimum CV value
+            #     best = np.argmin(CV[current2])
+            #     next[i] = current2[best]
+            
+        return pop[next[next != -1].astype(int)]
+                
+                
         
         
