@@ -169,7 +169,7 @@ class LHS(Sampler):
         '''
         
         if self.problem is not None:
-            if(self.problem.n_input!=nx):
+            if(self.problem.nInput!=nx):
                 raise ValueError('The input dimensions of the problem and the samples must be the same')
         
         if self.criterion not in LHS_METHOD:

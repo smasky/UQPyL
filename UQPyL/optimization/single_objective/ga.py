@@ -47,18 +47,20 @@ class GA(Algorithm):
             [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
             [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
     '''
-    name = "Genetic Algorithm"
+    
+    name = "GA"
     type = "Single"
+    
     def __init__(self, nInit: int=50, nPop: int=50,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,
                  maxIterTimes: int=1000,
                  maxFEs: int=50000,
                  maxTolerateTimes: int=1000, tolerate: float=1e-6, 
-                 verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
+                 verbose: bool=True, verboseFreq: int=100, logFlag: bool=False, saveFlag=False):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         #user-define setting
         self.setParameters('proC', proC)

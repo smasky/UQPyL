@@ -33,6 +33,7 @@ class SCE_UA(Algorithm):
             [3] Duan, Q., Sorooshian, S., & Gupta, V. K. (1994). A shuffled complex evolution approach for effective and efficient global minimization. Journal of optimization theory and applications, 76(3), 501-521.
                 
     '''
+    
     name="SCE-UA"
     type="Single"
     
@@ -41,11 +42,11 @@ class SCE_UA(Algorithm):
                 maxFEs: int= 50000, 
                 maxIterTimes: int= 1000, 
                 maxTolerateTimes: int= 1000, tolerate: float=1e-6,
-                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False):
+                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False, saveFlag=False):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         #algorithm setting
         self.setParameters('ngs', ngs)

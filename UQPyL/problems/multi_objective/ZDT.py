@@ -9,9 +9,9 @@ from ..problem_ABC import ProblemABC
 #--------------------------------------##
 class ZDT1(ProblemABC):
     
-    def __init__(self, n_input:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        super().__init__(n_input, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
         if nOutput!=2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
@@ -46,9 +46,9 @@ class ZDT1(ProblemABC):
 
 class ZDT2(ProblemABC):
     
-    def __init__(self, n_input:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        super().__init__(n_input, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
         if nOutput!=2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
@@ -61,7 +61,7 @@ class ZDT2(ProblemABC):
         
         Y=np.zeros((X.shape[0], self.nOutput))
         Y[:,0]=X[:,0]
-        g=1+9*np.sum(X[:, 1:], axis=1)/(self.n_input-1)
+        g=1+9*np.sum(X[:, 1:], axis=1)/(self.nInput-1)
         h=1-(Y[:,0]/g)**2
         Y[:,1]=g*h
         
@@ -83,9 +83,11 @@ class ZDT2(ProblemABC):
     
 class ZDT3(ProblemABC):
     
-    def __init__(self, n_input:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    name="ZDT3"
+    
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        super().__init__(n_input, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -98,7 +100,7 @@ class ZDT3(ProblemABC):
         
         Y=np.zeros((X.shape[0], self.nOutput))
         Y[:,0]=X[:,0]
-        g=1+9*np.sum(X[:, 1:], axis=1)/(self.n_input-1)
+        g=1+9*np.sum(X[:, 1:], axis=1)/(self.nInput-1)
         h=1-np.sqrt(Y[:,0]/g)-(Y[:,0]/g)*np.sin(10*np.pi*Y[:,0])
         Y[:,1]=g*h
         
@@ -125,9 +127,9 @@ class ZDT3(ProblemABC):
 
 class ZDT4(ProblemABC):
     
-    def __init__(self, n_input:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
        
-        super().__init__(n_input, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -162,9 +164,9 @@ class ZDT4(ProblemABC):
 
 class ZDT6(ProblemABC):
     
-    def __init__(self, n_input:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
-        super().__init__(n_input, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
         if nOutput!=2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")
@@ -177,7 +179,7 @@ class ZDT6(ProblemABC):
         
         Y=np.zeros((X.shape[0], self.nOutput))
         Y[:,0]=1-np.exp(-4*X[:,0])*np.sin(6*np.pi*X[:,0])**6
-        g=1+9*np.sum(X[:, 1:], axis=1)/(self.n_input-1)**0.25
+        g=1+9*np.sum(X[:, 1:], axis=1)/(self.nInput-1)**0.25
         h=1-(Y[:,0]/g)**2
         Y[:,1]=g*h
         

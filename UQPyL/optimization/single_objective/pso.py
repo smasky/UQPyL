@@ -46,18 +46,20 @@ class PSO(Algorithm):
             [4] Y. Shi and R. C. Eberhart, A modified particle swarm optimizer, in Proceedings of the IEEE Congress on Evolutionary Computation, 1998.
         
     '''
-    name= "Particle Swarm Optimization"
+    
+    name= "PSO"
     type= "Single" 
+    
     def __init__(self, nInit: int=50, nPop: int=50,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,
                     maxIterTimes: int=1000,
                     maxFEs: int=50000,
                     maxTolerateTimes: int=1000, tolerate: float=1e-6,
-                    verbose: bool=True, verboseFreq: int=100, logFlag: bool=False):
+                    verbose: bool=True, verboseFreq: int=100, logFlag: bool=False, saveFlag=False):
         
             super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag)
+                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
             
             #user-define setting
             self.setParameters('w', w)

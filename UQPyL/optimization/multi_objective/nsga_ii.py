@@ -48,16 +48,18 @@ class NSGAII(Algorithm):
     References:
         [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
     '''
-    name = "Nondominated Sorting Genetic Algorithm II"
+    
+    name = "NSGAII"
     type = "Multi"
+    
     def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
                  nInit: int =50, nPop: int =50,
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True):
+                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('proC', proC)
         self.setParameters('disC', disC)

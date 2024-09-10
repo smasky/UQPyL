@@ -8,16 +8,18 @@ class ABC(Algorithm):
     """
     Artificial Bee Colony Algorithm (ABC) <Single>
     """
-    name="Artificial Bee Colony Algorithm"
+    
+    name="ABC"
     type="Single"
+    
     def __init__(self, employedRate: float=0.3,  limit: int=50,
                  nInit: int=50, nPop: int=50, 
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True):
+                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
                 
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('employedRate', employedRate)
         self.setParameters('limit', limit)

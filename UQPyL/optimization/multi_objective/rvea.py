@@ -10,16 +10,18 @@ class RVEA(Algorithm):
     """
     Reference vector guided evolutionary algorithm (RVEA) <Multi>
     """
-    name="Reference vector guided evolutionary algorithm (RVEA)"
+    
+    name="RVEA"
     type="Multi"
+    
     def __init__(self, alpha: float=2.0, fr: float=0.1,
                 nInit: int=50, nPop: int=50,
                 maxFEs: int = 50000, 
                 maxIterTimes: int = 1000, 
                 maxTolerateTimes=None, tolerate=1e-6, 
-                verbose=True, verboseFreq=10, logFlag=True):
+                verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('alpha', alpha)
         self.setParameters('fr', fr)
@@ -61,6 +63,7 @@ class RVEA(Algorithm):
             condition= not (np.ceil(self.FEs / N) % np.ceil(fr * self.maxFEs / N))
             
             if condition:
+                
                 V = self.updateReferenceVector(pop, V0)
             
             self.record(pop)
@@ -76,6 +79,7 @@ class RVEA(Algorithm):
         return V
     
     def environmentalSelection(self, pop, V, theta):
+        
         popObjs=pop.objs
         
         m=pop.nOutput
@@ -107,13 +111,4 @@ class RVEA(Algorithm):
                 best = np.argmin(APD)
                 next[i] = current1[best]
                 
-            # elif len(current2) > 0:
-            #     # Select the one with the minimum CV value
-            #     best = np.argmin(CV[current2])
-            #     next[i] = current2[best]
-            
-        return pop[next[next != -1].astype(int)]
-                
-                
-        
-        
+        return pop[next[next != -1].astype(int)]    

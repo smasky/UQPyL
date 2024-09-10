@@ -3,13 +3,13 @@ import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
 
-    def __init__(self, n_input:int, n_output:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None, y_labels=None):
+    def __init__(self, nInput:int, nOutput:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None, y_labels=None):
         
-        self.n_input=n_input
-        self.nOutput=n_output
+        self.nInput=nInput
+        self.nOutput=nOutput
         self._set_ub_lb(ub,lb)
         if var_type is None:
-            self.var_type=np.array([0]*n_input)
+            self.var_type=np.array([0]*nInput)
         else:
             self.var_type=np.array(var_type)
         
@@ -19,10 +19,10 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.var_set=var_set
         
         if x_labels is None:
-            self.x_labels=['x_'+str(i) for i in range(1,n_input+1)]
+            self.x_labels=['x_'+str(i) for i in range(1,nInput+1)]
 
         if y_labels is None:
-            self.y_labels=['y_'+str(i) for i in range(1,n_output+1)]
+            self.y_labels=['y_'+str(i) for i in range(1,nOutput+1)]
         
     @abc.abstractmethod
     def evaluate(self,X):
@@ -60,13 +60,13 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
         
         if (isinstance(ub,(int, float))):
-            self.ub=np.ones((1,self.n_input))*ub
+            self.ub=np.ones((1,self.nInput))*ub
         elif(isinstance(ub,np.ndarray)):
             self._check_bound(ub)
             self.ub=ub.reshape(1, -1)
             
         if (isinstance(lb,(int, float))):
-            self.lb=np.ones((1,self.n_input))*lb
+            self.lb=np.ones((1,self.nInput))*lb
         elif(isinstance(lb,np.ndarray)):
             self._check_bound(lb)
             self.lb=lb.reshape(1, -1)
@@ -77,6 +77,6 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def _check_bound(self,bound: np.ndarray):
         
         bound=bound.ravel()
-        if(not bound.shape[0]==self.n_input):
-            raise ValueError('the input bound is inconsistent with the input n_inputensions')
+        if(not bound.shape[0]==self.nInput):
+            raise ValueError('the input bound is inconsistent with the input nInputensions')
         

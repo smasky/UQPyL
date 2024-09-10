@@ -36,16 +36,18 @@ class MOEAD(Algorithm):
             maxIters: int, default=1000
                 the maximum number of iterations
     '''
-    name="Multi_objective Evolutionary Algorithm based on Decomposition"
+    
+    name="MOEA/D"
     type="Multi"
+    
     def __init__(self, aggregation: Literal['PBI', 'TCH', 'TCH_N', 'TCH_M']= 'PBI',
                 nInit: int=50, nPop: int=50,
                 maxFEs: int = 50000, 
                 maxIterTimes: int = 1000, 
                 maxTolerateTimes=None, tolerate=1e-6, 
-                verbose=True, verboseFreq=10, logFlag=True):
+                verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         #problem setting
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('aggregation', aggregation)
         self.setParameters('nInit', nInit)

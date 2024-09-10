@@ -2,7 +2,7 @@ import numpy as np
 import functools
 import time
 import os
-import sys
+import re
 from datetime import datetime
 from prettytable import PrettyTable
             
@@ -124,8 +124,18 @@ class Verbose():
             Verbose.verbose=obj.verbose
             
             if obj.logFlag:
-                suffix=datetime.now().strftime("%m%d_%H%M%S")
-                Verbose.logFile=open(os.path.join(Verbose.workDir, f"log_{obj.name}_{suffix}.txt"), 'w')
+                
+                folder=os.path.join(Verbose.workDir, "Result")
+                if not os.path.exists(folder):
+                    os.mkdir(folder)
+                
+                folder_log=os.path.join(folder, "Log")
+                if not os.path.exists(folder_log):
+                    os.mkdir(folder_log)
+                
+                filename= os.path.join(folder_log, f"{obj.name}_"+ datetime.now().strftime("%m%d_%H%M%S")+".txt")
+                
+                Verbose.logFile=open(filename, 'w')
                 
             if  obj.verbose or obj.logFlag:
                 
@@ -146,19 +156,26 @@ class Verbose():
             totalTime=endTime-startTime
             
             if obj.verbose:
+                
                 title="Conclusion"
                 spacing=int((total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 Verbose.output("Time:  "+Verbose.formatTime(totalTime))
                 Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}")
                 Verbose.output(f"Best Objs and Best Decision with the FEs")
+                
                 if obj.problem.nOutput==1:
                     Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, total_width)
                 else:
                     Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, total_width)
+
+            if obj.saveFlag:
+                obj.saveResult()
+                
             if obj.logFlag:
                 Verbose.logFile.close()
-                
+                os.rename(filename, os.path.join(folder_log, obj.result.saveName+".txt"))
+   
             return res
         return wrapper 
                 

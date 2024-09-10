@@ -10,8 +10,7 @@ class Algorithm():
     This is a baseclass for algorithms
     """
     def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True,
-                 optMax=False):
+                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
         self.setting=Setting()
         self.result=Result(self)
@@ -25,12 +24,12 @@ class Algorithm():
         self.verbose=verbose
         self.verboseFreq=verboseFreq
         self.logFlag=logFlag
-
-        self.optMax=False
+        self.saveFlag=saveFlag
+        
     def initialize(self, nInit):
         
         lhs=LHS('classic', problem=self.problem)
-        xInit=lhs.sample(nInit, self.problem.n_input)
+        xInit=lhs.sample(nInit, self.problem.nInput)
         pop=Population(xInit)
         self.evaluate(pop); 
             
@@ -40,7 +39,7 @@ class Algorithm():
         
         pop.evaluate(self.problem)
         self.FEs+=pop.nPop
-        
+    
     def checkTermination(self):
         
         if self.FEs<=self.maxFEs:
@@ -53,6 +52,12 @@ class Algorithm():
     
     def setProblem(self, problem):
         self.problem=problem
+    
+    def saveResult(self):
+        if self.problem.nOutput>1:
+            self.result.save(type=1)
+        else:
+            self.result.save()
     
     @Verbose.decoratorRecord
     def record(self, pop):
@@ -74,6 +79,7 @@ class Setting():
     """
     Save the parameter setting of the algorithm
     """
+    
     def __init__(self):
         self.keys=[]
         self.values=[]

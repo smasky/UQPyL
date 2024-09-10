@@ -12,16 +12,18 @@ class DE(Algorithm):
     [1] Storn R , Price K .Differential Evolution (1997). A Simple and Efficient Heuristic for global Optimization over Continuous Spaces[J].
         Journal of Global Optimization, 11(4):341-359.DOI:10.1023/A:1008202821328.
     """
-    name = "Differential Evolution"
+    
+    name = "DE"
     type = "Single"
+    
     def __init__(self, cr: float=0.9, f: float=0.5,
                  nInit: int=50, nPop: int=50,
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True):
+                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('cr', cr)
         self.setParameters('f', f)
