@@ -91,7 +91,7 @@ from UQPyL.optimization import NSGAII, MOEAD, RVEA
 from UQPyL.problems import ZDT3, ZDT1
 problem=ZDT3(nInput=10)
 optimum=problem.getOptimum(100)
-nsga=RVEA(maxFEs=10000, maxIterTimes=1000, nInit=50, nPop=50, saveFlag=True)
+nsga=RVEA(maxFEs=50000, maxIterTimes=5000, nInit=50, nPop=50, saveFlag=True)
 res=nsga.run(problem)
 import matplotlib.pyplot as plt
 y=res.bestObj

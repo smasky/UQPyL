@@ -60,38 +60,9 @@ class Result():
             self.appearFEs=FEs
             self.appearIters=iter
 
-    def save(self, type=0):
+    def generateHDF5(self):
         
-        import os
-        import re
-        
-        folder=os.path.join(os.getcwd(), "Result")
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-        
-        folder_data=os.path.join(folder, "Data")
-        if not os.path.exists(folder_data):
-            os.mkdir(folder_data)
-        
-        filename = f"{self.algorithm.name}_{self.algorithm.problem.name}_D{self.algorithm.problem.nInput}_M{self.algorithm.problem.nInput}"
-        
-        all_files = [f for f in os.listdir(folder_data) if os.path.isfile(os.path.join(folder_data, f))]
-        
-        pattern = f"{filename}_(\d+)"
-        
-        max_num=0
-        for file in all_files:
-            match = re.match(pattern, file)
-            if match:
-                number = int(match.group(1))
-                if number > max_num:
-                    max_num=number
-        max_num+=1
-            
-        filename+=f"_{max_num}.hdf"
-        self.saveName=filename[:-4]
-        
-        filepath = os.path.join(folder_data, filename)
+        type = 1 if self.algorithm.problem.nOutput>1 else 0
         
         historyPopulation={}
         
@@ -144,27 +115,11 @@ class Result():
                  "Max_Iter" : self.algorithm.iters,
                  "Max_FEs" : self.algorithm.FEs }
         
-        with h5py.File(filepath, 'w') as f:
-            
-            save_dict_to_hdf5(f, result)
+        return result
         
     def reset(self):
-        
         self.bestDec=None; self.bestObj=None
         self.appearFEs=None; self.appearIters=None
         self.historyBestDecs={}; self.historyBestObjs={}
         self.historyDecs={}; self.historyObjs={}
         self.historyFEs={}; self.historyMetrics={}
-
-def save_dict_to_hdf5(h5file, d):
-    for key, value in d.items():
-        if isinstance(value, dict):
-            # 如果值是字典，创建一个新的组
-            group = h5file.create_group(str(key))
-            save_dict_to_hdf5(group, value)  # 递归调用存储子字典
-        elif isinstance(value, np.ndarray):
-            # 如果值是Numpy数组，直接创建数据集
-            h5file.create_dataset(key, data=value)
-        else:
-            # 如果是标量，保存为一维数组
-            h5file.create_dataset(key, data=np.array(value))

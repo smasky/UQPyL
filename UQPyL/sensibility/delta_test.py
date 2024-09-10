@@ -1,17 +1,17 @@
 #Delta test
-
 import numpy as np
 from scipy.spatial.distance import cdist
 from typing import Optional, Tuple
 
+from .saABC import SA
 from ..optimization import Binary_GA
-from .sa_ABC import SA
 from ..DoE import LHS, Sampler
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler
+
 class Delta_Test(SA):
     def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                       n_neighbors: int=2):
+                       nNeighbors: int=2):
         '''
             Delta Test 
            --------------------------
@@ -45,9 +45,9 @@ class Delta_Test(SA):
         '''
         super().__init__(problem, scalers)
 
-        self.n_neighbors=n_neighbors
+        self.n_neighbors=nNeighbors
         
-    def sample(self, N: int=500, sampler: Sampler=LHS('classic')):
+    def sample(self, N: int=500, sampler: Sampler = LHS('classic')):
         '''
             Generate samples
             -------------------------------

@@ -1,24 +1,8 @@
 # Extend Fourier amplitude sensitivity test, FAST
-"""
-  References
-    ----------
-    1. Cukier, R.I., Fortuin, C.M., Shuler, K.E., Petschek, A.G.,
-       Schaibly, J.H., 1973.
-       Study of the sensitivity of coupled reaction systems to
-       uncertainties in rate coefficients. I theory.
-       Journal of Chemical Physics 59, 3873-3878.
-       doi:10.1063/1.1680571
-    2. Saltelli, A., S. Tarantola, and K. P.-S. Chan (1999).
-       A Quantitative Model-Independent Method for Global Sensitivity Analysis
-       of Model Output.
-       Technometrics, 41(1):39-56,
-       doi:10.1080/00401706.1999.10485594
-    3. extend FAST
-"""
 import numpy as np
 from typing import Optional, Tuple
 
-from .sa_ABC import SA
+from .saABC import SA
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler
 class FAST(SA):

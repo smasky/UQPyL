@@ -47,7 +47,10 @@ def NBI(N: int, M:int):
 def uniformPoint(N: int, M: int, method: Literal['NBI', 'grid']='NBI'):
 
     if method=='NBI':
+        
         return NBI(N, M)
+    
     elif method=='grid':
+        
         return grid(N, M)
     
