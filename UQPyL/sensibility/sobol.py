@@ -55,13 +55,13 @@ class Sobol(SA):
         super().__init__(scalers, verbose, logFlag, saveFlag)
         #Parameter Setting
         self.setParameters("calSecondOrder", calSecondOrder)
-        self.setParameters("skip_value", skipValue)
+        self.setParameters("skipValue", skipValue)
         self.setParameters("scramble", scramble)
         self.setParameters("N", N)
         
     #-------------------------Public Functions--------------------------------#
-    def sample(self, problem: Problem, N: int=512, 
-               skipValue: int=0, scramble: bool=True) -> np.ndarray:
+    def sample(self, problem: Problem, N: Optional[int]=None, 
+               skipValue: Optional[int]=0, scramble: Optional[bool]=True):
         '''
             Generate Sobol_sequence using Saltelli's sampling technique in [2]
             ----------------------
@@ -78,6 +78,17 @@ class Sobol(SA):
                     else
                         the size of X is (N*(2*n_input+2), n_input)
         '''
+        if N is None:
+            N=self.getParaValue("N")
+        if skipValue is None:
+            skipValue=self.getParaValue("skipValue")
+        if scramble is None:
+            scramble=self.getParaValue("scramble")
+            
+        self.setParameters("N", N)
+        self.setParameters("skipValue", skipValue)
+        self.setParameters("scramble", scramble)
+        
         nInput=problem.nInput
         calSecondOrder=self.getParaValue("calSecondOrder")
         
@@ -152,7 +163,7 @@ class Sobol(SA):
                     The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
         '''
         #Parameters Setting
-        N, skipValue, scramble=self.getParaValue("N", "skip_value", "scramble")
+        N, skipValue, scramble=self.getParaValue("N", "skipValue", "scramble")
         calSecondOrder = self.getParaValue("calSecondOrder")
         
         self.setProblem(problem)
@@ -181,17 +192,19 @@ class Sobol(SA):
             S1.append(self._firstOrder(A, AB[:, j:j+1], B))
             ST.append(self._totalOrder(A, AB[:, j:j+1], B))
         
-        S2=np.full((nInput, nInput), np.nan)
+        S2=[]; S_Labels=[]
         if calSecondOrder:
             for j in range(nInput):
                 for k in range(j+1, nInput):
-                    S2[j,k]=(self._secondOrder(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
+                    S2.append(self._secondOrder(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
+                    S_Labels.append(f"{problem.x_labels[j]}-{problem.x_labels[k]}")
         
-        self.record('S1', np.array(S1))
-        self.record('ST', np.array(ST))
+        #Record Data
+        self.record('S1(First Order)', problem.x_labels, S1)
         if calSecondOrder:
-            self.record('S2', S2) 
-                    
+            self.record('S2(Second Order)', S_Labels, S2) 
+        self.record('ST(Total Order)', problem.x_labels, ST)
+        
         return self.result
     
     #-------------------------Private Functions--------------------------------#

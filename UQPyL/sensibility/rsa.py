@@ -5,8 +5,7 @@ from scipy.stats import cramervonmises_2samp
 from .saABC import SA
 from ..DoE import LHS, Sampler
 from ..problems import ProblemABC as Problem
-from ..utility import Scaler
-from ..surrogates import Surrogate
+from ..utility import Scaler, Verbose
 
 class RSA(SA):
     '''
@@ -41,14 +40,22 @@ class RSA(SA):
                                    doi: 10.1016/j.envsoft.2016.02.008.
             [2] SALib, https://github.com/SALib/SALib
     '''
-    def __init__(self, problem: Problem, n_region: int=20,
-                 scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
+    name="RSA"
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                 nRegion: int=20, N: int=500,
+                 verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
-        super().__init__(problem, scalers)
+        #Attribute
+        self.firstOrder=True
+        self.secondOrder=False
+        self.totalOrder=False
+        
+        super().__init__(scalers, verbose, logFlag, saveFlag)
 
-        self.n_region=n_region
+        self.setParameters("nRegion", nRegion)
+        self.setParameters("N", N)
     
-    def sample(self, N: int=500, sampler: Sampler=LHS('classic')):
+    def sample(self, problem: Problem, N: Optional[int]=None, sampler: Sampler=LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -61,14 +68,19 @@ class RSA(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        n_input=self.n_input
+        if N is None:
+            N=self.getParaValue("N")
         
-        X=sampler.sample(N, n_input)
+        self.setParameters("N", N)
+        
+        nInput=problem.nInput
+        
+        X=sampler.sample(N, nInput)
         
         return X
         
-    
-    def analyze(self, X: np.ndarray=None, Y: np.ndarray=None, verbose: bool=False):
+    @Verbose.decoratorAnalyze
+    def analyze(self, problem: Problem, X: np.ndarray=None, Y: np.ndarray=None):
         '''
             Perform RSA
             -------------------------------------
@@ -84,42 +96,29 @@ class RSA(SA):
                 Si: dict
                     The type of Si is dict. It contains 'S1'.
         '''
+        N, nRegion=self.getParaValue("N", "nRegion")
+        self.setProblem(problem)
+        nInput=problem.nInput
+        
+        if X is None or Y is None:
+            X=self.sample(problem, N)
+            Y=problem.evaluate(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)
         
-        seq = np.linspace(0, 1, self.n_region + 1)
-        results = np.full((self.n_region, self.n_input), np.nan)
+        seq = np.linspace(0, 1, nRegion + 1)
+        results = np.full((nRegion, nInput), np.nan)
         X_di = np.empty(X.shape[0])
         
-        for d_i in range(self.n_input):
+        for d_i in range(nInput):
                 X_di = X[:, d_i]
-                for bin_index in range(self.n_region):
+                for bin_index in range(nRegion):
                     lower_bound, upper_bound = seq[bin_index], seq[bin_index + 1]
                     b = (lower_bound < X_di) & (X_di <= upper_bound)
                     if np.count_nonzero(b) > 0 and np.unique(X[b]).size > 1:
                         r_s = cramervonmises_2samp(Y[b].ravel(), Y[~b].ravel()).statistic
                         results[bin_index, d_i] = r_s
 
-        Si = {'S1': np.nanmean(results, axis=0)}
-        self.Si = Si
+        self.record("S1", problem.x_labels, results)
         
-        if verbose:
-            self.summary()
-        
-        return results
-    
-    def summary(self):
-        '''
-            Print the analysis summary
-        '''
-        
-        print("RSA Analysis Summary")
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print('S1 value:')
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['S1']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
-    
+        return self.result

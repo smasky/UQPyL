@@ -55,7 +55,7 @@ class Morris(SA):
         self.setParameters("numTrajectory", numTrajectory)
         
         
-    def sample(self, problem: Problem, num_trajectory: int=500) -> np.ndarray:
+    def sample(self, problem: Problem, numTrajectory: Optional[int]=None, numLevels: Optional[int]=None) -> np.ndarray:
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
@@ -68,7 +68,17 @@ class Morris(SA):
                 Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
         
         '''
-        nt, numLevels= self.getParaValue("numTrajectory", "numLevels")
+        if numTrajectory is None:
+            nt=self.getParaValue('numTrajectory')
+        else:
+            nt=numTrajectory
+        
+        if numLevels is None:
+            numLevels=self.getParaValue('numLevels')
+        
+        self.setParameters("numTrajectory", nt)
+        self.setParameters("numLevels", numLevels)
+        
         nInput=problem.nInput
         
         X=np.zeros((nt*(nInput+1), nInput))
@@ -76,8 +86,9 @@ class Morris(SA):
         for i in range(nt):
             X[i*(nInput+1):(i+1)*(nInput+1), :]=self._generate_trajectory(nInput, numLevels)
         
-        return self.transform_into_problem(X)
-        
+        return self.transform_into_problem(problem, X)
+    
+    @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None) -> dict:
         '''
             Perform morris analysis
@@ -111,7 +122,7 @@ class Morris(SA):
 
         EE=np.zeros((nInput, numTrajectory))
         
-        N=int(X.shape[0]/self.num_levels)
+        N=int(X.shape[0]/numLevels)
         
         for i in range(numTrajectory):
             X_sub=X[i*(nInput+1):(i+1)*(nInput+1), :]
@@ -129,9 +140,9 @@ class Morris(SA):
         mu_star= np.mean(np.abs(EE), axis=1)
         sigma = np.std(EE, axis=1, ddof=1)
         
-        self.record('mu', mu)
-        self.record('mu_star', mu_star)
-        self.record('sigma', sigma)
+        self.record('mu', problem.x_labels, mu)
+        self.record('mu_star', problem.x_labels, mu_star)
+        self.record('sigma', problem.x_labels, sigma)
 
         return self.result
     

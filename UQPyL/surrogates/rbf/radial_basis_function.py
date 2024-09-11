@@ -3,28 +3,34 @@ from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional
 
+from .kernels import BaseKernel, Cubic
+from ..surrogateABC import Surrogate, Scale_T
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
-from .kernels import Kernel
-from ..surrogate_ABC import Surrogate, Scale_T
 
 class RBF(Surrogate):
     '''
     Radial basis function network
     '''    
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                 poly_feature: PolynomialFeatures=None,
-                 kernel: Optional[Kernel]=None, C_smooth: int=0):
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), polyFeature: PolynomialFeatures=None,
+                 kernel: Optional[BaseKernel]=None, 
+                 C_smooth: int=0, C_smooth_lb: int=1e-5, C_smooth_ub: int=1e5):
         
-        super().__init__(scalers, poly_feature)
-        self.C_smooth=C_smooth
-        if (isinstance(kernel,Kernel)):
-            self.kernel=kernel
+        super().__init__(scalers, polyFeature)
+        
+        self.setParameters("C_smooth", C_smooth, C_smooth_lb, C_smooth_ub)
+        
+        if (isinstance(kernel, BaseKernel)):
+            kernel=kernel
         else:
-            raise ValueError("Using wrong kernel instance, which not belong to Cubic\
-                              Gaussian, Linear, Multi_Quadric, Thin_plate_spline.")
+            kernel=Cubic()
         
-    def _get_tail_matrix(self,kernel: Kernel,train_X: np.ndarray):
+    def setKernel(self, kernel: BaseKernel):
+        
+        self.kernel=kernel
+        
+        
+    def _get_tail_matrix(self, kernel: BaseKernel, train_X: np.ndarray):
 
         if(kernel.name=="Cubic" or kernel.name=="Thin_plate_spline"):
             tail_matrix=np.ones((self.n_samples,self.n_features+1))

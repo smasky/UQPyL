@@ -55,12 +55,12 @@ problem=Ishigami(3, 1, np.pi, -1*np.pi)
 
 ################1. Sobol#################
 # print("################1.Sobol################")
-# from UQPyL.sensibility import Sobol
-# problem=Ishigami(3, 1, np.pi, -1*np.pi)
-# sobol=Sobol(calSecondOrder=True, verbose=True, saveFlag=True, logFlag=True) #Using Sobol Sequence and saltelli_sequence
-# X=sobol.sample(problem, 512)
-# Y=problem.evaluate(X)
-# Si=sobol.analyze(problem, X, Y)
+from UQPyL.sensibility import Sobol
+problem=Ishigami(3, 1, np.pi, -1*np.pi)
+sobol=Sobol(calSecondOrder=True, verbose=True, saveFlag=True, logFlag=True) #Using Sobol Sequence and saltelli_sequence
+X=sobol.sample(problem, 1024)
+Y=problem.evaluate(X)
+Si=sobol.analyze(problem, X, Y)
 
 ################2. FAST##################
 # print("################2.FAST################")
@@ -80,17 +80,17 @@ problem=Ishigami(3, 1, np.pi, -1*np.pi)
     
 # ################4. Morris###################
 # print("#############4.Morris#############")
-# morris_method=Morris(problem=problem, num_levels=4) #Using Morris Sampler
-# X=morris_method.sample(500)
+# morris_method=Morris(numLevels=4, verbose=True, saveFlag=True, logFlag=True) #Using Morris Sampler
+# X=morris_method.sample(problem, 500)
 # Y=problem.evaluate(X)
-# Si=morris_method.analyze(X, Y, verbose=True)
+# Si=morris_method.analyze(problem, X, Y)
 
 # ################5. RSA###################
 # print("#############5.RSA#############")
-# rsa_method=RSA(problem=problem, n_region=20)
-# X=rsa_method.sample(1000)
+# rsa_method=RSA(nRegion=20, verbose=True, saveFlag=True, logFlag=True)
+# X=rsa_method.sample(problem, 1000)
 # Y=problem.evaluate(X)
-# Si=rsa_method.analyze(X, Y, verbose=True)
+# Si=rsa_method.analyze(problem, X, Y)
 
 
 # #################6. MARS_SA################

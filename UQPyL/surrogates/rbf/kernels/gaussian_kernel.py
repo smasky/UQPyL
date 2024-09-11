@@ -1,9 +1,17 @@
-from .base_kernel import Kernel
+from .base_kernel import BaseKernel
 import numpy as np
 
-class Gaussian(Kernel):
+class Gaussian(BaseKernel):
+    
     name="Gaussian"
-    def __init__(self,gamma=1):
-        self.gamma=gamma
-    def evaluate(self,dist):
-        return np.exp(-1*self.gamma*np.power(dist,2))
+    
+    def __init__(self, epsilon: float=1.0, epsilon_ub: float=1e5, epsilon_lb: float=1e-5):
+        
+        super().__init__()
+        self.setParameters("epsilon", epsilon, epsilon_lb, epsilon_ub)
+        
+    def evaluate(self, dist):
+        
+        epsilon=self.getParaValue("epsilon")
+        
+        return np.exp(-1*epsilon*np.power(dist,2))

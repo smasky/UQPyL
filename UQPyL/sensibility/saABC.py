@@ -47,14 +47,12 @@ class SA(metaclass=abc.ABCMeta):
     def setProblem(self, problem: Problem):
         
         self.problem=problem
-        self.nInput=problem.nInput
-        self.lb=problem.lb; self.ub=problem.ub
-        self.labels=problem.x_labels
     
-    def record(self, label, value):
+    def record(self, key, x_labels,value):
         
-        self.result.Si[label]=value
-        self.labels.append(label)
+        if not isinstance(value, np.ndarray):
+            value=np.array(value)
+        self.result.Si[key]=(x_labels, value)
         
     def __check_and_scale_xy__(self, X, Y):
         
@@ -110,39 +108,17 @@ class Result():
         self.sa=obj
         
     def generateHDF5(self):
+        
         x_labels=self.sa.problem.x_labels
         result={}
-        S1_dict={}; S2_dict={}; ST_dict={}
-        if self.firstOrder:
-            S1=self.Si['S1']
-            
-            for label, value in zip(x_labels, S1.ravel()):
-                S1_dict[label] = value
-
-            S1_dict["matrix"]=S1
-            
-            result['S1']=S1_dict
-            
-        if self.secondOrder:
-            S2=self.Si['S2']
-            for i in range(len(x_labels)):
-                for j in range(i+1, len(x_labels)):
-                    S2_dict[f"{x_labels[i]}-{x_labels[j]}"] = S2[i,j]
-
-            S2_dict["matrix"]=S2
-            
-            result['S2']=S2_dict
-            
-        if self.totalOrder:
-            ST=self.Si['ST']
-            
-            for label, value in zip(x_labels, ST.ravel()):
-                ST_dict[label] = value
-
-            ST_dict["matrix"]=ST
-            
-            result['ST']=ST_dict
         
+        for key, value in self.Si.items():
+            x_labels=value[0]; matrix=value[1]
+            result.setdefault(key, {})
+            result[key]['matrix']=matrix
+            for label, v in zip(x_labels, matrix.ravel()):
+                result[key][label]=v
+                    
         return result
 class Setting():
     """
@@ -150,21 +126,24 @@ class Setting():
     """
     
     def __init__(self):
-        self.keys=[]
-        self.values=[]
-        self.dicts={}
+        self.dict={}
+    
+    def keys(self):
+        return self.dict.keys()
+    
+    def values(self):
+        
+        return self.dict.values()
     
     def setParameter(self, key, value):
         
-        self.dicts[key]=value
-        self.keys.append(key)
-        self.values.append(value)
+        self.dict[key]=value
     
     def getParaValue(self, *args):
         
         values=[]
         for arg in args:
-            values.append(self.dicts[arg])
+            values.append(self.dict[arg])
         
         if len(args)>1:
             return tuple(values)

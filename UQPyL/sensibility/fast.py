@@ -57,19 +57,27 @@ class FAST(SA):
         self.setParameters("M", M)
         self.setParameters("N", N)
         
-    def sample(self, problem: Problem, N: int=500) -> np.ndarray:
+    def sample(self, problem: Problem, N: Optional[int]=512, M: Optional[int]=None) -> np.ndarray:
         '''
             Generate FAST sequence, this technique from paper [2]
             --------------------------
             Parameters:
-                N: int, default=500
+                N: int, default=512
                     the number of sample points for each sequence
 
             Returns:
             X: 2d-np.ndarray
                 the size of X is ((N*n_input, n_input))
         '''
-        N, M=self.getParaValue('N', 'M')
+        if N is None:
+            N=self.getParaValue('N')
+        
+        if M is None:
+            M=self.getParaValue('M')
+        
+        self.setParameters('N', N) 
+        self.setParameters('M', M)
+        
         nInput=problem.nInput
         
         if N<4*M**2:
@@ -148,34 +156,7 @@ class FAST(SA):
             S1[i]=Di/V
             ST[i]=1.0-Dt/V
         
-        self.record('S1', S1)
-        self.record('ST', ST)
+        self.record('S1(First Order)', problem.x_labels, S1)
+        self.record('ST(Total Order)', problem.x_labels, ST)
         
         return self.result
-        
-    def summary(self):
-        '''
-            print analysis summary
-        '''
-        if self.Si is None:
-            raise ValueError("Please run analyze method first!")
-        
-        print("FAST Sensitivity Analysis")
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print("First Order Sensitivity Indices: ")
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['S1']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
-        print("Total Order Sensitivity Indices: ")
-        print("-------------------------------------------------")
-        for i in range(self.n_input):
-           print(f"{self.x_labels[i]}: {self.Si['ST'][i]:.4f}")
-        print("-------------------------------------------------")
-        print("-------------------------------------------------")
-    
-    #--------------------Private Function---------------------------#
-    def _default_sample(self):
-        return self.sample(500)

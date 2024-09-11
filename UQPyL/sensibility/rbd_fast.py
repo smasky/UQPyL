@@ -58,7 +58,7 @@ class RBD_FAST(SA):
         self.setParameters("M", M)
         self.setParameters("N", N)
     
-    def sample(self, problem: Problem, N: int=500, sampler: Sampler=LHS('classic')):
+    def sample(self, problem: Problem, N: Optional[int]=500, M: Optional[int]=None, sampler: Sampler=LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -71,7 +71,14 @@ class RBD_FAST(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        M=self.getParaValue('M')
+        if N is None:
+            N=self.getParaValue('N')
+        if M is None:
+            M=self.getParaValue('M')
+            
+        self.setParameters('N', N)
+        self.setParameters('M', M)
+        
         nInput=problem.nInput
             
         X=sampler.sample(N, nInput)
@@ -126,30 +133,9 @@ class RBD_FAST(SA):
             
             S1[i]=S1_sub
         
-        self.record('S1', S1)
+        self.record('S1', problem.x_labels, S1)
             
         return self.result
-    
-    def summary(self):
-        '''
-            print analysis summary
-        '''
-        if self.Si is None:
-            raise ValueError("The sensitivity indices have not been performed yet!")
-        
-        print("Random Balance Designs Fourier Amplitude Sensitivity Test")
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print("First Order Sensitivity Indices: ")
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['S1']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
-        print("-------------------------------------------------")
-    
-    
-    def _default_sample(self):
-        return self.sample(500)       
+     
         
         

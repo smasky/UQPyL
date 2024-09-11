@@ -6,31 +6,34 @@ from ..utility.polynomial_features import PolynomialFeatures
 from typing import Literal,Tuple
 
 Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'],Literal['StandardScaler','MinMaxScaler']]
+
 class Surrogate(metaclass=abc.ABCMeta):
     Scale_type=None 
     normalized=None
     dim=None
     n_samples=None
     n_features=None
-    X_scaler=None
-    Y_scaler=None
+    xScaler=None
+    yScaler=None
     train_x=None
     train_y=None
 
-    def __init__(self, scalers=(None, None), poly_feature=None):
+    def __init__(self, scalers=(None, None), polyFeature=None):
+        
+        self.setting=Setting()
         
         if scalers[0]:
-            self.X_scaler=scalers[0]
+            self.xScaler=scalers[0]
         else:
-            self.X_scaler=None
+            self.xScaler=None
         
         if scalers[1]:
-            self.Y_scaler=scalers[1]
+            self.yScaler=scalers[1]
         else:
-            self.Y_scaler=None
+            self.yScaler=None
         
-        if poly_feature:
-            self.poly_feature=poly_feature
+        if polyFeature:
+            self.poly_feature=polyFeature
         else:
             self.poly_feature=None
     
@@ -54,11 +57,11 @@ class Surrogate(metaclass=abc.ABCMeta):
             self.n_samples=train_x.shape[0] 
             
             
-            if(self.X_scaler):
-                train_x=self.X_scaler.fit_transform(train_x)
+            if(self.xScaler):
+                train_x=self.xScaler.fit_transform(train_x)
         
-            if(self.Y_scaler):
-                train_y=self.Y_scaler.fit_transform(train_y)
+            if(self.yScaler):
+                train_y=self.yScaler.fit_transform(train_y)
 
             if(self.poly_feature):
                 train_x=self.poly_feature.transform(train_x)
@@ -71,8 +74,8 @@ class Surrogate(metaclass=abc.ABCMeta):
     
     def __X_transform__(self,X: np.ndarray) -> np.ndarray:
         
-        if (self.X_scaler):
-            X=self.X_scaler.transform(X)
+        if (self.xScaler):
+            X=self.xScaler.transform(X)
         
         if (self.poly_feature):
             X=self.poly_feature.transform(X)
@@ -81,21 +84,21 @@ class Surrogate(metaclass=abc.ABCMeta):
     
     def __Y_transform__(self, Y: np.ndarray) -> np.ndarray:
         
-        if(self.Y_scaler):
-            Y=self.Y_scaler.transform(Y.reshape(-1,1))
+        if(self.yScaler):
+            Y=self.yScaler.transform(Y.reshape(-1,1))
             
         return Y
     
     def __Y_inverse_transform__(self, Y: np.ndarray) -> np.ndarray:
 
-        if(self.Y_scaler):
-            Y=self.Y_scaler.inverse_transform(Y.reshape(-1,1))
+        if(self.yScaler):
+            Y=self.yScaler.inverse_transform(Y.reshape(-1,1))
             
         return Y
     def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
         
-        if(self.X_scaler):
-            X=self.X_scaler.inverse_transform(X)
+        if(self.xScaler):
+            X=self.xScaler.inverse_transform(X)
         
         return X
     
@@ -106,7 +109,19 @@ class Surrogate(metaclass=abc.ABCMeta):
                 setattr(self, name, value)
             else:
                 raise ValueError("Cannot found this parameter! Please check")
-            
+    
+    def setParameters(self, key, value, lb, ub):
+        
+        self.setting.setParameter(key, value, lb, ub)
+    
+    def getParaValue(self, *args):
+        
+        return self.setting.getParaValue(*args)
+    
+    def addSetting(self, setting):
+        
+        self.setting.addSetting(setting)
+     
     @abc.abstractmethod
     def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
         pass
@@ -117,7 +132,7 @@ class Surrogate(metaclass=abc.ABCMeta):
     
 class Mo_Surrogates():
     def __init__(self, n_surrogates, models_list=[]):
-        from .surrogate_ABC import Surrogate
+        from .surrogateABC import Surrogate
         self.n_surrogates=n_surrogates
         
         for model in models_list:
@@ -127,7 +142,7 @@ class Mo_Surrogates():
         self.models_list=models_list
         
     def append(self, model):
-        from .surrogate_ABC import Surrogate
+        from .surrogateABC import Surrogate
         if not isinstance(model, Surrogate):
             ValueError("Please append the type of surrogate!")
             
@@ -148,3 +163,46 @@ class Mo_Surrogates():
         pre_Y=np.hstack(res)
         
         return pre_Y
+
+class Setting():
+    
+    def __init__(self):
+        
+        self.hyperParas={}
+        self.paraUb={}
+        self.paraLb={}
+    
+    def addSubSetting(self, setting):
+        
+        prefix=setting.name
+        self.hyperParas[prefix]=setting.hyperParas
+        self.paraLb[prefix]=setting.paraLb
+        self.paraUb[prefix]=setting.paraUb
+    
+    def keys(self):
+        
+        keyLists=[]
+        
+        
+        return self.hyperParas.keys()
+    
+    def values(self):
+        
+        return self.hyperParas.values()
+    
+    def setParameter(self, key, value, lb, ub):
+        
+        self.hyperParas[key]=value
+        self.paraLb[key]=lb
+        self.paraUb[key]=ub
+
+    def getParaValue(self, *args):
+        
+        values=[]
+        for arg in args:
+            values.append(self.hyperParas[arg])
+        
+        if len(args)>1:
+            return tuple(values)
+        else:
+            return values[0]

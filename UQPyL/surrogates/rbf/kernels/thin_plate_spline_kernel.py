@@ -1,17 +1,29 @@
-from .base_kernel import Kernel
+from .base_kernel import BaseKernel
 import numpy as np
 
-class Thin_plate_spline(Kernel):
+class ThinPlateSpline(BaseKernel):
+    
     name="Thin_plate_spline"
-    def evaluate(self,dist):
+    
+    def __init__(self, epsilon: float=1.0, epsilon_ub: float=1e5, epsilon_lb: float=1e-5):
+        
+        super().__init__()
+        self.setParameters("epsilon", epsilon, epsilon_lb, epsilon_ub)
+        
+    def evaluate(self, dist):
+        
+        epsilon=self.getParaValue("epsilon")
         
         dist[dist < np.finfo(float).eps] = np.finfo(float).eps
-        return np.power(dist,2)*np.log(dist)
-    
-    def get_Tail_Matrix(self,train_X):
         
-        Tail=np.ones((self.n_samples,self.n_features+1))
-        Tail[:self.n_samples,:self.n_features]=train_X.copy()
+        return np.power(dist*epsilon,2)*np.log(dist*epsilon)
+    
+    def get_Tail_Matrix(self, xTrain):
+        
+        nSample, nFeature = xTrain.shape
+        Tail=np.ones((nSample, nFeature+1))
+        Tail[:self.n_samples,:self.n_features]=xTrain
+        
         return (True,Tail)
     
     def get_degree(self,n_samples):

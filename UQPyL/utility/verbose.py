@@ -97,40 +97,15 @@ class Verbose():
         return table
     
     @staticmethod
-    def verboseFirstOrder(x_labels, S1, width):
+    def verboseSi(x_labels, Si, width):
         
         heads=x_labels
-        values=[format(item, ".4f") for item in S1.ravel()]
+        values=[format(item, ".4f") for item in Si.ravel()]
         
         table=Verbose.verboseTable(heads, values, 10, width)
         
         Verbose.output(table)
-        
-    @staticmethod
-    def verboseSecondOrder(x_labels, S2, width):
-        
-        heads=[]
-        values=[]
-        nInput=len(x_labels)
-        for i in range(nInput):
-            for j in range(i+1, nInput):
-                heads.append(f"{x_labels[i]}-{x_labels[j]}")
-                values.append(f"{S2[i][j]:.4f}")
-        
-        table=Verbose.verboseTable(heads, values, 10, width)
-        
-        Verbose.output(table)
-    
-    @staticmethod
-    def verboseTotalOrder(x_labels, ST, width):
-        
-        heads=x_labels
-        values=[format(item, ".4f") for item in ST.ravel()]
-        
-        table=Verbose.verboseTable(heads, values, 10, width)
-        
-        Verbose.output(table)
-        
+                
     @staticmethod
     def decoratorRecord(func):
         
@@ -309,8 +284,9 @@ class Verbose():
                 spacing=int((total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
 
-                keys=obj.setting.keys
-                values=obj.setting.values
+                keys=obj.setting.keys()
+                values=obj.setting.values()
+                
                 table=PrettyTable(keys)
                 table.add_row(values)
                 Verbose.output(table)
@@ -331,30 +307,12 @@ class Verbose():
                 spacing=int((total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 
-                for label in obj.result.labels:
-                    title=label
+                for key, values in obj.result.Si.items():
+                    title=key
                     spacing=int((total_width-len(title))/2)
                     Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseFirstOrder(obj.problem.x_labels, obj.result.Si['label'], total_width)
+                    Verbose.verboseSi(values[0], values[1], total_width)
                     
-                if obj.firstOrder:
-                    title="First Order Analysis"
-                    spacing=int((total_width-len(title))/2)
-                    Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseFirstOrder(obj.problem.x_labels, obj.result.Si['S1'], total_width)
-                
-                if obj.secondOrder:
-                    title="Second Order Analysis"
-                    spacing=int((total_width-len(title))/2)
-                    Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseSecondOrder(obj.problem.x_labels, obj.result.Si['S2'], total_width)
-                
-                if obj.totalOrder:
-                    title="Total Order Analysis"
-                    spacing=int((total_width-len(title))/2)
-                    Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseTotalOrder(obj.problem.x_labels, obj.result.Si['ST'], total_width)
-                
             if Verbose.logFlag:
                 
                 Verbose.saveLog(obj, folder_log, type=0)

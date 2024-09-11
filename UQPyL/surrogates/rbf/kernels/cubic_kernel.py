@@ -1,14 +1,28 @@
-from .base_kernel import Kernel
+from .base_kernel import BaseKernel
 import numpy as np
-class Cubic(Kernel):
+class Cubic(BaseKernel):
+    
     name="Cubic"
+    
+    def __init__(self, epsilon: float=1.0, epsilon_ub: float=1e5, epsilon_lb: float=1e-5):
+        
+        super().__init__()
+        self.setParameters("epsilon", epsilon, epsilon_lb, epsilon_ub)
+        
     def evaluate(self, dist):
-        return np.power(dist,3)
+        
+        epsilon=self.getParaValue("epsilon")
     
-    def get_Tail_Matrix(self, train_X):
-        Tail=np.ones((self.n_samples,self.n_features+1))
-        Tail[:self.n_samples,:self.n_features]=train_X.copy()
-        return (True,Tail)
+        return np.power(dist*epsilon,3)
     
-    def get_degree(self, n_samples):
-        return n_samples+1
+    def get_Tail_Matrix(self, xTrain):
+        
+        nSample, nFeature = xTrain.shape
+        Tail = np.ones((nSample, nFeature+1))
+        Tail[:nSample, :nFeature] = xTrain
+        
+        return ( True , Tail )
+    
+    def get_degree(self, nSample):
+        
+        return nSample+1
