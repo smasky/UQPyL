@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 
-from ..problem_ABC import ProblemABC
+from ..problemABC import ProblemABC
 ###################Basic Test Function##################
 #Reference: 
 #Xin Yao; Yong Liu; Guangming Lin (1999).Evolutionary programming made faster. , 3(2), 0–102.doi:10.1109/4235.771163

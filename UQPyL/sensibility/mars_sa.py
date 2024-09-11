@@ -5,7 +5,7 @@ from ..surrogates import MARS, Surrogate
 from ..utility import MinMaxScaler, Scaler
 from ..problems import ProblemABC as Problem
 from ..DoE import LHS, Sampler
-from .sa_ABC import SA
+from .saABC import SA
 
 class MARS_SA(SA):
     '''

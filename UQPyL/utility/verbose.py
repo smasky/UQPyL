@@ -56,6 +56,7 @@ class Verbose():
     
     @staticmethod
     def verboseMultiSolutions(dec, obj, FEs, Iters, width):
+        
         nDecs=dec.shape[0]
         if len(obj)==1:
             y_labels=["HV"]
@@ -64,27 +65,25 @@ class Verbose():
         
         heads=["FEs"]+["Iters"]+y_labels+["Num_Non-dominated_Solution"]
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj]+[nDecs]
-        rows=int(len(heads))//10+1
-        cols=10
-        for i in range(rows):
-            if (i+1)*cols<len(heads):
-                end=(i+1)*cols
-            else:
-                end=len(heads)
-            table=PrettyTable(heads[i*cols:end])
-            table.max_width=int(width/(cols+4))
-            table.min_width=int(width/(cols+4))
-            table.add_row(values[i*cols:end])
-            
-            Verbose.output(table)
+        
+        table=Verbose.verboseTable(heads, values, 10, width)
+        Verbose.output(table)
     
     @staticmethod
     def verboseSingleSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
         
         heads=["FEs"]+["Iters"]+y_labels+x_labels
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
-        rows=int(len(heads))//10+1
-        cols=10
+        
+        table=Verbose.verboseTable(heads, values, 10, width)
+            
+        Verbose.output(table)
+    
+    @staticmethod
+    def verboseTable(heads, values, num, width):
+        
+        rows=int(len(heads))//num+1
+        cols=num
         for i in range(rows):
             if (i+1)*cols<len(heads):
                 end=(i+1)*cols
@@ -94,9 +93,44 @@ class Verbose():
             table.max_width=int(width/(cols+4))
             table.min_width=int(width/(cols+4))
             table.add_row(values[i*cols:end])
-            
-            Verbose.output(table)
+        
+        return table
     
+    @staticmethod
+    def verboseFirstOrder(x_labels, S1, width):
+        
+        heads=x_labels
+        values=[format(item, ".4f") for item in S1.ravel()]
+        
+        table=Verbose.verboseTable(heads, values, 10, width)
+        
+        Verbose.output(table)
+        
+    @staticmethod
+    def verboseSecondOrder(x_labels, S2, width):
+        
+        heads=[]
+        values=[]
+        nInput=len(x_labels)
+        for i in range(nInput):
+            for j in range(i+1, nInput):
+                heads.append(f"{x_labels[i]}-{x_labels[j]}")
+                values.append(f"{S2[i][j]:.4f}")
+        
+        table=Verbose.verboseTable(heads, values, 10, width)
+        
+        Verbose.output(table)
+    
+    @staticmethod
+    def verboseTotalOrder(x_labels, ST, width):
+        
+        heads=x_labels
+        values=[format(item, ".4f") for item in ST.ravel()]
+        
+        table=Verbose.verboseTable(heads, values, 10, width)
+        
+        Verbose.output(table)
+        
     @staticmethod
     def decoratorRecord(func):
         
@@ -117,9 +151,12 @@ class Verbose():
         return wrapper
     
     @staticmethod
-    def saveData(obj, folder_data):
+    def saveData(obj, folder_data, type=1):
         
-        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
+        if type==0:
+            filename= f"{obj.name}_{obj.problem.name}"
+        else:
+            filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
 
         all_files = [f for f in os.listdir(folder_data) if os.path.isfile(os.path.join(folder_data, f))]
         
@@ -144,8 +181,12 @@ class Verbose():
             save_dict_to_hdf5(f, resultHDF5)
     
     @staticmethod
-    def saveLog(obj, folder_log):
-        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
+    def saveLog(obj, folder_log, type=1):
+        
+        if type==0:
+            filename= f"{obj.name}_{obj.problem.name}"
+        else:
+            filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
 
         all_files = [f for f in os.listdir(folder_log) if os.path.isfile(os.path.join(folder_log, f))]
         
@@ -180,19 +221,8 @@ class Verbose():
             #Check result dir
             if Verbose.logFlag or Verbose.saveFlag:
                 
-                folder=os.path.join(Verbose.workDir, "Result")
-                if not os.path.exists(folder):
-                    os.mkdir(folder)
+                folder_data, folder_log=Verbose.checkDir()
                 
-                folder_data=os.path.join(folder, "Data")
-                folder_log=os.path.join(folder, "Log")
-                
-                if not os.path.exists(folder_data):
-                    os.mkdir(folder_data)
-                    
-                if not os.path.exists(folder_log):
-                    os.mkdir(folder_log)
-            
             if Verbose.logFlag:
                   
                 Verbose.logLines=[]
@@ -241,10 +271,99 @@ class Verbose():
         return wrapper 
     
     @staticmethod
-    def decoratorAnalyze(self, func):
+    def checkDir():
+        folder=os.path.join(Verbose.workDir, "Result")
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        
+        folder_data=os.path.join(folder, "Data")
+        folder_log=os.path.join(folder, "Log")
+        
+        if not os.path.exists(folder_data):
+            os.mkdir(folder_data)
+            
+        if not os.path.exists(folder_log):
+            os.mkdir(folder_log)
+        
+        return folder_data, folder_log
+
+    @staticmethod
+    def decoratorAnalyze(func):
         
         def wrapper(obj, *args, **kwargs):
-        
+            
+            Verbose.verbose=obj.verbose
+            Verbose.logFlag=obj.logFlag
+            Verbose.saveFlag=obj.saveFlag
+            
+            if Verbose.saveFlag:
+                Verbose.logLines=[]
+            
+            if Verbose.logFlag or Verbose.saveFlag:
+                
+                folder_data, folder_log=Verbose.checkDir()
+            
+            if Verbose.verbose or Verbose.logFlag:
+                total_width=os.get_terminal_size().columns
+                title=obj.name+" Setting"
+                spacing=int((total_width-len(title))/2)
+                Verbose.output("="*spacing+title+"="*spacing)
+
+                keys=obj.setting.keys
+                values=obj.setting.values
+                table=PrettyTable(keys)
+                table.add_row(values)
+                Verbose.output(table)
+                
+                title="Attribute"
+                spacing=int((total_width-len(title))/2)
+                Verbose.output("="*spacing+title+"="*spacing)
+                
+                Verbose.output(f"First Order Sensitivity: {obj.firstOrder}")
+                Verbose.output(f"Second Order Sensitivity: {obj.secondOrder}")
+                Verbose.output(f"Total Order Sensitivity: {obj.totalOrder}")
+                
+            res=func(obj, *args, **kwargs)
+            
+            if Verbose.verbose or Verbose.logFlag:
+                total_width=os.get_terminal_size().columns
+                title="Conclusion"
+                spacing=int((total_width-len(title))/2)
+                Verbose.output("="*spacing+title+"="*spacing)
+                
+                for label in obj.result.labels:
+                    title=label
+                    spacing=int((total_width-len(title))/2)
+                    Verbose.output("-"*spacing+title+"-"*spacing)
+                    Verbose.verboseFirstOrder(obj.problem.x_labels, obj.result.Si['label'], total_width)
+                    
+                if obj.firstOrder:
+                    title="First Order Analysis"
+                    spacing=int((total_width-len(title))/2)
+                    Verbose.output("-"*spacing+title+"-"*spacing)
+                    Verbose.verboseFirstOrder(obj.problem.x_labels, obj.result.Si['S1'], total_width)
+                
+                if obj.secondOrder:
+                    title="Second Order Analysis"
+                    spacing=int((total_width-len(title))/2)
+                    Verbose.output("-"*spacing+title+"-"*spacing)
+                    Verbose.verboseSecondOrder(obj.problem.x_labels, obj.result.Si['S2'], total_width)
+                
+                if obj.totalOrder:
+                    title="Total Order Analysis"
+                    spacing=int((total_width-len(title))/2)
+                    Verbose.output("-"*spacing+title+"-"*spacing)
+                    Verbose.verboseTotalOrder(obj.problem.x_labels, obj.result.Si['ST'], total_width)
+                
+            if Verbose.logFlag:
+                
+                Verbose.saveLog(obj, folder_log, type=0)
+            
+            if Verbose.saveFlag:
+                
+                Verbose.saveData(obj, folder_data, type=0)
+            
+            return res
         return wrapper
     
 def save_dict_to_hdf5(h5file, d):

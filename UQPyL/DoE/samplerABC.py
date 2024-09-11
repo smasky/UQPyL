@@ -4,13 +4,14 @@ import numpy as np
 def decoratorRescale(func):
     def wrapper(self, *args, **kwargs):
         result=func(self, *args, **kwargs)
-        return self.problem._unit_X_transform_to_bound(result)
+        if self.problem is not None:
+            return self.problem._unit_X_transform_to_bound(result)
+        else:
+            return result
     return wrapper
 class Sampler(metaclass=abc.ABCMeta):
     def __init__(self):
         pass
-    
-    
     def __call__(self, nt:int, nx: int) -> np.ndarray:
         return self._generate(nt, nx)
     

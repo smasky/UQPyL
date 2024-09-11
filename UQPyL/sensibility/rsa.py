@@ -2,7 +2,7 @@ import numpy as np
 from typing import Optional, Tuple
 from scipy.stats import cramervonmises_2samp
 
-from .sa_ABC import SA
+from .saABC import SA
 from ..DoE import LHS, Sampler
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler

@@ -4,7 +4,7 @@ import numpy as np
 
 from ...problems import ProblemABC as Problem
 from ...DoE import LHS
-from ..algorithm import Algorithm, Population, Verbose
+from ..algorithmABC import Algorithm, Population, Verbose
 class PSO(Algorithm):
     '''
         Particle Swarm Optimization

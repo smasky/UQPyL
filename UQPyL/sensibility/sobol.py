@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 
 from .saABC import SA
 from ..problems import ProblemABC as Problem
-from ..utility import Scaler
+from ..utility import Scaler, Verbose
 class Sobol(SA):
     '''
     Sobol' sensibility analysis
@@ -40,24 +40,27 @@ class Sobol(SA):
                            doi: 10.1016/j.cpc.2009.09.018.
     [3] SALib, https://github.com/SALib/SALib
     '''
+    
+    name="Sobol"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                        calSecondOrder: bool=False,
-                       nSample: int=512, skipValue: int=0, scramble: bool=True,
-                       verbose: bool=False):
+                       N: int=512, skipValue: int=0, scramble: bool=True,
+                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
-        super().__init__(scalers, verbose)
-        #Parameter Setting
-        self.setParameters("calSecondOrder", calSecondOrder)
-        self.setParameters("skip_value", skipValue)
-        self.setParameters("scramble", scramble)
-        self.setParameters("n_sample", nSample)
         #Attribute
         self.firstOrder=True
         self.secondOrder=True if calSecondOrder else False
         self.totalOrder=True
         
+        super().__init__(scalers, verbose, logFlag, saveFlag)
+        #Parameter Setting
+        self.setParameters("calSecondOrder", calSecondOrder)
+        self.setParameters("skip_value", skipValue)
+        self.setParameters("scramble", scramble)
+        self.setParameters("N", N)
+        
     #-------------------------Public Functions--------------------------------#
-    def sample(self, problem: Problem, nSample: int=512, 
+    def sample(self, problem: Problem, N: int=512, 
                skipValue: int=0, scramble: bool=True) -> np.ndarray:
         '''
             Generate Sobol_sequence using Saltelli's sampling technique in [2]
@@ -76,7 +79,7 @@ class Sobol(SA):
                         the size of X is (N*(2*n_input+2), n_input)
         '''
         nInput=problem.nInput
-        calSecondOrder=self.calSecondOrder
+        calSecondOrder=self.getParaValue("calSecondOrder")
         
         M=None
         if skipValue>0 and isinstance(skipValue, int):
@@ -86,28 +89,26 @@ class Sobol(SA):
             if not((M&(M-1))==0 and (M!=0 and M-1!=0)):
                 raise ValueError("skip value must be a power of 2!")
             
-            if nSample>M:
+            if N>M:
                 raise ValueError("skip value must be greater than N you set!")
         
         elif skipValue<0 or not isinstance(skipValue, int):
             raise ValueError("skip value must be a positive integer!")
         
-        sampler=qmc.Sobol(nInput*2, scramble=scramble)
+        sampler=qmc.Sobol(nInput*2, scramble=scramble, seed=1)
         
         if M:
             sampler.fast_forward(M)
         
-        base_sequence=sampler.random(nSample)
-        
         if calSecondOrder:
-            saltelliSequence=np.zeros(((2*nInput+2)*nSample, nInput))
+            saltelliSequence=np.zeros(((2*nInput+2)*N, nInput))
         else:
-            saltelliSequence=np.zeros(((nInput+2)*nSample, nInput))
+            saltelliSequence=np.zeros(((nInput+2)*N, nInput))
         
-        baseSequence=sampler.random(nSample)
+        baseSequence=sampler.random(N)
         
         index=0
-        for i in range(nSample):
+        for i in range(N):
             
             saltelliSequence[index, :]=baseSequence[i, :nInput]
 
@@ -117,18 +118,19 @@ class Sobol(SA):
             saltelliSequence[index:index+nInput,:][np.diag_indices(nInput)]=baseSequence[i, nInput:]               
             index+=nInput
            
-            if self.cal_second_order:
+            if calSecondOrder:
                 saltelliSequence[index:index+nInput,:]=np.tile(baseSequence[i, nInput:], (nInput, 1))
                 saltelliSequence[index:index+nInput,:][np.diag_indices(nInput)]=baseSequence[i, :nInput] 
                 index+=nInput
             
-            saltelliSequence[index,:]=base_sequence[i, nInput:nInput*2]
+            saltelliSequence[index,:]=baseSequence[i, nInput:nInput*2]
             index+=1
         
         xSample=saltelliSequence
          
-        return self.transform_into_problem(xSample)
-     
+        return self.transform_into_problem(problem, xSample)
+    
+    @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None):
         '''
             Perform sobol' analyze
@@ -150,11 +152,13 @@ class Sobol(SA):
                     The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
         '''
         #Parameters Setting
-        nSample, skipValue, scramble=self.getParaValue("nSample", "skip_value", "scramble")
+        N, skipValue, scramble=self.getParaValue("N", "skip_value", "scramble")
         calSecondOrder = self.getParaValue("calSecondOrder")
         
+        self.setProblem(problem)
+        
         if X is None or Y is None:
-            X=self.sample(problem, nSample, skipValue, scramble)
+            X=self.sample(problem, N, skipValue, scramble)
             Y=problem.evaluate(X)
             
         X, Y=self.__check_and_scale_xy__(X, Y)
@@ -183,51 +187,21 @@ class Sobol(SA):
                 for k in range(j+1, nInput):
                     S2[j,k]=(self._secondOrder(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
         
-        self.Si={'S1':np.array(S1).ravel(), 'S2': S2, 'ST': np.array(ST).ravel()}
-        
-        if self.verbose:
-            self.summary()
-        
-        return self.Si
-
-    def summary(self):
-        '''
-            print analysis summary
-        '''
-        if self.Si is None:
-            raise ValueError("The sensitivity analysis has not been performed yet!")
-        
-        print("Sobol Sensitivity Analysis")
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print("First Order Sensitivity Indices: ")
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['S1']):
-            print(f"{label}: {value:.4f}")
-        if self.cal_second_order:
-            print("-------------------------------------------------")
-            print("Second Order Sensitivity Indices: ")
-            print("-------------------------------------------------")
-            for i in range(self.n_input):
-                for j in range(i+1, self.n_input):
-                    print(f"{self.x_labels[i]}-{self.x_labels[j]}: {self.Si['S2'][i, j]:.4f}")
-        print("-------------------------------------------------")
-        print("Total Order Sensitivity Indices: ")
-        print("-------------------------------------------------")
-        for i in range(self.n_input):
-           print(f"{self.x_labels[i]}: {self.Si['ST'][i]:.4f}")
-        print("-------------------------------------------------")
-        print("-------------------------------------------------")
-
+        self.record('S1', np.array(S1))
+        self.record('ST', np.array(ST))
+        if calSecondOrder:
+            self.record('S2', S2) 
+                    
+        return self.result
+    
     #-------------------------Private Functions--------------------------------#
     def _secondOrder(self, A, AB1, AB2, BA, B):
         
         Y=np.r_[A,B]
         
         Vjk=np.mean(BA*AB2- A*B, axis=0)/np.var(Y, axis=0)
-        Sj=self._first_order(A, AB1, B)
-        Sk=self._first_order(A, AB2, B)
+        Sj=self._firstOrder(A, AB1, B)
+        Sk=self._firstOrder(A, AB2, B)
         
         return Vjk-Sj-Sk
        

@@ -2,7 +2,7 @@ import numpy as np
 from typing import Union
 from itertools import product
 
-from .sampler_ABC import Sampler
+from .samplerABC import Sampler
 
 class FFD(Sampler):
     '''

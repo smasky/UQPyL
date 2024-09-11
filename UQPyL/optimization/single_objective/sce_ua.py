@@ -1,7 +1,7 @@
 #Shuffled Complex Evolution-UA
 import numpy as np
 import random
-from ..algorithm import Algorithm, Population, Verbose
+from ..algorithmABC import Algorithm, Population, Verbose
 class SCE_UA(Algorithm):
     '''
         Shuffled Complex Evolution (SCE-UA) method <Single>

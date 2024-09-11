@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from ..algorithm import Algorithm, Population
+from ..algorithmABC import Algorithm, Population
 from ...utility import Verbose
 
 class DE(Algorithm):

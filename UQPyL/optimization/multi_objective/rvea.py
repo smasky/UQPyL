@@ -3,7 +3,7 @@ import numpy as np
 from scipy.spatial.distance import cdist, pdist, squareform
 
 from ..utility_functions import uniformPoint, operationGA
-from ..algorithm import Algorithm
+from ..algorithmABC import Algorithm
 from ..population import Population
 from ...utility import Verbose
 class RVEA(Algorithm):

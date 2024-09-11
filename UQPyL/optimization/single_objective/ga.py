@@ -3,7 +3,7 @@
 import numpy as np
 import math
 
-from ..algorithm import Algorithm, Population, Verbose
+from ..algorithmABC import Algorithm, Population, Verbose
 class GA(Algorithm):
     '''
         Genetic Algorithm <Single>

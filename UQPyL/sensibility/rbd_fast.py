@@ -2,10 +2,10 @@ import numpy as np
 from scipy.signal import periodogram
 from typing import Optional, Tuple
 
-from .sa_ABC import SA
+from .saABC import SA
 from ..DoE import Sampler, LHS
 from ..problems import ProblemABC as Problem
-from ..utility import Scaler
+from ..utility import Scaler, Verbose
 class RBD_FAST(SA):
     '''
         Random Balance Designs Fourier Amplitude Sensitivity Test
@@ -43,13 +43,22 @@ class RBD_FAST(SA):
                                     Reliability Engineering & System Safety, vol. 107, pp. 205-213, Nov. 2012, 
                                     doi: 10.1016/j.ress.2012.06.010.
     '''
-    def __init__(self, problem: Problem,scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                       M: int=4):
+    name="RBD_FAST"
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
+                       N: int=500, M: int=4, 
+                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
-        super().__init__(problem, scalers)
-        self.M=M
+         #Attribute
+        self.firstOrder=True
+        self.secondOrder=False
+        self.totalOrder=False
+        
+        super().__init__(scalers, verbose, logFlag, saveFlag)
+        
+        self.setParameters("M", M)
+        self.setParameters("N", N)
     
-    def sample(self, N: int=500, sampler: Sampler=LHS('classic')):
+    def sample(self, problem: Problem, N: int=500, sampler: Sampler=LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -62,16 +71,18 @@ class RBD_FAST(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        n_input=self.n_input
+        M=self.getParaValue('M')
+        nInput=problem.nInput
             
-        X=sampler.sample(N, n_input)
+        X=sampler.sample(N, nInput)
 
-        if N<=4*self.M**2:
+        if N<=4*M**2:
             raise ValueError("the number of sample must be greater than 4*M**2!")
         
-        return self.transform_into_problem(X)
+        return self.transform_into_problem(problem, X)
     
-    def analyze(self, X: np.ndarray=None, Y: np.ndarray=None, verbose: bool=False):
+    @Verbose.decoratorAnalyze
+    def analyze(self, problem: Problem, X: np.ndarray=None, Y: np.ndarray=None):
         '''
             Perform RBD_FAST analysis
             -------------------------------------------------
@@ -86,36 +97,38 @@ class RBD_FAST(SA):
                 Si: dict
                     The type of Si is dict. And it contain 'S1' key value. 
         '''
+        N, M = self.getParaValue('N', 'M')
+        nInput = problem.nInput
+        self.setProblem(problem)
+        
+        if X is None or Y is None:
+            X=self.sample(problem, N)
+            Y=problem.evaluate(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)
-        n_input=self.n_input
         
-        S1=np.zeros(n_input); n_input=self.n_input
+        S1=np.zeros(nInput)
         
-        for i in range(n_input):
+        for i in range(nInput):
             idx=np.argsort(X[:, i])
             idx=np.concatenate([idx[::2], idx[1::2][::-1]])
             Y_seq=Y[idx]
             
             _, Pxx = periodogram(Y_seq.ravel())
             V=np.sum(Pxx[1:])
-            D1=np.sum(Pxx[1: self.M+1])
+            D1=np.sum(Pxx[1: M+1])
             S1_sub=D1/V
             
             #####normalization
-            lamb=(2*self.M)/Y.shape[0]
+            lamb=(2*M)/Y.shape[0]
             S1_sub=S1_sub-lamb/(1-lamb)*(1-S1_sub)
             #####
             
             S1[i]=S1_sub
         
-        Si={'S1':S1}
-        self.Si=Si
-        
-        if verbose:
-            self.summary()
+        self.record('S1', S1)
             
-        return Si
+        return self.result
     
     def summary(self):
         '''

@@ -1,6 +1,6 @@
 import numpy as np
 
-from .sampler_ABC import Sampler
+from .samplerABC import Sampler
 
 class Random(Sampler):
     '''

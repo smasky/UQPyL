@@ -4,7 +4,7 @@ from scipy.spatial.distance import pdist
 
 from ..problems import ProblemABC as Problem
 
-from .sampler_ABC import Sampler, decoratorRescale
+from .samplerABC import Sampler, decoratorRescale
 
 # from ._lhs import _lhs_classic, _lhs_centered, _lhs_correlate, _lhs_maximin, _lhs_centered_maximin
 

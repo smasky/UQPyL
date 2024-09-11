@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.stats.qmc import Sobol
 
-from .sampler_ABC import Sampler
+from .samplerABC import Sampler
 
 class Sobol_Sequence(Sampler):
     '''

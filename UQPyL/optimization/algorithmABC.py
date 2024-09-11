@@ -6,7 +6,7 @@ from .result import Result
 from ..DoE import LHS
 from ..utility import Verbose
 
-class Algorithm(abc=abc.ABCMeta):
+class Algorithm(metaclass=abc.ABCMeta):
     """
     This is a baseclass for algorithms
     """
@@ -35,6 +35,10 @@ class Algorithm(abc=abc.ABCMeta):
         self.evaluate(pop); 
             
         return pop
+    
+    @abc.abstractmethod
+    def run(self, problem, xInit=None, yInit=None):
+        pass
     
     def evaluate(self, pop):
         

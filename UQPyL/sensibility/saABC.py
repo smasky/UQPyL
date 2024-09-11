@@ -9,10 +9,10 @@ from ..problems import ProblemABC as Problem
 
 class SA(metaclass=abc.ABCMeta):
     
-    Si=None
+    result={}
     firstOrder=False; secondOrder=False; totalOrder=False
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
-                 verbose: bool=False):
+                 verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
              
         if scalers[0] is None:
             self.xScale=None
@@ -28,8 +28,13 @@ class SA(metaclass=abc.ABCMeta):
                     raise TypeError("scaler must be an instance of Scaler or None!")
             self.yScale=scalers[1]
 
-        self.setting=Setting()
         self.verbose=verbose
+        self.logFlag=logFlag
+        self.saveFlag=saveFlag
+        
+        self.setting=Setting()
+        self.result=Result(self)
+        
         
     def setParameters(self, key, value):
         
@@ -46,6 +51,11 @@ class SA(metaclass=abc.ABCMeta):
         self.lb=problem.lb; self.ub=problem.ub
         self.labels=problem.x_labels
     
+    def record(self, label, value):
+        
+        self.result.Si[label]=value
+        self.labels.append(label)
+        
     def __check_and_scale_xy__(self, X, Y):
         
         if not isinstance(X, np.ndarray) and X is not None:
@@ -80,15 +90,60 @@ class SA(metaclass=abc.ABCMeta):
                 
         return Y
     
-    def transform_into_problem(self, X, problem):
+    def transform_into_problem(self, problem, X):
         
         return X*(problem.ub-problem.lb)+problem.lb
     
     @abc.abstractmethod
     def analyze(self, X_sa=None, Y_sa=None):
         pass
-    
 
+class Result():
+    
+    def __init__(self, obj):
+        
+        self.Si={}
+        self.labels=[]
+        self.firstOrder=obj.firstOrder
+        self.secondOrder=obj.secondOrder
+        self.totalOrder=obj.totalOrder
+        self.sa=obj
+        
+    def generateHDF5(self):
+        x_labels=self.sa.problem.x_labels
+        result={}
+        S1_dict={}; S2_dict={}; ST_dict={}
+        if self.firstOrder:
+            S1=self.Si['S1']
+            
+            for label, value in zip(x_labels, S1.ravel()):
+                S1_dict[label] = value
+
+            S1_dict["matrix"]=S1
+            
+            result['S1']=S1_dict
+            
+        if self.secondOrder:
+            S2=self.Si['S2']
+            for i in range(len(x_labels)):
+                for j in range(i+1, len(x_labels)):
+                    S2_dict[f"{x_labels[i]}-{x_labels[j]}"] = S2[i,j]
+
+            S2_dict["matrix"]=S2
+            
+            result['S2']=S2_dict
+            
+        if self.totalOrder:
+            ST=self.Si['ST']
+            
+            for label, value in zip(x_labels, ST.ravel()):
+                ST_dict[label] = value
+
+            ST_dict["matrix"]=ST
+            
+            result['ST']=ST_dict
+        
+        return result
 class Setting():
     """
     Save the parameter setting of the algorithm

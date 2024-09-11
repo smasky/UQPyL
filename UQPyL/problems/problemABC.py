@@ -54,6 +54,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         X_scaled=(X - X_min) / (X_max - X_min)
         X_scaled=X_scaled*(self.ub-self.lb)+self.lb
         X_scaled=self._transform_special_parameters(X_scaled)
+        
         return X_scaled
     
     

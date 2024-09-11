@@ -4,7 +4,7 @@ import math
 from typing import Optional, Literal
 from scipy.spatial import distance
 
-from ..algorithm import Algorithm
+from ..algorithmABC import Algorithm
 from ..population import Population
 from ..utility_functions import uniformPoint, operationGAHalf, NDSort
 from ...utility import Verbose

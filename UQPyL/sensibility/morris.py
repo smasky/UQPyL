@@ -1,8 +1,8 @@
 import numpy as np
 from typing import Optional, Tuple
 
-from .sa_ABC import SA
-from ..utility import Scaler
+from .saABC import SA
+from ..utility import Scaler, Verbose
 from ..problems import ProblemABC as Problem
 class Morris(SA):
     '''
@@ -38,13 +38,24 @@ class Morris(SA):
                                  doi: 10.2307/1269043
         [2] SALib, https://github.com/SALib/SALib
     '''
-    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                       num_levels: int=4):
-          
-        super().__init__(problem, scalers)
-        self.num_levels=num_levels
+    name="Morris"
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                       numLevels: int=4, numTrajectory: int=500, 
+                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
-    def sample(self, num_trajectory: int=500) -> np.ndarray:
+        #Attribute
+        self.firstOrder=True
+        self.secondOrder=False
+        self.totalOrder=True
+        
+        super().__init__(scalers, verbose, logFlag, saveFlag)
+        
+        #Parameter Setting
+        self.setParameters("numLevels", numLevels)
+        self.setParameters("numTrajectory", numTrajectory)
+        
+        
+    def sample(self, problem: Problem, num_trajectory: int=500) -> np.ndarray:
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
@@ -57,16 +68,17 @@ class Morris(SA):
                 Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
         
         '''
-        nt=num_trajectory; nx=self.n_input; num_levels=self.num_levels
+        nt, numLevels= self.getParaValue("numTrajectory", "numLevels")
+        nInput=problem.nInput
         
-        X=np.zeros((nt*(nx+1), nx))
+        X=np.zeros((nt*(nInput+1), nInput))
         
         for i in range(nt):
-            X[i*(nx+1):(i+1)*(nx+1), :]=self._generate_trajectory(nx, num_levels)
+            X[i*(nInput+1):(i+1)*(nInput+1), :]=self._generate_trajectory(nInput, numLevels)
         
         return self.transform_into_problem(X)
         
-    def analyze(self, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None, verbose: bool=False) -> dict:
+    def analyze(self, problem: Problem, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None) -> dict:
         '''
             Perform morris analysis
             
@@ -86,17 +98,24 @@ class Morris(SA):
                 Si: dict
                     The type of Si is dict. And it contain 'mu', 'mu_star', 'sigma' key value.
         '''
-        n_input=self.n_input; num_trajectory=int(X.shape[0]/(n_input+1))
+        numTrajectory, numLevels=self.getParaValue("numTrajectory", "numLevels")
+        self.setProblem(problem)
+        nInput=problem.nInput
+        if X is None or Y is None:
+            X=self.sample(problem, N)
+            Y=problem.evaluate(X)
+        else:
+            numTrajectory=int(X.shape[0]/(nInput+1))
         
         X, Y=self.__check_and_scale_xy__(X, Y)
 
-        EE=np.zeros((n_input, num_trajectory))
+        EE=np.zeros((nInput, numTrajectory))
         
         N=int(X.shape[0]/self.num_levels)
         
-        for i in range(num_trajectory):
-            X_sub=X[i*(n_input+1):(i+1)*(n_input+1), :]
-            Y_sub=Y[i*(n_input+1):(i+1)*(n_input+1), :]
+        for i in range(numTrajectory):
+            X_sub=X[i*(nInput+1):(i+1)*(nInput+1), :]
+            Y_sub=Y[i*(nInput+1):(i+1)*(nInput+1), :]
 
             Y_diff=np.diff(Y_sub, axis=0)
             
@@ -110,13 +129,11 @@ class Morris(SA):
         mu_star= np.mean(np.abs(EE), axis=1)
         sigma = np.std(EE, axis=1, ddof=1)
         
-        Si={'mu':mu, 'mu_star': mu_star, 'sigma': sigma}
-        self.Si=Si
-        
-        if verbose:
-            self.summary()
-        
-        return Si
+        self.record('mu', mu)
+        self.record('mu_star', mu_star)
+        self.record('sigma', sigma)
+
+        return self.result
     
     def summary(self):
         '''

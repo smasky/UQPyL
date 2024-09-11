@@ -5,7 +5,7 @@ from typing import Optional
 
 from ..utility_functions import NDSort, crowdingDistance, tournamentSelection, operationGA
 from ...DoE import LHS
-from ..algorithm import Algorithm
+from ..algorithmABC import Algorithm
 from ..population import Population
 from ...problems import ProblemABC  as Problem
 from ...utility import Verbose

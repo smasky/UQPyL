@@ -1,7 +1,7 @@
 # M&L Shuffled Complex Evolution-UA <Single>
 
 import numpy as np
-from ..algorithm import Algorithm, Population, Verbose
+from ..algorithmABC import Algorithm, Population, Verbose
 
 class ML_SCE_UA(Algorithm):
     """
