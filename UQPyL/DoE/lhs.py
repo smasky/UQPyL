@@ -178,11 +178,11 @@ class LHS(Sampler):
         Sampling_method=LHS_METHOD[self.criterion]
         
         if self.criterion in ['maximin', 'center_maximin', 'correlation']:
-            X=Sampling_method(nt, nx, self.iterations, self.random_state)
+            xInit=Sampling_method(nt, nx, self.iterations, self.random_state)
         else:
-            X=Sampling_method(nt, nx, self.random_state)
+            xInit=Sampling_method(nt, nx, self.random_state)
         
-        return X
+        return xInit
     
     @decoratorRescale
     def sample(self, nt: int, nx:int, random_seed: Optional[int]=None) -> np.ndarray:

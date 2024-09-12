@@ -6,7 +6,7 @@ from .core._forward import ForwardPasser
 from .core._pruning import PruningPasser, FEAT_IMP_CRITERIA
 from .core._util import ascii_table, apply_weights_2d, gcv
 from .core._types import BOOL
-from ..surrogate_ABC import Surrogate
+from ..surrogateABC import Surrogate
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
 

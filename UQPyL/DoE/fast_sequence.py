@@ -55,7 +55,7 @@ class FAST_Sequence(Sampler):
         
         s=(2*np.pi/nt)*np.arange(nt)
         
-        X_sa=np.zeros((nt*nx, nx))
+        xInit=np.zeros((nt*nx, nx))
         w_tmp=np.zeros(nx)
         
         for i in range(nx):
@@ -66,9 +66,9 @@ class FAST_Sequence(Sampler):
             phi=2*np.pi*np.random.rand()    
             sin_result=np.sin(w_tmp[:,None]*s+phi)
             arsin_result=(1/np.pi)*np.arcsin(sin_result) #saltelli formula
-            X_sa[idx, :]=0.5+arsin_result.transpose()
+            xInit[idx, :]=0.5+arsin_result.transpose()
         
-        return X_sa
+        return xInit
     
     def sample(self, nt: int, nx: int) -> np.ndarray:
         

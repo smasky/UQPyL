@@ -33,9 +33,9 @@ class Sobol_Sequence(Sampler):
         '''
         
         sampler=Sobol(d=nx, scramble=self.scramble)
-        X=sampler.random(nt+self.skip_value)
+        xInit=sampler.random(nt+self.skip_value)
         
-        return X[self.skip_value:, :]
+        return xInit[self.skip_value:, :]
     
     def sample(self, nt: int, nx: int) -> np.ndarray:
         '''
@@ -52,11 +52,4 @@ class Sobol_Sequence(Sampler):
             An n-by-samples design matrix that has been normalized so factor values
             are uniformly spaced between zero and one.  
         '''
-        return self._generate(nt, nx)
-
-        
-        
-        
-        
-            
-        
+        return self._generate(nt, nx)   

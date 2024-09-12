@@ -3,18 +3,18 @@ import scipy
 
 from typing import Union, List, Literal, Tuple
 
-from ..surrogate_ABC import Surrogate, Scale_T
+from ..surrogateABC import Surrogate
 from ._activation_funcs import (ACTIVATIONS, DERIVATIVES, IDENTITY,
                                             RELU, TANH, LEAKY_RELU, ELU, RELU6)
 
 from ...utility.polynomial_features import PolynomialFeatures
 
-def square_error(true_Y: np.ndarray, pre_Y: np.ndarray, derivative: bool=False):
+def square_error(yTrue: np.ndarray, yPred: np.ndarray, derivative: bool=False):
     
     if not derivative:
-        return np.mean(np.square(true_Y-pre_Y))/2
+        return np.mean(np.square(yTrue-yPred))/2
     else:
-        return pre_Y-true_Y
+        return yPred-yTrue
 
 class FNN(Surrogate):
     '''
@@ -67,26 +67,26 @@ class FNN(Surrogate):
         
         return self.__Y_inverse_transform__(activations[-1])
         
-    def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
+    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        train_X, train_Y=self.__check_and_scale__(train_X, train_Y)
-        train_X=np.array(train_X)
-        train_Y=np.array(train_Y)
-        _, n_features=train_X.shape
+        xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        xTrain=np.array(xTrain)
+        yTrain=np.array(yTrain)
+        _, nFeature=xTrain.shape
         
-        if(train_Y.shape[1]!=1):
+        if(yTrain.shape[1]!=1):
             raise ValueError("only support one output now!")
         
         hidden_layer_sizes=self.hidden_layer_sizes
         
         ###############Initialization#################
     
-        self.n_output=train_Y.shape[1]
-        layer_units=[n_features]+hidden_layer_sizes+[self.n_output]
+        self.nOutput=yTrain.shape[1]
+        layer_units=[nFeature]+hidden_layer_sizes+[self.nOutput]
         
         self.layer_number=len(layer_units)
         
-        activations=[train_X]+[None]*(len(layer_units)-1)
+        activations=[xTrain]+[None]*(len(layer_units)-1)
         deltas=[None]*(len(activations)-1)
         
         self.coefs_=[]; self.intercepts_=[]
@@ -98,25 +98,25 @@ class FNN(Surrogate):
             self.intercepts_.append(intercept_init)
            
         coef_grads = [
-            np.empty((n_fan_in_, n_fan_out_), dtype=train_X.dtype)
+            np.empty((n_fan_in_, n_fan_out_), dtype=xTrain.dtype)
             for n_fan_in_, n_fan_out_ in zip(layer_units[:-1], layer_units[1:])
         ]
 
         intercept_grads = [
-            np.empty(n_fan_out_, dtype=train_X.dtype) for n_fan_out_ in layer_units[1:]
+            np.empty(n_fan_out_, dtype=xTrain.dtype) for n_fan_out_ in layer_units[1:]
         ]
         ########################################
         if self.solver in ['adam']:
-            self.__solver_gradient_descent(train_X, train_Y, activations, deltas,
+            self.__solver_gradient_descent(xTrain, yTrain, activations, deltas,
                                        coef_grads, intercept_grads, layer_units)
         
         elif self.solver in ['lbfgs']:
-            self.__solver_lbfgs(train_X, train_Y, activations, deltas,
+            self.__solver_lbfgs(xTrain, yTrain, activations, deltas,
                                     coef_grads, intercept_grads, layer_units)
             
 #####------------------------------private functions----------------------------------------####     
 
-    def __solver_gradient_descent(self, train_X: np.ndarray, train_Y: np.ndarray,
+    def __solver_gradient_descent(self, xTrain: np.ndarray, yTrain: np.ndarray,
                                   activations: List, deltas: List, coef_grads: List,
                                   intercept_grads: List, layer_units: List):
         #################################
@@ -130,25 +130,25 @@ class FNN(Surrogate):
         if self.solver=='adam':
             self.optimizer_=Adam(params, learning_rate=self.learning_rate, beta_1= 0.9, beta_2=0.999, epsilon=1e-8)
             
-        n_samples, _=train_X.shape
-        sample_idx=np.arange(n_samples, dtype=np.int32)
+        nSample, _=xTrain.shape
+        sample_idx=np.arange(nSample, dtype=np.int32)
         
-        batch_size=min(self.batch_size, n_samples)
+        batch_size=min(self.batch_size, nSample)
         
         ###############iteration############
         for _ in range(self.epoch):
             if self.shuffle:
-                sample_idx=np.arange(n_samples, dtype=np.int32)
+                sample_idx=np.arange(nSample, dtype=np.int32)
                 np.random.shuffle(sample_idx)
             
             accumulated_loss=0.0
-            for batch_slice in self.__gen_batch(n_samples, batch_size):
+            for batch_slice in self.__gen_batch(nSample, batch_size):
                 if self.shuffle:
-                    X_batch = train_X[sample_idx[batch_slice],:]
-                    Y_batch = train_Y[sample_idx[batch_slice]]
+                    X_batch = xTrain[sample_idx[batch_slice],:]
+                    Y_batch = yTrain[sample_idx[batch_slice]]
                 else:
-                    X_batch = train_X[batch_slice,:]
-                    Y_batch = train_Y[batch_slice]
+                    X_batch = xTrain[batch_slice,:]
+                    Y_batch = yTrain[batch_slice]
                 
                 activations[0]=X_batch
                 
@@ -168,7 +168,7 @@ class FNN(Surrogate):
                 self.optimizer_.update_params(params, grads)
             
             self.n_iter_ += 1
-            loss = accumulated_loss / train_X.shape[0]
+            loss = accumulated_loss / xTrain.shape[0]
             
             self.loss_curve_.append(loss)
             
@@ -183,7 +183,7 @@ class FNN(Surrogate):
             if no_improvement_count>self._no_improvement_count:
                 break
             
-    def __solver_lbfgs(self, train_X: np.ndarray, train_Y: np.ndarray,
+    def __solver_lbfgs(self, xTrain: np.ndarray, yTrain: np.ndarray,
                             activations: List, deltas: List, coef_grads: List,
                             intercept_grads: List, layer_units: List):
         self._coef_indptr = []
@@ -220,7 +220,7 @@ class FNN(Surrogate):
                 "iprint": iprint,
                 "gtol": tol,
             },
-            args=(train_X, train_Y, activations, deltas, coef_grads, intercept_grads),
+            args=(xTrain, yTrain, activations, deltas, coef_grads, intercept_grads),
         )
         
         self.loss_ = opt_res.fun
@@ -238,17 +238,17 @@ class FNN(Surrogate):
         grad = self.__pack(coef_grads, intercept_grads)
         return loss, grad
     
-    def __compute_loss_grad(self, layer_num: int, n_samples: int,activations: List, deltas: List, coef_grads: List, intercept_grads: List):
+    def __compute_loss_grad(self, layer_num: int, nSample: int,activations: List, deltas: List, coef_grads: List, intercept_grads: List):
         
         coef_grads[layer_num] = activations[layer_num].T@deltas[layer_num]
         coef_grads[layer_num] += self.alpha * self.coefs_[layer_num]
-        coef_grads[layer_num] /= n_samples
+        coef_grads[layer_num] /= nSample
         
         intercept_grads[layer_num] = np.mean(deltas[layer_num], 0)
             
     def __backprop(self, X_batch: np.ndarray, Y_batch: np.ndarray, activations: List, deltas: List, coef_grads: List, intercept_grads: List):
         
-        n_samples, _ =X_batch.shape
+        nSample, _ =X_batch.shape
         self.__forward(activations)
         
         loss=self.loss_func(Y_batch, activations[-1])
@@ -259,12 +259,12 @@ class FNN(Surrogate):
             coe=coe.ravel()
             l2+=np.dot(coe,coe)
             
-        loss+=(0.5*self.alpha)*l2/n_samples
+        loss+=(0.5*self.alpha)*l2/nSample
         ####using square erro
         deltas[-1]=self.loss_func(Y_batch, activations[-1], derivative=True)
         
         self.__compute_loss_grad(
-            len(activations)-2, n_samples, activations, deltas, coef_grads, intercept_grads
+            len(activations)-2, nSample, activations, deltas, coef_grads, intercept_grads
         )
         
         derivative_func=self.derivative_functions
@@ -273,7 +273,7 @@ class FNN(Surrogate):
             deltas[i - 1] = deltas[i]@self.coefs_[i].T
             derivative_func[i-1](activations[i], deltas[i - 1])
             self.__compute_loss_grad(
-                i - 1, n_samples, activations, deltas, coef_grads, intercept_grads
+                i - 1, nSample, activations, deltas, coef_grads, intercept_grads
             )
         return loss, coef_grads, intercept_grads
     
@@ -304,17 +304,17 @@ class FNN(Surrogate):
             start, end = self._intercept_indptr[i]
             self.intercepts_[i] = packed_parameters[start:end]
     
-    def __gen_batch(self, n_samples, batch_size, min_batch_size=0):
+    def __gen_batch(self, nSample, batch_size, min_batch_size=0):
                 
         start = 0
-        for _ in range(int(n_samples // batch_size)):
+        for _ in range(int(nSample // batch_size)):
             end = start + batch_size
-            if end + min_batch_size > n_samples:
+            if end + min_batch_size > nSample:
                 continue
             yield slice(start, end)
             start = end
-        if start < n_samples:
-            yield slice(start, n_samples)
+        if start < nSample:
+            yield slice(start, nSample)
             
     def __init_coef(self, fan_in, fan_out, dtype):
     # Use the initialization method recommended by

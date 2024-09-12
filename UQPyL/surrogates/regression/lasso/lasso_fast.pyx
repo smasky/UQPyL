@@ -13,7 +13,7 @@ from scipy.linalg.cython_lapack cimport sposv, dposv
 from numpy.math cimport INFINITY
 from cython cimport floating
 from libc.math cimport fabs, sqrt, exp, INFINITY, log
-from sklearn.exceptions import ConvergenceWarning
+
 
 cdef:
     int LASSO = 0
@@ -839,15 +839,13 @@ def celer(
         else:
             warnings.warn(
                 'Inner solver did not converge at ' +
-                f'epoch: {epoch}, gap: {gap_in:.2e} > {tol_in:.2e}',
-                ConvergenceWarning)
+                f'epoch: {epoch}, gap: {gap_in:.2e} > {tol_in:.2e}')
     else:
         warnings.warn(
             'Objective did not converge: duality ' +
             f'gap: {gap}, tolerance: {tol}. Increasing `tol` may make the' +
             ' solver faster without affecting the results much. \n' +
-            'Fitting data with very small alpha causes precision issues.',
-            ConvergenceWarning)
+            'Fitting data with very small alpha causes precision issues.')
 
     return np.asarray(w), np.asarray(theta), np.asarray(gaps[:t + 1])
 

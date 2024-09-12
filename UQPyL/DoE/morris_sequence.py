@@ -40,12 +40,12 @@ class Morris_Sequence(Sampler):
             An n-by-samples design matrix that has been normalized so factor values
             are uniformly spaced between zero and one.
         '''      
-        X=np.zeros((nt*(nx+1), nx))
+        xInit=np.zeros((nt*(nx+1), nx))
         
         for i in range(nt):
-            X[i*(nx+1):(i+1)*(nx+1), :]=self._generate_trajectory(nx)
+            xInit[i*(nx+1):(i+1)*(nx+1), :]=self._generate_trajectory(nx)
         
-        return X
+        return xInit
     
     def _generate_trajectory(self, nx: int) -> np.ndarray:
         '''

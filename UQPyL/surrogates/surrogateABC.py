@@ -1,23 +1,16 @@
 import abc
 import numpy as np
-# from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from typing import Literal, Tuple
 from ..utility.scalers import StandardScaler, MinMaxScaler
 from ..utility.polynomial_features import PolynomialFeatures
-from typing import Literal,Tuple
 
-Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'],Literal['StandardScaler','MinMaxScaler']]
+Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'], Literal['StandardScaler','MinMaxScaler']]
 
 class Surrogate(metaclass=abc.ABCMeta):
-    Scale_type=None 
-    normalized=None
-    dim=None
-    n_samples=None
-    n_features=None
     xScaler=None
     yScaler=None
-    train_x=None
-    train_y=None
-
+    xTrain=None
+    yTrain=None
     def __init__(self, scalers=(None, None), polyFeature=None):
         
         self.setting=Setting()
@@ -37,38 +30,37 @@ class Surrogate(metaclass=abc.ABCMeta):
         else:
             self.poly_feature=None
     
-    def __check_and_scale__(self,train_x: np.ndarray, train_y: np.ndarray):
+    def __check_and_scale__(self,xTrain: np.ndarray, yTrain: np.ndarray):
         '''
             check the type of train_data
                 and normalize the train_data if required 
         '''
         
-        if(not isinstance(train_x,np.ndarray) or not isinstance(train_y, np.ndarray)):
+        if(not isinstance(xTrain,np.ndarray) or not isinstance(yTrain, np.ndarray)):
             raise ValueError('Please make sure the type of train_data is np.ndarry')
         
-        self._train_x_=train_x.copy()
-        self._train_y_=train_y.copy()
+        self._xTrain_=xTrain.copy()
+        self._yTrain_=yTrain.copy()
         
-        train_x=np.atleast_2d(self._train_x_)
-        train_y=np.atleast_2d(self._train_y_).reshape(-1, 1)
+        xTrain=np.atleast_2d(self._xTrain_)
+        yTrain=np.atleast_2d(self._yTrain_).reshape(-1, 1)
         
-        if(train_x.shape[0]==train_y.shape[0]):
+        if(xTrain.shape[0]==yTrain.shape[0]):
             
-            self.n_samples=train_x.shape[0] 
-            
+            self.n_samples=xTrain.shape[0] 
             
             if(self.xScaler):
-                train_x=self.xScaler.fit_transform(train_x)
+                xTrain=self.xScaler.fit_transform(xTrain)
         
             if(self.yScaler):
-                train_y=self.yScaler.fit_transform(train_y)
+                yTrain=self.yScaler.fit_transform(yTrain)
 
             if(self.poly_feature):
-                train_x=self.poly_feature.transform(train_x)
+                xTrain=self.poly_feature.transform(xTrain)
                 
-            self.n_features=train_x.shape[1]
+            self.n_features=xTrain.shape[1]
             
-            return train_x,train_y
+            return xTrain,yTrain
         else:
             raise ValueError("The shapes of x and y are not consistent. Please check them!")
     
@@ -95,6 +87,7 @@ class Surrogate(metaclass=abc.ABCMeta):
             Y=self.yScaler.inverse_transform(Y.reshape(-1,1))
             
         return Y
+    
     def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
         
         if(self.xScaler):
@@ -102,25 +95,17 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         return X
     
-    def set_Paras(self, Para_dicts):
+    def setPara(self, key, value, lb, ub):
         
-        for name, value in Para_dicts.items():
-            if hasattr(self, name):
-                setattr(self, name, value)
-            else:
-                raise ValueError("Cannot found this parameter! Please check")
+        self.setting.setPara(key, value, lb, ub)
     
-    def setParameters(self, key, value, lb, ub):
+    def getPara(self, *args):
         
-        self.setting.setParameter(key, value, lb, ub)
-    
-    def getParaValue(self, *args):
-        
-        return self.setting.getParaValue(*args)
+        return self.setting.getPara(*args)
     
     def addSetting(self, setting):
         
-        self.setting.addSetting(setting)
+        self.setting.addSubSetting(setting)
      
     @abc.abstractmethod
     def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
@@ -168,39 +153,58 @@ class Setting():
     
     def __init__(self):
         
-        self.hyperParas={}
-        self.paraUb={}
-        self.paraLb={}
+        self.paras={}
+        self.paras_ub={}
+        self.paras_lb={}
+    
+    def getParaInfos(self):
+        
+        keyList=[]
+        valueList=[]
+        ubList=[]
+        lbList=[]
+        for key, item in self.paras.items():
+            
+            if isinstance(item, dict):
+                keyList+=[f"{key}.{t}" for t in item.keys()]
+                valueList+=item.values()
+                ubList+=self.paras_ub[key].values()
+                lbList+=self.paras_lb[key].values()
+            else:
+                keyList.append(key)
+                valueList.append(item)
+                ubList.append(self.paras_ub[key])
+                lbList.append(self.paras_lb[key])
+                
+        return keyList, valueList, ubList, lbList
     
     def addSubSetting(self, setting):
         
-        prefix=setting.name
-        self.hyperParas[prefix]=setting.hyperParas
-        self.paraLb[prefix]=setting.paraLb
-        self.paraUb[prefix]=setting.paraUb
-    
-    def keys(self):
+        prefix=setting.prefix
+        self.paras[prefix]=setting.paras
+        self.paras_lb[prefix]=setting.paras_lb
+        self.paras_ub[prefix]=setting.paras_ub
         
-        keyLists=[]
+    def assignValues(self, keys, values):
         
-        
-        return self.hyperParas.keys()
-    
-    def values(self):
-        
-        return self.hyperParas.values()
-    
-    def setParameter(self, key, value, lb, ub):
-        
-        self.hyperParas[key]=value
-        self.paraLb[key]=lb
-        self.paraUb[key]=ub
+        for i, key in enumerate(keys):
+            lists=key.split('.')
+            if len(lists)==1:
+                self.paras[lists[0]]=values[i]
+            else:
+                self.paras[lists[0]][lists[1]]=values[i]
 
-    def getParaValue(self, *args):
+    def setPara(self, key, value, lb, ub):
+        
+        self.paras[key]=value
+        self.paras_lb[key]=lb
+        self.paras_ub[key]=ub
+        
+    def getPara(self, *args):
         
         values=[]
         for arg in args:
-            values.append(self.hyperParas[arg])
+            values.append(self.paras[arg])
         
         if len(args)>1:
             return tuple(values)
