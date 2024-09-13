@@ -30,7 +30,9 @@ class SVR(Surrogate):
         if kernel=='sigmoid':
             self.setPara("coe0", coe0, coe0_lb, coe0_ub)
         
-        self.degree=degree
+        if kernel=="polynomial":
+            self.degree=degree
+            
         self.kernel=kernel
         self.maxIter=maxIter
         self.eps=eps
@@ -57,12 +59,11 @@ class SVR(Surrogate):
         yTrain=np.ascontiguousarray(yTrain).copy()
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
         
-        
         C=self.getPara("C")
         gamma=self.getPara("gamma")
         epsilon=self.getPara("epsilon")
         coe0=self.getPara("coe0") if self.kernel=="sigmoid" else 0.0
-        
+        degree=self.degree if self.kernel=="polynomial" else 2
         ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par=Parameter(3, eval(self.kernel.upper()), self.degree, self.maxIter, gamma, coe0, C, 0.5, epsilon, self.eps)     
+        par=Parameter(3, eval(self.kernel.upper()), degree, self.maxIter, gamma, coe0, C, 0.5, epsilon, self.eps)     
         self.model=svm_fit(xTrain, yTrain.ravel(), par)

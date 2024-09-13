@@ -66,35 +66,44 @@ class Verbose():
         heads=["FEs"]+["Iters"]+y_labels+["Num_Non-dominated_Solution"]
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj]+[nDecs]
         
-        table=Verbose.verboseTable(heads, values, 10, width)
-        Verbose.output(table)
+        tables=Verbose.verboseTable(heads, values, 10, width)
+        
+        for table in tables:
+            Verbose.output(table)
     
     @staticmethod
     def verboseSingleSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
         
         heads=["FEs"]+["Iters"]+y_labels+x_labels
+        
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
         
-        table=Verbose.verboseTable(heads, values, 10, width)
-            
-        Verbose.output(table)
+        tables=Verbose.verboseTable(heads, values, 10, width)
+        
+        for table in tables:
+            Verbose.output(table)
     
     @staticmethod
     def verboseTable(heads, values, num, width):
         
         rows=int(len(heads))//num+1
         cols=num
+        tables=[]
+        
         for i in range(rows):
             if (i+1)*cols<len(heads):
                 end=(i+1)*cols
             else:
                 end=len(heads)
+                
             table=PrettyTable(heads[i*cols:end])
             table.max_width=int(width/(cols+4))
             table.min_width=int(width/(cols+4))
             table.add_row(values[i*cols:end])
-        
-        return table
+            
+            tables.append(table)
+            
+        return tables
     
     @staticmethod
     def verboseSi(x_labels, Si, width):
@@ -102,9 +111,10 @@ class Verbose():
         heads=x_labels
         values=[format(item, ".4f") for item in Si.ravel()]
         
-        table=Verbose.verboseTable(heads, values, 10, width)
+        tables=Verbose.verboseTable(heads, values, 10, width)
         
-        Verbose.output(table)
+        for table in tables:
+            Verbose.output(table)
                 
     @staticmethod
     def decoratorRecord(func):

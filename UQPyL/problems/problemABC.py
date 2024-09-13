@@ -3,7 +3,10 @@ import numpy as np
 from typing import Union
 class ProblemABC(metaclass=abc.ABCMeta):
 
-    def __init__(self, nInput:int, nOutput:int, ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], var_type=None, var_set=None, x_labels=None, y_labels=None):
+    def __init__(self, nInput:int, nOutput:int, 
+                 ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], 
+                 var_type=None, var_set=None, 
+                 x_labels=None, y_labels=None):
         
         self.nInput=nInput
         self.nOutput=nOutput

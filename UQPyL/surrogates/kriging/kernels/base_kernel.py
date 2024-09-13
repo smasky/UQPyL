@@ -2,76 +2,47 @@
 import numpy as np
 from typing import Union
 
-class Krg_Kernel():
-    _n_input=1
-    def __init__(self, theta: Union[float, np.ndarray]=1, 
-                 theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5,
-                 heterogeneous: bool=True
+class BaseKernel():
+    
+    def __init__(self, heterogeneous: bool,
+                 theta: Union[float, np.ndarray], theta_lb: Union[float, np.ndarray], theta_ub: Union[float, np.ndarray],
                  ):
         
-        self.theta=theta
-        self.theta_lb=theta_lb
-        self.theta_ub=theta_ub
-        self.heterogenous=heterogeneous
+        self.setting=Setting()
         
-    def __check_array__(self, value):
+        self.heterogeneous=heterogeneous
         
-        if isinstance(value, (float, int)):
-            value_=np.ones(self.n_input)
-            value_.fill(value)
-        elif isinstance(value, np.ndarray):
-            if value.ndim>1:
-                value_=value.ravel()
-                if value_.shape[0]!=self.n_input:
-                    raise ValueError("Please make sure the shape of value")
-            else:
-                value_=value 
-        else:
-            raise ValueError("Please make sure the type of value")
+        self.setPara("theta", theta, theta_lb, theta_ub)
+        
+    def setPara(self, key, value, lb, ub):
+        
+        self.setting.setPara(key, value, lb, ub)
+    
+    def getPara(self, *args):
+        
+        return self.setting.getPara(*args)
+class Setting():
+    
+    def __init__(self, prefix):
+        
+        self.prefix=prefix
+        self.paras={}
+        self.paras_ub={}
+        self.paras_lb={}
+    
+    def setPara(self, key, value, lb, ub):
+        
+        self.paras[key]=value
+        self.paras_lb[key]=lb
+        self.paras_ub[key]=ub
 
-        return value_
-    
-    ##################################Attribute############################################
-    #--------------------------------length_scale----------------------------------------#
-    @property
-    def theta(self):
-        return self._theta
-    
-    @theta.setter
-    def theta(self, value):
-        value=self.__check_array__(value)
-        self._theta=value
-    
-    @property
-    def theta_lb(self):
-        return self._theta_lb
-    
-    @theta_lb.setter
-    def theta_lb(self, value):
-        value=self.__check_array__(value)
-        self._theta_lb=value
-    
-    @property
-    def theta_ub(self):
-        return self._theta_ub
-    
-    @theta_ub.setter
-    def theta_ub(self, value):
-        value=self.__check_array__(value)
-        self._theta_ub=value
-    
-    @property
-    def n_input(self):
-        return self._n_input
-    
-    @n_input.setter
-    def n_input(self, value):
-        if not isinstance(value, int):
-            raise ValueError("Please the type of value is int")
+    def getPara(self, *args):
         
-        if self.heterogenous:
-            # if self.theta.shape[0]==1:
-            self.theta = np.resize(self.theta, value) 
-            self.theta_lb = np.resize(self.theta_lb, value)
-            self.theta_ub = np.resize(self.theta_ub, value)
-            self._n_input=value 
+        values=[]
+        for arg in args:
+            values.append(self.paras[arg])
+        
+        if len(args)>1:
+            return tuple(values)
+        else:
+            return values[0]

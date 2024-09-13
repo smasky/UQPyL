@@ -30,7 +30,7 @@ class Surrogate(metaclass=abc.ABCMeta):
         else:
             self.poly_feature=None
     
-    def __check_and_scale__(self,xTrain: np.ndarray, yTrain: np.ndarray):
+    def __check_and_scale__(self, xTrain: np.ndarray, yTrain: np.ndarray):
         '''
             check the type of train_data
                 and normalize the train_data if required 
@@ -38,16 +38,11 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         if(not isinstance(xTrain,np.ndarray) or not isinstance(yTrain, np.ndarray)):
             raise ValueError('Please make sure the type of train_data is np.ndarry')
-        
-        self._xTrain_=xTrain.copy()
-        self._yTrain_=yTrain.copy()
-        
-        xTrain=np.atleast_2d(self._xTrain_)
-        yTrain=np.atleast_2d(self._yTrain_).reshape(-1, 1)
+                
+        xTrain=np.atleast_2d(xTrain)
+        yTrain=np.atleast_2d(yTrain).reshape(-1, 1)
         
         if(xTrain.shape[0]==yTrain.shape[0]):
-            
-            self.n_samples=xTrain.shape[0] 
             
             if(self.xScaler):
                 xTrain=self.xScaler.fit_transform(xTrain)
@@ -70,7 +65,7 @@ class Surrogate(metaclass=abc.ABCMeta):
             X=self.xScaler.transform(X)
         
         if (self.poly_feature):
-            X=self.poly_feature.transform(X)
+            X=self.polyFeature.transform(X)
             
         return X
     

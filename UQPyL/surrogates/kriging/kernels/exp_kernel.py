@@ -1,12 +1,12 @@
 import numpy as np
 from typing import Union
 
-from .base_kernel import Krg_Kernel
+from .base_kernel import BaseKernel
 
-class Exp_Kernel(Krg_Kernel):
+class Exp(BaseKernel):
     
     def __init__(self, theta: Union[float, np.ndarray]=1, 
-                 theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5,
+                 theta_lb: Union[float, np.ndarray]=1e-5, theta_ub: Union[float, np.ndarray]=1e5,
                  heterogeneous: bool=True):
         
         super().__init__(theta, theta_lb, theta_ub, heterogeneous)
@@ -17,8 +17,12 @@ class Exp_Kernel(Krg_Kernel):
                 D: np.ndarray
                     The distance matrix
         '''
-    
-        td= -self.theta
+        theta=self.getPara("theta")
+        nSample, _=D.shape
+        if self.heterogeneous and isinstance(theta, float):
+            theta=np.ones(nSample)*theta
+        
+        td= -theta
         r= np.exp(np.sum(D*td, axis=1))
         
         return r

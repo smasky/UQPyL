@@ -10,7 +10,7 @@ class Algorithm(metaclass=abc.ABCMeta):
     """
     This is a baseclass for algorithms
     """
-    def __init__(self, maxFEs, maxIterTimes, maxTolerateTimes=None, tolerate=1e-6, 
+    def __init__(self, maxFEs=None, maxIterTimes=None, maxTolerateTimes=None, tolerate=1e-6, 
                  verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
         self.setting=Setting()

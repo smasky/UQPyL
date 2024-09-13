@@ -5,6 +5,7 @@ from .single_objective import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_
 from .multi_objective import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 from .multi_objective import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6
 from .problemABC import ProblemABC
+from .pratical_problem import PracticalProblem
 
 single_objective_problems=["Sphere", "Schwefel_2_22", "Schwefel_1_22", "Schwefel_2_21", "Rosenbrock",
                 "Step", "Quartic", "Schwefel_2_26", "Rastrigin", "Ackley", "Griewank",

@@ -1,26 +1,37 @@
 import numpy as np
 from typing import Callable
 
-class Boxmin():
+from ..algorithmABC import Algorithm
+from ...problems import ProblemABC as Problem
+class Boxmin(Algorithm):
     type='MP' #mathematical programming
-    def __init__(self, initialPos: np.ndarray, ub: np.ndarray, lb: np.ndarray) -> None:
-        self.initalPos=initialPos
-        self.ub=ub
-        self.lb=lb
-        self.nv=0
-    ###################################Interface Function#################################
-    def run(self, func: Callable):
-        self.func=func
+    def __init__(self) -> None:
         
-        self._start()
+        super().__init__()
+        
+    ###################################Interface Function#################################
+    def run(self, probelm: Problem, xInit=None, yInit=None):
+        
+        if xInit is None:
+            xInit=np.random.uniform(probelm.lb, probelm.ub, probelm.nInput)
+            yInit=probelm.evaluate(xInit)
+        
+        self.func=probelm.evaluate
+        self.nv=0; 
+        
+        self._start(xInit, yInit)
+        
         p=self.initalPos.size
         
         for _ in range(np.minimum(p,4)):
             pos_copy=self.pos.copy()
             self._explore()
             self._move(pos_copy)
-            
-        return self.pos, self.f
+        
+        self.result.bestDec=self.pos
+        self.result.bestObj=self.f
+        
+        return self.result
     #######################################Private Function################################
     def _move(self, pos_old: np.ndarray):
         
@@ -82,14 +93,14 @@ class Boxmin():
         self.pos=pos
         self.f=f
         
-    def _start(self):
+    def _start(self, xInit, yInit):
         
-        p = self.initalPos.size
+        self.initalPos=xInit
+        
+        p = xInit.size
         D = 2 ** (np.arange(1, p + 1).reshape(-1, 1) / (p + 2))
-        
-        f = self.func(self.initalPos)
         
         self.nv=1
         self.D=D
-        self.f=f
+        self.f=yInit
         self.pos=self.initalPos

@@ -1,12 +1,12 @@
 import numpy as np
 from typing import Union, Optional
 
-from .base_kernel import Krg_Kernel
+from .base_kernel import BaseKernel
 
-class Guass_Kernel(Krg_Kernel):
+class Guass(BaseKernel):
     
     def __init__(self, theta: Union[float, np.ndarray]=1, 
-                 theta_lb: Union[float, np.ndarray]=0, theta_ub: Union[float, np.ndarray]=1e5,
+                 theta_lb: Union[float, np.ndarray]=1e-5, theta_ub: Union[float, np.ndarray]=1e5,
                  heterogeneous: bool=True
                  ):
         
@@ -18,8 +18,12 @@ class Guass_Kernel(Krg_Kernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        
-        td = D * -self.theta
+        theta=self.getPara("theta")
+        nSample, _=D.shape
+        if self.heterogeneous and isinstance(theta, float):
+            theta=np.ones(nSample)*theta
+            
+        td = D * -theta
         r = np.exp(np.sum(D * td, axis=1))
     
         return r
