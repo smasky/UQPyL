@@ -98,6 +98,10 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         return self.setting.getPara(*args)
     
+    def assignPara(self, key, value):
+        
+        self.setting.assignValues(key, value)
+    
     def addSetting(self, setting):
         
         self.setting.addSubSetting(setting)
