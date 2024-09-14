@@ -1,19 +1,23 @@
-# class krg_kernels():
 import numpy as np
 from typing import Union
 
 class BaseKernel():
-    
-    def __init__(self, heterogeneous: bool,
-                 theta: Union[float, np.ndarray], theta_lb: Union[float, np.ndarray], theta_ub: Union[float, np.ndarray],
-                 ):
+    def __init__(self):
         
         self.setting=Setting()
         
-        self.heterogeneous=heterogeneous
+    def __check_array__(self, value: Union[float,np.ndarray]):
         
-        self.setPara("theta", theta, theta_lb, theta_ub)
+        if isinstance(value, float):
+            value=np.array([value])
+        elif isinstance(value, np.ndarray):
+            if value.ndim>1:
+                value=value.ravel()
+        else:
+            raise ValueError("Please make sure the type of value")
         
+        return value
+    
     def setPara(self, key, value, lb, ub):
         
         self.setting.setPara(key, value, lb, ub)
@@ -21,6 +25,7 @@ class BaseKernel():
     def getPara(self, *args):
         
         return self.setting.getPara(*args)
+    
 class Setting():
     
     def __init__(self, prefix):

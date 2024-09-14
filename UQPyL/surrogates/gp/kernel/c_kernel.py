@@ -1,14 +1,15 @@
 from typing import Optional
 import numpy as np
 
-from .base_kernel import Gp_Kernel
+from .base_kernel import BaseKernel
 
-class Constant(Gp_Kernel):
+class Constant(BaseKernel):
     """
     Constant
     """
     def __init__(self, c: float=1.0):
         self.c=c
+        super().__init__()
     
     def setHyperPara(self, theta: np.ndarray):
         self.c=theta[0]
