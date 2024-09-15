@@ -23,7 +23,7 @@ class CSA(Algorithm):
     """
     
     name = "CSA"
-    type = "Single" 
+    type = "EA" 
     
     def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
                  nInit: int = 50, nPop: int = 50,

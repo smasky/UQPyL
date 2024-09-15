@@ -38,7 +38,7 @@ class MOEAD(Algorithm):
     '''
     
     name="MOEA/D"
-    type="Multi"
+    type="MOEA"
     
     def __init__(self, aggregation: Literal['PBI', 'TCH', 'TCH_N', 'TCH_M']= 'PBI',
                 nInit: int=50, nPop: int=50,

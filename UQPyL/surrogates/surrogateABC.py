@@ -15,25 +15,14 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         self.setting=Setting()
         
-        if scalers[0]:
-            self.xScaler=scalers[0]
-        else:
-            self.xScaler=None
-        
-        if scalers[1]:
-            self.yScaler=scalers[1]
-        else:
-            self.yScaler=None
-        
-        if polyFeature:
-            self.poly_feature=polyFeature
-        else:
-            self.poly_feature=None
+        self.xScaler=scalers[0] if scalers[0] else None
+        self.yScaler=scalers[1] if scalers[1] else None
+        self.polyFeature=polyFeature if polyFeature else None
     
     def __check_and_scale__(self, xTrain: np.ndarray, yTrain: np.ndarray):
         '''
-            check the type of train_data
-                and normalize the train_data if required 
+            check the type of train data
+                and normalize the train data if required 
         '''
         
         if(not isinstance(xTrain,np.ndarray) or not isinstance(yTrain, np.ndarray)):
@@ -44,49 +33,42 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         if(xTrain.shape[0]==yTrain.shape[0]):
             
-            if(self.xScaler):
-                xTrain=self.xScaler.fit_transform(xTrain)
-        
-            if(self.yScaler):
-                yTrain=self.yScaler.fit_transform(yTrain)
-
-            if(self.poly_feature):
-                xTrain=self.poly_feature.transform(xTrain)
-                
-            self.n_features=xTrain.shape[1]
+            xTrain=self.xScaler.fit_transform(xTrain) if self.xScaler else xTrain
+            
+            yTrain=self.yScaler.fit_transform(yTrain) if self.yScaler else xTrain
+            
+            xTrain=self.polyFeature.fit_transform(xTrain) if self.polyFeature else xTrain
             
             return xTrain,yTrain
+        
         else:
+            
             raise ValueError("The shapes of x and y are not consistent. Please check them!")
     
     def __X_transform__(self,X: np.ndarray) -> np.ndarray:
         
-        if (self.xScaler):
-            X=self.xScaler.transform(X)
+        X=self.xScaler.transform(X) if self.xScaler else X
         
-        if (self.poly_feature):
-            X=self.polyFeature.transform(X)
+        X=self.xScaler.transform(X) if self.polyFeature else X
             
         return X
     
     def __Y_transform__(self, Y: np.ndarray) -> np.ndarray:
         
-        if(self.yScaler):
-            Y=self.yScaler.transform(Y.reshape(-1,1))
+        Y=self.yScaler.transform(Y.reshape(-1,1)) if self.yScaler else Y
             
         return Y
     
     def __Y_inverse_transform__(self, Y: np.ndarray) -> np.ndarray:
 
-        if(self.yScaler):
-            Y=self.yScaler.inverse_transform(Y.reshape(-1,1))
+        
+        Y=self.yScaler.inverse_transform(Y.reshape(-1,1)) if self.yScaler else Y
             
         return Y
     
     def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
-        
-        if(self.xScaler):
-            X=self.xScaler.inverse_transform(X)
+                
+        X=self.xScaler.inverse_transform(X) if self.xScaler else X
         
         return X
     
@@ -107,11 +89,11 @@ class Surrogate(metaclass=abc.ABCMeta):
         self.setting.addSubSetting(setting)
      
     @abc.abstractmethod
-    def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
+    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         pass
     
     @abc.abstractmethod
-    def predict(self, predict_X: np.ndarray):
+    def predict(self, xPred: np.ndarray):
         pass
     
 class Mo_Surrogates():
@@ -158,12 +140,9 @@ class Setting():
     
     def getParaInfos(self):
         
-        keyList=[]
-        valueList=[]
-        ubList=[]
-        lbList=[]
+        keyList=[]; valueList=[]; ubList=[]; lbList=[]
         for key, item in self.paras.items():
-            
+            np.concatenate()
             if isinstance(item, dict):
                 keyList+=[f"{key}.{t}" for t in item.keys()]
                 valueList+=item.values()
@@ -175,7 +154,7 @@ class Setting():
                 ubList.append(self.paras_ub[key])
                 lbList.append(self.paras_lb[key])
                 
-        return keyList, valueList, ubList, lbList
+        return keyList, np.concatenate(valueList), np.concatenate(ubList), np.concatenate(lbList)
     
     def addSubSetting(self, setting):
         
@@ -195,8 +174,13 @@ class Setting():
 
     def setPara(self, key, value, lb, ub):
         
+        value=np.array(value) if not isinstance(value, np.ndarray) else value.ravel()
         self.paras[key]=value
+        
+        lb=np.array(lb) if not isinstance(lb, np.ndarray) else lb.ravel()
         self.paras_lb[key]=lb
+        
+        ub=np.array(ub) if not isinstance(ub, np.ndarray) else ub.ravel()
         self.paras_ub[key]=ub
         
     def getPara(self, *args):

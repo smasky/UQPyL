@@ -13,7 +13,7 @@ class ML_SCE_UA(Algorithm):
     """
     
     name="ML-SCE-UA"
-    type="Single"
+    type="EA"
     
     def __init__(self, ngs: int= 3, npg: int=7, nps: int=4, nspl: int=7, 
                 alpha: float=1.0, beta: float=0.5, sita: float=0.2,

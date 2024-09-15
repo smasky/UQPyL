@@ -283,7 +283,7 @@ class MARS(Surrogate):
     ])
 
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                 poly_feature: PolynomialFeatures=None, max_terms=None, max_degree=None, allow_missing=False,
+                 polyFeature: PolynomialFeatures=None, max_terms=None, max_degree=None, allow_missing=False,
                  penalty=None, endspan_alpha=None, endspan=None,
                  minspan_alpha=None, minspan=None,
                  thresh=None, zero_tol=None, min_search_points=None,
@@ -292,7 +292,7 @@ class MARS(Surrogate):
                  fast_h=None, smooth=None, enable_pruning=True,
                  feature_importance_type=None, verbose=0):
 
-        super().__init__(scalers, poly_feature)
+        super().__init__(scalers, polyFeature)
         
         self.max_terms = max_terms
         self.max_degree = max_degree

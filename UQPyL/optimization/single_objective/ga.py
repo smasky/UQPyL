@@ -49,7 +49,7 @@ class GA(Algorithm):
     '''
     
     name = "GA"
-    type = "Single"
+    type = "EA"
     
     def __init__(self, nInit: int=50, nPop: int=50,
                  proC: float=1, disC: float=20, proM: float=1, disM: float=20,

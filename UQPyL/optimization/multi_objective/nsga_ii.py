@@ -50,7 +50,7 @@ class NSGAII(Algorithm):
     '''
     
     name = "NSGAII"
-    type = "Multi"
+    type = "MOEA"
     
     def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
                  nInit: int =50, nPop: int =50,

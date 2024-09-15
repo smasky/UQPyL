@@ -12,7 +12,7 @@ class RVEA(Algorithm):
     """
     
     name="RVEA"
-    type="Multi"
+    type="MOEA"
     
     def __init__(self, alpha: float=2.0, fr: float=0.1,
                 nInit: int=50, nPop: int=50,

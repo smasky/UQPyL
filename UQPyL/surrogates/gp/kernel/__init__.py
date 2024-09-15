@@ -1,4 +1,4 @@
-from .base_kernel import Gp_Kernel
+from .base_kernel import BaseKernel
 from .c_kernel import Constant
 from .dot_kernel import DotProduct
 from .matern_kernel import Matern 

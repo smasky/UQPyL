@@ -1,12 +1,12 @@
 import numpy as np
 import scipy
 
-from typing import Union, List, Literal, Tuple
+from typing import Union, Optional, Literal, Tuple, List
 
 from ..surrogateABC import Surrogate
 from ._activation_funcs import (ACTIVATIONS, DERIVATIVES, IDENTITY,
                                             RELU, TANH, LEAKY_RELU, ELU, RELU6)
-
+from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
 
 def square_error(yTrue: np.ndarray, yPred: np.ndarray, derivative: bool=False):
@@ -21,18 +21,19 @@ class FNN(Surrogate):
     fully_connect_neural_network
     
     '''
-    def __init__(self, hidden_layer_sizes: List[int]=[200,100], 
+    def __init__(self,
+                 scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                 polyFeature: PolynomialFeatures=None,
+                 hidden_layer_sizes: List[int]=[200,100], 
                  activation_functions: Union[Literal['identity', 'tanh', 'relu', 'leaky_relu', 'elu', 'relu6'], List[str]]='relu',
                  learning_rate: float=0.001, solver: Literal['sgd', 'adam', 'lbfgs']='adam',
                  out_activation: Literal['identity']='identity', 
                  loss_func: Literal['square_error']='square_error', alpha: float=1,
                  epoch: int=2000, batch_size: int=10, shuffle: bool=True,
                  no_improvement_count: int=6000,
-                 scalers=(None, None),
-                 poly_feature: PolynomialFeatures=None
                  ):
         
-        super().__init__(scalers, poly_feature)
+        super().__init__(scalers, polyFeature)
         
         self.hidden_layer_sizes=hidden_layer_sizes
         self.layer_number=len(hidden_layer_sizes)+2
@@ -59,10 +60,10 @@ class FNN(Surrogate):
             
 ###--------------------------------------public functions-----------------------------------------------###
 
-    def predict(self, predict_X: np.ndarray) -> np.ndarray:
+    def predict(self, xPred: np.ndarray) -> np.ndarray:
         
-        predict_X=np.array(self.__X_transform__(predict_X))
-        activations=[predict_X]+[None]*(self.layer_number-1)
+        xPred=np.array(self.__X_transform__(xPred))
+        activations=[xPred]+[None]*(self.layer_number-1)
         self.__forward(activations)
         
         return self.__Y_inverse_transform__(activations[-1])

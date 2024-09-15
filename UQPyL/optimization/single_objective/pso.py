@@ -48,7 +48,7 @@ class PSO(Algorithm):
     '''
     
     name= "PSO"
-    type= "Single" 
+    type= "EA" 
     
     def __init__(self, nInit: int=50, nPop: int=50,
                     w: float=0.1, c1: float=0.5, c2: float=0.5,

@@ -14,7 +14,7 @@ class DE(Algorithm):
     """
     
     name = "DE"
-    type = "Single"
+    type = "EA"
     
     def __init__(self, cr: float=0.9, f: float=0.5,
                  nInit: int=50, nPop: int=50,

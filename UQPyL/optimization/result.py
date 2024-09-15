@@ -1,5 +1,4 @@
-import numpy as np
-import h5py 
+import numpy as np 
 
 from .population import Population
 from .metric import HV, IGD
@@ -16,8 +15,9 @@ class Result():
         self.historyDecs={}
         self.historyObjs={}
         self.historyFEs={}
-        self.algorithm=algorithm
         self.historyBestMetrics={}
+        
+        self.algorithm=algorithm
         
     def update(self, pop: Population, FEs, iter, type=0):
     

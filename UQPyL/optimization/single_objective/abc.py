@@ -10,7 +10,7 @@ class ABC(Algorithm):
     """
     
     name="ABC"
-    type="Single"
+    type="EA"
     
     def __init__(self, employedRate: float=0.3,  limit: int=50,
                  nInit: int=50, nPop: int=50, 
