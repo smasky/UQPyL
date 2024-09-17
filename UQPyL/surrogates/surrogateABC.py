@@ -1,6 +1,8 @@
 import abc
 import numpy as np
 from typing import Literal, Tuple
+
+from .setting import Setting
 from ..utility.scalers import StandardScaler, MinMaxScaler
 from ..utility.polynomial_features import PolynomialFeatures
 
@@ -33,11 +35,11 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         if(xTrain.shape[0]==yTrain.shape[0]):
             
-            xTrain=self.xScaler.fit_transform(xTrain) if self.xScaler else xTrain
+            xTrain=self.xScaler.fit_transform(xTrain) if self.xScaler else np.copy(xTrain)
             
-            yTrain=self.yScaler.fit_transform(yTrain) if self.yScaler else xTrain
+            yTrain=self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
             
-            xTrain=self.polyFeature.fit_transform(xTrain) if self.polyFeature else xTrain
+            xTrain=self.polyFeature.transform(xTrain) if self.polyFeature else np.copy(xTrain)
             
             return xTrain,yTrain
         
@@ -49,7 +51,7 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         X=self.xScaler.transform(X) if self.xScaler else X
         
-        X=self.xScaler.transform(X) if self.polyFeature else X
+        X=self.polyFeature.transform(X) if self.polyFeature else X
             
         return X
     
@@ -129,67 +131,3 @@ class Mo_Surrogates():
         pre_Y=np.hstack(res)
         
         return pre_Y
-
-class Setting():
-    
-    def __init__(self):
-        
-        self.paras={}
-        self.paras_ub={}
-        self.paras_lb={}
-    
-    def getParaInfos(self):
-        
-        keyList=[]; valueList=[]; ubList=[]; lbList=[]
-        for key, item in self.paras.items():
-            np.concatenate()
-            if isinstance(item, dict):
-                keyList+=[f"{key}.{t}" for t in item.keys()]
-                valueList+=item.values()
-                ubList+=self.paras_ub[key].values()
-                lbList+=self.paras_lb[key].values()
-            else:
-                keyList.append(key)
-                valueList.append(item)
-                ubList.append(self.paras_ub[key])
-                lbList.append(self.paras_lb[key])
-                
-        return keyList, np.concatenate(valueList), np.concatenate(ubList), np.concatenate(lbList)
-    
-    def addSubSetting(self, setting):
-        
-        prefix=setting.prefix
-        self.paras[prefix]=setting.paras
-        self.paras_lb[prefix]=setting.paras_lb
-        self.paras_ub[prefix]=setting.paras_ub
-        
-    def assignValues(self, keys, values):
-        
-        for i, key in enumerate(keys):
-            lists=key.split('.')
-            if len(lists)==1:
-                self.paras[lists[0]]=values[i]
-            else:
-                self.paras[lists[0]][lists[1]]=values[i]
-
-    def setPara(self, key, value, lb, ub):
-        
-        value=np.array(value) if not isinstance(value, np.ndarray) else value.ravel()
-        self.paras[key]=value
-        
-        lb=np.array(lb) if not isinstance(lb, np.ndarray) else lb.ravel()
-        self.paras_lb[key]=lb
-        
-        ub=np.array(ub) if not isinstance(ub, np.ndarray) else ub.ravel()
-        self.paras_ub[key]=ub
-        
-    def getPara(self, *args):
-        
-        values=[]
-        for arg in args:
-            values.append(self.paras[arg])
-        
-        if len(args)>1:
-            return tuple(values)
-        else:
-            return values[0]

@@ -10,16 +10,17 @@ class Boxmin(Algorithm):
         super().__init__()
         
     ###################################Interface Function#################################
-    def run(self, probelm: Problem, xInit=None, yInit=None):
-        
+    def run(self, problem: Problem, xInit=None):
+        self.ub=problem.ub.ravel()
+        self.lb=problem.lb.ravel()
         if xInit is None:
-            xInit=np.random.uniform(probelm.lb, probelm.ub, probelm.nInput)
-            yInit=probelm.evaluate(xInit)
+            xInit=np.random.uniform(problem.lb.ravel(), problem.ub.ravel(), problem.nInput)
+            
         
-        self.func=probelm.evaluate
+        self.func=problem.evaluate
         self.nv=0; 
         
-        self._start(xInit, yInit)
+        self._start(xInit)
         
         p=self.initalPos.size
         
@@ -93,7 +94,7 @@ class Boxmin(Algorithm):
         self.pos=pos
         self.f=f
         
-    def _start(self, xInit, yInit):
+    def _start(self, xInit):
         
         self.initalPos=xInit
         
@@ -102,5 +103,5 @@ class Boxmin(Algorithm):
         
         self.nv=1
         self.D=D
-        self.f=yInit
+        self.f=self.func(xInit)
         self.pos=self.initalPos

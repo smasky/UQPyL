@@ -5,7 +5,7 @@ from typing import Literal, Tuple, Optional, Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..surrogateABC import Surrogate
-from .kernels import BaseKernel, Guass
+from .kernel import BaseKernel, Guass
 from ...utility.metrics import r_square
 from ...optimization import Algorithm, GA
 from ...utility.model_selections import RandSelect
@@ -139,12 +139,8 @@ class KRG(Surrogate):
         
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
         
-        _, n_feature=xTrain.shape
-        if self.kernel.heterogeneous:
-            theta=self.getPara("kernel.theta")
-            if isinstance(theta, np.ndarray):
-                raise ValueError("The shape of theta and nInput is different") if theta.shape[0]!=n_feature else None
-            
+        self.kernel.initialize(xTrain.shape[1])
+        
         if(self.fitMode=='likelihood'):
             self._fit_likelihood(xTrain, yTrain)
         elif(self.fitMode=='predictError'):
@@ -162,98 +158,93 @@ class KRG(Surrogate):
         RS=RandSelect(20)
         train, test=RS.split(tol_xTrain)
         
-        xTest=tol_xTrain[test,:]; yTest=tol_xTrain[test,:]
-        xTrain=tol_yTrain[train,:]; yTrain=tol_yTrain[train,:]
+        xTest=tol_xTrain[test,:]; yTest=tol_yTrain[test,:]
+        xTrain=tol_xTrain[train,:]; yTrain=tol_yTrain[train,:]
+        self.xTrain=xTrain; self.yTrain=yTrain
         
         F, D=self._initialize(xTrain)
         
-        _, nFeature=xTrain.shape
+        varList, varValue, ub, lb, position=self.setting.getParaInfos()
+        nInput=len(varValue)
         
-        theta_ub=self.getPara("kernel.theta_ub")
-        theta_lb=self.getPara("kernel.theta_lb")
-        nInput=1 if self.kernel.heterogeneous else nFeature
-        
-        if self.optimizer=="MP": 
+        if self.optimizer.type=="MP": 
             
             ###Using Mathematical Programming
-            def objFunc(theta):
-                self.assignPara("theta", np.power(np.e, theta))
+            def objFunc(varValue):
+                self.assignPara(position, varValue)
                 self._objFunc(yTrain, F, D, record=True)
                 yPred=self.predict(self.__X_inverse_transform__(xTest))
                 obj=-1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-            return obj
+                
+                return obj
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(theta_ub), np.log(theta_lb))
+            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
             res=self.optimizer.run(problem)
-            bestTheta=res.bestDec; bestObj=res.bestObj
+            bestDec=res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 res = self.optimizer(problem)
-                theta = res.bestDec
                 obj = res.bestObj
                 if obj < bestObj:
-                    bestTheta = theta
+                    bestDec = res.bestDec
                     bestObj = obj
                     
-        elif self.optimizer=="EA":
+        elif self.optimizer.type=="EA":
             ###Using Evolutionary Algorithm
-            def objFunc(thetas):
-                n, _=theta.shape
+            def objFunc(varValues):
+                n, _=varValues.shape
                 objs=np.zeros(n)
                 
-                for i, theta in enumerate(thetas):
-                    self.assignPara("kernel.theta", np.power(np.e, theta))
+                for i, varValue in enumerate(varValues):
+                    self.assignPara(position, varValue)
                     self._objFunc(yTrain, F, D, record=True)
                     yPred=self.predict(self.__X_inverse_transform__(xTest))
                     objs[i]=-1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-                return objs
+                return objs.reshape(-1, 1)
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(theta_ub), np.log(theta_lb))
+            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
             
             res=self.optimizer.run(problem)
-            bestObj=res.bestObj; bestDec=res.bestDec
+            bestDec=res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 res=self.optimizer.run(problem)
                 obj=res.bestObj
                 if obj < bestObj:
-                    bestTheta = res.bestDec
+                    bestDec = res.bestDec
                     bestObj = obj
                     
-            self.assignPara("kernel.theta", np.power(np.e, bestTheta))
-            
+            self.assignPara(position, bestDec)
+        
+        self.xTrain=tol_xTrain; self.yTrain=tol_yTrain
         F, D=self._initialize(tol_xTrain)
-        self._objFunc(yTrain, F, D, record=True)
+        self._objFunc(self.yTrain, F, D, record=True)
         
     def _fit_likelihood(self, xTrain, yTrain):
                 
         F, D=self._initialize(xTrain)  #fitPar
         
-        _, nFeature = xTrain.shape
+        varList, varValue, ub, lb, position=self.setting.getParaInfos()
+        nInput=len(varValue)
         
-        theta_ub=self.getPara("kernel.theta_ub")
-        theta_lb=self.getPara("kernel.theta_lb")
-        nInput=1 if self.kernel.heterogeneous else nFeature
-        
-        def objFunc(theta):
-            
-            self.assignPara('kernel.theta', np.power(np.e, theta))
-            
-            return self._objFunc(yTrain, F, D, record=False)
-            
         if self.optimizer.type=="MP":
-            ###Using Mathematical Programming Method
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(theta_ub), np.log(theta_lb))
-            res=self.optimizer.run(problem)
             
-            bestTheta=res.bestDec; bestObj=res.bestObj
+            def objFunc(varValue):
+                self.assignPara(position, varValue)
+                return self._objFunc(yTrain, F, D, record=False)
+            
+            ###Using Mathematical Programming Method
+            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
+            
+            res=self.optimizer.run(problem, xInit=np.array([1.0]))
+            
+            bestDec=res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 res = self.optimizer(problem)
-                theta = res.bestDec
                 obj = res.bestObj
                 if obj < bestObj:
-                    bestTheta = theta
+                    bestDec = res.bestDec
                     bestObj = obj
                                
         elif self.optimizer.type=="EA":
@@ -262,27 +253,26 @@ class KRG(Surrogate):
 
                 objs=np.zeros(thetas.shape[0])
                 for i, theta in enumerate(thetas):
-                    objs[i]=self._objFunc(yTrain, F, D, record=False)
+                    self.assignPara(position, theta)
+                    objs[i]=-1*self._objFunc(yTrain, F, D, record=False)
                     
                 return objs.reshape(-1,1)
             
-            problem=PracticalProblem(objFunc, nInput, 1, theta_ub, theta_lb)
+            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
             
-            res=self.optimizer(problem)
+            res=self.optimizer.run(problem)
             
-            bestTheta=res.bestDec; bestObj=res.bestObj
+            bestDec=res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 
                 res=self.optimizer(problem)
-                theta=res.bestDec
                 obj=res.bestObj
                 if obj<bestObj:
-                    bestTheta=theta
+                    bestDec=res.bestDec
                     bestObj=obj
-            
-            self.assignPara("kernel.theta", np.power(np.e, bestTheta))
         
+        self.assignPara(position, bestDec)
         self._objFunc(yTrain, F, D, record=True)
         
     def _initialize(self, xTrain: np.ndarray):
@@ -317,6 +307,7 @@ class KRG(Surrogate):
             Q, G = qr(Ft, mode='economic')
             
             Yt = lstsq(C, yTrain)[0]
+            # Ytt = np.linalg.solve(C, yTrain)
             beta = lstsq(G, Q.T @ Yt)[0]
             rho = Yt - Ft @ beta
             sigma2 = np.sum(rho ** 2, axis=0) / m

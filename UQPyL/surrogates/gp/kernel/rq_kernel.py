@@ -19,13 +19,13 @@ class RationalQuadratic(BaseKernel):
                  alpha: float=1.0, alpha_ub: float=1e5, alpha_lb: float=1e-5):
         
         super().__init__()
-        self.setPara("length_scale", length_scale, length_lb, length_ub)
+        self.setPara("l", length_scale, length_lb, length_ub)
         self.setPara("alpha", alpha, alpha_lb, alpha_ub)
         self.heterogeneous=heterogeneous
        
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale=self.getPara("length_scale")
+        length_scale=self.getPara("l")
         alpha=self.getPara("alpha")
         
         if xTrain2 is None:

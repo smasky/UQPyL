@@ -7,7 +7,7 @@ from ...problems import PracticalProblem
 from ..surrogateABC import Surrogate
 from ...optimization import Algorithm, GA
 from ...utility.model_selections import RandSelect
-from ...utility.metrics import r_square, rank_score
+from ...utility.metrics import r_square
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
 
@@ -16,13 +16,13 @@ class GPR(Surrogate):
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  polyFeature: PolynomialFeatures=None,
                  kernel: BaseKernel=RBF(),
-                 optimizer: Algorithm=GA(), n_restarts_optimizer: int=1,
+                 optimizer: Algorithm=GA(maxFEs=1000), n_restarts_optimizer: int=0,
                  fitMode: Literal['likelihood', 'predictError']='likelihood',
-                 C: float=0.0, C_ub: float=1e5, C_lb: float=1e-5):
+                 C: float=1e-9, C_ub: float=1e-6, C_lb: float=1e-12):
         
-        super().__init__(scalers=scalers, poly_feature=polyFeature)
+        super().__init__(scalers=scalers, polyFeature=polyFeature)
         
-        self.setPara("C", C, C_ub, C_lb)
+        self.setPara("C", C, C_lb, C_ub)
         
         self.fitMode=fitMode
         
@@ -36,27 +36,28 @@ class GPR(Surrogate):
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        self.xTrain=xTrain; self.yTrain=yTrain
+        self.kernel.initialize(xTrain.shape[1])
         
         if self.fitMode=='likelihood':
             self._fitLikelihood(xTrain, yTrain)
         else:
             self._fitPredictError(xTrain, yTrain)
             
-    def predict(self, predict_X: np.ndarray) -> np.ndarray:
+    def predict(self, xPred: np.ndarray, Output_std: bool=False):
         
-        if self.X_scaler:
-            predict_X=self.X_scaler.transform(predict_X)
+        xPred=self.__X_transform__(xPred)
         
-        K_trans=self.kernel(predict_X,self.xTrain)
+        K_trans=self.kernel(xPred, self.xTrain)
         y_mean=K_trans @ self.alpha_
                
         V=solve_triangular(
             self.L_, K_trans.T, lower=True
         )
         
-        if self.std:
+        if Output_std:
             
-            K=self.kernel(predict_X)
+            K=self.kernel(xPred)
             y_var=np.diag(K).copy()
             y_var-=np.einsum("ij, ji->i", V.T, V)
             y_var[y_var<0]=0.0
@@ -68,8 +69,8 @@ class GPR(Surrogate):
 ###--------------------------private functions--------------------###
     def _fitPredictError(self, xTrain, yTrain):
         
-        tol_xTrain=xTrain
-        tol_yTrain=yTrain
+        tol_xTrain=np.copy(xTrain)
+        tol_yTrain=np.copy(yTrain)
         
         #TODO cross-validation KFold Method
         
@@ -79,52 +80,61 @@ class GPR(Surrogate):
         xTest=tol_xTrain[test,:]; yTest=tol_yTrain[test,:]
         xTrain=tol_xTrain[train,:]; yTrain=tol_yTrain[train,:]
         
-        varList, varValue, ub, lb=self.setting.getParaInfos()
+        self.xTrain=xTrain; self.yTrain=yTrain
+        
+        varList, varValue, ub, lb, position=self.setting.getParaInfos()
         nInput=len(varValue) #TODO
         
-        if self.optimizer=="MP":
-            self.OPModel=eval(self.optimizer)(self.kernel.theta, self.kernel.theta_ub, self.kernel.theta_lb)
+        if self.optimizer.type=="MP":
             
             def objFunc(varValue):
                 
-                self.assignPara(varList, varValue)
+                self.assignPara(position, varValue)
                 self._objfunc(xTrain, yTrain, record=True)
-                yPred = self.predict(self.xScaler.inverse_transform(xTest))
-                return -1*r_square(self.yScaler.inverse_transform(yTest), yPred)
+                yPred = self.predict(self.__X_inverse_transform__(xTest))
+                return -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
             
-            problem=PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=ub, lb=lb)
+            problem=PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=ub, lb=lb, x_labels=varList)
             
             res = self.optimizer.run(problem)
             
-            bestDec, bestObj=res['bestDec'], res['bestObj']
+            bestDec, bestObj=res.bestDec, res.bestObj
             
-        elif self.optimizer=="EA":
+        elif self.optimizer.type=="EA":
             
             def objFunc(varValues):
                 
                 objs=np.ones(varValues.shape[0])
                 for i, varValue in enumerate(varValues):
                     
-                    self.assignPara(varList, np.power(np.e, varValue))
+                    self.assignPara(position, np.power(np.e, varValue))
 
-                    self._objfunc(xTrain, yTrain, record=True)
-                    yPred = self.predict(self.xScaler.inverse_transform(xTest))
-                    objs[i]= -1*r_square(self.yScaler.inverse_transform(yTest), yPred)
+                    obj=self._objfunc(xTrain, yTrain, record=True)
+                    if obj==-np.inf:
+                        objs[i]=obj*-1
+                    else:
+                        yPred = self.predict(self.__X_inverse_transform__(xTest))
+                        objs[i]= -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
 
                 return objs.reshape( (-1, 1) )
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
+            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb), x_labels=varList)
             res=self.optimizer.run(problem)
-            bestDec, bestTheta=res['bestDec'], res['bestTheta']
+            bestDec, bestObj=res.bestDec, res.bestObj
 
             for _ in range(self.n_restarts_optimizer):
                 res=self.optimizer.run(problem)
-                dec, obj=res['bestDec'], res['bestObj']
+                dec, obj=res.bestDec, res.bestObj
                 if obj < bestObj:
-                    bestDec, bestTheta=dec, obj
-                
-        self.assignPara(varList, np.power(np.e, bestDec))
-        self._objfunc(tol_xTrain, tol_yTrain, record=True)
+                    bestDec, bestObj=dec, obj
+        #TODO            
+        if bestObj[0]>-0.99:
+            self.xTrain=tol_xTrain; self.yTrain=tol_yTrain
+        else:
+            self.xTrain=xTrain; self.yTrain=yTrain
+            
+        self.assignPara(position, np.power(np.e, bestDec))
+        self._objfunc(self.xTrain, self.yTrain, record=True)#TODO
     
     def _fit_pure_likelihood(self):
         
@@ -132,22 +142,22 @@ class GPR(Surrogate):
         
     def _fitLikelihood(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        varList, varValue, ub, lb=self.setting.getParaInfos()
+        varList, varValue, ub, lb, position=self.setting.getParaInfos()
         nInput=len(varValue) #TODO
         
-        if self.optimizer=="MP":
+        if self.optimizer.type=="MP":
             
             def objFunc(varValue):
                 
-                self.assignPara(varList, np.power(np.e, varValue))
+                self.assignPara(position, np.power(np.e, varValue))
 
                 return -self._objfunc(xTrain, yTrain, record=False)
                 
-            problem = PracticalProblem(self.objfunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb))
+            problem = PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), x_labels=varList)
             res=self.optimizer.run(problem)
-            bestDec, bestObj=res['bestDec'], res['bestObj']
+            bestDec, bestObj=res.bestDec, res.bestObj
             
-        elif self.optimizer=="EA":
+        elif self.optimizer.type=="EA":
             
             def objFunc(varValues):
                 
@@ -155,26 +165,26 @@ class GPR(Surrogate):
                 
                 for i, value in enumerate(varValues):
                     
-                    self.assignPara(varList, np.power(np.e, value))
+                    self.assignPara(position, np.power(np.e, value))
                     
-                    objs[i]=-self._objfunc(xTrain, yTrain, record=False)
+                    objs[i]=-1*self._objfunc(xTrain, yTrain, record=False)
                     
-                return objs.reshape( (-1, 1) )
+                return objs.reshape((-1, 1))
             
-            problem=PracticalProblem(objFunc, nInput, 1, ub, lb)
+            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb), x_labels=varList)
             res=self.optimizer.run(problem)
-            bestDec, bestTheta=res['bestDec'], res['bestTheta']
+            bestDec, bestTheta=res.bestDec, res.bestObj
             
             for _ in range(self.n_restarts_optimizer):
                 res=self.optimizer.run(problem)
-                dec, obj=res['bestDec'], res['bestObj']
+                dec, obj=res.bestDec, res.bestTheta
                 if obj < bestObj:
                     bestDec, bestTheta=dec, obj
-            
-        self.assignPara(varList, np.power(np.e, bestDec))
+                    
+        self.assignPara(position, np.power(np.e, bestDec))
         #Prepare for prediction
-        self._objfunc(bestTheta, record=True) 
-    
+        self._objfunc(xTrain, yTrain, record=True)
+        
     def _objfunc(self, xTrain, yTrain, record=False):
         """
             log_marginal_likelihood

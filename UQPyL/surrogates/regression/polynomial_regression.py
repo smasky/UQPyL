@@ -13,13 +13,17 @@ class PolynomialRegression(LinearRegression):
     """
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
+                polyFeature: PolynomialFeatures=None,
                 interactionOnly: bool=False, degree: int=2, 
                 lossType: Literal['Origin', 'Ridge', 'Lasso']='Origin',
                 fitIntercept: bool= True,
+                epoch: Optional[int]=None, tol: Optional[float]=None, 
                 C: float=0.1, C_ub: float=100, C_lb: float=1e-5):
         
         super().__init__(scalers=scalers, polyFeature=None,
-                         lossType=lossType, fitIntercept=fitIntercept, C=C, C_ub=C_ub, C_lb=C_lb)
+                         lossType=lossType, fitIntercept=fitIntercept, 
+                         epoch=epoch, tol=tol,
+                         C=C, C_ub=C_ub, C_lb=C_lb)
         
         self.degree=degree
         self.fitIntercept=fitIntercept
@@ -46,7 +50,7 @@ class PolynomialRegression(LinearRegression):
         xPred=self.__X_transform__(xPred)
         xPred=self.polynomialFeatures(xPred)
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             yPred=xPred@self.coef+self.intercept
         else:
             yPred=xPred@self.coef
@@ -86,7 +90,7 @@ class PolynomialRegression(LinearRegression):
             for feature_idx in range(nFeature):
                 start = index[feature_idx]
                 new_index.append(current_col)
-                if self.interaction_only:
+                if self.interactionOnly:
                     start += index[feature_idx + 1] - index[feature_idx]
                 next_col = current_col + end - start
                 if next_col <= current_col:

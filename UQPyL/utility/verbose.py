@@ -2,6 +2,7 @@ import os
 import re
 import time
 import h5py
+import math
 import functools
 import numpy as np
 
@@ -76,9 +77,12 @@ class Verbose():
         
         heads=["FEs"]+["Iters"]+y_labels+x_labels
         
-        values=[FEs, Iters]+[ format(item, ".4f") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
+        values=[FEs, Iters]+[ format(item, ".2e") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
         
-        tables=Verbose.verboseTable(heads, values, 10, width)
+        maxWidth=max(len(s) for s in heads)
+        count=math.floor(width/maxWidth)-1
+        
+        tables=Verbose.verboseTable(heads, values, count, width)
         
         for table in tables:
             Verbose.output(table)

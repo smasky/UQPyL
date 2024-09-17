@@ -3,7 +3,7 @@ from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional
 
-from .kernels import BaseKernel, Cubic
+from .kernel import BaseKernel, Cubic
 from ..surrogateABC import Surrogate
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures

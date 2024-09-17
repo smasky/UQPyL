@@ -20,31 +20,21 @@ cython_extensions = [
     Extension("UQPyL.surrogates.mars.core._pruning", ["UQPyL/surrogates/mars/core/_pruning.pyx"], include_dirs=[numpy_inc]),
     Extension("UQPyL.surrogates.mars.core._qr", ["UQPyL/surrogates/mars/core/_qr.pyx"], include_dirs=[numpy_inc]),
     Extension("UQPyL.surrogates.mars.core._knot_search", ["UQPyL/surrogates/mars/core/_knot_search.pyx"], include_dirs=[numpy_inc]),
-    Extension('UQPyL.surrogates.regression.lasso', ["UQPyL/surrogates/regression/lasso/lasso_fast.pyx"], include_dirs=[numpy_inc])
+    Extension("UQPyL.surrogates.regression.lasso.lasso", ["UQPyL/surrogates/regression/lasso/lasso_fast.pyx"], include_dirs=[numpy_inc])
 ]
 #pybind11扩展模块
 pybind11_extensions = [
-    Extension("UQPyL.surrogates.svr.core", [str(Path("UQPyL/surrogates/svr/core/libsvm_interface.cpp")), str(Path("UQPyL/surrogates/svr_/svm.cpp"))], include_dirs=[numpy_inc, pybind11_inc]),
+    Extension("UQPyL.surrogates.svr.core.libsvm_interface", [str(Path("UQPyL/surrogates/svr/core/libsvm_interface.cpp")), str(Path("UQPyL/surrogates/svr/core/svm.cpp"))], include_dirs=[numpy_inc, pybind11_inc]),
 ]
 
 extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 'boundscheck': False})+pybind11_extensions
-# 使用cythonize编译扩展模块
 
-# setup(
-#     name="UQPyL",
-#     description='A package for uncertainty quantification and parameter optimization with surrogate models.',
-#     version="2.0.0",
-#     author="wmtSky",
-#     url='https://https://github.com/smasky/UQPyL',
-#     ext_modules=extensions,
-# )
 setup(
     name="UQPyL",
     author="wmtSky",
     version="2.0.5",
     author_email="wmtsky@hhu.edu.cn",
-    # ... 其他常规setup参数 ...
-    ext_modules=extensions,  # 如果有自定义的编译行为
+    ext_modules=extensions,  
     packages=find_packages(),
     description="A python package for parameter uncertainty quantification and optimization",
     long_description=open("README.md").read(),

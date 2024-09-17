@@ -10,7 +10,6 @@ class RVEA(Algorithm):
     """
     Reference vector guided evolutionary algorithm (RVEA) <Multi>
     """
-    
     name="RVEA"
     type="MOEA"
     

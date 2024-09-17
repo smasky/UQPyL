@@ -1,4 +1,4 @@
-from problemABC import Problem
+from .problemABC import ProblemABC as Problem
 import numpy as np
 from typing import Union
 

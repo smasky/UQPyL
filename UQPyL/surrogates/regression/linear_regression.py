@@ -40,42 +40,42 @@ class LinearRegression(Surrogate):
         
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
         
-        if self.loss_type=='Origin':
+        if self.lossType=='Origin':
             
             self.fitOrigin(xTrain, yTrain)
             
-        elif self.loss_type=='Ridge':
+        elif self.lossType=='Ridge':
             
             self.fitRidge(xTrain, yTrain)
             
-        elif self.loss_type=='Lasso':
+        elif self.lossType=='Lasso':
             
             self.fitLasso(xTrain, yTrain)
             
         else:
             raise ValueError('Using wrong model type!')
         
-    def predict(self, predict_X: np.ndarray) -> np.ndarray:
+    def predict(self, xPred: np.ndarray) -> np.ndarray:
         
-        predict_X=self.__X_transform__(predict_X)
+        xPred=self.__X_transform__(xPred)
         
-        if(self.fit_intercept):
-            predict_Y=predict_X@self.coef_+self.intercept_
+        if(self.fitIntercept):
+            yPred=xPred@self.coef+self.intercept
         else:
-            predict_Y=predict_X@self.coef_
-        predict_Y=predict_Y.reshape(-1,1)
-        return self.__Y_inverse_transform__(predict_Y)
+            yPred=xPred@self.coef
+        yPred=yPred.reshape(-1,1)
+        return self.__Y_inverse_transform__(yPred)
     
 ###--------------------------private functions----------------------------###
 
     def fitOrigin(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             xTrain=np.hstack((xTrain, np.ones((xTrain.shape[0], 1))))
         
         self.coef, _ , self.rank, self.singular = lstsq(xTrain, yTrain)
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             self.intercept = self.coef[-1]
             self.coef = self.coef[:-1]
         else:
@@ -87,7 +87,7 @@ class LinearRegression(Surrogate):
         
         _, nFeatures=xTrain.shape
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             xOffset = np.mean(xTrain, axis=0)
             yOffset = np.mean(yTrain, axis=0)
             xTrain -= xOffset
@@ -99,8 +99,8 @@ class LinearRegression(Surrogate):
         
         self.coef=solve(A, b)
         
-        if self.fit_intercept:
-            self.intercept=yOffset-np.dot(xOffset.reshape(1,-1), self.coef_)
+        if self.fitIntercept:
+            self.intercept=yOffset-np.dot(xOffset.reshape(1,-1), self.coef)
             return self.coef, self.intercept
         else:
             return self.coef
@@ -122,7 +122,7 @@ class LinearRegression(Surrogate):
         xIndices = np.empty([1], dtype=np.int32)
         xIndptr = np.empty([1], dtype=np.int32)
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             xOffset=np.mean(xTrain, axis=0)
             yOffset=np.mean(yTrain, axis=0)
             xTrain-=xOffset
@@ -169,7 +169,7 @@ class LinearRegression(Surrogate):
         
         self.coef=sol[0]
         
-        if self.fit_intercept:
+        if self.fitIntercept:
             self.intercept=yOffset-np.dot(xOffset.reshape(1,-1), self.coef)
             return self.coef, self.intercept
         else:

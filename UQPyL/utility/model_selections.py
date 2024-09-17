@@ -3,7 +3,7 @@ from typing import Literal, Tuple
 import math
 class RandSelect():
     def __init__(self, pTest: int=5):
-        self.pTest=pTest
+        self.pTest=pTest/100
         
     def split(self, X: np.ndarray) -> Tuple[list, list]:
         nSample,_=X.shape

@@ -85,7 +85,7 @@ double predict(svm_model* model, py::array_t<double, py::array::c_style> testX){
 
 PYBIND11_MODULE(libsvm_interface, m)
 {
-    m.doc() = "Test module for xtensor python bindings";
+    m.doc() = "Svm Core Code";
     m.def("svm_fit", &fit, py::call_guard<py::gil_scoped_release>(), "svm_fit");
     m.def("svm_predict", &predict, py::call_guard<py::gil_scoped_release>(), "svm_predict");
     py::class_<Parameter>(m, "Parameter")

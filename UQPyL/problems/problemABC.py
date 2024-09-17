@@ -23,9 +23,13 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         if x_labels is None:
             self.x_labels=['x_'+str(i) for i in range(1,nInput+1)]
+        else:
+            self.x_labels=x_labels
 
         if y_labels is None:
             self.y_labels=['y_'+str(i) for i in range(1,nOutput+1)]
+        else:
+            self.y_labels
         
     @abc.abstractmethod
     def evaluate(self,X):

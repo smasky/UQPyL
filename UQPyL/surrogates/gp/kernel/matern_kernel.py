@@ -32,12 +32,12 @@ class Matern(BaseKernel):
         
         self.nu=nu
         
-        self.setPara("length_scale", length_scale, length_ub, length_lb)
+        self.setPara("l", length_scale, length_ub, length_lb)
         self.nu = nu #TODO
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale=self.getPara("length_scale")
+        length_scale=self.getPara("l")
         nu=self.nu
         if xTrain2 is None:
             dists=pdist(xTrain1/length_scale, metric="euclidean")

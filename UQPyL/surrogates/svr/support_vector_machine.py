@@ -65,5 +65,5 @@ class SVR(Surrogate):
         coe0=self.getPara("coe0") if self.kernel=="sigmoid" else 0.0
         degree=self.degree if self.kernel=="polynomial" else 2
         ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par=Parameter(3, eval(self.kernel.upper()), degree, self.maxIter, gamma, coe0, C, 0.5, epsilon, self.eps)     
+        par=Parameter(int(3), int(eval(self.kernel.upper())), int(degree), int(self.maxIter), float(gamma), float(coe0), float(C), float(0.5), float(epsilon), float(self.eps))     
         self.model=svm_fit(xTrain, yTrain.ravel(), par)

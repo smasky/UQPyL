@@ -5,12 +5,12 @@ from .base_kernel import BaseKernel
 
 class Guass(BaseKernel):
     
-    def __init__(self, theta: Union[float, np.ndarray]=1, 
-                 theta_lb: Union[float, np.ndarray]=1e-5, theta_ub: Union[float, np.ndarray]=1e5,
-                 heterogeneous: bool=True
+    def __init__(self, heterogeneous: bool=True, 
+                 theta: Union[float, np.ndarray]=0.1, 
+                 theta_lb: Union[float, np.ndarray]=1e-20, theta_ub: Union[float, np.ndarray]=1,
                  ):
         
-        super().__init__(theta, theta_lb, theta_ub, heterogeneous)
+        super().__init__(heterogeneous, theta, theta_lb, theta_ub)
     
     def __call__(self, D: np.ndarray):
         '''
@@ -19,9 +19,6 @@ class Guass(BaseKernel):
                     The distance matrix
         '''
         theta=self.getPara("theta")
-        nSample, _=D.shape
-        if self.heterogeneous and isinstance(theta, float):
-            theta=np.ones(nSample)*theta
             
         td = D * -theta
         r = np.exp(np.sum(D * td, axis=1))

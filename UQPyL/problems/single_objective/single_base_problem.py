@@ -21,9 +21,9 @@ class Sphere(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None, disc_range=None, cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None, disc_range=None, cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var, disc_range, cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var, disc_range, cont_var)
     
     def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
         '''
@@ -56,9 +56,9 @@ class Schwefel_2_22(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -84,9 +84,9 @@ class Schwefel_1_22(ProblemABC):
         F*=0
     '''
     
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -95,7 +95,7 @@ class Schwefel_1_22(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         X=X**2
-        for d in range(self.n_input):
+        for d in range(self.nInput):
             F+=np.sum(X[:,:d],axis=1).reshape(-1,1)
         return F
     
@@ -114,9 +114,9 @@ class Schwefel_2_21(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -142,9 +142,9 @@ class Rosenbrock(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -172,9 +172,9 @@ class Step(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -200,16 +200,16 @@ class Quartic(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))  
-        Temp=np.linspace(1,self.n_input,self.n_input)*np.power(X,4)
+        Temp=np.linspace(1,self.nInput,self.nInput)*np.power(X,4)
         F=np.sum(Temp,axis=1).reshape(-1,1)+np.random.random((Temp.shape[0],1))          
         return F
 
@@ -228,9 +228,9 @@ class Schwefel_2_26(ProblemABC):
         X*=420.9687 420.9687 ... 420.9687
         F*=-12569.5
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -256,9 +256,9 @@ class Rastrigin(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -275,8 +275,8 @@ class Ackley(ProblemABC):
         Single Optimization Multimodal
         
     F10-> Ackley Function:
-        F= -20 \exp \left ( -0.2 \sqrt{ \frac{1}{n_input} \sum x_i^2 } \right ) 
-                  - \exp \left ( \frac{1}{n_input} \sum cos 2 \pi x_i \right ) + 20 + e
+        F= -20 \exp \left ( -0.2 \sqrt{ \frac{1}{nInput} \sum x_i^2 } \right ) 
+                  - \exp \left ( \frac{1}{nInput} \sum cos 2 \pi x_i \right ) + 20 + e
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*32;LB->np.ones(1,30)*-32
@@ -285,17 +285,17 @@ class Ackley(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =32,lb: Union[int,float,np.ndarray] =-32,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =32,lb: Union[int,float,np.ndarray] =-32,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
-        Temp1=np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.n_input)*-0.2)*-20
-        Temp2=np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.n_input)*-1+20+np.e  
+        Temp1=np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.nInput)*-0.2)*-20
+        Temp2=np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.nInput)*-1+20+np.e  
         F=(Temp1+Temp2).reshape(-1,1)
         return F
     
@@ -314,16 +314,16 @@ class Griewank(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
-        I=np.sqrt(np.atleast_2d(np.linspace(1,self.n_input,self.n_input)))
+        I=np.sqrt(np.atleast_2d(np.linspace(1,self.nInput,self.nInput)))
         F=np.sum(np.square(X), axis=1).reshape(-1,1)/4000-np.prod(np.cos(X/I),axis=1).reshape(-1,1)+1     
         return F
 
@@ -346,9 +346,9 @@ class Trid(ProblemABC):
         X_i^*=i(D+1-i),i=1,2,...,D
         F^*=-D(D+4)(D-1)/6
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -373,9 +373,9 @@ class Bent_Cigar(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
-    def __init__(self, n_input: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10, disc_var=None, cont_var=None):
+    def __init__(self, nInput: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10, disc_var=None, cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -400,9 +400,9 @@ class Discus(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -431,9 +431,9 @@ class Weierstrass(ProblemABC):
     kMax=20
     a=0.5
     b=3
-    def __init__(self, n_input:int =30, ub: Union[int,float,np.ndarray] =0.5,lb: Union[int,float,np.ndarray] =-0.5,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =0.5,lb: Union[int,float,np.ndarray] =-0.5,disc_var=None,cont_var=None):
         
-        super().__init__(n_input,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -443,11 +443,11 @@ class Weierstrass(ProblemABC):
         K=np.atleast_2d(np.linspace(1,self.kMax,self.kMax))
         aK=np.power(self.a,K)
         bK=np.power(self.b,K)
-        aK_expand=np.tile(aK.transpose(),(1,self.n_input)).reshape(1,-1)
-        bK_expand=np.tile(bK.transpose(),(1,self.n_input)).reshape(1,-1)
+        aK_expand=np.tile(aK.transpose(),(1,self.nInput)).reshape(1,-1)
+        bK_expand=np.tile(bK.transpose(),(1,self.nInput)).reshape(1,-1)
         
         
         X_expand=np.tile(X, (1,self.kMax))
-        Addition=np.sum(aK*np.cos(bK*np.pi),axis=1).reshape(-1,1)*self.n_input
+        Addition=np.sum(aK*np.cos(bK*np.pi),axis=1).reshape(-1,1)*self.nInput
         F=np.sum(np.cos(2*np.pi*(X_expand+0.5)*bK_expand)*aK_expand,axis=1).reshape(-1,1)-Addition
         return F

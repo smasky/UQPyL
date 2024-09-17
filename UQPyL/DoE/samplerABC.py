@@ -5,7 +5,7 @@ def decoratorRescale(func):
     def wrapper(self, *args, **kwargs):
         result=func(self, *args, **kwargs)
         if self.problem is not None:
-            return self.problem._unit_xInit_transform_to_bound(result)
+            return self.problem._unit_X_transform_to_bound(result)
         else:
             return result
     return wrapper
