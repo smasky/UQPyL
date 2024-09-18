@@ -45,6 +45,7 @@ class CSA(Algorithm):
            
     #------------------Public Function------------------#
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Initialization

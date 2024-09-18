@@ -6,3 +6,4 @@ from . import gp
 from . import kriging
 from . import mars
 from . import svr
+from . import fnn

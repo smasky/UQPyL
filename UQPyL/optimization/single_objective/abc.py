@@ -27,6 +27,7 @@ class ABC(Algorithm):
         self.setParameters('nPop', nPop)
     
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         #Parameter Setting
         employedRate, limit = self.getParaValue('employedRate', 'limit')

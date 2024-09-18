@@ -9,6 +9,7 @@ class Population():
         self.decs=np.copy(decs)
         self.objs=np.copy(objs)
         if decs is not None:
+            decs=np.atleast_2d(decs)
             self.nPop, self.D=decs.shape
         else:
             self.nPop=0; self.D=0

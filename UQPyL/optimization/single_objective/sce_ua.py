@@ -57,6 +57,7 @@ class SCE_UA(Algorithm):
         self.setParameters('beta', beta)
         
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Parameter Setting

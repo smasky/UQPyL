@@ -581,21 +581,21 @@ class SWAT_UQ_Flow(ProblemABC):
     def delete(self):
         shutil.rmtree(self.work_temp_dir)
             
-file_path="D:\YS_swat\TxtInOut"
-temp_path="D:\\YS_swat\\instance_temp"
-swat_exe_name="swat_681.exe"
-observed_file_name="ob1.txt"
-paras_file_name="paras_infos.txt"
+# file_path="D:\YS_swat\TxtInOut"
+# temp_path="D:\\YS_swat\\instance_temp"
+# swat_exe_name="swat_681.exe"
+# observed_file_name="ob1.txt"
+# paras_file_name="paras_infos.txt"
 
-swat_cup=SWAT_UQ_Flow(work_path=file_path,
-                    paras_file_name=paras_file_name,
-                    observed_file_name=observed_file_name,
-                    swat_exe_name=swat_exe_name,
-                    temp_path=temp_path,
-                    max_threads=10, num_parallel=3,
-                    verbose=True)
+# swat_cup=SWAT_UQ_Flow(work_path=file_path,
+#                     paras_file_name=paras_file_name,
+#                     observed_file_name=observed_file_name,
+#                     swat_exe_name=swat_exe_name,
+#                     temp_path=temp_path,
+#                     max_threads=10, num_parallel=3,
+#                     verbose=True)
 
-from UQPyL.optimization import PSO, GA
-pso=GA(problem=swat_cup)
-res=pso.run()
+# from UQPyL.optimization import PSO, GA
+# pso=GA(problem=swat_cup)
+# res=pso.run()
 

@@ -3,7 +3,7 @@
 import numpy as np
 import math
 
-from ..algorithmABC import Algorithm, Population, Verbose
+from ..algorithmABC import Algorithm, Population, Verbose, Result
 class GA(Algorithm):
     '''
         Genetic Algorithm <Single>
@@ -72,6 +72,7 @@ class GA(Algorithm):
         
     #--------------------Public Functions---------------------#
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Initialization

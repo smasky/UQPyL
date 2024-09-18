@@ -13,7 +13,7 @@ class RBF(Surrogate):
     Radial basis function network
     '''    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), polyFeature: PolynomialFeatures=None,
-                 kernel: Optional[BaseKernel]=None, 
+                 kernel: Optional[BaseKernel]=Cubic(), 
                  C_smooth: int=0.0, C_smooth_lb: int=1e-5, C_smooth_ub: int=1e5):
         
         super().__init__(scalers, polyFeature)
@@ -22,8 +22,6 @@ class RBF(Surrogate):
         
         if (isinstance(kernel, BaseKernel)):
             kernel=kernel
-        else:
-            kernel=Cubic()
         
         self.setKernel(kernel)
         

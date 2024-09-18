@@ -1,5 +1,6 @@
 import numpy as np
 import abc
+import functools
 
 from .population import Population
 from .result import Result
@@ -36,6 +37,16 @@ class Algorithm(metaclass=abc.ABCMeta):
             
         return pop
     
+    @staticmethod
+    def initializeRun(func):
+        
+        @functools.wraps(func)
+        def wrapper(obj, *args, **kwargs):
+            obj.result=Result(obj)
+            res=func(obj, *args, **kwargs)
+            return res
+        return wrapper
+ 
     @abc.abstractmethod
     def run(self, problem, xInit=None, yInit=None):
         pass
@@ -48,7 +59,7 @@ class Algorithm(metaclass=abc.ABCMeta):
     def checkTermination(self):
         
         if self.FEs<=self.maxFEs:
-            if self.iters<=self.maxIter:
+            if self.maxIter is None or self.iters<=self.maxIter:
                 if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
                     self.iters+=1
                     return True

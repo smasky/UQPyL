@@ -27,7 +27,8 @@ class RVEA(Algorithm):
         self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
     
-    @Verbose.decoratorRun 
+    @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Parameters setting

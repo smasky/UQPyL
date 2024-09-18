@@ -5,9 +5,9 @@ from .base_kernel import BaseKernel
 
 class Guass(BaseKernel):
     
-    def __init__(self, heterogeneous: bool=True, 
-                 theta: Union[float, np.ndarray]=0.1, 
-                 theta_lb: Union[float, np.ndarray]=1e-20, theta_ub: Union[float, np.ndarray]=1,
+    def __init__(self, heterogeneous: bool=False, 
+                 theta: Union[float, np.ndarray]=1, 
+                 theta_lb: Union[float, np.ndarray]=1e-20, theta_ub: Union[float, np.ndarray]=100,
                  ):
         
         super().__init__(heterogeneous, theta, theta_lb, theta_ub)

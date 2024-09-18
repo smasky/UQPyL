@@ -5,7 +5,6 @@ import numpy as np
 import itertools
 import copy
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import time
 
 def fit_predict(evaluator, dataX, dataY, train_sets, test_sets, metric):
     

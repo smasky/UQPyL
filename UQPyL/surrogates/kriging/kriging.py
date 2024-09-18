@@ -7,9 +7,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from ..surrogateABC import Surrogate
 from .kernel import BaseKernel, Guass
 from ...utility.metrics import r_square
-from ...optimization import Algorithm, GA
+from ...optimization.mathematics import Boxmin
 from ...utility.model_selections import RandSelect
-from ...utility.scalers import Scaler
+from ...utility.scalers import Scaler, StandardScaler
 from ...utility.polynomial_features import PolynomialFeatures
 from ...problems import PracticalProblem
 
@@ -78,7 +78,7 @@ class KRG(Surrogate):
                  polyFeature: PolynomialFeatures=None,
                  kernel: BaseKernel= Guass(),
                  regression: Literal['poly0','poly1','poly2']='poly0',
-                 optimizer: Algorithm = GA(), 
+                 optimizer: 'Algorithm' = Boxmin(), 
                  fitMode: Literal['likelihood', 'predictError']='likelihood',
                  n_restart_optimize: int=1):
         
@@ -133,7 +133,7 @@ class KRG(Surrogate):
         if only_value:
             return predictY
         else:
-            return predictY, mse
+            return predictY, mse.reshape(-1, 1)
     
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
@@ -241,7 +241,7 @@ class KRG(Surrogate):
             bestDec=res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
-                res = self.optimizer(problem)
+                res = self.optimizer.run(problem)
                 obj = res.bestObj
                 if obj < bestObj:
                     bestDec = res.bestDec
@@ -318,7 +318,10 @@ class KRG(Surrogate):
             return -np.inf
         
         if record:
-            self.fitPar['sigma2'] = sigma2
+            if isinstance(self.yScaler,  StandardScaler):
+                self.fitPar['sigma2'] = np.square(self.yScaler.sita)@sigma2
+            else:
+                self.fitPar['sigma2'] = sigma2
             self.fitPar['beta'] = beta
             self.fitPar['gamma'] = (lstsq(C.T, rho)[0]).T
             self.fitPar['C'] = C

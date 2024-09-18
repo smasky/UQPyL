@@ -36,6 +36,7 @@ class ML_SCE_UA(Algorithm):
         self.setParameters('sita', sita)
         
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Parameter Setting

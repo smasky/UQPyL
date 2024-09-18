@@ -55,6 +55,7 @@ class MOEAD(Algorithm):
         
     #-------------------Public Functions-----------------------#
     @Verbose.decoratorRun
+    @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Parameter Setting

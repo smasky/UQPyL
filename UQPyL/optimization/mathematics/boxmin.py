@@ -23,8 +23,9 @@ class Boxmin(Algorithm):
         self._start(xInit)
         
         p=self.initalPos.size
+        kmax = 2 if p <= 2 else min(p, 4)
         
-        for _ in range(np.minimum(p,4)):
+        for _ in range(kmax):
             pos_copy=self.pos.copy()
             self._explore()
             self._move(pos_copy)

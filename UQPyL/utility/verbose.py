@@ -203,6 +203,8 @@ class Verbose():
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
             
+            record=[Verbose.logFlag, Verbose.verbose, Verbose.saveFlag]
+            
             Verbose.logFlag=obj.logFlag
             Verbose.verbose=obj.verbose
             Verbose.saveFlag=obj.saveFlag
@@ -255,7 +257,9 @@ class Verbose():
             if Verbose.logFlag:
                 
                 Verbose.saveLog(obj, folder_log)
-   
+
+            Verbose.logFlag, Verbose.verbose, Verbose.saveFlag=record
+            
             return res
         return wrapper 
     
