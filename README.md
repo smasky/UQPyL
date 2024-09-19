@@ -29,7 +29,7 @@ The **main characteristics** of UQPyL includes:
 
 **Optimization Algorithms:** (* indicates the use of surrogate models)
 - Single Objective Optimization: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
-- Multi Objective Optimization: MOEA/D, NSGA-II, RVEA, MOASMO
+- Multi Objective Optimization: MOEA/D, NSGA-II, RVEA, MOASMO*
 
 Noted: It is still being updated, and if you need other algorithms, please contact me.
 
@@ -80,7 +80,7 @@ def func(X):
   Y=np.sum(X, axis=1).reshape(-1, 1)
   return Y
 
-problem=PracticalProblem(func=func, ub=100, lb=-100, name="Sphere")
+problem=PracticalProblem(func=func, nInput=10, nOutput=1, ub=100, lb=-100, name="Sphere")
 ```
 **Please noted that**, the func need receive the matrix of X and return the matrix of Y. Columns=Dimensions / Rows=Samples
 
