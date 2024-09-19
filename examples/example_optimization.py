@@ -4,6 +4,7 @@ sys.path.append('.')
 from UQPyL.problems import Sphere
 
 problem=Sphere(nInput=10)
+
 #-------------ASMO--------------#
 
 # from UQPyL.optimization.single_objective import ASMO
@@ -13,8 +14,13 @@ problem=Sphere(nInput=10)
 # res=asmo.run(problem)
 
 #-----------EGO---------------#
+# from UQPyL.optimization.single_objective import EGO
+# from UQPyL.optimization.single_objective import ASMO
+# ego=ASMO(nInit=50)
+# res=ego.run(problem)
 
-from UQPyL.optimization.single_objective import EGO
-from UQPyL.optimization.single_objective import ASMO
-ego=ASMO(nInit=50)
-res=ego.run(problem)
+#-----------GA---------------#
+# from UQPyL.optimization.single_objective import GA
+# ga=GA(saveFlag=True)
+# res=ga.run(problem)
+

@@ -21,6 +21,7 @@ class Sphere(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name="Shpere"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None, disc_range=None, cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var, disc_range, cont_var)
@@ -56,6 +57,7 @@ class Schwefel_2_22(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name="Schwefel_2_22"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -83,7 +85,7 @@ class Schwefel_1_22(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    
+    name="Schwefel_1_22"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -114,6 +116,7 @@ class Schwefel_2_21(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name="Schwefel_2_21"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -142,6 +145,7 @@ class Rosenbrock(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
+    name="Rosenbrock"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -172,6 +176,7 @@ class Step(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
+    name="Step"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -200,6 +205,7 @@ class Quartic(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
+    name="Quartic"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -228,6 +234,7 @@ class Schwefel_2_26(ProblemABC):
         X*=420.9687 420.9687 ... 420.9687
         F*=-12569.5
     '''
+    name="Schwefel_2_26"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -256,6 +263,7 @@ class Rastrigin(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name="Rastrigin"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -314,6 +322,7 @@ class Griewank(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name="Griewank"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -346,6 +355,7 @@ class Trid(ProblemABC):
         X_i^*=i(D+1-i),i=1,2,...,D
         F^*=-D(D+4)(D-1)/6
     '''
+    name="Trid"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -373,6 +383,7 @@ class Bent_Cigar(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    name="Bent_Cigar"
     def __init__(self, nInput: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10, disc_var=None, cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -400,6 +411,7 @@ class Discus(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    name="Discus"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
         
         super().__init__(nInput,1,ub,lb,disc_var,cont_var)
@@ -428,6 +440,7 @@ class Weierstrass(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    name="Weierstrass"
     kMax=20
     a=0.5
     b=3

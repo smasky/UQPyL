@@ -32,6 +32,7 @@ class DTLZ1(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ1"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -114,6 +115,7 @@ class DTLZ2(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ2"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
            
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -189,6 +191,7 @@ class DTLZ3(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ3"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -260,6 +263,7 @@ class DTLZ4(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ4"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -335,6 +339,7 @@ class DTLZ5(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ5"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -412,6 +417,7 @@ class DTLZ6(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ6"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
@@ -487,6 +493,7 @@ class DTLZ7(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    name="DTLZ7"
     def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
         super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)

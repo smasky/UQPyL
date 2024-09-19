@@ -402,9 +402,11 @@ class SWAT_UQ_Flow(ProblemABC):
                 cur_group=[index[i]]
         
         lines_group+=self._generate_data_lines(cur_group)
+        
         return lines_group
     
     def _generate_data_lines(self, group):
+        
         start=group[0];end=group[-1]
         print_flag=self.model_infos["print_flag"]
         n_rch=self.model_infos["n_rch"]
@@ -565,7 +567,7 @@ class SWAT_UQ_Flow(ProblemABC):
                 self.file_var_info[file]["type"].append(data_type_)
                                 
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            # 提交任务到线程池
+            
             futures=[]
             for file_name, infos in self.file_var_info.items():
                 futures.append(executor.submit(read_value_swat, self.work_path, file_name , infos["name"], infos["position"], 1))

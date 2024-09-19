@@ -8,7 +8,7 @@ from ..problemABC import ProblemABC
 # 2000, 8(2): 173-195.
 #--------------------------------------##
 class ZDT1(ProblemABC):
-    
+    name="ZDT1"
     def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
         super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
@@ -45,7 +45,7 @@ class ZDT1(ProblemABC):
         return R
 
 class ZDT2(ProblemABC):
-    
+    name="ZDT2"
     def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
         super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
@@ -84,7 +84,6 @@ class ZDT2(ProblemABC):
 class ZDT3(ProblemABC):
     
     name="ZDT3"
-    
     def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
         super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
@@ -126,7 +125,7 @@ class ZDT3(ProblemABC):
         return R
 
 class ZDT4(ProblemABC):
-    
+    name="ZDT4"
     def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
        
         super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
@@ -163,7 +162,7 @@ class ZDT4(ProblemABC):
         return R
 
 class ZDT6(ProblemABC):
-    
+    name="ZDT6"
     def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
         
         super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
