@@ -131,13 +131,13 @@ jobs:
 
     steps:
       - name: Download Wheel Package Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: wheelhouse
           path: ./wheelhouse
 
       - name: Download Source Distribution Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: source-distribution
           path: ./source_distribution
