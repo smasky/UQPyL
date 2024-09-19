@@ -1,0 +1,12 @@
+site_name: UQPyL
+theme:
+  name: material
+nav:
+  - Abstract
+  - Quick Start
+  - User Guide
+  - Problem
+  - Sensibility
+  - Optimization
+  - API Reference
+  - About
