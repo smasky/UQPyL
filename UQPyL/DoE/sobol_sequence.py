@@ -1,7 +1,9 @@
 import numpy as np
 from scipy.stats.qmc import Sobol
+from typing import Optional
 
-from .samplerABC import Sampler
+from .samplerABC import Sampler, decoratorRescale
+from ..problems import ProblemABC as Problem
 
 class Sobol_Sequence(Sampler):
     '''
@@ -16,9 +18,6 @@ class Sobol_Sequence(Sampler):
     Methods:
     __call__ or sample: generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
     
-    Examples:
-        >>> sobol_seq=Sobol_Sequence(skip_value=128)
-        >>> sobol_seq.sample(64, 4)
     '''
     def __init__(self, scramble: bool=True, skip_value: int=0):
         
@@ -27,7 +26,7 @@ class Sobol_Sequence(Sampler):
         self.scramble=scramble
         self.skip_value=skip_value
         
-    def _generate(self, nt: int, nx: int) -> np.ndarray:
+    def _generate(self, nt: int, nx: int):
         '''
         generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
         '''
@@ -37,7 +36,8 @@ class Sobol_Sequence(Sampler):
         
         return xInit[self.skip_value:, :]
     
-    def sample(self, nt: int, nx: int) -> np.ndarray:
+    @decoratorRescale
+    def sample(self, nt: int, nx: Optional[int] = None, problem: Optional[Problem] = None, random_seed: Optional[int] = None) -> np.ndarray:
         '''
         generate the shape of (nt, nx) and numpy array Sobol sequence. 
         
@@ -52,4 +52,18 @@ class Sobol_Sequence(Sampler):
             An n-by-samples design matrix that has been normalized so factor values
             are uniformly spaced between zero and one.  
         '''
+        
+        if random_seed is not None:
+            self.random_state = np.random.RandomState(random_seed)
+        else:
+            self.random_state = np.random.RandomState()
+        
+        if problem is not None and nx is not None:
+            if(problem.nInput!=nx):
+                raise ValueError('The input dimensions of the problem and the samples must be the same')
+        elif problem is None and nx is None:
+            raise ValueError('Either the problem or the input dimensions must be provided')
+        
+        nx=problem.nInput if problem is not None else nx
+        
         return self._generate(nt, nx)   

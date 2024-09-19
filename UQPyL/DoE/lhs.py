@@ -136,23 +136,17 @@ class LHS(Sampler):
     
     Methods:
     __call__ or sample: Generate a Latin-hypercube design
-        
-    Examples:
-        >>>lhs=LHS('classic')
-        >>>samples=lhs(5,10) or samples=lhs.sample(5,10)
-    
+            
     '''
-    def __init__(self, criterion: Criterion ='classic', iterations: int=5, problem: Optional[Problem]=None):
+    def __init__(self, criterion: Criterion ='classic', iterations: int=5):
         
         self.criterion=criterion
         self.iterations=iterations
-        self.problem=problem
         
         #initial random state
-        self.random_state=np.random.RandomState()
+        super().__init__()
         
-        
-    def _generate(self, nt: int, nx: int) -> np.ndarray:
+    def _generate(self, nt: int, nx:int=None):
         '''
         Generate a Latin-hypercube design
         
@@ -168,10 +162,6 @@ class LHS(Sampler):
             are uniformly spaced between zero and one.
         '''
         
-        if self.problem is not None:
-            if(self.problem.nInput!=nx):
-                raise ValueError('The input dimensions of the problem and the samples must be the same')
-        
         if self.criterion not in LHS_METHOD:
             raise ValueError('The criterion must be one of {}'.format(LHS_METHOD.keys()))
         
@@ -185,7 +175,7 @@ class LHS(Sampler):
         return xInit
     
     @decoratorRescale
-    def sample(self, nt: int, nx:int, random_seed: Optional[int]=None) -> np.ndarray:
+    def sample(self, nt: int, nx:int = None, problem: Problem = None, random_seed: Optional[int] = None) -> np.ndarray:
         '''
         Generate a Latin-hypercube design
         
@@ -209,5 +199,13 @@ class LHS(Sampler):
             self.random_state = np.random.RandomState(random_seed)
         else:
             self.random_state = np.random.RandomState()
+        
+        if problem is not None and nx is not None:
+            if(problem.nInput!=nx):
+                raise ValueError('The input dimensions of the problem and the samples must be the same')
+        elif problem is None and nx is None:
+            raise ValueError('Either the problem or the input dimensions must be provided')
+        
+        nx=problem.nInput if problem is not None else nx
         
         return self._generate(nt, nx)

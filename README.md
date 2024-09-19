@@ -59,7 +59,9 @@ Recommended (PyPi or Conda):
 
 ```bash
 pip install UQPyL
+```
 
+```bash
 conda install UQPyL
 ```
 

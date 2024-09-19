@@ -583,11 +583,11 @@ class SWAT_UQ_Flow(ProblemABC):
     def delete(self):
         shutil.rmtree(self.work_temp_dir)
             
-# file_path="D:\YS_swat\TxtInOut"
-# temp_path="D:\\YS_swat\\instance_temp"
-# swat_exe_name="swat_681.exe"
-# observed_file_name="ob1.txt"
-# paras_file_name="paras_infos.txt"
+file_path="D:\YS_swat\TxtInOut"
+temp_path="D:\\YS_swat\\instance_temp"
+swat_exe_name="swat_681.exe"
+observed_file_name="ob1.txt"
+paras_file_name="paras_infos.txt"
 
 # swat_cup=SWAT_UQ_Flow(work_path=file_path,
 #                     paras_file_name=paras_file_name,
