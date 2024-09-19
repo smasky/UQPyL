@@ -5,9 +5,9 @@
 
 ## Main Characteristics
 
-1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
+1. **Comprehensive Sensitivity Analysis and Optimization Algorithm**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
 2. **Advanced Surrogate Modeling**: Integrates diverse surrogate models equipped to solve computationally expensive problems.
-3. **Rich Educational Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly.
+3. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly.
 4. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
 ## Quick Links
@@ -34,7 +34,7 @@
 
 ### Optimization Algorithms
 
-(* indicates the use of surrogate models)
+(* indicates solving computational expensive optimization problem)
 - **Single Objective Optimization**: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
 - **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, MOASMO*
 
