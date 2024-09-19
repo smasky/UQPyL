@@ -1,4 +1,4 @@
-```markdown
+
 # Uncertainty Quantification Python Laboratory (UQPyL)
 
 **UQPyL:** The **Uncertainty Quantification Python Laboratory** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
@@ -168,10 +168,10 @@ For any inquiries or contributions, please contact:
 
 ---
 
-*This project is licensed under the MIT License - see the [LICENSE](https://github.com/smasky/UQPyL/blob/main/LICENSE) file for details.*
+*This project is licensed under the MIT License - see the [LICENSE](https://github.com/smasky/UQPyL/LICENSE) file for details.*
 
 ![GitHub Stars](https://img.shields.io/github/stars/smasky/UQPyL?style=social)
 ![GitHub Forks](https://img.shields.io/github/forks/smasky/UQPyL?style=social)
-```
+
 
 
