@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "UQPyL"
-version = "2.0.5"
+version = "2.0.6"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
@@ -21,9 +21,9 @@ readme = "README.md"
 dependencies = [
   "numpy",
   "scipy",
+  "prettytable",
 ]
 classifiers = [
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",

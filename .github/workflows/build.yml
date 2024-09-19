@@ -86,7 +86,7 @@ jobs:
         fi
 
     - name: Save Wheel Package as Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: wheelhouse
         path: wheelhouse/*.whl
@@ -117,7 +117,7 @@ jobs:
           mv dist/*.tar.gz dist_sources/  # 移动生成的源码包到新的目录
 
       - name: Upload source distribution as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: source-distribution
           path: dist_sources/*
