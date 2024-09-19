@@ -82,7 +82,7 @@ def func(X):
 
 problem=PracticalProblem(func=func, nInput=10, nOutput=1, ub=100, lb=-100, name="Sphere")
 ```
-**Please noted that**, the func need receive the matrix of X and return the matrix of Y. Columns=Dimensions / Rows=Samples
+**Please noted that**, the func need receive the matrix of X and return the matrix of Y. And keep columns equal to dimensions and rows equal to samples.
 
 After defining problem you solved, you can use any methods in UQPyL.
 **Sensibility:**
