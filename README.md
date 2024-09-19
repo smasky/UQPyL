@@ -1,40 +1,48 @@
-# Uncertainty Quantification Python Laboratory <br> (UQPyL)
+```markdown
+# Uncertainty Quantification Python Laboratory (UQPyL)
 
-**UQPyL:** The **Uncertainty Quantification Python Laboratory** provide comprehensive workflows tailored to the **Uncertainty Quantification** and **Optimization** for computational models and their associated applications (e.g. model calibration, resource scheduling, product design). 
+**UQPyL:** The **Uncertainty Quantification Python Laboratory** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
 
-The **main characteristics** of UQPyL includes:
+## Main Characteristics
 
-1. Implementation of widely used sensitivity analysis methodologies and optimization algorithms.
+1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
+2. **Advanced Surrogate Modeling**: Integrates diverse surrogate models equipped to solve computationally expensive problems.
+3. **Rich Educational Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly.
+4. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
-2. Integration of diverse surrogate models equipped with tunable to solving computational expensive problems.
+## Quick Links
 
-3. Provision of a comprehensive suite of benchmark problems and practical case studies, enabling users to quick start.
+- **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**#TODO**: Needs update)
+- **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
+- **Documentation**: **#TODO**
+- **Citation Info**: **#TODO**
 
-4. A modular and extensible architecture that encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
+---
 
- **Website:** http://www.uq-pyl.com/ (**#TODO** it need to update now.) <br>
-  **Source Code:** https://github.com/smasky/UQPyL/ <br> 
-  **Documentation:** **#TODO** <br>
-  **Citing in your work:** **#TODO** <br>
+## Included Methods and Algorithms
 
-# Included Methods and Algorithms
-**Sensibility Analysis:** (all methods support for surrogate models)
+### Sensitivity Analysis
+
+(All methods support surrogate models)
 - Sobol'
-- Delta_test (DT)
-- extended Fourier Amplitude Sensitivity Test (eFAST)
-- Random Balance Designs - Fourier Amplitude Sensitivity Test
-- Multivariate Adaptive Regression Splines-Sensibility Analysis (MARS-SA)
+- Delta Test (DT)
+- Extended Fourier Amplitude Sensitivity Test (eFAST)
+- Random Balance Designs - Fourier Amplitude Sensitivity Test (RBD-FAST)
+- Multivariate Adaptive Regression Splines-Sensitivity Analysis (MARS-SA)
 - Morris
 - Regional Sensitivity Analysis (RSA)
 
-**Optimization Algorithms:** (* indicates the use of surrogate models)
-- Single Objective Optimization: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
-- Multi Objective Optimization: MOEA/D, NSGA-II, RVEA, MOASMO*
+### Optimization Algorithms
 
-Noted: It is still being updated, and if you need other algorithms, please contact me.
+(* indicates the use of surrogate models)
+- **Single Objective Optimization**: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
+- **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, MOASMO*
 
-**Surrogate Models:**
-- Full connect neural network (FNN)
+*Note: The library is still being updated. If you need other algorithms, please contact us.*
+
+### Surrogate Models
+
+- Fully Connected Neural Network (FCNN)
 - Kriging (KRG)
 - Gaussian Process (GP)
 - Linear Regression (LR)
@@ -43,97 +51,127 @@ Noted: It is still being updated, and if you need other algorithms, please conta
 - Support Vector Machine (SVM)
 - Multivariate Adaptive Regression Splines (MARS)
 
-# Installation
+---
 
-Recommend (PyPi or Conda):
+## Installation
 
-```
+Recommended (PyPi or Conda):
+
+```bash
 pip install UQPyL
 
 conda install UQPyL
 ```
 
-And also:
+Alternatively:
 
-```
+```bash
 git clone https://github.com/smasky/UQPyL.git 
-pip install . 
+cd UQPyL
+pip install .
 ```
 
-# Quick Start
-For users, we should define the problem you want to solved firstly. The problem usually contains three important properties:
-a. func (the mapping from X to Y); b. the dimensions of decisions and outputs; c. the bound of decisions (ub, lb).
+---
 
-For benchmark problems, we can import them from **UQPyL.problems** and instantiation:
+## Quick Start
 
-```
+To use UQPyL, define the problem you want to solve. The problem usually contains three important properties:
+1. `func` (the mapping from X to Y)
+2. The dimensions of decisions and outputs
+3. The bounds of decisions (ub, lb)
+
+### Benchmark Problems
+
+```python
 from UQPyL.problems.single_objective import Sphere
 
-problem=Sphere(nInput=10, ub=100, lb=-100)
-problem=Sphere(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)
+problem = Sphere(nInput=10, ub=100, lb=-100)
+problem = Sphere(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)
 ```
 
-For practical problems, we should define the evaluation function in addition, like:
-```
+### Practical Problems
+
+Define the evaluation function:
+
+```python
 from UQPyL.problems import PracticalProblem
+
 def func(X):
-  Y=np.sum(X, axis=1).reshape(-1, 1)
-  return Y
+    Y = np.sum(X, axis=1).reshape(-1, 1)
+    return Y
 
-problem=PracticalProblem(func=func, nInput=10, nOutput=1, ub=100, lb=-100, name="Sphere")
+problem = PracticalProblem(func=func, nInput=10, nOutput=1, ub=100, lb=-100, name="Sphere")
 ```
-**Please noted that**, the func need receive the matrix of X and return the matrix of Y. And keep columns equal to dimensions and rows equal to samples.
 
-After defining problem you solved, you can use any methods in UQPyL.
-**Sensibility:**
-```
+**Note:** The `func` needs to accept a matrix of X and return a matrix of Y, with columns equal to dimensions and rows equal to samples. X and Y should be np.ndarray.
+
+After defining the problem, you can use any methods in UQPyL.
+
+### Sensitivity Analysis
+
+```python
 from UQPyL.sensibility import Sobol
 
-sobol=Sobol() #instantiation and set hyper-parameters
+sobol = Sobol()  # Instantiate and set hyper-parameters
 sobol.analyze(problem)
 ```
 
-**Optimization:**
-```
+### Optimization
+
+```python
 from UQPyL.optimization.single_objective import SCE_UA
 
-sce=SCE_UA()
-res=sce.run(problem)
-bestDec=res.bestDec; bestObj=res.bestObj
+sce = SCE_UA()
+res = sce.run(problem)
+bestDec = res.bestDec
+bestObj = res.bestObj
 ```
 
-**Surrogate:**
-```
+### Surrogate Modeling
+
+```python
 from UQPyL.DoE import LHS
 
-lhs=LHS(problem)
-xTrain=lhs.sample(200, problem.nInput)
-yTrain=problem.evaluate(xTrain)
+lhs = LHS(problem)
+xTrain = lhs.sample(200, problem.nInput)
+yTrain = problem.evaluate(xTrain)
 
-xTest=lhs.sample(50, problem.nInput)
-yTest=problem.evaluate(xTest)
+xTest = lhs.sample(50, problem.nInput)
+yTest = problem.evaluate(xTest)
 
 from UQPyL.surrogate.rbf import RBF
 
-rbf=RBF()
+rbf = RBF()
 rbf.fit(xTrain, yTrain)
-yPred=rbf.predict(xTest)
+yPred = rbf.predict(xTest)
 
 from UQPyL.utility.metric import r_square
-r2=r_square(yTest, yPred)
+r2 = r_square(yTest, yPred)
 ```
 
-The above is a quick start. For more advanced usage, please refer to the documentation (#TODO).
-
-# Call for Contributions
-We appreciate and welcome contributions. Because, we only set up standard workflows here. More advanced quantification methods and optimization algorithms are waited for pulling to this project.
+For more advanced usage, please refer to the documentation (**#TODO**).
 
 ---
-# Contact:
 
-wmtSky, <wmtsky@hhu.edu.cn> 
+## Call for Contributions
 
+We welcome contributions to expand our library with more sophisticated UQ methods, optimization algorithms and engineering problems.
 
+---
 
+## Contact
+
+For any inquiries or contributions, please contact:
+
+**wmtSky**  
+[Email: wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn)
+
+---
+
+*This project is licensed under the MIT License - see the [LICENSE](https://github.com/smasky/UQPyL/blob/main/LICENSE) file for details.*
+
+![GitHub Stars](https://img.shields.io/github/stars/smasky/UQPyL?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/smasky/UQPyL?style=social)
+```
 
 
