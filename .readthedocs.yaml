@@ -14,6 +14,4 @@ mkdocs:
 python:
   install:
     - method: pip
-      path: .  # 指定项目路径
-    - packages:
-        - mkdoc*-*aterial  # 安装 MkDocs Material 主题
+      requirements: docs-requirements.txt  # 使用 docs-requirements.txt 文件
