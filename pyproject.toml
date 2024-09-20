@@ -11,14 +11,25 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name="UQPyL"
-version="2.0.8"
-description="A package for uncertainty quantification and parameter optimization with surrogate models."
-license = { file = "LICENSE.md" }
+name = "UQPyL"
+version = "2.0.6"
 authors = [
-{name="wmtSky", email="wmtsky@hhu.edu.cn"}
+    {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
+description = "A python package for parameter uncertainty quantification and optimization"
+readme = "README.md"
 dependencies = [
   "numpy",
   "scipy",
+  "prettytable",
+]
+classifiers = [
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
 ]

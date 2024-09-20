@@ -86,7 +86,63 @@ jobs:
         fi
 
     - name: Save Wheel Package as Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: wheelhouse
         path: wheelhouse/*.whl
+
+  package_source:
+    runs-on: ubuntu-latest  # 可以在任何平台上执行，这里假设选择Ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python (for creating source distribution)
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'  # 您可以选择一个合适的Python版本来构建源码包
+
+      - name: Install common dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Cython numpy pybind11 scipy
+
+      - name: Create source distribution
+        run: python setup.py sdist  # 假设您的项目有一个setup.py文件
+
+      - name: Move source distribution to specific directory
+        run: |
+          mkdir dist_sources
+          mv dist/*.tar.gz dist_sources/  # 移动生成的源码包到新的目录
+
+      - name: Upload source distribution as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-distribution
+          path: dist_sources/*
+
+  deploy_to_testpypi:
+    needs: [build, package_source]
+    runs-on: ubuntu-latest
+    env:
+      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+    steps:
+      - name: Download Wheel Package Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: wheelhouse
+          path: ./wheelhouse
+
+      - name: Download Source Distribution Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: source-distribution
+          path: ./source_distribution
+
+      - name: Publish to TestPyPI
+        run: |
+          pip install twine
+          twine upload --repository-url  https://upload.pypi.org/legacy/  wheelhouse/*.whl source_distribution/*.tar.gz

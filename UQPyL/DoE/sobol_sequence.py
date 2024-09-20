@@ -1,28 +1,43 @@
 import numpy as np
 from scipy.stats.qmc import Sobol
+from typing import Optional
 
-from .sampler_ABC import Sampler
+from .samplerABC import Sampler, decoratorRescale
+from ..problems import ProblemABC as Problem
 
 class Sobol_Sequence(Sampler):
     '''
     Sobol Sequence
+    ------------------------------------------------
+    Parameters:
+    scramble: bool default=True
+        the switch to scramble the sequence or not
+    skip_value: int default=0
+        the number of skipped points for Sobol sequence
     
     Methods:
     __call__ or sample: generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
     
     '''
-    def __init__(self):
+    def __init__(self, scramble: bool=True, skip_value: int=0):
         
         super().__init__()
-    
-    def _generate(self, nt: int, nx: int) -> np.ndarray:
+        
+        self.scramble=scramble
+        self.skip_value=skip_value
+        
+    def _generate(self, nt: int, nx: int):
         '''
         generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
         '''
         
-        return Sobol(d=nx).random(nt)
+        sampler=Sobol(d=nx, scramble=self.scramble)
+        xInit=sampler.random(nt+self.skip_value)
+        
+        return xInit[self.skip_value:, :]
     
-    def sample(self, nt: int, nx: int) -> np.ndarray:
+    @decoratorRescale
+    def sample(self, nt: int, nx: Optional[int] = None, problem: Optional[Problem] = None, random_seed: Optional[int] = None) -> np.ndarray:
         '''
         generate the shape of (nt, nx) and numpy array Sobol sequence. 
         
@@ -37,11 +52,18 @@ class Sobol_Sequence(Sampler):
             An n-by-samples design matrix that has been normalized so factor values
             are uniformly spaced between zero and one.  
         '''
-        return self._generate(nt, nx)
-
         
+        if random_seed is not None:
+            self.random_state = np.random.RandomState(random_seed)
+        else:
+            self.random_state = np.random.RandomState()
         
+        if problem is not None and nx is not None:
+            if(problem.nInput!=nx):
+                raise ValueError('The input dimensions of the problem and the samples must be the same')
+        elif problem is None and nx is None:
+            raise ValueError('Either the problem or the input dimensions must be provided')
         
+        nx=problem.nInput if problem is not None else nx
         
-            
-        
+        return self._generate(nt, nx)   

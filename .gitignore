@@ -3,6 +3,8 @@
 build
 GUI
 result.json
+dist
+UQPyL.egg-info
 
 Test/*.pickle
 Test/*.pdf

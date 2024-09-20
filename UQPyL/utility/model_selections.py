@@ -2,19 +2,21 @@ import numpy as np
 from typing import Literal, Tuple
 import math
 class RandSelect():
-    def __init__(self, n_test: int=5):
-        self.n_test=n_test
+    def __init__(self, pTest: int=5):
+        self.pTest=pTest/100
         
     def split(self, X: np.ndarray) -> Tuple[list, list]:
-        n_sample,_=X.shape
-        n_sets=math.floor(n_sample/self.n_test)
+        nSample,_=X.shape
         
-        index=np.arange(n_sample)
+        nTest=int(nSample*self.pTest)
+        nSets=math.floor(nSample/nTest)
+        
+        index=np.arange(nSample)
         np.random.shuffle(index)
         
-        nn=np.floor(n_sample/n_sets)*n_sets
-        split_bound=np.linspace(0,nn,n_sets+1,dtype=np.int32)
-        signal=np.ones(n_sample,dtype=np.bool_)
+        nn=np.floor(nSample/nSets)*nSets
+        split_bound=np.linspace(0,nn,nSets+1,dtype=np.int32)
+        signal=np.ones(nSample, dtype=np.bool_)
         signal[split_bound[0]:split_bound[1]]=0
         test=index[split_bound[0]:split_bound[1]].copy()
         train=index[signal].copy()

@@ -63,7 +63,7 @@ class StandardScaler(Scaler):
         
         trainX=np.atleast_2d(trainX)
         self.mu=np.mean(trainX, axis=0)
-        self.sita=np.std(trainX, axis=0)
+        self.sita=np.std(trainX, axis=0, ddof=1)
         
         super().fit(trainX)
         

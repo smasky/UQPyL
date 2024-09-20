@@ -1,31 +1,16 @@
+from .problemABC import ProblemABC as Problem
 import numpy as np
-from typing import Callable
+from typing import Union
 
-from .problem_ABC import ProblemABC
-class Problem(ProblemABC):
-    '''
-    Class for creating practical problem
-    '''
-    def __init__(self, func, dim, n_output, ub, lb):
-        super().__init__()
-        self._func=func
-        self.dim=dim
-        self.n_output=n_output
-        self.ub=ub
-        self.lb=lb
-        
-    def __check_func__(self,func):
-        '''
-        check the available of coupling function(algorithm and model)
-        '''
-        #TODO
-        pass
-        
-    def set_func(self,func):
-        
-        if(self.__check_func__(func)):
-            self._func=func
+class PracticalProblem(Problem):
+    def __init__(self, func: callable,
+                 nInput: int, nOutput: int, 
+                 ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray], 
+                 var_type=None, var_set=None, x_labels=None, y_labels=None, name=None):
+
+        self.func = func
+        self.name = name
+        super().__init__(nInput, nOutput, ub, lb, var_type, var_set, x_labels, y_labels)
         
     def evaluate(self, X):
-        return self._func(X)
-        
+        return self.func(X)

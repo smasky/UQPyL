@@ -1,7 +1,6 @@
 import numpy as np
-import math
-from typing import Tuple
-def r2_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
+
+def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     R2-score
     """
@@ -24,14 +23,13 @@ def rank_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     
     ty=true_Y.ravel()
     py=pre_Y.ravel()
-    count=0
     n_samples=true_Y.shape[0]
     
-    nc=0;nd=0;nt1=0;nt2=0
+    nc=0;nd=0
     for n in range(n_samples-1):
         for m in range(n+1, n_samples):
             sign=(ty[n]-ty[m])*(py[n]-py[m])
-            if(sign>0):
+            if(sign>0 or (ty[n]==ty[m] and py[n]==py[m])):
                 nc+=1
             else :
                 nd+=1

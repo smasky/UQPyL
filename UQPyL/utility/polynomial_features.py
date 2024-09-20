@@ -2,7 +2,9 @@ import numpy as np
 from math import comb
 
 class PolynomialFeatures():
+    
     def __init__(self, degree: int=2, include_bias: bool=False, interaction_only: bool=False):
+        
         self.degree=degree
         self.include_bias=include_bias
         self.interaction_only=interaction_only

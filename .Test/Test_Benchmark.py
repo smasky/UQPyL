@@ -2,16 +2,16 @@ import sys
 sys.path.append(".")
 from scipy.io import loadmat
 import os
-os.chdir('./Test')
+os.chdir('./.Test')
 
 
-from UQPyL.problems.Single_Benchmarks import (Sphere,Schwefel_1_22,Schwefel_2_22,Schwefel_2_21,
-                                       Rosenbrock,Step,Quartic,Schwefel_2_26,Rastrigin,
-                                       Ackley,Griewank,Trid,Bent_Cigar,Discus,
-                                       Weierstrass)
+# from UQPyL.problems.Single_Benchmarks import (Sphere,Schwefel_1_22,Schwefel_2_22,Schwefel_2_21,
+#                                        Rosenbrock,Step,Quartic,Schwefel_2_26,Rastrigin,
+#                                        Ackley,Griewank,Trid,Bent_Cigar,Discus,
+#                                        Weierstrass)
 
-from UQPyL.problems.Multi_ZDT import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
-from UQPyL.problems.Multi_DTLZ import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
+# from UQPyL.problems.Multi_ZDT import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
+# from UQPyL.problems.Multi_DTLZ import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
 
 from UQPyL.DoE import LHS
 import numpy as np
