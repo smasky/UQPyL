@@ -1,16 +1,19 @@
 version: 2
 
+# 设置构建环境
 build:
   os: ubuntu-20.04
   tools:
     python: "3.8"
 
+# 使用 MkDocs 构建
 mkdocs:
   configuration: mkdocs.yml
 
+# 配置 Python 依赖并安装 MkDocs Material 主题
 python:
   install:
     - method: pip
-      path: .
+      path: .  # 指定项目路径
     - packages:
-        - mkdocs-material  
+        - mkdoc*-*aterial  # 安装 MkDocs Material 主题
