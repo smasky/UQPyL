@@ -12,6 +12,5 @@ python:
   install:
     - method: pip
       path: .
-    - requirements: []
     - packages:
         - mkdocs-material  
