@@ -4,6 +4,7 @@ theme:
 nav:
   - Introduction: introduction.md
   - Quick Start: quick_start.md
+  - Advancing: advancing.md
   - Tutorial: tutorial.md
   - Examples Collection: examples.md
   - API Reference: api_reference.md
@@ -12,6 +13,11 @@ nav:
 extra_css:
   - css/nav_.css
   - css/head_.css
+  - css/content_.css
+
+markdown_extensions:
+  - pymdownx.emoji
+  - pymdownx.superfences
 
 site_url: https://UQPyL.readthedocs.io/
 repo_url: https://github.com/smasky/UQPyL
