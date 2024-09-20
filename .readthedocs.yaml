@@ -13,5 +13,4 @@ mkdocs:
 # 配置 Python 依赖并安装 MkDocs Material 主题
 python:
   install:
-    - method: pip
-      requirements: docs-requirements.txt  # 使用 docs-requirements.txt 文件
+    - requirements: docs-requirements.txt  # 安装 docs-requirements.txt 中指定的依赖
