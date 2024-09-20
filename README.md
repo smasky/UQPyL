@@ -14,7 +14,7 @@
 
 - **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**#TODO**: Needs update)
 - **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
-- **Documentation**: **#TODO**
+- **Documentation**: [UQPyL Documentation](https://uqpyl.readthedocs.io/en/latest/)(**#TODO**: Being updating )
 - **Citation Info**: **#TODO**
 
 ---
