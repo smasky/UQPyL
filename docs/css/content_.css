@@ -1,0 +1,13 @@
+.md-content{
+    min-width: 50%;
+}
+
+.md-typeset h1{
+    color: black;
+    font-weight: bold;
+}
+
+.md-typeset h2{
+    color: black;
+    font-weight: 500;
+}
