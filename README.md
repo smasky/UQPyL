@@ -166,7 +166,7 @@ We welcome contributions to expand our library with more sophisticated UQ method
 For any inquiries or contributions, please contact:
 
 **wmtSky**  
-[Email: wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn)
+Email: [wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn), [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)
 
 ---
 

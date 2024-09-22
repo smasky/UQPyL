@@ -13,4 +13,6 @@ Test/*.txt
 Test/*.mat
 Test/Debug
 
-**/__pycache__
+*.pyd
+__pycache__/
+*.py[co]
