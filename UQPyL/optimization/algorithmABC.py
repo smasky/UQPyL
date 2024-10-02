@@ -30,8 +30,8 @@ class Algorithm(metaclass=abc.ABCMeta):
         
     def initialize(self, nInit):
         
-        lhs=LHS('classic', problem=self.problem)
-        xInit=lhs.sample(nInit, self.problem.nInput)
+        lhs=LHS('classic')
+        xInit=lhs.sample(nInit, self.problem.nInput, problem=self.problem)
         pop=Population(xInit)
         self.evaluate(pop); 
             
