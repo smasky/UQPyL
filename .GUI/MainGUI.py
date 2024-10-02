@@ -1,7 +1,7 @@
 # coding:utf-8
 import sys
 import os
-os.chdir("./GUI")
+os.chdir("./.GUI")
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QPixmap, QIcon,QPainter, QBrush, QPainterPath
 from PySide6.QtWidgets import QApplication, QLabel
@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QApplication, QLabel
 from PySide6.QtCore import Qt, Signal, QEasingCurve, QUrl, QSize,QTimer,QRectF
 # from qframelesswindow import FramelessWindow, TitleBar, StandardTitleBar
 from PySide6.QtWidgets import QApplication,QWidget,QVBoxLayout,QPushButton,QHBoxLayout,QLabel
-from qframelesswindow import FramelessWindow,StandardTitleBar
+from qframelesswindow import FramelessWindow, StandardTitleBar
 from PySide6.QtGui import QColor, QPixmap, QIcon,QColor,QPalette
 
 from qfluentwidgets import (NavigationAvatarWidget, NavigationItemPosition, MessageBox, FluentWindow,
@@ -89,9 +89,6 @@ class Window(FluentWindow):
         self.move(w//2 - self.width()//2, h//2 - self.height()//2)
         self.show()
         QApplication.processEvents()
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

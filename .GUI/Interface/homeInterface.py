@@ -48,6 +48,7 @@ class HomeInterface(ScrollArea):
         #set Qss
         with open("./qss//home_interface.qss") as f:
             self.setStyleSheet(f.read())
+            
     def loadSamples(self):
         pass
     def __iniLinkView(self):
