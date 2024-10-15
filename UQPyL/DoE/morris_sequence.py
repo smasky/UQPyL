@@ -9,23 +9,23 @@ class Morris_Sequence(Sampler):
     The sample technique for Morris analysis
     
     Parameters:
-        num_levels (p): each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
-                        Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
+        numLevels (p): each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
+                        Morris et al[1]. recommend the numLevels to be even and range from 4 and 10.
     
     Methods:
         __call__ or sample: Generate a sample for FAST method
     
     Examples:
-        >>> mor_seq=Morris_Sequence(num_levels=4)
+        >>> mor_seq=Morris_Sequence(numLevels=4)
         >>> mor_seq.sample(100, 4) or mor_seq(100, 4)
     
     Reference:
         [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, Technometrics, 33:2, 161-174
     '''
-    def __init__(self, num_levels: int=4):
+    def __init__(self, numLevels: int=4):
         
         super().__init__()
-        self.num_levels=num_levels
+        self.numLevels=numLevels
         
     def _generate(self, nt: int, nx: int):
         '''
@@ -69,7 +69,7 @@ class Morris_Sequence(Sampler):
         
     def _generate_trajectory(self, nx: int):
         
-        delta=self.num_levels/(2*(self.num_levels-1))
+        delta=self.numLevels/(2*(self.numLevels-1))
         
         B=np.tril(np.ones([nx + 1, nx], dtype=int), -1)
         
@@ -77,7 +77,7 @@ class Morris_Sequence(Sampler):
         D_star = np.diag(np.random.choice([-1, 1], nx)) #step1
         J=np.ones((nx+1, nx))
         
-        levels_grids=np.linspace(0, 1-delta, int(self.num_levels / 2))
+        levels_grids=np.linspace(0, 1-delta, int(self.numLevels / 2))
         x_star=np.random.choice(levels_grids, nx).reshape(1,-1) #step2
         
         P_star=np.zeros((nx,nx))
