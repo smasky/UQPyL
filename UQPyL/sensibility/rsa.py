@@ -106,19 +106,39 @@ class RSA(SA):
         
         X, Y=self.__check_and_scale_xy__(X, Y)
         
-        seq = np.linspace(0, 1, nRegion + 1)
+        seq = np.linspace(0.0, 1.0, nRegion + 1)
         results = np.full((nRegion, nInput), np.nan)
         X_di = np.empty(X.shape[0])
         
+        trr=Y.ravel()
+        mrr=X_di
+        
         for d_i in range(nInput):
-                X_di = X[:, d_i]
-                for bin_index in range(nRegion):
-                    lower_bound, upper_bound = seq[bin_index], seq[bin_index + 1]
-                    b = (lower_bound < X_di) & (X_di <= upper_bound)
-                    if np.count_nonzero(b) > 0 and np.unique(X[b]).size > 1:
-                        r_s = cramervonmises_2samp(Y[b].ravel(), Y[~b].ravel()).statistic
-                        results[bin_index, d_i] = r_s
-
-        self.record("S1", problem.x_labels, results)
+            X_di[:] = X[:, d_i]
+            
+            quants=np.quantile(trr, seq)
+            
+            b = (quants[0] <= trr) & (trr <= quants[1])
+            if self._has_samples(Y, b):
+                results[0, d_i] = cramervonmises_2samp(mrr[b].ravel(), mrr[~b].ravel()).statistic
+             
+            for bin_index in range(1, nRegion):
+                
+                b = (quants[bin_index] < trr) & (trr <= quants[bin_index+1])
+                
+                if self._has_samples(Y, b):
+                    results[bin_index, d_i] = cramervonmises_2samp(mrr[b].ravel(), mrr[~b].ravel()).statistic
+        
+        
+        self.record("S1", problem.x_labels, np.mean(results, axis=0))
+        self.record("S1_Detail", problem.x_labels, np.mean(results, axis=0))
         
         return self.result
+    
+    def _has_samples(self, y, sel):
+        
+        return(
+            (np.count_nonzero(sel) !=0)
+             and (len(y[~sel])!=0 )
+             and np.unique(y[sel]).size > 1
+        )

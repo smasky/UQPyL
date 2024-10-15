@@ -146,7 +146,7 @@ class FAST(SA):
             idx=np.arange(i*n, (i+1)*n)
             Y_sub=Y[idx]
             #fft
-            f=np.fft.fft(Y_sub.ravel())
+            f=np.fft.fft(Y_sub)
             # Sp = np.power(np.absolute(f[np.arange(1, np.ceil((self.N_within_sampler-1)/2), dtype=np.int32)-1])/self.N_within_sampler, 2) #TODO 1-(NS-1)/2 
             Sp = np.power(np.absolute(f[np.arange(1, np.ceil(n / 2), dtype=np.int32)]) / n, 2)
             V=2.0*np.sum(Sp)

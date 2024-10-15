@@ -20,6 +20,7 @@ class Verbose():
     workDir=os.getcwd()
     IterEmit=None
     VerboseEmit=None
+    total_width=os.get_terminal_size().columns
     @staticmethod    
     def output(obj):
         
@@ -34,13 +35,11 @@ class Verbose():
     
     @staticmethod
     def verboseSetting(obj):
-    
-        total_width=os.get_terminal_size().columns
         
         if obj.verbose or obj.logFlag:
             
             title=obj.name+" Setting"
-            spacing=int((total_width-len(title))/2)
+            spacing=int((Verbose.total_width-len(title))/2)
             Verbose.output("="*spacing+title+"="*spacing)
             keys=obj.setting.keys
             values=obj.setting.values
@@ -131,14 +130,13 @@ class Verbose():
             func(obj, *args, **kwargs)
             
             if obj.verbose and obj.iters%obj.verboseFreq==0:
-                total_width=os.get_terminal_size().columns
                 title="FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 if obj.problem.nOutput==1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, total_width)
+                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, Verbose.total_width)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, total_width)
+                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, Verbose.total_width)
         return wrapper
     
     @staticmethod
@@ -222,9 +220,8 @@ class Verbose():
                 
             if  Verbose.verbose or Verbose.logFlag:
                 
-                total_width=os.get_terminal_size().columns
                 title=obj.name+" Setting"
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 
                 keys=obj.setting.keys
@@ -241,16 +238,16 @@ class Verbose():
             if Verbose.verbose:
                 
                 title="Conclusion"
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 Verbose.output("Time:  "+Verbose.formatTime(totalTime))
                 Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}")
                 Verbose.output(f"Best Objs and Best Decision with the FEs")
                 
                 if obj.problem.nOutput==1:
-                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, total_width)
+                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, Verbose.total_width)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, total_width)
+                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, Verbose.total_width)
 
             if Verbose.saveFlag:
                 
@@ -299,9 +296,9 @@ class Verbose():
                 folder_data, folder_log=Verbose.checkDir()
             
             if Verbose.verbose or Verbose.logFlag:
-                total_width=os.get_terminal_size().columns
+
                 title=obj.name+" Setting"
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
 
                 keys=obj.setting.keys()
@@ -312,7 +309,7 @@ class Verbose():
                 Verbose.output(table)
                 
                 title="Attribute"
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 
                 Verbose.output(f"First Order Sensitivity: {obj.firstOrder}")
@@ -322,16 +319,16 @@ class Verbose():
             res=func(obj, *args, **kwargs)
             
             if Verbose.verbose or Verbose.logFlag:
-                total_width=os.get_terminal_size().columns
+      
                 title="Conclusion"
-                spacing=int((total_width-len(title))/2)
+                spacing=int((Verbose.total_width-len(title))/2)
                 Verbose.output("="*spacing+title+"="*spacing)
                 
                 for key, values in obj.result.Si.items():
                     title=key
-                    spacing=int((total_width-len(title))/2)
+                    spacing=int((Verbose.total_width-len(title))/2)
                     Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseSi(values[0], values[1], total_width)
+                    Verbose.verboseSi(values[0], values[1], Verbose.total_width)
                     
             if Verbose.logFlag:
                 

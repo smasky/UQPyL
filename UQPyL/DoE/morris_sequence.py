@@ -65,7 +65,7 @@ class Morris_Sequence(Sampler):
         
         nx=problem.nInput if problem is not None else nx
         
-        self._generate(nt, nx)
+        return self._generate(nt, nx)
         
     def _generate_trajectory(self, nx: int):
         

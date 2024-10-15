@@ -144,6 +144,9 @@ class Morris(SA):
         self.record('mu_star', problem.x_labels, mu_star)
         self.record('sigma', problem.x_labels, sigma)
 
+        self.record('S1', problem.x_labels, mu)
+        self.record('ST', problem.x_labels, sigma)
+        
         return self.result
     
     def summary(self):

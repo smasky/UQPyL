@@ -19,12 +19,12 @@ class Sobol_Sequence(Sampler):
     __call__ or sample: generate the shape of (nt*nx, nx) and numpy array Sobol sequence. 
     
     '''
-    def __init__(self, scramble: bool=True, skip_value: int=0):
+    def __init__(self, scramble: bool=True, skipValue: int=0):
         
         super().__init__()
         
         self.scramble=scramble
-        self.skip_value=skip_value
+        self.skipValue=skipValue
         
     def _generate(self, nt: int, nx: int):
         '''
@@ -32,9 +32,9 @@ class Sobol_Sequence(Sampler):
         '''
         
         sampler=Sobol(d=nx, scramble=self.scramble)
-        xInit=sampler.random(nt+self.skip_value)
+        xInit=sampler.random(nt+self.skipValue)
         
-        return xInit[self.skip_value:, :]
+        return xInit[self.skipValue:, :]
     
     @decoratorRescale
     def sample(self, nt: int, nx: Optional[int] = None, problem: Optional[Problem] = None, random_seed: Optional[int] = None) -> np.ndarray:

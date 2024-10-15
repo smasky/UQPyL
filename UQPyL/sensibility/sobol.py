@@ -100,8 +100,8 @@ class Sobol(SA):
             if not((M&(M-1))==0 and (M!=0 and M-1!=0)):
                 raise ValueError("skip value must be a power of 2!")
             
-            if N>M:
-                raise ValueError("skip value must be greater than N you set!")
+            if N<M:
+                raise ValueError("N must be greater than skip value you set!")
         
         elif skipValue<0 or not isinstance(skipValue, int):
             raise ValueError("skip value must be a positive integer!")
@@ -200,10 +200,10 @@ class Sobol(SA):
                     S_Labels.append(f"{problem.x_labels[j]}-{problem.x_labels[k]}")
         
         #Record Data
-        self.record('S1(First Order)', problem.x_labels, S1)
+        self.record('S1', problem.x_labels, S1)
         if calSecondOrder:
-            self.record('S2(Second Order)', S_Labels, S2) 
-        self.record('ST(Total Order)', problem.x_labels, ST)
+            self.record('S2', S_Labels, S2) 
+        self.record('ST', problem.x_labels, ST)
         
         return self.result
     
