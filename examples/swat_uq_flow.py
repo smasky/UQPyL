@@ -246,7 +246,13 @@ class SWAT_UQ_Flow(ProblemABC):
             os.makedirs(self.work_temp_dir)
     
     def _set_values(self, work_path, paras_values):
-                
+        
+        # for file_name, infos in self.file_var_info.items():
+        #     write_value_to_file(work_path, file_name, 
+        #                        infos["name"], infos["default"], 
+        #                        infos["index"], infos["mode"],  infos["position"], infos["type"],
+        #                        paras_values.ravel())
+              
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures=[]
             for file_name, infos in self.file_var_info.items():
@@ -571,27 +577,28 @@ class SWAT_UQ_Flow(ProblemABC):
                 self.file_var_info[file]["position"].append(position)
                 self.file_var_info[file].setdefault("type", [])
                 self.file_var_info[file]["type"].append(data_type_)
-                                
+        
+        # for file_name, infos in self.file_var_info.items():
+        #     read_value_swat(self.work_path, file_name, infos["name"], infos["position"], 1)   
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             
             futures=[]
             for file_name, infos in self.file_var_info.items():
                 futures.append(executor.submit(read_value_swat, self.work_path, file_name , infos["name"], infos["position"], 1))
-
         for future in futures:
             res=future.result()
             for key, items in res.items():
                 values=' '.join(str(value) for value in items)
-                _, file_name=key.split('|')
-                self.file_var_info[file_name].setdefault("default", [])
-                self.file_var_info[file_name]["default"].append(values)
-                          
+                # print(key, values)
+                paraName, file_name=key.split('|')
+                self.file_var_info[file_name].setdefault("default", {})
+                self.file_var_info[file_name]["default"][paraName]=values
     def delete(self):
         shutil.rmtree(self.work_temp_dir)
             
 file_path="D:\YS_swat\TxtInOut"
 temp_path="D:\\YS_swat\\instance_temp"
-swat_exe_name="swat_681.exe"
+swat_exe_name="swat.exe"
 observed_file_name="ob1.txt"
 paras_file_name="paras_infos.txt"
 
@@ -600,10 +607,17 @@ swat_cup=SWAT_UQ_Flow(work_path=file_path,
                     observed_file_name=observed_file_name,
                     swat_exe_name=swat_exe_name,
                     temp_path=temp_path,
-                    max_threads=10, num_parallel=3,
+                    max_threads=10, num_parallel=5,
                     verbose=True)
 
-from UQPyL.optimization import PSO, GA
-pso=GA()
-res=pso.run(problem=swat_cup)
+# x=np.array([-0.052000, 1.247500, 18.303900, 0.163000, 0.020000, 0.110000, 51.000000, 0.098500, 134.992706, 0.510000, 1540.000000, 0.570000, 1.940000]) 
+x=np.array([-0.118800, 6.492550, 1.000, 0.320500, 0.020000, 0.37500, 154.9000,  0.020690, 293.495900, 0.24900, 874.000, 0.666700, 1.00])
+
+# x=np.array([])
+a=swat_cup.evaluate(x.reshape(1,-1))
+
+
+# from UQPyL.optimization import PSO, GA
+# pso=PSO(verboseFreq=1)
+# res=pso.run(problem=swat_cup)
 

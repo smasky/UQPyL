@@ -1,0 +1,13 @@
+CN2 r c -0.2_0.2 all
+SURLAG v c 0.05_24 all
+OV_N v c 0.01_30.0 all
+ESCO v c 0.10_1.00 all
+GW_REVAP v c 0.02_0.021 all
+ALPHA_BF v c 0.0_1.0 all
+GW_DELAY v c 30.0_450.00 all
+CH_N2 v c -0.01_0.30 all
+CH_K2 v c -0.01_500.00 all
+ALPHA_BNK v c 0.00_1.00 all
+Ksat r c 0.00_2000.0 all
+Ave r c 0.0_1.00 all
+Bulk r c 0.9_2.5 all

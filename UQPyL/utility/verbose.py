@@ -18,6 +18,8 @@ class Verbose():
     saveFlag=False
     verbose=False
     workDir=os.getcwd()
+    IterEmit=None
+    VerboseEmit=None
     @staticmethod    
     def output(obj):
         
