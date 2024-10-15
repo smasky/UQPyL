@@ -18,8 +18,9 @@ class Verbose():
     saveFlag=False
     verbose=False
     workDir=os.getcwd()
-    IterEmit=None
-    VerboseEmit=None
+    iterEmit=None
+    verboseEmit=None
+    isStop=False
     total_width=os.get_terminal_size().columns
     @staticmethod    
     def output(obj):
@@ -28,9 +29,15 @@ class Verbose():
             obj=str(obj)+'\n'
         
         if Verbose.logFlag:
+            
             Verbose.logLines.append(obj)
         
+        if Verbose.verboseEmit:
+            
+            Verbose.verboseEmit.send(obj)
+        
         if Verbose.verbose:
+            
             print(obj)
     
     @staticmethod
@@ -126,6 +133,10 @@ class Verbose():
         
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
+            
+            if Verbose.iterEmit:
+                
+                Verbose.iterEmit.send()
             
             func(obj, *args, **kwargs)
             
@@ -230,6 +241,11 @@ class Verbose():
                 table.add_row(values)
                 Verbose.output(table)
             
+            #TODO
+            if Verbose.iterEmit:
+                
+                Verbose.iterEmit.send()
+            
             startTime=time.time()
             res=func(obj, *args, **kwargs)
             endTime=time.time()
@@ -257,6 +273,13 @@ class Verbose():
                 
                 Verbose.saveLog(obj, folder_log)
 
+            #TODO
+            if Verbose.isStop:
+                Verbose.iterEmit.unfinished()
+            else:
+                Verbose.iterEmit.finished()
+            
+            
             Verbose.logFlag, Verbose.verbose, Verbose.saveFlag=record
             
             return res
