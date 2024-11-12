@@ -1,4 +1,3 @@
-import numpy as np
 import abc
 import functools
 
@@ -58,22 +57,28 @@ class Algorithm(metaclass=abc.ABCMeta):
     
     def checkTermination(self):
         
-        if Verbose.isStop: #TODO
-            
-            return False
+        
         
         if self.FEs<self.maxFEs:
-            if self.maxIter is None or self.iters<self.maxIter:
+            if self.maxIter is None or self.iters<=self.maxIter:
                 if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
+                    
+                    if hasattr(self.problem, 'GUI'):
+                        self.problem.iterEmit.send()
+                        if self.problem.isStop==True:
+                            return False
+                        
                     self.iters+=1
                     return True
                 
         return False
     
     def setProblem(self, problem):
+        
         self.problem=problem
     
     def saveResult(self):
+        
         if self.problem.nOutput>1:
             self.result.save(type=1)
         else:

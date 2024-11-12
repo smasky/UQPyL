@@ -6,7 +6,6 @@ import math
 import functools
 import numpy as np
 
-from datetime import datetime
 from prettytable import PrettyTable
             
 class Verbose():
@@ -18,41 +17,23 @@ class Verbose():
     saveFlag=False
     verbose=False
     workDir=os.getcwd()
-    iterEmit=None
-    verboseEmit=None
-    isStop=False
-    total_width=os.get_terminal_size().columns
-    @staticmethod    
-    def output(obj):
-        
-        if isinstance(obj, PrettyTable):
-            obj=str(obj)+'\n'
-        
-        if Verbose.logFlag:
-            
-            Verbose.logLines.append(obj)
-        
-        if Verbose.verboseEmit:
-            
-            Verbose.verboseEmit.send(obj)
-        
-        if Verbose.verbose:
-            
-            print(obj)
+    totalWidth = 120
     
     @staticmethod
-    def verboseSetting(obj):
+    def output(text, problem):
         
-        if obj.verbose or obj.logFlag:
-            
-            title=obj.name+" Setting"
-            spacing=int((Verbose.total_width-len(title))/2)
-            Verbose.output("="*spacing+title+"="*spacing)
-            keys=obj.setting.keys
-            values=obj.setting.values
-            table=PrettyTable(keys)
-            table.add_row(values)
-            Verbose.output(table)    
+        if isinstance(text, PrettyTable):
+            text=str(text)+'\n'
+        
+        if problem.logLines is not None:
+            problem.logLines.append(text)
+        
+        if hasattr(problem, "verboseEmit"):
+            if problem.verboseEmit:
+                problem.verboseEmit.send(text)
+        
+        if problem.verboseFlag:
+            print(text)
     
     @staticmethod
     def formatTime(seconds): 
@@ -64,7 +45,7 @@ class Verbose():
         return f"{days} day | {hours} hour | {minutes} minute | {seconds: .2f} second"
     
     @staticmethod
-    def verboseMultiSolutions(dec, obj, FEs, Iters, width):
+    def verboseMultiSolutions(dec, obj, FEs, Iters, width, problem):
         
         nDecs=dec.shape[0]
         if len(obj)==1:
@@ -75,58 +56,78 @@ class Verbose():
         heads=["FEs"]+["Iters"]+y_labels+["Num_Non-dominated_Solution"]
         values=[FEs, Iters]+[ format(item, ".4f") for item in obj]+[nDecs]
         
-        tables=Verbose.verboseTable(heads, values, 10, width)
+        table=PrettyTable(heads)
+        table.add_row([" "]*len(heads))
+        headerString = table.get_string(fields=heads, header=True, border=False)
+        maxWidth = max(len(line) for line in headerString.splitlines())*1.5
+        
+        count=math.ceil(maxWidth/width)
+        
+        tables=Verbose.verboseTable(heads, values, count, width)
         
         for table in tables:
-            Verbose.output(table)
+            Verbose.output(table, problem)
     
     @staticmethod
-    def verboseSingleSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width):
+    def verboseSingleSolutions(dec, obj, x_labels, y_labels, FEs, Iters, width, problem):
         
         heads=["FEs"]+["Iters"]+y_labels+x_labels
         
         values=[FEs, Iters]+[ format(item, ".2e") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
         
-        maxWidth=max(len(s) for s in heads)
-        count=math.floor(width/maxWidth)-1
+        table=PrettyTable(heads)
+        table.add_row([" "]*len(heads))
+        headerString = table.get_string(fields=heads, header=True, border=False)
+        maxWidth = max(len(line) for line in headerString.splitlines())*1.5
+        
+        count=math.ceil(maxWidth/width)
         
         tables=Verbose.verboseTable(heads, values, count, width)
         
         for table in tables:
-            Verbose.output(table)
+            Verbose.output(table, problem)
     
     @staticmethod
     def verboseTable(heads, values, num, width):
         
-        rows=int(len(heads))//num+1
-        cols=num
+        col=len(heads)//num
+        rows=num
         tables=[]
         
         for i in range(rows):
-            if (i+1)*cols<len(heads):
-                end=(i+1)*cols
+            
+            if i+1!=rows:
+                end=(i+1)*col
             else:
                 end=len(heads)
-                
-            table=PrettyTable(heads[i*cols:end])
-            table.max_width=int(width/(cols+4))
-            table.min_width=int(width/(cols+4))
-            table.add_row(values[i*cols:end])
+
+            table=PrettyTable(heads[i*col:end])
+            
+            table.max_width=int(width/(col+4))
+            table.min_width=int(width/(col+4))
+            table.add_row(values[i*col:end])
             
             tables.append(table)
             
         return tables
     
     @staticmethod
-    def verboseSi(x_labels, Si, width):
+    def verboseSi(problem, x_labels, Si, width):
         
         heads=x_labels
         values=[format(item, ".4f") for item in Si.ravel()]
         
-        tables=Verbose.verboseTable(heads, values, 10, width)
+        table=PrettyTable(heads)
+        table.add_row([" "]*len(heads))
+        headerString = table.get_string(fields=heads, header=True, border=False)
+        maxWidth = max(len(line) for line in headerString.splitlines())*1.5
+        
+        count=math.ceil(maxWidth/width)
+        
+        tables=Verbose.verboseTable(heads, values, count, width)
         
         for table in tables:
-            Verbose.output(table)
+            Verbose.output(table, problem)
                 
     @staticmethod
     def decoratorRecord(func):
@@ -134,20 +135,22 @@ class Verbose():
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
             
-            if Verbose.iterEmit:
+            problem=obj.problem
+            if hasattr(problem, 'GUI'):
+                totalWidth=problem.totalWidth
+            else:
+                totalWidth=Verbose.totalWidth
                 
-                Verbose.iterEmit.send()
-            
             func(obj, *args, **kwargs)
             
             if obj.verbose and obj.iters%obj.verboseFreq==0:
                 title="FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
                 if obj.problem.nOutput==1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, Verbose.total_width)
+                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.x_labels, obj.problem.y_labels, obj.FEs, obj.iters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, Verbose.total_width)
+                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, totalWidth, problem)
         return wrapper
     
     @staticmethod
@@ -176,6 +179,14 @@ class Verbose():
         filepath = os.path.join(folder_data, filename)
         
         resultHDF5=obj.result.generateHDF5()
+        
+        text=f"Result Save Path: {filepath}"
+        
+        if obj.problem.logLines is not None:
+            obj.problem.logLines.append(text)
+        
+        if hasattr(obj.problem, 'GUI'):
+            obj.problem.verboseEmit.send(text)
         
         with h5py.File(filepath, 'w') as f:
             save_dict_to_hdf5(f, resultHDF5)
@@ -206,7 +217,7 @@ class Verbose():
         filepath = os.path.join(folder_log, filename)
         
         with open(filepath, "w") as f:
-            f.writelines(Verbose.logLines)
+            f.writelines(obj.problem.logLines)
     
     @staticmethod
     def decoratorRun(func):
@@ -214,80 +225,102 @@ class Verbose():
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
             
-            record=[Verbose.logFlag, Verbose.verbose, Verbose.saveFlag]
+            if len(args) > 0:
+                problem = args[0]
+            elif 'problem' in kwargs:
+                problem = kwargs['problem']
+            problem.verboseFlag=obj.verbose
+            totalWidth=Verbose.totalWidth
             
-            Verbose.logFlag=obj.logFlag
-            Verbose.verbose=obj.verbose
-            Verbose.saveFlag=obj.saveFlag
+            if obj.logFlag or hasattr(problem, 'GUI'):
+                problem.logLines=[]
+            else:  
+                problem.logLines=None
             
-            #Check result dir
-            if Verbose.logFlag or Verbose.saveFlag:
+            if obj.verbose or obj.logFlag:
+                if hasattr(problem, 'GUI'):
+                    totalWidth=problem.totalWidth
+                else:
+                    totalWidth=os.get_terminal_size().columns
+                    Verbose.totalWidth=totalWidth
+            
+            if obj.logFlag or obj.saveFlag:
                 
-                folder_data, folder_log=Verbose.checkDir()
+                if hasattr(problem, 'GUI'):
+                    workDir=problem.workDir
+                    folder_data, folder_log=Verbose.checkDir(workDir) 
+                else:
+                    folder_data, folder_log=Verbose.checkDir(Verbose.workDir)
                 
-            if Verbose.logFlag:
-                  
-                Verbose.logLines=[]
-                
-            if  Verbose.verbose or Verbose.logFlag:
+            #TODO            
+            if  obj.verbose or problem.logLines:
                 
                 title=obj.name+" Setting"
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
                 
                 keys=obj.setting.keys
                 values=obj.setting.values
                 table=PrettyTable(keys)
                 table.add_row(values)
-                Verbose.output(table)
-            
-            #TODO
-            if Verbose.iterEmit:
+                Verbose.output(table, problem)
                 
-                Verbose.iterEmit.send()
+            if hasattr(problem, 'GUI'):
+                iterEmit=problem.iterEmit
+                iterEmit.send()
             
             startTime=time.time()
             res=func(obj, *args, **kwargs)
             endTime=time.time()
             totalTime=endTime-startTime
             
-            if Verbose.verbose:
+            if obj.verbose:
                 
                 title="Conclusion"
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
-                Verbose.output("Time:  "+Verbose.formatTime(totalTime))
-                Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}")
-                Verbose.output(f"Best Objs and Best Decision with the FEs")
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
+                Verbose.output("Time:  "+Verbose.formatTime(totalTime), problem)
+                Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}", problem)
+                Verbose.output(f"Best Objs and Best Decision with the FEs", problem)
                 
                 if obj.problem.nOutput==1:
-                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, Verbose.total_width)
+                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.x_labels, obj.problem.y_labels, res.appearFEs, res.appearIters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, Verbose.total_width)
+                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, totalWidth, problem)
 
-            if Verbose.saveFlag:
+            if obj.saveFlag:
                 
                 Verbose.saveData(obj, folder_data)
                 
-            if Verbose.logFlag:
+            if obj.logFlag:
                 
                 Verbose.saveLog(obj, folder_log)
 
             #TODO
-            if Verbose.isStop:
-                Verbose.iterEmit.unfinished()
-            else:
-                Verbose.iterEmit.finished()
-            
-            
-            Verbose.logFlag, Verbose.verbose, Verbose.saveFlag=record
-            
+            if hasattr(problem, 'GUI'):
+                if problem.isStop:
+                    iterEmit.unfinished()
+                else:
+                    iterEmit.finished()
+                    
+            # if Verbose.isStop!=None:
+            #     if Verbose.isStop:
+                    
+            #         Verbose.iterEmit.unfinished()
+                    
+            #     else:
+                    
+            #         Verbose.iterEmit.finished()
+                    
+            # Verbose.logFlag, Verbose.verbose, Verbose.saveFlag=record 
             return res
         return wrapper 
     
     @staticmethod
-    def checkDir():
-        folder=os.path.join(Verbose.workDir, "Result")
+    def checkDir(workDir):
+        
+        folder=os.path.join(workDir, "Result")
+        
         if not os.path.exists(folder):
             os.mkdir(folder)
         
@@ -307,57 +340,71 @@ class Verbose():
         
         def wrapper(obj, *args, **kwargs):
             
-            Verbose.verbose=obj.verbose
-            Verbose.logFlag=obj.logFlag
-            Verbose.saveFlag=obj.saveFlag
+            if len(args) > 0:
+                problem = args[0]
+            elif 'problem' in kwargs:
+                problem = kwargs['problem']
+            problem.verboseFlag=obj.verbose
             
-            if Verbose.saveFlag:
-                Verbose.logLines=[]
+            totalWidth=Verbose.total_width
             
-            if Verbose.logFlag or Verbose.saveFlag:
+            if obj.logFlag or hasattr(problem, 'GUI'):
                 
-                folder_data, folder_log=Verbose.checkDir()
+                problem.logLines=[]
             
-            if Verbose.verbose or Verbose.logFlag:
-
+            else:
+                
+                problem.logLines=None
+            
+            if obj.logFlag or obj.saveFlag:
+                
+                if hasattr(problem, 'GUI'):
+                    totalWidth=problem.totalWidth
+                    workDir=problem.workDir
+                    folder_data, folder_log=Verbose.checkDir(workDir) 
+                else:
+                    folder_data, folder_log=Verbose.checkDir(Verbose.workDir)
+            
+            if obj.verbose or obj.logFlag:
+                
                 title=obj.name+" Setting"
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
 
                 keys=obj.setting.keys()
                 values=obj.setting.values()
                 
                 table=PrettyTable(keys)
                 table.add_row(values)
-                Verbose.output(table)
+                Verbose.output(table, problem)
                 
                 title="Attribute"
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
                 
-                Verbose.output(f"First Order Sensitivity: {obj.firstOrder}")
-                Verbose.output(f"Second Order Sensitivity: {obj.secondOrder}")
-                Verbose.output(f"Total Order Sensitivity: {obj.totalOrder}")
+                Verbose.output(f"First Order Sensitivity: {obj.firstOrder}", problem)
+                Verbose.output(f"Second Order Sensitivity: {obj.secondOrder}", problem)
+                Verbose.output(f"Total Order Sensitivity: {obj.totalOrder}", problem)
                 
             res=func(obj, *args, **kwargs)
             
-            if Verbose.verbose or Verbose.logFlag:
+            if obj.verbose or obj.logFlag:
       
                 title="Conclusion"
-                spacing=int((Verbose.total_width-len(title))/2)
-                Verbose.output("="*spacing+title+"="*spacing)
+                spacing=int((totalWidth-len(title))/2)-1
+                Verbose.output("="*spacing+title+"="*spacing, problem)
                 
                 for key, values in obj.result.Si.items():
                     title=key
-                    spacing=int((Verbose.total_width-len(title))/2)
-                    Verbose.output("-"*spacing+title+"-"*spacing)
-                    Verbose.verboseSi(values[0], values[1], Verbose.total_width)
+                    spacing=int((totalWidth-len(title))/2)-1
+                    Verbose.output("-"*spacing+title+"-"*spacing, problem)
+                    Verbose.verboseSi(problem, values[0], values[1], Verbose.total_width)
                     
-            if Verbose.logFlag:
+            if obj.logFlag:
                 
                 Verbose.saveLog(obj, folder_log, type=0)
             
-            if Verbose.saveFlag:
+            if obj.saveFlag:
                 
                 Verbose.saveData(obj, folder_data, type=0)
             
@@ -373,4 +420,3 @@ def save_dict_to_hdf5(h5file, d):
             h5file.create_dataset(key, data=value)
         else:
             h5file.create_dataset(key, data=np.array(value))
-            

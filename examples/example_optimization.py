@@ -1,6 +1,10 @@
 import sys
 sys.path.append('.')
 
+import os
+uqPath=os.path.dirname("../UQPyL/")
+sys.path.insert(0, uqPath)
+
 from UQPyL.problems import Sphere, Weierstrass
 
 problem=Sphere(nInput=10)
