@@ -1,15 +1,15 @@
 ### Multi-Objective Adaptive Surrogate Modelling-based Optimization
 import numpy as np
-from tqdm import tqdm
 from scipy.spatial.distance import cdist
 
 from ...DoE import LHS
-from ...problems import ProblemABC as Problem
+from ...problems import PracticalProblem
 from ...surrogates import Mo_Surrogates
+from ..algorithmABC import Algorithm, Population, Verbose
 from .nsga_ii import NSGAII
 
-lhs=LHS("center")
-class MOASMO():
+
+class MOASMO(Algorithm):
     '''
     Multi-Objective Adaptive Surrogate Modelling-based Optimization <Multi-objective> <Surrogate>
     -----------------------------------------------------------------
@@ -51,110 +51,132 @@ class MOASMO():
         [1] W. Gong et al., Multiobjective adaptive surrogate modeling-based optimization for parameter estimation of large, complex geophysical models, 
                             Water Resour. Res., vol. 52, no. 3, pp. 1984–2008, Mar. 2016, doi: 10.1002/2015WR018230.
     '''
-    def __init__(self, problem: Problem, surrogates: Mo_Surrogates,
-                 Pct: float=0.2, n_init: int=50, n_pop: int=100, 
-                 maxFEs: int=1000, maxIter: int=100,
-                 x_init: int=None, y_init: int=None,
-                 advance_infilling=False):
-        #problem setting
-        self.evaluate=problem.evaluate
-        self.lb=problem.lb; self.ub=problem.ub
-        self.n_input=problem.n_input
-        self.n_output=problem.n_output
+    
+    name="MOASMO"
+    type="MOEA"
+    
+    def __init__(self, surrogates: Mo_Surrogates=None,
+                 optimizer: Algorithm=None,
+                 pct: float=0.2, nInit: int=50, nPop: int=50, 
+                 maxFEs: int=1000, 
+                 maxIterTimes: int=100,
+                 maxTolerateTimes=None, tolerate=1e-6,
+                 verbose=True, verboseFreq=1, logFlag=True, saveFlag=False):
+
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
-        #algorithm setting
-        self.surrogates=surrogates
-        self.n_init=n_init
-        self.x_init=x_init
-        self.y_init=y_init
-        self.Pct=Pct
-        self.n_pop=n_pop
-        self.advance_infilling=advance_infilling
-        self.subProblem=Problem(self.surrogates.predict, self.n_input, self.n_output, self.ub, self.lb)
+        self.setParameters('pct', pct)
+        self.setParameters('nInit', nInit)
+        self.setParameters('nPop', nPop)
         
-        #termination setting
-        self.maxFEs=maxFEs
-        self.maxIter=maxIter
-    def run(self):
+        if surrogates is not None:
+            self.surrogates=surrogates
         
-        maxFEs=self.maxFEs
-        show_process=tqdm(total=maxFEs)
-        pct=self.Pct  
-        n_init=self.n_init
-        n_infilling=int(np.floor(n_init*pct))
-        ub=self.ub; lb=self.lb
+        self.optimizer=optimizer
         
-        lhs=LHS('classic', problem=self.problem)
-        if self.x_init is None:
-            self.x_init=lhs(self.n_samples, self.n_input)
-        if self.y_init is None:
-            self.y_init=self.evaluate(self.x_init)
+    @Verbose.decoratorRun
+    @Algorithm.initializeRun
+    def run(self, problem, xInit=None, yInit=None):
         
-        FE=n_init
-        XPop=self.x_init
-        YPop=self.y_init
-        show_process.update(FE)
-        while FE<maxFEs:
-            #build surrogate
-            self.surrogates.fit(XPop, YPop)
-            
-            nsga_ii=NSGAII(self.subProblem, self.n_pop)
-            #main optimization
-            Result=nsga_ii.run()
-            BestX=Result['pareto_x']
-            BestY=Result['pareto_y']
-            CrowdDis=Result['crowdDis']
-            
-            if self.advance_infilling==False:
-                #Origin version
-                if BestY.shape[0]>n_infilling:
-                    idx=CrowdDis.argsort()[::-1][:n_infilling]
-                    BestX=np.copy(BestX[idx])
-                    BestY=np.copy(BestY[idx])
+        pct=self.getParaValue('pct')
+        nInit=self.getParaValue('nInit')
+        
+        nInfilling=int(pct*nInit)
+        
+        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        
+        #Problem
+        self.problem=problem
+        #SubProblem
+        subProblem=PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb)
+        
+        #Termination Condition Setting
+        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        
+        #Population Generation
+        if xInit is not None:
+            if yInit is not None:
+                pop=Population(xInit, yInit)
             else:
-                #Advanced version Using crowding-based strategy
-                if BestY.shape[0]>n_infilling:
+                pop=Population(xInit)
+                self.evaluate(pop)
+        else:
+            pop=self.initialize(nInit)
+        
+        while self.checkTermination():
+            
+            #Build surrogate models
+            self.surrogates.fit(pop.decs, pop.objs)
+            #Run optimization
+            res=self.optimizer.run(subProblem)
+            
+            offSpring=Population(decs=res.bestDec, objs=res.bestObj)
+            
+            if offSpring.nPop>nInfilling:
+                bestOff=offSpring.getBest(nInfilling)
+            else:
+                bestOff=offSpring
+            
+            self.evaluate(bestOff)
+            
+            pop.add(bestOff)
+            self.record(pop)
+            
+            # offSpring=Population(decs=res.bestDec)
+            # self.evaluate(offSpring)
+            
+            # pop.add(offSpring)
+            # nsga_ii=NSGAII(self.subProblem, self.n_pop)
+            # #main optimization
+            # Result=nsga_ii.run()
+            # BestX=Result['pareto_x']
+            # BestY=Result['pareto_y']
+            # CrowdDis=Result['crowdDis']
+            
+            # if self.advance_infilling==False:
+            #     #Origin version
+            #     if BestY.shape[0]>n_infilling:
+            #         idx=CrowdDis.argsort()[::-1][:n_infilling]
+            #         BestX=np.copy(BestX[idx])
+            #         BestY=np.copy(BestY[idx])
+            # else:
+            #     #Advanced version Using crowding-based strategy
+            #     if BestY.shape[0]>n_infilling:
                     
-                    Known_FrontNo, _ =nsga_ii.NDSort(YPop, YPop.shape[0])
-                    Unknown_FrontNo, _=nsga_ii.NDSort(BestY, BestY.shape[0])
-                    Known_best_Y=YPop[np.where(Known_FrontNo==1)]
-                    Unknown_best_Y=BestY[np.where(Unknown_FrontNo==1)]
-                    Unknown_best_X=BestX[np.where(Unknown_FrontNo==1)]
+            #         Known_FrontNo, _ =nsga_ii.NDSort(YPop, YPop.shape[0])
+            #         Unknown_FrontNo, _=nsga_ii.NDSort(BestY, BestY.shape[0])
+            #         Known_best_Y=YPop[np.where(Known_FrontNo==1)]
+            #         Unknown_best_Y=BestY[np.where(Unknown_FrontNo==1)]
+            #         Unknown_best_X=BestX[np.where(Unknown_FrontNo==1)]
 
-                    added_points_Y=[]
-                    added_points_X=[]
-                    for _ in range(n_infilling):
+            #         added_points_Y=[]
+            #         added_points_X=[]
+            #         for _ in range(n_infilling):
                         
-                        if len(added_points_Y)==0:
-                            distances = cdist(Unknown_best_Y, Known_best_Y)
-                        else:
-                            distances = cdist(Unknown_best_Y, np.append(Known_best_Y, added_points_Y, axis=0))
+            #             if len(added_points_Y)==0:
+            #                 distances = cdist(Unknown_best_Y, Known_best_Y)
+            #             else:
+            #                 distances = cdist(Unknown_best_Y, np.append(Known_best_Y, added_points_Y, axis=0))
 
-                        max_distance_index = np.argmax(np.min(distances, axis=1))
+            #             max_distance_index = np.argmax(np.min(distances, axis=1))
 
-                        added_point = Unknown_best_Y[max_distance_index]
-                        added_points_Y.append(added_point)
-                        added_points_X.append(Unknown_best_X[max_distance_index])
-                        Known_best_Y = np.append(Known_best_Y, [added_point], axis=0)
+            #             added_point = Unknown_best_Y[max_distance_index]
+            #             added_points_Y.append(added_point)
+            #             added_points_X.append(Unknown_best_X[max_distance_index])
+            #             Known_best_Y = np.append(Known_best_Y, [added_point], axis=0)
 
-                        Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
-                        Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
-                    BestX=np.copy(np.array(added_points_X))
-                    BestY=np.copy(np.array(added_points_Y))
+            #             Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
+            #             Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
+            #         BestX=np.copy(np.array(added_points_X))
+            #         BestY=np.copy(np.array(added_points_Y))
             
-            FE+=BestX.shape[0]
-            show_process.update(BestX.shape[0])
+            # FE+=BestX.shape[0]
+            # # show_process.update(BestX.shape[0])
             
-            BestY=self.evaluate(BestX)
-            XPop=np.vstack((XPop,BestX))
-            YPop=np.vstack((YPop,BestY))
-        
-        FrontNo, _ =nsga_ii.NDSort(YPop, YPop.shape[0])
-        idx=np.where(FrontNo==1)
-        ND_XPop=XPop[idx]
-        ND_YPop=YPop[idx]
-        
-        return ND_XPop, ND_YPop
+            # BestY=self.evaluate(BestX)
+            # XPop=np.vstack((XPop,BestX))
+            # YPop=np.vstack((YPop,BestY))      
+        return self.result
           
         
                 

@@ -98,7 +98,12 @@ class Population():
             
     def argsort(self):
         
-        args=np.argsort(self.objs.ravel())
+        if self.nOutput==1:
+            args=np.argsort(self.objs.ravel())
+        else:
+            frontNo, _=NDSort(self)
+            crowDis=crowdingDistance(self, frontNo)
+            args = np.lexsort((-crowDis, frontNo))
         
         return args
     
@@ -117,7 +122,8 @@ class Population():
     
     def evaluate(self, problem):
         
-        self.objs=problem.evaluate(self.decs)
+        decs=problem._transform_special_parameters(np.copy(self.decs))
+        self.objs=problem.evaluate(decs)
         self.nOutput=self.objs.shape[1]
         self.evaluated=True
         

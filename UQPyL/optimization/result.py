@@ -19,9 +19,10 @@ class Result():
         
         self.algorithm=algorithm
         
-    def update(self, pop: Population, FEs, iter, type=0):
+    def update(self, pop: Population, problem, FEs, iter, type=0):
     
-        decs=np.copy(pop.decs); objs=np.copy(pop.objs)
+        decs=problem._transform_special_parameters(np.copy(pop.decs))
+        objs=np.copy(pop.objs)
         if type==0:
             
             if self.bestObj==None or np.min(objs)<self.bestObj:
@@ -40,6 +41,9 @@ class Result():
         else:
             
             bests=pop.getBest()
+            bestDecs=problem._transform_special_parameters(np.copy(bests.decs))
+            bestObjs=bests.objs
+            
             optimum=self.algorithm.problem.getOptimum()
             
             igdValue=None; hvValue=None
@@ -48,15 +52,15 @@ class Result():
                 igdValue=IGD(bests, optimum)
             
             hvValue=HV(bests)
-            self.historyDecs[FEs]=pop.decs
-            self.historyObjs[FEs]=pop.objs
-            self.historyBestDecs[FEs]= bests.decs
-            self.historyBestMetrics[FEs]= [(hvValue, igdValue) if igdValue is not None else (hvValue)]
-            self.historyBestObjs[FEs]= bests.objs
+            self.historyDecs[FEs]=decs
+            self.historyObjs[FEs]=objs
+            self.historyBestDecs[FEs]= bestDecs
+            self.historyBestMetrics[FEs]= [[hvValue, igdValue] if igdValue is not None else [hvValue]]
+            self.historyBestObjs[FEs]= bestObjs
             self.historyFEs[FEs]=iter
-            self.bestDec=bests.decs
-            self.bestObj=bests.objs
-            self.bestMetric=(hvValue, igdValue) if igdValue is not None else (hvValue)
+            self.bestDec=bestDecs
+            self.bestObj=bestObjs
+            self.bestMetric=[hvValue, igdValue] if igdValue is not None else [hvValue]
             self.appearFEs=FEs
             self.appearIters=iter
 

@@ -7,13 +7,16 @@ def decoratorRescale(func):
     def wrapper(self, *args, **kwargs):
         result=func(self, *args, **kwargs)
         
-        for arg in args:
-            if isinstance(arg, Problem):
-                return arg._unit_X_transform_to_bound(result)
+        if len(args)>=3:
+            
+            problem=args[2]
+            return problem._unit_X_transform_to_bound(result)
         
-        for key, value in kwargs.items():
-            if isinstance(value, Problem):
-                return value._unit_X_transform_to_bound(result)
+        if 'problem' in kwargs:
+            problem=kwargs['problem']
+            
+            if problem:
+                return problem._unit_X_transform_to_bound(result)
 
         return result
     return wrapper

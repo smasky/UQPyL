@@ -1,3 +1,4 @@
+#Temp
 import sys
 sys.path.append(".")
 
@@ -14,12 +15,12 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 import numpy as np
 from scipy.stats import pearsonr
+
 from UQPyL.utility.metrics import r_square
-from UQPyL.problems import ProblemABC
+from UQPyL.problems import ProblemABC as Problem
 
 #C++ Module
 from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
-
 
 def func_NSE_inverse(true_values, sim_values):
     return -1*r_square(true_values.reshape(-1,1), sim_values.reshape(-1,1))
@@ -42,12 +43,19 @@ def func_KGE_inverse(true_values, sim_values):
     kge = 1 - np.sqrt((r - 1)**2 + (beta - 1)**2 + (gamma - 1)**2)
     return -1*kge
 
-OBJTYPE={1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_Pbias", 5: "func_KGE_inverse"}
-VARNAME={6: "FLOW_OUT", 47: "TOT_N", 48: "TOT_P" }
-OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE"}
+def func_Mean(true_values, sim_values):
+    return np.mean(sim_values)
 
-class SWAT_UQ_Flow(ProblemABC):
-    hru_suffix=["chm", "gw", "hru", "mgt", "sdr", "sep", "sol"]
+def func_Sum(true_values, sim_values):
+    return np.sum(sim_values)
+
+OBJTYPE={1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_Pbias", 5: "func_KGE_inverse", 6: "func_Mean", 7:"func_Sum"}
+VARNAME={6: "FLOW_OUT", 47: "TOT_N", 48: "TOT_P" }
+OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
+
+class SWAT_UQ(Problem):
+    
+    hru_suffix=["chm", "gw", "hru", "mgt", "sdr", "sep", "sol", "ops"]
     watershed_suffix=["pnd", "rte", "sub", "swq", "wgn", "wus"]
     model_infos={}
     observe_infos={}
@@ -56,11 +64,12 @@ class SWAT_UQ_Flow(ProblemABC):
     n_sub=0
     
     def __init__(self, work_path: str, paras_file_name: str, 
-                 observed_file_name: str, swat_exe_name: str, temp_path:str=None, 
+                 observed_file_name: str, swat_exe_name: str, special_paras_file: str=None, temp_path:str=None,
+                 user_eval: callable=None, nOutput=None,
                  max_threads: int=12, num_parallel: int=5, verbose=False):
         
         self.verbose=verbose
-        
+
         #create the space for running multiple instance of SWAT
         if temp_path is None:
             #if dont set the temp_path, create a temp dir
@@ -72,14 +81,18 @@ class SWAT_UQ_Flow(ProblemABC):
             os.makedirs(temp_path)
             self.work_temp_dir=temp_path
             self.use_temp_dir=False
+        
         #basic setting
         self.work_path=work_path
         self.paras_file_name=paras_file_name
         self.observed_file_name=observed_file_name
+        self.special_paras_file=special_paras_file
         self.swat_exe_name=swat_exe_name
         
         self.max_workers=max_threads
         self.num_parallel=num_parallel
+
+        self.user_eval=user_eval
         
         if self.verbose:
             print("="*25+"basic setting"+"="*25)
@@ -97,6 +110,7 @@ class SWAT_UQ_Flow(ProblemABC):
         
         self.work_path_queue=queue.Queue()
         self.work_temp_dirs=[]
+        
         for i in range(num_parallel):
             path=os.path.join(self.work_temp_dir, "instance{}".format(i))
             self.work_temp_dirs.append(path)
@@ -104,11 +118,41 @@ class SWAT_UQ_Flow(ProblemABC):
                 
         with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
             futures = [executor.submit(copy_origin_to_tmp, self.work_path, work_temp) for work_temp in self.work_temp_dirs]
+        
         for future in futures:
             future.result()
-                       
-        super().__init__(nInput=len(self.paras_list), nOutput=self.n_output, lb=self.lb, ub=self.ub, var_type=[0]*len(self.paras_list), var_set=None)
-    #------------------------interface function-----------------------#
+        
+        if nOutput is None:
+            self.n_output=self.txt_objs
+        else:
+            self.n_output=nOutput
+            
+        super().__init__(nInput=len(self.paras_list), nOutput=self.n_output, lb=self.lb, ub=self.ub, var_type=self.disc_var, var_set=self.disc_range)
+
+    def evaluate(self, X):
+        
+        n=X.shape[0]
+        n_out=self.n_output
+        Y=np.zeros((n,n_out))
+        
+        variables=self._subprocess(X[0, :], 0)
+        
+        with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
+            futures=[executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
+        
+            for _ , future in enumerate(futures):
+                variables=future.result()
+                
+                id=variables['id']
+                if self.user_obj is None:
+                    #use default
+                    Y[id]=variables['txtObjs']
+                else:
+                    #use user define
+                    Y[id]=self.user_func(variables)
+
+        return Y
+    
     def _subprocess(self, input_x, id):
         
         work_path=self.work_path_queue.get()
@@ -123,12 +167,12 @@ class SWAT_UQ_Flow(ProblemABC):
             text=True)
         process.wait()
         
-        total_objs=self.n_output
+        total_objs=self.txt_objs
         data_infos=self.observe_infos["observe_data"]
         obj_comb=self.observe_infos["obj_comb"]
         
         obj_array=np.zeros(total_objs)
-        
+        sim_series=[]
         for obj_id in range(1, total_objs+1):
             series_comb=obj_comb[obj_id]
             v_obj=0
@@ -151,35 +195,324 @@ class SWAT_UQ_Flow(ProblemABC):
                 sim_value=np.concatenate(sim_value_list, axis=0)
                 obj_value=eval(OBJTYPE[obj_type])(observed_value, sim_value)
                 v_obj+=obj_value*weight
+                sim_series.append(sim_value)
             obj_array[obj_id-1]=v_obj
             
         self.work_path_queue.put(work_path)
-        return (id, obj_array)
+        
+        #txt_objs txt_sim_series x
+        variables={}
+        variables['Objs']=obj_array
+        variables['SimSeries']=sim_series
+        variables['x']=input_x
+        variables['id']=id
+        return variables
     
-    def evaluate(self, X):
-        n=X.shape[0]
-        n_out=self.n_output
-        Y=np.zeros((n,n_out))
+    def _set_values(self, work_path, paras_values):
         
-        for i in range(n):
-            id, obj_value=self._subprocess(X[i,:], i)
-            Y[id, :]=obj_value
-        
-        if n<self.num_parallel:
-            for i in range(n):
-                id, obj_value=self._subprocess(X[i,:], i)
-                Y[id, :]=obj_value
-        else:
-            with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
-                futures=[executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures=[]
+            for file_name, infos in self.file_var_info.items():
+                future = executor.submit(write_value_to_file, work_path, file_name, 
+                                         infos["name"], infos["default"], 
+                                         infos["index"], infos["mode"],  infos["position"], infos["type"],
+                                         paras_values.ravel())
+                futures.append(future)
             
-            for i, future in enumerate(futures):
-                 id, obj_value=future.result()
-                 Y[id, :]=obj_value
-                  
-        return Y
-    #---------------------private function------------------------------#
-    def _initial(self): 
+            for future in futures:
+                res=future.result()
+    
+    def _get_observed_data(self):
+        file_path=os.path.join(self.work_path, self.observed_file_name)
+        rch_ids=[]
+        var_cols=[]
+        rch_weights=[]
+        obj_types=[]
+        data=[]
+        
+        print_flag=self.model_infos["print_flag"]
+        
+        try:
+            with open(file_path, "r") as f:
+                
+                lines=f.readlines()
+                
+                pattern_id=re.compile(r'REACH_ID_(\d+)\s+')
+                pattern_col=re.compile(r'VAR_COL_(\d+)\s+')
+                pattern_type=re.compile(r'TYPE_(\d+)\s+')
+                pattern_obj=re.compile(r'OBJ_(\d+)\s+')
+                pattern_value=re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
+                
+                total_series=int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
+                num_objs=int(re.search(r'\d+', lines[1]).group())
+                
+                obj_comb={}
+                obj_ids=[]
+                for i in range(1, num_objs+1):
+                    obj_comb.setdefault(i, [])
+                
+                i=2; series_id=0
+                while i<len(lines):
+                    line=lines[i]
+                    match_rch= pattern_id.match(line)
+                    
+                    if match_rch:
+                        series_id+=1
+                        
+                        rch_id=int(match_rch.group(1))
+                        rch_ids.append(rch_id)
+                        
+                        var_col=int(pattern_col.match(lines[i+1]).group(1))
+                        var_cols.append(var_col)
+                        
+                        obj_type=int(pattern_type.match(lines[i+2]).group(1))
+                        obj_types.append(obj_type)
+                        
+                        obj_id=int(pattern_obj.match(lines[i+3]).group(1))
+                        obj_comb[obj_id].append(series_id)
+                        obj_ids.append(obj_id)
+                        
+                        weight=float(re.search(r'\d+\.?\d*',lines[i+4]).group())
+                        rch_weights.append(weight)
+                        
+                        num_data=int(re.search(r'\d+', lines[i+5]).group())
+                        
+                        i=i+6
+                        
+                        line=lines[i]
+                        while pattern_value.match(line) is None:
+                            i+=1
+                            line=lines[i]   
+                               
+                        n=0
+                        while True:
+                            line=lines[i];n+=1
+                            match_data = pattern_value.match(line)
+                            _, time, year = map(int, match_data.groups()[:-1])
+                            value = float(match_data.groups()[-1])
+                            if print_flag==0:
+                                years=year-self.model_infos["begin_date"].year
+                                if years==0:
+                                    index=time-self.model_infos["begin_date"].month
+                                else:
+                                    index=time+12-self.model_infos["begin_date"].month+(years-1)*12
+                            else:
+                                index=(datetime(year, 1, 1)+timedelta(days=time-1)-self.model_infos["begin_record"]).days
+                            data.append([series_id, rch_id, var_col, obj_type, obj_id, weight, int(index), int(year), int(time), value])
+                            if n==num_data:
+                                break
+                            else:
+                                i+=1              
+                    i+=1
+        except FileNotFoundError:
+            raise FileNotFoundError("The observed data file is not found, please check the file name!")
+        
+        except Exception as e:
+            raise ValueError("There is an error in observed data file, please check!")
+        
+        if total_series!=series_id:
+            raise ValueError("The number of reaches in observed.txt is not equal to the number of reaches in flow data!")
+        
+        # dtype = {'series_id': int, 'rch_id': int, 'var_col': int, 'obj_type': int, 'obj_id': int, 'weight': float, 'index': int, 'year': int, 'time': int, 'value': float}                     
+        observed_data = pd.DataFrame(data, columns=['series_id', 'rch_id', 'var_col', 'obj_type', 'obj_id', 'weight','index', 'year', 'time', 'value'])
+                                     
+        data_infos=[]
+        for series_id in range(0, total_series):
+            id=series_id+1
+            data=observed_data.query('series_id==@id')
+            data_value=data['value'].to_numpy(dtype=float)
+            data_index=data['index'].to_numpy(dtype=int)
+            read_lines=self._get_lines_for_output_(data_index)
+            data_infos.append((series_id, rch_ids[series_id], var_cols[series_id], obj_types[series_id], obj_ids[series_id], rch_weights[series_id],  read_lines, data_value)) #TODO
+
+        self.observe_infos["total_series"]=total_series
+        self.observe_infos["observe_data"]=data_infos
+        self.observe_infos["obj_comb"]=obj_comb
+        
+        self.txt_objs=num_objs
+        # self.n_output=num_objs #TODO
+
+        if self.verbose:
+            print("="*25+"Observed Information"+"="*25)
+            print("The number of observed data series is: ", total_series)
+            print("The number of objective functions is: ", num_objs)
+            series_id_formatted="{:^10}".format("Series_id")
+            rch_formatted="{:^10}".format("Reach_id")
+            variable_formatted= "{:^10}".format("Variable")
+            obj_type_formatted= "{:^10}".format("Obj_type")
+            obj_id_formatted= "{:^10}".format("Obj_id")
+            weight_formatted= "{:^10}".format("Weight")
+            data_formatted= "{:<30}".format("Read_lines")
+            print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
+            for obj_id, series in obj_comb.items():
+                for id in series:
+                    i=id-1
+                    series_id_formatted="{:^10}".format(id)
+                    rch_formatted="{:^10}".format(data_infos[i][1])
+                    variable_formatted= "{:^10}".format(VARNAME[data_infos[i][2]])
+                    obj_type_formatted= "{:^10}".format(OBJTYPENAME[data_infos[i][3]])
+                    obj_id_formatted= "{:^10}".format(data_infos[i][4])
+                    weight_formatted= "{:^10}".format(data_infos[i][5])
+                    lines=data_infos[i][6]
+                    line_str=""
+                    for line in lines:
+                        line_str+=str(line[0])+"-"+str(line[1])+" "
+                    data_formatted= "{:<30}".format(line_str)
+                    print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
+            print("="*70)
+        
+    def _record_default_values(self):
+        """
+        record default values from the swat file
+        """
+        
+        var_infos_path=os.path.join(self.work_path, self.paras_file_name)
+        low_bound=[]
+        up_bound=[]
+        disc_var=[]
+        disc_set=[]
+        var_name=[]
+        mode=[]
+        assign_hru_id=[]
+        
+        with open(var_infos_path, 'r') as f:
+            
+            lines=f.readlines()
+            
+            for line in lines:
+                tmp_list=line.split()
+                var_name.append(tmp_list[0])
+                mode.append(tmp_list[1])
+                op_type=tmp_list[2]
+                lower_upper=tmp_list[3].split("_")
+                
+                if op_type=="c":
+                    low_bound.append(float(lower_upper[0]))
+                    up_bound.append(float(lower_upper[1]))
+                    disc_set.append(0)
+                    disc_var.append(0)
+                    
+                elif op_type=="i":
+                    low_bound.append(float(lower_upper[0]))
+                    up_bound.append(float(lower_upper[-1]))
+                    disc_set.append(0)
+                    disc_var.append(1)
+                    
+                else:
+                    low_bound.append(0)
+                    up_bound.append(1)
+                    disc_var.append(2)
+                    disc_set.append([float(e) for e in lower_upper])
+                
+                assign_hru_id.append(tmp_list[4:])
+        
+        self.lb = np.array(low_bound).reshape(1,-1)
+        self.ub = np.array(up_bound).reshape(1,-1)
+        self.mode = mode
+        self.paras_list = var_name
+        self.x_labels = self.paras_list
+        self.disc_range = disc_set
+        self.disc_var = disc_var
+        self.n_input = len(self.paras_list)
+        
+        if self.verbose:
+            print("="*50+"Parameter Information"+"="*50)
+            name_formatted="{:^20}".format("Parameter name")
+            type_formatted="{:^7}".format("Type")
+            mode_formatted= "{:^7}".format("Mode")
+            low_bound_formatted="{:^15}".format("Lower bound")
+            up_bound_formatted="{:^15}".format("Upper bound")
+            assign_hru_id_formatted="{:^20}".format("HRU ID or Sub_HRU ID")
+            print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
+            for i in range(len(self.paras_list)):
+                name_formatted="{:^20}".format(self.paras_list[i])
+                type_formatted="{:^7}".format("Float" if self.disc_var[i]==0 else "int")
+                mode_formatted= "{:^7}".format(self.mode[i])
+                low_bound_formatted="{:^15}".format(self.lb[0][i])
+                up_bound_formatted="{:^15}".format(self.ub[0][i])
+                assign_hru_id_formatted="{:^20}".format(" ".join(assign_hru_id[i]))
+                print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
+            print("="*120)
+            print("\n"*1)
+        self.file_var_info={}
+        
+        watershed_hru=self.model_infos["watershed_hru"]
+        watershed_list=self.model_infos["watershed_list"]
+        hru_list=self.model_infos["hru_list"]
+        
+        for i, element in enumerate(self.paras_list):
+            
+            suffix=self.paras_file.query('para_name==@element')['file_name'].values[0]
+            position=self.paras_file.query('para_name==@element')['position'].values[0]
+            
+            if(self.paras_file.query('para_name==@element')['type'].values[0]=="int"):
+                data_type_=0
+            else:
+                data_type_=1
+            
+            if suffix in self.hru_suffix:
+                if assign_hru_id[i][0]=="all":
+                    files=[e+".{}".format(suffix) for e in hru_list]
+                else:
+                    files=[]
+                    for comb in assign_hru_id[i]:
+                        if "(" not in comb:
+                            code=f"{'0' * (9 - 4 - len(comb))}{comb}{'0'*4}"
+                            for hru in watershed_hru[code]:
+                                files.append(f"{hru}.{suffix}")
+                        else:
+                            sub=comb.split("(")[0]
+                            hru=comb.split("(")[1].strip(")").split(',')
+                            for e in hru:
+                                code=f"{'0' * (9 - 4 - len(sub))}{sub}{'0'*(4-len(e))}{e}"
+                                files.append(f"{code}.{suffix}")
+                                
+            elif suffix in self.watershed_suffix:
+                if assign_hru_id[i][0]=="all":
+                    files=[e+"."+suffix for e in watershed_list]
+                else:
+                    files=[]
+                    for e in assign_hru_id[i]: 
+                        code=f"{'0' * (9 - 4 - len(e))}{e}{'0'*4}"
+                        files.append(code+"."+suffix)
+                    
+            elif suffix=="bsn":
+                files=["basins.bsn"]
+            
+            for file in files:
+                self.file_var_info.setdefault(file,{})
+                self.file_var_info[file].setdefault("index", [])
+                self.file_var_info[file]["index"].append(i)
+                self.file_var_info[file].setdefault("mode", [])
+                if self.mode[i]=="v":
+                    self.file_var_info[file]["mode"].append(0)
+                elif self.mode[i]=="r":
+                    self.file_var_info[file]["mode"].append(1)
+                elif self.mode[i]=="a":
+                    self.file_var_info[file]["mode"].append(2)
+                
+                self.file_var_info[file].setdefault("name", [])
+                self.file_var_info[file]["name"].append(element)
+                self.file_var_info[file].setdefault("position",[])
+                self.file_var_info[file]["position"].append(position)
+                self.file_var_info[file].setdefault("type", [])
+                self.file_var_info[file]["type"].append(data_type_)
+        
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures=[]
+            for file_name, infos in self.file_var_info.items():
+                futures.append(executor.submit(read_value_swat, self.work_path, file_name , infos["name"], infos["position"], 1))
+        
+        for future in futures:
+            res=future.result()
+            for key, items in res.items():
+                values=' '.join(str(value) for value in items)
+                paraName, file_name=key.split('|')
+                self.file_var_info[file_name].setdefault("default", {})
+                self.file_var_info[file_name]["default"][paraName]=values
+          
+    def _initial(self):
+        
         paras=["IPRINT", "NBYR", "IYR", "IDAF", "IDAL", "NYSKIP"]
         pos=["default"]*len(paras)
         dict_values=read_value_swat(self.work_path, "file.cio", paras, pos, 0)
@@ -224,8 +557,16 @@ class SWAT_UQ_Flow(ProblemABC):
         self.model_infos["n_rch"]=len(self.model_infos["watershed_list"])
         self.n_rch=self.model_infos["n_rch"]
         
+        #read the paras file
         self.paras_file=pd.read_excel(os.path.join(self.work_path, 'SWAT_paras_files.xlsx'), index_col=0)
-
+        #for special paras file
+        if self.special_paras_file is not None:
+            with open(os.path.join(self.work_path, self.special_paras_file), 'r') as f:
+                lines=f.readlines()
+                for line in lines:
+                    tmp_list=line.split()
+                    self.paras_file.loc[tmp_list[0]]=tmp_list[1:]
+        
         if self.verbose:
             print("="*25+"Model Information"+"="*25)
             print("The time period of simulation is: ", self.model_infos["begin_date"].strftime("%Y%m%d"), " to ", self.model_infos["end_date"].strftime("%Y%m%d"))
@@ -240,167 +581,7 @@ class SWAT_UQ_Flow(ProblemABC):
             print("="*70)
             print("\n"*1)
             
-    def __del__(self):
-        if self.used_temp_dir:
-            os.makedirs(self.work_temp_dir)
-    
-    def _set_values(self, work_path, paras_values):
-        
-        # for file_name, infos in self.file_var_info.items():
-        #     write_value_to_file(work_path, file_name, 
-        #                        infos["name"], infos["default"], 
-        #                        infos["index"], infos["mode"],  infos["position"], infos["type"],
-        #                        paras_values.ravel())
-              
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            futures=[]
-            for file_name, infos in self.file_var_info.items():
-                future = executor.submit(write_value_to_file, work_path, file_name, 
-                                         infos["name"], infos["default"], 
-                                         infos["index"], infos["mode"],  infos["position"], infos["type"],
-                                         paras_values.ravel())
-                futures.append(future)
-            
-            for future in futures:
-                res=future.result()
-              
-    def _get_observed_data(self):
-        file_path=os.path.join(self.work_path, self.observed_file_name)
-        rch_ids=[]
-        var_cols=[]
-        rch_weights=[]
-        obj_types=[]
-        data=[]
-        
-        print_flag=self.model_infos["print_flag"]
-        
-        try:
-            with open(file_path, "r") as f:
-                
-                lines=f.readlines()
-                
-                pattern_id=re.compile(r'REACH_ID_(\d+)\s+')
-                pattern_col=re.compile(r'VAR_COL_(\d+)\s+')
-                pattern_type=re.compile(r'TYPE_(\d+)\s+')
-                pattern_obj=re.compile(r'OBJ_(\d+)\s+')
-                pattern_value=re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
-                
-                total_series=int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
-                num_objs=int(re.search(r'\d+', lines[1]).group())
-                
-                obj_comb={}
-                obj_ids=[]
-                for i in range(1, num_objs+1):
-                    obj_comb.setdefault(i, [])
-                
-                i=2; series_id=0
-                while i<len(lines):
-                    line=lines[i]
-                    match_rch= pattern_id.match(line)
-                    if match_rch:
-                        series_id+=1
-                        
-                        rch_id=int(match_rch.group(1))
-                        rch_ids.append(rch_id)
-                        
-                        var_col=int(pattern_col.match(lines[i+1]).group(1))
-                        var_cols.append(var_col)
-                        
-                        obj_type=int(pattern_type.match(lines[i+2]).group(1))
-                        obj_types.append(obj_type)
-                        
-                        obj_id=int(pattern_obj.match(lines[i+3]).group(1))
-                        obj_comb[obj_id].append(series_id)
-                        obj_ids.append(obj_id)
-                        
-                        weight=float(re.search(r'\d+\.?\d*',lines[i+4]).group())
-                        rch_weights.append(weight)
-                        
-                        num_data=int(re.search(r'\d+', lines[i+5]).group())
-                        
-                        i=i+6
-                        
-                        line=lines[i]
-                        while pattern_value.match(line) is None:
-                            i+=1
-                            line=lines[i]   
-                            
-                        n=0
-                        while True:
-                            line=lines[i];n+=1
-                            match_data = pattern_value.match(line)
-                            _, time, year = map(int, match_data.groups()[:-1])
-                            value = float(match_data.groups()[-1])
-                            if print_flag==0:
-                                years=year-self.model_infos["begin_date"].year
-                                if years==0:
-                                    index=time-self.model_infos["begin_date"].month
-                                else:
-                                    index=time+12-self.model_infos["begin_date"].month+(years-1)*12
-                            else:
-                                index=(datetime(year, 1, 1)+timedelta(days=time-1)-self.model_infos["begin_record"]).days
-                            data.append([series_id, rch_id, var_col, obj_type, obj_id, weight, int(index), int(year), int(time), value])
-                            if n==num_data:
-                                break
-                            else:
-                                i+=1              
-                    i+=1
-        except FileNotFoundError:
-            raise FileNotFoundError("The observed data file is not found, please check the file name!")
-        
-        except Exception as e:
-            raise ValueError("There is an error in observed data file, please check!")
-        
-        if total_series!=series_id:
-            raise ValueError("The number of reaches in observed.txt is not equal to the number of reaches in flow data!")
-        
-        # dtype = {'series_id': int, 'rch_id': int, 'var_col': int, 'obj_type': int, 'obj_id': int, 'weight': float, 'index': int, 'year': int, 'time': int, 'value': float}                     
-        observed_data = pd.DataFrame(data, columns=['series_id', 'rch_id', 'var_col', 'obj_type', 'obj_id', 'weight','index', 'year', 'time', 'value'])
-                                     
-        data_infos=[]
-        for series_id in range(0, total_series):
-            id=series_id+1
-            data=observed_data.query('series_id==@id')
-            data_value=data['value'].to_numpy(dtype=float)
-            data_index=data['index'].to_numpy(dtype=int)
-            read_lines=self._get_lines_for_output(data_index)
-            data_infos.append((series_id, rch_ids[series_id], var_cols[series_id], obj_types[series_id], obj_ids[series_id], rch_weights[series_id],  read_lines, data_value))
-
-        self.observe_infos["total_series"]=total_series
-        self.observe_infos["observe_data"]=data_infos
-        self.observe_infos["obj_comb"]=obj_comb
-        self.n_output=num_objs
-
-        if self.verbose:
-            print("="*25+"Observed Information"+"="*25)
-            print("The number of observed data series is: ", total_series)
-            print("The number of objective functions is: ", num_objs)
-            series_id_formatted="{:^10}".format("Series_id")
-            rch_formatted="{:^10}".format("Reach_id")
-            variable_formatted= "{:^10}".format("Variable")
-            obj_type_formatted= "{:^10}".format("Obj_type")
-            obj_id_formatted= "{:^10}".format("Obj_id")
-            weight_formatted= "{:^10}".format("Weight")
-            data_formatted= "{:<30}".format("Read_lines")
-            print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
-            for obj_id, series in obj_comb.items():
-                for id in series:
-                    i=id-1
-                    series_id_formatted="{:^10}".format(id)
-                    rch_formatted="{:^10}".format(data_infos[i][1])
-                    variable_formatted= "{:^10}".format(VARNAME[data_infos[i][2]])
-                    obj_type_formatted= "{:^10}".format(OBJTYPENAME[data_infos[i][3]])
-                    obj_id_formatted= "{:^10}".format(data_infos[i][4])
-                    weight_formatted= "{:^10}".format(data_infos[i][5])
-                    lines=data_infos[i][6]
-                    line_str=""
-                    for line in lines:
-                        line_str+=str(line[0])+"-"+str(line[1])+" "
-                    data_formatted= "{:<30}".format(line_str)
-                    print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
-            print("="*70)
-            
-    def _get_lines_for_output(self, index):
+    def _get_lines_for_output_(self, index):
         
         index.ravel().sort()
         cur_group=[index[0]]; lines_group=[]
@@ -438,7 +619,7 @@ class SWAT_UQ_Flow(ProblemABC):
                 years=start//12
                 start_in_year=start
                 end_in_year=years*12+11
-                if end<end_in_year:
+                if end<=end_in_year:
                     lines.append([10+n_rch*start_in_year+n_rch*years, 9+n_rch*(end+1)+n_rch*years])
                     return lines
                 else:
@@ -456,167 +637,45 @@ class SWAT_UQ_Flow(ProblemABC):
         elif print_flag==1:
             lines=[[10+n_rch*start, 9+n_rch*(end+1)]]
             return lines
-            
-            
-    def _record_default_values(self):
-        """
-        record default values from the swat file
-        """
-        var_infos_path=os.path.join(self.work_path, self.paras_file_name)
-        low_bound=[]
-        up_bound=[]
-        disc_var=[]
-        var_name=[]
-        mode=[]
-        assign_hru_id=[]
-        discrete_bound=[]
-        with open(var_infos_path, 'r') as f:
-            lines=f.readlines()
-            for line in lines:
-                tmp_list=line.split()
-                var_name.append(tmp_list[0])
-                mode.append(tmp_list[1])
-                op_type=tmp_list[2]
-                lower_upper=tmp_list[3].split("_")
-                
-                if op_type=="c":
-                    low_bound.append(float(lower_upper[0]))
-                    up_bound.append(float(lower_upper[1]))
-                    discrete_bound.append(0)
-                    disc_var.append(0)
-                else:
-                    low_bound.append(float(lower_upper[0]))
-                    up_bound.append(float(lower_upper[-1]))
-                    discrete_bound.append([float(e) for e in lower_upper])
-                    disc_var.append(1)
-                    
-                assign_hru_id.append(tmp_list[4:])
-        
-        self.lb= np.array(low_bound).reshape(1,-1)
-        self.ub= np.array(up_bound).reshape(1,-1)
-        self.mode= mode
-        self.paras_list=var_name
-        self.x_labels=self.paras_list
-        self.disc_range=discrete_bound
-        self.disc_var=disc_var
-        self.n_input=len(self.paras_list)
-        
-        if self.verbose:
-            print("="*50+"Parameter Information"+"="*50)
-            name_formatted="{:^20}".format("Parameter name")
-            type_formatted="{:^7}".format("Type")
-            mode_formatted= "{:^7}".format("Mode")
-            low_bound_formatted="{:^15}".format("Lower bound")
-            up_bound_formatted="{:^15}".format("Upper bound")
-            assign_hru_id_formatted="{:^20}".format("HRU ID or Sub_HRU ID")
-            print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
-            for i in range(len(self.paras_list)):
-                name_formatted="{:^20}".format(self.paras_list[i])
-                type_formatted="{:^7}".format("Float" if self.disc_var[i]==0 else "int")
-                mode_formatted= "{:^7}".format(self.mode[i])
-                low_bound_formatted="{:^15}".format(self.lb[0][i])
-                up_bound_formatted="{:^15}".format(self.ub[0][i])
-                assign_hru_id_formatted="{:^20}".format(" ".join(assign_hru_id[i]))
-                print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
-            print("="*120)
-            print("\n"*1)
-        self.file_var_info={}
-        
-        self.data_types=[]
-        watershed_hru=self.model_infos["watershed_hru"]
-        watershed_list=self.model_infos["watershed_list"]
-        hru_list=self.model_infos["hru_list"]
-        for i, element in enumerate(self.paras_list):
-            element=element.split('@')[0]
-            suffix=self.paras_file.query('para_name==@element')['file_name'].values[0]
-            position=self.paras_file.query('para_name==@element')['position'].values[0]
-            
-            if(self.paras_file.query('para_name==@element')['type'].values[0]=="int"):
-                data_type_=0
-            else:
-                data_type_=1
-            self.data_types.append(data_type_)
-            if suffix in self.hru_suffix:
-                if assign_hru_id[i][0]=="all":
-                    files=[e+".{}".format(suffix) for e in hru_list]
-                else:
-                    files=[]
-                    for ele in assign_hru_id[i]:
-                        if "_" not in ele:
-                            code=f"{'0' * (9 - 4 - len(ele))}{ele}{'0'*4}"
-                            for e in watershed_hru[code]:
-                                files.append(e+"."+suffix)
-                        else:
-                            hru_id, bsn_id=ele.split('_')
-                            code=f"{'0' * (9 - 4 - len(bsn_id))}{bsn_id}{'0'*(4-len(hru_id))}{bsn_id}"
-                            files.append(code+"."+suffix)
-            elif suffix in self.watershed_suffix:
-                if assign_hru_id[i][0]=="all":
-                    files=[e+"."+suffix for e in watershed_list]
-                else:
-                    files=[e+"."+suffix for e in assign_hru_id[i]]
-            elif suffix=="bsn":
-                files=["basins.bsn"]
-            
-            for file in files:
-                self.file_var_info.setdefault(file,{})
-                self.file_var_info[file].setdefault("index", [])
-                self.file_var_info[file]["index"].append(i)
-                self.file_var_info[file].setdefault("mode", [])
-                if self.mode[i]=="v":
-                    self.file_var_info[file]["mode"].append(0)
-                elif self.mode[i]=="r":
-                    self.file_var_info[file]["mode"].append(1)
-                elif self.mode[i]=="a":
-                    self.file_var_info[file]["mode"].append(2)
-                
-                self.file_var_info[file].setdefault("name", [])
-                self.file_var_info[file]["name"].append(element)
-                self.file_var_info[file].setdefault("position",[])
-                self.file_var_info[file]["position"].append(position)
-                self.file_var_info[file].setdefault("type", [])
-                self.file_var_info[file]["type"].append(data_type_)
-        
-        # for file_name, infos in self.file_var_info.items():
-        #     read_value_swat(self.work_path, file_name, infos["name"], infos["position"], 1)   
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            
-            futures=[]
-            for file_name, infos in self.file_var_info.items():
-                futures.append(executor.submit(read_value_swat, self.work_path, file_name , infos["name"], infos["position"], 1))
-        for future in futures:
-            res=future.result()
-            for key, items in res.items():
-                values=' '.join(str(value) for value in items)
-                # print(key, values)
-                paraName, file_name=key.split('|')
-                self.file_var_info[file_name].setdefault("default", {})
-                self.file_var_info[file_name]["default"][paraName]=values
-    def delete(self):
-        shutil.rmtree(self.work_temp_dir)
-            
-file_path="D:\YS_swat\TxtInOut"
-temp_path="D:\\YS_swat\\instance_temp"
-swat_exe_name="swat.exe"
-observed_file_name="ob1.txt"
-paras_file_name="paras_infos.txt"
+    
+#================================================================
 
-swat_cup=SWAT_UQ_Flow(work_path=file_path,
-                    paras_file_name=paras_file_name,
-                    observed_file_name=observed_file_name,
-                    swat_exe_name=swat_exe_name,
-                    temp_path=temp_path,
-                    max_threads=10, num_parallel=5,
-                    verbose=True)
+def evaluate(variables):
+    
+    obj1=variables['txtObjs'][0] #TOT N-MEAN
+    obj2=variables['txtObjs'][1] #TOT P-MEAN
+    
+    x=variables['x']
+    obj3=x[0]*x[1]*x[3]*100+x[2]*x[4]*1000
 
-# x=np.array([-0.052000, 1.247500, 18.303900, 0.163000, 0.020000, 0.110000, 51.000000, 0.098500, 134.992706, 0.510000, 1540.000000, 0.570000, 1.940000]) 
-x=np.array([-0.118800, 6.492550, 1.000, 0.320500, 0.020000, 0.37500, 154.9000,  0.020690, 293.495900, 0.24900, 874.000, 0.666700, 1.00])
+    return (obj1, obj2, obj3)
+    
+file_path="E:\swat_opt\TxtInOut2"
+temp_path="E:\\swat_opt\\temp"
+#from UQPyL.DoE import LHS    
+# swat_cup=SWAT_UQ(work_path=file_path,
+#                     paras_file_name="paras_infos.txt",
+#                     observed_file_name="observed.txt",
+#                     temp_path=temp_path,
+#                     swat_exe_name="SWAT_64rel.exe",
+#                     special_paras_file="special_paras.txt",
+#                     verbose=True,
+#                     user_eval=evaluate,
+#                     nOutput=3,
+#                     max_threads=10, num_parallel=10)  
 
-# x=np.array([])
-a=swat_cup.evaluate(x.reshape(1,-1))
+from UQPyL.optimization import NSGAII, MOASMO
+from UQPyL.surrogates.rbf import RBF
+from UQPyL.surrogates import Mo_Surrogates
+from UQPyL.problems.multi_objective import ZDT1
 
+zdt=ZDT1(nInput=15)
 
-# from UQPyL.optimization import PSO, GA
-# pso=PSO(verboseFreq=1)
-# res=pso.run(problem=swat_cup)
+obj1=RBF()
+obj2=RBF()
+obj3=RBF()
 
+surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2])
+optimizer=NSGAII(maxIterTimes=10000, verbose=False, logFlag=False, saveFlag=False)
+moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, maxFEs=150, saveFlag=True)
+moasmo.run(problem=zdt)

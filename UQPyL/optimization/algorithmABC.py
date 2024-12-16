@@ -30,10 +30,11 @@ class Algorithm(metaclass=abc.ABCMeta):
     def initialize(self, nInit):
         
         lhs=LHS('classic')
-        xInit=lhs.sample(nInit, self.problem.nInput, problem=self.problem)
+        xInit=lhs.sample(nInit, self.problem.nInput)
+        xInit=self.problem._unit_X_transform_to_bound(xInit, discrete=False)
         pop=Population(xInit)
-        self.evaluate(pop); 
-            
+        self.evaluate(pop)
+        
         return pop
     
     @staticmethod
@@ -53,6 +54,7 @@ class Algorithm(metaclass=abc.ABCMeta):
     def evaluate(self, pop):
         
         pop.evaluate(self.problem)
+        
         self.FEs+=pop.nPop
     
     def checkTermination(self):
@@ -88,9 +90,9 @@ class Algorithm(metaclass=abc.ABCMeta):
     def record(self, pop):
         
         if self.problem.nOutput==1:
-            self.result.update(pop, self.FEs, self.iters)
+            self.result.update(pop, self.problem, self.FEs, self.iters)
         else:
-            self.result.update(pop, self.FEs, self.iters, 1)
+            self.result.update(pop, self.problem, self.FEs, self.iters, 1)
             
     def setParameters(self, key, value):
         

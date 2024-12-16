@@ -17,7 +17,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.var_type=np.array(var_type)
         
         if var_set is None:
-            self.var_set={}
+            self.var_set=[]
         else:
             self.var_set=var_set
         
@@ -40,30 +40,34 @@ class ProblemABC(metaclass=abc.ABCMeta):
     
     def _transform_special_parameters(self, X):
         
-        int_indice=np.where(self.var_type==1)[0]
-        if int_indice.size>0:
-            X[:, int_indice]=np.round(X[:, int_indice])
+        discrete_indice=np.where(self.var_type==2)[0]
         
-        if self.var_set is not None:
-            for index, set in self.var_set.items():
-                num_interval=len(set)
-                bins=np.linspace(self.lb[index], self.ub[index], num_interval+1)
-                indices = np.digitize(X[:, index], bins) - 1
-                X[:, index]=np.array([set[i] for i in indices])
+        for index in discrete_indice:
+            S=self.var_set[index]
+            num_interval=len(S)
+            bins=np.linspace(self.lb[0, index], self.ub[0, index], num_interval+1)
+            indices = np.digitize(X[:, index], bins, right=False) - 1
+            indices[indices==num_interval]=num_interval-1
+            X[:, index]=np.array([S[i] for i in indices])
                     
         return X
     
-    def _unit_X_transform_to_bound(self, X):
+    def _unit_X_transform_to_bound(self, X, discrete=True):
         
         X_min=X.min(axis=0)
         X_max=X.max(axis=0)
         
         X_scaled=(X - X_min) / (X_max - X_min)
         X_scaled=X_scaled*(self.ub-self.lb)+self.lb
-        X_scaled=self._transform_special_parameters(X_scaled)
         
-        return X_scaled
-    
+        int_indice=np.where(self.var_type==1)[0]
+        if int_indice.size>0:
+            X[:, int_indice]=np.round(X[:, int_indice])
+            
+        if discrete:
+            X_scaled=self._transform_special_parameters(X_scaled)
+        
+        return X_scaled 
     
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
         
@@ -87,4 +91,28 @@ class ProblemABC(metaclass=abc.ABCMeta):
         bound=bound.ravel()
         if(not bound.shape[0]==self.nInput):
             raise ValueError('the input bound is inconsistent with the input nInputensions')
+    
+# def transform(func):
+#     def wrapper(self, *args, **kwargs):
+#         #transform
         
+#         if len(args)==2:
+#             X=args[0]
+#             T=args[1]
+#         elif len(args)==1:
+#             X=args[0]
+#             T=kwargs['transformX']
+#         else:
+#             X=kwargs['X']
+#             T=kwargs['transformX']
+
+#         if T:
+#             var_type=self.var_type
+#             var_set=self.var_set
+            
+            
+            
+        
+#         result = func(self, *args, **kwargs)
+#         return result
+#     return wrapper
