@@ -544,12 +544,6 @@ class DTLZ7(ProblemABC):
             ))
         ])
         
-        
-        # g = 1 + 9 * np.mean(X[:, self.nOutput:], axis=1)
-        # Y = np.zeros((X.shape[0], self.nOutput))
-        # Y[:, :self.nOutput-1] = X[:, :self.nOutput-1]
-        # Y[:, self.nOutput-1] = (1 + g) * (self.nOutput - np.sum(Y[:, :self.nOutput-1] / (1 + np.repeat(g, self.nOutput-1)) * (1 + np.sin(3*np.pi*Y[:, :self.nOutput-1])), axis=1))
-
         return Y
     
     def get_optimum(self, N):
