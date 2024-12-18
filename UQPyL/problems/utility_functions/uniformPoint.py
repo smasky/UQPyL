@@ -37,6 +37,8 @@ def _NBI(N: int, M:int):
     W = np.maximum(W, 1e-6)
     N = W.shape[0]
     
+    return W, N
+    
 
 def uniformPoint(N: int, M: int, method: Literal['NBI', 'grid']='NBI'):
 

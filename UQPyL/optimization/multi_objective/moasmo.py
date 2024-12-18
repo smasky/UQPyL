@@ -3,6 +3,7 @@ import numpy as np
 from scipy.spatial.distance import cdist
 
 from ...DoE import LHS
+from ..utility_functions import NDSort
 from ...problems import PracticalProblem
 from ...surrogates import Mo_Surrogates
 from ..algorithmABC import Algorithm, Population, Verbose
@@ -58,6 +59,7 @@ class MOASMO(Algorithm):
     def __init__(self, surrogates: Mo_Surrogates=None,
                  optimizer: Algorithm=None,
                  pct: float=0.2, nInit: int=50, nPop: int=50, 
+                 advance_infilling=False,
                  maxFEs: int=1000, 
                  maxIterTimes: int=100,
                  maxTolerateTimes=None, tolerate=1e-6,
@@ -68,6 +70,7 @@ class MOASMO(Algorithm):
         self.setParameters('pct', pct)
         self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
+        self.setParameters('advance_infilling', advance_infilling)
         
         if surrogates is not None:
             self.surrogates=surrogates
@@ -80,6 +83,7 @@ class MOASMO(Algorithm):
         
         pct=self.getParaValue('pct')
         nInit=self.getParaValue('nInit')
+        advance_infilling=self.getParaValue('advance_infilling')
         
         nInfilling=int(pct*nInit)
         
@@ -112,13 +116,47 @@ class MOASMO(Algorithm):
             
             offSpring=Population(decs=res.bestDec, objs=res.bestObj)
             
-            if offSpring.nPop>nInfilling:
-                bestOff=offSpring.getBest(nInfilling)
+            if advance_infilling==False:
+                
+                if offSpring.nPop>nInfilling:
+                    bestOff=offSpring.getBest(nInfilling)
+                else:
+                    bestOff=offSpring
+                    
             else:
-                bestOff=offSpring
+                if offSpring.nPop>nInfilling:
+                    Known_FrontNo, _ =NDSort(pop)
+                    Unknown_FrontNo, _=NDSort(offSpring)
+                    
+                    Known_best_Y=pop.objs[np.where(Known_FrontNo==1)]
+                    Unknown_best_Y=offSpring.objs[np.where(Unknown_FrontNo==1)]
+                    Unknown_best_X=offSpring.decs[np.where(Unknown_FrontNo==1)]
+                    
+                    added_points_Y=[]
+                    added_points_X=[]
+                    
+                    for _ in range(nInfilling):
+                        
+                        if len(added_points_Y)==0:
+                            distances = cdist(Unknown_best_Y, Known_best_Y)
+                        else:
+                            distances = cdist(Unknown_best_Y, np.append(Known_best_Y, added_points_Y, axis=0))
+
+                        max_distance_index = np.argmax(np.min(distances, axis=1))
+                        
+                        added_point = Unknown_best_Y[max_distance_index]
+                        added_points_Y.append(added_point)
+                        added_points_X.append(Unknown_best_X[max_distance_index])
+                        Known_best_Y = np.append(Known_best_Y, [added_point], axis=0)
+                        
+                        Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
+                        Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
+                        
+                    BestX=np.copy(np.array(added_points_X))
+                    BestY=np.copy(np.array(added_points_Y))
+                    bestOff=Population(decs=BestX, objs=BestY)
             
-            self.evaluate(bestOff)
-            
+            self.evaluate(bestOff)  
             pop.add(bestOff)
             self.record(pop)
             

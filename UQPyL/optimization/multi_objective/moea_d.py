@@ -37,7 +37,7 @@ class MOEAD(Algorithm):
                 the maximum number of iterations
     '''
     
-    name="MOEA/D"
+    name="MOEA_D"
     type="MOEA"
     
     def __init__(self, aggregation: Literal['PBI', 'TCH', 'TCH_N', 'TCH_M']= 'PBI',

@@ -70,6 +70,8 @@ class SWAT_UQ(Problem):
         
         self.verbose=verbose
 
+        self.name="SWAT-UQ"
+        
         #create the space for running multiple instance of SWAT
         if temp_path is None:
             #if dont set the temp_path, create a temp dir
@@ -144,12 +146,12 @@ class SWAT_UQ(Problem):
                 variables=future.result()
                 
                 id=variables['id']
-                if self.user_obj is None:
+                if self.user_eval is None:
                     #use default
                     Y[id]=variables['txtObjs']
                 else:
                     #use user define
-                    Y[id]=self.user_func(variables)
+                    Y[id]=self.user_eval(variables)
 
         return Y
     
@@ -642,27 +644,27 @@ class SWAT_UQ(Problem):
 
 def evaluate(variables):
     
-    obj1=variables['txtObjs'][0] #TOT N-MEAN
-    obj2=variables['txtObjs'][1] #TOT P-MEAN
+    obj1=variables['Objs'][0] #TOT N-MEAN
+    obj2=variables['Objs'][1] #TOT P-MEAN
     
     x=variables['x']
-    obj3=x[0]*x[1]*x[3]*100+x[2]*x[4]*1000
+    obj3=x[0]*x[1]/10*4200*57*(x[3]+0.001)+x[2]*4000*600*(x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
 
     return (obj1, obj2, obj3)
     
 file_path="E:\swat_opt\TxtInOut2"
 temp_path="E:\\swat_opt\\temp"
-#from UQPyL.DoE import LHS    
-# swat_cup=SWAT_UQ(work_path=file_path,
-#                     paras_file_name="paras_infos.txt",
-#                     observed_file_name="observed.txt",
-#                     temp_path=temp_path,
-#                     swat_exe_name="SWAT_64rel.exe",
-#                     special_paras_file="special_paras.txt",
-#                     verbose=True,
-#                     user_eval=evaluate,
-#                     nOutput=3,
-#                     max_threads=10, num_parallel=10)  
+from UQPyL.DoE import LHS    
+swat_cup=SWAT_UQ(work_path=file_path,
+                    paras_file_name="paras_infos.txt",
+                    observed_file_name="observed.txt",
+                    temp_path=temp_path,
+                    swat_exe_name="SWAT_64rel.exe",
+                    special_paras_file="special_paras.txt",
+                    verbose=True,
+                    user_eval=evaluate,
+                    nOutput=3,
+                    max_threads=10, num_parallel=10)  
 
 from UQPyL.optimization import NSGAII, MOASMO
 from UQPyL.surrogates.rbf import RBF
@@ -675,7 +677,7 @@ obj1=RBF()
 obj2=RBF()
 obj3=RBF()
 
-surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2])
-optimizer=NSGAII(maxIterTimes=10000, verbose=False, logFlag=False, saveFlag=False)
-moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, maxFEs=150, saveFlag=True)
-moasmo.run(problem=zdt)
+surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2, obj3])
+optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verbose=False, logFlag=False, saveFlag=False)
+moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, advance_infilling=True, maxFEs=300, saveFlag=True)
+moasmo.run(problem=swat_cup)

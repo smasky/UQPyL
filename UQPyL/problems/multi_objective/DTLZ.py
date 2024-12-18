@@ -19,9 +19,9 @@ class DTLZ1(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -33,11 +33,11 @@ class DTLZ1(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ1"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ1 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -58,14 +58,14 @@ class DTLZ1(ProblemABC):
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-            
-        g = 100 * (self.n_input - self.n_output + 1 + \
-           np.sum((X[:, self.n_output:] - 0.5) ** 2 - \
-                  np.cos(20. * np.pi * (X[:, self.n_output:] - 0.5)), axis=1))
         
-        Y = 0.5 * np.tile(1 + g, (1, self.n_output)) \
-            * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), X[:, :self.n_output - 1]]), axis=1)) \
-            * np.hstack([np.ones((X.shape[0], 1)), 1 - X[:, self.n_output - 1::-1]])
+        g = 100 * (self.nInput - self.nOutput + 1 + \
+                   np.sum((X[:, self.nOutput:] - 0.5) ** 2 - \
+                          np.cos(20. * np.pi * (X[:, self.nOutput:] - 0.5)), axis=1))
+        
+        Y = 0.5 * np.tile(1 + g, (self.nOutput, 1)).T \
+            * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), X[:, :self.nOutput - 1]]), axis=1)) \
+            * np.hstack([np.ones((X.shape[0], 1)), 1 - X[:, self.nOutput - 2::-1]])
         
         return Y
     
@@ -75,8 +75,8 @@ class DTLZ1(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from ..utility_functions._uniformPoint import uniformPoint
-        R,_= uniformPoint(N, self.n_output)
+        from ..utility_functions.uniformPoint import uniformPoint
+        R,_= uniformPoint(N, self.nOutput)
         R=R/2
         
         return R
@@ -102,9 +102,9 @@ class DTLZ2(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -116,11 +116,11 @@ class DTLZ2(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ2"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
            
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ2 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -141,10 +141,16 @@ class DTLZ2(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         
-        g = np.sum((X[:, self.n_output:] - 0.5) ** 2, axis=1)
-        Y = np.tile(1 + g, (1, self.n_output)) \
-            * np.fliplr(np.cumprod(np.hstack((np.ones((g.shape[0], 1)), np.cos(X[:, :self.n_output - 1] * np.pi / 2))), axis=1)) \
-            * np.hstack((np.ones((g.shape[0], 1)), np.sin(X[:, self.n_output - 1::-1] * np.pi / 2)))
+        g = np.sum((X[:, self.nOutput:] - 0.5) ** 2, axis=1)
+        ones_col = np.ones((g.shape[0], 1))
+        cos_prod = np.cos(X[:, :self.nOutput-1] * np.pi / 2)
+        sin_vals = np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)
+        
+        cumprod_part = np.cumprod(np.hstack([ones_col, cos_prod]), axis=1)
+        Y = np.tile(1 + g, (self.nOutput, 1)).T * np.fliplr(cumprod_part) * np.hstack([ones_col, sin_vals])
+        # Y = np.tile(1 + g, (1, self.nOutput)) \
+        #     * np.fliplr(np.cumprod(np.hstack((np.ones((g.shape[0], 1)), np.cos(X[:, :self.nOutput - 1] * np.pi / 2))), axis=1)) \
+        #     * np.hstack((np.ones((g.shape[0], 1)), np.sin(X[:, self.nOutput - 2::-1] * np.pi / 2)))
         
         return Y
     
@@ -152,9 +158,9 @@ class DTLZ2(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from ..utility_functions._uniformPoint import uniformPoint
-        R, _ = uniformPoint(N, self.n_output)
-        R = R / np.tile(np.sqrt(np.sum(R ** 2, axis=1)).reshape(-1, 1), (1, self.n_output))
+        from ..utility_functions.uniformPoint import uniformPoint
+        R, _ = uniformPoint(N, self.nOutput)
+        R = R / np.tile(np.sqrt(np.sum(R ** 2, axis=1)).reshape(-1, 1), (1, self.nOutput))
         
         return R
     
@@ -178,9 +184,9 @@ class DTLZ3(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -192,11 +198,11 @@ class DTLZ3(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ3"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
          
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ3 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -216,16 +222,17 @@ class DTLZ3(ProblemABC):
         X=self._check_2d(X)
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        g = 100 * (self.n_input - self.n_output + 1 + np.sum((X[:, self.n_output:] - 0.5) ** 2 - np.cos(20 * np.pi * (X[:, self.n_output:] - 0.5)), axis=1))
-        Y = np.tile(1 + g, (1, self.n_output)) * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), np.cos(X[:, :self.n_output - 1] * np.pi / 2)]), axis=1)) * np.hstack([np.ones((X.shape[0], 1)), np.sin(X[:, self.n_output - 1::-1] * np.pi / 2)])
+        
+        g = 100 * (self.nInput - self.nOutput + 1 + np.sum((X[:, self.nOutput-1:] - 0.5) ** 2 - np.cos(20 * np.pi * (X[:, self.nOutput-1:] - 0.5)), axis=1))
+        Y = (1 + g[:, None]) * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) * np.hstack([np.ones((X.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         return Y
     
     def get_optimum(self, N):
         '''
         Return the optimum of the problem.
         '''
-        from ..utility_functions._uniformPoint import uniformPoint
-        R, _ =uniformPoint(N, self.n_output)
+        from ..utility_functions.uniformPoint import uniformPoint
+        R, _ =uniformPoint(N, self.nOutput)
         R /= np.sqrt(np.sum(R**2, axis=1))[:, np.newaxis]
         
         return R
@@ -250,9 +257,9 @@ class DTLZ4(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -264,11 +271,11 @@ class DTLZ4(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ4"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ4 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -289,11 +296,11 @@ class DTLZ4(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
             
-        X[:, :self.n_output-1] = np.power(X[:, :self.n_output-1], 100)
-        g = np.sum(np.power(X[:, self.n_output-1:] - 0.5, 2), axis=1)
-        Y = (1 + g[:, np.newaxis]) \
-            * np.fliplr(np.cumprod(np.column_stack([np.ones(g.shape[0]), np.cos(X[:, :self.n_output-1] * np.pi / 2)]), axis=1)) \
-            * np.column_stack([np.ones(g.shape[0]), np.sin(X[:, self.M-1::-1] * np.pi / 2)])
+        X[:, :self.nOutput-1] = np.power(X[:, :self.nOutput-1], 100)
+        g = np.sum(np.power(X[:, self.nOutput-1:] - 0.5, 2), axis=1)
+        Y = np.tile(1 + g[:, None], (1, self.nOutput)) \
+            * np.fliplr(np.cumprod(np.hstack([np.ones((g.shape[0], 1)), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) \
+                * np.hstack([np.ones((g.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         
         return Y
     
@@ -301,8 +308,8 @@ class DTLZ4(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        from ..utility_functions._uniformPoint import uniformPoint
-        R, _ = uniformPoint(N, self.n_output)
+        from ..utility_functions.uniformPoint import uniformPoint
+        R, _ = uniformPoint(N, self.nOutput)
         R /= np.sqrt(np.sum(R**2, axis=1))[:, np.newaxis]
         return R
 
@@ -326,9 +333,9 @@ class DTLZ5(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -340,11 +347,11 @@ class DTLZ5(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ5"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
          
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ5 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -365,26 +372,30 @@ class DTLZ5(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
 
-        g = np.sum((X[:, self.n_output-1:] - 0.5)**2, axis=1)
-        temp = np.repeat(g[:, np.newaxis], self.n_output-2, axis=1)
-        X[:, 1:self.n_output-1] = (1 + 2 * temp * X[:, 1:self.n_output-1]) / (2 + 2 * temp)
-        Y = (1 + g[:, np.newaxis]) \
-                    * np.fliplr(np.cumprod(np.column_stack([np.ones(g.shape[0]), np.cos(X[:, :self.n_output-1] * np.pi / 2)]), axis=1)) \
-                    * np.column_stack([np.ones(g.shape[0]), np.sin(X[:, self.n_output-1::-1] * np.pi / 2)])
+        g = np.sum((X[:, self.nOutput-1:] - 0.5)**2, axis=1)
+        temp = np.tile(g[:, None], (1, self.nOutput-2))
+        X[:, 1:self.nOutput-1] = (1 + 2 * temp * X[:, 1:self.nOutput-1]) / (2 + 2 * temp)
+        Y = np.tile(1 + g[:, None], (1, self.nOutput)) \
+            * np.fliplr(np.cumprod(np.hstack([np.ones((g.shape[0], 1)), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) \
+                * np.hstack([np.ones((g.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         return Y
     
     def get_optimum(self, N):
         '''
         Return the optimum of the problem.
         '''
-        R = np.vstack((np.linspace(0, 1, N), np.linspace(1, 0, N))).T
-        # 规范化这些点，使其在目标空间中的范数为 1
-        R /= np.linalg.norm(R, axis=1, keepn_inputs=True)
-        # 扩展到更高维度，重复 R 的第一列 obj.M-2 次
-        R = np.hstack([np.tile(R[:, [0]], (1, self.n_output-2)), R])
-        # 计算规范化的权重因子
-        divisors = np.power(np.sqrt(2), np.tile([self.n_output-2] + list(range(self.n_output-2, -1, -1)), (R.shape[0], 1)))
-        R /= divisors
+        # 生成 R 矩阵 (对应 MATLAB 的 [0:1/(N-1):1;1:-1/(N-1):0]')
+        R = np.column_stack((np.linspace(0, 1, N), np.linspace(1, 0, N)))  # [0:1/(N-1):1; 1:-1/(N-1):0]'
+        # 标准化 R，每一行除以其范数
+        R = R / np.sqrt(np.sum(R**2, axis=1, keepdims=True))  # ./repmat(sqrt(sum(R.^2, 2)), 1, size(R,2))
+
+        # 扩展 R 的列数 (对应 MATLAB 的 [R(:, ones(1, obj.M-2)), R])
+        R_extended = np.hstack((R[:, np.zeros(self.nOutput-2, dtype=int)], R))  # np.zeros(M-2, dtype=int) 模拟 ones(1, obj.M-2)
+
+        # 缩放 R，每列除以缩放因子 (对应 MATLAB 的 R./sqrt(2).^repmat([obj.M-2, obj.M-2:-1:0], size(R, 1), 1))
+        scaling_factors = np.sqrt(2) ** np.array([self.nOutput-2] + list(range(self.nOutput-2, -1, -1)))  # [obj.M-2, obj.M-2:-1:0]
+        R = R_extended / scaling_factors  # 逐列缩放
+        
         return R
 
     def get_pf(self):
@@ -404,9 +415,9 @@ class DTLZ6(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -418,11 +429,11 @@ class DTLZ6(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ6"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
     
     def evaluate(self, X, unit=False):
@@ -443,12 +454,12 @@ class DTLZ6(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         
-        g = np.sum(X[:, self.n_output-1:] ** 0.1, axis=1)
-        Temp = np.tile(g.reshape((-1, 1)), (1, self.n_output-2))
-        X[:, 1:self.n_output-2] = (1 + 2 * Temp * X[:, 1:self.n_output-2]) / (2 + 2 * Temp)
-        Y = np.tile(1 - g.reshape((-1, 1)), (1, self.n_output)) \
-                * np.fliplr(np.cumprod(np.hstack((np.ones((g.shape[0], 1)), np.cos(X[:, 0:self.n_output-2] * np.pi / 2))), axis=1)) \
-                * np.hstack((np.ones((g.shape[0], 1)), np.sin(X[:, self.n_output-2::-1] * np.pi / 2)))
+        g = np.sum(X[:, self.nOutput:]**0.1, axis=1)
+        Temp = np.tile(g, (self.nOutput-2, 1)).T
+        X[:, 1:self.nOutput-1] = (1 + 2 * Temp * X[:, 1:self.nOutput-1]) / (2 + 2 * Temp)
+        Y = np.tile(1 + g, (self.nOutput, 1)).T \
+            * np.fliplr(np.cumprod(np.column_stack([np.ones(g.shape), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) \
+                * np.column_stack([np.ones(g.shape), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         
         return Y
     
@@ -456,10 +467,12 @@ class DTLZ6(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
+
         R = np.array([np.linspace(0, 1, N), np.linspace(1, 0, N)]).T
-        R = R / np.sqrt(np.sum(R**2, axis=1)).reshape(-1, 1)
-        R = np.hstack([R[:, self.n_output-3:self.n_output], R])
-        R = R / np.power(np.sqrt(2), np.tile([self.n_output-2] + list(range(self.n_output-2, -1, -1)), (R.shape[0], 1)))
+        R = R / np.sqrt(np.sum(R**2, axis=1, keepdims=True))
+        R = np.hstack([R[:, [0]] * np.ones((1, self.nOutput - 2)), R])
+        scale_factors = np.sqrt(2) ** np.array([self.nOutput - 2] + list(range(self.nOutput - 2, -1, -1)))
+        R = R / scale_factors
 
         return R
     
@@ -480,9 +493,9 @@ class DTLZ7(ProblemABC):
     get_optimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
-    n_input: int
+    nInput: int
         Dimension of the problem.
-    n_output: int
+    nOutput: int
         Number of objective functions.
     ub: Union[int,float,np.ndarray]
         Upper bound of the problem.
@@ -494,11 +507,11 @@ class DTLZ7(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ7"
-    def __init__(self, n_input:int =30, n_output: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
         
-        super().__init__(n_input, n_output, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
         
-        if n_output!=3:
+        if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
         
     def evaluate(self, X, unit=False):
@@ -519,23 +532,38 @@ class DTLZ7(ProblemABC):
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
         
-        g = 1 + 9 * np.mean(X[:, self.n_output:], axis=1)
-        Y = np.zeros((X.shape[0], self.n_output))
-        Y[:, :self.n_output-1] = X[:, :self.n_output-1]
-        Y[:, self.n_output-1] = (1 + g) * (self.n_output - np.sum(Y[:, :self.n_output-1] / (1 + np.repeat(g, self.n_output-1)) * (1 + np.sin(3*np.pi*Y[:, :self.n_output-1])), axis=1))
+        g = 1 + 9 * np.mean(X[:, self.nOutput:], axis=1, keepdims=True)
+
+        # 计算目标值矩阵
+        Y = np.hstack([
+            X[:, :self.nOutput-1], 
+            (1 + g) * (self.nOutput - np.sum(
+                X[:, :self.nOutput-1] / (1 + g) * (1 + np.sin(3 * np.pi * X[:, :self.nOutput-1])),
+                axis=1,
+                keepdims=True
+            ))
+        ])
+        
+        
+        # g = 1 + 9 * np.mean(X[:, self.nOutput:], axis=1)
+        # Y = np.zeros((X.shape[0], self.nOutput))
+        # Y[:, :self.nOutput-1] = X[:, :self.nOutput-1]
+        # Y[:, self.nOutput-1] = (1 + g) * (self.nOutput - np.sum(Y[:, :self.nOutput-1] / (1 + np.repeat(g, self.nOutput-1)) * (1 + np.sin(3*np.pi*Y[:, :self.nOutput-1])), axis=1))
+
+        return Y
     
     def get_optimum(self, N):
         '''
         Return the optimum of the problem.
         '''
-        from ..utility_functions._uniformPoint import uniformPoint
+        from ..utility_functions.uniformPoint import uniformPoint
         interval = [0, 0.251412, 0.631627, 0.859401]
         median = (interval[1] - interval[0]) / (interval[3] - interval[2] + interval[1] - interval[0])
         
-        X, _ = uniformPoint(N, self.n_output-1, 'grid')
+        X, _ = uniformPoint(N, self.nOutput-1, 'grid')
         X[X <= median] = X[X <= median] * (interval[1] - interval[0]) / median + interval[0]
         X[X > median] = (X[X > median] - median) * (interval[3] - interval[2]) / (1 - median) + interval[2]
-        R = np.hstack((X, 2 * (self.n_output - np.sum(X / 2 * (1 + np.sin(3 * np.pi * X)), axis=1)).reshape(-1, 1)))
+        R = np.hstack((X, 2 * (self.nOutput - np.sum(X / 2 * (1 + np.sin(3 * np.pi * X)), axis=1)).reshape(-1, 1)))
         
         return R
     
@@ -543,5 +571,5 @@ class DTLZ7(ProblemABC):
         '''
         Return the pareto front of the problem.
         '''
-        #TODO 
-        pass
+        
+        return self.get_optimum(100)
