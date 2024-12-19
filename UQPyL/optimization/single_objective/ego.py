@@ -22,26 +22,26 @@ class EGO(Algorithm):
         
         self.setParameters('nInit', nInit)
 
-        scaler=(StandardScaler(0, 1), StandardScaler(0, 1))
-        surrogate=KRG()
-        self.surrogate=surrogate
+        scaler = (StandardScaler(0, 1), StandardScaler(0, 1))
+        surrogate = KRG()
+        self.surrogate = surrogate
         
-        optimizer=GA(maxFEs=10000, verbose=False)
-        self.optimizer=optimizer
-        self.optimizer.verbose=False
+        optimizer = GA(maxFEs=10000, verbose=False, saveFlag=False, logFlag=False)
+        self.optimizer = optimizer
+        self.optimizer.verbose = False
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
         #Initialization
-        nInit=self.getParaValue('nInit')
+        nInit = self.getParaValue('nInit')
         
         #Problem
         self.problem=problem
         
         #SubProblem
-        subProblem=PracticalProblem(self.EI, problem.nInput, 1, problem.ub, problem.lb)
+        subProblem=PracticalProblem(self.EI, problem.nInput, 1, problem.ub, problem.lb, problem.var_type, problem.var_set)
         
         #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
@@ -61,10 +61,13 @@ class EGO(Algorithm):
         while self.checkTermination():
             # Build surrogate model
             self.surrogate.fit(pop.decs, pop.objs)
+            
             res=self.optimizer.run(subProblem)
             
             offSpring=Population(decs=res.bestDec)
+            
             self.evaluate(offSpring)
+            
             pop.add(offSpring)
             
             self.record(pop)

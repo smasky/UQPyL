@@ -10,16 +10,16 @@ def NDSort(YPop, NSort):
        
         Table = np.bincount(indices)
         N, M = PopObj.shape
-        FrontNo = np.inf * np.ones(N)
-        MaxFNo = 0
+        frontNo = np.inf * np.ones(N)
+        maxFNo = 0
 
-        while np.sum(Table[FrontNo < np.inf]) < min(NSort, len(indices)):
-            MaxFNo += 1
+        while np.sum(Table[frontNo < np.inf]) < min(NSort, len(indices)):
+            maxFNo += 1
             for i in range(N):
-                if FrontNo[i] == np.inf:
+                if frontNo[i] == np.inf:
                     Dominated = False
                     for j in range(i-1, -1, -1):
-                        if FrontNo[j] == MaxFNo:
+                        if frontNo[j] == maxFNo:
                             m = 1
                             while m < M and PopObj[i, m] >= PopObj[j, m]:
                                 m += 1
@@ -27,8 +27,8 @@ def NDSort(YPop, NSort):
                             if Dominated or M == 2:
                                 break
                     if not Dominated:
-                        FrontNo[i] = MaxFNo
+                        frontNo[i] = maxFNo
 
-        FrontNo = FrontNo[indices]
+        frontNo = frontNo[indices]
 
-        return FrontNo, MaxFNo
+        return frontNo, maxFNo

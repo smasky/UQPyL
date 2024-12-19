@@ -6,29 +6,33 @@ class Result():
     
     def __init__(self, algorithm):
         
-        self.bestDec=None
-        self.bestObj=None
-        self.appearFEs=None
-        self.appearIters=None
-        self.historyBestDecs={}
-        self.historyBestObjs={}
-        self.historyDecs={}
-        self.historyObjs={}
-        self.historyFEs={}
-        self.historyBestMetrics={}
+        self.bestDec = None
+        self.bestObj = None
+        self.appearFEs = None
+        self.appearIters = None
+        self.historyBestDecs = {}
+        self.historyBestObjs = {}
+        self.historyDecs = {}
+        self.historyObjs = {}
+        self.historyFEs = {}
+        self.historyBestMetrics = {}
         
-        self.algorithm=algorithm
+        self.algorithm = algorithm
         
-    def update(self, pop: Population, problem, FEs, iter, type=0):
-    
-        decs=problem._transform_special_parameters(np.copy(pop.decs))
-        objs=np.copy(pop.objs)
-        if type==0:
+    def update(self, pop: Population, problem, FEs, iter, type):
+        
+        decs = pop.decs
+        if problem.encoding=='mix':
+            decs = problem._transform_discrete_var(np.copy(pop.decs))
+            
+        objs = np.copy(pop.objs)
+        
+        if type=='EA':
             
             if self.bestObj==None or np.min(objs)<self.bestObj:
-                ind=np.where(objs==np.min(objs))
-                self.bestDec=decs[ind[0][0], :]
-                self.bestObj=objs[ind[0][0], :]
+                iMin = np.argmin(objs)
+                self.bestDec=decs[iMin, :]
+                self.bestObj=objs[iMin, :]
                 self.appearFEs=FEs
                 self.appearIters=iter
                 

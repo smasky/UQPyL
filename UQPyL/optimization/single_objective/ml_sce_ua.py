@@ -20,7 +20,7 @@ class ML_SCE_UA(Algorithm):
                 maxFEs: int= 50000, 
                 maxIterTimes: int= 1000, 
                 maxTolerateTimes: int= 1000, tolerate: float=1e-6,
-                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False, saveFlag=False):
+                verbose: bool=True, verboseFreq: int=10, logFlag: bool=False, saveFlag=True):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
@@ -47,10 +47,9 @@ class ML_SCE_UA(Algorithm):
         
         #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
-        
-        
+    
         if ngs==0:
-            ngs=problem.n_input 
+            ngs=problem.nInput 
             if ngs>15:
                 ngs=15
         
@@ -59,19 +58,8 @@ class ML_SCE_UA(Algorithm):
         nps  = ngs + 1
         nspl = npg
         nInit  = npg * ngs
-        
-        if self.verbose or self.logFlag:
-            Verbose.output("When invoking the problem, the new setting is:")
-            Verbose.verboseSetting(self)
-        
-        if xInit is not None:
-            if yInit is not None:
-                pop=Population(xInit, yInit)
-            else:
-                pop=Population(xInit)
-                self.evaluate(pop)
-        else:
-            pop=self.initialize(nInit)
+    
+        pop=self.initialize(nInit)
         
         #Sort the population in order of increasing function values
         idx=pop.argsort()
@@ -113,23 +101,32 @@ class ML_SCE_UA(Algorithm):
                      
     def cce(self, sPop, bPop, alpha, beta, sita):
         
-        n, d = sPop.size()
+        N, D = sPop.size()
         
-        sWorst=sPop[-1:]
-        ce=np.mean(sPop[:n].decs, axis=0).reshape(1, -1)
+        sPopDecs = sPop.decs
+        bPopDecs = bPop.decs
         
-        sNew=((sWorst-ce) * alpha * -1 + ce )*(1-sita)+bPop*sita
-        sNew.clip(self.problem.lb, self.problem.ub)
+        sWorst = sPop[-1:]
+        sWorstDecs = sWorst.decs
+        sWorstObjs = sWorst.objs
         
+        ce = np.mean(sPopDecs[:N], axis=0).reshape(1, -1)
+        
+        sNewDecs = ((sWorstDecs-ce) * alpha * -1 + ce )*(1-sita)+bPopDecs*sita
+        np.clip(sNewDecs, self.problem.lb, self.problem.ub)
+        
+        sNew = Population(sNewDecs)
         self.evaluate(sNew)
         
-        if sNew.objs[0] > sWorst.objs[0]:
-            sNew=(sWorst + (sNew-sWorst) * beta)*(1-sita)+bPop*sita
+        if sNew.objs[0] > sWorstObjs[0]:
+            sNewDecs = (sWorstDecs + (sNewDecs - sWorstDecs) * beta) * (1-sita) + bPopDecs*sita
+            sNew = Population(sNewDecs)
             self.evaluate(sNew)
         
         # Both reflection and contraction have failed, attempt a random point
-            if sNew.objs[0] > sWorst.objs[0]:
-                sNew.decs = self.problem.lb + np.random.random(d) * (self.problem.ub - self.problem.lb)
+            if sNew.objs[0] > sWorstObjs[0]:
+                sNewDecs = self.problem.lb + np.random.random(D) * (self.problem.ub - self.problem.lb)
+                sNew = Population(sNewDecs)
                 self.evaluate(sNew)
         # END OF CCE
         return sNew

@@ -50,12 +50,12 @@ class PSO(Algorithm):
     name= "PSO"
     type= "EA" 
     
-    def __init__(self, nInit: int=50, nPop: int=50,
-                    w: float=0.1, c1: float=0.5, c2: float=0.5,
-                    maxIterTimes: int=1000,
-                    maxFEs: int=50000,
-                    maxTolerateTimes: int=1000, tolerate: float=1e-6,
-                    verbose: bool=True, verboseFreq: int=100, logFlag: bool=False, saveFlag=False):
+    def __init__(self, w: float = 0.1, c1: float = 0.5, c2: float = 0.5,
+                    nPop: int = 50,
+                    maxIterTimes: int = 1000,
+                    maxFEs: int = 50000,
+                    maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
+                    verbose: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         
             super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
@@ -65,35 +65,26 @@ class PSO(Algorithm):
             self.setParameters('w', w)
             self.setParameters('c1', c1)
             self.setParameters('c2', c2)
-            self.setParameters('nInit', nInit)
             self.setParameters('nPop', nPop)
                 
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None):
+    def run(self, problem):
         
         #Initialization
         #Parameter Setting
         w, c1, c2 = self.getParaValue('w', 'c1', 'c2')
-        nInit, nPop = self.getParaValue('nInit', 'nPop')
+        nPop = self.getParaValue('nPop')
+        
         #Problem 
-        self.problem=problem
+        self.problem = problem
         
         #Termination Condition Setting
-        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
         #Population Generation
-        if xInit is not None:
-            if yInit is not None:
-                pop=Population(xInit, yInit)
-            else:
-                pop=Population(xInit)
-                self.evaluate(pop)
-        else:
-            pop=self.initialize(nInit)
+        pop=self.initialize(nPop)
             
-        pop=pop.getTop(nPop)
-        
         #Record result
         self.record(pop)
         
@@ -118,28 +109,35 @@ class PSO(Algorithm):
     
     def _operationPSO(self, pop, vel, pBestPop, gBestPop, w, c1, c2):
         
-        n, d=pop.size()
+        popDecs = pop.decs
+        pBestDecs = pBestPop.decs
+        gBestDecs = gBestPop.decs
         
-        particleVel=vel
+        N, D = pop.size()
         
-        r1=np.random.random((n, d))
-        r2=np.random.random((n, d))
+        particleVel = vel
         
-        offVel=w*particleVel+(pBestPop.decs-pop.decs)*c1*r1+(gBestPop.decs-pop.decs)*c2*r2
+        r1 = np.random.random((N, D))
+        r2 = np.random.random((N, D))
         
-        offSpring=pop+offVel
+        offVel = w*particleVel+(pBestDecs-popDecs)*c1*r1+(gBestDecs-popDecs)*c2*r2
         
-        offSpring.clip(self.problem.lb, self.problem.ub)
+        offspringDecs = popDecs + offVel
+        np.clip(offspringDecs, self.problem.lb, self.problem.ub)
         
-        return offSpring, offVel
+        return Population(offspringDecs), offVel
     
     def _randomParticle(self, pop):
         
-        n, d=pop.size()
-        n_to_reinit = int(0.1 * n)
-        rows_to_mutate = np.random.choice(n, size=n_to_reinit, replace=False)
-        cols_to_mutate = np.random.choice(d, size=n_to_reinit, replace=False)
-
-        pop.decs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.problem.lb[0, cols_to_mutate], self.problem.ub[0, cols_to_mutate], size=n_to_reinit)
+        popDecs = pop.decs
+        N, D = pop.size()
         
-        return pop
+        n_to_reinit = int(0.1 * N)
+        rows_to_mutate = np.random.choice(N, size=n_to_reinit, replace=False)
+        cols_to_mutate = np.random.choice(D, size=n_to_reinit, replace=False)
+
+        offspringDecs = popDecs.copy()
+        
+        offspringDecs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.problem.lb[0, cols_to_mutate], self.problem.ub[0, cols_to_mutate], size=n_to_reinit)
+        
+        return Population(offspringDecs)

@@ -7,7 +7,10 @@ def NDSort(pop, nSort=None):
         '''
         if nSort is None:
             nSort=len(pop)
-        popObjs, indices = np.unique(pop.objs, axis=0, return_inverse=True)
+        
+        popObjs=pop.objs
+        
+        popObjs, indices = np.unique(popObjs, axis=0, return_inverse=True)
        
         table = np.bincount(indices)
         n, d = popObjs.shape

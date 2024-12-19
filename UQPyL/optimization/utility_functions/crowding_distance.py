@@ -20,7 +20,7 @@ def crowdingDistance(pop, frontNo):
         fmin = np.min(popObjs[front, :], axis=0)
         
         for i in range(m):
-            # 对第i个目标排序，获取排序后的索引
+            
             rank = np.argsort(popObjs[front, i])
             crowdDis[front[rank[0]]] = np.inf
             crowdDis[front[rank[-1]]] = np.inf

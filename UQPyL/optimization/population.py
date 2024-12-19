@@ -4,22 +4,21 @@ import copy
 from .utility_functions import NDSort, crowdingDistance
 class Population():
     
-    def __init__(self, decs=None, objs=None):
+    def __init__(self, decs, objs=None):
         
-        self.decs=np.copy(decs)
-        self.objs=np.copy(objs)
-        if decs is not None:
-            decs=np.atleast_2d(decs)
-            self.nPop, self.D=decs.shape
-        else:
-            self.nPop=0; self.D=0
-        if objs is not None:
-            self.nOutput=objs.shape[1]
-            self.evaluated=None
+        self.decs = np.atleast_2d(np.copy(decs))
+        
+        if objs is not None: 
+            self.objs = np.atleast_2d(np.copy(objs))
+            self.nOutput=self.objs.shape[1]
+        
+        self.nPop, self.D = self.decs.shape
+            
        
     def __add__(self, otherPop):
         
         if isinstance(otherPop, np.ndarray):
+            
             return Population(self.decs+otherPop)
         
         return Population(self.decs+otherPop.decs)
@@ -49,7 +48,7 @@ class Population():
     
     def add(self, decs, objs):
         
-        otherPop=Population(decs, objs)
+        otherPop = Population(decs, objs)
         self.add(otherPop)
 
     def checkSameStatus(self, otherPop):
@@ -62,34 +61,38 @@ class Population():
         if self.evaluate is False:
             raise Exception("The population is not evaluated yet.")
     
-    def initialize(self, decs, objs):
+    # def initialize(self, decs, objs):
         
-        self.decs=decs
-        self.objs=objs
-        self.nPop, self.D=decs.shape
+    #     self.decs = decs
+    #     self.objs = objs
+    #     self.nPop, self.D=decs.shape
         
-    def getTop(self, k):
+    # def getTop(self, k):
         
-        return self.getBest(k)
+    #     return self.getBest(k)
     
     def getBest(self, k=None):
         
         if k is None:
             if self.nOutput==1:
-                obj=np.max(self.objs)
-                decs=self.decs[np.argmax(self.objs)]
+                iMax = np.argmax(self.objs)
+                obj = self.objs[iMax]
+                decs = self.decs[iMax]
                 return Population(decs, obj)
+            
             else:
-                frontNo, _=NDSort(self)
-                objs=self.objs[frontNo==1]
-                decs=self.decs[frontNo==1]
+                frontNo, _ = NDSort(self)
+                objs = self.objs[frontNo==1]
+                decs = self.decs[frontNo==1]
                 return Population(decs, objs)
+            
         else:
             if self.nOutput==1:
-                idx=self.argsort()
+                idx = self.argsort()
                 return self[idx[:k]]
+            
             else:
-                frontNo, _=NDSort(self)
+                frontNo, _ = NDSort(self)
                 crowDis=crowdingDistance(self, frontNo)
                 indices = np.lexsort((-crowDis, frontNo))
                 objs=self.objs[indices[:k]]
@@ -99,22 +102,25 @@ class Population():
     def argsort(self):
         
         if self.nOutput==1:
-            args=np.argsort(self.objs.ravel())
+            args = np.argsort(self.objs.ravel())
+            
         else:
-            frontNo, _=NDSort(self)
-            crowDis=crowdingDistance(self, frontNo)
+            frontNo, _ = NDSort(self)
+            crowDis = crowdingDistance(self, frontNo)
             args = np.lexsort((-crowDis, frontNo))
         
         return args
     
     def clip(self, lb, ub):
         
-        self.decs=np.clip(self.decs, lb, ub)
+        self.decs = np.clip(self.decs, lb, ub)
     
     def replace(self, index, pop):
         
-        self.decs[index, :]=pop.decs
-        self.objs[index, :]=pop.objs
+        self.decs[index, :] = pop.decs
+        
+        if pop.objs is not None:
+            self.objs[index, :] = pop.objs
         
     def size(self):
         
@@ -122,10 +128,13 @@ class Population():
     
     def evaluate(self, problem):
         
-        decs=problem._transform_special_parameters(np.copy(self.decs))
-        self.objs=problem.evaluate(decs)
-        self.nOutput=self.objs.shape[1]
-        self.evaluated=True
+        decs=self.decs
+        if problem.encoding=='mix':
+            decs = problem._transform_discrete_var(np.copy(decs))
+        
+        self.nOutput=problem.nOutput
+        
+        self.objs = problem.evaluate(decs)
         
     def add(self, otherPop):
         

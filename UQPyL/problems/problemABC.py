@@ -11,10 +11,12 @@ class ProblemABC(metaclass=abc.ABCMeta):
         self.nInput=nInput
         self.nOutput=nOutput
         self._set_ub_lb(ub,lb)
-        self.encoding="float"
+        self.encoding="real"
         
-        if var_type is None:
+        if var_type==None or var_type=={}:
             self.var_type=np.zeros(self.nInput)
+            self.I_float=np.arange(self.nInput)
+            
         else:
             self.encoding="mix"
             self.var_type=np.array(var_type, dtype=np.int32)
@@ -76,10 +78,12 @@ class ProblemABC(metaclass=abc.ABCMeta):
         X_scaled=(X - X_min) / (X_max - X_min)
         X_scaled=X_scaled*(self.ub-self.lb)+self.lb
         
-        self._transform_int_var(X_scaled)
+        if self.encoding=='mix':
             
-        if dst:
-            X_scaled=self._transform_discrete_var(X_scaled)
+            self._transform_int_var(X_scaled)
+                
+            if dst:
+                X_scaled=self._transform_discrete_var(X_scaled)
         
         return X_scaled 
     

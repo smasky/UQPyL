@@ -26,11 +26,11 @@ class CSA(Algorithm):
     type = "EA" 
     
     def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
-                 nInit: int = 50, nPop: int = 50,
+                 nPop: int = 50,
                  maxIterTimes: int=1000,
                  maxFEs: int=50000,
                  maxTolerateTimes: int=1000, tolerate: float=1e-6, 
-                 verbose: bool=True, verboseFreq: int=100, logFlag: bool=False, saveFlag: bool=False):
+                 verbose: bool=True, verboseFreq: int=10, logFlag: bool=False, saveFlag: bool=True):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
@@ -40,7 +40,6 @@ class CSA(Algorithm):
         self.setParameters('alpha', alpha)
         self.setParameters('beta', beta)
         self.setParameters('M', M)
-        self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
            
     #------------------Public Function------------------#
@@ -51,7 +50,7 @@ class CSA(Algorithm):
         #Initialization
         #Parameter Setting
         alpha, beta, M = self.getParaValue('alpha', 'beta', 'M')
-        nInit, nPop = self.getParaValue('nInit', 'nPop')
+        nPop = self.getParaValue('nPop')
         
         #Problem
         self.problem=problem
@@ -60,16 +59,7 @@ class CSA(Algorithm):
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
         #Population Generation
-        if xInit is not None:
-            if yInit is not None:
-                pop=Population(xInit, yInit)
-            else:
-                pop=Population(xInit)
-                self.evaluate(pop)
-        else:
-            pop=self.initialize(nInit)
-        
-        pop=pop.getTop(nPop)
+        pop=self.initialize(nPop)
         
         #Initial directors and supervisors
         pBest=pop.copy() #personal Best
@@ -79,10 +69,10 @@ class CSA(Algorithm):
         while self.checkTermination():
             
             #Team communication operator
-            uPop=self.teamCommunicationOperator(pop, pBest, gBest, alpha, beta)
+            uPop = self.teamCommunicationOperator(pop, pBest, gBest, alpha, beta)
             
             #Reflective learning operator 
-            vPop=self.reflectiveLearningOperator(uPop)
+            vPop = self.reflectiveLearningOperator(uPop)
             
             #Internal competition operator
             self.evaluate(uPop)
@@ -97,58 +87,70 @@ class CSA(Algorithm):
             # gBest=pBest[pBest.argsort()[:self.M]]
             gBest.add(tmp)
             gBest=gBest[gBest.argsort()[:M]]
+            
             pop=newPop.copy()
             
         return self.result
     
     def reflectiveLearningOperator(self, pop):
         
-        n, d=pop.size()
-        c=(self.problem.ub+self.problem.lb)/2
-        c_n=np.repeat(c, n, axis=0)
-        lb_n=np.repeat(self.problem.lb, n, axis=0)
-        ub_n=np.repeat(self.problem.ub, n, axis=0)
-        fai_1=self.problem.ub+self.problem.lb-pop.decs
+        N, D = pop.size()
         
-        gailv=np.abs(pop.decs-c)/(self.problem.ub-self.problem.lb)
+        popDecs=pop.decs
+        
+        c = (self.problem.ub+self.problem.lb)/2
+        
+        c_n = np.repeat(c, N, axis=0)
+        lb_n = np.repeat(self.problem.lb, N, axis=0)
+        ub_n = np.repeat(self.problem.ub, N, axis=0)
+        fai_1 = self.problem.ub+self.problem.lb-pop.decs
+        
+        gailv = np.abs(popDecs-c)/(self.problem.ub-self.problem.lb)
         #calculate r
-        t1=np.random.random((n, d))*np.abs(c-fai_1)+np.where(c_n>fai_1, fai_1, c_n)
-        t2=np.random.random((n, d))*np.abs(fai_1-self.problem.lb)+np.where(fai_1>lb_n, lb_n, fai_1)
-        seed=np.random.random((n,d))
-        r=np.where(gailv<seed, t1, t2)
+        t1 = np.random.random((N, D))*np.abs(c-fai_1)+np.where(c_n>fai_1, fai_1, c_n)
+        t2 = np.random.random((N, D))*np.abs(fai_1-self.problem.lb)+np.where(fai_1>lb_n, lb_n, fai_1)
+        seed = np.random.random((N,D))
+        r = np.where(gailv<seed, t1, t2)
         
         #calculate p
-        t3=np.random.random((n, d))*np.abs(fai_1-c)+np.where(c_n>fai_1, fai_1, c_n)
-        t4=np.random.random((n, d))*np.abs(self.problem.ub-fai_1)+np.where(fai_1>ub_n, ub_n, fai_1)
-        seed=np.random.random((n,d))
-        p=np.where(gailv<seed, t3, t4)
+        t3 = np.random.random((N, D))*np.abs(fai_1-c)+np.where(c_n>fai_1, fai_1, c_n)
+        t4 = np.random.random((N, D))*np.abs(self.problem.ub-fai_1)+np.where(fai_1>ub_n, ub_n, fai_1)
+        seed = np.random.random((N, D))
+        p = np.where(gailv<seed, t3, t4)
         
+        vPopDecs = np.where(pop.decs>=c_n, r, p)
+        np.clip(vPopDecs, self.problem.lb, self.problem.ub)
         
-        vPop=Population(decs=np.where(pop.decs>=c_n, r, p))
-        vPop.clip(self.problem.lb, self.problem.ub)
+        vPop = Population(vPopDecs)
+        
         return vPop
     
     def teamCommunicationOperator(self, pop, pBest, gBest, alpha, beta):
         
-        n, d=pop.size()
+        popDecs = pop.decs
+        pBestDecs = pBest.decs
+        gBestDecs = gBest.decs
         
-        M, _=gBest.size()
-        ind=np.random.randint(0, M, (n,d))
+        N, D = pop.size()
         
-        A=np.log(1.0/np.random.random((n, d)))*(gBest.decs[ind, np.arange(d)]-pop.decs)
+        M, _ = gBest.size()
         
-        B=alpha*np.random.random((n, d))*(np.mean(gBest.decs, axis=0)-pop.decs)
+        idx = np.random.randint(0, M, (N, D) )
+        A = np.log(1.0/np.random.random( (N, D) ) )*(gBestDecs[idx, np.arange(D)] - popDecs)
         
-        C=beta*np.random.random((n, d))*(np.mean(pBest.decs, axis=0)-pop.decs)
+        B = alpha*np.random.random( (N, D) )*(np.mean(gBestDecs, axis=0) - popDecs)
         
-        uPop=pop+A+B+C
-        uPop.clip(self.problem.lb, self.problem.ub)
+        C = beta*np.random.random( (N, D) )*(np.mean(pBestDecs, axis=0) - popDecs)
         
-        return uPop
+        uPopDecs = popDecs + A + B + C
+        
+        np.clip(uPopDecs, self.problem.lb, self.problem.ub)
+        
+        return Population(uPopDecs)
 
     def Phi(self, num1, num2):
         if num1<num2:
-            o=num1+np.random.random(1)*abs(num1-num2)
+            o = num1+np.random.random(1)*abs(num1-num2)
         else:
-            o=num2+np.random.random(1)*abs(num1-num2)
+            o = num2+np.random.random(1)*abs(num1-num2)
         return o

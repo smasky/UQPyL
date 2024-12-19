@@ -31,8 +31,10 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         lhs=LHS('classic')
         xInit=lhs.sample(nInit, self.problem.nInput)
-        xInit=self.problem._unit_X_transform_to_bound(xInit, discrete=False)
+        xInit=self.problem._unit_X_transform_to_bound(xInit, dst=False)
+        
         pop=Population(xInit)
+        
         self.evaluate(pop)
         
         return pop
@@ -88,9 +90,9 @@ class Algorithm(metaclass=abc.ABCMeta):
     def record(self, pop):
         
         if self.problem.nOutput==1:
-            self.result.update(pop, self.problem, self.FEs, self.iters)
+            self.result.update(pop, self.problem, self.FEs, self.iters, 'EA')
         else:
-            self.result.update(pop, self.problem, self.FEs, self.iters, 1)
+            self.result.update(pop, self.problem, self.FEs, self.iters, 'MOEA')
             
     def setParameters(self, key, value):
         

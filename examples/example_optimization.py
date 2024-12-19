@@ -21,44 +21,74 @@ problem=Sphere(nInput=10)
 #-----------EGO---------------#
 # from UQPyL.optimization.single_objective import EGO
 # from UQPyL.optimization.single_objective import ASMO
-# ego=ASMO(nInit=50)
+# ego=EGO(nInit=50)
 # res=ego.run(problem)
 
 #-----------GA---------------#
 # from UQPyL.optimization.single_objective import GA
-# ga=GA(saveFlag=True)
+# ga=GA()
 # res=ga.run(problem)
 
+#-----------ABC---------------#
+# from UQPyL.optimization.single_objective import ABC
+# abc=ABC()
+# res=abc.run(problem)
 
-from UQPyL.optimization.multi_objective import MOEAD, RVEA, NSGAIII, NSGAII
-from UQPyL.problems.multi_objective import DTLZ6
+#-----------CSA---------------#
+# from UQPyL.optimization.single_objective import CSA
+# csa=CSA()
+# res=csa.run(problem)
 
-dtlz1=DTLZ6(nInput=15)
-moead=NSGAII(maxFEs=10000, nInit=100, nPop=100)
-res=moead.run(dtlz1)
+#-------------DE---------------#
+# from UQPyL.optimization.single_objective import DE
+# de=DE()
+# res=de.run(problem)
 
-Y=res.bestObj
+#------------PSO----------------#
+# from UQPyL.optimization.single_objective import PSO
+# pso=PSO()
+# res=pso.run(problem)
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
+#--------------SCE-UA--------------#
+# from UQPyL.optimization.single_objective import SCE_UA
+# sce_ua=SCE_UA()
+# res=sce_ua.run(problem)
 
-# 创建数据
-x = Y[:, 0]
-y = Y[:, 1]
-z = Y[:, 2]
+#----------------ML-SCE-UA------------------#
+from UQPyL.optimization.single_objective import ML_SCE_UA
+ml_sce_ua=ML_SCE_UA()
+res=ml_sce_ua.run(problem)
 
-# 创建图形和轴
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
 
-# 添加数据到轴上
-ax.scatter(x, y, z)
+# from UQPyL.optimization.multi_objective import MOEAD, RVEA, NSGAIII, NSGAII
+# from UQPyL.problems.multi_objective import DTLZ6
 
-# 添加标签
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
+# dtlz1=DTLZ6(nInput=15)
+# moead=NSGAII(maxFEs=10000, nInit=100, nPop=100)
+# res=moead.run(dtlz1)
 
-# 显示图形
-plt.show()
+# Y=res.bestObj
+
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+# import numpy as np
+
+# # 创建数据
+# x = Y[:, 0]
+# y = Y[:, 1]
+# z = Y[:, 2]
+
+# # 创建图形和轴
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+
+# # 添加数据到轴上
+# ax.scatter(x, y, z)
+
+# # 添加标签
+# ax.set_xlabel('X Label')
+# ax.set_ylabel('Y Label')
+# ax.set_zlabel('Z Label')
+
+# # 显示图形
+# plt.show()
