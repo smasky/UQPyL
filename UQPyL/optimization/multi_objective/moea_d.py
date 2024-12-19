@@ -52,6 +52,7 @@ class MOEAD(Algorithm):
         self.setParameters('aggregation', aggregation)
         self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
+        # self.setParameters('normalized', normalized)
         
     #-------------------Public Functions-----------------------#
     @Verbose.decoratorRun
@@ -61,6 +62,7 @@ class MOEAD(Algorithm):
         #Parameter Setting
         aggregation=self.getParaValue('aggregation')
         nInit, nPop=self.getParaValue('nInit', 'nPop')
+        # normalized=self.getParaValue('normalized')
         #Problem
         self.setProblem(problem)
         #Termination Condition Setting
@@ -83,43 +85,64 @@ class MOEAD(Algorithm):
         B=B[:,0:T]
         
         Z=np.min(pop.objs, axis=0).reshape(1,-1)
-        
+         
         while self.checkTermination():
+            
             for i in range(N):
                 
                 P = B[i, np.random.permutation(B.shape[1])].ravel()
 
                 offspring=operationGAHalf(pop[P[0:2]], problem.ub, problem.lb, 1, 20, 1, 20)
+                
                 self.evaluate(offspring)
                 
                 Z=np.min(np.vstack((Z, offspring.objs)), axis=0).reshape(1, -1)
                 
+                popObjs=pop.objs[P]
+                offspringObjs=offspring.objs
+                
+                # if normalized:
+                #     popObjs=pop.objs[P]
+                #     offspringObjs=offspring.objs
+                    
+                #     tmp=np.vstack((popObjs, offspringObjs))
+                #     maximum=np.mean(tmp, axis=0)
+                #     minimum=np.var(tmp, axis=0, ddof=0)
+                    
+                #     popObjs=(popObjs-minimum)/(maximum-minimum)
+                #     offspringObjs=(offspringObjs-minimum)/(maximum-minimum)
+                    
+                # else:
+                    
+                #     popObjs=pop.objs[P]
+                #     offspringObjs=offspring.objs
+                    
                 #PBI
                 if(aggregation=='PBI'):
                     
                     normW = np.sqrt(np.sum(W[P, :]**2, axis=1))
-                    normP = np.sqrt(np.sum((pop.objs[P] - np.tile(Z, (T, 1)))**2, axis=1))
-                    normO = np.sqrt(np.sum((offspring.objs - Z)**2, axis=1))
+                    normP = np.sqrt(np.sum((popObjs - np.tile(Z, (T, 1)))**2, axis=1))
+                    normO = np.sqrt(np.sum((offspringObjs - Z)**2, axis=1))
                     CosineP = np.sum((pop.objs[P] - np.tile(Z, (T, 1))) * W[P, :], axis=1) / normW / normP
-                    CosineO = np.sum(np.tile(offspring.objs - Z, (T, 1)) * W[P, :], axis=1) / normW / normO
+                    CosineO = np.sum(np.tile(offspringObjs - Z, (T, 1)) * W[P, :], axis=1) / normW / normO
                     g_old = normP * CosineP + 5 * normP * np.sqrt(1 - CosineP**2)
                     g_new = normO * CosineO + 5 * normO * np.sqrt(1 - CosineO**2)
                     
                 elif(aggregation=='TCH'):
                     
-                    g_old = np.max(np.abs(pop.objs[P] - np.tile(Z, (T, 1))) * W[P, :], axis=1)
-                    g_new = np.max(np.tile(np.abs(offspring.objs- Z), (T, 1)) * W[P, :], axis=1)
+                    g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) * W[P, :], axis=1)
+                    g_new = np.max(np.tile(np.abs(offspringObjs- Z), (T, 1)) * W[P, :], axis=1)
                     
                 elif(aggregation=='TCH_N'):
                     
                     Zmax = np.max(pop.objs, axis=0)
-                    g_old = np.max(np.abs(pop.objs[P] - np.tile(Z, (T, 1))) / np.tile(Zmax - Z, (T, 1)) * W[P, :], axis=1)
-                    g_new = np.max(np.tile(np.abs(offspring.objs - Z) / (Zmax - Z), (T, 1)) * W[P, :], axis=1)
+                    g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) / np.tile(Zmax - Z, (T, 1)) * W[P, :], axis=1)
+                    g_new = np.max(np.tile(np.abs(offspringObjs - Z) / (Zmax - Z), (T, 1)) * W[P, :], axis=1)
                     
                 elif(aggregation=='TCH_M'):
                     
-                    g_old = np.max(np.abs(pop.objs[P] - np.tile(Z, (T, 1))) / W[P, :], axis=1)
-                    g_new = np.max(np.tile(np.abs(offspring.objs - Z), (T, 1)) / W[P, :], axis=1)
+                    g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) / W[P, :], axis=1)
+                    g_new = np.max(np.tile(np.abs(offspringObjs - Z), (T, 1)) / W[P, :], axis=1)
                 
                 pop.replace(P[g_old >= g_new], offspring)
                 

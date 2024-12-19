@@ -18,7 +18,7 @@ class Population():
             self.evaluated=None
        
     def __add__(self, otherPop):
-        # self.checkSameStatus(otherPop)
+        
         if isinstance(otherPop, np.ndarray):
             return Population(self.decs+otherPop)
         
@@ -149,9 +149,11 @@ class Population():
         if isinstance(index, (slice, list, np.ndarray)):
             decs = self.decs[index]
             objs = self.objs[index] if self.objs is not None else None
+            
         elif isinstance(index, (int, np.integer)):
             decs = self.decs[index:index+1]
             objs = self.objs[index:index+1] if self.objs is not None else None
+            
         else:
             raise TypeError("Index must be int, slice, list, or ndarray")
         

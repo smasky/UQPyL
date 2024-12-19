@@ -33,9 +33,9 @@ class DTLZ1(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ1"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ1 is a three-objective optimization problem")
@@ -116,9 +116,9 @@ class DTLZ2(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ2"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
            
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ2 is a three-objective optimization problem")
@@ -148,9 +148,6 @@ class DTLZ2(ProblemABC):
         
         cumprod_part = np.cumprod(np.hstack([ones_col, cos_prod]), axis=1)
         Y = np.tile(1 + g, (self.nOutput, 1)).T * np.fliplr(cumprod_part) * np.hstack([ones_col, sin_vals])
-        # Y = np.tile(1 + g, (1, self.nOutput)) \
-        #     * np.fliplr(np.cumprod(np.hstack((np.ones((g.shape[0], 1)), np.cos(X[:, :self.nOutput - 1] * np.pi / 2))), axis=1)) \
-        #     * np.hstack((np.ones((g.shape[0], 1)), np.sin(X[:, self.nOutput - 2::-1] * np.pi / 2)))
         
         return Y
     
@@ -171,7 +168,7 @@ class DTLZ2(ProblemABC):
         a = np.linspace(0, np.pi / 2, 10).reshape(-1, 1)
         R = [np.sin(a) * np.cos(a.T), np.sin(a) * np.sin(a.T), np.cos(a) * np.ones(a.shape).T]
         Y = np.array(list(itertools.product(R[0], R[1], R[2])))
-        #TODO 
+        
         return Y
 
 class DTLZ3(ProblemABC):
@@ -198,9 +195,9 @@ class DTLZ3(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ3"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
          
         if nOutput!=3:
             raise ValueError("DTLZ3 is a three-objective optimization problem")
@@ -271,9 +268,9 @@ class DTLZ4(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ4"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ4 is a three-objective optimization problem")
@@ -347,9 +344,9 @@ class DTLZ5(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ5"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
          
         if nOutput!=3:
             raise ValueError("DTLZ5 is a three-objective optimization problem")
@@ -429,9 +426,9 @@ class DTLZ6(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ6"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
@@ -507,9 +504,9 @@ class DTLZ7(ProblemABC):
         Continuous variables of the problem.
     '''
     name="DTLZ7"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None) -> None:
+    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")

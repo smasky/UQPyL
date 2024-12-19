@@ -11,15 +11,27 @@ class ProblemABC(metaclass=abc.ABCMeta):
         self.nInput=nInput
         self.nOutput=nOutput
         self._set_ub_lb(ub,lb)
-        if var_type is None:
-            self.var_type=np.array([0]*nInput)
-        else:
-            self.var_type=np.array(var_type)
+        self.encoding="float"
         
-        if var_set is None:
-            self.var_set=[]
+        if var_type is None:
+            self.var_type=np.zeros(self.nInput)
         else:
-            self.var_set=var_set
+            self.encoding="mix"
+            self.var_type=np.array(var_type, dtype=np.int32)
+            self.I_float=np.where(self.var_type==0)[0]
+            self.I_int=np.where(self.var_type==1)[0]
+            self.I_dst=np.where(self.var_type==2)[0]
+
+        if var_set is None:
+            self.var_set={}
+        else:
+            self.var_set={}
+            
+            for i in self.I_dst:
+                if isinstance(var_set[i], list):
+                    self.var_set[i]=var_set[i]
+                else:
+                    raise ValueError("The type of sub var_set must be list.")
         
         if x_labels is None:
             self.x_labels=['x_'+str(i) for i in range(1,nInput+1)]
@@ -38,21 +50,25 @@ class ProblemABC(metaclass=abc.ABCMeta):
     def getOptimum(self):
         pass
     
-    def _transform_special_parameters(self, X):
+    def _transform_discrete_var(self, X):
         
-        discrete_indice=np.where(self.var_type==2)[0]
-        
-        for index in discrete_indice:
-            S=self.var_set[index]
+        for i in self.I_dst:
+            S=self.var_set[i]
             num_interval=len(S)
-            bins=np.linspace(self.lb[0, index], self.ub[0, index], num_interval+1)
-            indices = np.digitize(X[:, index], bins, right=False) - 1
+            bins=np.linspace(self.lb[0, i], self.ub[0, i], num_interval+1)
+            indices = np.digitize(X[:, i], bins, right=False) - 1
             indices[indices==num_interval]=num_interval-1
-            X[:, index]=np.array([S[i] for i in indices])
-                    
+            X[:, i]=np.array([S[i] for i in indices])
+            
         return X
     
-    def _unit_X_transform_to_bound(self, X, discrete=True):
+    def _transform_int_var(self, X):
+        
+        X[:, self.I_int]=np.round(X[:, self.I_int])
+
+        return X
+    
+    def _unit_X_transform_to_bound(self, X, dst=True):
         
         X_min=X.min(axis=0)
         X_max=X.max(axis=0)
@@ -60,29 +76,43 @@ class ProblemABC(metaclass=abc.ABCMeta):
         X_scaled=(X - X_min) / (X_max - X_min)
         X_scaled=X_scaled*(self.ub-self.lb)+self.lb
         
-        int_indice=np.where(self.var_type==1)[0]
-        if int_indice.size>0:
-            X[:, int_indice]=np.round(X[:, int_indice])
+        self._transform_int_var(X_scaled)
             
-        if discrete:
-            X_scaled=self._transform_special_parameters(X_scaled)
+        if dst:
+            X_scaled=self._transform_discrete_var(X_scaled)
         
         return X_scaled 
     
     def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
         
-        if (isinstance(ub,(int, float))):
+        if (isinstance(ub, (int, float))):
             self.ub=np.ones((1,self.nInput))*ub
-        elif(isinstance(ub,np.ndarray)):
+            
+        elif(isinstance(ub, np.ndarray)):
             self._check_bound(ub)
             self.ub=ub.reshape(1, -1)
+        
+        elif(isinstance(ub, list)):
+            self.ub=np.array(ub)
+            self._check_bound(self.ub)
             
-        if (isinstance(lb,(int, float))):
+        else:
+            raise ValueError("The type of ub is not supported.")
+        
+        if (isinstance(lb, (int, float))):
             self.lb=np.ones((1,self.nInput))*lb
-        elif(isinstance(lb,np.ndarray)):
+            
+        elif(isinstance(lb, np.ndarray)):
             self._check_bound(lb)
             self.lb=lb.reshape(1, -1)
-            
+        
+        elif(isinstance(lb, list)):
+            self.lb=np.array(lb)
+            self._check_bound(self.lb)
+        
+        else:
+            raise ValueError("The type of lb is not supported.")
+        
     def _check_2d(self, X:np.ndarray):
         return np.atleast_2d(X)
     
@@ -91,28 +121,3 @@ class ProblemABC(metaclass=abc.ABCMeta):
         bound=bound.ravel()
         if(not bound.shape[0]==self.nInput):
             raise ValueError('the input bound is inconsistent with the input nInputensions')
-    
-# def transform(func):
-#     def wrapper(self, *args, **kwargs):
-#         #transform
-        
-#         if len(args)==2:
-#             X=args[0]
-#             T=args[1]
-#         elif len(args)==1:
-#             X=args[0]
-#             T=kwargs['transformX']
-#         else:
-#             X=kwargs['X']
-#             T=kwargs['transformX']
-
-#         if T:
-#             var_type=self.var_type
-#             var_set=self.var_set
-            
-            
-            
-        
-#         result = func(self, *args, **kwargs)
-#         return result
-#     return wrapper

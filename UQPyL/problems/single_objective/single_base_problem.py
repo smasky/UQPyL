@@ -22,9 +22,9 @@ class Sphere(ProblemABC):
         F*=0
     '''
     name="Shpere"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None, disc_range=None, cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100, lb: Union[int,float,np.ndarray] =-100):
         
-        super().__init__(nInput,1,ub,lb,disc_var, disc_range, cont_var)
+        super().__init__(nInput,1,ub,lb)
     
     def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
         '''
@@ -34,10 +34,12 @@ class Sphere(ProblemABC):
                 unit: bool, default=False
                     whether to transform X to the bound
         '''
+        
         X=self._check_2d(X)
         
         if unit:
             X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+            
         F=np.sum(X**2, axis=1).reshape(-1,1)      
         
         return F
@@ -58,9 +60,9 @@ class Schwefel_2_22(ProblemABC):
         F*=0
     '''
     name="Schwefel_2_22"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -86,9 +88,10 @@ class Schwefel_1_22(ProblemABC):
         F*=0
     '''
     name="Schwefel_1_22"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -117,9 +120,9 @@ class Schwefel_2_21(ProblemABC):
         F*=0
     '''
     name="Schwefel_2_21"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -146,9 +149,9 @@ class Rosenbrock(ProblemABC):
         F*=0
     '''
     name="Rosenbrock"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -177,9 +180,9 @@ class Step(ProblemABC):
         F*=0
     '''
     name="Step"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -206,9 +209,9 @@ class Quartic(ProblemABC):
         F*=0
     '''
     name="Quartic"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -235,9 +238,9 @@ class Schwefel_2_26(ProblemABC):
         F*=-12569.5
     '''
     name="Schwefel_2_26"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -264,9 +267,9 @@ class Rastrigin(ProblemABC):
         F*=0
     '''
     name="Rastrigin"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -293,9 +296,9 @@ class Ackley(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =32,lb: Union[int,float,np.ndarray] =-32,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =32,lb: Union[int,float,np.ndarray] =-32):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -323,9 +326,9 @@ class Griewank(ProblemABC):
         F*=0
     '''
     name="Griewank"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -356,9 +359,9 @@ class Trid(ProblemABC):
         F^*=-D(D+4)(D-1)/6
     '''
     name="Trid"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -384,9 +387,9 @@ class Bent_Cigar(ProblemABC):
         F^*=0
     '''
     name="Bent_Cigar"
-    def __init__(self, nInput: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10, disc_var=None, cont_var=None):
+    def __init__(self, nInput: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -412,9 +415,9 @@ class Discus(ProblemABC):
         F^*=0
     '''
     name="Discus"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
     
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
@@ -444,9 +447,9 @@ class Weierstrass(ProblemABC):
     kMax=20
     a=0.5
     b=3
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =0.5,lb: Union[int,float,np.ndarray] =-0.5,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =0.5,lb: Union[int,float,np.ndarray] =-0.5):
         
-        super().__init__(nInput,1,ub,lb,disc_var,cont_var)
+        super().__init__(nInput, 1, ub, lb)
         
     def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         

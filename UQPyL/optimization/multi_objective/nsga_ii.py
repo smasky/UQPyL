@@ -1,13 +1,10 @@
 # Non-dominated Sorting Genetic Algorithm II (NSGA-II) <Multi>
 import numpy as np
-import math
-from typing import Optional
+
 
 from ..utility_functions import NDSort, crowdingDistance, tournamentSelection, operationGA
-from ...DoE import LHS
 from ..algorithmABC import Algorithm
 from ..population import Population
-from ...problems import ProblemABC  as Problem
 from ...utility import Verbose
 class NSGAII(Algorithm):
     '''

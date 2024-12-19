@@ -9,9 +9,9 @@ from ..problemABC import ProblemABC
 #--------------------------------------##
 class ZDT1(ProblemABC):
     name="ZDT1"
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
@@ -46,9 +46,9 @@ class ZDT1(ProblemABC):
 
 class ZDT2(ProblemABC):
     name="ZDT2"
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
@@ -84,9 +84,9 @@ class ZDT2(ProblemABC):
 class ZDT3(ProblemABC):
     
     name="ZDT3"
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -107,7 +107,7 @@ class ZDT3(ProblemABC):
     
     def getOptimum(self, N=100):
         
-        from ..utility_functions._NDsort import NDSort
+        from ..utility_functions.NDsort import NDSort
         
         R=np.zeros((N, self.nOutput))
         R[:,0]=np.linspace(0,1,N)
@@ -126,9 +126,9 @@ class ZDT3(ProblemABC):
 
 class ZDT4(ProblemABC):
     name="ZDT4"
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
        
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
@@ -163,9 +163,9 @@ class ZDT4(ProblemABC):
 
 class ZDT6(ProblemABC):
     name="ZDT6"
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0,disc_var=None,cont_var=None):
+    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb, disc_var, cont_var)
+        super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")

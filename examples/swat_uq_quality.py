@@ -652,8 +652,8 @@ def evaluate(variables):
 
     return (obj1, obj2, obj3)
     
-file_path="E:\swat_opt\TxtInOut2"
-temp_path="E:\\swat_opt\\temp"
+file_path="D:\swat_opt\TxtInOut2"
+temp_path="D:\\swat_opt\\temp"
 from UQPyL.DoE import LHS    
 swat_cup=SWAT_UQ(work_path=file_path,
                     paras_file_name="paras_infos.txt",
@@ -666,18 +666,20 @@ swat_cup=SWAT_UQ(work_path=file_path,
                     nOutput=3,
                     max_threads=10, num_parallel=10)  
 
-from UQPyL.optimization import NSGAII, MOASMO
+from UQPyL.optimization import NSGAII, MOASMO, MOEAD
 from UQPyL.surrogates.rbf import RBF
 from UQPyL.surrogates import Mo_Surrogates
 from UQPyL.problems.multi_objective import ZDT1
 
-zdt=ZDT1(nInput=15)
+moead=MOEAD(aggregation='TCH', nInit=100, nPop=100, maxFEs=5000, verboseFreq=1, saveFlag=True)
+moead.run(swat_cup)
+# zdt=ZDT1(nInput=15)
 
-obj1=RBF()
-obj2=RBF()
-obj3=RBF()
+# obj1=RBF()
+# obj2=RBF()
+# obj3=RBF()
 
-surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2, obj3])
-optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verbose=False, logFlag=False, saveFlag=False)
-moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, advance_infilling=True, maxFEs=300, saveFlag=True)
-moasmo.run(problem=swat_cup)
+# surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2, obj3])
+# optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verbose=False, logFlag=False, saveFlag=False)
+# moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, advance_infilling=True, maxFEs=300, saveFlag=True)
+# moasmo.run(problem=swat_cup)
