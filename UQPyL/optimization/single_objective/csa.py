@@ -84,7 +84,7 @@ class CSA(Algorithm):
             #Update person best and global best
             tmp=newPop[newPop.argsort()[:M]]
             pBest=Population(decs=np.where(newPop.objs<pBest.objs, newPop.decs, pBest.decs), objs=np.minimum(newPop.objs, pBest.objs) )
-            # gBest=pBest[pBest.argsort()[:self.M]]
+           
             gBest.add(tmp)
             gBest=gBest[gBest.argsort()[:M]]
             
@@ -119,7 +119,7 @@ class CSA(Algorithm):
         p = np.where(gailv<seed, t3, t4)
         
         vPopDecs = np.where(pop.decs>=c_n, r, p)
-        np.clip(vPopDecs, self.problem.lb, self.problem.ub)
+        np.clip(vPopDecs, self.problem.lb, self.problem.ub, out=vPopDecs)
         
         vPop = Population(vPopDecs)
         
@@ -144,7 +144,7 @@ class CSA(Algorithm):
         
         uPopDecs = popDecs + A + B + C
         
-        np.clip(uPopDecs, self.problem.lb, self.problem.ub)
+        np.clip(uPopDecs, self.problem.lb, self.problem.ub, out=uPopDecs)
         
         return Population(uPopDecs)
 

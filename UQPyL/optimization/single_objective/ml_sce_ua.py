@@ -113,13 +113,15 @@ class ML_SCE_UA(Algorithm):
         ce = np.mean(sPopDecs[:N], axis=0).reshape(1, -1)
         
         sNewDecs = ((sWorstDecs-ce) * alpha * -1 + ce )*(1-sita)+bPopDecs*sita
-        np.clip(sNewDecs, self.problem.lb, self.problem.ub)
+        np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
         
         sNew = Population(sNewDecs)
         self.evaluate(sNew)
         
         if sNew.objs[0] > sWorstObjs[0]:
             sNewDecs = (sWorstDecs + (sNewDecs - sWorstDecs) * beta) * (1-sita) + bPopDecs*sita
+            np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
+            
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
         

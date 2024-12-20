@@ -5,8 +5,8 @@ def GD(pop, optimum):
     
     distances = cdist(pop, optimum, metric='euclidean')
     
-    minDist=np.min(distances, axis=1)
+    minDist = np.min(distances, axis=1)
     
-    gd=np.mean(minDist)
+    gd = np.mean(minDist)
     
     return gd

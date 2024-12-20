@@ -5,9 +5,9 @@ import os
 uqPath=os.path.dirname("../UQPyL/")
 sys.path.insert(0, uqPath)
 
-from UQPyL.problems import Sphere, Weierstrass
+# from UQPyL.problems import Sphere, Weierstrass
 
-problem=Sphere(nInput=10)
+# problem=Sphere(nInput=10)
 
 
 #-------------ASMO--------------#
@@ -55,40 +55,33 @@ problem=Sphere(nInput=10)
 # res=sce_ua.run(problem)
 
 #----------------ML-SCE-UA------------------#
-from UQPyL.optimization.single_objective import ML_SCE_UA
-ml_sce_ua=ML_SCE_UA()
-res=ml_sce_ua.run(problem)
+# from UQPyL.optimization.single_objective import ML_SCE_UA
+# ml_sce_ua=ML_SCE_UA()
+# res=ml_sce_ua.run(problem)
 
+#Multi-objective Optimization
+from UQPyL.optimization.multi_objective import RVEA, NSGAII, NSGAIII, MOEAD, MOASMO
+from UQPyL.problems.multi_objective import DTLZ2
 
+dtlz1=DTLZ2(nInput=15)
+rvea=MOASMO(maxFEs=1000, nInit=50)
+res=rvea.run(dtlz1)
+
+bestObjs=res.bestObj
 # from UQPyL.optimization.multi_objective import MOEAD, RVEA, NSGAIII, NSGAII
 # from UQPyL.problems.multi_objective import DTLZ6
 
-# dtlz1=DTLZ6(nInput=15)
-# moead=NSGAII(maxFEs=10000, nInit=100, nPop=100)
-# res=moead.run(dtlz1)
+x=bestObjs[:, 0]
+y=bestObjs[:, 1]
+z=bestObjs[:, 2]
 
-# Y=res.bestObj
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-# import matplotlib.pyplot as plt
-# from mpl_toolkits.mplot3d import Axes3D
-# import numpy as np
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
 
-# # 创建数据
-# x = Y[:, 0]
-# y = Y[:, 1]
-# z = Y[:, 2]
-
-# # 创建图形和轴
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-
-# # 添加数据到轴上
-# ax.scatter(x, y, z)
-
-# # 添加标签
-# ax.set_xlabel('X Label')
-# ax.set_ylabel('Y Label')
-# ax.set_zlabel('Z Label')
-
-# # 显示图形
-# plt.show()
+# 绘制三维散点图
+scatter = ax.scatter(x, y, z, alpha=0.8)
+# 显示图形
+plt.show()

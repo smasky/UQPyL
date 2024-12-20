@@ -123,7 +123,7 @@ class PSO(Algorithm):
         offVel = w*particleVel+(pBestDecs-popDecs)*c1*r1+(gBestDecs-popDecs)*c2*r2
         
         offspringDecs = popDecs + offVel
-        np.clip(offspringDecs, self.problem.lb, self.problem.ub)
+        np.clip(offspringDecs, self.problem.lb, self.problem.ub, out=offspringDecs)
         
         return Population(offspringDecs), offVel
     

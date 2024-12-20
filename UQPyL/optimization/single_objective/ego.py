@@ -12,7 +12,8 @@ from ...utility.scalers import StandardScaler
 class EGO(Algorithm):
     
     name="EGO"
-    type="EA"
+    type="EA" 
+    
     def __init__(self, nInit: int=50,
                  maxFEs: int=1000,
                  maxTolerateTimes: int=100,
@@ -53,6 +54,10 @@ class EGO(Algorithm):
             else:
                 pop=Population(xInit)
                 self.evaluate(pop)
+            
+            if nInit > len(pop):
+                pop.merge(self.initialize(nInit-len(pop)))
+                
         else:
             pop=self.initialize(nInit)
         

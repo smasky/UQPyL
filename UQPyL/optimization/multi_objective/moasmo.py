@@ -8,6 +8,7 @@ from ...problems import PracticalProblem
 from ...surrogates import Mo_Surrogates
 from ..algorithmABC import Algorithm, Population, Verbose
 from .nsga_ii import NSGAII
+from ...surrogates.rbf import RBF
 
 
 class MOASMO(Algorithm):
@@ -69,13 +70,17 @@ class MOASMO(Algorithm):
         
         self.setParameters('pct', pct)
         self.setParameters('nInit', nInit)
-        self.setParameters('nPop', nPop)
         self.setParameters('advance_infilling', advance_infilling)
         
         if surrogates is not None:
-            self.surrogates=surrogates
+            self.surrogates = surrogates
+        else:
+            self.surrogates = Mo_Surrogates(n_surrogates=3, models_list=[RBF(), RBF(), RBF()])
         
-        self.optimizer=optimizer
+        if optimizer is not None:
+            self.optimizer = optimizer
+        else:
+            self.optimizer = NSGAII(maxFEs=10000, verbose=False, saveFlag=False, logFlag=False)
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -91,11 +96,12 @@ class MOASMO(Algorithm):
         
         #Problem
         self.problem=problem
+        
         #SubProblem
-        subProblem=PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb)
+        subProblem=PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
         
         #Termination Condition Setting
-        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        self.FEs = 0; self.iters = 0; self.tolerateTimes =0
         
         #Population Generation
         if xInit is not None:
@@ -104,36 +110,42 @@ class MOASMO(Algorithm):
             else:
                 pop=Population(xInit)
                 self.evaluate(pop)
-        else:
-            pop=self.initialize(nInit)
+            
+            if nInit>len(pop):
+                pop.merge(self.initialize(nInit-len(pop)))
+            
+        else: 
+            pop = self.initialize(nInit)
         
         while self.checkTermination():
             
             #Build surrogate models
             self.surrogates.fit(pop.decs, pop.objs)
-            #Run optimization
-            res=self.optimizer.run(subProblem)
             
-            offSpring=Population(decs=res.bestDec, objs=res.bestObj)
+            #Run optimization
+            res = self.optimizer.run(subProblem)
+            
+            offSpring = Population(decs=res.bestDec, objs=res.bestObj)
             
             if advance_infilling==False:
                 
-                if offSpring.nPop>nInfilling:
-                    bestOff=offSpring.getBest(nInfilling)
+                if offSpring.nPop > nInfilling:
+                    bestOff = offSpring.getBest(nInfilling)
                 else:
-                    bestOff=offSpring
+                    bestOff = offSpring
                     
             else:
-                if offSpring.nPop>nInfilling:
-                    Known_FrontNo, _ =NDSort(pop)
-                    Unknown_FrontNo, _=NDSort(offSpring)
+                
+                if offSpring.nPop > nInfilling:
+                    Known_FrontNo, _ = NDSort(pop)
+                    Unknown_FrontNo, _ = NDSort(offSpring)
                     
-                    Known_best_Y=pop.objs[np.where(Known_FrontNo==1)]
-                    Unknown_best_Y=offSpring.objs[np.where(Unknown_FrontNo==1)]
-                    Unknown_best_X=offSpring.decs[np.where(Unknown_FrontNo==1)]
+                    Known_best_Y = pop.objs[np.where(Known_FrontNo==1)]
+                    Unknown_best_Y = offSpring.objs[np.where(Unknown_FrontNo==1)]
+                    Unknown_best_X = offSpring.decs[np.where(Unknown_FrontNo==1)]
                     
-                    added_points_Y=[]
-                    added_points_X=[]
+                    added_points_Y = []
+                    added_points_X = []
                     
                     for _ in range(nInfilling):
                         
@@ -151,69 +163,15 @@ class MOASMO(Algorithm):
                         
                         Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
                         Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
-                        
-                    BestX=np.copy(np.array(added_points_X))
-                    BestY=np.copy(np.array(added_points_Y))
-                    bestOff=Population(decs=BestX, objs=BestY)
+                    
+                    BestX = np.copy(np.array(added_points_X))
+                    BestY = np.copy(np.array(added_points_Y))
+                    bestOff = Population(decs = BestX, objs = BestY)
             
-            self.evaluate(bestOff)  
+            self.evaluate(bestOff)
             pop.add(bestOff)
             self.record(pop)
-            
-            # offSpring=Population(decs=res.bestDec)
-            # self.evaluate(offSpring)
-            
-            # pop.add(offSpring)
-            # nsga_ii=NSGAII(self.subProblem, self.n_pop)
-            # #main optimization
-            # Result=nsga_ii.run()
-            # BestX=Result['pareto_x']
-            # BestY=Result['pareto_y']
-            # CrowdDis=Result['crowdDis']
-            
-            # if self.advance_infilling==False:
-            #     #Origin version
-            #     if BestY.shape[0]>n_infilling:
-            #         idx=CrowdDis.argsort()[::-1][:n_infilling]
-            #         BestX=np.copy(BestX[idx])
-            #         BestY=np.copy(BestY[idx])
-            # else:
-            #     #Advanced version Using crowding-based strategy
-            #     if BestY.shape[0]>n_infilling:
-                    
-            #         Known_FrontNo, _ =nsga_ii.NDSort(YPop, YPop.shape[0])
-            #         Unknown_FrontNo, _=nsga_ii.NDSort(BestY, BestY.shape[0])
-            #         Known_best_Y=YPop[np.where(Known_FrontNo==1)]
-            #         Unknown_best_Y=BestY[np.where(Unknown_FrontNo==1)]
-            #         Unknown_best_X=BestX[np.where(Unknown_FrontNo==1)]
-
-            #         added_points_Y=[]
-            #         added_points_X=[]
-            #         for _ in range(n_infilling):
-                        
-            #             if len(added_points_Y)==0:
-            #                 distances = cdist(Unknown_best_Y, Known_best_Y)
-            #             else:
-            #                 distances = cdist(Unknown_best_Y, np.append(Known_best_Y, added_points_Y, axis=0))
-
-            #             max_distance_index = np.argmax(np.min(distances, axis=1))
-
-            #             added_point = Unknown_best_Y[max_distance_index]
-            #             added_points_Y.append(added_point)
-            #             added_points_X.append(Unknown_best_X[max_distance_index])
-            #             Known_best_Y = np.append(Known_best_Y, [added_point], axis=0)
-
-            #             Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
-            #             Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
-            #         BestX=np.copy(np.array(added_points_X))
-            #         BestY=np.copy(np.array(added_points_Y))
-            
-            # FE+=BestX.shape[0]
-            # # show_process.update(BestX.shape[0])
-            
-            # BestY=self.evaluate(BestX)
-            # XPop=np.vstack((XPop,BestX))
-            # YPop=np.vstack((YPop,BestY))      
+                
         return self.result
           
         

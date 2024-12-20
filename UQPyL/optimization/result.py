@@ -45,7 +45,11 @@ class Result():
         else:
             
             bests=pop.getBest()
-            bestDecs=problem._transform_special_parameters(np.copy(bests.decs))
+            
+            bestDecs=bests.decs
+            if problem.encoding=='mix':
+                decs = problem._transform_discrete_var(np.copy(pop.decs))
+            
             bestObjs=bests.objs
             
             optimum=self.algorithm.problem.getOptimum()

@@ -27,8 +27,10 @@ class ASMO(Algorithm):
             n_init: int, default=50
                 Number of initial samples for surrogate modelling
     '''
+    
     name="ASMO"
     type="EA"
+    
     def __init__(self, nInit: int = 50,
                  surrogate: Surrogate = None,
                  optimizer: Algorithm = None,
@@ -78,6 +80,10 @@ class ASMO(Algorithm):
             else:
                 pop = Population(xInit)
                 self.evaluate(pop)
+            
+            if nInit > len(pop):
+                pop.merge(self.initialize(nInit-len(pop)))
+                
         else:
             pop = self.initialize(nInit)
         

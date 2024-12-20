@@ -3,7 +3,8 @@
 import numpy as np
 import math
 
-from ..algorithmABC import Algorithm, Population, Verbose, Result
+from ..algorithmABC import Algorithm, Verbose, Result
+from ..population import Population
 class GA(Algorithm):
     '''
         Genetic Algorithm <single> <real>/<mix>
@@ -165,7 +166,8 @@ class GA(Algorithm):
         sita = np.random.rand(2 * N, D) < proM / D
         mu = np.random.rand(2 * N, D)
         
-        offspring.clip(lower, upper)
+        np.clip(offspring, lower, upper, out=offspring)
+        
         temp = sita & (mu <= 0.5)        
         t1 = (1 - 2 * mu[temp]) * np.power(1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]), disM + 1)
         offspring[temp] = offspring[temp] + (np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1) *(upper[temp] - lower[temp])

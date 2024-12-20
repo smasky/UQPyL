@@ -1,10 +1,12 @@
 import numpy as np
 import copy
 
-from .utility_functions import NDSort, crowdingDistance
+from .utility_functions.ndsort import NDSort
+from .utility_functions.crowding_distance import crowdingDistance
+
 class Population():
     
-    def __init__(self, decs, objs=None):
+    def __init__(self, decs, objs=None, cons=None):
         
         self.decs = np.atleast_2d(np.copy(decs))
         
@@ -12,9 +14,11 @@ class Population():
             self.objs = np.atleast_2d(np.copy(objs))
             self.nOutput=self.objs.shape[1]
         
+        if cons is not None:
+            self.cons = np.atleast_2d(np.copy(cons))
+        
         self.nPop, self.D = self.decs.shape
             
-       
     def __add__(self, otherPop):
         
         if isinstance(otherPop, np.ndarray):
@@ -102,6 +106,9 @@ class Population():
     def argsort(self):
         
         if self.nOutput==1:
+            
+            feasible = self.popCon
+            
             args = np.argsort(self.objs.ravel())
             
         else:
@@ -113,7 +120,7 @@ class Population():
     
     def clip(self, lb, ub):
         
-        self.decs = np.clip(self.decs, lb, ub)
+        self.decs = np.clip(self.decs, lb, ub, out=self.decs)
     
     def replace(self, index, pop):
         

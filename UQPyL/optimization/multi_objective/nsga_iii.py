@@ -4,8 +4,8 @@ import numpy as np
 from ..algorithmABC import Algorithm
 from ..population import Population
 from ...utility import Verbose
-from ..utility_functions import tournamentSelection, operationGA, uniformPoint, NDSort, crowdingDistance
-
+from ..utility_functions import tournamentSelection, uniformPoint, NDSort, crowdingDistance
+from ..utility_functions.operation_GA import operationGA
 class NSGAIII(Algorithm):
     '''
     Non-dominated Sorting Genetic Algorithm III <Multi>
@@ -15,11 +15,11 @@ class NSGAIII(Algorithm):
     type = "MOEA"
     
     def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
-                 nInit: int=50, nPop: int=50,
+                 nPop: int=50,
                  maxFEs=50000, maxIterTimes=1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
                  verbose=True, verboseFreq=10, 
-                 logFlag=True, saveFlag=False):
+                 logFlag=True, saveFlag=True):
         
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
@@ -27,7 +27,6 @@ class NSGAIII(Algorithm):
         self.setParameters('disC', disC)
         self.setParameters('proM', proM)
         self.setParameters('disM', disM)
-        self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
         
         #-------------------------Public Functions------------------------#
@@ -37,34 +36,26 @@ class NSGAIII(Algorithm):
         
         #Parameter Setting
         proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nInit, nPop=self.getParaValue('nInit', 'nPop')
+        nPop=self.getParaValue('nPop')
         
         #Problem
         self.setProblem(problem)
-        Z, N=uniformPoint(nPop, problem.nOutput)
-        nInit=N; nPop=N
+        
+        Z, nPop=uniformPoint(nPop, problem.nOutput)
+        
         #Termination Condition Setting
         self.FEs=0; self.iters=0
-        #Population Generation
-        if xInit is not None:
-            pop = Population(xInit, yInit) if yInit is not None else Population(xInit)
-            if yInit is None:
-                self.evaluate(pop)
-        else:
-            pop = self.initialize(nInit)
-            
-        pop=pop.getTop(nPop)
         
-        # Zmin=np.min(pop.objs, axis=0).reshape(1,-1)
+        #Population Generation
+        pop = self.initialize(nPop)
         
         while self.checkTermination():
             
             frontNo, _ = NDSort(pop)
             crowdDis = crowdingDistance(pop, frontNo)
-            # _, frontNo, CrowdDis=self.environmentalSelection(pop, nPop)
-            selectIdx=tournamentSelection(2, nPop, frontNo, -crowdDis)
+            selectIdx = tournamentSelection(2, nPop, frontNo, -crowdDis)
             
-            offspring=operationGA(pop[selectIdx], self.problem.ub, self.problem.lb, proC, disC, proM, disM)
+            offspring = operationGA(pop[selectIdx], self.problem.ub, self.problem.lb, proC, disC, proM, disM)
             
             self.evaluate(offspring)
             
@@ -100,6 +91,7 @@ class NSGAIII(Algorithm):
         return offSpring
         
     def lastSelection(self, PopObj1, PopObj2, K, Z, Zmin):
+        
         from scipy.spatial.distance import cdist
         PopObj = np.vstack((PopObj1, PopObj2)) - Zmin
         N, M = PopObj.shape

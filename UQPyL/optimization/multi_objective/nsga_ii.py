@@ -2,7 +2,9 @@
 import numpy as np
 
 
-from ..utility_functions import NDSort, crowdingDistance, tournamentSelection, operationGA
+from ..utility_functions import NDSort, crowdingDistance, tournamentSelection
+from ..utility_functions.operation_GA import operationGA
+
 from ..algorithmABC import Algorithm
 from ..population import Population
 from ...utility import Verbose
@@ -50,11 +52,11 @@ class NSGAII(Algorithm):
     type = "MOEA"
     
     def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
-                 nInit: int =50, nPop: int =50,
+                 nPop: int =50,
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
+                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
         
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
@@ -62,30 +64,25 @@ class NSGAII(Algorithm):
         self.setParameters('disC', disC)
         self.setParameters('proM', proM)
         self.setParameters('disM', disM)
-        self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None):
+    def run(self, problem):
         
         #Parameter Setting
         proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nInit, nPop=self.getParaValue('nInit', 'nPop')
+        nPop=self.getParaValue('nPop')
+        
         #Problem
         self.setProblem(problem)
+        
         #Termination Condition Setting
         self.FEs=0; self.iters=0
+        
         #Population Generation
-        if xInit is not None:
-            pop = Population(xInit, yInit) if yInit is not None else Population(xInit)
-            if yInit is None:
-                self.evaluate(pop)
-        else:
-            pop = self.initialize(nInit)
-            
-        pop=pop.getTop(nPop)
+        pop = self.initialize(nPop)
         
         _, frontNo, CrowdDis=self.environmentalSelection(pop, nPop)
         

@@ -3,12 +3,12 @@ from scipy.spatial.distance import cdist
 
 def IGD(pop, optimum):
     
-    popObjs=pop.getBest().objs
+    popObjs = pop.getBest().objs
     
-    distances=cdist(optimum, popObjs, metric='euclidean')
+    distances = cdist(optimum, popObjs, metric='euclidean')
     
-    minDist=np.min(distances, axis=1)
+    minDist = np.min(distances, axis=1)
     
-    igd=np.mean(minDist)
+    igd = np.mean(minDist)
     
     return igd

@@ -120,6 +120,7 @@ class ABC(Algorithm):
         
         rnd = np.random.random((len(unemployedBees), d))*2-1
         newBees = employedBees[globalIdx]+(employedBees[globalIdx]-pop[randIdx[beeType==0]])*rnd
+        
         newBees.clip(self.problem.lb, self.problem.ub)
         
         self.evaluate(newBees)

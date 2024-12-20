@@ -1,12 +1,13 @@
 #multiobjective evolutionary algorithm based on decomposition (MOEAD) <Multi>
 import numpy as np
 import math
-from typing import Optional, Literal
+from typing import Literal
 from scipy.spatial import distance
 
 from ..algorithmABC import Algorithm
 from ..population import Population
-from ..utility_functions import uniformPoint, operationGAHalf, NDSort
+from ..utility_functions import uniformPoint, NDSort
+from ..utility_functions.operation_GA import operationGAHalf
 from ...utility import Verbose
 class MOEAD(Algorithm):
     '''
@@ -41,82 +42,63 @@ class MOEAD(Algorithm):
     type="MOEA"
     
     def __init__(self, aggregation: Literal['PBI', 'TCH', 'TCH_N', 'TCH_M']= 'PBI',
-                nInit: int=50, nPop: int=50,
+                nPop: int=50,
                 maxFEs: int = 50000, 
                 maxIterTimes: int = 1000, 
                 maxTolerateTimes=None, tolerate=1e-6, 
-                verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
+                verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
+        
         #problem setting
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
         self.setParameters('aggregation', aggregation)
-        self.setParameters('nInit', nInit)
         self.setParameters('nPop', nPop)
-        # self.setParameters('normalized', normalized)
+        
         
     #-------------------Public Functions-----------------------#
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None):
+    def run(self, problem):
         
         #Parameter Setting
         aggregation=self.getParaValue('aggregation')
-        nInit, nPop=self.getParaValue('nInit', 'nPop')
-        # normalized=self.getParaValue('normalized')
+        nPop=self.getParaValue('nPop')
+        
         #Problem
         self.setProblem(problem)
+        
         #Termination Condition Setting
         self.FEs=0; self.iters=0
-        #Population Generation
-        if xInit is not None:
-            pop = Population(xInit, yInit) if yInit is not None else Population(xInit)
-            if yInit is None:
-                self.evaluate(pop)
-        else:
-            pop = self.initialize(nInit)
-        
-        pop=pop.getTop(nPop)
         
         T = math.ceil(nPop / 10)
-        W, N=uniformPoint(nPop, problem.nOutput)
+        W, N = uniformPoint(nPop, problem.nOutput)
+        
+        nPop=N
         
         B=distance.cdist(W, W, metric='euclidean')
         B=np.argsort(B, axis=1)
         B=B[:,0:T]
         
+        #Population Generation
+        pop = self.initialize(nPop)
+        
         Z=np.min(pop.objs, axis=0).reshape(1,-1)
          
         while self.checkTermination():
             
-            for i in range(N):
+            for i in range(nPop):
                 
                 P = B[i, np.random.permutation(B.shape[1])].ravel()
 
-                offspring=operationGAHalf(pop[P[0:2]], problem.ub, problem.lb, 1, 20, 1, 20)
+                offspring = operationGAHalf(pop[P[0:2]], problem.ub, problem.lb, 1, 20, 1, 20)
                 
                 self.evaluate(offspring)
                 
-                Z=np.min(np.vstack((Z, offspring.objs)), axis=0).reshape(1, -1)
+                Z = np.min(np.vstack((Z, offspring.objs)), axis=0).reshape(1, -1)
                 
-                popObjs=pop.objs[P]
-                offspringObjs=offspring.objs
+                popObjs = pop.objs[P]
+                offspringObjs = offspring.objs
                 
-                # if normalized:
-                #     popObjs=pop.objs[P]
-                #     offspringObjs=offspring.objs
-                    
-                #     tmp=np.vstack((popObjs, offspringObjs))
-                #     maximum=np.mean(tmp, axis=0)
-                #     minimum=np.var(tmp, axis=0, ddof=0)
-                    
-                #     popObjs=(popObjs-minimum)/(maximum-minimum)
-                #     offspringObjs=(offspringObjs-minimum)/(maximum-minimum)
-                    
-                # else:
-                    
-                #     popObjs=pop.objs[P]
-                #     offspringObjs=offspring.objs
-                    
                 #PBI
                 if(aggregation=='PBI'):
                     

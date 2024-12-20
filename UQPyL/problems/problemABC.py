@@ -46,8 +46,11 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.y_labels
         
     @abc.abstractmethod
-    def evaluate(self,X):
+    def evaluate(self, X):
         pass
+    
+    def constraint(self, X):
+        return np.zeros((X.shape[0], 1))
     
     def getOptimum(self):
         pass
