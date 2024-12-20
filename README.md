@@ -36,7 +36,7 @@
 
 (* indicates solving computational expensive optimization problem)
 - **Single Objective Optimization**: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
-- **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, MOASMO*
+- **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, NSGA-III, MOASMO*
 
 *Note: The library is still being updated. If you need other algorithms, please contact us.*
 
