@@ -1,7 +1,7 @@
 #Non-dominated Sorting
 import numpy as np
 
-def NDSort(pop, nSort=None):
+def NDSort(pop, nSort=None, cons=True):
         '''
             Non-dominated Sorting
         '''
@@ -9,6 +9,16 @@ def NDSort(pop, nSort=None):
             nSort=len(pop)
         
         popObjs=pop.objs
+        
+        _, M=popObjs.shape
+        
+        if cons:
+            popCons=pop.cons
+            Infeasible = np.any(popCons > 0, axis=1)
+            popObjs[Infeasible, :] = (
+                np.tile(np.max(popObjs, axis=0), (np.sum(Infeasible), 1)) +
+                np.tile(np.sum(np.maximum(0, popCons[Infeasible, :]), axis=1).reshape(-1, 1), (1, M))
+            )
         
         popObjs, indices = np.unique(popObjs, axis=0, return_inverse=True)
        

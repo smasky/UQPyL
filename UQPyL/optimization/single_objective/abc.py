@@ -12,12 +12,12 @@ class ABC(Algorithm):
     name="ABC"
     type="EA"
     
-    def __init__(self, employedRate: float=0.3,  limit: int=50,
-                 nPop: int=50, 
+    def __init__(self, employedRate: float = 0.3,  limit: int = 50,
+                 nPop: int = 50, 
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
-                 maxTolerateTimes=1000, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=False, saveFlag=False):
+                 maxTolerateTimes = 1000, tolerate = 1e-6, 
+                 verbose = True, verboseFreq = 10, logFlag = False, saveFlag = False):
                 
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
@@ -37,7 +37,7 @@ class ABC(Algorithm):
         self.setProblem(problem)
         
         #Termination Condition Setting
-        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
         #Population Generation
         pop = self.initialize(nPop)
@@ -62,7 +62,9 @@ class ABC(Algorithm):
         return self.result
             
     def checkLimitTimes(self, beeType:np.ndarray, limitCount: np.ndarray, limit: int):
+        
         onlookerBees = np.where(limitCount>limit)[0]
+        
         beeType[onlookerBees] = 2
         
         return beeType        
@@ -128,10 +130,10 @@ class ABC(Algorithm):
         pop.replace(beeType==0, newBees)
         
         replaceIdx = np.where(newBees.objs<employedBees[globalIdx].objs)[0]
-        limitCount[unemployedType[replaceIdx]]=0
-        beeType[unemployedType[replaceIdx]]=1
-        limitCount[employedType[globalIdx][replaceIdx]]=0
-        beeType[employedType[globalIdx][replaceIdx]]=0
+        limitCount[unemployedType[replaceIdx]] = 0
+        beeType[unemployedType[replaceIdx]] = 1
+        limitCount[employedType[globalIdx][replaceIdx]] = 0
+        beeType[employedType[globalIdx][replaceIdx]] = 0
         
         updateIdx = np.where(newBees.objs>employedBees[globalIdx].objs)[0]
         limitCount[employedType[globalIdx][updateIdx]]+=1
@@ -140,7 +142,7 @@ class ABC(Algorithm):
         
     def updateEmployedBees(self, pop: Population, beeType: np.ndarray,  limitCount: np.ndarray):
         
-        n, d = pop.size()
+        _, D = pop.size()
         employedBeesType = np.where(beeType==1)[0]
         nEmployBees = np.sum(beeType==1)
         idx = np.arange(len(pop))
@@ -149,7 +151,7 @@ class ABC(Algorithm):
             if(np.all(randIdx[employedBeesType]!=idx[employedBeesType])):
                 break
             
-        rnd = np.random.random((nEmployBees, d))*2-1
+        rnd = np.random.random((nEmployBees, D))*2-1
         
         newBees = pop[employedBeesType]+(pop[randIdx[employedBeesType]]-pop[employedBeesType])*rnd
         newBees.clip(self.problem.lb, self.problem.ub)
@@ -161,8 +163,6 @@ class ABC(Algorithm):
         
         updateIdx = np.where(newBees.objs<pop[employedBeesType].objs)[0]
         pop.replace(employedBeesType[updateIdx], newBees[updateIdx])
-        
-       
         
         return pop, limitCount
     

@@ -86,19 +86,19 @@ class MOASMO(Algorithm):
     @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
         
-        pct=self.getParaValue('pct')
-        nInit=self.getParaValue('nInit')
-        advance_infilling=self.getParaValue('advance_infilling')
+        pct = self.getParaValue('pct')
+        nInit = self.getParaValue('nInit')
+        advance_infilling = self.getParaValue('advance_infilling')
         
-        nInfilling=int(pct*nInit)
+        nInfilling = int(pct*nInit)
         
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
         #Problem
-        self.problem=problem
+        self.problem = problem
         
         #SubProblem
-        subProblem=PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem = PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
         
         #Termination Condition Setting
         self.FEs = 0; self.iters = 0; self.tolerateTimes =0
@@ -106,12 +106,12 @@ class MOASMO(Algorithm):
         #Population Generation
         if xInit is not None:
             if yInit is not None:
-                pop=Population(xInit, yInit)
+                pop = Population(xInit, yInit)
             else:
-                pop=Population(xInit)
+                pop = Population(xInit)
                 self.evaluate(pop)
             
-            if nInit>len(pop):
+            if nInit > len(pop):
                 pop.merge(self.initialize(nInit-len(pop)))
             
         else: 

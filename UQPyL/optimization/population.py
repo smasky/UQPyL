@@ -3,7 +3,6 @@ import copy
 
 from .utility_functions.ndsort import NDSort
 from .utility_functions.crowding_distance import crowdingDistance
-
 class Population():
     
     def __init__(self, decs, objs=None, cons=None):
@@ -54,26 +53,6 @@ class Population():
         
         otherPop = Population(decs, objs)
         self.add(otherPop)
-
-    def checkSameStatus(self, otherPop):
-        
-        if self.evaluated != otherPop.evaluated:
-            raise Exception("The population evaluation status is different.")
-    
-    def checkEvaluated(self):
-        
-        if self.evaluate is False:
-            raise Exception("The population is not evaluated yet.")
-    
-    # def initialize(self, decs, objs):
-        
-    #     self.decs = decs
-    #     self.objs = objs
-    #     self.nPop, self.D=decs.shape
-        
-    # def getTop(self, k):
-        
-    #     return self.getBest(k)
     
     def getBest(self, k=None):
         
@@ -82,13 +61,15 @@ class Population():
                 iMax = np.argmax(self.objs)
                 obj = self.objs[iMax]
                 decs = self.decs[iMax]
-                return Population(decs, obj)
+                cons = self.cons[iMax]
+                return Population(decs, obj, cons)
             
             else:
                 frontNo, _ = NDSort(self)
                 objs = self.objs[frontNo==1]
                 decs = self.decs[frontNo==1]
-                return Population(decs, objs)
+                cons = self.cons[frontNo==1]
+                return Population(decs, objs, cons)
             
         else:
             if self.nOutput==1:
@@ -97,23 +78,31 @@ class Population():
             
             else:
                 frontNo, _ = NDSort(self)
-                crowDis=crowdingDistance(self, frontNo)
+                crowDis = crowdingDistance(self, frontNo)
                 indices = np.lexsort((-crowDis, frontNo))
-                objs=self.objs[indices[:k]]
-                decs=self.decs[indices[:k]]
-                return Population(decs, objs)
+                objs = self.objs[indices[:k]]
+                decs = self.decs[indices[:k]]
+                cons = self.cons[indices[:k]] 
+                return Population(decs, objs, cons)
             
     def argsort(self):
         
         if self.nOutput==1:
             
-            feasible = self.popCon
+            popSumCon=np.sum(self.cons, axis=1)
             
-            args = np.argsort(self.objs.ravel())
+            infeasible = (popSumCon > 0).astype(int)
+            
+            integration = self.objs + infeasible * popSumCon
+            
+            args = np.argsort(integration.ravel())
             
         else:
+            
             frontNo, _ = NDSort(self)
+            
             crowDis = crowdingDistance(self, frontNo)
+            
             args = np.lexsort((-crowDis, frontNo))
         
         return args
@@ -142,12 +131,14 @@ class Population():
         self.nOutput=problem.nOutput
         
         self.objs = problem.evaluate(decs)
+        self.cons = problem.constraint(decs)
         
     def add(self, otherPop):
         
         if self.decs is not None:
             self.decs=np.vstack((self.decs, otherPop.decs))
             self.objs=np.vstack((self.objs, otherPop.objs))
+            self.cons=np.vstack((self.cons, otherPop.cons))
         else:
             self.decs=otherPop.decs
             self.objs=otherPop.objs
@@ -165,15 +156,17 @@ class Population():
         if isinstance(index, (slice, list, np.ndarray)):
             decs = self.decs[index]
             objs = self.objs[index] if self.objs is not None else None
+            cons = self.cons[index] if self.cons is not None else None
             
         elif isinstance(index, (int, np.integer)):
             decs = self.decs[index:index+1]
             objs = self.objs[index:index+1] if self.objs is not None else None
+            cons = self.cons[index:index+1] if self.cons is not None else None
             
         else:
             raise TypeError("Index must be int, slice, list, or ndarray")
         
-        return Population(decs, objs)
+        return Population(decs, objs, cons)
 
     def __len__(self):
         

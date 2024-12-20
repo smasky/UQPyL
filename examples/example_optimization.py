@@ -64,24 +64,24 @@ from UQPyL.optimization.multi_objective import RVEA, NSGAII, NSGAIII, MOEAD, MOA
 from UQPyL.problems.multi_objective import DTLZ2
 
 dtlz1=DTLZ2(nInput=15)
-rvea=MOASMO(maxFEs=1000, nInit=50)
+rvea=NSGAII(maxFEs=10000, nPop=50)
 res=rvea.run(dtlz1)
 
-bestObjs=res.bestObj
+# bestObjs=res.bestObj
 # from UQPyL.optimization.multi_objective import MOEAD, RVEA, NSGAIII, NSGAII
 # from UQPyL.problems.multi_objective import DTLZ6
 
-x=bestObjs[:, 0]
-y=bestObjs[:, 1]
-z=bestObjs[:, 2]
+# x=bestObjs[:, 0]
+# y=bestObjs[:, 1]
+# z=bestObjs[:, 2]
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 
-fig = plt.figure(figsize=(10, 7))
-ax = fig.add_subplot(111, projection='3d')
+# fig = plt.figure(figsize=(10, 7))
+# ax = fig.add_subplot(111, projection='3d')
 
-# 绘制三维散点图
-scatter = ax.scatter(x, y, z, alpha=0.8)
-# 显示图形
-plt.show()
+# # 绘制三维散点图
+# scatter = ax.scatter(x, y, z, alpha=0.8)
+# # 显示图形
+# plt.show()

@@ -73,16 +73,16 @@ class MOEAD(Algorithm):
         T = math.ceil(nPop / 10)
         W, N = uniformPoint(nPop, problem.nOutput)
         
-        nPop=N
+        nPop = N
         
-        B=distance.cdist(W, W, metric='euclidean')
-        B=np.argsort(B, axis=1)
-        B=B[:,0:T]
+        B = distance.cdist(W, W, metric='euclidean')
+        B = np.argsort(B, axis=1)
+        B = B[:,0:T]
         
         #Population Generation
         pop = self.initialize(nPop)
         
-        Z=np.min(pop.objs, axis=0).reshape(1,-1)
+        Z = np.min(pop.objs, axis=0).reshape(1,-1)
          
         while self.checkTermination():
             

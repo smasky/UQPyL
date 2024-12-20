@@ -36,12 +36,12 @@ class NSGAIII(Algorithm):
         
         #Parameter Setting
         proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nPop=self.getParaValue('nPop')
+        nPop = self.getParaValue('nPop')
         
         #Problem
         self.setProblem(problem)
         
-        Z, nPop=uniformPoint(nPop, problem.nOutput)
+        Z, nPop = uniformPoint(nPop, problem.nOutput)
         
         #Termination Condition Setting
         self.FEs=0; self.iters=0
@@ -61,9 +61,9 @@ class NSGAIII(Algorithm):
             
             pop.merge(offspring)
             
-            Zmin=np.min(pop.objs, axis=0).reshape(1,-1)
+            Zmin = np.min(pop.objs, axis=0).reshape(1,-1)
             
-            pop=self.environmentSelection(pop, Z, Zmin)
+            pop = self.environmentSelection(pop, Z, Zmin)
             
             self.record(pop)
         
@@ -71,22 +71,22 @@ class NSGAIII(Algorithm):
     
     def environmentSelection(self, pop, Z, Zmin):
         
-        N=Z.shape[0]
+        N = Z.shape[0]
         
-        frontNo, maxFNo=NDSort(pop, N)
+        frontNo, maxFNo = NDSort(pop, N)
         
-        next=frontNo < maxFNo
+        next = frontNo < maxFNo
         
-        last=np.where(frontNo==maxFNo)[0]
+        last = np.where(frontNo==maxFNo)[0]
         
-        popObjs1=pop.objs[next]
-        popObjs2=pop.objs[last]
+        popObjs1 = pop.objs[next]
+        popObjs2 = pop.objs[last]
         
-        choose=self.lastSelection(popObjs1, popObjs2, N-popObjs1.shape[0], Z, Zmin)
+        choose = self.lastSelection(popObjs1, popObjs2, N-popObjs1.shape[0], Z, Zmin)
         
-        next[last[choose]]=True
+        next[last[choose]] = True
         
-        offSpring=pop[next]
+        offSpring = pop[next]
         
         return offSpring
         

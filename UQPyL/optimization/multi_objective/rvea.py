@@ -32,17 +32,17 @@ class RVEA(Algorithm):
     def run(self, problem):
         
         #Parameters setting
-        alpha, fr=self.getParaValue('alpha', 'fr')
-        nPop=self.getParaValue('nPop')
+        alpha, fr = self.getParaValue('alpha', 'fr')
+        nPop = self.getParaValue('nPop')
         
         #Problem
         self.setProblem(problem)
         
         #Termination Condition Setting
-        self.FEs=0; self.iters=0
+        self.FEs = 0; self.iters = 0
         
         #Vector Generation
-        V0, nPop=uniformPoint(nPop, problem.nOutput)
+        V0, nPop = uniformPoint(nPop, problem.nOutput)
         V = np.copy(V0)
         
         #Population Generation
@@ -51,7 +51,7 @@ class RVEA(Algorithm):
         #Iterative
         while self.checkTermination():
             
-            matingPool=np.random.randint(0, len(pop), nPop)
+            matingPool = np.random.randint(0, len(pop), nPop)
             
             offspring = operationGA(pop[matingPool], problem.ub, problem.lb)
             
@@ -59,7 +59,7 @@ class RVEA(Algorithm):
             
             pop = self.environmentalSelection(pop.merge(offspring), V, (self.FEs/self.maxFEs)**alpha)
             
-            condition= not (np.ceil(self.FEs / nPop) % np.ceil(fr * self.maxFEs / nPop))
+            condition = not (np.ceil(self.FEs / nPop) % np.ceil(fr * self.maxFEs / nPop))
             
             if condition:
                 
@@ -79,21 +79,21 @@ class RVEA(Algorithm):
     
     def environmentalSelection(self, pop, V, theta):
         
-        popObjs=pop.objs
+        popObjs = pop.objs
         
-        M=popObjs.shape[1]
+        M = popObjs.shape[1]
         
-        nV=V.shape[0]
+        nV = V.shape[0]
         
-        popObjs=popObjs - np.min(popObjs, axis=0)
+        popObjs = popObjs - np.min(popObjs, axis=0)
         
-        cosine=1-cdist(V, V, metric='cosine')
+        cosine = 1-cdist(V, V, metric='cosine')
         
         np.fill_diagonal(cosine, 0)
         
-        gamma= np.min(np.arccos(cosine), axis=1)
+        gamma = np.min(np.arccos(cosine), axis=1)
         
-        angle= np.arccos(1-cdist(popObjs, V, metric="cosine"))
+        angle = np.arccos(1-cdist(popObjs, V, metric="cosine"))
         
         associate = np.argmin(angle, axis=1)
         
