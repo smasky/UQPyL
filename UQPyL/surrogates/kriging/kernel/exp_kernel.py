@@ -22,38 +22,4 @@ class Exp(BaseKernel):
         td= -theta
         r= np.exp(np.sum(D*td, axis=1))
         
-        return r
-    
-    ##################################Attribute############################################
-    #--------------------------------length_scale----------------------------------------#
-    @property
-    def theta(self):
-        return self._theta
-    
-    @theta.setter
-    def theta(self, value):
-        value=self.__check_array__(value)
-        self._theta=value
-    
-    @property
-    def theta_lb(self):
-        return self._theta_lb
-    
-    @theta.setter
-    def theta_lb(self, value):
-        value=self.__check_array__(value)
-        self._theta_lb=value
-    
-    @property
-    def theta_ub(self):
-        return self._theta_ub
-    
-    @theta.setter
-    def theta_ub(self, value):
-        value=self.__check_array__(value)
-        self._theta_ub=value
-    
-    
-    
-        
-        
+        return r    

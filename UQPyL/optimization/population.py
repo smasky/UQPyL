@@ -89,7 +89,7 @@ class Population():
         
         if self.nOutput==1:
             
-            popSumCon=np.sum(self.cons, axis=1)
+            popSumCon=np.sum(self.cons, axis=1).reshape(-1, 1)
             
             infeasible = (popSumCon > 0).astype(int)
             

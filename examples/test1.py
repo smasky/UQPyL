@@ -1,26 +1,16 @@
-class ParentClass:
-    def decorator(self, func):
-        def wrapper(*args, **kwargs):
-            print("Accessing parent instance variable:", self.instance_var)
-            print("Something is happening before the method is called.")
-            result = func(*args, **kwargs)
-            print("Something is happening after the method is called.")
-            print("Accessing child instance variable (if available):", getattr(self, 'child_var', 'Not Available'))
-            return result
-        return wrapper
+import numpy as np
 
-    def __init__(self, value):
-        self.instance_var = value
+# 定义 list 和 linspace
+my_list = ['A', 'B', 'C', 'D']
+linspace = [0]
 
-class ChildClass(ParentClass):
-    def __init__(self, parent_value, child_value):
-        super().__init__(parent_value)
-        self.child_var = child_value
+# 定义区间边界
+bins = [0, 0.25, 0.5, 0.75, 1]
 
-    @ParentClass.decorator
-    def say_hello(self, name):
-        print(f"Hello, {name}!")
+# 使用 np.digitize，将值映射到区间
+indices = np.digitize(linspace, bins, right=True) - 1
 
-# 使用
-obj = ChildClass("parent_value", "child_value")
-obj.say_hello("Alice")
+# 获取对应的 list 值
+mapped_values = [my_list[i] for i in indices]
+
+print(mapped_values)

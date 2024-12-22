@@ -60,16 +60,31 @@ sys.path.insert(0, uqPath)
 # res=ml_sce_ua.run(problem)
 
 #Multi-objective Optimization
-from UQPyL.optimization.multi_objective import RVEA, NSGAII, NSGAIII, MOEAD, MOASMO
-from UQPyL.problems.multi_objective import DTLZ2
+# from UQPyL.problems import DTLZ2
+# dtlz2=DTLZ2(nInput=15)
 
-dtlz1=DTLZ2(nInput=15)
-rvea=NSGAII(maxFEs=10000, nPop=50)
-res=rvea.run(dtlz1)
+#----------------------RVEA---------------------#
+# from UQPyL.optimization.multi_objective import RVEA
+# rvea=RVEA()
+# res=rvea.run(dtlz2)
 
-# bestObjs=res.bestObj
-# from UQPyL.optimization.multi_objective import MOEAD, RVEA, NSGAIII, NSGAII
-# from UQPyL.problems.multi_objective import DTLZ6
+
+#---------------------NSGAII-------------------#
+# from UQPyL.optimization.multi_objective import NSGAII
+# nsgaii=NSGAII()
+# res=nsgaii.run(dtlz2)
+
+#------------------NSGAIII--------------------#
+# from UQPyL.optimization.multi_objective import NSGAIII
+# nsgaiii=NSGAIII()
+# res=nsgaiii.run(dtlz2)
+
+#------------------MOEAD--------------------------#
+# from UQPyL.optimization.multi_objective import MOEAD
+# moead=MOEAD()
+# res=moead.run(dtlz2)
+
+
 
 # x=bestObjs[:, 0]
 # y=bestObjs[:, 1]

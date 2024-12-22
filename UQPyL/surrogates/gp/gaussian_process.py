@@ -5,7 +5,8 @@ from typing import Tuple, Optional, Literal
 from .kernel import BaseKernel, RBF
 from ...problems import PracticalProblem
 from ..surrogateABC import Surrogate
-from ...optimization import Algorithm, GA
+from ...optimization import Algorithm
+from ...optimization.single_objective import GA
 from ...utility.model_selections import RandSelect
 from ...utility.metrics import r_square
 from ...utility.scalers import Scaler
@@ -13,54 +14,60 @@ from ...utility.polynomial_features import PolynomialFeatures
 
 class GPR(Surrogate):
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                 polyFeature: PolynomialFeatures=None,
-                 kernel: BaseKernel=RBF(),
-                 optimizer: Algorithm=GA(maxFEs=1000), n_restarts_optimizer: int=0,
-                 fitMode: Literal['likelihood', 'predictError']='likelihood',
-                 C: float=1e-9, C_ub: float=1e-6, C_lb: float=1e-12):
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+                 polyFeature: PolynomialFeatures = None,
+                 kernel: BaseKernel = RBF(),
+                 optimizer: Algorithm = GA(maxFEs = 1000, nPop = 50), n_restarts_optimizer: int = 0,
+                 fitMode: Literal['likelihood', 'predictError'] = 'likelihood',
+                 C: float = 1e-9, C_ub: float = 1e-6, C_lb: float = 1e-12):
         
         super().__init__(scalers=scalers, polyFeature=polyFeature)
         
         self.setPara("C", C, C_lb, C_ub)
         
-        self.fitMode=fitMode
+        self.fitMode = fitMode
         
-        self.optimizer=optimizer
+        if isinstance(optimizer, Algorithm):
+            optimizer.verbose = False
+            optimizer.saveFlag = False
+            optimizer.logFlag = False
+        self.optimizer = optimizer
         
-        self.n_restarts_optimizer=n_restarts_optimizer
+        self.kernel = kernel
         
-        self.setKernel(kernel)
+        self.n_restarts_optimizer = n_restarts_optimizer
         
 ###---------------------------------public function---------------------------------------###
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
-        self.xTrain=xTrain; self.yTrain=yTrain
-        self.kernel.initialize(xTrain.shape[1])
+        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
+        self.xTrain = xTrain; self.yTrain = yTrain
         
-        if self.fitMode=='likelihood':
+        self.setKernel(self.kernel)
+        
+        if self.fitMode == 'likelihood':
             self._fitLikelihood(xTrain, yTrain)
+            
         else:
             self._fitPredictError(xTrain, yTrain)
             
     def predict(self, xPred: np.ndarray, Output_std: bool=False):
         
-        xPred=self.__X_transform__(xPred)
+        xPred = self.__X_transform__(xPred)
         
-        K_trans=self.kernel(xPred, self.xTrain)
-        y_mean=K_trans @ self.alpha_
+        K_trans = self.kernel(xPred, self.xTrain)
+        y_mean = K_trans @ self.alpha_
                
-        V=solve_triangular(
+        V = solve_triangular(
             self.L_, K_trans.T, lower=True
         )
         
         if Output_std:
             
-            K=self.kernel(xPred)
-            y_var=np.diag(K).copy()
-            y_var-=np.einsum("ij, ji->i", V.T, V)
-            y_var[y_var<0]=0.0
+            K = self.kernel(xPred)
+            y_var = np.diag(K).copy()
+            y_var -= np.einsum("ij, ji->i", V.T, V)
+            y_var[y_var<0] = 0.0
             
             return y_mean, np.sqrt(y_var)
         
@@ -69,27 +76,27 @@ class GPR(Surrogate):
 ###--------------------------private functions--------------------###
     def _fitPredictError(self, xTrain, yTrain):
         
-        tol_xTrain=np.copy(xTrain)
-        tol_yTrain=np.copy(yTrain)
+        tol_xTrain = np.copy(xTrain)
+        tol_yTrain = np.copy(yTrain)
         
         #TODO cross-validation KFold Method
         
-        RS=RandSelect(10)
-        train, test=RS.split(tol_xTrain)
+        RS = RandSelect(10)
+        train, test = RS.split(tol_xTrain)
         
-        xTest=tol_xTrain[test,:]; yTest=tol_yTrain[test,:]
-        xTrain=tol_xTrain[train,:]; yTrain=tol_yTrain[train,:]
+        xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
+        xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
         
-        self.xTrain=xTrain; self.yTrain=yTrain
+        self.xTrain = xTrain; self.yTrain = yTrain
         
-        varList, varValue, ub, lb, position=self.setting.getParaInfos()
-        nInput=len(varValue) #TODO
+        varList, varValue, ub, lb, position = self.setting.getParaInfos()
+        nInput = len(varValue) #TODO
         
         if self.optimizer.type=="MP":
             
             def objFunc(varValue):
                 
-                self.assignPara(position, varValue)
+                self.assignPara(, varValue)
                 self._objfunc(xTrain, yTrain, record=True)
                 yPred = self.predict(self.__X_inverse_transform__(xTest))
                 return -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
@@ -98,40 +105,40 @@ class GPR(Surrogate):
             
             res = self.optimizer.run(problem)
             
-            bestDec, bestObj=res.bestDec, res.bestObj
+            bestDec, bestObj = res.bestDec, res.bestObj
             
         elif self.optimizer.type=="EA":
             
             def objFunc(varValues):
                 
-                objs=np.ones(varValues.shape[0])
+                objs = np.ones(varValues.shape[0])
                 for i, varValue in enumerate(varValues):
                     
                     self.assignPara(position, np.power(np.e, varValue))
 
                     obj=self._objfunc(xTrain, yTrain, record=True)
                     if obj==-np.inf:
-                        objs[i]=obj*-1
+                        objs[i] = obj*-1
                     else:
                         yPred = self.predict(self.__X_inverse_transform__(xTest))
-                        objs[i]= -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+                        objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
 
                 return objs.reshape( (-1, 1) )
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb), x_labels=varList)
-            res=self.optimizer.run(problem)
-            bestDec, bestObj=res.bestDec, res.bestObj
+            problem = PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb), x_labels=varList)
+            res = self.optimizer.run(problem)
+            bestDec, bestObj = res.bestDec, res.bestObj
 
             for _ in range(self.n_restarts_optimizer):
-                res=self.optimizer.run(problem)
-                dec, obj=res.bestDec, res.bestObj
+                res = self.optimizer.run(problem)
+                dec, obj = res.bestDec, res.bestObj
                 if obj < bestObj:
-                    bestDec, bestObj=dec, obj
+                    bestDec, bestObj = dec, obj
         #TODO            
         if bestObj[0]>-0.99:
-            self.xTrain=tol_xTrain; self.yTrain=tol_yTrain
+            self.xTrain = tol_xTrain; self.yTrain = tol_yTrain
         else:
-            self.xTrain=xTrain; self.yTrain=yTrain
+            self.xTrain = xTrain; self.yTrain = yTrain
             
         self.assignPara(position, np.power(np.e, bestDec))
         self._objfunc(self.xTrain, self.yTrain, record=True)#TODO
@@ -142,20 +149,21 @@ class GPR(Surrogate):
         
     def _fitLikelihood(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        varList, varValue, ub, lb, position=self.setting.getParaInfos()
-        nInput=len(varValue) #TODO
+        nameList = list(self.setting.parasValue.keys())
+        
+        paraInfos, ub, lb = self.setting.getParaInfos(nameList)
+        nInput = ub.size #TODO
         
         if self.optimizer.type=="MP":
             
             def objFunc(varValue):
-                
-                self.assignPara(position, np.power(np.e, varValue))
 
+                self.assignPara(paraInfos, np.exp(varValue))
+                
                 return -self._objfunc(xTrain, yTrain, record=False)
                 
-            problem = PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), x_labels=varList)
-            res=self.optimizer.run(problem)
-            bestDec, bestObj=res.bestDec, res.bestObj
+            problem = PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb))
+            bestDec, bestObj = self.optimizer.run(problem)
             
         elif self.optimizer.type=="EA":
             
@@ -163,15 +171,17 @@ class GPR(Surrogate):
                 
                 objs=np.zeros(varValues.shape[0])
                 
+                varValues=np.exp(varValues)
+                
                 for i, value in enumerate(varValues):
                     
-                    self.assignPara(position, np.power(np.e, value))
+                    self.assignPara(paraInfos, value)
                     
                     objs[i]=-1*self._objfunc(xTrain, yTrain, record=False)
                     
                 return objs.reshape((-1, 1))
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb), x_labels=varList)
+            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
             res=self.optimizer.run(problem)
             bestDec, bestTheta=res.bestDec, res.bestObj
             
@@ -181,7 +191,7 @@ class GPR(Surrogate):
                 if obj < bestObj:
                     bestDec, bestTheta=dec, obj
                     
-        self.assignPara(position, np.power(np.e, bestDec))
+        self.assignPara(paraInfos, np.exp(bestDec))
         #Prepare for prediction
         self._objfunc(xTrain, yTrain, record=True)
         
@@ -213,10 +223,11 @@ class GPR(Surrogate):
 
         return log_likelihood
     
-    def setKernel(self, kernel: BaseKernel):
+    def setKernel(self, kernel: BaseKernel, N):
         
         self.kernel=kernel
-        self.setting.addSubSetting(self.kernel.setting)
+        kernel.initialize(N)
+        self.setting.mergeSetting(self.kernel.setting)
         
         
         

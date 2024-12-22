@@ -7,19 +7,60 @@ from UQPyL.DoE import LHS
 from UQPyL.utility.metrics import r_square
 
 problem=Sphere(nInput=10)
-lhs=LHS('center', problem=problem)
-#generate train data and prediction data
-xTrain=lhs.sample(200, problem.nInput)
+lhs=LHS('center')
+
+#generate train data 
+xTrain=lhs.sample(500, problem=problem)
 yTrain=problem.evaluate(xTrain)
-#
-xTest=lhs.sample(50, problem.nInput)
-xTest=np.vstack((xTest, np.zeros((1,10))))
+
+#generate test data
+xTest=lhs.sample(50, problem=problem)
 yTest=problem.evaluate(xTest)
-# ##
-xTest=np.loadtxt('xTest.txt'); yTest=np.loadtxt('yTest.txt').reshape(-1, 1)
-xTrain=np.loadtxt('xTrain.txt'); yTrain=np.loadtxt('yTrain.txt').reshape(-1, 1)
+
+#save to txt
 # np.savetxt('xTest.txt', xTest); np.savetxt('yTest.txt', yTest.reshape(-1, 1))
 # np.savetxt('xTrain.txt', xTrain); np.savetxt('yTrain.txt', yTrain.reshape(-1, 1))
+
+#-------------------Kriging----------------------------#
+# from UQPyL.surrogates.kriging import KRG
+# from UQPyL.surrogates.kriging.kernel import Guass, Cubic, Exp
+# from UQPyL.utility.scalers import MinMaxScaler, StandardScaler
+# from UQPyL.optimization import GA
+# from time import time
+
+# kernel=Guass(theta=1.0, heterogeneous=True)
+## kernel=Cubic(theta=1.0, heterogeneous=True)
+## kernel=Exp(theta=1.0, heterogeneous=True)
+
+# optimizer = GA(maxFEs=1000, nPop=50)
+
+# #use Boxmin
+# krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer='Boxmin', n_restart_optimize=0, fitMode='likelihood')
+
+# #use optimization
+# #krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer=optimizer, n_restart_optimize=0, fitMode='likelihood')
+
+# krg.fit(xTrain, yTrain)
+# yPred=krg.predict(xTest)
+# value=r_square(yTest, yPred)
+# print(value)
+
+#-------------------Gaussian Process---------------------#
+from UQPyL.surrogates.gp import GPR
+from UQPyL.optimization.single_objective import GA
+from UQPyL.surrogates.gp.kernel import RBF, Matern, RationalQuadratic
+
+optimizer = GA(maxFEs=1000, nPop=50)
+gpr=GPR(kernel=RBF(length_scale=1, heterogeneous=True), optimizer=optimizer, fitMode="predictError")
+gpr.fit(xTrain, yTrain)
+yPred=gpr.predict(xTest)
+value=r_square(yTest, yPred)
+print(value)
+
+
+
+
+
 # ##
 #-------------------Linear regression-----------------#
 # from UQPyL.surrogates.regression import LinearRegression
@@ -59,35 +100,9 @@ xTrain=np.loadtxt('xTrain.txt'); yTrain=np.loadtxt('yTrain.txt').reshape(-1, 1)
 # y=rbf.predict(np.zeros(10).reshape(1,-1))
 # print(value)
 
-#-------------------Gaussian Process---------------------#
-# from UQPyL.surrogates.gp import GPR
-# from UQPyL.optimization.single_objective import GA
-# from UQPyL.optimization.mathematics import Boxmin
-# from UQPyL.surrogates.gp.kernel import RBF, Matern
-# gpr=GPR(kernel=RBF(length_scale=1, heterogeneous=True), optimizer=GA(maxFEs=1000, verboseFreq=1), fitMode="predictError")
-# gpr.fit(xTrain, yTrain)
-# yPred=gpr.predict(xTest)
-# value=r_square(yTest, yPred)
-# print(value)
 
-#-------------------Kriging----------------------------#
-from UQPyL.surrogates.kriging import KRG
-from UQPyL.surrogates.kriging.kernel import Guass
-from UQPyL.optimization.single_objective import GA
-from UQPyL.optimization.mathematics import Boxmin
-from UQPyL.utility.scalers import MinMaxScaler, StandardScaler
-krg=KRG(scalers=(StandardScaler(0,1), StandardScaler(0,1)), kernel=Guass(theta=1.0, heterogeneous=False), optimizer=Boxmin(), n_restart_optimize=0, fitMode='likelihood')
-krg.fit(xTrain, yTrain)
-yPred, mse=krg.predict(xTest, only_value=False)
-yPred1, mse1=krg.predict(xTrain[0:2, :], only_value=False)
-value=r_square(yTest, yPred)
-print(value)
 
-#-----------------Mars--------------------------#
-# from UQPyL.surrogates.mars import MARS
-# mars=MARS()
-# mars.fit(xTrain, yTrain)
-# yPred=mars.predict(xTest)
-# value=r_square(yTest, yPred)
-# print(value)
+
+
+
 

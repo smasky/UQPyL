@@ -9,17 +9,18 @@ from ..utility.polynomial_features import PolynomialFeatures
 Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'], Literal['StandardScaler','MinMaxScaler']]
 
 class Surrogate(metaclass=abc.ABCMeta):
-    xScaler=None
-    yScaler=None
-    xTrain=None
-    yTrain=None
+
     def __init__(self, scalers=(None, None), polyFeature=None):
         
-        self.setting=Setting()
+        #create user-define setting
+        self.setting = Setting()
         
-        self.xScaler=scalers[0] if scalers[0] else None
-        self.yScaler=scalers[1] if scalers[1] else None
-        self.polyFeature=polyFeature if polyFeature else None
+        self.xScaler = scalers[0] if scalers[0] else None
+        self.yScaler = scalers[1] if scalers[1] else None
+        self.polyFeature = polyFeature if polyFeature else None
+        
+        self.xTrain = None
+        self.yTrain = None
     
     def __check_and_scale__(self, xTrain: np.ndarray, yTrain: np.ndarray):
         '''
@@ -30,16 +31,16 @@ class Surrogate(metaclass=abc.ABCMeta):
         if(not isinstance(xTrain,np.ndarray) or not isinstance(yTrain, np.ndarray)):
             raise ValueError('Please make sure the type of train_data is np.ndarry')
                 
-        xTrain=np.atleast_2d(xTrain)
-        yTrain=np.atleast_2d(yTrain).reshape(-1, 1)
+        xTrain = np.atleast_2d(xTrain)
+        yTrain = np.atleast_2d(yTrain).reshape(-1, 1)
         
         if(xTrain.shape[0]==yTrain.shape[0]):
             
-            xTrain=self.xScaler.fit_transform(xTrain) if self.xScaler else np.copy(xTrain)
+            xTrain = self.xScaler.fit_transform(xTrain) if self.xScaler else np.copy(xTrain)
             
-            yTrain=self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+            yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
             
-            xTrain=self.polyFeature.transform(xTrain) if self.polyFeature else np.copy(xTrain)
+            xTrain = self.polyFeature.transform(xTrain) if self.polyFeature else np.copy(xTrain)
             
             return xTrain,yTrain
         
@@ -49,28 +50,28 @@ class Surrogate(metaclass=abc.ABCMeta):
     
     def __X_transform__(self,X: np.ndarray) -> np.ndarray:
         
-        X=self.xScaler.transform(X) if self.xScaler else X
+        X = self.xScaler.transform(X) if self.xScaler else X
         
-        X=self.polyFeature.transform(X) if self.polyFeature else X
+        X = self.polyFeature.transform(X) if self.polyFeature else X
             
         return X
     
     def __Y_transform__(self, Y: np.ndarray) -> np.ndarray:
         
-        Y=self.yScaler.transform(Y.reshape(-1,1)) if self.yScaler else Y
+        Y = self.yScaler.transform(Y.reshape(-1,1)) if self.yScaler else Y
             
         return Y
     
     def __Y_inverse_transform__(self, Y: np.ndarray) -> np.ndarray:
 
         
-        Y=self.yScaler.inverse_transform(Y.reshape(-1,1)) if self.yScaler else Y
+        Y = self.yScaler.inverse_transform(Y.reshape(-1,1)) if self.yScaler else Y
             
         return Y
     
     def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
                 
-        X=self.xScaler.inverse_transform(X) if self.xScaler else X
+        X = self.xScaler.inverse_transform(X) if self.xScaler else X
         
         return X
     
@@ -88,7 +89,7 @@ class Surrogate(metaclass=abc.ABCMeta):
     
     def addSetting(self, setting):
         
-        self.setting.addSubSetting(setting)
+        self.setting.mergeSetting(setting)
      
     @abc.abstractmethod
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):

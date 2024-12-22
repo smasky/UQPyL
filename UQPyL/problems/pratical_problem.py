@@ -21,8 +21,14 @@ class PracticalProblem(Problem):
         super().__init__(nInput, nOutput, ub, lb, var_type, var_set, x_labels, y_labels)
         
     def evaluate(self, X):
+        
         return self.objFunc(X)
     
     def constraint(self, X):
-        return self.conFunc(X)
+        
+        if self.conFunc:
+            return self.conFunc(X)
+        
+        else:
+            return super().constraint(X)
     

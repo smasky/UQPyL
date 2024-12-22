@@ -1,13 +1,14 @@
 import numpy as np
-from scipy.linalg import LinAlgError, cholesky, qr, lstsq
+from scipy.linalg import cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional, Union
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from ..surrogateABC import Surrogate
+from .boxmin import Boxmin
 from .kernel import BaseKernel, Guass
+from ..surrogateABC import Surrogate
+from ...optimization.algorithmABC import Algorithm
+from ...optimization.single_objective import GA
 from ...utility.metrics import r_square
-from ...optimization.mathematics import Boxmin
 from ...utility.model_selections import RandSelect
 from ...utility.scalers import Scaler, StandardScaler
 from ...utility.polynomial_features import PolynomialFeatures
@@ -40,7 +41,7 @@ def regrpoly2(S):
 
 class KRG(Surrogate):
     """
-    A Kriging implementation based on python env includes the new training method(prediction error), 
+    A Kriging implementation based on python env. includes the new training method(prediction error), 
     from the DACE toolbox(MATLAB).
     
     parameters:
@@ -57,7 +58,7 @@ class KRG(Surrogate):
     correlation: the correlation function, only 'corrgauss'
     
     optimizer: the method used to find the optimal theta for current data, containing:
-                * all Single Objective Algorithm
+                * 'GA'
                 *'Boxmin'
     
     n_restart_optimize: the times of using evolutionary algorithms to optimize theta 
@@ -78,36 +79,60 @@ class KRG(Surrogate):
                  polyFeature: PolynomialFeatures=None,
                  kernel: BaseKernel= Guass(),
                  regression: Literal['poly0','poly1','poly2']='poly0',
-                 optimizer: 'Algorithm' = Boxmin(), 
+                 optimizer: Literal['Boxmin'] = 'Boxmin', 
                  fitMode: Literal['likelihood', 'predictError']='likelihood',
                  n_restart_optimize: int=1):
         
         super().__init__(scalers, polyFeature)
-    
-        self.optimizer=optimizer
-        self.fitMode=fitMode
-        self.n_restart_optimize=n_restart_optimize
+
+        #set optimizer
+        if optimizer == 'Boxmin':
+            self.optimizer = Boxmin()
+        
+        elif isinstance(optimizer, Algorithm):
+            
+            if optimizer.type=="EA":
+                self.optimizer = optimizer
+            else:
+                print('The optimizer you input does not support! Here the GA would be used!')
+                self.optimizer = GA(maxFEs=10000, nPop=50)
+            
+            self.optimizer.verbose = False
+            self.optimizer.saveFlag = False
+            self.optimizer.logFlag = False
+        
+        else:
+            print('The optimizer you input does not support! Here the Boxmin would be used!')
+            self.optimizer = Boxmin()        
+            
+        #set tuning mode
+        self.fitMode = fitMode
+        
+        #set the number of restart optimization
+        self.n_restart_optimize = n_restart_optimize
         
         if not isinstance(kernel, BaseKernel):
-            raise ValueError("The kernel must be the instance of Krg_Kernel")
+            raise ValueError("The kernel must be the instance of surrogates.kriging.kernel!")
         
-        self.setKernel(kernel)
+        self.kernel=kernel
         
         if(regression=='poly0'):
             self.regrFunc=regrpoly0
+            
         elif(regression=='poly1'):
             self.regrFunc=regrpoly1
+            
         elif(regression=='poly2'):
             self.regrFunc=regrpoly2
         
 ###-------------------------------public function-----------------------------###
     def predict(self, xPred: np.ndarray, only_value=True) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
         
-        xPred=self.__X_transform__(xPred)
+        xPred = self.__X_transform__(xPred)
         
-        nSample, _= self.xTrain.shape
+        nSample, _ = self.xTrain.shape
         
-        nPred, nFeature=xPred.shape
+        nPred, nFeature = xPred.shape
         
         dx = np.zeros( (nPred * nSample, nFeature) )
         
@@ -117,14 +142,14 @@ class KRG(Surrogate):
             dx[kk, :] = xPred[k, :] - self.xTrain
             kk = kk + nSample
         
-        F=self.regrFunc(xPred)
+        F = self.regrFunc(xPred)
         
         r = np.reshape( self.kernel(dx), (nSample, nPred) , order='F' )
         sy = F @ self.fitPar['beta'] + (self.fitPar['gamma'] @ r).T
         
-        predictY=self.__Y_inverse_transform__(sy)
+        predictY = self.__Y_inverse_transform__(sy)
 
-        rt=lstsq(self.fitPar['C'], r)[0]
+        rt = lstsq(self.fitPar['C'], r)[0]
         u = lstsq(self.fitPar['G'],
                              self.fitPar['Ft'].T @ rt - F.T)[0]
         
@@ -137,108 +162,77 @@ class KRG(Surrogate):
     
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
         
-        self.kernel.initialize(xTrain.shape[1])
+        self.setKernel(self.kernel, xTrain.shape[1])
         
-        if(self.fitMode=='likelihood'):
+        if(self.fitMode =='likelihood'):
             self._fit_likelihood(xTrain, yTrain)
-        elif(self.fitMode=='predictError'):
+            
+        elif(self.fitMode =='predictError'):
             self._fit_predict_error(xTrain, yTrain)
             
-        self.xTrain=xTrain; self.yTrain=yTrain
-###-------------------private functions----------------------###
-    def setKernel(self, kernel):
+        self.xTrain = xTrain; self.yTrain = yTrain
         
-        self.kernel=kernel
+###-------------------private functions----------------------###
+    def setKernel(self, kernel, N):
+        
+        kernel.initialize(N)
         self.addSetting(kernel.setting)
+        # kernel.setting=self.setting
         
     def _fit_predict_error(self, tol_xTrain, tol_yTrain):
         
-        RS=RandSelect(20)
-        train, test=RS.split(tol_xTrain)
+        RS = RandSelect(20)
+        train, test = RS.split(tol_xTrain)
         
-        xTest=tol_xTrain[test,:]; yTest=tol_yTrain[test,:]
-        xTrain=tol_xTrain[train,:]; yTrain=tol_yTrain[train,:]
-        self.xTrain=xTrain; self.yTrain=yTrain
+        xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
+        xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
+        self.xTrain = xTrain; self.yTrain = yTrain
         
-        F, D=self._initialize(xTrain)
+        F, D = self._initialize(xTrain)
         
-        varList, varValue, ub, lb, position=self.setting.getParaInfos()
-        nInput=len(varValue)
+        paraInfos, ub, lb = self.setting.getParaInfos(["theta"])
+        nInput = ub.size
         
-        if self.optimizer.type=="MP": 
+        if self.optimizer.type == "MP": 
             
             ###Using Mathematical Programming
             def objFunc(varValue):
-                self.assignPara(position, varValue)
+                self.assignPara(paraInfos, varValue)
                 self._objFunc(yTrain, F, D, record=True)
-                yPred=self.predict(self.__X_inverse_transform__(xTest))
-                obj=-1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+                yPred = self.predict(self.__X_inverse_transform__(xTest))
+                obj = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
                 
                 return obj
             
-            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
-            res=self.optimizer.run(problem)
-            bestDec=res.bestDec; bestObj=res.bestObj
+            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            bestDec, bestObj = self.optimizer.run(problem)
             
             for _ in range(self.n_restart_optimize):
-                res = self.optimizer(problem)
-                obj = res.bestObj
+                
+                dec, obj = self.optimizer.run(problem)
                 if obj < bestObj:
-                    bestDec = res.bestDec
+                    bestDec = dec
                     bestObj = obj
                     
         elif self.optimizer.type=="EA":
             ###Using Evolutionary Algorithm
             def objFunc(varValues):
-                n, _=varValues.shape
-                objs=np.zeros(n)
+                n, _ = varValues.shape
+                objs = np.zeros(n)
                 
                 for i, varValue in enumerate(varValues):
-                    self.assignPara(position, varValue)
+                    self.assignPara(paraInfos, varValue)
                     self._objFunc(yTrain, F, D, record=True)
-                    yPred=self.predict(self.__X_inverse_transform__(xTest))
-                    objs[i]=-1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+                    yPred = self.predict(self.__X_inverse_transform__(xTest))
+                    objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
                 return objs.reshape(-1, 1)
             
-            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
+            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
             
-            res=self.optimizer.run(problem)
-            bestDec=res.bestDec; bestObj=res.bestObj
-            
-            for _ in range(self.n_restart_optimize):
-                res=self.optimizer.run(problem)
-                obj=res.bestObj
-                if obj < bestObj:
-                    bestDec = res.bestDec
-                    bestObj = obj
-                    
-            self.assignPara(position, bestDec)
-        
-        self.xTrain=tol_xTrain; self.yTrain=tol_yTrain
-        F, D=self._initialize(tol_xTrain)
-        self._objFunc(self.yTrain, F, D, record=True)
-        
-    def _fit_likelihood(self, xTrain, yTrain):
-                
-        F, D=self._initialize(xTrain)  #fitPar
-        
-        varList, varValue, ub, lb, position=self.setting.getParaInfos()
-        nInput=len(varValue)
-        
-        if self.optimizer.type=="MP":
-            
-            def objFunc(varValue):
-                self.assignPara(position, varValue)
-                return self._objFunc(yTrain, F, D, record=False)
-            
-            ###Using Mathematical Programming Method
-            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
-            
-            res=self.optimizer.run(problem, xInit=np.array([1.0]))
-            
-            bestDec=res.bestDec; bestObj=res.bestObj
+            res = self.optimizer.run(problem)
+            bestDec = res.bestDec; bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 res = self.optimizer.run(problem)
@@ -246,56 +240,87 @@ class KRG(Surrogate):
                 if obj < bestObj:
                     bestDec = res.bestDec
                     bestObj = obj
+                    
+            self.assignPara(paraInfos, bestDec)
+        
+        self.xTrain = tol_xTrain; self.yTrain=tol_yTrain
+        F, D = self._initialize(tol_xTrain)
+        self._objFunc(self.yTrain, F, D, record=True)
+        
+    def _fit_likelihood(self, xTrain, yTrain):
+                
+        F, D = self._initialize(xTrain)  #fitPar
+        
+        paraInfos, ub, lb = self.setting.getParaInfos(["theta"])
+        nInput = ub.size
+        
+        if self.optimizer.type=="MP":
+            
+            def objFunc(varValue):
+                self.assignPara(paraInfos, varValue)
+                return self._objFunc(yTrain, F, D, record=False)
+            
+            ###Using Mathematical Programming Method
+            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            
+            bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput))
+              
+            for _ in range(self.n_restart_optimize):
+                dec, obj = self.optimizer.run(problem)
+                
+                if obj < bestObj:
+                    bestDec = dec
+                    bestObj = obj
                                
         elif self.optimizer.type=="EA":
             ###Using Evolutionary Algorithm
             def objFunc(thetas):
-
-                objs=np.zeros(thetas.shape[0])
+                objs = np.zeros((thetas.shape[0], 1))
+                thetas = np.exp(thetas)
                 for i, theta in enumerate(thetas):
-                    self.assignPara(position, theta)
-                    objs[i]=-1*self._objFunc(yTrain, F, D, record=False)
+                    self.assignPara(paraInfos, theta)
+                    objs[i, 0] = self._objFunc(yTrain, F, D, record=False)
                     
-                return objs.reshape(-1,1)
+                return objs
             
-            problem=PracticalProblem(objFunc, nInput, 1, ub, lb, x_labels=varList)
+            problem = PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
             
-            res=self.optimizer.run(problem)
+            res = self.optimizer.run(problem)
             
-            bestDec=res.bestDec; bestObj=res.bestObj
+            bestDec = np.exp(res.bestDec); bestObj=res.bestObj
             
             for _ in range(self.n_restart_optimize):
                 
-                res=self.optimizer(problem)
-                obj=res.bestObj
-                if obj<bestObj:
-                    bestDec=res.bestDec
-                    bestObj=obj
+                res = self.optimizer(problem)
+                obj = res.bestObj
+                if obj < bestObj:
+                    bestDec = res.bestDec
+                    bestObj = obj
         
-        self.assignPara(position, bestDec)
+        self.assignPara(paraInfos, bestDec)
         self._objFunc(yTrain, F, D, record=True)
         
     def _initialize(self, xTrain: np.ndarray):
         
-        nSample, nFeature=xTrain.shape
+        nSample, nFeature = xTrain.shape
         
         D = np.zeros((int((nSample*(nSample-1)/2)), nFeature))
         for k in range(nFeature):
             D[:, k] = pdist(xTrain[:, [k]], metric='euclidean')
         
-        F=self.regrFunc(xTrain)
+        F = self.regrFunc(xTrain)
         
-        self.fitPar={}
+        self.fitPar = {}
         
         return F, D
     
     def _objFunc(self, yTrain, F, D, record=False):
         
-        obj=np.inf
+        obj = np.inf
         
-        m=F.shape[0]
+        m = F.shape[0]
                 
-        r=self.kernel(D)
+        r = self.kernel(D)
         
         mu = (10 + m) * np.spacing(1)
         R = np.triu(np.ones((m, m)), 1)
@@ -315,7 +340,7 @@ class KRG(Surrogate):
             obj = np.sum(sigma2, axis=0) * detR
             
         except np.linalg.LinAlgError:
-            return -np.inf
+            return np.inf
         
         if record:
             if isinstance(self.yScaler,  StandardScaler):
