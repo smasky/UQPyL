@@ -17,7 +17,7 @@ class Constant(BaseKernel):
     def __call__(self, trainX: np.ndarray, trainY: Optional[np.ndarray]=None):
     
         if trainY is None:
-            K=np.ones((trainX.shape[0],trainY.shape[0]))*self.c
+            K=np.ones((trainX.shape[0], trainY.shape[0]))*self.c
         else:
             K=np.ones((trainX.shape[0], trainX.shape[0]))*self.c
         
