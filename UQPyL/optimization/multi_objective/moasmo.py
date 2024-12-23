@@ -8,8 +8,7 @@ from ...problems import PracticalProblem
 from ...surrogates import Mo_Surrogates
 from ..algorithmABC import Algorithm, Population, Verbose
 from .nsga_ii import NSGAII
-from ...surrogates.rbf import RBF
-
+from ...surrogates.rbf.radial_basis_function import RBF
 
 class MOASMO(Algorithm):
     '''

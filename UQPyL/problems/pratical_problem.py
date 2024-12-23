@@ -14,7 +14,7 @@ class PracticalProblem(Problem):
         self.conFunc = conFunc
         
         if name is None:
-            name = self.__class__.__name__
+            self.name = self.__class__.__name__
         else:
             self.name = name
         

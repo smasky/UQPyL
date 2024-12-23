@@ -10,7 +10,8 @@ RBF = 2
 SIGMOID = 3
 
 class SVR(Surrogate):
-    model=None
+    model = None
+    name = "SVR"
     def __init__(self, 
                  scalers=(None, None), 
                  polyFeature: PolynomialFeatures=None,
@@ -18,7 +19,7 @@ class SVR(Surrogate):
                  C: float=0.1, C_ub: float=1e3, C_lb: float=1e-5,
                  epsilon: float=0.1, epsilon_ub: float=1e3, epsilon_lb: float=1e-5,
                  gamma: float=1.0, gamma_ub: float=1e3, gamma_lb: float=1e-5,
-                 coe0: float=0.0, coe0_ub: float=1e3, coe0_lb: float=1e-5,
+                 coe0: float=0.1, coe0_ub: float=1e3, coe0_lb: float=1e-5,
                  degree: int=3, maxIter: int=1e5,  eps: float=0.001):
         
         super().__init__(scalers, polyFeature)
@@ -58,6 +59,20 @@ class SVR(Surrogate):
         xTrain=np.ascontiguousarray(xTrain).copy()
         yTrain=np.ascontiguousarray(yTrain).copy()
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        
+        C=self.getPara("C")
+        gamma=self.getPara("gamma")
+        epsilon=self.getPara("epsilon")
+        coe0=self.getPara("coe0") if self.kernel=="sigmoid" else 0.0
+        degree=self.degree if self.kernel=="polynomial" else 2
+        ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
+        par=Parameter(int(3), int(eval(self.kernel.upper())), int(degree), int(self.maxIter), float(gamma), float(coe0), float(C), float(0.5), float(epsilon), float(self.eps))     
+        self.model=svm_fit(xTrain, yTrain.ravel(), par)
+    
+    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        
+        xTrain=np.ascontiguousarray(xTrain).copy()
+        yTrain=np.ascontiguousarray(yTrain).copy()
         
         C=self.getPara("C")
         gamma=self.getPara("gamma")

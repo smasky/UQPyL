@@ -5,7 +5,7 @@ import numpy as np
 from UQPyL.problems import Sphere
 from UQPyL.DoE import LHS
 from UQPyL.utility.metrics import r_square
-
+from UQPyL.surrogates.auto_tuner import autoTuner
 problem=Sphere(nInput=10)
 lhs=LHS('center')
 
@@ -29,18 +29,21 @@ yTest=problem.evaluate(xTest)
 # from time import time
 
 # kernel=Guass(theta=1.0, heterogeneous=True)
-## kernel=Cubic(theta=1.0, heterogeneous=True)
-## kernel=Exp(theta=1.0, heterogeneous=True)
+# kernel=Cubic(theta=1.0, heterogeneous=True)
+# kernel=Exp(theta=1.0, heterogeneous=True)
 
-# optimizer = GA(maxFEs=1000, nPop=50)
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
 
-# #use Boxmin
-# krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer='Boxmin', n_restart_optimize=0, fitMode='likelihood')
-
-# #use optimization
-# #krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer=optimizer, n_restart_optimize=0, fitMode='likelihood')
-
+#use Boxmin
+# krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, n_restart_optimize=0)
+#use optimization
+#krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer=optimizer, n_restart_optimize=0, fitMode='likelihood')
 # krg.fit(xTrain, yTrain)
+
+#use autoTuner
+# tuner=autoTuner(optimizer=optimizer, model=krg)
+# paraList=tuner.getParaList() 
+# tuner.tune(xTrain, yTrain, paraList, ratio=10)
 # yPred=krg.predict(xTest)
 # value=r_square(yTest, yPred)
 # print(value)
@@ -50,61 +53,92 @@ yTest=problem.evaluate(xTest)
 # from UQPyL.optimization.single_objective import GA
 # from UQPyL.surrogates.gp.kernel import RBF, Matern, RationalQuadratic
 
-# optimizer = GA(maxFEs=2000, nPop=50)
-# # kernel = RBF(length_scale = 1.0, heterogeneous=True)
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+# kernel = RBF(length_scale = 1.0, heterogeneous=True)
 # # kernel = Matern(length_scale = 1.0, optimize_nu = True, heterogeneous=True)
 # kernel = RationalQuadratic(length_scale=1.0, alpha=1.0, heterogeneous=True)
-# gpr = GPR(kernel=kernel, optimizer=optimizer, fitMode='predictError')
 
+# gpr = GPR(kernel=kernel, optimizer=optimizer, fitMode='predictError')
 # gpr.fit(xTrain, yTrain)
+
+# use autoTuner
+# gpr = GPR(kernel=kernel)
+# tuner=autoTuner(optimizer=optimizer, model=gpr)
+# paraList=tuner.getParaList() 
+# tuner.tune(xTrain, yTrain, paraList, ratio=20)
+
+
 # yPred = gpr.predict(xTest)
 # value = r_square(yTest, yPred)
 # print(value)
-# print(kernel.getPara("l"))
 
+#------------------RBF--------------------#
+# from UQPyL.surrogates.rbf.kernel import Cubic, Multiquadric, Linear, Gaussian
+# from UQPyL.surrogates.rbf import RBF
+# from UQPyL.optimization.single_objective import GA
 
-# ##
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+
+# kernel = Cubic()
+
+# rbf = RBF(kernel=kernel)
+
+##use autoTuner
+# tuner=autoTuner(optimizer=optimizer, model=rbf)
+# paraList=tuner.getParaList() 
+# tuner.tune(xTrain, yTrain, paraList, ratio=20)
+
+# yPred=rbf.predict(xTest)
+# value=r_square(yTest, yPred)
+# print(value)
+
 #-------------------Linear regression-----------------#
 # from UQPyL.surrogates.regression import LinearRegression
-# from UQPyL.utility.polynomial_features import PolynomialFeatures
-# lr=LinearRegression(polyFeature=PolynomialFeatures(degree=2), lossType='Lasso', fitIntercept=True)
-# lr.fit(xTrain, yTrain)
+# from UQPyL.optimization.single_objective import GA
+
+# lr = LinearRegression(lossType='Lasso', fitIntercept=True)
+
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+# #use autoTuner
+
+# tuner=autoTuner(optimizer=optimizer, model=lr)
+# paraList=tuner.getParaList()
+# tuner.tune(xTrain, yTrain, paraList, ratio=20)
+
 # yPred=lr.predict(xTest)
 # value=r_square(yTest, yPred)
 # print(value)
 
-#-------------------Polynomial regression-----------------#
+#------------------Polynomial regression-----------------#
 # from UQPyL.surrogates.regression import PolynomialRegression
-# pr=PolynomialRegression(degree=2, lossType='Lasso', fitIntercept=True)
-# pr.fit(xTrain, yTrain)
+# from UQPyL.optimization.single_objective import GA
+
+# pr = PolynomialRegression(degree=2, lossType='Lasso', fitIntercept=True)
+
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+
+
+# #use autoTuner
+
+# tuner=autoTuner(optimizer=optimizer, model=pr)
+# paraList=tuner.getParaList()
+# tuner.tune(xTrain, yTrain, paraList, ratio=20)
+
 # yPred=pr.predict(xTest)
 # value=r_square(yTest, yPred)
 # print(value)
 
-#-------------------Support vector regression---------------#
+#------------------Support vector regression----------------#
 # from UQPyL.surrogates.svr import SVR
-# from UQPyL.utility.polynomial_features import PolynomialFeatures
-# svr=SVR(kernel='sigmoid')
-# svr.fit(xTrain, yTrain)
+# from UQPyL.optimization.single_objective import GA
+
+# svr=SVR(kernel='rbf')
+# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+#use autoTuner
+# tuner=autoTuner(optimizer=optimizer, model=svr)
+# paraList=tuner.getParaList()
+# tuner.tune(xTrain, yTrain, paraList, ratio=20)
+
 # yPred=svr.predict(xTest)
 # value=r_square(yTest, yPred)
 # print(value)
-
-#-------------------Radial Basis Functions----------------#
-# from UQPyL.surrogates.rbf import RBF
-# from UQPyL.surrogates.rbf.kernel import Cubic, Multiquadric
-
-# rbf=RBF(kernel=Cubic())
-# rbf.fit(xTrain, yTrain)
-# yPred=rbf.predict(xTest)
-# value=r_square(yTest, yPred)
-
-# y=rbf.predict(np.zeros(10).reshape(1,-1))
-# print(value)
-
-
-
-
-
-
-

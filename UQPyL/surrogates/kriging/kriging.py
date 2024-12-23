@@ -74,6 +74,8 @@ class KRG(Surrogate):
             *'MaxminScaler'
             
     """
+    name = "KRG"
+    
     def __init__(self, 
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  polyFeature: PolynomialFeatures=None,
@@ -114,7 +116,8 @@ class KRG(Surrogate):
         if not isinstance(kernel, BaseKernel):
             raise ValueError("The kernel must be the instance of surrogates.kriging.kernel!")
         
-        self.kernel=kernel
+        self.kernel = kernel
+        self.addSetting(kernel.setting)
         
         if(regression=='poly0'):
             self.regrFunc=regrpoly0
@@ -171,8 +174,9 @@ class KRG(Surrogate):
             
         elif(self.fitMode =='predictError'):
             self._fit_predict_error(xTrain, yTrain)
-            
-        self.xTrain = xTrain; self.yTrain = yTrain
+        
+        else:
+            self._fitPure(xTrain, yTrain)
         
 ###-------------------private functions----------------------###
     def setKernel(self, kernel, N):
@@ -180,7 +184,15 @@ class KRG(Surrogate):
         kernel.initialize(N)
         self.addSetting(kernel.setting)
         # kernel.setting=self.setting
+    
+    def _fitPure(self, xTrain, yTrain):
         
+        self.xTrain = xTrain; self.yTrain = yTrain
+        
+        F, D= self._initialize(xTrain)
+        
+        self._objFunc(yTrain, F, D, record=True)
+    
     def _fit_predict_error(self, tol_xTrain, tol_yTrain):
         
         RS = RandSelect(20)
@@ -297,6 +309,7 @@ class KRG(Surrogate):
                     bestDec = res.bestDec
                     bestObj = obj
         
+        self.xTrain = xTrain; self.yTrain = yTrain
         self.assignPara(paraInfos, bestDec)
         self._objFunc(yTrain, F, D, record=True)
         

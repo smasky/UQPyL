@@ -16,6 +16,8 @@ class LinearRegression(Surrogate):
     'Lasso'--------'Lasso'----Using L1 regularization
     '''
     
+    name = "LR"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  polyFeature: PolynomialFeatures=None, 
                  lossType: Literal['Origin', 'Ridge', 'Lasso']='Origin',
@@ -33,7 +35,6 @@ class LinearRegression(Surrogate):
             self.epoch=epoch
             self.tol=tol
                 
-        
 ###---------------------------------public function---------------------------------------###
 
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
@@ -67,7 +68,23 @@ class LinearRegression(Surrogate):
         return self.__Y_inverse_transform__(yPred)
     
 ###--------------------------private functions----------------------------###
-
+    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        
+        if self.lossType=='Origin':
+            
+            self.fitOrigin(xTrain, yTrain)
+            
+        elif self.lossType=='Ridge':
+            
+            self.fitRidge(xTrain, yTrain)
+            
+        elif self.lossType=='Lasso':
+            
+            self.fitLasso(xTrain, yTrain)
+            
+        else:
+            raise ValueError('Using wrong model type!')
+        
     def fitOrigin(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         if self.fitIntercept:

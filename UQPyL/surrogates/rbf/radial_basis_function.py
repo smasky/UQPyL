@@ -5,7 +5,6 @@ from typing import Tuple, Optional, Literal
 
 from .kernel import BaseKernel, Cubic
 from ..surrogateABC import Surrogate
-from ...optimization.algorithmABC import Algorithm
 from ...utility.metrics import r_square
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
@@ -14,7 +13,10 @@ from ...utility.model_selections import RandSelect
 class RBF(Surrogate):
     '''
     Radial basis function network
-    '''    
+    '''   
+    
+    name = "RBF"
+     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), polyFeature: PolynomialFeatures=None,
                  kernel: Optional[BaseKernel]=Cubic(), 
                  C_smooth: int=0.0, C_smooth_lb: int=1e-5, C_smooth_ub: int=1e5):
@@ -24,11 +26,12 @@ class RBF(Surrogate):
         self.setPara("C_smooth", C_smooth, C_smooth_lb, C_smooth_ub)
         
         self.kernel = kernel
+        self.setting.mergeSetting(kernel.setting)
+        
         
     def setKernel(self, kernel: BaseKernel):
         
         self.kernel = kernel
-        
         self.setting.mergeSetting(self.kernel.setting)
     
     def _get_tail_matrix(self, kernel: BaseKernel, train_X: np.ndarray):
@@ -72,46 +75,47 @@ class RBF(Surrogate):
         self.coe_lambda=solve[:nSample, :]
         self.xTrain=xTrain
     
-    def _fitPredictError(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        tol_xTrain = np.copy(xTrain)
-        tol_yTrain = np.copy(yTrain)
+    # def _fitPredictError(self, xTrain: np.ndarray, yTrain: np.ndarray):
+    #     tol_xTrain = np.copy(xTrain)
+    #     tol_yTrain = np.copy(yTrain)
         
-        RS = RandSelect(10)
-        train, test = RS.split(tol_xTrain)
+    #     RS = RandSelect(10)
+    #     train, test = RS.split(tol_xTrain)
         
-        xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
-        xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
+    #     xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
+    #     xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
         
-        self.xTrain = xTrain; self.yTrain = yTrain
+    #     self.xTrain = xTrain; self.yTrain = yTrain
         
-        nameList = list(self.setting.parasValue.keys())
+    #     nameList = list(self.setting.parasValue.keys())
         
-        paraInfos, ub, lb = self.setting.getParaInfos(nameList)
-        nInput = ub.size #TODO
+    #     paraInfos, ub, lb = self.setting.getParaInfos(nameList)
+    #     nInput = ub.size #TODO
         
-        def objFunc(varValues):
+    #     def objFunc(varValues):
             
-            varValues = np.exp(varValues)
-            objs = np.ones(varValues.shape[0])
+    #         varValues = np.exp(varValues)
+    #         objs = np.ones(varValues.shape[0])
             
-            for i, varValue in enumerate(varValues):
+    #         for i, varValue in enumerate(varValues):
                     
-                    self.assignPara(paraInfos, varValue)
+    #                 self.assignPara(paraInfos, varValue)
 
-                    obj=self._fitPure(xTrain, yTrain)
-                    if obj==-np.inf:
-                        objs[i] = obj*-1
+    #                 obj=self._fitPure(xTrain, yTrain)
+    #                 if obj==-np.inf:
+    #                     objs[i] = obj*-1
                         
-                    else:
-                        yPred = self.predict(self.__X_inverse_transform__(xTest))
-                        objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+    #                 else:
+    #                     yPred = self.predict(self.__X_inverse_transform__(xTest))
+    #                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
 
-            return objs.reshape( (-1, 1) )
+    #         return objs.reshape( (-1, 1) )
         
 ###--------------------------public functions----------------------------###
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        
         self._fitPure(xTrain, yTrain)
           
     def predict(self, xPred: np.ndarray):

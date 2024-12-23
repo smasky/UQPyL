@@ -15,6 +15,8 @@ from ...utility.polynomial_features import PolynomialFeatures
 
 class GPR(Surrogate):
     
+    name = "GPR"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  polyFeature: PolynomialFeatures = None,
                  kernel: BaseKernel = RBF(),
@@ -29,7 +31,7 @@ class GPR(Surrogate):
         self.fitMode = fitMode
         
         if isinstance(optimizer, Algorithm):
-            optimizer.verbose = False
+            # optimizer.verbose = False
             optimizer.saveFlag = False
             optimizer.logFlag = False
         else:
@@ -38,6 +40,7 @@ class GPR(Surrogate):
         self.optimizer = optimizer
         
         self.kernel = kernel
+        self.addSetting(kernel.setting)
         
         self.n_restarts_optimizer = n_restarts_optimizer
         
@@ -45,7 +48,6 @@ class GPR(Surrogate):
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        self.xTrain = xTrain; self.yTrain = yTrain
         
         self.setKernel(self.kernel, xTrain.shape[1])
         
@@ -56,7 +58,7 @@ class GPR(Surrogate):
             self._fitPredictError(xTrain, yTrain)
         
         else:
-            self._fitPureLikelihood(xTrain, yTrain)
+            self._fitPure(xTrain, yTrain)
             
     def predict(self, xPred: np.ndarray, Output_std: bool=False):
         
@@ -157,9 +159,11 @@ class GPR(Surrogate):
         self.assignPara(paraInfos, np.exp(bestDec))
         self._objfunc(self.xTrain, self.yTrain, record=True) #TODO
     
-    def _fitPureLikelihood(self, xTrain, yTrain):
+    def _fitPure(self, xTrain, yTrain):
         
-        self._objfunc( xTrain, yTrain, record=True )  
+        self.xTrain = xTrain; self.yTrain = yTrain
+        
+        self._objfunc( xTrain, yTrain, record=True )
         
     def _fitLikelihood(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
@@ -210,6 +214,7 @@ class GPR(Surrogate):
         self.assignPara(paraInfos, np.exp(bestDec))
         
         #Prepare for prediction
+        self.xTrain = xTrain; self.yTrain = yTrain
         self._objfunc(xTrain, yTrain, record=True)
         
     def _objfunc(self, xTrain, yTrain, record=False):

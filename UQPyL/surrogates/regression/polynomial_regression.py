@@ -12,6 +12,8 @@ class PolynomialRegression(LinearRegression):
     PolynomialRegression
     """
     
+    name = "PR"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                 polyFeature: PolynomialFeatures=None,
                 interactionOnly: bool=False, degree: int=2, 
@@ -60,6 +62,18 @@ class PolynomialRegression(LinearRegression):
         return self.__Y_inverse_transform__(yPred)
     
 ###------------------------private functions-----------------------------###
+    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        
+        xTrain=self.polynomialFeatures(xTrain)
+        if self.lossType=='Origin':
+            self.fitOrigin(xTrain, yTrain)
+        elif self.lossType=='Ridge':
+            self.fitRidge(xTrain, yTrain)
+        elif self.lossType=='Lasso':
+            self.fitLasso(xTrain, yTrain)
+        else:
+            raise ValueError('Using wrong model type!')
+        
     def polynomialFeatures(self, xTrain: np.ndarray):
         
         nSample, nFeature=xTrain.shape
