@@ -75,9 +75,9 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         return X
     
-    def setPara(self, key, value, lb, ub):
+    def setPara(self, key, value, lb, ub, T = 0, S = None):
         
-        self.setting.setPara(key, value, lb, ub)
+        self.setting.setPara(key, value, lb, ub, T, S)
     
     def getPara(self, *args):
         

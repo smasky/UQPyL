@@ -14,7 +14,7 @@ class RationalQuadratic(BaseKernel):
     theta: the set of unknown parameters. np.vstack(length_scale, alpha)
 
     """
-    def __init__(self, length_scale: Union[float, np.ndarray]=1.0, length_ub: Union[float, np.ndarray]=10.0, length_lb: Union[float, np.ndarray]=0.0,
+    def __init__(self, length_scale: Union[float, np.ndarray]=1.0, length_ub: Union[float, np.ndarray]=1e5, length_lb: Union[float, np.ndarray]=1,
                  heterogeneous: bool=False,
                  alpha: float=1.0, alpha_ub: float=1e5, alpha_lb: float=1e-5):
         
@@ -30,13 +30,12 @@ class RationalQuadratic(BaseKernel):
         
         if xTrain2 is None:
             dists=squareform(pdist(xTrain1/length_scale, metric="sqeuclidean"))
+            np.fill_diagonal(dists,1)
             tmp= dists / (2*alpha)
             base=1 + tmp
             K=base**-alpha
-            np.fill_diagonal(K,1)
         else:
-            dists=cdist(xTrain1, xTrain2, metric="sqeuclidean")
-            dists=dists/length_scale
+            dists=cdist(xTrain1/length_scale, xTrain2/length_scale, metric="sqeuclidean")
             K= (1+dists / (2* alpha )) ** -alpha
         
         return K

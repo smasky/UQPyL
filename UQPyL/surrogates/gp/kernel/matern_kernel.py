@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union, Literal
 from scipy.spatial.distance import pdist, squareform, cdist
 import scipy.special as sp
 import numpy as np
@@ -23,26 +23,38 @@ class Matern(BaseKernel):
        theta: the set of unknown parameters 
  
     """
-    def __init__(self, length_scale: Union[float, np.ndarray]=1.0,
-                 length_ub: Union[float, np.ndarray]=1e5, length_lb: Union[float, np.ndarray]=1e-5,
-                 heterogeneous: bool=False,
-                 nu: float=1.5):
-                
+    def __init__(self, length_scale: Union[float, np.ndarray] = 1.0,
+                 length_ub: Union[float, np.ndarray] = 1e5, length_lb: Union[float, np.ndarray] = 1,
+                 heterogeneous: bool = False,
+                 nu: Literal[0.5, 1.5, 2.5, np.inf] = 1.5, optimize_nu: bool = False):
+        
         super().__init__()
         
-        self.nu=nu
+        self.optimize_nu = optimize_nu
         
-        self.setPara("l", length_scale, length_ub, length_lb)
-        self.nu = nu #TODO
+        self.heterogeneous = heterogeneous
+        
+        self.setPara("l", length_scale, length_lb, length_ub)
+
+        if self.optimize_nu:
+            self.setPara("nu", nu, 0.5, 2.5)
+        else:
+            self.nu = nu
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale=self.getPara("l")
-        nu=self.nu
+        length_scale = self.getPara("l")
+        
+        if self.optimize_nu:
+            nu = self.getPara("nu")
+        else:
+            nu = self.nu
+        
         if xTrain2 is None:
-            dists=pdist(xTrain1/length_scale, metric="euclidean")
+            dists = pdist(xTrain1/length_scale, metric="euclidean")
         else:
             dists = cdist(xTrain1/length_scale, xTrain2/length_scale, metric="euclidean")
+        
         if nu==0.5:
             
             K=np.exp(-dists)
@@ -59,18 +71,25 @@ class Matern(BaseKernel):
             
         elif nu==np.inf:
             
-            K=np.exp(-(dists**2)/2.0)
+            K=np.exp(-0.5*dists**2)
             
         else:
             
             factor = (2 ** (1 - nu)) / sp.gamma(nu)
+            
             # Argument for the Bessel function
-            scaled_dist = np.sqrt(2 * nu) * dists / length_scale
+            
+            scaled_dist = np.maximum(np.sqrt(2 * nu) * dists, 1e-10)
+            
             # Matérn kernel formula
+            
             K = factor * (scaled_dist ** nu) * sp.kv(nu, scaled_dist)
             
+            K[scaled_dist == 0] = 1.0
+            
         if xTrain2 is None:
-            K=squareform(K)
+            
+            K = squareform(K)
             np.fill_diagonal(K,1.0)
         
         return K

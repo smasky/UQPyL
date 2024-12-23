@@ -46,19 +46,21 @@ yTest=problem.evaluate(xTest)
 # print(value)
 
 #-------------------Gaussian Process---------------------#
-from UQPyL.surrogates.gp import GPR
-from UQPyL.optimization.single_objective import GA
-from UQPyL.surrogates.gp.kernel import RBF, Matern, RationalQuadratic
+# from UQPyL.surrogates.gp import GPR
+# from UQPyL.optimization.single_objective import GA
+# from UQPyL.surrogates.gp.kernel import RBF, Matern, RationalQuadratic
 
-optimizer = GA(maxFEs=1000, nPop=50)
-gpr=GPR(kernel=RBF(length_scale=1, heterogeneous=True), optimizer=optimizer, fitMode="predictError")
-gpr.fit(xTrain, yTrain)
-yPred=gpr.predict(xTest)
-value=r_square(yTest, yPred)
-print(value)
+# optimizer = GA(maxFEs=2000, nPop=50)
+# # kernel = RBF(length_scale = 1.0, heterogeneous=True)
+# # kernel = Matern(length_scale = 1.0, optimize_nu = True, heterogeneous=True)
+# kernel = RationalQuadratic(length_scale=1.0, alpha=1.0, heterogeneous=True)
+# gpr = GPR(kernel=kernel, optimizer=optimizer, fitMode='predictError')
 
-
-
+# gpr.fit(xTrain, yTrain)
+# yPred = gpr.predict(xTest)
+# value = r_square(yTest, yPred)
+# print(value)
+# print(kernel.getPara("l"))
 
 
 # ##

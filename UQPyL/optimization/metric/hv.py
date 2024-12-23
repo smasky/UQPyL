@@ -2,14 +2,14 @@ import numpy as np
 
 def HV(pop, refPoint=None):
     
-    popObjs=pop.getBest().objs
-    _, m=popObjs.shape
+    popObjs = pop.getBest().objs
+    _, m = popObjs.shape
     
     if refPoint is None:
         
         refPoint = np.ones(m)
-        fmin=np.min(np.vstack((popObjs, np.zeros((1,m)))), axis=0)
-        fmax=np.max(np.vstack((popObjs, np.ones((1,m)))), axis=0)
+        fmin = np.min(np.vstack((popObjs, np.zeros((1,m)))), axis=0)
+        fmax = np.max(np.vstack((popObjs, np.ones((1,m)))), axis=0)
         popObjs = (popObjs - fmin)/(fmax - fmin)/1.1
         
     if m < 4:    
@@ -27,6 +27,7 @@ def HV(pop, refPoint=None):
             S=S_
         
         hyperVolume=0
+        
         for i in range(len(S)):
             p = S[i][1][0]
             hyperVolume += S[i][0] * np.abs(p[m-1] - refPoint[m-1])
@@ -37,11 +38,11 @@ def HV(pop, refPoint=None):
          
          totalHyperVolume = np.prod(upperBounds - lowerBounds)
          
-         nSamples=1e6
+         nSamples = 1e6
          
-         samples=np.random.uniform(lowerBounds, upperBounds, (int(nSamples), m))
+         samples = np.random.uniform(lowerBounds, upperBounds, (int(nSamples), m))
          
-         count=0
+         count = 0
          
          for sample in samples:
              if np.any(np.all(popObjs<=sample, axis=1)):

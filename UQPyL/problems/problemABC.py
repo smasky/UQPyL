@@ -50,6 +50,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         pass
     
     def constraint(self, X):
+        
         return np.zeros((X.shape[0], 1))
     
     def getOptimum(self):

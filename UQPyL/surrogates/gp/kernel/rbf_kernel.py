@@ -29,33 +29,3 @@ class RBF(BaseKernel):
             dists=cdist(xTrain1/length_scale, xTrain2/length_scale, metric="sqeuclidean")
             K = np.exp(-0.5 * dists)
         return K
-    
-    def initialize(self, nInput):
-        
-        length_scale=self.getPara("l")
-        length_ub=self.setting.paras_ub["l"]
-        length_lb=self.setting.paras_lb["l"]
-        
-        if self.heterogeneous:
-            if isinstance(length_scale, float):
-                length_scale=np.ones(nInput)*length_scale
-            elif length_scale.size==1:
-                length_scale=np.repeat(length_scale, nInput)
-            elif length_scale.size!=nInput:
-                raise ValueError("the dimension of length_scale is not consistent with the number of input")
-            
-            if isinstance(length_ub, float):
-                length_ub=np.ones(nInput)*length_ub
-            elif length_ub.size==1:
-                length_ub=np.repeat(length_ub, nInput)
-            elif length_ub.size!=nInput:
-                raise ValueError("the dimension of length_ub is not consistent with the number of input")
-            
-            if isinstance(length_lb, float):
-                length_lb=np.ones(nInput)*length_lb
-            elif length_lb.size==1:
-                length_lb=np.repeat(length_lb, nInput)
-            elif length_lb.size!=nInput:
-                raise ValueError("the dimension of length_lb is not consistent with the number of input")
-        
-        self.setPara("l", length_scale, length_lb, length_ub)

@@ -4,15 +4,16 @@ import numpy as np
 from .base_kernel import BaseKernel
 
 class Constant(BaseKernel):
+    
     """
     Constant
     """
-    def __init__(self, c: float=1.0):
-        self.c=c
-        super().__init__()
     
-    def setHyperPara(self, theta: np.ndarray):
-        self.c=theta[0]
+    def __init__(self, c: float=1.0):
+        
+        self.c=c
+        
+        super().__init__()
     
     def __call__(self, trainX: np.ndarray, trainY: Optional[np.ndarray]=None):
     

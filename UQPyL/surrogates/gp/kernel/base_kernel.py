@@ -56,4 +56,4 @@ class BaseKernel():
                 elif lengthLB.size!=nInput:
                     raise ValueError("the dimension of lengthLB is not consistent with the number of input")
             
-            self.setPara( "l", length , lengthLB, lengthUB )
+            self.setPara( "l", length.astype(np.float64) , lengthLB.astype(np.float64), lengthUB.astype(np.float64))
