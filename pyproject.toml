@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "UQPyL"
-version = "2.0.9"
+version = "2.0.10"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
@@ -22,7 +22,7 @@ dependencies = [
   "numpy",
   "scipy",
   "prettytable",
-  "h5py"
+  "h5py",
 ]
 classifiers = [
     "Programming Language :: Python :: 3.7",
