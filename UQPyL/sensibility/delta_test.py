@@ -4,7 +4,7 @@ from scipy.spatial.distance import cdist
 from typing import Optional, Tuple
 
 from .saABC import SA
-from ..optimization import Binary_GA
+from .util._binary_ga import Binary_GA
 from ..DoE import LHS, Sampler
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler

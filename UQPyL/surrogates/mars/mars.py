@@ -314,7 +314,41 @@ class MARS(Surrogate):
         self.enable_pruning = enable_pruning
         self.feature_importance_type = feature_importance_type
         self.verbose = verbose
+#-------------------------Public Function---------------------------#
+    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        
+        xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
+        
+        #indicate label for each dimension
+        self.xlabels_ = self._scrape_labels(xTrain)
+        xTrain, yTrain, sample_weight, output_weight, missing = self._scrub(
+            xTrain, yTrain, None, None, None)
+        #forward
+        self.forward_pass(xTrain, yTrain,
+                          sample_weight, output_weight, missing,
+                          self.xlabels_, [], skip_scrub=True)
+        #pruning
+        if self.enable_pruning is True:
+            self.pruning_pass(xTrain, yTrain,
+                              sample_weight, output_weight, missing,
+                              skip_scrub=True)
+        if hasattr(self, 'smooth') and self.smooth:
+            self.basis_ = self.basis_.smooth(xTrain)
+        self.linear_fit(xTrain, yTrain, sample_weight, output_weight, missing,
+                        skip_scrub=True)
+        return self
+    
+    def predict(self, xPredict: np.ndarray):
+        
+        xPredict = self.__X_transform__(xPredict)
+        
+        X, missing = self._scrub_x(xPredict, None)
+        B = self.transform(X, missing)
+        y = np.dot(B, self.coef_.T)
+        
+        return self.__Y_inverse_transform__(y)
 
+#------------------------------Private Function-------------------------#
     def __eq__(self, other):
         if self.__class__ is not other.__class__:
             return False
@@ -501,90 +535,7 @@ class MARS(Surrogate):
         #           force_all_finite=False)
 
         return X, y, sample_weight, None, missing
-
-    def fit(self, train_X: np.ndarray, train_Y: np.ndarray):
-        '''
-        Fit an Earth model to the input data X and y.
-
-
-        Parameters
-        ----------
-        X : array-like, shape = [m, n] where m is the number of samples
-            and n is the number of features the training predictors.
-            The X parameter can be a numpy array, a pandas DataFrame, a patsy
-            DesignMatrix, or a tuple of patsy DesignMatrix objects as
-            output by patsy.dmatrices.
-
-
-        y : array-like, optional (default=None), shape = [m, p] where m is the
-            number of samples The training response, p the number of outputs.
-            The y parameter can be a numpy array, a pandas DataFrame,
-            a Patsy DesignMatrix, or can be left as None (default) if X was
-            the output of a call to patsy.dmatrices (in which case, X contains
-            the response).
-
-
-        sample_weight : array-like, optional (default=None), shape = [m]
-             where m is the number of samples.
-             Sample weights for training.  Weights must be greater than or
-             equal to zero. Rows with zero weight do not contribute at all.
-             Weights are useful when dealing with heteroscedasticity.
-             In such cases, the weight should be proportional to the inverse of
-             the (known) variance.
-
-        output_weight : array-like, optional (default=None), shape = [p]
-             where p is the number of outputs.
-             Output weights for training. Weights must be greater than or equal
-             to zero. Output with zero weight do not contribute at all.
-
-        missing : array-like, shape = [m, n] where m is the number of samples
-            and n is the number of features.
-            The missing parameter can be a numpy array, a pandas DataFrame, or
-            a  patsy DesignMatrix.  All entries will be interpreted as boolean
-            values, with True indicating the corresponding entry in X should be
-            interpreted as missing.  If the missing argument not used but the X
-            argument is a pandas DataFrame, missing will be inferred from X if
-            allow_missing is True.
-
-        linvars : iterable of strings or ints, optional (empty by default)
-            Used to specify features that may only enter terms as linear basis
-            functions (without knots).  Can include both column numbers and
-            column names (see xlabels, below).  If left empty, some variables
-            may still enter linearly during the forward pass if no knot would
-            provide a reduction in GCV compared to the linear function.
-            Note that this feature differs from the R package earth.
-
-
-        xlabels : iterable of strings, optional (empty by default)
-            The xlabels argument can be used to assign names to data columns.
-            This argument is not generally needed, as names can be captured
-            automatically from most standard data structures.
-            If included, must have length n, where n is the number of features.
-            Note that column order is used to compute term values and make
-            predictions, not column names.
-        '''
-        
-        train_X, train_Y=self.__check_and_scale__(train_X, train_Y)
-        
-        #indicate label for each dimension
-        self.xlabels_ = self._scrape_labels(train_X)
-        train_X, train_Y, sample_weight, output_weight, missing = self._scrub(
-            train_X, train_Y, None, None, None)
-        #forward
-        self.forward_pass(train_X, train_Y,
-                          sample_weight, output_weight, missing,
-                          self.xlabels_, [], skip_scrub=True)
-        #pruning
-        if self.enable_pruning is True:
-            self.pruning_pass(train_X, train_Y,
-                              sample_weight, output_weight, missing,
-                              skip_scrub=True)
-        if hasattr(self, 'smooth') and self.smooth:
-            self.basis_ = self.basis_.smooth(train_X)
-        self.linear_fit(train_X, train_Y, sample_weight, output_weight, missing,
-                        skip_scrub=True)
-        return self
-
+    
     def forward_pass(self, X, y=None,
                      sample_weight=None, output_weight=None,
                      missing=None,
@@ -941,41 +892,6 @@ class MARS(Surrogate):
             self.grsq_ = 1.0 - (self.gcv_ / gcv0)
         else:
             self.grsq_ = 1.0
-
-    def predict(self, predict_X: np.ndarray):
-        '''
-        Predict the response based on the input data X.
-
-
-        Parameters
-        ----------
-        X : array-like, shape = [m, n] where m is the number of samples and n
-            is the number of features
-            The training predictors.  The X parameter can be a numpy
-            array, a pandas DataFrame, or a patsy DesignMatrix.
-
-        missing : array-like, shape = [m, n] where m is the number of samples
-            and n is the number of features.
-            The missing parameter can be a numpy array, a pandas DataFrame, or
-            a  patsy DesignMatrix.  All entries will be interpreted as boolean
-            values, with True indicating the corresponding entry in X should be
-            interpreted as missing.  If the missing argument not used but the X
-            argument is a pandas DataFrame, missing will be inferred from X if
-            allow_missing is True.
-
-       Returns
-       -------
-            y : array of shape = [m] or [m, p] where m is the number of samples
-                and p is the number of outputs
-                The predicted values.
-        '''
-        predict_X=self.__X_transform__(predict_X)
-        
-        X, missing = self._scrub_x(predict_X, None)
-        B = self.transform(X, missing)
-        y = np.dot(B, self.coef_.T)
-        
-        return self.__Y_inverse_transform__(y)
 
     def predict_deriv(self, X, variables=None, missing=None):
         '''

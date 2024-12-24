@@ -3,8 +3,9 @@ from scipy.linalg import cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional, Union
 
-from .boxmin import Boxmin
+
 from .kernel import BaseKernel, Guass
+from ..utility.boxmin import Boxmin
 from ..surrogateABC import Surrogate
 from ...optimization.algorithmABC import Algorithm
 from ...optimization.single_objective import GA

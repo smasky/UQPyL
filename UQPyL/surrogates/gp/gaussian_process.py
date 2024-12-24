@@ -3,7 +3,7 @@ from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Tuple, Optional, Literal
 
 from .kernel import BaseKernel, RBF
-from .boxmin import Boxmin
+from ..utility.boxmin import Boxmin
 from ...problems import PracticalProblem
 from ..surrogateABC import Surrogate
 from ...optimization import Algorithm
