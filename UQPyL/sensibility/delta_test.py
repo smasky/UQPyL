@@ -85,7 +85,9 @@ class Delta_Test(SA):
         X, Y=self.__check_and_scale_xy__(X, Y)
         
         n_input=self.n_input
+        
         ##main process
+        
         self.X_=X; self.Y_=Y
         optimizer=Binary_GA(self._cal_delta, self.n_input, population_size=n_input*2)
         best_paras, self.best_value, history_paras, _=optimizer.run()
@@ -95,6 +97,7 @@ class Delta_Test(SA):
         HSP_paras=[self.labels[index] for index, value in enumerate(best_paras) if value==1]
         
         Si={'S1': S1_score, 'HSP':HSP_paras}
+        
         self.Si=Si
         
         if verbose:

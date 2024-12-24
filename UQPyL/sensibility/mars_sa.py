@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Optional, Tuple
 
-from ..surrogates import MARS, Surrogate
+from ..surrogates import MARS
 from ..utility import MinMaxScaler, Scaler
 from ..problems import ProblemABC as Problem
 from ..DoE import LHS, Sampler

@@ -22,31 +22,31 @@ yTest=problem.evaluate(xTest)
 # np.savetxt('xTrain.txt', xTrain); np.savetxt('yTrain.txt', yTrain.reshape(-1, 1))
 
 #-------------------Kriging----------------------------#
-# from UQPyL.surrogates.kriging import KRG
-# from UQPyL.surrogates.kriging.kernel import Guass, Cubic, Exp
-# from UQPyL.utility.scalers import MinMaxScaler, StandardScaler
-# from UQPyL.optimization import GA
-# from time import time
+from UQPyL.surrogates.kriging import KRG
+from UQPyL.surrogates.kriging.kernel import Guass, Cubic, Exp
+from UQPyL.utility.scalers import MinMaxScaler, StandardScaler
+from UQPyL.optimization import GA
+from time import time
 
-# kernel=Guass(theta=1.0, heterogeneous=True)
+kernel=Guass(theta=1.0, heterogeneous=True)
 # kernel=Cubic(theta=1.0, heterogeneous=True)
 # kernel=Exp(theta=1.0, heterogeneous=True)
 
-# optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
+optimizer = GA(maxFEs=1000, nPop=50, saveFlag=False, logFlag=False, verboseFreq=1)
 
-#use Boxmin
-# krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, n_restart_optimize=0)
-#use optimization
-#krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer=optimizer, n_restart_optimize=0, fitMode='likelihood')
+# use Boxmin
+krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, n_restart_optimize=0)
+# use optimization
+# krg=KRG(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)), kernel=kernel, optimizer=optimizer, n_restart_optimize=0, fitMode='likelihood')
 # krg.fit(xTrain, yTrain)
 
-#use autoTuner
-# tuner=autoTuner(optimizer=optimizer, model=krg)
-# paraList=tuner.getParaList() 
-# tuner.tune(xTrain, yTrain, paraList, ratio=10)
-# yPred=krg.predict(xTest)
-# value=r_square(yTest, yPred)
-# print(value)
+# use autoTuner
+tuner=autoTuner(optimizer=optimizer, model=krg)
+paraList=tuner.getParaList() 
+tuner.opTune(xTrain, yTrain, paraList, ratio=10)
+yPred=krg.predict(xTest)
+value=r_square(yTest, yPred)
+print(value)
 
 #-------------------Gaussian Process---------------------#
 # from UQPyL.surrogates.gp import GPR

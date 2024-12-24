@@ -8,4 +8,3 @@ from .csa import CSA
 from .asmo import ASMO
 from .abc import ABC
 from .ego import EGO
-from ._binary_ga import Binary_GA

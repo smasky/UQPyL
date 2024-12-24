@@ -5,7 +5,7 @@ from typing import Literal, Tuple, Optional, Union
 
 
 from .kernel import BaseKernel, Guass
-from ..utility.boxmin import Boxmin
+from ..util.boxmin import Boxmin
 from ..surrogateABC import Surrogate
 from ...optimization.algorithmABC import Algorithm
 from ...optimization.single_objective import GA
