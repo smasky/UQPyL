@@ -116,7 +116,7 @@ class GPR(Surrogate):
                 
                 return obj
             
-            problem=PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb))
+            problem=PracticalProblem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
             
             bestDec, bestObj = self.optimizer.run(problem)
             
@@ -132,6 +132,7 @@ class GPR(Surrogate):
                     self.assignPara(paraInfos, varValue)
 
                     obj=self._objfunc(xTrain, yTrain, record=True)
+                    
                     if obj==-np.inf:
                         objs[i] = obj*-1
                         
@@ -141,7 +142,7 @@ class GPR(Surrogate):
 
                 return objs.reshape( (-1, 1) )
             
-            problem = PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
+            problem = PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             res = self.optimizer.run(problem)
             bestDec, bestObj = res.bestDec, res.bestObj
 
@@ -180,7 +181,7 @@ class GPR(Surrogate):
                 
                 return -self._objfunc(xTrain, yTrain, record=False)
                 
-            problem = PracticalProblem(objFunc, nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb))
+            problem = PracticalProblem(nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), objFunc = objFunc)
             bestDec, bestObj = self.optimizer.run(problem)
             
         elif self.optimizer.type=="EA":
@@ -199,7 +200,7 @@ class GPR(Surrogate):
                     
                 return objs.reshape((-1, 1))
             
-            problem=PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
+            problem=PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             res=self.optimizer.run(problem)
             bestDec, bestObj=res.bestDec, res.bestObj
             

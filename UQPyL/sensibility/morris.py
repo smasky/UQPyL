@@ -39,14 +39,14 @@ class Morris(SA):
         [2] SALib, https://github.com/SALib/SALib
     '''
     name="Morris"
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                       numLevels: int=4, numTrajectory: int=500, 
-                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+                       numLevels: int = 4, numTrajectory: int = 500, 
+                       verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
         
         #Attribute
-        self.firstOrder=True
-        self.secondOrder=False
-        self.totalOrder=True
+        self.firstOrder = True
+        self.secondOrder = False
+        self.totalOrder = True
         
         super().__init__(scalers, verbose, logFlag, saveFlag)
         
@@ -55,7 +55,7 @@ class Morris(SA):
         self.setParameters("numTrajectory", numTrajectory)
         
         
-    def sample(self, problem: Problem, numTrajectory: Optional[int]=None, numLevels: Optional[int]=None) -> np.ndarray:
+    def sample(self, problem: Problem, numTrajectory: Optional[int] = None, numLevels: Optional[int] = None) -> np.ndarray:
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
@@ -69,27 +69,27 @@ class Morris(SA):
         
         '''
         if numTrajectory is None:
-            nt=self.getParaValue('numTrajectory')
+            nt = self.getParaValue('numTrajectory')
         else:
-            nt=numTrajectory
+            nt = numTrajectory
         
         if numLevels is None:
-            numLevels=self.getParaValue('numLevels')
+            numLevels = self.getParaValue('numLevels')
         
         self.setParameters("numTrajectory", nt)
         self.setParameters("numLevels", numLevels)
         
-        nInput=problem.nInput
+        nInput = problem.nInput
         
-        X=np.zeros((nt*(nInput+1), nInput))
+        X = np.zeros((nt*(nInput+1), nInput))
         
         for i in range(nt):
-            X[i*(nInput+1):(i+1)*(nInput+1), :]=self._generate_trajectory(nInput, numLevels)
+            X[i*(nInput+1):(i+1)*(nInput+1), :] = self._generate_trajectory(nInput, numLevels)
         
         return self.transform_into_problem(problem, X)
     
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None) -> dict:
+    def analyze(self, problem: Problem, X: Optional[np.ndarray] = None, Y: Optional[np.ndarray] = None) -> dict:
         '''
             Perform morris analysis
             
@@ -109,32 +109,37 @@ class Morris(SA):
                 Si: dict
                     The type of Si is dict. And it contain 'mu', 'mu_star', 'sigma' key value.
         '''
-        numTrajectory, numLevels=self.getParaValue("numTrajectory", "numLevels")
+        numTrajectory, numLevels = self.getParaValue("numTrajectory", "numLevels")
+        
         self.setProblem(problem)
-        nInput=problem.nInput
+        
+        nInput = problem.nInput
+        
         if X is None or Y is None:
-            X=self.sample(problem, N)
-            Y=problem.evaluate(X)
+            
+            X = self.sample(problem, N)
+            Y = problem.objFunc(X)
+            
         else:
-            numTrajectory=int(X.shape[0]/(nInput+1))
+            numTrajectory = int(X.shape[0]/(nInput+1))
         
-        X, Y=self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_and_scale_xy__(X, Y)
 
-        EE=np.zeros((nInput, numTrajectory))
+        EE = np.zeros((nInput, numTrajectory))
         
-        N=int(X.shape[0]/numLevels)
+        N = int(X.shape[0]/numLevels)
         
         for i in range(numTrajectory):
-            X_sub=X[i*(nInput+1):(i+1)*(nInput+1), :]
-            Y_sub=Y[i*(nInput+1):(i+1)*(nInput+1), :]
+            X_sub = X[i*(nInput+1):(i+1)*(nInput+1), :]
+            Y_sub = Y[i*(nInput+1):(i+1)*(nInput+1), :]
 
-            Y_diff=np.diff(Y_sub, axis=0)
+            Y_diff = np.diff(Y_sub, axis=0)
             
             tmp_indice = list(np.argmax(np.diff(X_sub, axis=0) != 0, axis=1))
-            indice=[tmp_indice.index(i) for i in range(len(tmp_indice))]
-            delta_diff=np.sum(np.diff(X_sub, axis=0), axis=1).reshape(-1,1)
-            ee=Y_diff/delta_diff
-            EE[:, i:i+1]=ee[indice]
+            indice = [tmp_indice.index(i) for i in range(len(tmp_indice))]
+            delta_diff = np.sum(np.diff(X_sub, axis=0), axis=1).reshape(-1,1)
+            ee = Y_diff/delta_diff
+            EE[:, i:i+1] = ee[indice]
             
         mu = np.mean(EE, axis=1)
         mu_star= np.mean(np.abs(EE), axis=1)
@@ -178,18 +183,18 @@ class Morris(SA):
         '''
             Generate a random trajectory from Reference[1]
         '''
-        delta=num_levels/(2*(num_levels-1))
+        delta = num_levels/(2*(num_levels-1))
         
-        B=np.tril(np.ones([nx + 1, nx], dtype=int), -1)
+        B = np.tril(np.ones([nx + 1, nx], dtype=int), -1)
         
         # from paper[1] page 164
         D_star = np.diag(np.random.choice([-1, 1], nx)) #step1
-        J=np.ones((nx+1, nx))
+        J = np.ones((nx+1, nx))
         
-        levels_grids=np.linspace(0, 1-delta, int(num_levels / 2))
-        x_star=np.random.choice(levels_grids, nx).reshape(1,-1) #step2
+        levels_grids = np.linspace(0, 1-delta, int(num_levels / 2))
+        x_star = np.random.choice(levels_grids, nx).reshape(1,-1) #step2
         
-        P_star=np.zeros((nx,nx))
+        P_star = np.zeros((nx,nx))
         cols = np.random.choice(nx, nx, replace=False)
         P_star[np.arange(nx), cols]=1 #step3
         

@@ -152,7 +152,7 @@ class SWAT_UQ_Flow(ProblemABC):
                 obj_value=eval(OBJTYPE[obj_type])(observed_value, sim_value)
                 v_obj+=obj_value*weight
             obj_array[obj_id-1]=v_obj
-            
+        print(sim_value)
         self.work_path_queue.put(work_path)
         return (id, obj_array)
     
@@ -240,9 +240,9 @@ class SWAT_UQ_Flow(ProblemABC):
             print("="*70)
             print("\n"*1)
             
-    def __del__(self):
-        if self.used_temp_dir:
-            os.makedirs(self.work_temp_dir)
+    # def __del__(self):
+    #     if self.used_temp_dir:
+    #         os.makedirs(self.work_temp_dir)
     
     def _set_values(self, work_path, paras_values):
         
@@ -595,7 +595,7 @@ class SWAT_UQ_Flow(ProblemABC):
     def delete(self):
         shutil.rmtree(self.work_temp_dir)
             
-file_path="D:\YS_swat\TxtInOut"
+file_path="D:\\djBasin\\TxtInOutFSB\\TxtInOutFSB"
 temp_path="D:\\YS_swat\\instance_temp"
 swat_exe_name="swat.exe"
 observed_file_name="ob1.txt"
@@ -606,7 +606,7 @@ swat_cup=SWAT_UQ_Flow(work_path=file_path,
                     observed_file_name=observed_file_name,
                     swat_exe_name=swat_exe_name,
                     temp_path=temp_path,
-                    max_threads=10, num_parallel=5,
+                    max_threads=10, num_parallel=1,
                     verbose=True)
 
 # x=np.array([-0.052000, 1.247500, 18.303900, 0.163000, 0.020000, 0.110000, 51.000000, 0.098500, 134.992706, 0.510000, 1540.000000, 0.570000, 1.940000]) 
@@ -614,7 +614,7 @@ x=np.array([-0.118800, 6.492550, 1.000, 0.320500, 0.020000, 0.37500, 154.9000,  
 
 # x=np.array([])
 a=swat_cup.evaluate(x.reshape(1,-1))
-
+print(a)
 
 # from UQPyL.optimization import PSO, GA
 # pso=PSO(verboseFreq=1)

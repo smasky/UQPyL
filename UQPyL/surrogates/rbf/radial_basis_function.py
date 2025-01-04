@@ -74,43 +74,7 @@ class RBF(Surrogate):
         self.coe_h=coe_h
         self.coe_lambda=solve[:nSample, :]
         self.xTrain=xTrain
-    
-    # def _fitPredictError(self, xTrain: np.ndarray, yTrain: np.ndarray):
-    #     tol_xTrain = np.copy(xTrain)
-    #     tol_yTrain = np.copy(yTrain)
-        
-    #     RS = RandSelect(10)
-    #     train, test = RS.split(tol_xTrain)
-        
-    #     xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
-    #     xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
-        
-    #     self.xTrain = xTrain; self.yTrain = yTrain
-        
-    #     nameList = list(self.setting.parasValue.keys())
-        
-    #     paraInfos, ub, lb = self.setting.getParaInfos(nameList)
-    #     nInput = ub.size #TODO
-        
-    #     def objFunc(varValues):
             
-    #         varValues = np.exp(varValues)
-    #         objs = np.ones(varValues.shape[0])
-            
-    #         for i, varValue in enumerate(varValues):
-                    
-    #                 self.assignPara(paraInfos, varValue)
-
-    #                 obj=self._fitPure(xTrain, yTrain)
-    #                 if obj==-np.inf:
-    #                     objs[i] = obj*-1
-                        
-    #                 else:
-    #                     yPred = self.predict(self.__X_inverse_transform__(xTest))
-    #                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-
-    #         return objs.reshape( (-1, 1) )
-        
 ###--------------------------public functions----------------------------###
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         

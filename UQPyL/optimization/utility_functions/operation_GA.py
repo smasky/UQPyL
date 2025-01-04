@@ -8,7 +8,7 @@ def operationGA(matingPool, ub, lb, proC=1, disC=20, proM=1, disM=20):
         GA Operation: crossover and mutation
     '''
     
-    popDec = matingPool.decs
+    popDec = np.copy(matingPool.decs)
         
     NN = len(matingPool)
     

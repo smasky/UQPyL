@@ -14,7 +14,7 @@ class DTLZ1(ProblemABC):
     Multi-Objective problem named DTLZ1 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -40,7 +40,7 @@ class DTLZ1(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ1 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -97,7 +97,7 @@ class DTLZ2(ProblemABC):
     Multi-Objective problem named DTLZ2 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -123,7 +123,7 @@ class DTLZ2(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ2 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -176,7 +176,7 @@ class DTLZ3(ProblemABC):
     Multi-Objective problem named DTLZ3 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -202,7 +202,7 @@ class DTLZ3(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ3 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -249,7 +249,7 @@ class DTLZ4(ProblemABC):
     Multi-Objective problem named DTLZ4 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -275,7 +275,7 @@ class DTLZ4(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ4 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -325,7 +325,7 @@ class DTLZ5(ProblemABC):
     Multi-Objective problem named DTLZ5 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -351,7 +351,7 @@ class DTLZ5(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ5 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -407,7 +407,7 @@ class DTLZ6(ProblemABC):
     Multi-Objective problem named DTLZ6 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -433,7 +433,7 @@ class DTLZ6(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         
@@ -485,7 +485,7 @@ class DTLZ7(ProblemABC):
     Multi-Objective problem named DTLZ7 of the DTLZ suit.
     
     Methods:
-    evaluate: Returns the function value of the problem if provide the X.
+    objFunc: Returns the function value of the problem if provide the X.
     get_PF: Returns the Pareto Front of the problem.
     get_optimum: Returns the Pareto Optimum of the problem.
     
@@ -511,7 +511,7 @@ class DTLZ7(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
         
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         '''
         Perform the evaluation of the input variables X
         

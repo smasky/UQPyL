@@ -80,7 +80,7 @@ class autoTuner():
                 ub[idx] = np.log(ub[idx])
                 lb[idx] = np.log(lb[idx])
             
-            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            problem = PracticalProblem(nInput, 1, ub, lb, objFunc=objFunc)
             
             res = self.optimizer.run(problem=problem)
             

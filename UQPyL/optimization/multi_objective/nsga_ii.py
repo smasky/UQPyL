@@ -72,31 +72,31 @@ class NSGAII(Algorithm):
     def run(self, problem):
         
         #Parameter Setting
-        proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nPop=self.getParaValue('nPop')
+        proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
+        nPop = self.getParaValue('nPop')
         
         #Problem
         self.setProblem(problem)
         
         #Termination Condition Setting
-        self.FEs=0; self.iters=0
+        self.FEs = 0; self.iters = 0
         
         #Population Generation
         pop = self.initialize(nPop)
         
-        _, frontNo, CrowdDis=self.environmentalSelection(pop, nPop)
+        _, frontNo, CrowdDis = self.environmentalSelection(pop, nPop)
         
         while self.checkTermination():
             
-            selectIdx=tournamentSelection(2, nPop, frontNo, -CrowdDis)
+            matingPool = tournamentSelection(pop, 2, len(pop), frontNo, -CrowdDis)
             
-            offspring=operationGA(pop[selectIdx], self.problem.ub, self.problem.lb, proC, disC, proM, disM)
+            offspring = operationGA(matingPool, problem.ub, problem.lb, proC, disC, proM, disM)
             
             self.evaluate(offspring)
             
             pop.merge(offspring)
             
-            pop, frontNo, CrowdDis=self.environmentalSelection(pop, nPop)
+            pop, frontNo, CrowdDis = self.environmentalSelection(pop, nPop)
             
             self.record(pop)
             

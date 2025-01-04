@@ -24,9 +24,9 @@ class Sphere(ProblemABC):
     name="Shpere"
     def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100, lb: Union[int,float,np.ndarray] =-100):
         
-        super().__init__(nInput,1,ub,lb)
+        super().__init__(nInput , 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit=False) -> np.ndarray:
         '''
             Parameters:
                 X: np.ndarray
@@ -64,7 +64,7 @@ class Schwefel_2_22(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -93,7 +93,7 @@ class Schwefel_1_22(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         F=0
         X=self._check_2d(X)
@@ -124,7 +124,7 @@ class Schwefel_2_21(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -153,7 +153,7 @@ class Rosenbrock(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         
@@ -184,7 +184,7 @@ class Step(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -213,7 +213,7 @@ class Quartic(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -242,7 +242,7 @@ class Schwefel_2_26(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -271,7 +271,7 @@ class Rastrigin(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -300,7 +300,7 @@ class Ackley(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -330,7 +330,7 @@ class Griewank(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -363,7 +363,7 @@ class Trid(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -391,7 +391,7 @@ class Bent_Cigar(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -419,7 +419,7 @@ class Discus(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:
@@ -451,7 +451,7 @@ class Weierstrass(ProblemABC):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def evaluate(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
         X=self._check_2d(X)
         if unit:

@@ -5,7 +5,6 @@ sys.path.append(".")
 import os
 import re
 import queue
-import shutil
 import tempfile
 import itertools
 import subprocess
@@ -35,8 +34,8 @@ def func_Pbias(true_values, sim_values):
     return np.sum(np.abs(true_values-sim_values)/true_values)*100
 
 def func_KGE_inverse(true_values, sim_values):
-    true_values=true_values.ravel()
-    sim_values=sim_values.ravel()
+    true_values = true_values.ravel()
+    sim_values = sim_values.ravel()
     r, _ = pearsonr(true_values, sim_values)
     beta = np.std(sim_values) / np.std(true_values)
     gamma = np.mean(sim_values) / np.mean(true_values)
@@ -50,8 +49,9 @@ def func_Sum(true_values, sim_values):
     return np.sum(sim_values)
 
 OBJTYPE={1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_Pbias", 5: "func_KGE_inverse", 6: "func_Mean", 7:"func_Sum"}
-VARNAME={6: "FLOW_OUT", 47: "TOT_N", 48: "TOT_P" }
+VARNAME={6: "FLOW_OUT", 13: "ORGN", 15: "ORGP", 17: "NO3", 19: "NH4", 21: "NO2",47: "TOT_N", 48: "TOT_P"}
 OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
+
 
 class SWAT_UQ(Problem):
     
@@ -136,8 +136,6 @@ class SWAT_UQ(Problem):
         n=X.shape[0]
         n_out=self.n_output
         Y=np.zeros((n,n_out))
-        
-        variables=self._subprocess(X[0, :], 0)
         
         with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
             futures=[executor.submit(self._subprocess, X[i, :], i) for i in range(n)]

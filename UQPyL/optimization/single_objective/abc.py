@@ -121,8 +121,12 @@ class ABC(Algorithm):
                 break
         
         rnd = np.random.random((len(unemployedBees), d))*2-1
-        newBees = employedBees[globalIdx]+(employedBees[globalIdx]-pop[randIdx[beeType==0]])*rnd
         
+        popDecs = pop.decs
+        employedDecs = employedBees.decs
+        newDecs = employedDecs[globalIdx]+(employedDecs[globalIdx]-popDecs[randIdx[beeType==0]])*rnd
+        
+        newBees = Population(decs = newDecs)
         newBees.clip(self.problem.lb, self.problem.ub)
         
         self.evaluate(newBees)
@@ -153,7 +157,10 @@ class ABC(Algorithm):
             
         rnd = np.random.random((nEmployBees, D))*2-1
         
-        newBees = pop[employedBeesType]+(pop[randIdx[employedBeesType]]-pop[employedBeesType])*rnd
+        popDecs = pop.decs
+        newDecs = popDecs[employedBeesType]+(popDecs[randIdx[employedBeesType]]-popDecs[employedBeesType])*rnd
+        
+        newBees = Population(decs = newDecs)
         newBees.clip(self.problem.lb, self.problem.ub)
         
         self.evaluate(newBees)

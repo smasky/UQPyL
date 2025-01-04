@@ -141,7 +141,7 @@ class KRG(Surrogate):
         dx = np.zeros( (nPred * nSample, nFeature) )
         
         kk = np.arange( nSample )
-
+        
         for k in np.arange(nPred):
             dx[kk, :] = xPred[k, :] - self.xTrain
             kk = kk + nSample
@@ -219,7 +219,7 @@ class KRG(Surrogate):
                 
                 return obj
             
-            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            problem = PracticalProblem(nInput, 1, ub, lb, objFunc=objFunc)
             bestDec, bestObj = self.optimizer.run(problem)
             
             for _ in range(self.n_restart_optimize):
@@ -242,7 +242,7 @@ class KRG(Surrogate):
                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
                 return objs.reshape(-1, 1)
             
-            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            problem = PracticalProblem(nInput, 1, ub, lb, objFunc = objFunc)
             
             res = self.optimizer.run(problem)
             bestDec = res.bestDec; bestObj=res.bestObj
@@ -274,7 +274,7 @@ class KRG(Surrogate):
                 return self._objFunc(yTrain, F, D, record=False)
             
             ###Using Mathematical Programming Method
-            problem = PracticalProblem(objFunc, nInput, 1, ub, lb)
+            problem = PracticalProblem(nInput, 1, ub, lb, objFunc = objFunc)
             
             bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput))
               
@@ -296,7 +296,7 @@ class KRG(Surrogate):
                     
                 return objs
             
-            problem = PracticalProblem(objFunc, nInput, 1, np.log(ub), np.log(lb))
+            problem = PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             
             res = self.optimizer.run(problem)
             

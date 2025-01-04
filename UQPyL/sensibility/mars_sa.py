@@ -33,11 +33,11 @@ class MARS_SA(SA):
                                 doi: 10.1214/aos/1176347963.
             [2] SALib, https://github.com/SALib/SALib
     '''
-    def __init__(self, problem: Problem, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None)):
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None)):
         
-        super().__init__(problem, scalers)
+        super().__init__(scalers)
     
-    def sample(self, N: int=500, sampler: Sampler=LHS('classic')):
+    def sample(self, N: int=500, sampler: Sampler = LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -50,13 +50,13 @@ class MARS_SA(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        n_input=self.n_input
+        n_input = self.n_input
         
-        X=sampler.sample(N, n_input)
+        X = sampler.sample(N, n_input)
         
         return X
     
-    def analyze(self, X: np.ndarray=None, Y: np.ndarray=None, verbose: bool=False):
+    def analyze(self, problem: Problem, X: np.ndarray = None, Y: np.ndarray = None, verbose: bool = False):
         '''
             Perform MARS-SA
             -------------------------------------
@@ -72,8 +72,8 @@ class MARS_SA(SA):
                 Si: dict
                     The type of Si is dict. It contains 'S1'.
         '''
-        X, Y=self.__check_and_scale_xy__(X, Y)
-        n_input=self.n_input
+        X, Y = self.__check_and_scale_xy__(X, Y)
+        n_input = self.n_input
         
         S1=np.zeros(n_input)
         #main process    

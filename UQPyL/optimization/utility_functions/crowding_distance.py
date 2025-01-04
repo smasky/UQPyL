@@ -3,9 +3,9 @@ import numpy as np
 
 def crowdingDistance(pop, frontNo):
     
-    popObjs=pop.objs
+    popObjs = pop.objs
     
-    n, m=popObjs.shape
+    n, m = popObjs.shape
 
     if frontNo is None:
         frontNo = np.ones(n)

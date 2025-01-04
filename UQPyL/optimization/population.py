@@ -3,56 +3,50 @@ import copy
 
 from .utility_functions.ndsort import NDSort
 from .utility_functions.crowding_distance import crowdingDistance
+
 class Population():
     
-    def __init__(self, decs, objs=None, cons=None):
+    def __init__(self, decs, objs = None, cons = None, conWgt = None):
+        
+        self.conWgt = conWgt
         
         self.decs = np.atleast_2d(np.copy(decs))
         
         if objs is not None: 
             self.objs = np.atleast_2d(np.copy(objs))
-            self.nOutput=self.objs.shape[1]
-        
+            self.nOutput = self.objs.shape[1]
+        else:
+            self.objs = None
+            
         if cons is not None:
             self.cons = np.atleast_2d(np.copy(cons))
-        
+        else:
+            self.cons = None
+            
         self.nPop, self.D = self.decs.shape
-            
-    def __add__(self, otherPop):
-        
-        if isinstance(otherPop, np.ndarray):
-            
-            return Population(self.decs+otherPop)
-        
-        return Population(self.decs+otherPop.decs)
-    
-    def __sub__(self, otherPop):
-        
-        if isinstance(otherPop, np.ndarray):
-            return Population(self.decs-otherPop)
-        
-        return Population(self.decs-otherPop.decs)
-    
-    def __mul__(self, number):
-        
-        return Population(self.decs*number)
-    
-    def __rmul__(self, number):
-        
-        return Population(self.decs*number)
-    
-    def __truediv__(self, number):
-        
-        return Population(self.decs/number)
     
     def copy(self):
         
         return copy.deepcopy(self)
     
-    def add(self, decs, objs):
+    def add(self, decs, objs, cons = None):
         
-        otherPop = Population(decs, objs)
+        otherPop = Population(decs, objs, cons, self.conWgt)
+        
         self.add(otherPop)
+    
+    def add(self, otherPop):
+        
+        if self.decs is not None:
+            self.decs = np.vstack((self.decs, otherPop.decs))
+            self.objs = np.vstack((self.objs, otherPop.objs))
+            self.cons = np.vstack((self.cons, otherPop.cons)) if self.cons is not None else None
+        else:
+            self.decs = otherPop.decs
+            self.objs = otherPop.objs
+            self.cons = otherPop.cons
+            
+        self.nPop=self.decs.shape[0]
     
     def getBest(self, k=None):
         
@@ -61,15 +55,16 @@ class Population():
                 iMax = np.argmax(self.objs)
                 obj = self.objs[iMax]
                 decs = self.decs[iMax]
-                cons = self.cons[iMax]
-                return Population(decs, obj, cons)
+                if cons != None:
+                    cons = self.cons[iMax]
+                return Population(decs, obj, cons, self.conWgt)
             
             else:
                 frontNo, _ = NDSort(self)
                 objs = self.objs[frontNo==1]
                 decs = self.decs[frontNo==1]
-                cons = self.cons[frontNo==1]
-                return Population(decs, objs, cons)
+                cons = self.cons[frontNo==1] if self.cons is not None else None
+                return Population(decs, objs, cons, self.conWgt)
             
         else:
             if self.nOutput==1:
@@ -83,18 +78,24 @@ class Population():
                 objs = self.objs[indices[:k]]
                 decs = self.decs[indices[:k]]
                 cons = self.cons[indices[:k]] 
-                return Population(decs, objs, cons)
+                return Population(decs, objs, cons, self.conWgt)
             
     def argsort(self):
         
-        if self.nOutput==1:
+        if self.nOutput == 1:
             
-            popSumCon=np.sum(self.cons, axis=1).reshape(-1, 1)
-            
-            infeasible = (popSumCon > 0).astype(int)
-            
-            integration = self.objs + infeasible * popSumCon
-            
+            if self.cons is not None:
+                
+                popCons_ = np.maximum(0 , self.cons)
+                
+                popCons = popCons_ * self.conWgt if self.conWgt is not None else popCons_ * 1e6
+                
+                popSumCon = np.sum( popCons, axis=1 ).reshape(-1, 1)
+                
+                infeasible = (popSumCon > 0).astype(int)
+                
+            integration = self.objs + infeasible * popSumCon if self.cons is not None else self.objs
+                
             args = np.argsort(integration.ravel())
             
         else:
@@ -124,27 +125,17 @@ class Population():
     
     def evaluate(self, problem):
         
-        decs=self.decs
-        if problem.encoding=='mix':
+        decs = self.decs
+        
+        if problem.encoding == 'mix':
             decs = problem._transform_discrete_var(np.copy(decs))
         
-        self.nOutput=problem.nOutput
+        self.nOutput = problem.nOutput
         
-        self.objs = problem.evaluate(decs)
-        self.cons = problem.constraint(decs)
+        res = problem.evaluate(decs)
         
-    def add(self, otherPop):
+        self.objs, self.cons = res['objs'], res['cons']
         
-        if self.decs is not None:
-            self.decs=np.vstack((self.decs, otherPop.decs))
-            self.objs=np.vstack((self.objs, otherPop.objs))
-            self.cons=np.vstack((self.cons, otherPop.cons))
-        else:
-            self.decs=otherPop.decs
-            self.objs=otherPop.objs
-            
-        self.nPop=self.decs.shape[0]
-    
     def merge(self, otherPop):
         
         self.add(otherPop)
@@ -166,7 +157,7 @@ class Population():
         else:
             raise TypeError("Index must be int, slice, list, or ndarray")
         
-        return Population(decs, objs, cons)
+        return Population(decs, objs, cons, self.conWgt)
 
     def __len__(self):
         

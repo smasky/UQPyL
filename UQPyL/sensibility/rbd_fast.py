@@ -110,7 +110,7 @@ class RBD_FAST(SA):
         
         if X is None or Y is None:
             X=self.sample(problem, N)
-            Y=problem.evaluate(X)
+            Y=problem.objFunc(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)
         

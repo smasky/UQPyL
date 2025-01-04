@@ -18,7 +18,7 @@ class ZDT1(ProblemABC):
         if nOutput!=2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         
         X=self._check_2d(X)
         if unit:
@@ -57,7 +57,7 @@ class ZDT2(ProblemABC):
         if nOutput!=2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         
         X=self._check_2d(X)
         if unit:
@@ -96,7 +96,7 @@ class ZDT3(ProblemABC):
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         
         X=self._check_2d(X)
         if unit:
@@ -140,7 +140,7 @@ class ZDT4(ProblemABC):
         if nOutput!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         
         X=self._check_2d(X)
         if unit:
@@ -179,7 +179,7 @@ class ZDT6(ProblemABC):
         if nOutput!=2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")
     
-    def evaluate(self, X, unit=False):
+    def objFunc(self, X, unit=False):
         
         X=self._check_2d(X)
         if unit:

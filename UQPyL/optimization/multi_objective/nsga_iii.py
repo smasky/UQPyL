@@ -53,9 +53,9 @@ class NSGAIII(Algorithm):
             
             frontNo, _ = NDSort(pop)
             crowdDis = crowdingDistance(pop, frontNo)
-            selectIdx = tournamentSelection(2, nPop, frontNo, -crowdDis)
+            matingPool = tournamentSelection(pop, 2, len(pop), frontNo, -crowdDis)
             
-            offspring = operationGA(pop[selectIdx], self.problem.ub, self.problem.lb, proC, disC, proM, disM)
+            offspring = operationGA(matingPool, self.problem.ub, self.problem.lb, proC, disC, proM, disM)
             
             self.evaluate(offspring)
             

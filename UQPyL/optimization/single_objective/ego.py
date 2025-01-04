@@ -42,7 +42,8 @@ class EGO(Algorithm):
         self.problem=problem
         
         #SubProblem
-        subProblem=PracticalProblem(self.EI, problem.nInput, 1, problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem=PracticalProblem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
+                                    var_type = problem.var_type, var_set = problem.var_set)
         
         #Termination Condition Setting
         self.FEs=0; self.iters=0; self.tolerateTimes=0
@@ -57,7 +58,7 @@ class EGO(Algorithm):
             
             if nInit > len(pop):
                 pop.merge(self.initialize(nInit-len(pop)))
-                
+            
         else:
             pop=self.initialize(nInit)
         

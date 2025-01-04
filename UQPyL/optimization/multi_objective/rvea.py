@@ -7,6 +7,7 @@ from ..utility_functions.operation_GA import operationGA
 from ..algorithmABC import Algorithm
 from ..population import Population
 from ...utility import Verbose
+
 class RVEA(Algorithm):
     """
     Reference vector guided evolutionary algorithm (RVEA) <Multi>
@@ -57,7 +58,7 @@ class RVEA(Algorithm):
             
             self.evaluate(offspring)
             
-            pop = self.environmentalSelection(pop.merge(offspring), V, (self.FEs/self.maxFEs)**alpha)
+            pop = self.environmentSelection(pop.merge(offspring), V, (self.FEs/self.maxFEs)**alpha)
             
             condition = not (np.ceil(self.FEs / nPop) % np.ceil(fr * self.maxFEs / nPop))
             
@@ -77,7 +78,7 @@ class RVEA(Algorithm):
         
         return V
     
-    def environmentalSelection(self, pop, V, theta):
+    def environmentSelection(self, pop, V, theta):
         
         popObjs = pop.objs
         
