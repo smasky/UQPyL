@@ -1,17 +1,12 @@
 import numpy as np
-from typing import Callable
-
-from ...problems import ProblemABC as Problem
 class Boxmin():
-    
-    type='MP' #mathematical programming
     
     def __init__(self) -> None:
         
         pass
         
     ###################################Interface Function#################################
-    def run(self, problem: Problem, xInit=None):
+    def run(self, problem, xInit=None):
         
         self.ub=problem.ub.ravel()
         self.lb=problem.lb.ravel()

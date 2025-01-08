@@ -83,28 +83,28 @@ res=nsgaiii.run(dtlz5)
 # moead=MOEAD()
 # res=moead.run(dtlz2)
 
-Y=res.bestObj
+# Y=res.bestObj
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+# import numpy as np
 
-# 创建数据
-x = Y[:, 0]
-y = Y[:, 1]
-z = Y[:, 2]
+# # 创建数据
+# x = Y[:, 0]
+# y = Y[:, 1]
+# z = Y[:, 2]
 
-# 创建图形和轴
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+# # 创建图形和轴
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
 
-# 添加数据到轴上
-ax.scatter(x, y, z)
+# # 添加数据到轴上
+# ax.scatter(x, y, z)
 
-# 添加标签
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
+# # 添加标签
+# ax.set_xlabel('X Label')
+# ax.set_ylabel('Y Label')
+# ax.set_zlabel('Z Label')
 
-# 显示图形
-plt.show()
+# # 显示图形
+# plt.show()

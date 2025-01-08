@@ -154,3 +154,20 @@ class ProblemABC(metaclass=abc.ABCMeta):
         bound = bound.ravel()
         if( not bound.shape[0] == self.nInput ):
             raise ValueError('The input bound is inconsistent with the nInput of the problem setting')
+        
+        
+    @staticmethod
+    def singleEval(func):
+        
+        def wrapper(X):
+            X = np.atleast_2d(X)
+            evals = []
+            
+            for x in X:
+                eval = func(x)
+                evals.append(np.atleast_1d(eval))
+
+            return np.vstack(evals)
+        
+        return wrapper 
+                
