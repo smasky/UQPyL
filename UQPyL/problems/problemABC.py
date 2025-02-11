@@ -32,7 +32,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.varSet = {}
         else:
             self.varSet = {}
-            for i in self.I_dst:
+            for i in self.idxD:
                 if isinstance(varSet[i], list):
                     self.varSet[i] = varSet[i]
                 else:
@@ -56,22 +56,33 @@ class ProblemABC(metaclass=abc.ABCMeta):
             conWgt = np.array(conWgt).reshape(1, -1)
 
         self.conWgt = conWgt
-
+    
     def evaluate(self, X):
         
-        res = {}
-        #calObjs
-        res['objs'] = self.objFunc(X)
-        #calConstraints
-        res['cons'] = self.conFunc(X)
+        #Use the user-define way
+        if self.evaluate_ is not None:
+            return self.evaluate_(X)
         
-        return res
+        #Use the default way
+        ##calObjs
+        objs = self.objFunc(X)
+        
+        ##calConstraints
+        cons = self.conFunc(X)
+        
+        return {'objs' : objs, 'cons' : cons}
     
     def objFunc(self, X):
+        
+        if self.objFunc_ is not None:
+            return self.objFunc_(X)
         
         return np.full( (X.shape[0], 1), np.inf )
     
     def conFunc(self, X):
+        
+        if self.conFunc_ is not None:
+            return self.conFunc_(X)
         
         return None
         
@@ -155,9 +166,9 @@ class ProblemABC(metaclass=abc.ABCMeta):
         if( not bound.shape[0] == self.nInput ):
             raise ValueError('The input bound is inconsistent with the nInput of the problem setting')
         
-        
+    
     @staticmethod
-    def singleEval(func):
+    def singleFunc(func):
         
         def wrapper(X):
             X = np.atleast_2d(X)
@@ -169,5 +180,28 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
             return np.vstack(evals)
         
-        return wrapper 
+        return wrapper
+    
+    @staticmethod
+    def singleEval(func):
+        
+        def wrapper(X):
+            X = np.atleast_2d(X)
+            
+            objs =[]
+            cons =[]
+            
+            for x in X:
+                res = func(x)
+                objs.append(np.atleast_1d(res['objs']))
+                if 'cons' in res:
+                    cons.append(np.atleast_1d(res['cons']))
+            
+            res = {'objs': np.vstack(objs)}
+            
+            if len(cons) != 0:
+                res['cons'] = np.vstack(cons)
                 
+            return res
+        
+        return wrapper 

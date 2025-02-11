@@ -60,9 +60,9 @@ sys.path.insert(0, uqPath)
 # res=ml_sce_ua.run(problem)
 
 #Multi-objective Optimization
-from UQPyL.problems import DTLZ2, DTLZ5
-dtlz5=DTLZ5(nInput = 15)
-dtlz2=DTLZ2(nInput = 15)
+# from UQPyL.problems import DTLZ2, DTLZ5
+# dtlz5=DTLZ5(nInput = 15)
+# dtlz2=DTLZ2(nInput = 15)
 #-------------------RVEA----------------------#
 # from UQPyL.optimization.multi_objective import RVEA
 # rvea=RVEA(nPop = 50, maxFEs = 100)
