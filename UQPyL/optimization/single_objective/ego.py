@@ -4,7 +4,7 @@ from scipy.stats import norm
 
 from .ga import GA
 from ..algorithmABC import Algorithm, Population, Verbose
-from ...problems import PracticalProblem
+from ...problems import Problem
 from ...surrogates import Surrogate
 from ...surrogates.kriging import KRG
 from ...utility.scalers import StandardScaler
@@ -42,7 +42,7 @@ class EGO(Algorithm):
         self.problem=problem
         
         #SubProblem
-        subProblem=PracticalProblem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
+        subProblem=Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
                                     var_type = problem.var_type, var_set = problem.var_set)
         
         #Termination Condition Setting

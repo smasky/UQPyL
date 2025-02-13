@@ -13,7 +13,7 @@ from ...utility.metrics import r_square
 from ...utility.model_selections import RandSelect
 from ...utility.scalers import Scaler, StandardScaler
 from ...utility.polynomial_features import PolynomialFeatures
-from ...problems import PracticalProblem
+from ...problems import Problem
 
 ####---------------------regression functions--------------------###
 def regrpoly0(S):
@@ -219,7 +219,7 @@ class KRG(Surrogate):
                 
                 return obj
             
-            problem = PracticalProblem(nInput, 1, ub, lb, objFunc=objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc=objFunc)
             bestDec, bestObj = self.optimizer.run(problem)
             
             for _ in range(self.n_restart_optimize):
@@ -242,7 +242,7 @@ class KRG(Surrogate):
                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
                 return objs.reshape(-1, 1)
             
-            problem = PracticalProblem(nInput, 1, ub, lb, objFunc = objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
             res = self.optimizer.run(problem)
             bestDec = res.bestDec; bestObj=res.bestObj
@@ -274,7 +274,7 @@ class KRG(Surrogate):
                 return self._objFunc(yTrain, F, D, record=False)
             
             ###Using Mathematical Programming Method
-            problem = PracticalProblem(nInput, 1, ub, lb, objFunc = objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
             bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput))
               
@@ -296,7 +296,7 @@ class KRG(Surrogate):
                     
                 return objs
             
-            problem = PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             
             res = self.optimizer.run(problem)
             

@@ -69,8 +69,6 @@ class DTLZ1(ProblemABC):
         
         return Y
     
- 
-    
     def get_optimum(self, N):
         '''
         Return the optimum of the problem.
@@ -91,7 +89,6 @@ class DTLZ1(ProblemABC):
         Y = np.array(list(itertools.product(R[0], R[1], R[2])))
           
         return Y
-
 class DTLZ2(ProblemABC):
     '''
     Multi-Objective problem named DTLZ2 of the DTLZ suit.

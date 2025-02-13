@@ -2,7 +2,7 @@
 
 from .sce_ua import SCE_UA
 from ..algorithmABC import Algorithm, Population, Verbose
-from ...problems import PracticalProblem
+from ...problems import Problem
 from ...surrogates import Surrogate
 from ...surrogates.kriging import KRG
 from ...utility.scalers import StandardScaler
@@ -68,7 +68,7 @@ class ASMO(Algorithm):
         self.problem = problem
         
         #SubProblem
-        subProblem = PracticalProblem(self.surrogate.predict, problem.nInput, 1,problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem = Problem(self.surrogate.predict, problem.nInput, 1,problem.ub, problem.lb, problem.var_type, problem.var_set)
         
         #Termination Condition Setting
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0

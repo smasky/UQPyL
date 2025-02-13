@@ -3,53 +3,89 @@ sys.path.append('.')
 
 import numpy as np
 
-
-
 from UQPyL.problems import ProblemABC
-#define objFunc
-@ProblemABC.singleFunc
-def objFunc(x):
-    
-    y = (x[0]-1.5)**2 + (x[1]-0.5)**2 + \
-        3*(x[2]-1.1)**2 + (x[3]-2)**2 + \
-        5*(x[4]-3.7)**2
-    
-    return y
 
-@ProblemABC.singleFunc
-def conFunc(x):
+#-----------------Single Evaluation Separate Mode-----------------#
+# @ProblemABC.singleFunc
+# def objFunc(x):
     
-    cv1 = (x[0] - 1)**2 - 0.25
-    cv2 = (x[0] - 1)**2 - 1
+#     y = (x[0]-1.5)**2 + (x[1]-0.5)**2 + \
+#         3*(x[2]-1.1)**2 + (x[3]-2)**2 + \
+#         5*(x[4]-3.7)**2
     
-    return [cv1, cv2]
+#     return y[:, np.newaixs]
 
-@ProblemABC.singleEval
-def evaluate(x):
-    y = (x[0]-1.5)**2 + (x[1]-0.5)**2 + \
-        3*(x[2]-1.1)**2 + (x[3]-2)**2 + \
-        5*(x[4]-3.7)**2
+# @ProblemABC.singleFunc
+# def conFunc(x):
     
-    cv1 = (x[0] - 1)**2 - 0.25
-    cv2 = (x[0] - 1)**2 - 1
+#     cv1 = (x[0] - 1)**2 - 0.25
+#     cv2 = (x[0] - 1)**2 - 1
+    
+#     return np.column_stack((CV1, CV2))
 
-    return {'objs' : y, 'cons' : [cv1, cv2]}
+#-----------------------Single Evaluation Integration Mode-------------------------------------------#
 
-from UQPyL.problems import PracticalProblem
+# @ProblemABC.singleEval
+# def evaluate(x):
+#     y = (x[0]-1.5)**2 + (x[1]-0.5)**2 + \
+#         3*(x[2]-1.1)**2 + (x[3]-2)**2 + \
+#         5*(x[4]-3.7)**2
+    
+#     cv1 = (x[0] - 1)**2 - 0.25
+#     cv2 = (x[0] - 1)**2 - 1
+
+#     return {'objs' : y, 'cons' : np.column_stack((CV1, CV2)) }
+
+#----------------Ordinary Evaluation Integration Mode------------------------#
+# def evaluate(X):
+    
+#     y = (X[:, 0]-1.5)**2 + (X[:, 1]-0.5)**2 + \
+#          3*(X[:, 2]-1.1)**2 + (X[:, 3]-2)**2 + \
+#          5*(X[:, 4]-3.7)**2
+    
+#     CV1 = (X[:, 0] - 1)**2 - 0.25
+#     CV2 = (X[:, 0] - 1)**2 - 1
+    
+#     return {'objs' : y, 'cons' : np.column_stack((CV1, CV2))}
+
+#----------------Ordinary Evaluation Separate Mode-----------#
+def objFunc(X):
+    
+    y = (X[:, 0]-1.5)**2 + (X[:, 1]-0.5)**2 + \
+            3*(X[:, 2]-1.1)**2 + (X[:, 3]-2)**2 + \
+                5*(X[:, 4]-3.7)**2
+                
+    return y[:, np.newaxis]
+
+def conFunc(X):
+    
+    CV1 = (X[:, 0] - 1)**2 - 0.25
+    CV2 = (X[:, 0] - 1)**2 - 1
+    
+    return np.column_stack((CV1, CV2))
+    
+from UQPyL.problems import Problem
+
 setting = {
     "name" : "F1",
     "nInput": 5,
     "nOutput": 1,
     "ub": [1.0] * 5,
     "lb": [0.0] * 5,
-    "evaluate" : evaluate,
+    # "evaluate" : evaluate,
+    'objFunc' : objFunc,
+    'conFunc' : conFunc,
     "varType" : [0, 1, 2, 0, 0],
     "varSet" : {2: [2.2, 3.1, 5.5, 6.8]},
     "xLabels" : [ f"x{i}" for i in range(1, 6)]
 }
 
-problem = PracticalProblem(**setting)
+problem = Problem(**setting)
 
-res = problem.evaluate(np.array([0.1]*5))
+from UQPyL.optimization import GA, PSO
 
-a=1
+ga = GA()
+
+pso = PSO()
+
+res = ga.run(problem)

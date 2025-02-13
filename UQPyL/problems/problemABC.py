@@ -27,7 +27,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.idxF = np.where(self.varType==0)[0]
             self.idxI = np.where(self.varType==1)[0]
             self.idxD = np.where(self.varType==2)[0]
-
+            
         if varSet is None:
             self.varSet = {}
         else:
@@ -70,8 +70,8 @@ class ProblemABC(metaclass=abc.ABCMeta):
         ##calConstraints
         cons = self.conFunc(X)
         
-        return {'objs' : objs, 'cons' : cons}
-    
+        return {'objs': objs} if cons is None else {'objs': objs, 'cons': cons}
+
     def objFunc(self, X):
         
         if self.objFunc_ is not None:
@@ -166,7 +166,6 @@ class ProblemABC(metaclass=abc.ABCMeta):
         if( not bound.shape[0] == self.nInput ):
             raise ValueError('The input bound is inconsistent with the nInput of the problem setting')
         
-    
     @staticmethod
     def singleFunc(func):
         

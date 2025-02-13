@@ -4,7 +4,7 @@ from scipy.spatial.distance import cdist
 
 from ...DoE import LHS
 from ..utility_functions import NDSort
-from ...problems import PracticalProblem
+from ...problems import Problem
 from ...surrogates import Mo_Surrogates
 from ..algorithmABC import Algorithm, Population, Verbose
 from .nsga_ii import NSGAII
@@ -97,7 +97,7 @@ class MOASMO(Algorithm):
         self.problem = problem
         
         #SubProblem
-        subProblem = PracticalProblem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem = Problem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
         
         #Termination Condition Setting
         self.FEs = 0; self.iters = 0; self.tolerateTimes =0

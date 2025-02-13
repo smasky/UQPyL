@@ -5,7 +5,7 @@ from .surrogateABC import Surrogate
 from ..optimization.algorithmABC import Algorithm
 from ..utility.model_selections import RandSelect
 from ..utility.metrics import r_square
-from ..problems.pratical_problem import PracticalProblem
+from ..problems.problem import Problem
 class autoTuner():
     def __init__(self, optimizer: Algorithm, model: Surrogate):
         
@@ -80,7 +80,7 @@ class autoTuner():
                 ub[idx] = np.log(ub[idx])
                 lb[idx] = np.log(lb[idx])
             
-            problem = PracticalProblem(nInput, 1, ub, lb, objFunc=objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc=objFunc)
             
             res = self.optimizer.run(problem=problem)
             

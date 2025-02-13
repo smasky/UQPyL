@@ -4,7 +4,7 @@ from typing import Tuple, Optional, Literal
 
 from .kernel import BaseKernel, RBF
 from ..util.boxmin import Boxmin
-from ...problems import PracticalProblem
+from ...problems import Problem
 from ..surrogateABC import Surrogate
 from ...optimization import Algorithm
 from ...optimization.single_objective import GA
@@ -116,7 +116,7 @@ class GPR(Surrogate):
                 
                 return obj
             
-            problem=PracticalProblem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
+            problem=Problem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
             
             bestDec, bestObj = self.optimizer.run(problem)
             
@@ -142,7 +142,7 @@ class GPR(Surrogate):
 
                 return objs.reshape( (-1, 1) )
             
-            problem = PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             res = self.optimizer.run(problem)
             bestDec, bestObj = res.bestDec, res.bestObj
 
@@ -181,7 +181,7 @@ class GPR(Surrogate):
                 
                 return -self._objfunc(xTrain, yTrain, record=False)
                 
-            problem = PracticalProblem(nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), objFunc = objFunc)
+            problem = Problem(nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), objFunc = objFunc)
             bestDec, bestObj = self.optimizer.run(problem)
             
         elif self.optimizer.type=="EA":
@@ -200,7 +200,7 @@ class GPR(Surrogate):
                     
                 return objs.reshape((-1, 1))
             
-            problem=PracticalProblem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            problem=Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
             res=self.optimizer.run(problem)
             bestDec, bestObj=res.bestDec, res.bestObj
             
