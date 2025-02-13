@@ -136,6 +136,8 @@ class SCE_UA(Algorithm):
         
         sWorstDecs = sPop.decs[-1:]
         sWorstObjs = sPop.objs[-1:]
+        sWorstCons = sPop.cons[-1:] if sPop.cons is not None else None
+        
         ce = np.mean(sPopDecs[:N], axis=0).reshape(1, -1)
         
         sNewDecs = (sWorstDecs-ce) * alpha * -1 + ce
@@ -144,15 +146,20 @@ class SCE_UA(Algorithm):
         sNew = Population(sNewDecs)
         self.evaluate(sNew)
         
-        if sNew.objs[0] > sWorstObjs:
+        C = np.any(sNew.cons[0] > sWorstCons) if sNew.cons is not None else False
+        
+        if sNew.objs[0] > sWorstObjs or C:
+            
             sNewDecs = sWorstDecs + (sNewDecs-sWorstDecs) * beta
             np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
             
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
-        
+            
+            C = np.any(sNew.cons[0] > sWorstCons) if sNew.cons is not None else False
+            
         # Both reflection and contraction have failed, attempt a random point
-            if sNew.objs[0] > sWorstObjs:
+            if sNew.objs[0] > sWorstObjs or C:
                 sNewDecs = self.problem.lb + np.random.random(D) * (self.problem.ub - self.problem.lb)
                 sNew = Population(sNewDecs)
                 self.evaluate(sNew)

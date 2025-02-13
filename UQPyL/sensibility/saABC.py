@@ -109,14 +109,14 @@ class Result():
         
     def generateHDF5(self):
         
-        x_labels=self.sa.problem.x_labels
+        x_labels=self.sa.problem.xLabels
         result={}
         
         for key, value in self.Si.items():
-            x_labels=value[0]; matrix=value[1]
+            xLabels=value[0]; matrix=value[1]
             result.setdefault(key, {})
             result[key]['matrix']=matrix
-            for label, v in zip(x_labels, matrix.ravel()):
+            for label, v in zip(xLabels, matrix.ravel()):
                 result[key][label]=v
                     
         return result

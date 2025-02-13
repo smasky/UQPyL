@@ -338,7 +338,7 @@ class Verbose():
                 problem = kwargs['problem']
             problem.verboseFlag = obj.verbose
             
-            totalWidth = Verbose.total_width
+            totalWidth = Verbose.totalWidth
             
             if obj.logFlag or hasattr(problem, 'GUI'):
                 
@@ -390,7 +390,7 @@ class Verbose():
                     title = key
                     spacing = int((totalWidth-len(title))/2)-1
                     Verbose.output("-"*spacing+title+"-"*spacing, problem)
-                    Verbose.verboseSi(problem, values[0], values[1], Verbose.total_width)
+                    Verbose.verboseSi(problem, values[0], values[1], Verbose.totalWidth)
                     
             if obj.logFlag:
                 Verbose.saveLog(obj, folderLog, type=0)

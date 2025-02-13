@@ -157,7 +157,7 @@ class FAST(SA):
             S1[i] = Di/V
             ST[i] = 1.0-Dt/V
         
-        self.record('S1(First Order)', problem.x_labels, S1)
-        self.record('ST(Total Order)', problem.x_labels, ST)
+        self.record('S1(First Order)', problem.xLabels, S1)
+        self.record('ST(Total Order)', problem.xLabels, ST)
         
         return self.result

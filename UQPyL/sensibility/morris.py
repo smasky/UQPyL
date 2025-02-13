@@ -117,7 +117,7 @@ class Morris(SA):
         
         if X is None or Y is None:
             
-            X = self.sample(problem, N)
+            X = self.sample(problem, numTrajectory, numLevels)
             Y = problem.objFunc(X)
             
         else:
@@ -145,12 +145,12 @@ class Morris(SA):
         mu_star= np.mean(np.abs(EE), axis=1)
         sigma = np.std(EE, axis=1, ddof=1)
         
-        self.record('mu', problem.x_labels, mu)
-        self.record('mu_star', problem.x_labels, mu_star)
-        self.record('sigma', problem.x_labels, sigma)
+        self.record('mu', problem.xLabels, mu)
+        self.record('mu_star', problem.xLabels, mu_star)
+        self.record('sigma', problem.xLabels, sigma)
 
-        self.record('S1', problem.x_labels, mu)
-        self.record('ST', problem.x_labels, sigma)
+        self.record('S1', problem.xLabels, mu)
+        self.record('ST', problem.xLabels, sigma)
         
         return self.result
     

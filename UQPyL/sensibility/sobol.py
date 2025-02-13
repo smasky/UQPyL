@@ -170,7 +170,7 @@ class Sobol(SA):
         
         if X is None or Y is None:
             X=self.sample(problem, N, skipValue, scramble)
-            Y=problem.evaluate(X)
+            Y=problem.objFunc(X)
             
         X, Y=self.__check_and_scale_xy__(X, Y)
         
@@ -200,10 +200,10 @@ class Sobol(SA):
                     S_Labels.append(f"{problem.x_labels[j]}-{problem.x_labels[k]}")
         
         #Record Data
-        self.record('S1', problem.x_labels, S1)
+        self.record('S1', problem.xLabels, S1)
         if calSecondOrder:
             self.record('S2', S_Labels, S2) 
-        self.record('ST', problem.x_labels, ST)
+        self.record('ST', problem.xLabels, ST)
         
         return self.result
     
