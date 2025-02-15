@@ -25,23 +25,26 @@ class RosenbrockWithCon(ProblemABC):
     '''
     name="RosenbrockWithConstraint"
     
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30):
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int,float,np.ndarray] =30,
+                        lb: Union[int,float,np.ndarray] =-30):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
+        X = self._check_X_2d(X)
+           
+        Temp1 = 100*np.square(X[:, 1:]-np.square(X[:, :-1]))
+        Temp2 = np.square( X[:, :-1] -1 )
+        F = np.sum(Temp1+Temp2, axis=1)[:, np.newaxis]
         
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))    
-        Temp1=100*np.square(X[:,1:]-np.square(X[:,:-1]))
-        Temp2=np.square(X[:,:-1]-1)
-        F=np.sum(Temp1+Temp2,axis=1).reshape(-1,1)
         return F
     
-    def conFunc(self, X: np.ndarray):
+    def conFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X = self._check_2d(X)
+        X = self._check_X_2d(X)
         
-        return (X[:, 0]**2 + X[:, 1]**2 -1).reshape(-1,1)
+        CV = (X[:, 0]**2 + X[:, 1]**2 -1)[:, np.newaxis]
+        
+        return CV

@@ -56,11 +56,11 @@ class ProblemABC(metaclass=abc.ABCMeta):
             conWgt = np.array(conWgt).reshape(1, -1)
 
         self.conWgt = conWgt
-    
+        
     def evaluate(self, X):
         
         #Use the user-define way
-        if self.evaluate_ is not None:
+        if hasattr(self, 'evaluate_') and self.evaluate_ is not None:
             return self.evaluate_(X)
         
         #Use the default way
@@ -70,18 +70,18 @@ class ProblemABC(metaclass=abc.ABCMeta):
         ##calConstraints
         cons = self.conFunc(X)
         
-        return {'objs': objs} if cons is None else {'objs': objs, 'cons': cons}
+        return {'objs': objs, 'cons': cons}
 
     def objFunc(self, X):
         
-        if self.objFunc_ is not None:
+        if hasattr(self, 'objFunc_') and self.objFunc_ is not None:
             return self.objFunc_(X)
         
         return np.full( (X.shape[0], 1), np.inf )
     
     def conFunc(self, X):
         
-        if self.conFunc_ is not None:
+        if hasattr(self, 'conFunc_') and self.conFunc_ is not None:
             return self.conFunc_(X)
         
         return None
@@ -155,10 +155,12 @@ class ProblemABC(metaclass=abc.ABCMeta):
         else:
             raise ValueError("The type of lb is not supported.")
     
-    def _check_2d(self, X):
+    def _check_X_2d(self, X):
         
         X = np.atleast_2d(X)
+        
         return X
+    
     
     def _check_bound(self,bound: np.ndarray):
         

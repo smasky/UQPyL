@@ -32,15 +32,19 @@ class DTLZ1(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ1"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
+    
+    def __init__(self, nInput:int =30, nOutput: int=3, 
+                    ub: Union[int,float,np.ndarray] =1, 
+                        lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ1 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -55,9 +59,7 @@ class DTLZ1(ProblemABC):
             the outputs of the problem.
         '''
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X = self._check_X_2d(X)
         
         g = 100 * (self.nInput - self.nOutput + 1 + \
                    np.sum((X[:, self.nOutput:] - 0.5) ** 2 - \
@@ -112,15 +114,19 @@ class DTLZ2(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ2"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
+    
+    def __init__(self, nInput:int =30, nOutput: int=3, 
+                    ub: Union[int,float,np.ndarray] =1, 
+                        lb: Union[int,float,np.ndarray] =0):
            
         super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ2 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -134,9 +140,7 @@ class DTLZ2(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
         
         g = np.sum((X[:, self.nOutput:] - 0.5) ** 2, axis=1)
         ones_col = np.ones((g.shape[0], 1))
@@ -191,7 +195,9 @@ class DTLZ3(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ3"
+    
     def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
@@ -199,7 +205,7 @@ class DTLZ3(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ3 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -213,9 +219,7 @@ class DTLZ3(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
         
         g = 100 * (self.nInput - self.nOutput + 1 + np.sum((X[:, self.nOutput-1:] - 0.5) ** 2 - np.cos(20 * np.pi * (X[:, self.nOutput-1:] - 0.5)), axis=1))
         Y = (1 + g[:, None]) * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) * np.hstack([np.ones((X.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
@@ -264,7 +268,9 @@ class DTLZ4(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ4"
+    
     def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
@@ -272,7 +278,7 @@ class DTLZ4(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ4 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -286,9 +292,7 @@ class DTLZ4(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
             
         X[:, :self.nOutput-1] = np.power(X[:, :self.nOutput-1], 100)
         g = np.sum(np.power(X[:, self.nOutput-1:] - 0.5, 2), axis=1)
@@ -340,7 +344,9 @@ class DTLZ5(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ5"
+    
     def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
@@ -348,7 +354,7 @@ class DTLZ5(ProblemABC):
         if nOutput!=3:
             raise ValueError("DTLZ5 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -362,9 +368,7 @@ class DTLZ5(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
 
         g = np.sum((X[:, self.nOutput-1:] - 0.5)**2, axis=1)
         temp = np.tile(g[:, None], (1, self.nOutput-2))
@@ -378,17 +382,16 @@ class DTLZ5(ProblemABC):
         '''
         Return the optimum of the problem.
         '''
-        # 生成 R 矩阵 (对应 MATLAB 的 [0:1/(N-1):1;1:-1/(N-1):0]')
-        R = np.column_stack((np.linspace(0, 1, N), np.linspace(1, 0, N)))  # [0:1/(N-1):1; 1:-1/(N-1):0]'
-        # 标准化 R，每一行除以其范数
-        R = R / np.sqrt(np.sum(R**2, axis=1, keepdims=True))  # ./repmat(sqrt(sum(R.^2, 2)), 1, size(R,2))
+       
+        R = np.column_stack((np.linspace(0, 1, N), np.linspace(1, 0, N)))  
+     
+        R = R / np.sqrt(np.sum(R**2, axis=1, keepdims=True))  
 
-        # 扩展 R 的列数 (对应 MATLAB 的 [R(:, ones(1, obj.M-2)), R])
-        R_extended = np.hstack((R[:, np.zeros(self.nOutput-2, dtype=int)], R))  # np.zeros(M-2, dtype=int) 模拟 ones(1, obj.M-2)
+      
+        R_extended = np.hstack((R[:, np.zeros(self.nOutput-2, dtype=int)], R)) 
 
-        # 缩放 R，每列除以缩放因子 (对应 MATLAB 的 R./sqrt(2).^repmat([obj.M-2, obj.M-2:-1:0], size(R, 1), 1))
-        scaling_factors = np.sqrt(2) ** np.array([self.nOutput-2] + list(range(self.nOutput-2, -1, -1)))  # [obj.M-2, obj.M-2:-1:0]
-        R = R_extended / scaling_factors  # 逐列缩放
+        scaling_factors = np.sqrt(2) ** np.array([self.nOutput-2] + list(range(self.nOutput-2, -1, -1)))  
+        R = R_extended / scaling_factors  
         
         return R
 
@@ -422,15 +425,19 @@ class DTLZ6(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ6"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
+    
+    def __init__(self, nInput:int =30, nOutput: int=3, 
+                    ub: Union[int,float,np.ndarray] =1, 
+                        lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
     
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -444,9 +451,7 @@ class DTLZ6(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
         
         g = np.sum(X[:, self.nOutput:]**0.1, axis=1)
         Temp = np.tile(g, (self.nOutput-2, 1)).T
@@ -500,15 +505,19 @@ class DTLZ7(ProblemABC):
     cont_var: list
         Continuous variables of the problem.
     '''
+    
     name="DTLZ7"
-    def __init__(self, nInput:int =30, nOutput: int=3, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
+    
+    def __init__(self, nInput:int =30, nOutput: int=3, 
+                    ub: Union[int,float,np.ndarray] =1, 
+                        lb: Union[int,float,np.ndarray] =0):
         
         super().__init__(nInput, nOutput, ub, lb)
         
         if nOutput!=3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
         
-    def objFunc(self, X, unit=False):
+    def objFunc(self, X):
         '''
         Perform the evaluation of the input variables X
         
@@ -522,13 +531,10 @@ class DTLZ7(ProblemABC):
         Y: np.ndarray(2d-array)
             the outputs of the problem.
         '''
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X=self._check_X_2d(X)
         
         g = 1 + 9 * np.mean(X[:, self.nOutput:], axis=1, keepdims=True)
 
-        # 计算目标值矩阵
         Y = np.hstack([
             X[:, :self.nOutput-1], 
             (1 + g) * (self.nOutput - np.sum(
@@ -545,7 +551,9 @@ class DTLZ7(ProblemABC):
         Return the optimum of the problem.
         '''
         from ..utility_functions.uniformPoint import uniformPoint
+        
         interval = [0, 0.251412, 0.631627, 0.859401]
+        
         median = (interval[1] - interval[0]) / (interval[3] - interval[2] + interval[1] - interval[0])
         
         X, _ = uniformPoint(N, self.nOutput-1, 'grid')

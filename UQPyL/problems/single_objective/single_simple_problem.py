@@ -2,10 +2,12 @@ import numpy as np
 from typing import Union
 
 from ..problemABC import ProblemABC
+
 ###################Basic Test Function##################
 #Reference: 
 #Xin Yao; Yong Liu; Guangming Lin (1999).Evolutionary programming made faster. , 3(2), 0–102.doi:10.1109/4235.771163
 ###############################################################
+
 class Sphere(ProblemABC):
     '''
     Types:
@@ -21,26 +23,25 @@ class Sphere(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    name="Shpere"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100, lb: Union[int,float,np.ndarray] =-100):
+    
+    name = "Shpere"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] = 100, 
+                        lb: Union[int, float, list, np.ndarray] = -100):
         
         super().__init__(nInput , 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         '''
             Parameters:
                 X: np.ndarray
                     the input data
-                unit: bool, default=False
-                    whether to transform X to the bound
         '''
         
-        X=self._check_2d(X)
-        
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
+        X = self._check_X_2d(X)
             
-        F=np.sum(X**2, axis=1).reshape(-1,1)      
+        F = np.sum(X**2, axis=1)[:, np.newaxis]    
         
         return F
 
@@ -59,17 +60,20 @@ class Schwefel_2_22(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    name="Schwefel_2_22"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10):
+    
+    name = "Schwefel_2_22"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] =10, 
+                        lb: Union[int, float, list, np.ndarray] =-10):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        F=np.sum(np.abs(X),axis=1).reshape(-1,1)+np.prod(np.abs(X),axis=1).reshape(-1,1)
+        X = self._check_X_2d(X)
+        F = np.sum(np.abs(X),axis=1)[:, np.newaxis] + np.prod(np.abs(X),axis=1)[:, np.newaxis]
+        
         return F
 
 class Schwefel_1_22(ProblemABC):
@@ -87,21 +91,25 @@ class Schwefel_1_22(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    name="Schwefel_1_22"
     
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
+    name = "Schwefel_1_22"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] = 100, 
+                        lb: Union[int, float, list, np.ndarray] = -100):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        F=0
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        X=X**2
+        F = 0
+        X = self._check_X_2d(X)
+
+        X = X**2
+        
         for d in range(self.nInput):
-            F+=np.sum(X[:,:d],axis=1).reshape(-1,1)
+            F += np.sum(X[:,:d], axis=1)[:, np.newaxis]
+            
         return F
     
 class Schwefel_2_21(ProblemABC):
@@ -119,18 +127,22 @@ class Schwefel_2_21(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    
     name="Schwefel_2_21"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int,float,np.ndarray] =100,
+                        lb: Union[int,float,np.ndarray] =-100):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        X=np.abs(X)
-        F=np.max(X,axis=1).reshape(-1,1)
+        X = self._check_X_2d(X)
+
+        X = np.abs(X)
+        F = np.max(X, axis=1)[:, np.newaxis]
+        
         return F
     
 class Rosenbrock(ProblemABC):
@@ -148,20 +160,23 @@ class Rosenbrock(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
+    
     name="Rosenbrock"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =30,lb: Union[int,float,np.ndarray] =-30):
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] =30,
+                        lb: Union[int,float, list, np.ndarray] =-30):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
+        X = self._check_X_2d(X)
         
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))    
-        Temp1=100*np.square(X[:,1:]-np.square(X[:,:-1]))
-        Temp2=np.square(X[:,:-1]-1)
-        F=np.sum(Temp1+Temp2,axis=1).reshape(-1,1)
+        Temp1 = 100*np.square(X[:,1:]-np.square(X[:,:-1]))
+        Temp2 = np.square(X[:,:-1]-1)
+        F = np.sum(Temp1+Temp2, axis=1)[:, np.newaxis]
+        
         return F
 
 class Step(ProblemABC):
@@ -179,17 +194,19 @@ class Step(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
-    name="Step"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =100,lb: Union[int,float,np.ndarray] =-100):
+    
+    name = "Step"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int,float,np.ndarray] =100,
+                        lb: Union[int,float,np.ndarray] =-100):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))     
-        F=np.sum(np.square(np.floor(X)+0.5),axis=1).reshape(-1,1)
+        X = self._check_X_2d(X)  
+        F = np.sum(np.square(np.floor(X)+0.5), axis=1)[:, np.newaxis]
         
         return F
     
@@ -208,18 +225,21 @@ class Quartic(ProblemABC):
         X*=1 1 1 ... 1
         F*=0
     '''
+    
     name="Quartic"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =1.28,lb: Union[int,float,np.ndarray] =-1.28):
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int,float,np.ndarray] =1.28,
+                        lb: Union[int,float,np.ndarray] =-1.28):
         
         super().__init__(nInput, 1, ub, lb)
         
     def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))  
-        Temp=np.linspace(1,self.nInput,self.nInput)*np.power(X,4)
-        F=np.sum(Temp,axis=1).reshape(-1,1)+np.random.random((Temp.shape[0],1))          
+        X=self._check_X_2d(X)
+
+        Temp = np.linspace(1, self.nInput,self.nInput) * np.power(X,4)
+        F = np.sum(Temp, axis=1)[:, np.newaxis] + np.random.random((Temp.shape[0], 1))          
         return F
 
 class Schwefel_2_26(ProblemABC):
@@ -237,18 +257,22 @@ class Schwefel_2_26(ProblemABC):
         X*=420.9687 420.9687 ... 420.9687
         F*=-12569.5
     '''
-    name="Schwefel_2_26"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =500,lb: Union[int,float,np.ndarray] =-500):
+    
+    name = "Schwefel_2_26"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, np.ndarray] = 500, 
+                        lb: Union[int, float, np.ndarray] = -500):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
-        Temp=np.sin(np.sqrt(np.abs(X)))*X
-        F=np.sum(Temp,axis=1).reshape(-1,1)*-1         
+        X = self._check_X_2d(X)
+
+        Temp = np.sin( np.sqrt( np.abs(X) ) ) * X
+        F = np.sum(Temp, axis=1)[:, np.newaxis] * -1 
+            
         return F
     
 class Rastrigin(ProblemABC):
@@ -266,18 +290,21 @@ class Rastrigin(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    name="Rastrigin"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =5.12,lb: Union[int,float,np.ndarray] =-5.12):
+    
+    name = "Rastrigin"
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] =5.12, 
+                        lb: Union[int, float, list, np.ndarray] =-5.12):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-       
-        F=np.sum(np.square(X)-10*np.cos(2*np.pi*X)+10,axis=1).reshape(-1,1)
+        X = self._check_X_2d(X)
+
+        F = np.sum(np.square( X )-10 * np.cos(2 * np.pi * X) + 10, axis=1)[:, np.newaxis]
+        
         return F
 
 class Ackley(ProblemABC):
@@ -296,18 +323,20 @@ class Ackley(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =32,lb: Union[int,float,np.ndarray] =-32):
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] =32,
+                        lb: Union[int, float, list, np.ndarray] =-32):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
-        Temp1=np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.nInput)*-0.2)*-20
-        Temp2=np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.nInput)*-1+20+np.e  
-        F=(Temp1+Temp2).reshape(-1,1)
+        X=self._check_X_2d(X)
+        
+        Temp1 = np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.nInput)*-0.2)*-20
+        Temp2 = np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.nInput)*-1+20+np.e  
+        F = (Temp1+Temp2).reshape[:, np.newaxis]
+        
         return F
     
 class Griewank(ProblemABC):
@@ -325,18 +354,22 @@ class Griewank(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    
     name="Griewank"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =600,lb: Union[int,float,np.ndarray] =-600):
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int, float, list, np.ndarray] =600,
+                        lb: Union[int, float, list, np.ndarray] =-600):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X)) 
-        I=np.sqrt(np.atleast_2d(np.linspace(1,self.nInput,self.nInput)))
-        F=np.sum(np.square(X), axis=1).reshape(-1,1)/4000-np.prod(np.cos(X/I),axis=1).reshape(-1,1)+1     
+        X = self._check_X_2d(X)
+
+        I = np.sqrt(np.atleast_2d(np.linspace(1,self.nInput, self.nInput)))
+        F = np.sum(np.square(X), axis=1)[:, np.newaxis] / 4000 - np.prod(np.cos(X/I), axis=1)[:, np.newaxis]+1     
+        
         return F
 
 ##############Other Common Used Functions##############
@@ -358,17 +391,20 @@ class Trid(ProblemABC):
         X_i^*=i(D+1-i),i=1,2,...,D
         F^*=-D(D+4)(D-1)/6
     '''
+    
     name="Trid"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =900,lb: Union[int,float,np.ndarray] =-900):
+    
+    def __init__(self, nInput: int =30, 
+                    ub: Union[int,float,np.ndarray] =900,
+                        lb: Union[int,float,np.ndarray] =-900):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        F=np.sum(np.square(X-1),axis=1).reshape(-1,1)-np.sum(X[:,1:]*X[:,:-1],axis=1).reshape(-1,1)
+        X = self._check_X_2d(X)
+        F = np.sum(np.square(X-1), axis=1)[:, np.newaxis] - np.sum(X[:,1:]*X[:,:-1], axis=1)[:, np.newaxis]
+        
         return F
 
 class Bent_Cigar(ProblemABC):
@@ -386,17 +422,21 @@ class Bent_Cigar(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    
     name="Bent_Cigar"
-    def __init__(self, nInput: int =30, ub: Union[int,float,np.ndarray] =10, lb: Union[int,float,np.ndarray] =-10):
+    
+    def __init__(self, nInput: int =30, 
+                    ub: Union[int, float, np.ndarray] =10, 
+                        lb: Union[int, float, np.ndarray] =-10):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        F=((X[:,0]**2)+np.sum(np.square(X[:,1:]),axis=1)*(10**6)).reshape(-1,1)
+        X = self._check_X_2d(X)
+
+        F = ( (X[:,0]**2) + np.sum(np.square(X[:,1:]), axis=1)*(10**6) )[:, np.newaxis]
+        
         return F
     
 class Discus(ProblemABC):
@@ -414,17 +454,21 @@ class Discus(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    
     name="Discus"
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =10,lb: Union[int,float,np.ndarray] =-10):
+    
+    def __init__(self, nInput:int =30, 
+                    ub: Union[int,float,np.ndarray] =10, 
+                        lb: Union[int,float,np.ndarray] =-10):
         
         super().__init__(nInput, 1, ub, lb)
     
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        F=(X[:,0]**2*(10**6)+np.sum(np.square(X[:,1:]),axis=1)).reshape(-1,1)
+        X = self._check_X_2d(X)
+
+        F = (X[:,0]**2*(10**6)+np.sum(np.square(X[:,1:]),axis=1))[:, np.newaxis]
+        
         return F
     
 class Weierstrass(ProblemABC):
@@ -443,27 +487,32 @@ class Weierstrass(ProblemABC):
         X^*=0 0 0 ...0
         F^*=0
     '''
+    
     name="Weierstrass"
-    kMax=20
-    a=0.5
-    b=3
-    def __init__(self, nInput:int =30, ub: Union[int,float,np.ndarray] =0.5,lb: Union[int,float,np.ndarray] =-0.5):
+    
+    kMax = 20
+    a = 0.5
+    b = 3
+    
+    def __init__(self, nInput:int = 30, 
+                    ub: Union[int, float, list, np.ndarray] = 0.5,
+                        lb: Union[int,float, list, np.ndarray] = -0.5):
         
         super().__init__(nInput, 1, ub, lb)
         
-    def objFunc(self, X: np.ndarray, unit: bool=False) -> np.ndarray:
+    def objFunc(self, X: np.ndarray) -> np.ndarray:
         
-        X=self._check_2d(X)
-        if unit:
-            X=self._unit_X_transform_to_bound(np.atleast_2d(X))
-        K=np.atleast_2d(np.linspace(1,self.kMax,self.kMax))
-        aK=np.power(self.a,K)
-        bK=np.power(self.b,K)
-        aK_expand=np.tile(aK.transpose(),(1,self.nInput)).reshape(1,-1)
-        bK_expand=np.tile(bK.transpose(),(1,self.nInput)).reshape(1,-1)
+        X = self._check_X_2d(X)
+
+        K = np.atleast_2d(np.linspace(1, self.kMax, self.kMax))
+        aK = np.power(self.a, K)
+        bK = np.power(self.b, K)
+        aK_expand = np.tile(aK.transpose(),(1, self.nInput))[:, np.newaxis]
+        bK_expand = np.tile(bK.transpose(),(1, self.nInput))[:, np.newaxis]
         
         
-        X_expand=np.tile(X, (1,self.kMax))
-        Addition=np.sum(aK*np.cos(bK*np.pi),axis=1).reshape(-1,1)*self.nInput
-        F=np.sum(np.cos(2*np.pi*(X_expand+0.5)*bK_expand)*aK_expand,axis=1).reshape(-1,1)-Addition
+        X_expand = np.tile(X, (1, self.kMax))
+        Addition = np.sum(aK * np.cos(bK * np.pi), axis=1)[:, np.newaxis] * self.nInput
+        F = np.sum(np.cos(2 * np.pi * (X_expand + 0.5) * bK_expand) * aK_expand, axis=1)[:, np.newaxis] - Addition
+        
         return F
