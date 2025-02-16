@@ -134,7 +134,7 @@ class FAST(SA):
         
         if X is None or Y is None:
             X = self.sample(problem, N)
-            Y = problem.objFunc(X)
+            Y = self.evaluate(X)
         
         X, Y = self.__check_and_scale_xy__(X, Y)
         nInput = problem.nInput; n = int(X.shape[0]/nInput)
@@ -147,7 +147,7 @@ class FAST(SA):
             idx = np.arange(i*n, (i+1)*n)
             Y_sub = Y[idx]
             #fft
-            f = np.fft.fft(Y_sub)
+            f = np.fft.fft(Y_sub.ravel())
             # Sp = np.power(np.absolute(f[np.arange(1, np.ceil((self.N_within_sampler-1)/2), dtype=np.int32)-1])/self.N_within_sampler, 2) #TODO 1-(NS-1)/2 
             Sp = np.power(np.absolute(f[np.arange(1, np.ceil(n / 2), dtype=np.int32)]) / n, 2)
             V = 2.0*np.sum(Sp)
@@ -157,7 +157,7 @@ class FAST(SA):
             S1[i] = Di/V
             ST[i] = 1.0-Dt/V
         
-        self.record('S1(First Order)', problem.xLabels, S1)
-        self.record('ST(Total Order)', problem.xLabels, ST)
+        self.record('S1', problem.xLabels, S1)
+        self.record('ST', problem.xLabels, ST)
         
         return self.result

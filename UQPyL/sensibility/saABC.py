@@ -9,31 +9,32 @@ from ..problems import ProblemABC as Problem
 
 class SA(metaclass=abc.ABCMeta):
     
-    result={}
-    firstOrder=False; secondOrder=False; totalOrder=False
+    result = {}
+    firstOrder = False; secondOrder = False; totalOrder = False
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
-                 verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
+                 verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
              
         if scalers[0] is None:
-            self.xScale=None
+            self.xScale = None
         else:
             if not isinstance(scalers[0], Scaler):
                     raise TypeError("scaler must be an instance of Scaler or None!")
-            self.xScale=scalers[0]
+            self.xScale = scalers[0]
         
         if scalers[1] is None:
-            self.yScale=None
+            self.yScale = None
         else:
             if not isinstance(scalers[1], Scaler):
                     raise TypeError("scaler must be an instance of Scaler or None!")
-            self.yScale=scalers[1]
+            self.yScale = scalers[1]
 
-        self.verbose=verbose
-        self.logFlag=logFlag
-        self.saveFlag=saveFlag
+        self.verbose = verbose
+        self.logFlag = logFlag
+        self.saveFlag = saveFlag
         
-        self.setting=Setting()
-        self.result=Result(self)
+        self.setting = Setting()
+        self.result = Result(self)
         
         
     def setParameters(self, key, value):
@@ -71,21 +72,12 @@ class SA(metaclass=abc.ABCMeta):
         return X, Y
     
     
-    def evaluate(self, X, origin=False):
-       
-        if not origin and self.surrogate:
-            
-            Y=self.surrogate.predict(X)
-        else:
-            Y=self.evaluate_(X)
+    def evaluate(self, X):
         
-        if self.Y_scale:
-            if self.Y_scale.fitted:
-                Y=self.Y_scale.transform(Y)
-            else:        
-                Y=self.Y_scale.fit_transform(Y)
-                self.Y_scale.fitted=True
-                
+        res = self.problem.evaluate(X)
+        
+        Y = res['objs']
+        
         return Y
     
     def transform_into_problem(self, problem, X):
@@ -106,7 +98,7 @@ class Result():
         self.secondOrder=obj.secondOrder
         self.totalOrder=obj.totalOrder
         self.sa=obj
-        
+    
     def generateHDF5(self):
         
         x_labels=self.sa.problem.xLabels
@@ -120,6 +112,18 @@ class Result():
                 result[key][label]=v
                     
         return result
+    
+    def __str__(self):
+        res = self.Si
+        output = ""
+        for key, (variables, values) in res.items():
+            # print(f"{key}:")
+            output += f"{key}:\n"
+            for var, val in zip(variables, values):
+                output += f"  {var}: {val:.5f}\n"
+            output += '\n'
+            
+        return output
 class Setting():
     """
     Save the parameter setting of the algorithm

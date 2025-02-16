@@ -163,14 +163,14 @@ class Sobol(SA):
                     The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
         '''
         #Parameters Setting
-        N, skipValue, scramble=self.getParaValue("N", "skipValue", "scramble")
+        N, skipValue, scramble = self.getParaValue("N", "skipValue", "scramble")
         calSecondOrder = self.getParaValue("calSecondOrder")
         
         self.setProblem(problem)
         
         if X is None or Y is None:
-            X=self.sample(problem, N, skipValue, scramble)
-            Y=problem.objFunc(X)
+            X = self.sample(problem, N, skipValue, scramble)
+            Y = self.evaluate(X)
             
         X, Y=self.__check_and_scale_xy__(X, Y)
         
@@ -197,7 +197,7 @@ class Sobol(SA):
             for j in range(nInput):
                 for k in range(j+1, nInput):
                     S2.append(self._secondOrder(A, AB[:, j:j+1], AB[:, k:k+1], BA[:, j:j+1], B))
-                    S_Labels.append(f"{problem.x_labels[j]}-{problem.x_labels[k]}")
+                    S_Labels.append(f"{problem.xLabels[j]}-{problem.xLabels[k]}")
         
         #Record Data
         self.record('S1', problem.xLabels, S1)
@@ -212,7 +212,7 @@ class Sobol(SA):
         
         Y=np.r_[A,B]
         
-        Vjk=np.mean(BA*AB2- A*B, axis=0)/np.var(Y, axis=0)
+        Vjk=float(np.mean(BA*AB2- A*B, axis=0)/np.var(Y, axis=0))
         Sj=self._firstOrder(A, AB1, B)
         Sk=self._firstOrder(A, AB2, B)
         
@@ -222,13 +222,13 @@ class Sobol(SA):
         
         Y=np.r_[A,B]
         
-        return np.mean(B*(AB-A), axis=0)/np.var(Y, axis=0)
+        return float(np.mean(B*(AB-A), axis=0)/np.var(Y, axis=0))
     
     def _totalOrder(self, A, AB, B):
         
         Y=np.r_[A,B]
         
-        return 0.5*np.mean((A-AB)**2, axis=0)/np.var(Y, axis=0)
+        return float(0.5*np.mean((A-AB)**2, axis=0)/np.var(Y, axis=0))
             
     def _separateOutputValues(self, Y, d, n, calSecondOrder):
         

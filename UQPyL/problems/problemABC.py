@@ -125,17 +125,18 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         return X_scaled 
     
-    def _set_ub_lb(self,ub: Union[int, float, np.ndarray], lb: Union[int, float, np.ndarray]) -> None:
+    def _set_ub_lb(self, ub: Union[int, float, list, np.ndarray], 
+                        lb: Union[int, float, list, np.ndarray]):
         
         if (isinstance(ub, (int, float))):
             self.ub = np.ones((1,self.nInput))*ub
             
         elif(isinstance(ub, np.ndarray)):
             self._check_bound(ub)
-            self.ub = ub.reshape(1, -1)
+            self.ub = ub[:, np.newaxis]
         
         elif(isinstance(ub, list)):
-            self.ub = np.array(ub).reshape(1, -1)
+            self.ub = np.array(ub)[:, np.newaxis]
             self._check_bound(self.ub)
             
         else:
@@ -146,10 +147,10 @@ class ProblemABC(metaclass=abc.ABCMeta):
             
         elif(isinstance(lb, np.ndarray)):
             self._check_bound(lb)
-            self.lb = lb.reshape(1, -1)
+            self.lb = lb[:, np.newaxis]
         
         elif(isinstance(lb, list)):
-            self.lb = np.array(lb).reshape(1, -1)
+            self.lb = np.array(lb)[:, np.newaxis]
             self._check_bound(self.lb)
         
         else:
