@@ -108,7 +108,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
         return X
     
-    def _unit_X_transform_to_bound(self, X, dst=True):
+    def _transform_unit_X(self, X, dst=True):
         
         X_min = X.min(axis=0)
         X_max = X.max(axis=0)

@@ -42,7 +42,7 @@ class RSA(SA):
     '''
     name="RSA"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
-                 nRegion: int=20, N: int=500,
+                 nRegion: int=20,
                  verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
         #Attribute
@@ -53,9 +53,8 @@ class RSA(SA):
         super().__init__(scalers, verbose, logFlag, saveFlag)
 
         self.setParameters("nRegion", nRegion)
-        self.setParameters("N", N)
     
-    def sample(self, problem: Problem, N: Optional[int]=None, sampler: Sampler=LHS('classic')):
+    def sample(self, problem: Problem, N: int, sampler: Sampler=LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -68,19 +67,15 @@ class RSA(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        if N is None:
-            N=self.getParaValue("N")
-        
-        self.setParameters("N", N)
         
         nInput=problem.nInput
         
         X=sampler.sample(N, nInput)
         
-        return X
+        return problem._transform_unit_X(X)
         
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: np.ndarray=None, Y: np.ndarray=None):
+    def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray=None):
         '''
             Perform RSA
             -------------------------------------
@@ -96,12 +91,14 @@ class RSA(SA):
                 Si: dict
                     The type of Si is dict. It contains 'S1'.
         '''
-        N, nRegion=self.getParaValue("N", "nRegion")
+        
+        nRegion=self.getParaValue("nRegion")
+        
         self.setProblem(problem)
+        
         nInput=problem.nInput
         
-        if X is None or Y is None:
-            X=self.sample(problem, N)
+        if Y is None:
             Y=self.evaluate(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)

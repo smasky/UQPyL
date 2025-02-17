@@ -44,32 +44,26 @@ class Sobol(SA):
     name="Sobol"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                        calSecondOrder: bool=False,
-                       N: int=512, skipValue: int=0, scramble: bool=True,
-                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
+                       verboseFlag: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
         #Attribute
         self.firstOrder=True
         self.secondOrder=True if calSecondOrder else False
         self.totalOrder=True
         
-        super().__init__(scalers, verbose, logFlag, saveFlag)
+        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         #Parameter Setting
         self.setParameters("calSecondOrder", calSecondOrder)
-        self.setParameters("skipValue", skipValue)
-        self.setParameters("scramble", scramble)
-        self.setParameters("N", N)
         
     #-------------------------Public Functions--------------------------------#
-    def sample(self, problem: Problem, N: Optional[int]=None, 
-               skipValue: Optional[int]=0, scramble: Optional[bool]=True):
+    def sample(self, problem: Problem, N: Optional[int]=512, 
+               skipValue: Optional[int]=0, scramble: Optional[bool]=False):
         '''
             Generate Sobol_sequence using Saltelli's sampling technique in [2]
             ----------------------
             Parameters:
                 N: int default=512
                     the number of base sequence. Noted that N should be power of 2.
-                cal_second_order: bool default=False
-                    the switch to calculate second order or not
                 
             Returns:
                 X: np.ndarray
@@ -78,71 +72,66 @@ class Sobol(SA):
                     else
                         the size of X is (N*(2*n_input+2), n_input)
         '''
-        if N is None:
-            N=self.getParaValue("N")
-        if skipValue is None:
-            skipValue=self.getParaValue("skipValue")
-        if scramble is None:
-            scramble=self.getParaValue("scramble")
-            
-        self.setParameters("N", N)
-        self.setParameters("skipValue", skipValue)
-        self.setParameters("scramble", scramble)
-        
+                
         nInput=problem.nInput
-        calSecondOrder=self.getParaValue("calSecondOrder")
         
-        M=None
+        calSecondOrder=self.getParaValue("calSecondOrder")
+                
         if skipValue>0 and isinstance(skipValue, int):
             
             M=skipValue
             
-            if not((M&(M-1))==0 and (M!=0 and M-1!=0)):
-                raise ValueError("skip value must be a power of 2!")
+            if not( ( M & ( M - 1 ) ) == 0 and ( M != 0 and M-1 != 0) ):
+                raise ValueError("The skip value must be a power of 2!")
             
-            if N<M:
+            if N < M:
                 raise ValueError("N must be greater than skip value you set!")
         
         elif skipValue<0 or not isinstance(skipValue, int):
+            
             raise ValueError("skip value must be a positive integer!")
         
-        sampler=qmc.Sobol(nInput*2, scramble=scramble, seed=1)
+        if not ( N & ( N-1 ) )==0:
+            raise ValueError(f"The sample number must be a power of 2! \n You can use {int(np.power(2, np.ceil(np.log2(N))))}")
         
-        if M:
-            sampler.fast_forward(M)
+        sampler = qmc.Sobol(nInput*2, scramble=scramble, seed=1)
+        
+        if skipValue > 0:
+            sampler.fast_forward(skipValue)
         
         if calSecondOrder:
-            saltelliSequence=np.zeros(((2*nInput+2)*N, nInput))
+            SS=np.zeros( ( (2 * nInput + 2) * N, nInput) ) #Saltelli Sequence
         else:
-            saltelliSequence=np.zeros(((nInput+2)*N, nInput))
+            SS=np.zeros( ( (nInput + 2) * N, nInput) ) #Saltelli Sequence
         
-        baseSequence=sampler.random(N)
+        BS=sampler.random(N) #Base Sequence
         
         index=0
+        
         for i in range(N):
             
-            saltelliSequence[index, :]=baseSequence[i, :nInput]
+            SS[index, :]=BS[i, :nInput]
 
             index+=1
             
-            saltelliSequence[index:index+nInput,:]=np.tile(baseSequence[i, :nInput], (nInput, 1))
-            saltelliSequence[index:index+nInput,:][np.diag_indices(nInput)]=baseSequence[i, nInput:]               
+            SS[index:index+nInput,:]=np.tile(BS[i, :nInput], (nInput, 1))
+            SS[index:index+nInput,:][np.diag_indices(nInput)]=BS[i, nInput:]               
             index+=nInput
            
             if calSecondOrder:
-                saltelliSequence[index:index+nInput,:]=np.tile(baseSequence[i, nInput:], (nInput, 1))
-                saltelliSequence[index:index+nInput,:][np.diag_indices(nInput)]=baseSequence[i, :nInput] 
+                SS[index:index+nInput,:]=np.tile(BS[i, nInput:], (nInput, 1))
+                SS[index:index+nInput,:][np.diag_indices(nInput)]=BS[i, :nInput] 
                 index+=nInput
             
-            saltelliSequence[index,:]=baseSequence[i, nInput:nInput*2]
+            SS[index,:]=BS[i, nInput:nInput*2]
             index+=1
         
-        xSample=saltelliSequence
+        X = SS
          
-        return self.transform_into_problem(problem, xSample)
+        return problem._unit_X_transform(X)
     
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: Optional[np.ndarray]=None, Y: Optional[np.ndarray]=None):
+    def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray]=None):
         '''
             Perform sobol' analyze
             Noted that if the X and Y is None, sample(512) is used for generate data 
@@ -163,13 +152,11 @@ class Sobol(SA):
                     The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
         '''
         #Parameters Setting
-        N, skipValue, scramble = self.getParaValue("N", "skipValue", "scramble")
         calSecondOrder = self.getParaValue("calSecondOrder")
         
         self.setProblem(problem)
         
-        if X is None or Y is None:
-            X = self.sample(problem, N, skipValue, scramble)
+        if Y is None:
             Y = self.evaluate(X)
             
         X, Y=self.__check_and_scale_xy__(X, Y)

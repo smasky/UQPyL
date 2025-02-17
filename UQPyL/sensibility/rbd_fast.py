@@ -43,9 +43,11 @@ class RBD_FAST(SA):
                                     Reliability Engineering & System Safety, vol. 107, pp. 205-213, Nov. 2012, 
                                     doi: 10.1016/j.ress.2012.06.010.
     '''
+    
     name="RBD_FAST"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
-                       N: int=500, M: int=4, 
+                       M: int=4, 
                        verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
          #Attribute
@@ -56,40 +58,38 @@ class RBD_FAST(SA):
         super().__init__(scalers, verbose, logFlag, saveFlag)
         
         self.setParameters("M", M)
-        self.setParameters("N", N)
     
-    def sample(self, problem: Problem, N: Optional[int]=500, M: Optional[int]=None, sampler: Sampler=LHS('classic')):
+    def sample(self, problem: Problem, N: int=500, M: Optional[int]=None, sampler: Sampler=LHS('classic')):
         '''
             Generate samples
             -------------------------------
             Parameter:
                 N: int, default=500
-                    N is corresponding to the use sampler 
-                sampler: Sampler, default=LHS('classic')
+                    N is corresponding to the use sampler
+                
+                sampler: Sampler, default -> LHS('classic')
             
             Returns:
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        if N is None:
-            N=self.getParaValue('N')
+        
         if M is None:
             M=self.getParaValue('M')
+        else:
+            self.setParameters('M', M)
             
-        self.setParameters('N', N)
-        self.setParameters('M', M)
-        
         nInput=problem.nInput
-            
+        
+        if N <= 4*M**2:
+            raise ValueError("The number of sample must be greater than 4*M**2!")
+        
         X=sampler.sample(N, nInput)
 
-        if N<=4*M**2:
-            raise ValueError("the number of sample must be greater than 4*M**2!")
-        
-        return self.transform_into_problem(problem, X)
+        return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: np.ndarray=None, Y: np.ndarray=None):
+    def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray=None):
         '''
             Perform RBD_FAST analysis
             -------------------------------------------------
@@ -98,19 +98,20 @@ class RBD_FAST(SA):
                     the input data
                 Y: np.ndarray
                     the result data
-                verbose: bool
-                    the switch to print analysis summary or not     
+                     
             Returns:
                 Si: dict
                     The type of Si is dict. And it contain 'S1' key value. 
         '''
-        N, M = self.getParaValue('N', 'M')
-        nInput = problem.nInput
+        
+        M = self.getParaValue('M')
+        
         self.setProblem(problem)
         
-        if X is None or Y is None:
-            X=self.sample(problem, N)
-            Y=problem.objFunc(X)
+        nInput = problem.nInput
+        
+        if Y is None:
+            Y=self.evaluate(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)
         

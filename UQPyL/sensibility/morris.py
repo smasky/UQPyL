@@ -13,7 +13,7 @@ class Morris(SA):
             the problem you want to analyse
         scaler: Tuple[Scaler, Scaler], default=(None, None)
             used for scaling X or Y
-        num_levels (p): int, default=4, recommended value: 4 to 10
+        numLevels (p): int, default=4, recommended value: 4 to 10
                 each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
                 Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
         
@@ -40,7 +40,7 @@ class Morris(SA):
     '''
     name="Morris"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                       numLevels: int = 4, numTrajectory: int = 500, 
+                       numLevels: int = 4,
                        verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
         
         #Attribute
@@ -52,15 +52,14 @@ class Morris(SA):
         
         #Parameter Setting
         self.setParameters("numLevels", numLevels)
-        self.setParameters("numTrajectory", numTrajectory)
         
         
-    def sample(self, problem: Problem, numTrajectory: Optional[int] = None, numLevels: Optional[int] = None) -> np.ndarray:
+    def sample(self, problem: Problem, numTrajectory: int = None, numLevels: Optional[int] = None) -> np.ndarray:
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
         Parameters:  
-            num_trajectory: int, default=500, recommend value: 500 to 1000
+            numTrajectory: int, default=500, recommend value: 500 to 1000
                 The number of trajectories. In general, the size of each trajectory is n_input+1 
             
         Returns:
@@ -68,18 +67,13 @@ class Morris(SA):
                 Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
         
         '''
-        if numTrajectory is None:
-            nt = self.getParaValue('numTrajectory')
-        else:
-            nt = numTrajectory
+
+        nt = numTrajectory
         
         if numLevels is None:
             numLevels = self.getParaValue('numLevels')
-        
-        self.setParameters("numTrajectory", nt)
-        self.setParameters("numLevels", numLevels)
-        
-        np.random.seed(100)
+        else:
+            self.setParameters("numLevels", numLevels)
         
         nInput = problem.nInput
         
@@ -91,7 +85,7 @@ class Morris(SA):
         return self.transform_into_problem(problem, X)
     
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: Optional[np.ndarray] = None, Y: Optional[np.ndarray] = None) -> dict:
+    def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None) -> dict:
         '''
             Perform morris analysis
             
@@ -111,19 +105,16 @@ class Morris(SA):
                 Si: dict
                     The type of Si is dict. And it contain 'mu', 'mu_star', 'sigma' key value.
         '''
-        numTrajectory, numLevels = self.getParaValue("numTrajectory", "numLevels")
+        numLevels = self.getParaValue("numLevels")
         
         self.setProblem(problem)
         
         nInput = problem.nInput
         
-        if X is None or Y is None:
+        if Y is None:
+            Y = self.evaluate(X)
             
-            X = self.sample(problem, numTrajectory, numLevels)
-            Y = problem.objFunc(X)
-            
-        else:
-            numTrajectory = int(X.shape[0]/(nInput+1))
+        numTrajectory = int(X.shape[0]/(nInput+1))
         
         X, Y = self.__check_and_scale_xy__(X, Y)
 

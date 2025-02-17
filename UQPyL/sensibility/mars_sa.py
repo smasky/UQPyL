@@ -9,7 +9,7 @@ from .saABC import SA
 
 class MARS_SA(SA):
     '''
-        Multivariate Adaptive Regression Splines - Sensibility Analysis
+        Multivariate Adaptive Regression Splines for Sensibility Analysis
         -------------------------------------------------------
         Parameters:
             Parameters:
@@ -33,6 +33,9 @@ class MARS_SA(SA):
                                 doi: 10.1214/aos/1176347963.
             [2] SALib, https://github.com/SALib/SALib
     '''
+    
+    name="MARS_SA"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None)):
         
         super().__init__(scalers)
@@ -52,11 +55,12 @@ class MARS_SA(SA):
         '''
         n_input = self.n_input
         
-        X = sampler.sample(N, n_input)
+        X = sampler.sample(N, n_input, problem = self.problem)
         
         return X
     
-    def analyze(self, problem: Problem, X: np.ndarray = None, Y: np.ndarray = None, verbose: bool = False):
+    
+    def analyze(self, problem: Problem, X: np.ndarray = None, Y: np.ndarray = None):
         '''
             Perform MARS-SA
             -------------------------------------
@@ -77,15 +81,15 @@ class MARS_SA(SA):
         
         S1=np.zeros(n_input)
         #main process    
-        mars=MARS(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
+        mars=MARS( scalers = (MinMaxScaler(0,1), MinMaxScaler(0,1)) )
         mars.fit(X, Y)
-        base_gcv=mars.gcv_
+        base_gcv = mars.gcv_
         
         for i in range(n_input):
-            X_sub=np.delete(X, [i], axis=1)
-            mars=MARS(scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)))
+            X_sub = np.delete(X, [i], axis=1)
+            mars = MARS( scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)) )
             mars.fit(X_sub, Y)
-            S1[i]=np.abs(base_gcv-mars.gcv_)
+            S1[i] = np.abs(base_gcv - mars.gcv_)
             
         S1_sum = sum(S1)
         S1/=S1_sum

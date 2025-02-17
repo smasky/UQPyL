@@ -49,11 +49,11 @@ class SA(metaclass=abc.ABCMeta):
         
         self.problem=problem
     
-    def record(self, key, x_labels,value):
+    def record(self, key, xLabels,value):
         
         if not isinstance(value, np.ndarray):
             value=np.array(value)
-        self.result.Si[key]=(x_labels, value)
+        self.result.Si[key]=(xLabels, value)
         
     def __check_and_scale_xy__(self, X, Y):
         

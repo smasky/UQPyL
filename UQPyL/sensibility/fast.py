@@ -10,8 +10,8 @@ class FAST(SA):
     name="FAST"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                       N: int = 512, M: int = 4,
-                       verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                    M: int =4,
+                    verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         '''
         Fourier amplitude sensitivity test (FAST) or extend Fourier amplitude sensitivity test (eFAST)
         ---------------------------
@@ -52,41 +52,42 @@ class FAST(SA):
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
+    
+        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
-        super().__init__(scalers, verbose, logFlag, saveFlag)
-        #Parameter Setting
         self.setParameters("M", M)
-        self.setParameters("N", N)
-        
-    def sample(self, problem: Problem, N: Optional[int] = 512, M: Optional[int] = None) -> np.ndarray:
+
+    def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = None):
         '''
-            Generate FAST sequence, this technique from paper [2]
-            --------------------------
+            -----------------------------------------------------
+            Generate FAST sequence from paper [2]
+            -----------------------------------------------------
             Parameters:
-                N: int, default=512
+                N: int, default = 500
                     the number of sample points for each sequence
+                M: int, default = 4
+                    the fourier frequency
 
             Returns:
-            X: 2d-np.ndarray
-                the size of X is ((N*n_input, n_input))
+                X: np.ndarray -> 2d-array
+                    the size of X is ( ( N*nInput, nInput ) )
+            -----------------------------------------------------
         '''
-        if N is None:
-            N = self.getParaValue('N')
         
+        # 
         if M is None:
             M = self.getParaValue('M')
-        
-        self.setParameters('N', N) 
-        self.setParameters('M', M)
+        else:
+            self.setParameters("M", M)
         
         nInput = problem.nInput
         
         if N < 4*M**2:
-            raise ValueError("the number of sample must be greater than 4*M**2!")
+            raise ValueError("The number of sample must be greater than 4*M**2! \n Default M = 4 .")
         
         w = np.zeros(nInput)
         w[0] = np.floor((N-1)/(2*M))
-        max_wi = np.floor(w[0]/(2*M)) #Saltelli
+        max_wi = np.floor(w[0]/(2*M))
         
         if max_wi >= nInput-1:
             w[1:] = np.floor(np.linspace(1, max_wi, nInput-1))
@@ -108,10 +109,10 @@ class FAST(SA):
             arsin_result = (1/np.pi)*np.arcsin(sin_result) #saltelli formula
             X[idx, :] = 0.5+arsin_result.transpose()
         
-        return self.transform_into_problem(problem, X)
+        return problem._unit_X_transform(X)
     
     @Verbose.decoratorAnalyze
-    def analyze(self, problem: Problem, X: Optional[np.ndarray] = None, Y: Optional[np.ndarray] = None):
+    def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):
         '''
             Perform FAST or extend FAST analysis
             Noted that if the X and Y is None, sample(500) is used for generate data 
@@ -122,22 +123,24 @@ class FAST(SA):
                     the input data
                 Y: np.ndarray
                     the result data
-                verbose: bool
-                    the switch to print analysis summary or not     
             Returns:
                 Si: dict
                     The type of Si is dict. And it contain 'S1', 'ST' key value. 
         '''
         #Parameter Setting
-        N, M = self.getParaValue('N', 'M')
+        M = self.getParaValue('M')
+        
+        #Set problem
         self.setProblem(problem)
         
-        if X is None or Y is None:
-            X = self.sample(problem, N)
+        if Y is None:
             Y = self.evaluate(X)
         
         X, Y = self.__check_and_scale_xy__(X, Y)
-        nInput = problem.nInput; n = int(X.shape[0]/nInput)
+        
+        nInput = problem.nInput; 
+        n = int(X.shape[0] / nInput)
+        
         S1 = np.zeros(nInput); ST = np.zeros(nInput)
         
         #main process
@@ -146,9 +149,7 @@ class FAST(SA):
         for i in range(nInput):
             idx = np.arange(i*n, (i+1)*n)
             Y_sub = Y[idx]
-            #fft
             f = np.fft.fft(Y_sub.ravel())
-            # Sp = np.power(np.absolute(f[np.arange(1, np.ceil((self.N_within_sampler-1)/2), dtype=np.int32)-1])/self.N_within_sampler, 2) #TODO 1-(NS-1)/2 
             Sp = np.power(np.absolute(f[np.arange(1, np.ceil(n / 2), dtype=np.int32)]) / n, 2)
             V = 2.0*np.sum(Sp)
             Di = 2.0*np.sum(Sp[np.int32(np.arange(1, M+1, dtype=np.int32)*w_0-1)]) #pw<=(NS-1)/2 w_0=(NS-1)/M
