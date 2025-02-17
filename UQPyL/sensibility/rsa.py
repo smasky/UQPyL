@@ -102,7 +102,7 @@ class RSA(SA):
         
         if X is None or Y is None:
             X=self.sample(problem, N)
-            Y=problem.evaluate(X)
+            Y=self.evaluate(X)
         
         X, Y=self.__check_and_scale_xy__(X, Y)
         
@@ -129,9 +129,9 @@ class RSA(SA):
                 if self._has_samples(Y, b):
                     results[bin_index, d_i] = cramervonmises_2samp(mrr[b].ravel(), mrr[~b].ravel()).statistic
         
-        
-        self.record("S1", problem.x_labels, np.mean(results, axis=0))
-        self.record("S1_Detail", problem.x_labels, np.mean(results, axis=0))
+        results_star = np.mean(results, axis=0)
+        self.record("S1", problem.xLabels, results_star)
+        self.record("S1(Scaled)", problem.xLabels, results_star/np.sum(results_star))
         
         return self.result
     

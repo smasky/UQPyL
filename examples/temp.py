@@ -1,37 +1,65 @@
 import sys
 
-from SALib.analyze import sobol
-from SALib.sample import saltelli
-from SALib.test_functions import Ishigami
+import numpy as np
+from SALib.analyze import morris
+from SALib.sample.morris import sample
+from SALib.test_functions import Sobol_G
 from SALib.util import read_param_file
+from SALib.plotting.morris import (
+    horizontal_bar_plot,
+    covariance_plot,
+    sample_histograms,
+)
+import matplotlib.pyplot as plt
 
-from SALib.analyze import fast
-from SALib.sample import fast_sampler
 
 # Read the parameter range file and generate samples
-problem = read_param_file("./examples/Ishigami.txt")
+problem = read_param_file("./examples/sobol_G.txt")
+# or define manually without a parameter file:
+# problem = {
+#  'num_vars': 8,
+#  'names': ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8'],
+#  'groups': None,
+#  'bounds': [[0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0],
+#             [0.0, 1.0]]
+# }
+# Files with a 4th column for "group name" will be detected automatically, e.g.
+# param_file = '../../src/SALib/test_functions/params/Ishigami_groups.txt'
 
 # Generate samples
-param_values = fast_sampler.sample(problem, 1000, seed=100)
+param_values = sample(problem, N=1000, num_levels=4, optimal_trajectories=None, seed=100)
 
-# Run the "model" and save the output in a text file
-# This will happen offline for external models
-Y = Ishigami.evaluate(param_values)
+# To use optimized trajectories (brute force method),
+# give an integer value for optimal_trajectories
+
+# Run the "model" -- this will happen offline for external models
+Y = Sobol_G.evaluate(param_values)
 
 # Perform the sensitivity analysis using the model output
 # Specify which column of the output file to analyze (zero-indexed)
-Si = fast.analyze(problem, Y, print_to_console=True, seed=100)
-print(Si)
-# Returns a dictionary with keys 'S1', 'S1_conf', 'ST', and 'ST_conf'
-# e.g. Si['S1'] contains the first-order index for each parameter,
-# in the same order as the parameter file
-# The optional second-order indices are now returned in keys 'S2', 'S2_conf'
-# These are both upper triangular DxD matrices with nan's in the duplicate
-# entries.
-# Optional keyword arguments parallel=True and n_processors=(int) for parallel execution
-# using multiprocessing
+Si = morris.analyze(
+    problem,
+    param_values,
+    Y,
+    conf_level=0.95,
+    print_to_console=True,
+    num_levels=4,
+    num_resamples=100,
+)
+# Returns a dictionary with keys 'mu', 'mu_star', 'sigma', and 'mu_star_conf'
+# e.g. Si['mu_star'] contains the mu* value for each parameter, in the
+# same order as the parameter file
 
-# First-order indices expected with Saltelli sampling:
-# x1: 0.3139
-# x2: 0.4424
-# x3: 0.0
+fig, (ax1, ax2) = plt.subplots(1, 2)
+horizontal_bar_plot(ax1, Si, {}, sortby="mu_star", unit=r"tCO$_2$/year")
+covariance_plot(ax2, Si, {}, unit=r"tCO$_2$/year")
+
+fig2 = plt.figure()
+sample_histograms(fig2, param_values, problem, {"color": "y"})
+plt.show()

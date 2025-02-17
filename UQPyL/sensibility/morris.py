@@ -79,6 +79,8 @@ class Morris(SA):
         self.setParameters("numTrajectory", nt)
         self.setParameters("numLevels", numLevels)
         
+        np.random.seed(100)
+        
         nInput = problem.nInput
         
         X = np.zeros((nt*(nInput+1), nInput))
@@ -149,8 +151,7 @@ class Morris(SA):
         self.record('mu_star', problem.xLabels, mu_star)
         self.record('sigma', problem.xLabels, sigma)
 
-        self.record('S1', problem.xLabels, mu)
-        self.record('ST', problem.xLabels, sigma)
+        self.record('S1(scaled)', problem.xLabels, mu_star/np.sum(mu_star))
         
         return self.result
     

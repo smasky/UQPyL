@@ -133,7 +133,7 @@ class RBD_FAST(SA):
             
             S1[i]=S1_sub
         
-        self.record('S1', problem.x_labels, S1)
+        self.record('S1', problem.xLabels, S1)
         
         return self.result
      
