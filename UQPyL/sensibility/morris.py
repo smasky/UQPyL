@@ -41,14 +41,14 @@ class Morris(SA):
     name="Morris"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                        numLevels: int = 4,
-                       verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                       verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         
         #Attribute
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
         
-        super().__init__(scalers, verbose, logFlag, saveFlag)
+        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
         #Parameter Setting
         self.setParameters("numLevels", numLevels)
@@ -82,7 +82,7 @@ class Morris(SA):
         for i in range(nt):
             X[i*(nInput+1):(i+1)*(nInput+1), :] = self._generate_trajectory(nInput, numLevels)
         
-        return self.transform_into_problem(problem, X)
+        return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None) -> dict:
@@ -98,8 +98,6 @@ class Morris(SA):
                     the input data
                 Y: np.ndarray
                     the result data
-                verbose: bool
-                    the switch to print analysis summary or not
 
             Returns:
                 Si: dict
@@ -145,31 +143,6 @@ class Morris(SA):
         self.record('S1(scaled)', problem.xLabels, mu_star/np.sum(mu_star))
         
         return self.result
-    
-    def summary(self):
-        '''
-            print analysis summary
-        '''
-        print('Morris Sensitivity Analysis')
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print('mu value:')
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['mu']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
-        print('mu_star value:')
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['mu_star']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
-        print("-------------------------------------------------")
-        print('sigma value:')
-        print("-------------------------------------------------")
-        for label, value in zip(self.x_labels, self.Si['sigma']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
     #-------------------------Private Function-------------------------------------#
     def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
         '''

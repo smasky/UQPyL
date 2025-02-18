@@ -14,7 +14,7 @@ import numpy as np
 #ST2 = 0.442
 #ST3 = 0.244
 
-# from UQPyL.problems import Problem
+from UQPyL.problems import Problem
 
 # def objFunc(X):
     
@@ -66,31 +66,31 @@ import numpy as np
 
 #Non-monotonic Sobol G Function (8 parameters)
 # First-order indices
-# S1: 0.5065 0.1791 0.0237 0.0072 0.000 0.0 0.0 0.0 0.0
+# S1: 0.7065 0.1791 0.0237 0.0072 0.000 0.0 0.0 0.0 0.0
 
-# def objFunc(X):
+def objFunc(X):
     
-#     a = np.array([0, 1, 4.5, 9, 99, 99, 99, 99])
-#     alpha = np.ones_like(a)
-#     Ytemp = np.zeros(X.shape)
+    a = np.array([0, 1, 4.5, 9, 99, 99, 99, 99])
+    alpha = np.ones_like(a)
+    Ytemp = np.zeros(X.shape)
 
-#     for i in range(8):
+    for i in range(8):
         
-#         Ytemp[:, i] = ((1 + alpha[i]) * np.abs(2 * X[:, i] - 1) ** alpha[i] + a[i]) / (1 + a[i])
+        Ytemp[:, i] = ((1 + alpha[i]) * np.abs(2 * X[:, i] - 1) ** alpha[i] + a[i]) / (1 + a[i])
         
-#     Y = Ytemp.prod(axis=1)[:, np.newaxis]
+    Y = Ytemp.prod(axis=1)[:, np.newaxis]
     
-#     return Y
+    return Y
 
-# setting = {
-#     'nInput' : 8,
-#     'nOutput' : 1,
-#     'ub' : 1,
-#     'lb' : 0,
-#     'objFunc' : objFunc
-# }
+setting = {
+    'nInput' : 8,
+    'nOutput' : 1,
+    'ub' : 1,
+    'lb' : 0,
+    'objFunc' : objFunc
+}
 
-# problem = Problem(**setting)
+problem = Problem(**setting)
 
 # from UQPyL.sensibility import Morris
 
@@ -101,7 +101,7 @@ import numpy as np
 # res = morris.analyze(problem, X)
 # print(res)
 
-
+#RSA
 # from UQPyL.sensibility import RSA
 
 # rsa = RSA()
@@ -110,3 +110,24 @@ import numpy as np
 
 # res = rsa.analyze(problem, X)
 # print(res)
+
+#MARS-SA
+# from UQPyL.sensibility import MARS_SA
+
+# mars_sa = MARS_SA()
+
+# X = mars_sa.sample(problem, N = 1000)
+
+# res = mars_sa.analyze(problem, X)
+
+# print(res)
+
+#Delta_Test
+from UQPyL.sensibility import Delta_Test
+
+delta_test = Delta_Test()
+
+X = delta_test.sample(problem, N = 1000 )
+
+res = delta_test.analyze(problem, X)
+print(res)

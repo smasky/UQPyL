@@ -48,14 +48,14 @@ class RBD_FAST(SA):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
                        M: int=4, 
-                       verbose: bool=False, logFlag: bool=False, saveFlag: bool=False):
+                       verboseFlag: bool=False, logFlag: bool=False, saveFlag: bool=False):
         
          #Attribute
         self.firstOrder=True
         self.secondOrder=False
         self.totalOrder=False
         
-        super().__init__(scalers, verbose, logFlag, saveFlag)
+        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
         self.setParameters("M", M)
     

@@ -1,11 +1,11 @@
 import numpy as np
 from typing import Optional, Tuple
 
-from ..surrogates import MARS
-from ..utility import MinMaxScaler, Scaler
+from ..surrogates.mars import MARS
+from .saABC import SA
+from ..utility import MinMaxScaler, Scaler, Verbose
 from ..problems import ProblemABC as Problem
 from ..DoE import LHS, Sampler
-from .saABC import SA
 
 class MARS_SA(SA):
     '''
@@ -36,11 +36,17 @@ class MARS_SA(SA):
     
     name="MARS_SA"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None)):
+    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         
-        super().__init__(scalers)
+        #Attribute
+        self.firstOrder = True
+        self.secondOrder = False
+        self.totalOrder = False
+        
+        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
     
-    def sample(self, N: int=500, sampler: Sampler = LHS('classic')):
+    def sample(self, problem: Problem, N: int=500, sampler: Sampler = LHS('classic')):
         '''
             Generate samples
             -------------------------------
@@ -53,13 +59,13 @@ class MARS_SA(SA):
                 X: 2d-np.ndarray
                     the size is determined by the used sampler. Default: (N, n_input)            
         '''
-        n_input = self.n_input
+        nInput = problem.nInput
         
-        X = sampler.sample(N, n_input, problem = self.problem)
+        X = sampler.sample(N, nInput)
         
-        return X
+        return problem._transform_unit_X(X)
     
-    
+    @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray = None, Y: np.ndarray = None):
         '''
             Perform MARS-SA
@@ -69,23 +75,27 @@ class MARS_SA(SA):
                     the input data
                 Y: np.ndarray
                     the result data
-                verbose: bool 
-                    the switch to print analysis summary or not
             
             Returns:
                 Si: dict
                     The type of Si is dict. It contains 'S1'.
         '''
-        X, Y = self.__check_and_scale_xy__(X, Y)
-        n_input = self.n_input
+        self.setProblem(problem)
         
-        S1=np.zeros(n_input)
+        if Y is None:
+            Y = self.evaluate(X)
+        
+        X, Y = self.__check_and_scale_xy__(X, Y)
+        nInput = problem.nInput
+        
+        S1 = np.zeros(nInput)
+        
         #main process    
         mars=MARS( scalers = (MinMaxScaler(0,1), MinMaxScaler(0,1)) )
         mars.fit(X, Y)
         base_gcv = mars.gcv_
         
-        for i in range(n_input):
+        for i in range(nInput):
             X_sub = np.delete(X, [i], axis=1)
             mars = MARS( scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)) )
             mars.fit(X_sub, Y)
@@ -94,27 +104,10 @@ class MARS_SA(SA):
         S1_sum = sum(S1)
         S1/=S1_sum
         
-        Si={'S1': S1}
-        self.Si=Si
+        self.record('S1', problem.xLabels, S1)
         
-        if verbose:
-            self.summary()
-        
-        return S1
-    
-    def summary(self):
-        '''
-            print summary analysis
-        '''
-        
-        print('MARS Sensibility Analysis')
-        print("-------------------------------------------------")
-        print("Input Dimension: %d" % self.n_input)
-        print("-------------------------------------------------")
-        print("S1 value:")
-        for label, value in zip(self.x_labels, self.Si['S1']):
-            print(f"{label}: {value:.4f}")
-        print("-------------------------------------------------")
+        return self.result
+
         
         
         
