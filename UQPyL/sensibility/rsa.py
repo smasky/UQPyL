@@ -9,41 +9,78 @@ from ..utility import Scaler, Verbose
 
 class RSA(SA):
     '''
-        Regonal Sensitivity Analysis
-        ---------------------------
-        Parameters:
-            problem: Problem
-                the problem you want to analyse
-            n_region: int, default=20
-                the number of region you want to divide
-            scaler: Tuple[Scaler, Scaler], default=(None, None)
-                used for scaling X or Y
-             
-            Following parameters derived from the variable 'problem'
-            n_input: the input number of the problem
-            ub: the upper bound of the problem
-            lb: the lower bound of the problem
-        
-        Methods:
-            sample: Generate a sample for RSA analysis
-            analyze: perform RSA analyze from the X and Y you provided.
-        
-        Examples:
-            >>>rsa_method=RSA(problem)
-            >>>X=rsa_method.sample(500)
-            >>>Y=problem.evaluate(X)
-            >>>Si=rsa_method.analyze(X, Y)
-        
-        References:
-            [1] F. Pianosi et al., Sensitivity analysis of environmental models: A systematic review with practical workflow, 
-                                   Environmental Modelling & Software, vol. 79, pp. 214-232, May 2016, 
-                                   doi: 10.1016/j.envsoft.2016.02.008.
-            [2] SALib, https://github.com/SALib/SALib
+    -------------------------------------------------
+    Regional Sensitivity Analysis (RSA)
+    -------------------------------------------------
+    This class implements the RSA method, which is used for 
+    sensitivity analysis by dividing the input space into regions 
+    and analyzing the influence of input factors on model outputs.
+
+    Parameters:
+        problem (Problem): 
+            The problem instance defining the input space.
+        n_region (int, optional): 
+            The number of regions to divide the input space into. 
+            This determines the granularity of the sensitivity analysis. 
+            Defaults to 20.
+        scalers (Tuple[Scaler, Scaler], optional): 
+            Tuple containing scalers for input (X) and output (Y) data. 
+            Defaults to (None, None), meaning no scaling is applied.
+        verboseFlag (bool): 
+            If True, enables verbose mode for logging. Defaults to False.
+        logFlag (bool): 
+            If True, enables logging of results. Defaults to False.
+        saveFlag (bool): 
+            If True, saves the results to a file. Defaults to False.
+
+    Methods:
+        sample: Generate a sample for RSA analysis
+        analyze: Perform RSA analysis from the X and Y you provided.
+
+    Examples:
+        >>> rsa_method = RSA(problem)
+        >>> X = rsa_method.sample(500)
+        >>> Y = problem.evaluate(X)
+        >>> Si = rsa_method.analyze(X, Y)
+
+    References:
+        [1] F. Pianosi et al., Sensitivity analysis of environmental models: A systematic review with practical workflow, 
+            Environmental Modelling & Software, vol. 79, pp. 214-232, May 2016, 
+            doi: 10.1016/j.envsoft.2016.02.008.
+        [2] SALib, https://github.com/SALib/SALib
+    -------------------------------------------------
     '''
+    
     name="RSA"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                  nRegion: int=20,
                  verboseFlag: bool=False, logFlag: bool=False, saveFlag: bool=False):
+        '''
+        Initialize the RSA method for sensitivity analysis.
+        
+        The RSA method divides the input space into regions and evaluates 
+        the sensitivity of model outputs to variations in input factors 
+        within these regions.
+
+        Parameters:
+            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
+                Tuple containing scalers for input (X) and output (Y) data. 
+                Defaults to (None, None), meaning no scaling is applied.
+            nRegion (int): 
+                The number of regions to divide the input space into. 
+                This affects the resolution of the sensitivity analysis. 
+                Defaults to 20.
+            verboseFlag (bool): 
+                If True, enables verbose mode for logging, providing detailed 
+                output during execution. Defaults to False.
+            logFlag (bool): 
+                If True, enables logging of results to a file or console. 
+                Defaults to False.
+            saveFlag (bool): 
+                If True, saves the results to a file for later analysis. 
+                Defaults to False.
+        '''
         
         #Attribute
         self.firstOrder=True
@@ -56,16 +93,23 @@ class RSA(SA):
     
     def sample(self, problem: Problem, N: int, sampler: Sampler=LHS('classic')):
         '''
-            Generate samples
-            -------------------------------
-            Parameters:
-                N: int, default=500
-                    N is corresponding to the use sampler 
-                sampler: Sampler, default=LHS('classic')
-            
-            Returns:
-                X: 2d-np.ndarray
-                    the size is determined by the used sampler. Default: (N, n_input)            
+        Generate samples for RSA analysis
+        ---------------------------------------
+        This method generates a sample of input data `X` using a specified 
+        sampling strategy, typically Latin Hypercube Sampling (LHS), for 
+        the RSA method.
+
+        Parameters:
+            problem (Problem): 
+                The problem instance defining the input space.
+            N (int): 
+                The number of sample points to generate.
+            sampler (Sampler, optional): 
+                The sampling strategy to use. Defaults to LHS with 'classic' method.
+
+        Returns:
+            np.ndarray: 
+                A 2D array representing the generated sample points, with shape `(N, nInput)`.
         '''
         
         nInput=problem.nInput
@@ -77,19 +121,25 @@ class RSA(SA):
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray=None):
         '''
-            Perform RSA
-            -------------------------------------
-            Parameters:
-                X: np.ndarray
-                    the input data
-                Y: np.ndarray
-                    the result data
-                verbose: bool 
-                    the switch to print analysis summary or not
-            
-            Returns:
-                Si: dict
-                    The type of Si is dict. It contains 'S1'.
+        Perform RSA analysis
+        -------------------------------------
+        This method performs the RSA sensitivity analysis by dividing the 
+        input space into regions and evaluating the influence of input 
+        factors on model outputs within these regions.
+
+        Parameters:
+            problem (Problem): 
+                The problem instance defining the input and output space.
+            X (np.ndarray): 
+                A 2D array representing the input data for analysis.
+            Y (np.ndarray, optional): 
+                A 1D array representing the output values corresponding to `X`. 
+                If None, it will be computed by evaluating the problem with `X`.
+
+        Returns:
+            dict: 
+                A dictionary containing the sensitivity index 'S1', which 
+                represents the first-order sensitivity indices for each input factor.
         '''
         
         nRegion=self.getParaValue("nRegion")
@@ -133,7 +183,22 @@ class RSA(SA):
         return self.result
     
     def _has_samples(self, y, sel):
-        
+        '''
+        Check if the selected samples are sufficient for analysis.
+
+        This helper method ensures that the selected samples are non-empty 
+        and contain enough unique values for meaningful statistical analysis.
+
+        Parameters:
+            y (np.ndarray): 
+                The output data array.
+            sel (np.ndarray): 
+                A boolean array indicating the selected samples.
+
+        Returns:
+            bool: 
+                True if the selected samples are sufficient, False otherwise.
+        '''
         return(
             (np.count_nonzero(sel) !=0)
              and (len(y[~sel])!=0 )

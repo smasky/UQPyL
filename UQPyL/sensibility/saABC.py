@@ -13,7 +13,7 @@ class SA(metaclass=abc.ABCMeta):
     firstOrder = False; secondOrder = False; totalOrder = False
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
-                 verbose: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
              
         if scalers[0] is None:
             self.xScale = None
@@ -29,7 +29,7 @@ class SA(metaclass=abc.ABCMeta):
                     raise TypeError("scaler must be an instance of Scaler or None!")
             self.yScale = scalers[1]
 
-        self.verbose = verbose
+        self.verboseFlag = verboseFlag
         self.logFlag = logFlag
         self.saveFlag = saveFlag
         
@@ -101,7 +101,6 @@ class Result():
     
     def generateHDF5(self):
         
-        x_labels=self.sa.problem.xLabels
         result={}
         
         for key, value in self.Si.items():
@@ -117,7 +116,7 @@ class Result():
         res = self.Si
         output = ""
         for key, (variables, values) in res.items():
-            # print(f"{key}:")
+            
             output += f"{key}:\n"
             for var, val in zip(variables, values):
                 output += f"  {var}: {val:.5f}\n"

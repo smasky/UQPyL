@@ -8,44 +8,79 @@ from ..problems import ProblemABC as Problem
 from ..utility import Scaler, Verbose
 class Sobol(SA):
     '''
-    Sobol' sensibility analysis
-    --------------------------
+    -------------------------------------------------
+    Sobol' Sensitivity Analysis
+    -------------------------------------------------
+    This class implements the Sobol' method, which is used for 
+    global sensitivity analysis of model outputs. It calculates 
+    first-order, second-order, and total-order sensitivity indices.
+
     Parameters:
-        problem: Problem
-            the problem you want to analyse
-        scaler: Tuple[Scaler, Scaler], default=(None, None)
-            used for scaling X or Y
-            
-        Following parameters derived from the variable 'problem'
-        n_input: the input number of the problem
-        ub: the upper bound of the problem
-        lb: the lower bound of the problem
-    
+        problem (Problem): 
+            The problem instance defining the input space.
+        scalers (Tuple[Scaler, Scaler], optional): 
+            Tuple containing scalers for input (X) and output (Y) data. 
+            Defaults to (None, None), meaning no scaling is applied.
+        calSecondOrder (bool): 
+            If True, calculates second-order sensitivity indices. 
+            Defaults to False.
+        verboseFlag (bool): 
+            If True, enables verbose mode for logging. Defaults to False.
+        logFlag (bool): 
+            If True, enables logging of results. Defaults to False.
+        saveFlag (bool): 
+            If True, saves the results to a file. Defaults to False.
+
     Methods:
-        sample: Generate a sample for sobol' analysis
-        analyze: perform sobol analyze from the X and Y you provided.
-    
+        sample: Generate a sample for Sobol' analysis
+        analyze: Perform Sobol' analysis from the X and Y you provided.
+
     Examples:
-        >>> sob_method=Sobol(problem)
-        >>> X=sob_method.sample(500)
-        >>> Y=problem.evaluate(X)
-        >>> sob_method.analyze(X,Y)
-    
+        >>> sob_method = Sobol(problem)
+        >>> X = sob_method.sample(500)
+        >>> Y = problem.evaluate(X)
+        >>> sob_method.analyze(X, Y)
+
     References:
-    [1] I. M. Sobol', Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates, 
-                      Mathematics and Computers in Simulation, vol. 55, no. 1, pp. 271–280, Feb. 2001, 
-                      doi: 10.1016/S0378-4754(00)00270-6.
-    [2] A. Saltelli et al, Variance based sensitivity analysis of model output. Design and estimator for the total sensitivity index, 
-                           Computer Physics Communications, vol. 181, no. 2, pp. 259–270, Feb. 2010, 
-                           doi: 10.1016/j.cpc.2009.09.018.
-    [3] SALib, https://github.com/SALib/SALib
+        [1] I. M. Sobol', Global sensitivity indices for nonlinear mathematical models and their Monte Carlo estimates, 
+            Mathematics and Computers in Simulation, vol. 55, no. 1, pp. 271–280, Feb. 2001, 
+            doi: 10.1016/S0378-4754(00)00270-6.
+        [2] A. Saltelli et al, Variance based sensitivity analysis of model output. Design and estimator for the total sensitivity index, 
+            Computer Physics Communications, vol. 181, no. 2, pp. 259–270, Feb. 2010, 
+            doi: 10.1016/j.cpc.2009.09.018.
+        [3] SALib, https://github.com/SALib/SALib
+    -------------------------------------------------
     '''
     
     name="Sobol"
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                        calSecondOrder: bool=False,
                        verboseFlag: bool=False, logFlag: bool=False, saveFlag: bool=False):
+        '''
+        Initialize the Sobol' method for sensitivity analysis.
         
+        The Sobol' method is a variance-based sensitivity analysis technique 
+        that decomposes the variance of the model output into contributions 
+        from input variables and their interactions.
+
+        Parameters:
+            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
+                Tuple containing scalers for input (X) and output (Y) data. 
+                Defaults to (None, None), meaning no scaling is applied.
+            calSecondOrder (bool): 
+                If True, calculates second-order sensitivity indices, 
+                capturing interactions between pairs of input variables. 
+                Defaults to False.
+            verboseFlag (bool): 
+                If True, enables verbose mode for logging, providing detailed 
+                output during execution. Defaults to False.
+            logFlag (bool): 
+                If True, enables logging of results to a file or console. 
+                Defaults to False.
+            saveFlag (bool): 
+                If True, saves the results to a file for later analysis. 
+                Defaults to False.
+        '''
         #Attribute
         self.firstOrder=True
         self.secondOrder=True if calSecondOrder else False
@@ -59,18 +94,30 @@ class Sobol(SA):
     def sample(self, problem: Problem, N: Optional[int]=512, 
                skipValue: Optional[int]=0, scramble: Optional[bool]=False):
         '''
-            Generate Sobol_sequence using Saltelli's sampling technique in [2]
-            ----------------------
-            Parameters:
-                N: int default=512
-                    the number of base sequence. Noted that N should be power of 2.
-                
-            Returns:
-                X: np.ndarray
-                    if cal_second_order
-                        the size of X is (N*(n_input+2), n_input)
-                    else
-                        the size of X is (N*(2*n_input+2), n_input)
+        Generate a sample for Sobol' analysis
+        ---------------------------------------
+        This method generates a sample of input data `X` using Saltelli's 
+        sampling technique, which is designed to efficiently estimate 
+        Sobol' sensitivity indices.
+
+        Parameters:
+            problem (Problem): 
+                The problem instance defining the input space.
+            N (int, optional): 
+                The number of base sequence samples. Must be a power of 2. 
+                Defaults to 512.
+            skipValue (int, optional): 
+                The number of initial samples to skip in the Sobol' sequence. 
+                Must be a power of 2. Defaults to 0.
+            scramble (bool, optional): 
+                If True, applies scrambling to the Sobol' sequence for 
+                improved uniformity. Defaults to False.
+
+        Returns:
+            np.ndarray: 
+                A 2D array representing the generated sample points, with 
+                shape determined by the number of input variables and 
+                whether second-order indices are calculated.
         '''
                 
         nInput=problem.nInput
@@ -133,23 +180,26 @@ class Sobol(SA):
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray]=None):
         '''
-            Perform sobol' analyze
-            Noted that if the X and Y is None, sample(512) is used for generate data 
-                       and use the method problem.evaluate to evaluate them.
-            In Sobol method, we recommend to indicate X at least.
+        Perform Sobol' analysis
         -------------------------
-            Parameters:
-                X: np.ndarray
-                    the input data
-                Y: np.ndarray
-                    the result data
-                cal_second_order: bool default=False
-                    the switch to calculate second order or not
-                verbose: bool
-                    the switch to print analysis summary or not
-            Returns:
-                Si: dict
-                    The type of Si is dict. And it contain 'S1', 'S2', 'ST' key value.   
+        This method performs the Sobol' sensitivity analysis by calculating 
+        first-order, second-order, and total-order sensitivity indices based 
+        on the provided input data `X` and output data `Y`.
+
+        Parameters:
+            problem (Problem): 
+                The problem instance defining the input and output space.
+            X (np.ndarray): 
+                A 2D array representing the input data for analysis.
+            Y (np.ndarray, optional): 
+                A 1D array representing the output values corresponding to `X`. 
+                If None, it will be computed by evaluating the problem with `X`.
+
+        Returns:
+            dict: 
+                A dictionary containing the sensitivity indices 'S1', 'S2', 
+                and 'ST', representing first-order, second-order, and 
+                total-order indices, respectively.
         '''
         #Parameters Setting
         calSecondOrder = self.getParaValue("calSecondOrder")

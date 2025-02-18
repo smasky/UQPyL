@@ -1,6 +1,6 @@
 #Delta test
 import numpy as np
-from scipy.spatial.distance import cdist
+from scipy.spatial import KDTree
 from typing import Optional, Tuple
 
 from .saABC import SA
@@ -104,6 +104,10 @@ class Delta_Test(SA):
             Y (np.ndarray, optional): 
                 A 1D array of length `N` representing the output values corresponding to `X`. 
                 If None, it will be computed by evaluating the problem with `X`.
+                
+        Returns:
+            res (Result): 
+                A class containing the sensitivity result, you can sue `res.si` to obtain results.        
         """
         
         self.setProblem(problem)
@@ -132,23 +136,52 @@ class Delta_Test(SA):
         self.record('S1', problem.xLabels, S1)
         
         self.record('S1(scaled)', problem.xLabels, S1/np.sum(S1))
-        
+
         return self.result
     
+    #TODO Find the best GCV as the most sensitive combination
+    def findBestCombination(self, problem, X: np.ndarray, Y: np.ndarray=None):
+        
+        self.setProblem(problem)
+        
+        nNeighbors = self.getParaValue('nNeighbors')
+        
+        if Y is None:
+            Y = self.evaluate(X)
+        
+        pass
+        
     #--------------------Private Function--------------------------#
     def _cal_delta(self, X, Y, nNeighbors):
-        
+        """
+        Calculate the Delta value using KDTree for nearest neighbor search.
+
+        Parameters:
+            X (np.ndarray): 
+                The input data array.
+            Y (np.ndarray): 
+                The output data array.
+            nNeighbors (int): 
+                The number of nearest neighbors to consider.
+
+        Returns:
+            float: 
+                The calculated Delta value.
+        """
         N, _ = X.shape
         
-        distances = cdist(X, X)
-        np.fill_diagonal(distances, np.inf)
-
-        neighbors_indices = np.argsort(distances, axis=1)[:, :nNeighbors]
+        # Build a KDTree for fast nearest neighbor search
+        tree = KDTree(X)
+        
+        # Query the nearest neighbors for each point
+        _, neighbors_indices = tree.query(X, k=nNeighbors + 1)  # +1 to include the point itself
+        
+        # Exclude the point itself from the neighbors
+        neighbors_indices = neighbors_indices[:, 1:]
         
         Delta = 0
         for i in range(N):
-            
             d = (Y[i] - Y[neighbors_indices[i]])**2
-            Delta +=float(np.mean(d))
+            Delta += float(np.mean(d))
         
-        return Delta/(nNeighbors*N)     
+        return Delta / (nNeighbors * N)     

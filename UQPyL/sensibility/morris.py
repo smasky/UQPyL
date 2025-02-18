@@ -5,43 +5,77 @@ from .saABC import SA
 from ..utility import Scaler, Verbose
 from ..problems import ProblemABC as Problem
 class Morris(SA):
-    '''
-    Morris analysis
-    ------------------------------------------------------
+    """
+    -------------------------------------------------
+    Morris Method for Sensitivity Analysis
+    -------------------------------------------------
+    This class implements the Morris method, which is 
+    used for screening and identifying important factors 
+    in a model by calculating elementary effects.
+
     Parameters:
-        problem: Problem
-            the problem you want to analyse
-        scaler: Tuple[Scaler, Scaler], default=(None, None)
-            used for scaling X or Y
-        numLevels (p): int, default=4, recommended value: 4 to 10
-                each x_i would take value on {0, 1/(p-1), 2/(p-1), ..., 1}. 
-                Morris et al[1]. recommend the num_levels to be even and range from 4 and 10.
-        
-        Following parameters derived from the variable 'problem'
-        n_input: the input number of the problem
-        ub: the upper bound of the problem
-        lb: the lower bound of the problem
-    
+        problem (Problem): 
+            The problem instance defining the input space.
+        scalers (Tuple[Scaler, Scaler], optional): 
+            Tuple containing scalers for input (X) and output (Y) data. 
+            Defaults to (None, None).
+        numLevels (int): 
+            The number of levels for each input factor. 
+            Recommended values are between 4 and 10. Defaults to 4.
+        verboseFlag (bool): 
+            If True, enables verbose mode for logging. Defaults to False.
+        logFlag (bool): 
+            If True, enables logging of results. Defaults to False.
+        saveFlag (bool): 
+            If True, saves the results to a file. Defaults to False.
+
     Methods:
-        sample: Generate a sample for morris analysis
-        analyze: perform morris analyze from the X and Y you provided.
-        
+        sample: Generate a sample for Morris analysis
+        analyze: Perform Morris analysis from the X and Y you provided.
+
     Examples:
-        >>> mor_method=Morris_Sequence(problem)
-        >>> X=mor_method.sample(100, 4)
-        >>> Y=problem.evaluate(X)
+        >>> mor_method = Morris(problem)
+        >>> X = mor_method.sample(100, 4)
+        >>> Y = problem.evaluate(X)
         >>> mor_method.analyze(X, Y)
-    
+
     References:
         [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, 
-                                 Technometrics, 33:2, 161-174
-                                 doi: 10.2307/1269043
+            Technometrics, 33:2, 161-174, doi: 10.2307/1269043
         [2] SALib, https://github.com/SALib/SALib
-    '''
+    -------------------------------------------------
+    """
+    
     name="Morris"
+    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                        numLevels: int = 4,
                        verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+        '''
+        Initialize the Morris method for sensitivity analysis.
+        
+        The Morris method is a screening method used to identify important factors
+        in a model by calculating the elementary effects of input factors. This 
+        initialization sets up the necessary parameters and configurations.
+
+        Parameters:
+            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
+                Tuple containing scalers for input (X) and output (Y) data. 
+                Defaults to (None, None), meaning no scaling is applied.
+            numLevels (int): 
+                The number of levels for each input factor. This determines the 
+                granularity of the factor space exploration. Recommended values 
+                are between 4 and 10. Defaults to 4.
+            verboseFlag (bool): 
+                If True, enables verbose mode for logging, providing detailed 
+                output during execution. Defaults to False.
+            logFlag (bool): 
+                If True, enables logging of results to a file or console. 
+                Defaults to False.
+            saveFlag (bool): 
+                If True, saves the results to a file for later analysis. 
+                Defaults to False.
+        '''
         
         #Attribute
         self.firstOrder = True
@@ -58,14 +92,24 @@ class Morris(SA):
         '''
         Generate a sample for Morris analysis
         ---------------------------------------
+        This method generates a sample of input data `X` for the Morris method,
+        which is used to compute the elementary effects of input factors.
+
         Parameters:  
-            numTrajectory: int, default=500, recommend value: 500 to 1000
-                The number of trajectories. In general, the size of each trajectory is n_input+1 
-            
+            problem (Problem): 
+                The problem instance defining the input space.
+            numTrajectory (int, optional): 
+                The number of trajectories. Each trajectory is a sequence of 
+                input points used to compute the elementary effects. 
+                Defaults to 500, recommended values are between 500 and 1000.
+            numLevels (int, optional): 
+                The number of levels for each input factor. If not provided, 
+                the initialized value of `numLevels` is used.
+
         Returns:
-            samples: np.ndarray
-                Noted that The size of samples are (num_trajectory*(n_input+1), n_input)
-        
+            np.ndarray: 
+                A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, 
+                representing the generated sample points.
         '''
 
         nt = numTrajectory
@@ -87,21 +131,26 @@ class Morris(SA):
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None) -> dict:
         '''
-            Perform morris analysis
-            
-            Noted that if the X and Y is None, sample(500, 4) is used for generate data 
-                       and use the method problem.evaluate to evaluate them.
-            
-            -------------------------
-            Parameters:
-                X: np.ndarray
-                    the input data
-                Y: np.ndarray
-                    the result data
+        Perform Morris analysis
+        -------------------------
+        This method performs the Morris sensitivity analysis by calculating 
+        the elementary effects of input factors based on the provided input 
+        data `X` and output data `Y`.
 
-            Returns:
-                Si: dict
-                    The type of Si is dict. And it contain 'mu', 'mu_star', 'sigma' key value.
+        Parameters:
+            problem (Problem): 
+                The problem instance defining the input and output space.
+            X (np.ndarray): 
+                A 2D array representing the input data for analysis.
+            Y (np.ndarray, optional): 
+                A 1D array representing the output values corresponding to `X`. 
+                If None, it will be computed by evaluating the problem with `X`.
+
+        Returns:
+            dict: 
+                A dictionary containing the sensitivity indices 'mu', 'mu_star', 
+                and 'sigma', which represent the mean, absolute mean, and standard 
+                deviation of the elementary effects, respectively.
         '''
         numLevels = self.getParaValue("numLevels")
         
@@ -143,6 +192,7 @@ class Morris(SA):
         self.record('S1(scaled)', problem.xLabels, mu_star/np.sum(mu_star))
         
         return self.result
+    
     #-------------------------Private Function-------------------------------------#
     def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
         '''
@@ -173,12 +223,5 @@ class Morris(SA):
         return B_star
         
     def _default_sample(self):
+        
         return self.sample(500)
-        
-        
-        
-        
-                
-        
-        
-        

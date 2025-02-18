@@ -123,11 +123,11 @@ problem = Problem(**setting)
 # print(res)
 
 #Delta_Test
-from UQPyL.sensibility import Delta_Test
+# from UQPyL.sensibility import Delta_Test
 
-delta_test = Delta_Test()
+# delta_test = Delta_Test()
 
-X = delta_test.sample(problem, N = 1000 )
+# X = delta_test.sample(problem, N = 1000 )
 
-res = delta_test.analyze(problem, X)
-print(res)
+# res = delta_test.analyze(problem, X)
+# print(res)

@@ -7,45 +7,53 @@ from ..problems import ProblemABC as Problem
 from ..utility import Scaler, Verbose
 class FAST(SA):
     
+    """
+    -------------------------------------------------
+    Fourier Amplitude Sensitivity Test (FAST)
+    -------------------------------------------------
+    This class implements the FAST method, which is 
+    used for global sensitivity analysis of model outputs.
+    
+    Methods:
+        sample: Generate a sample for FAST analysis
+        analyze: Perform FAST analysis from the X and Y you provided.
+    
+    Examples:
+        >>> fast_method = FAST()
+        >>> X = fast_method.sample(problem)
+        >>> res = fast_method.analyze(problem, X)
+        >>> print(res)
+        
+    References:
+        [1] Cukier et al., A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output,
+            Technometrics, 41(1):39-56, doi: 10.1063/1.1680571
+        [2] A. Saltelli et al., A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output,
+            Technometrics, vol. 41, no. 1, pp. 39-56, Feb. 1999, doi: 10.1080/00401706.1999.10485594.
+        [3] SALib, https://github.com/SALib/SALib
+    --------------------------------------------------------------------------
+    """
+    
     name="FAST"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                     M: int =4,
                     verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         '''
-        Fourier amplitude sensitivity test (FAST) or extend Fourier amplitude sensitivity test (eFAST)
-        ---------------------------
-        Parameters:
-            problem: Problem
-                The problem you want to analyse
-            scaler: Tuple[Scaler, Scaler], default=(None, None)
-                Used for scaling X or Y
-            M: int, default=4
+        Initializes the FAST method.
+        
+        Args:
+            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
+                Tuple containing scalers for input (X) and output (Y) data. 
+                Defaults to (None, None).
+            M (int): 
                 The interference parameter, i.e., the number of harmonics to sum in the
-                Fourier series decomposition (defalut 4). 
-                But, the number of sample must be greater than 4*M**2!
-                            
-            Following parameters derived from the variable 'problem'
-            n_input: the input number of the problem
-            ub: the upper bound of the problem
-            lb: the lower bound of the problem
-
-        Methods:
-            sample: Generate a sample for FAST analysis
-            analyze: perform FAST analyze from the X and Y you provided.
-        
-        Examples:
-            >>> fast_method=FAST(problem)
-            >>> X=fast_method.sample()
-        
-        References:
-            [1] Cukier et, al, A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output
-                               Technometrics, 41(1):39-56,
-                               doi: 10.1063/1.1680571
-            [2] A. Saltelli et al, A Quantitative Model-Independent Method for Global Sensitivity Analysis of Model Output,
-                                   Technometrics, vol. 41, no. 1, pp. 39-56, Feb. 1999, 
-                                   doi: 10.1080/00401706.1999.10485594.
-            [3] SALib, https://github.com/SALib/SALib
+                Fourier series decomposition. Defaults to 4.
+            verboseFlag (bool): 
+                If True, enables verbose mode for logging. Defaults to False.
+            logFlag (bool): 
+                If True, enables logging of results. Defaults to False.
+            saveFlag (bool): 
+                If True, saves the results to a file. Defaults to False.
         '''
         
         #Attribute
@@ -58,21 +66,23 @@ class FAST(SA):
         self.setParameters("M", M)
 
     def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = None):
-        '''
-            -----------------------------------------------------
-            Generate FAST sequence from paper [2]
-            -----------------------------------------------------
-            Parameters:
-                N: int, default = 500
-                    the number of sample points for each sequence
-                M: int, default = 4
-                    the fourier frequency
+        """
+        Generate a sample set for the FAST method.
 
-            Returns:
-                X: np.ndarray -> 2d-array
-                    the size of X is ( ( N*nInput, nInput ) )
-            -----------------------------------------------------
-        '''
+        This method generates a sample of input data `X` using the FAST sequence.
+
+        Args:
+            problem (Problem): 
+                The problem instance defining the input space.
+            N (int, optional): 
+                The number of sample points for each sequence. Defaults to 500.
+            M (int, optional): 
+                The Fourier frequency. If None, uses the initialized value of M.
+
+        Returns:
+            res (Result): 
+                A class containing the sensitivity result, you can sue `res.si` to obtain results.
+        """
         
         # 
         if M is None:
@@ -113,20 +123,23 @@ class FAST(SA):
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):
-        '''
-            Perform FAST or extend FAST analysis
-            Noted that if the X and Y is None, sample(500) is used for generate data 
-                       and use the method problem.evaluate to evaluate them.
-            -------------------------------------------------
-            Parameters:
-                X: np.ndarray
-                    the input data
-                Y: np.ndarray
-                    the result data
-            Returns:
-                Si: dict
-                    The type of Si is dict. And it contain 'S1', 'ST' key value. 
-        '''
+        
+        """
+        Perform the FAST analysis on the input data.
+
+        This method calculates the FAST sensitivity analysis based on the input data `X` 
+        and output data `Y`. If `Y` is not provided, it is computed by evaluating the problem.
+
+        Args:
+            problem (Problem): 
+                The problem instance that defines the input and output space.
+            X (np.ndarray): 
+                A 2D array of shape `(N * nInput, nInput)`, representing the input data for analysis.
+            Y (np.ndarray, optional): 
+                A 1D array of length `N` representing the output values corresponding to `X`. 
+                If None, it will be computed by evaluating the problem with `X`.
+
+        """
         #Parameter Setting
         M = self.getParaValue('M')
         
@@ -162,3 +175,4 @@ class FAST(SA):
         self.record('ST', problem.xLabels, ST)
         
         return self.result
+    

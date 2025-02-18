@@ -4,7 +4,7 @@ from typing import Union, Optional
 class ProblemABC(metaclass=abc.ABCMeta):
 
     def __init__(self, nInput:int, nOutput:int,
-                 ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray], 
+                 ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray],
                  conWgt: Optional[list] = None,
                  varType: Optional[list] = None, varSet: Optional[dict] = None,
                  xLabels: Optional[list] = None, yLabels: Optional[list] = None):

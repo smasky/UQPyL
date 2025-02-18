@@ -9,35 +9,49 @@ from ..DoE import LHS, Sampler
 
 class MARS_SA(SA):
     '''
-        Multivariate Adaptive Regression Splines for Sensibility Analysis
-        -------------------------------------------------------
-        Parameters:
-            Parameters:
-                problem: Problem
-                    the problem you want to analyse
-                scaler: Tuple[Scaler, Scaler], default=(None, None)
-                    used for scaling X or Y
-        Methods:
-            sample: Generate a sample for MARS analysis
-            analyze: perform MARS analyze from the X and Y you provided.
+    -------------------------------------------------
+    Multivariate Adaptive Regression Splines for Sensibility Analysis
+    -------------------------------------------------
+    This class implements the MARS method, which is 
+    used for sensitivity analysis of model outputs.
+    
+    Methods:
+        sample: Generate a sample for MARS analysis
+        analyze: Perform MARS analysis from the X and Y you provided.
+    
+    Examples:
+        >>> mars_method = MARS_SA()
+        >>> X = mars_method.sample(problem, 500)
+        >>> Y = problem.evaluate(X)
+        >>> res = mars_method.analyze(problem, X, Y)
+        >>> print(res)
         
-        Examples:
-            >>> mars_method=MARS_SA(problem)
-            >>> X=mars_method.sample(500)
-            >>> Y=problem.evaluate(X)
-            >>> mars_method.analyze(X, Y)
-        
-        References:
-            [1] J. H. Friedman, Multivariate Adaptive Regression Splines, 
-                                The Annals of Statistics, vol. 19, no. 1, pp. 1-67, Mar. 1991, 
-                                doi: 10.1214/aos/1176347963.
-            [2] SALib, https://github.com/SALib/SALib
+    References:
+        [1] J. H. Friedman, Multivariate Adaptive Regression Splines, 
+            The Annals of Statistics, vol. 19, no. 1, pp. 1-67, Mar. 1991, 
+            doi: 10.1214/aos/1176347963.
+        [2] SALib, https://github.com/SALib/SALib
+    --------------------------------------------------------------------------
     '''
     
     name="MARS_SA"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+        '''
+        Initializes the MARS_SA method.
+        
+        Args:
+            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
+                Tuple containing scalers for input (X) and output (Y) data. 
+                Defaults to (None, None).
+            verboseFlag (bool): 
+                If True, enables verbose mode for logging. Defaults to False.
+            logFlag (bool): 
+                If True, enables logging of results. Defaults to False.
+            saveFlag (bool): 
+                If True, saves the results to a file. Defaults to False.
+        '''
         
         #Attribute
         self.firstOrder = True
@@ -48,17 +62,23 @@ class MARS_SA(SA):
     
     def sample(self, problem: Problem, N: int=500, sampler: Sampler = LHS('classic')):
         '''
-            Generate samples
-            -------------------------------
-            Parameters:
-                N: int, default=500
-                    N is corresponding to the use sampler 
-                sampler: Sampler, default=LHS('classic')
-            
-            Returns:
-                X: 2d-np.ndarray
-                    the size is determined by the used sampler. Default: (N, n_input)            
+        Generate a sample set for the MARS method.
+
+        This method generates a sample of input data `X` using the specified sampling method.
+
+        Args:
+            problem (Problem): 
+                The problem instance defining the input space.
+            N (int, optional): 
+                The number of samples to generate. Defaults to 500.
+            sampler (Sampler, optional): 
+                The sampling method to use. Defaults to Latin Hypercube Sampling (LHS) with 'classic' mode.
+
+        Returns:
+            np.ndarray: 
+                A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
         '''
+        
         nInput = problem.nInput
         
         X = sampler.sample(N, nInput)
@@ -68,17 +88,23 @@ class MARS_SA(SA):
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray = None, Y: np.ndarray = None):
         '''
-            Perform MARS-SA
-            -------------------------------------
-            Parameters:
-                X: np.ndarray
-                    the input data
-                Y: np.ndarray
-                    the result data
-            
-            Returns:
-                Si: dict
-                    The type of Si is dict. It contains 'S1'.
+        Perform the MARS analysis on the input data.
+
+        This method calculates the MARS sensitivity analysis based on the input data `X` 
+        and output data `Y`. If `Y` is not provided, it is computed by evaluating the problem.
+
+        Args:
+            problem (Problem): 
+                The problem instance that defines the input and output space.
+            X (np.ndarray): 
+                A 2D array of shape `(N, nInput)`, representing the input data for analysis.
+            Y (np.ndarray, optional): 
+                A 1D array of length `N` representing the output values corresponding to `X`. 
+                If None, it will be computed by evaluating the problem with `X`.
+
+        Returns:
+            res (Result): 
+                A class containing the sensitivity result, you can sue `res.si` to obtain results.
         '''
         self.setProblem(problem)
         

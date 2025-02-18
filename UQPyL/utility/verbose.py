@@ -143,7 +143,7 @@ class Verbose():
                 
             func(obj, *args, **kwargs)
             
-            if obj.verbose and obj.iters%obj.verboseFreq==0:
+            if obj.verboseFlag and obj.iters%obj.verboseFreq==0:
                 title = "FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
                 spacing = int((totalWidth-len(title))/2)-1
                 Verbose.output("="*spacing+title+"="*spacing, problem)
@@ -229,7 +229,7 @@ class Verbose():
                 problem = args[0]
             elif 'problem' in kwargs:
                 problem = kwargs['problem']
-            problem.verboseFlag = obj.verbose
+            problem.verboseFlag = obj.verboseFlag
             totalWidth = Verbose.totalWidth
             
             if obj.logFlag or hasattr(problem, 'GUI'):
@@ -237,7 +237,7 @@ class Verbose():
             else:  
                 problem.logLines = None
             
-            if obj.verbose or obj.logFlag:
+            if obj.verboseFlag or obj.logFlag:
                 if hasattr(problem, 'GUI'):
                     totalWidth = problem.totalWidth
                 else:
@@ -256,7 +256,7 @@ class Verbose():
                     folderData, folderLog = Verbose.checkDir(Verbose.workDir)
                 
             #TODO            
-            if  obj.verbose or problem.logLines:
+            if  obj.verboseFlag or problem.logLines:
                 
                 title = obj.name+" Setting"
                 spacing = int((totalWidth-len(title))/2)-1
@@ -277,7 +277,7 @@ class Verbose():
             endTime = time.time()
             totalTime = endTime-startTime
             
-            if obj.verbose:
+            if obj.verboseFlag:
                 
                 title = "Conclusion"
                 spacing = int((totalWidth-len(title))/2)-1
@@ -336,7 +336,7 @@ class Verbose():
                 problem = args[0]
             elif 'problem' in kwargs:
                 problem = kwargs['problem']
-            problem.verboseFlag = obj.verbose
+            problem.verboseFlag = obj.verboseFlag
             
             totalWidth = Verbose.totalWidth
             
@@ -357,7 +357,7 @@ class Verbose():
                 else:
                     folderData, folderLog = Verbose.checkDir(Verbose.workDir)
             
-            if obj.verbose or obj.logFlag:
+            if obj.verboseFlag or obj.logFlag:
                 
                 title = obj.name+" Setting"
                 spacing = int((totalWidth-len(title))/2)-1
@@ -380,7 +380,7 @@ class Verbose():
                 
             res = func(obj, *args, **kwargs)
             
-            if obj.verbose or obj.logFlag:
+            if obj.verboseFlag or obj.logFlag:
       
                 title = "Conclusion"
                 spacing = int((totalWidth-len(title))/2)-1
