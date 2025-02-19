@@ -11,7 +11,7 @@ class Algorithm(metaclass=abc.ABCMeta):
     This is a baseclass for algorithms
     """
     def __init__(self, maxFEs=None, maxIterTimes=None, maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=False):
+                 verboseFlag=True, verboseFreq=10, logFlag=True, saveFlag=False):
         
         self.setting=Setting()
         self.result=Result(self)
@@ -22,7 +22,7 @@ class Algorithm(metaclass=abc.ABCMeta):
         self.maxTolerateTimes=maxTolerateTimes
         self.tolerate=tolerate
         
-        self.verbose=verbose
+        self.verboseFlag=verboseFlag
         self.verboseFreq=verboseFreq
         self.logFlag=logFlag
         self.saveFlag=saveFlag
@@ -31,13 +31,19 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         lhs=LHS('classic')
         xInit=lhs.sample(nInit, self.problem.nInput)
-        xInit=self.problem._unit_X_transform_to_bound(xInit, dst=False)
+        xInit=self.problem._transform_unit_X(xInit, dst=False)
         
         pop=Population(xInit)
         
         self.evaluate(pop)
         
         return pop
+    
+    def setProblem(self, problem):
+        
+        self.problem=problem
+        
+        self.setting.setParameter('optType', problem.optType)
     
     @staticmethod
     def initializeRun(func):
@@ -78,6 +84,7 @@ class Algorithm(metaclass=abc.ABCMeta):
     def setProblem(self, problem):
         
         self.problem=problem
+        self.optType = self.problem.optType
     
     def saveResult(self):
         

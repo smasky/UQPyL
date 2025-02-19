@@ -9,9 +9,6 @@ from ..problems import ProblemABC as Problem
 
 class SA(metaclass=abc.ABCMeta):
     
-    result = {}
-    firstOrder = False; secondOrder = False; totalOrder = False
-    
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
              

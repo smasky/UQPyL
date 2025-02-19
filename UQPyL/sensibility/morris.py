@@ -34,6 +34,8 @@ class Morris(SA):
         analyze: Perform Morris analysis from the X and Y you provided.
 
     Examples:
+        # `problem` is an instance of ProblemABC or Problem from UQPyL.problems
+        #  You must create a problem instance before using this method.
         >>> mor_method = Morris(problem)
         >>> X = mor_method.sample(100, 4)
         >>> Y = problem.evaluate(X)

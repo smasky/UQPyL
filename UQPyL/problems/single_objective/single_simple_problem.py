@@ -41,7 +41,7 @@ class Sphere(ProblemABC):
         
         X = self._check_X_2d(X)
             
-        F = np.sum(X**2, axis=1)[:, np.newaxis]    
+        F = np.sum(X**2, axis=1)[:, np.newaxis]
         
         return F
 

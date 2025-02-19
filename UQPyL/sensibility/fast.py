@@ -19,6 +19,8 @@ class FAST(SA):
         analyze: Perform FAST analysis from the X and Y you provided.
     
     Examples:
+        # `problem` is an instance of ProblemABC or Problem from UQPyL.problems
+        #  You must create a problem instance before using this method.
         >>> fast_method = FAST()
         >>> X = fast_method.sample(problem)
         >>> res = fast_method.analyze(problem, X)

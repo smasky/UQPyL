@@ -1,11 +1,11 @@
 import abc
 import numpy as np
-from typing import Union, Optional
+from typing import Union, Optional, Literal
 class ProblemABC(metaclass=abc.ABCMeta):
 
     def __init__(self, nInput:int, nOutput:int,
                  ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray],
-                 conWgt: Optional[list] = None,
+                 optType: Literal['min', 'max'] = 'min', conWgt: Optional[list] = None,
                  varType: Optional[list] = None, varSet: Optional[dict] = None,
                  xLabels: Optional[list] = None, yLabels: Optional[list] = None):
         
@@ -14,6 +14,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         self._set_ub_lb(ub,lb)
         
+        self.optType = self._check_optType(optType)
         self.encoding = "real"
         
         if varType==None:
@@ -90,6 +91,15 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         pass
     
+    def _check_optType(self, t):
+        
+        t = t.lower()
+        
+        if t not in ['min', 'max']:
+            raise ValueError("The optType must be 'min' or 'max'.")
+
+        return t
+
     def _transform_discrete_var(self, X):
         
         for i in self.idxD:

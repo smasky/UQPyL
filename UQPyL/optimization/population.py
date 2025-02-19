@@ -6,7 +6,7 @@ from .utility_functions.crowding_distance import crowdingDistance
 
 class Population():
     
-    def __init__(self, decs, objs = None, cons = None, conWgt = None):
+    def __init__(self, decs, objs = None, cons = None, conWgt = None, optType: str = 'min'):
         
         self.conWgt = conWgt
         
@@ -48,38 +48,101 @@ class Population():
             
         self.nPop=self.decs.shape[0]
     
-    def getBest(self, k=None):
+    def getBest(self, k: int = None):
         
-        if k is None:
-            if self.nOutput==1:
-                iMax = np.argmax(self.objs)
-                obj = self.objs[iMax]
-                decs = self.decs[iMax]
-                if cons != None:
-                    cons = self.cons[iMax]
-                return Population(decs, obj, cons, self.conWgt)
-            
-            else:
-                frontNo, _ = NDSort(self)
-                objs = self.objs[frontNo==1]
-                decs = self.decs[frontNo==1]
-                cons = self.cons[frontNo==1] if self.cons is not None else None
-                return Population(decs, objs, cons, self.conWgt)
-            
+        '''
+        Get the `k` best individual in the population.
+        '''
+        
+        if self.nOutput == 1:
+            return self._getBestSingle(k)
         else:
-            if self.nOutput==1:
-                idx = self.argsort()
-                return self[idx[:k]]
+            return self._getBestMulti(k)
+    
+    def _getBestSingle(self, k: int = None):
+        
+        if self.cons is not None:
+            
+            CV = self.conWgt * self.cons if self.conWgt is not None else self.cons
+            CV = np.sum(np.maximum(0, CV), axis=1)
+            feasible = CV <= 0
+            
+            combinedObjs = np.where(feasible[:, None],
+                                      self.objs,
+                                      self.objs + CV[:, None])
+        else:
+            combinedObjs = self.objs
+        
+        sortedIdx = np.argsort(combinedObjs.ravel())
+        
+        if k is not None:
+            sortedIdx = sortedIdx[:k]
+        else:
+            sortedIdx = sortedIdx[:1]
+        
+        return Population(self.decs[sortedIdx],
+                          self.objs[sortedIdx],
+                          self.cons[sortedIdx] if self.cons is not None else None,
+                          self.conWgt)
+    
+    def _getBestMulti(self, k: int = None):
+        
+        if self.cons is not None:
+            
+            CV = self.conWgt * self.cons if self.conWgt is not None else self.cons
+            CV = np.sum(np.maximum(0, CV), axis=1)
+            feasible = CV <= 0
+            
+            feasiblePop = self[feasible]
+            
+            if len(feasiblePop) > 0:
+                frontNo, _ = NDSort(feasiblePop)
+                nonDominated = frontNo == 1
+                bestPop = feasiblePop[nonDominated]
             
             else:
-                frontNo, _ = NDSort(self)
-                crowDis = crowdingDistance(self, frontNo)
-                indices = np.lexsort((-crowDis, frontNo))
-                objs = self.objs[indices[:k]]
-                decs = self.decs[indices[:k]]
-                cons = self.cons[indices[:k]] 
-                return Population(decs, objs, cons, self.conWgt)
+                sortedIdx = np.argsort(CV)
+                k = 10 if k is None else k
+                bestPop = self[sortedIdx[:k]]
+                return bestPop
+        else:
+            frontNo, _ = NDSort(self)
+            nonDominated = frontNo == 1
+            bestPop = self[nonDominated]
+        
+        if k is not None and len(bestPop) > k:
+            crowDis = crowdingDistance(self, frontNo)
+            sortedIdx = np.lexsort((-crowDis, frontNo))
+            bestPop = self[sortedIdx[:k]]
+        
+        return bestPop
+    
+    def getParetoFront(self):
+        
+        if self.cons is not None:
             
+            CV = self.conWgt * self.cons if self.conWgt is not None else self.cons
+            CV = np.sum(np.maximum(0, CV), axis=1)
+            feasible = CV <= 0
+            
+            feasiblePop = self[feasible]
+            
+            if len(feasiblePop) > 0:
+                frontNo, _ = NDSort(feasiblePop)
+                nonDominated = frontNo == 1
+                bestPop = feasiblePop[nonDominated]
+                
+            else:
+                sortedIdx = np.argsort(CV)
+                bestPop = self[sortedIdx[:10]]
+                return bestPop
+        else:
+            frontNo, _ = NDSort(self)
+            nonDominated = frontNo == 1
+            bestPop = self[nonDominated]
+
+        return bestPop
+    
     def argsort(self):
         
         if self.nOutput == 1:
@@ -136,6 +199,9 @@ class Population():
         
         self.objs, self.cons = res['objs'], res['cons']
         
+        if problem.optType == 'max':
+            self.objs = -self.objs
+    
     def merge(self, otherPop):
         
         self.add(otherPop)

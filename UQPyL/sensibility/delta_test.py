@@ -4,11 +4,10 @@ from scipy.spatial import KDTree
 from typing import Optional, Tuple
 
 from .saABC import SA
-# from .util._binary_ga import Binary_GA
 from ..DoE import LHS, Sampler
-from ..problems import ProblemABC as Problem
+from ..problems import ProblemABC, Problem
 from ..utility import Scaler, Verbose
-
+from ..optimization import GA
 class Delta_Test(SA):
     """
     -------------------------------------------------
@@ -22,6 +21,8 @@ class Delta_Test(SA):
         analyze: perform Delta Test analyze from the X and Y you provided.
     
     Examples:
+        # `problem` is an instance of ProblemABC or Problem from UQPyL.problems
+        #  You must create a problem instance before using this method.
         >>> delta_method = Delta_Test(nNeighbors = 2)
         >>> X = delta_method.sample(problem, N = 1000)
         >>> res = delta_method.analyze(problem, X)
@@ -148,6 +149,16 @@ class Delta_Test(SA):
         
         if Y is None:
             Y = self.evaluate(X)
+        
+        X, Y=self.__check_and_scale_xy__(X, Y)
+        
+        @ProblemABC.singleFunc
+        def objFunc(x_):
+            
+            Indices = np.where(x_ == 1)[0]
+            XSub = X[:, Indices]
+            
+            return -1*self._cal_delta(XSub, Y, nNeighbors)
         
         pass
         

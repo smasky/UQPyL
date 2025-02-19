@@ -69,11 +69,11 @@ class GA(Algorithm):
                  maxIterTimes: int = 1000,
                  maxFEs: int = 50000,
                  maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
-                 verbose: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate,
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+                         verboseFlag=verboseFlag, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         #user-define setting
         self.setParameters('proC', proC)
@@ -93,7 +93,7 @@ class GA(Algorithm):
         nPop = self.getParaValue('nPop')
         
         #Problem
-        self.problem = problem
+        self.setProblem(problem)
         
         #Termination Condition Setting
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
@@ -102,7 +102,7 @@ class GA(Algorithm):
         pop = self.initialize(nPop)
         
         #Record
-        self.record(pop) 
+        self.record(pop)
         
         #Iterative
         while self.checkTermination():

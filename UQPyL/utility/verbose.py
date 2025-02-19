@@ -71,14 +71,14 @@ class Verbose():
     @staticmethod
     def verboseSingleSolutions(dec, obj, xLabels, yLabels, FEs, Iters, width, problem):
         
-        heads = ["FEs"]+["Iters"]+yLabels+xLabels
+        heads = ["FEs"]+["Iters"]+["OptType"]+yLabels+xLabels
         
-        values = [FEs, Iters]+[ format(item, ".2e") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
+        values = [FEs, Iters]+[problem.optType]+[ format(item, ".1e") for item in obj.ravel()]+[format(item, ".3f") for item in dec.ravel()]
         
         table = PrettyTable(heads)
         table.add_row([" "]*len(heads))
         headerString = table.get_string(fields=heads, header=True, border=False)
-        maxWidth = max(len(line) for line in headerString.splitlines())*1.5
+        maxWidth = max(len(line) for line in headerString.splitlines())*1.8
         
         count = math.ceil(maxWidth/width)
         
@@ -90,7 +90,7 @@ class Verbose():
     @staticmethod
     def verboseTable(heads, values, num, width):
         
-        col = len(heads)//num
+        col = math.ceil(len(heads)/num)
         rows = num
         tables = []
         
@@ -148,9 +148,9 @@ class Verbose():
                 spacing = int((totalWidth-len(title))/2)-1
                 Verbose.output("="*spacing+title+"="*spacing, problem)
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDec, obj.result.bestObj, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(obj.result.bestDecs, obj.result.bestObjs, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDec, obj.result.bestMetric, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(obj.result.bestDecs, obj.result.bestMetric, obj.FEs, obj.iters, totalWidth, problem)
         return wrapper
     
     @staticmethod
@@ -287,9 +287,9 @@ class Verbose():
                 Verbose.output(f"Best Objs and Best Decision with the FEs", problem)
                 
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(res.bestDec, res.bestObj, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(res.bestDecs, res.bestObjs, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDec, res.bestMetric, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(res.bestDecs, res.bestMetric, res.appearFEs, res.appearIters, totalWidth, problem)
 
             if obj.saveFlag:
                 

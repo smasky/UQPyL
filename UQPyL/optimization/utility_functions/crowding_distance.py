@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def crowdingDistance(pop, frontNo):
+def crowdingDistance(pop, frontNo = None):
     
     popObjs = pop.objs
     

@@ -38,6 +38,8 @@ class RSA(SA):
         analyze: Perform RSA analysis from the X and Y you provided.
 
     Examples:
+        # `problem` is an instance of ProblemABC or Problem from UQPyL.problems
+        #  You must create a problem instance before using this method.
         >>> rsa_method = RSA(problem)
         >>> X = rsa_method.sample(500)
         >>> Y = problem.evaluate(X)

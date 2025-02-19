@@ -36,14 +36,14 @@ import numpy as np
 
 #-----------------------------------------------------------------------------------#
 #Multi Objective
-# from UQPyL.optimization.multi_objective import NSGAII, NSGAIII, MOEAD, RVEA
-# from UQPyL.problems.multi_objective import ZDT1
+from UQPyL.optimization.multi_objective import NSGAII, NSGAIII, MOEAD, RVEA
+from UQPyL.problems.multi_objective import ZDT1
 
-# problem = ZDT1(30)
+problem = ZDT1(30)
 
 #NSGAII
-# nsgaii = NSGAII()
-# res = nsgaii.run(problem)
+nsgaii = NSGAII()
+res = nsgaii.run(problem)
 
 #NSGAIII
 # nsgaiii = NSGAIII()
