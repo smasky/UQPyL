@@ -199,9 +199,8 @@ class Population():
         
         self.objs, self.cons = res['objs'], res['cons']
         
-        if problem.optType == 'max':
-            self.objs = -self.objs
-    
+        self.objs = self.objs * problem.opt
+        
     def merge(self, otherPop):
         
         self.add(otherPop)

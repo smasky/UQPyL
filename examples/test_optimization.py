@@ -10,7 +10,7 @@ import numpy as np
 
 # problem = Sphere(30)
 
-# GA
+#GA
 # ga = GA()
 # res = ga.run(problem)
 

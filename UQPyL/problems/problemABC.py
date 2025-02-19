@@ -5,7 +5,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
     def __init__(self, nInput:int, nOutput:int,
                  ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray],
-                 optType: Literal['min', 'max'] = 'min', conWgt: Optional[list] = None,
+                 optType: Union[str, list] = 'min', conWgt: Optional[list] = None,
                  varType: Optional[list] = None, varSet: Optional[dict] = None,
                  xLabels: Optional[list] = None, yLabels: Optional[list] = None):
         
@@ -15,6 +15,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         self._set_ub_lb(ub,lb)
         
         self.optType = self._check_optType(optType)
+        
         self.encoding = "real"
         
         if varType==None:
@@ -93,12 +94,33 @@ class ProblemABC(metaclass=abc.ABCMeta):
     
     def _check_optType(self, t):
         
-        t = t.lower()
+        if isinstance(t, str):
+            
+            if t not in ['min', 'max']:
+                raise ValueError("The optType must be 'min' or 'max'.")
+            
+            if t == 'min':
+                self.opt = 1
+            else:
+                self.opt = -1
+                
+            t = [t.lower()]
+        elif isinstance(t, list):
+            if len(t) != self.nOutput:
+                raise ValueError("The length of optType must be equal to nOutput.")
+            
+            for i in t:
+                if i not in ['min', 'max']:
+                    raise ValueError("The optType must be 'min' or 'max'.")
+            
+            t = [i.lower() for i in t]
+            
+            self.opt = np.array([1 if i == 'min' else -1 for i in t])
+            
+        else:
+            raise ValueError("The type of optType must be str or list.")
         
-        if t not in ['min', 'max']:
-            raise ValueError("The optType must be 'min' or 'max'.")
-
-        return t
+        return " ".join(t)
 
     def _transform_discrete_var(self, X):
         

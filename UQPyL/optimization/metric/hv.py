@@ -1,32 +1,50 @@
 import numpy as np
 
-def HV(pop, refPoint=None):
+def HV(pop, refPoint=None, normalize=True):
+    """计算Pareto前沿的超体积指标。
     
+    参数:
+        pop: Population对象, 包含目标函数值
+        refPoint: numpy数组, 参考点。如果为None, 将自动生成。
+                  参考点应在所有目标维度上比任何解要差。
+        
+    返回:
+        float: 计算得到的超体积值
+    """
     popObjs = pop.getBest().objs
     _, m = popObjs.shape
     
+    if popObjs.size == 0:
+        return 0.0
+    
     if refPoint is None:
         
-        refPoint = np.ones(m)
-        fmin = np.min(np.vstack((popObjs, np.zeros((1,m)))), axis=0)
-        fmax = np.max(np.vstack((popObjs, np.ones((1,m)))), axis=0)
-        popObjs = (popObjs - fmin)/(fmax - fmin)/1.1
+        refPoint = np.max(popObjs, axis=0) * 1.1
         
+    if normalize:
+        
+        fmin = np.min(np.vstack((popObjs, np.zeros((1, m)))), axis=0)
+        fmax = np.max(np.vstack((popObjs, np.ones((1, m)))), axis=0)
+        
+        popObjs = (popObjs - fmin) / (fmax - fmin)
+        
+        refPoint = (refPoint - fmin) / (fmax - fmin)
+    
     if m < 4:    
-        pl=popObjs[np.lexsort(popObjs.T[::-1])]
+        pl = popObjs[np.lexsort(popObjs.T[::-1])]
         
-        S=[(1, pl)]
+        S = [(1, pl)]
         
         for k in range(m-1):
-            S_=[]
+            S_ = []
             for i in range(len(S)):
                 Stemp = slice(S[i][1], k, refPoint)
                 for j in range(len(Stemp)):
                     temp = (Stemp[j][0] * S[i][0], Stemp[j][1])
                     S_.append(temp)
-            S=S_
+            S = S_
         
-        hyperVolume=0
+        hyperVolume = 0
         
         for i in range(len(S)):
             p = S[i][1][0]
@@ -38,17 +56,12 @@ def HV(pop, refPoint=None):
          
          totalHyperVolume = np.prod(upperBounds - lowerBounds)
          
-         nSamples = 1e6
+         nSamples = int(1e6)
          
          samples = np.random.uniform(lowerBounds, upperBounds, (int(nSamples), m))
          
-         count = 0
-         
-         for sample in samples:
-             if np.any(np.all(popObjs<=sample, axis=1)):
-                 count+=1
-        
-         hyperVolume=count/nSamples*totalHyperVolume
+         dominated = np.any(np.all(popObjs <= samples[:, None], axis=2), axis=1)
+         hyperVolume = np.sum(dominated) / nSamples * totalHyperVolume
     
     return hyperVolume
 

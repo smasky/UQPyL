@@ -1,6 +1,7 @@
 import numpy as np 
 
 from .population import Population
+from .metric import HV
 class Result():
     
     def __init__(self, algorithm):
@@ -9,6 +10,7 @@ class Result():
         self.bestDecs = None
         self.bestObjs = None
         self.bestCons = None
+        self.bestMetric = None
         self.bestFeasible = False
         
         #Current best solution appearance
@@ -19,6 +21,8 @@ class Result():
         self.historyBestDecs = {}
         self.historyBestObjs = {}
         self.historyBestCons = {}
+        self.historyBestMetrics = {}
+        
         self.historyDecs = {}
         self.historyObjs = {}
         self.historyCons = {}
@@ -30,19 +34,19 @@ class Result():
         
         decs = np.copy(pop.decs)
         
-        optType = problem.optType
+        opt = problem.opt
         
         if problem.encoding == 'mix':
             decs = problem._transform_discrete_var(decs)
         
         if algType == 'EA':
-            self._update_EA(pop, FEs, iter, optType)
+            self._update_EA(pop, FEs, iter, opt)
         else:
-            self._update_MOEA(pop, FEs, iter, optType)
+            self._update_MOEA(pop, FEs, iter, opt)
         
-        self._update_history(pop, FEs, iter, optType)
+        self._update_history(pop, FEs, iter, opt)
       
-    def _update_EA(self, pop, FEs, iter, optType):
+    def _update_EA(self, pop, FEs, iter, opt):
         
         #Obtain local optima solutions
         bestPop = pop.getBest(k=1)
@@ -58,32 +62,36 @@ class Result():
         ):
             self.bestDecs = localBestDecs
             self.bestObjs = localBestObjs
-            self.bestTrueObjs = localBestObjs if optType == 'min' else -1*localBestObjs
+            self.bestTrueObjs = localBestObjs * opt
             self.bestCons = localBestCons
             self.bestFeasible = localBestFeasible
             self.appearFEs = FEs
             self.appearIters = iter
     
-    def _update_MOEA(self, pop, FEs, iter, optType):
+    def _update_MOEA(self, pop, FEs, iter, opt):
         
         bestPop = pop.getBest()
-        localBestDecs = bestPop.decs[0]
-        localBestObjs = bestPop.objs[0]
-        localBestCons = bestPop.cons[0] if bestPop.cons is not None else None
+        localBestDecs = bestPop.decs
+        localBestObjs = bestPop.objs
+        localBestCons = bestPop.cons if bestPop.cons is not None else None
         localBestFeasible = True if localBestCons is None else np.all(np.maximum(0, localBestCons) <= 0)
         
         self.bestDecs = localBestDecs
         self.bestObjs = localBestObjs
-        self.bestTrueObjs = localBestObjs if optType == 'min' else -1*localBestObjs
+        self.bestTrueObjs = localBestObjs * opt
         self.bestCons = localBestCons
         self.bestFeasible = localBestFeasible
+        
+        self.bestMetric = HV(pop, refPoint = np.max(pop.objs, axis=0) * 1.1)
+        self.historyBestMetrics[FEs] = self.bestMetric
+        
         self.appearFEs = FEs
         self.appearIters = iter
         
-    def _update_history(self, pop, FEs, iters, optType):
+    def _update_history(self, pop, FEs, iters, opt):
         
         self.historyDecs[FEs] = pop.decs
-        self.historyObjs[FEs] = pop.objs if optType == 'min' else -1*pop.objs
+        self.historyObjs[FEs] = pop.objs * opt
         self.historyCons[FEs] = pop.cons
         self.historyFEs[FEs] = iters
         
@@ -123,10 +131,7 @@ class Result():
                 item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs}
             else:
                 metrics = self.historyBestMetrics[key]
-                if isinstance(metrics[0], tuple):
-                    item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs, "HV": metrics[0][0], "IGD": metrics[0][1]}
-                else:
-                    item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs, "HV": metrics}
+                item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs, "HV": metrics}
             
             if self.historyBestCons[key] is not None:
                 item['Best Constrains'] = self.historyBestCons[key]
@@ -135,7 +140,7 @@ class Result():
         
         globalBest={}
         globalBest["Best Decisions"] = self.bestDecs
-        globalBest["Best Objectives"] = self.bestObjs
+        globalBest["Best Objectives"] = self.bestTrueObjs
         if self.bestCons is not None:
             globalBest["Best Constrains"] = self.bestCons
         globalBest["FEs"] = self.appearFEs

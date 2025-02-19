@@ -45,16 +45,12 @@ class Verbose():
         return f"{days} day | {hours} hour | {minutes} minute | {seconds: .2f} second"
     
     @staticmethod
-    def verboseMultiSolutions(dec, obj, FEs, Iters, width, problem):
+    def verboseMultiSolutions(dec, metric, feasible, FEs, Iters, width, problem):
         
         nDecs = dec.shape[0]
-        if len(obj) == 1:
-            yLabels = ["HV"]
-        else:
-            yLabels = ["HV", "IGD"]
         
-        heads = ["FEs"]+["Iters"]+yLabels+["Num of Non-dominated Solutions"]
-        values = [FEs, Iters]+[ format(item, ".4f") for item in obj]+[nDecs]
+        heads = ["FEs", "Iters","OptType", "HV", "Feasible", "Num of Non-dominated Solutions"]
+        values = [FEs, Iters, problem.optType]+[ format(metric, ".4f")]+[feasible]+[nDecs]
         
         table = PrettyTable(heads)
         table.add_row([" "]*len(heads))
@@ -69,18 +65,18 @@ class Verbose():
             Verbose.output(table, problem)
     
     @staticmethod
-    def verboseSingleSolutions(dec, obj, xLabels, yLabels, FEs, Iters, width, problem):
+    def verboseSingleSolutions(dec, obj, feasible, xLabels, yLabels, FEs, Iters, width, problem):
         
-        heads = ["FEs"]+["Iters"]+["OptType"]+yLabels+xLabels
+        heads = ["FEs"]+["Iters"]+["OptType"]+["Feasible"]+yLabels+xLabels
         
-        values = [FEs, Iters]+[problem.optType]+[ format(item, ".1e") for item in obj.ravel()]+[format(item, ".3f") for item in dec.ravel()]
+        values = [FEs, Iters]+[problem.optType]+[feasible]+[format(item, ".1e") for item in obj.ravel()]+[format(item, ".3f") for item in dec.ravel()]
         
         table = PrettyTable(heads)
         table.add_row([" "]*len(heads))
         headerString = table.get_string(fields=heads, header=True, border=False)
         maxWidth = max(len(line) for line in headerString.splitlines())*1.8
         
-        count = math.ceil(maxWidth/width)
+        count = math.ceil(maxWidth/width)+1
         
         tables = Verbose.verboseTable(heads, values, count, width)
         
@@ -141,16 +137,16 @@ class Verbose():
             else:
                 totalWidth = Verbose.totalWidth
                 
-            func(obj, *args, **kwargs)
+            func(obj, *args, **kwargs) # Main Process
             
             if obj.verboseFlag and obj.iters%obj.verboseFreq==0:
                 title = "FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
                 spacing = int((totalWidth-len(title))/2)-1
                 Verbose.output("="*spacing+title+"="*spacing, problem)
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDecs, obj.result.bestObjs, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(obj.result.bestDecs, obj.result.bestObjs, obj.result.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDecs, obj.result.bestMetric, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(obj.result.bestDecs, obj.result.bestMetric, obj.result.bestFeasible, obj.FEs, obj.iters, totalWidth, problem)
         return wrapper
     
     @staticmethod
@@ -287,10 +283,10 @@ class Verbose():
                 Verbose.output(f"Best Objs and Best Decision with the FEs", problem)
                 
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(res.bestDecs, res.bestObjs, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(res.bestDecs, res.bestObjs, res.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDecs, res.bestMetric, res.appearFEs, res.appearIters, totalWidth, problem)
-
+                    Verbose.verboseMultiSolutions(res.bestDecs, res.bestMetric, res.bestFeasible, res.appearFEs, res.appearIters, totalWidth, problem)
+                    
             if obj.saveFlag:
                 
                 Verbose.saveData(obj, folderData)
