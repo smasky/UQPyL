@@ -4,6 +4,7 @@ from typing import Optional, Tuple
 from .saABC import SA
 from ..utility import Scaler, Verbose
 from ..problems import ProblemABC as Problem
+
 class Morris(SA):
     """
     -------------------------------------------------
@@ -12,22 +13,6 @@ class Morris(SA):
     This class implements the Morris method, which is 
     used for screening and identifying important factors 
     in a model by calculating elementary effects.
-
-    Parameters:
-        problem (Problem): 
-            The problem instance defining the input space.
-        scalers (Tuple[Scaler, Scaler], optional): 
-            Tuple containing scalers for input (X) and output (Y) data. 
-            Defaults to (None, None).
-        numLevels (int): 
-            The number of levels for each input factor. 
-            Recommended values are between 4 and 10. Defaults to 4.
-        verboseFlag (bool): 
-            If True, enables verbose mode for logging. Defaults to False.
-        logFlag (bool): 
-            If True, enables logging of results. Defaults to False.
-        saveFlag (bool): 
-            If True, saves the results to a file. Defaults to False.
 
     Methods:
         sample: Generate a sample for Morris analysis
@@ -48,72 +33,42 @@ class Morris(SA):
     -------------------------------------------------
     """
     
-    name="Morris"
+    name = "Morris"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                       numLevels: int = 4,
-                       verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
-        '''
+                 numLevels: int = 4,
+                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+        """
         Initialize the Morris method for sensitivity analysis.
-        
-        The Morris method is a screening method used to identify important factors
-        in a model by calculating the elementary effects of input factors. This 
-        initialization sets up the necessary parameters and configurations.
 
-        Parameters:
-            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
-                Tuple containing scalers for input (X) and output (Y) data. 
-                Defaults to (None, None), meaning no scaling is applied.
-            numLevels (int): 
-                The number of levels for each input factor. This determines the 
-                granularity of the factor space exploration. Recommended values 
-                are between 4 and 10. Defaults to 4.
-            verboseFlag (bool): 
-                If True, enables verbose mode for logging, providing detailed 
-                output during execution. Defaults to False.
-            logFlag (bool): 
-                If True, enables logging of results to a file or console. 
-                Defaults to False.
-            saveFlag (bool): 
-                If True, saves the results to a file for later analysis. 
-                Defaults to False.
-        '''
+        :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
+        :param numLevels: int - The number of levels for each input factor. Recommended values are between 4 and 10. Defaults to 4.
+        :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
+        :param logFlag: bool - If True, enables logging of results. Defaults to False.
+        :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
+        """
         
-        #Attribute
+        # Attribute
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
         
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
-        #Parameter Setting
+        # Parameter Setting
         self.setParameters("numLevels", numLevels)
         
-        
     def sample(self, problem: Problem, numTrajectory: int = None, numLevels: Optional[int] = None) -> np.ndarray:
-        '''
-        Generate a sample for Morris analysis
-        ---------------------------------------
-        This method generates a sample of input data `X` for the Morris method,
-        which is used to compute the elementary effects of input factors.
+        """
+        Generate a sample for Morris analysis.
 
-        Parameters:  
-            problem (Problem): 
-                The problem instance defining the input space.
-            numTrajectory (int, optional): 
-                The number of trajectories. Each trajectory is a sequence of 
-                input points used to compute the elementary effects. 
-                Defaults to 500, recommended values are between 500 and 1000.
-            numLevels (int, optional): 
-                The number of levels for each input factor. If not provided, 
-                the initialized value of `numLevels` is used.
+        :param problem: Problem - The problem instance defining the input space.
+        :param numTrajectory: int, optional - The number of trajectories. Each trajectory is a sequence of input points used to compute the elementary effects. Defaults to 500.
+        :param numLevels: int, optional - The number of levels for each input factor. If not provided, the initialized value of `numLevels` is used.
 
-        Returns:
-            np.ndarray: 
-                A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, 
-                representing the generated sample points.
-        '''
-
+        :return: np.ndarray - A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, representing the generated sample points.
+        """
+        
         nt = numTrajectory
         
         if numLevels is None:
@@ -132,28 +87,15 @@ class Morris(SA):
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None) -> dict:
-        '''
-        Perform Morris analysis
-        -------------------------
-        This method performs the Morris sensitivity analysis by calculating 
-        the elementary effects of input factors based on the provided input 
-        data `X` and output data `Y`.
+        """
+        Perform Morris analysis.
 
-        Parameters:
-            problem (Problem): 
-                The problem instance defining the input and output space.
-            X (np.ndarray): 
-                A 2D array representing the input data for analysis.
-            Y (np.ndarray, optional): 
-                A 1D array representing the output values corresponding to `X`. 
-                If None, it will be computed by evaluating the problem with `X`.
+        :param problem: Problem - The problem instance defining the input and output space.
+        :param X: np.ndarray - A 2D array representing the input data for analysis.
+        :param Y: np.ndarray, optional - A 1D array representing the output values corresponding to `X`. If None, it will be computed by evaluating the problem with `X`.
 
-        Returns:
-            dict: 
-                A dictionary containing the sensitivity indices 'mu', 'mu_star', 
-                and 'sigma', which represent the mean, absolute mean, and standard 
-                deviation of the elementary effects, respectively.
-        '''
+        :return: dict - A dictionary containing the sensitivity indices 'mu', 'mu_star', and 'sigma', which represent the mean, absolute mean, and standard deviation of the elementary effects, respectively.
+        """
         numLevels = self.getParaValue("numLevels")
         
         self.setProblem(problem)
@@ -197,9 +139,9 @@ class Morris(SA):
     
     #-------------------------Private Function-------------------------------------#
     def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
-        '''
-            Generate a random trajectory from Reference[1]
-        '''
+        """
+        Generate a random trajectory from Reference[1].
+        """
         delta = num_levels/(2*(num_levels-1))
         
         B = np.tril(np.ones([nx + 1, nx], dtype=int), -1)

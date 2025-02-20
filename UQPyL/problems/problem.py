@@ -9,7 +9,7 @@ class Problem(ProblemABC):
                  objFunc: Optional[callable] = None, conFunc: Optional[callable] = None, 
                  evaluate: Optional[callable] = None,
                  conWgt: Optional[list] = None,
-                 varType: list = None, varSet: list = None, 
+                 varType: list = None, varSet: list = None, optType: Union[list, str] = 'min',
                  xLabels: list = None, yLabels: list = None, name: str = None):
         
         self.objFunc_ = None; self.conFunc_ = None; self.evaluate_ = None
@@ -30,4 +30,4 @@ class Problem(ProblemABC):
         
         super().__init__(nInput = nInput, nOutput = nOutput, ub = ub, lb = lb,
                          conWgt = conWgt, varType = varType, varSet = varSet, 
-                         xLabels = xLabels, yLabels = yLabels)
+                         xLabels = xLabels, yLabels = yLabels, optType = optType)

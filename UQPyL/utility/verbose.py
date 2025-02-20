@@ -26,7 +26,7 @@ class Verbose():
             text = str(text)+'\n'
         
         if problem.logLines is not None:
-            problem.logLines.append(text)
+            problem.logLines.append(text+'\n')
         
         if hasattr(problem, "verboseEmit"):
             if problem.verboseEmit:
@@ -144,9 +144,10 @@ class Verbose():
                 spacing = int((totalWidth-len(title))/2)-1
                 Verbose.output("="*spacing+title+"="*spacing, problem)
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDecs, obj.result.bestObjs, obj.result.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(obj.result.bestTrueDecs, obj.result.bestTrueObjs, obj.result.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDecs, obj.result.bestMetric, obj.result.bestFeasible, obj.FEs, obj.iters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(obj.result.bestTrueDecs, obj.result.bestMetric, obj.result.bestFeasible, obj.FEs, obj.iters, totalWidth, problem)
+        
         return wrapper
     
     @staticmethod
@@ -283,9 +284,9 @@ class Verbose():
                 Verbose.output(f"Best Objs and Best Decision with the FEs", problem)
                 
                 if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(res.bestDecs, res.bestObjs, res.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseSingleSolutions(res.bestTrueDecs, res.bestTrueObjs, res.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDecs, res.bestMetric, res.bestFeasible, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(res.bestTrueDecs, res.bestMetric, res.bestFeasible, res.appearFEs, res.appearIters, totalWidth, problem)
                     
             if obj.saveFlag:
                 

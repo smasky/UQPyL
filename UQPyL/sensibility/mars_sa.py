@@ -36,49 +36,35 @@ class MARS_SA(SA):
     --------------------------------------------------------------------------
     '''
     
-    name="MARS_SA"
+    name = "MARS_SA"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         '''
-        Initializes the MARS_SA method.
+        Initialize the MARS_SA method.
         
-        Args:
-            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
-                Tuple containing scalers for input (X) and output (Y) data. 
-                Defaults to (None, None).
-            verboseFlag (bool): 
-                If True, enables verbose mode for logging. Defaults to False.
-            logFlag (bool): 
-                If True, enables logging of results. Defaults to False.
-            saveFlag (bool): 
-                If True, saves the results to a file. Defaults to False.
+        :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
+        :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
+        :param logFlag: bool - If True, saves logging to a file. Defaults to False.
+        :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
         '''
         
-        #Attribute
+        # Attribute
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = False
         
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
     
-    def sample(self, problem: Problem, N: int=500, sampler: Sampler = LHS('classic')):
+    def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic')):
         '''
         Generate a sample set for the MARS method.
 
-        This method generates a sample of input data `X` using the specified sampling method.
+        :param problem: Problem - The problem instance defining the input space.
+        :param N: int, optional - The number of samples to generate. Defaults to 500.
+        :param sampler: Sampler, optional - The sampling method to use. Defaults to Latin Hypercube Sampling (LHS) with 'classic' mode.
 
-        Args:
-            problem (Problem): 
-                The problem instance defining the input space.
-            N (int, optional): 
-                The number of samples to generate. Defaults to 500.
-            sampler (Sampler, optional): 
-                The sampling method to use. Defaults to Latin Hypercube Sampling (LHS) with 'classic' mode.
-
-        Returns:
-            np.ndarray: 
-                A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
+        :return: np.ndarray - A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
         '''
         
         nInput = problem.nInput
@@ -92,21 +78,12 @@ class MARS_SA(SA):
         '''
         Perform the MARS analysis on the input data.
 
-        This method calculates the MARS sensitivity analysis based on the input data `X` 
-        and output data `Y`. If `Y` is not provided, it is computed by evaluating the problem.
+        :param problem: Problem - The problem instance that defines the input and output space.
+        :param X: np.ndarray - A 2D array of shape `(N, nInput)`, representing the input data for analysis.
+        :param Y: np.ndarray, optional - A 1D array of length `N` representing the output values corresponding to `X`. 
+                  If None, it will be computed by evaluating the problem with `X`.
 
-        Args:
-            problem (Problem): 
-                The problem instance that defines the input and output space.
-            X (np.ndarray): 
-                A 2D array of shape `(N, nInput)`, representing the input data for analysis.
-            Y (np.ndarray, optional): 
-                A 1D array of length `N` representing the output values corresponding to `X`. 
-                If None, it will be computed by evaluating the problem with `X`.
-
-        Returns:
-            res (Result): 
-                A class containing the sensitivity result, you can sue `res.si` to obtain results.
+        :return: Result - A class containing the sensitivity result, you can use `res.si` to obtain results.
         '''
         self.setProblem(problem)
         
@@ -118,32 +95,20 @@ class MARS_SA(SA):
         
         S1 = np.zeros(nInput)
         
-        #main process    
-        mars=MARS( scalers = (MinMaxScaler(0,1), MinMaxScaler(0,1)) )
+        # Main process    
+        mars = MARS(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
         mars.fit(X, Y)
         base_gcv = mars.gcv_
         
         for i in range(nInput):
             X_sub = np.delete(X, [i], axis=1)
-            mars = MARS( scalers=(MinMaxScaler(0,1), MinMaxScaler(0,1)) )
+            mars = MARS(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
             mars.fit(X_sub, Y)
             S1[i] = np.abs(base_gcv - mars.gcv_)
             
         S1_sum = sum(S1)
-        S1/=S1_sum
+        S1 /= S1_sum
         
         self.record('S1', problem.xLabels, S1)
         
         return self.result
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

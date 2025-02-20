@@ -140,7 +140,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
         return X
     
-    def _transform_unit_X(self, X, dst=True):
+    def _transform_unit_X(self, X, IFlag = True, DFlag = True):
         
         X_min = X.min(axis=0)
         X_max = X.max(axis=0)
@@ -150,12 +150,19 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         if self.encoding == 'mix':
             
-            self._transform_int_var(X_scaled)
-                
-            if dst:
-                X_scaled = self._transform_discrete_var(X_scaled)
+            X_scaled = self._transform_to_I_D(X_scaled, IFlag = IFlag, DFlag = DFlag)
         
         return X_scaled 
+    
+    def _transform_to_I_D(self, X, IFlag = True, DFlag = True):
+        
+        if IFlag:
+            X = self._transform_int_var(X)
+        
+        if DFlag:
+            X = self._transform_discrete_var(X)
+        
+        return X
     
     def _set_ub_lb(self, ub: Union[int, float, list, np.ndarray], 
                         lb: Union[int, float, list, np.ndarray]):
@@ -165,10 +172,10 @@ class ProblemABC(metaclass=abc.ABCMeta):
             
         elif(isinstance(ub, np.ndarray)):
             self._check_bound(ub)
-            self.ub = ub[:, np.newaxis]
+            self.ub = ub[np.newaxis, :]
         
         elif(isinstance(ub, list)):
-            self.ub = np.array(ub)[:, np.newaxis]
+            self.ub = np.array(ub)[np.newaxis, :]
             self._check_bound(self.ub)
             
         else:
@@ -179,10 +186,10 @@ class ProblemABC(metaclass=abc.ABCMeta):
             
         elif(isinstance(lb, np.ndarray)):
             self._check_bound(lb)
-            self.lb = lb[:, np.newaxis]
+            self.lb = lb[np.newaxis, :]
         
         elif(isinstance(lb, list)):
-            self.lb = np.array(lb)[:, np.newaxis]
+            self.lb = np.array(lb)[np.newaxis, :]
             self._check_bound(self.lb)
         
         else:

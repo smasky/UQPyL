@@ -188,11 +188,12 @@ class Population():
     
     def evaluate(self, problem):
         
-        decs = self.decs
+        decs = np.copy(self.decs)
         
         if problem.encoding == 'mix':
-            decs = problem._transform_discrete_var(np.copy(decs))
-        
+            decs = problem._transform_discrete_var(decs)
+            decs = problem._transform_int_var(decs)
+
         self.nOutput = problem.nOutput
         
         res = problem.evaluate(decs)

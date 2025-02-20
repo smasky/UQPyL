@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from .saABC import SA
 from ..problems import ProblemABC as Problem
 from ..utility import Scaler, Verbose
+
 class FAST(SA):
     
     """
@@ -35,30 +36,22 @@ class FAST(SA):
     --------------------------------------------------------------------------
     """
     
-    name="FAST"
+    name = "FAST"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                    M: int =4,
-                    verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
-        '''
-        Initializes the FAST method.
+                 M: int = 4,
+                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+        """
+        Initialize the FAST method.
+
+        :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
+        :param M: int - The interference parameter, i.e., the number of harmonics to sum in the Fourier series decomposition. Defaults to 4.
+        :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
+        :param logFlag: bool - If True, enables logging of results. Defaults to False.
+        :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
+        """
         
-        Args:
-            scalers (Tuple[Optional[Scaler], Optional[Scaler]]): 
-                Tuple containing scalers for input (X) and output (Y) data. 
-                Defaults to (None, None).
-            M (int): 
-                The interference parameter, i.e., the number of harmonics to sum in the
-                Fourier series decomposition. Defaults to 4.
-            verboseFlag (bool): 
-                If True, enables verbose mode for logging. Defaults to False.
-            logFlag (bool): 
-                If True, enables logging of results. Defaults to False.
-            saveFlag (bool): 
-                If True, saves the results to a file. Defaults to False.
-        '''
-        
-        #Attribute
+        # Attribute
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
@@ -71,19 +64,11 @@ class FAST(SA):
         """
         Generate a sample set for the FAST method.
 
-        This method generates a sample of input data `X` using the FAST sequence.
+        :param problem: Problem - The problem instance defining the input space.
+        :param N: int, optional - The number of sample points for each sequence. Defaults to 500.
+        :param M: int, optional - The Fourier frequency. If None, uses the initialized value of M.
 
-        Args:
-            problem (Problem): 
-                The problem instance defining the input space.
-            N (int, optional): 
-                The number of sample points for each sequence. Defaults to 500.
-            M (int, optional): 
-                The Fourier frequency. If None, uses the initialized value of M.
-
-        Returns:
-            res (Result): 
-                A class containing the sensitivity result, you can sue `res.si` to obtain results.
+        :return: Result - A class containing the sensitivity result, you can use `res.si` to obtain results.
         """
         
         # 
@@ -94,21 +79,21 @@ class FAST(SA):
         
         nInput = problem.nInput
         
-        if N < 4*M**2:
+        if N < 4 * M**2:
             raise ValueError("The number of sample must be greater than 4*M**2! \n Default M = 4 .")
         
         w = np.zeros(nInput)
-        w[0] = np.floor((N-1)/(2*M))
-        max_wi = np.floor(w[0]/(2*M))
+        w[0] = np.floor((N - 1) / (2 * M))
+        max_wi = np.floor(w[0] / (2 * M))
         
-        if max_wi >= nInput-1:
-            w[1:] = np.floor(np.linspace(1, max_wi, nInput-1))
+        if max_wi >= nInput - 1:
+            w[1:] = np.floor(np.linspace(1, max_wi, nInput - 1))
         else:
-            w[1:] = np.arange(nInput-1)%max_wi+1
+            w[1:] = np.arange(nInput - 1) % max_wi + 1
         
-        s = (2*np.pi/N)*np.arange(N)
+        s = (2 * np.pi / N) * np.arange(N)
         
-        X = np.zeros((N*nInput, nInput))
+        X = np.zeros((N * nInput, nInput))
         w_tmp = np.zeros(nInput)
         
         for i in range(nInput):
@@ -125,22 +110,13 @@ class FAST(SA):
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):
-        
         """
         Perform the FAST analysis on the input data.
 
-        This method calculates the FAST sensitivity analysis based on the input data `X` 
-        and output data `Y`. If `Y` is not provided, it is computed by evaluating the problem.
-
-        Args:
-            problem (Problem): 
-                The problem instance that defines the input and output space.
-            X (np.ndarray): 
-                A 2D array of shape `(N * nInput, nInput)`, representing the input data for analysis.
-            Y (np.ndarray, optional): 
-                A 1D array of length `N` representing the output values corresponding to `X`. 
-                If None, it will be computed by evaluating the problem with `X`.
-
+        :param problem: Problem - The problem instance that defines the input and output space.
+        :param X: np.ndarray - A 2D array of shape `(N * nInput, nInput)`, representing the input data for analysis.
+        :param Y: np.ndarray, optional - A 1D array of length `N` representing the output values corresponding to `X`. 
+                  If None, it will be computed by evaluating the problem with `X`.
         """
         #Parameter Setting
         M = self.getParaValue('M')

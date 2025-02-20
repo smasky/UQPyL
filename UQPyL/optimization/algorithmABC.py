@@ -31,7 +31,7 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         lhs=LHS('classic')
         xInit=lhs.sample(nInit, self.problem.nInput)
-        xInit=self.problem._transform_unit_X(xInit, dst=False)
+        xInit=self.problem._transform_unit_X(xInit, IFlag = False, DFlag = False)
         
         pop=Population(xInit)
         

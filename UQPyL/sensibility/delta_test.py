@@ -8,6 +8,7 @@ from ..DoE import LHS, Sampler
 from ..problems import ProblemABC, Problem
 from ..utility import Scaler, Verbose
 from ..optimization import GA
+
 class Delta_Test(SA):
     """
     -------------------------------------------------
@@ -37,22 +38,15 @@ class Delta_Test(SA):
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None), 
                        nNeighbors: int=2,
                        verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
-        '''
-        Initializes the Delta Test method. 
-        
-        args:
-            scaler (Tuple[Optional[Scaler], Optional[Scaler]]): 
-                Tuple containing scalers for input (X) and output (Y) data. 
-                Defaults to (None, None).   
-            nNeighbors (int): 
-                The number of nearest neighbors used in Delta Test estimation. Defaults to 2.
-            verboseFlag (bool): 
-                If True, enables verbose mode for logging. Defaults to False.
-            logFlag (bool): 
-                If True, enables logging of results. Defaults to False.
-            saveFlag (bool): 
-                If True, saves the results to a file. Defaults to False.           
-        '''
+        """
+        Initialize the Delta Test method.
+
+        :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
+        :param nNeighbors: int - The number of nearest neighbors used in Delta Test estimation. Defaults to 2.
+        :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
+        :param logFlag: bool - If True, saves logging to a file. Defaults to False.
+        :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
+        """
         
         #Attribute
         self.firstOrder = True
@@ -67,20 +61,11 @@ class Delta_Test(SA):
         """
         Generate a sample set for the Delta Test.
 
-        This method generates a sample of input data `X` using the specified sampling method.
-        The generated data is transformed into the unit space of the given problem.
+        :param problem: Problem - The problem instance defining the input space.
+        :param N: int - The number of samples to generate. Defaults to 500.
+        :param sampler: Sampler - The sampling method to use. Defaults to Latin Hypercube Sampling (LHS) with 'classic' mode.
 
-        Args:
-            problem (Problem): 
-                The problem instance defining the input space.
-            N (int, optional): 
-                The number of samples to generate. Defaults to 500.
-            sampler (Sampler, optional): 
-                The sampling method to use. Defaults to Latin Hypercube Sampling (LHS) with 'classic' mode.
-
-        Returns:
-            np.ndarray: 
-                A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
+        :return: np.ndarray - A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
         """
         
         nInput = problem.nInput
@@ -94,21 +79,12 @@ class Delta_Test(SA):
         """
         Perform the Delta Test analysis on the input data.
 
-        This method calculates the Delta Test sensitivity analysis based on the input data `X` 
-        and output data `Y`. If `Y` is not provided, it is computed by evaluating the problem.
-
-        Args:
-            problem (Problem): 
-                The problem instance that defines the input and output space.
-            X (np.ndarray): 
-                A 2D array of shape `(N, n_input)`, representing the input data for analysis.
-            Y (np.ndarray, optional): 
-                A 1D array of length `N` representing the output values corresponding to `X`. 
-                If None, it will be computed by evaluating the problem with `X`.
+        :param problem: Problem - The problem instance that defines the input and output space.
+        :param X: np.ndarray - A 2D array of shape `(N, n_input)`, representing the input data for analysis.
+        :param Y: np.ndarray - A 1D array of length `N` representing the output values corresponding to `X`. 
+                  If None, it will be computed by evaluating the problem with `X`.
                 
-        Returns:
-            res (Result): 
-                A class containing the sensitivity result, you can sue `res.si` to obtain results.        
+        :return: Result - A class containing the sensitivity result, you can use `res.si` to obtain results.
         """
         
         self.setProblem(problem)
@@ -141,7 +117,21 @@ class Delta_Test(SA):
         return self.result
     
     #TODO Find the best GCV as the most sensitive combination
-    def findBestCombination(self, problem, X: np.ndarray, Y: np.ndarray=None):
+    def findCombEA(self, problem, X: np.ndarray, Y: np.ndarray=None, 
+                            FEs: int=10000, 
+                                verboseFlag: bool = True, saveFlag: bool = True):
+        """
+        Find the best combination using Evolutionary Algorithm.
+
+        :param problem: Problem - The problem instance.
+        :param X: np.ndarray - Input data array.
+        :param Y: np.ndarray - Output data array. If None, it will be computed.
+        :param FEs: int - Maximum number of function evaluations. Defaults to 10000.
+        :param verboseFlag: bool - If True, enables verbose mode. Defaults to True.
+        :param saveFlag: bool - If True, saves the results. Defaults to True.
+
+        :return: Result - The result of the optimization.
+        """
         
         self.setProblem(problem)
         
@@ -154,30 +144,91 @@ class Delta_Test(SA):
         
         @ProblemABC.singleFunc
         def objFunc(x_):
-            
+            """
+            Minimize the delta value.
+
+            :param x_: Binary array indicating selected variables.
+
+            :return: Delta value for the selected variables.
+            """
+            x_ = x_.astype(int)
             Indices = np.where(x_ == 1)[0]
             XSub = X[:, Indices]
             
-            return -1*self._cal_delta(XSub, Y, nNeighbors)
+            if np.sum(x_) == 0:
+                return np.inf
+            else:
+                return self._cal_delta(XSub, Y, nNeighbors)
         
-        pass
+        # Create the optimization problem
+        nInput = problem.nInput; nOutput = 1
+        ub = [1] * nInput; lb = [0] * nInput
+        varType = [1] * nInput
         
+        problem = Problem(nInput = nInput, nOutput = nOutput, ub = ub, lb = lb, 
+                            varType = varType, objFunc = objFunc, optType = 'min')
+        
+        # Initialize the GA
+        ga = GA(maxFEs = FEs, verboseFlag = verboseFlag, saveFlag = saveFlag)
+        
+        # Run the GA
+        res = ga.run(problem)
+        
+        return res
+    
+    def findCombVio(self, problem, X: np.ndarray, Y: np.ndarray=None):
+        """
+        Find the best combination using a brute-force approach.
+
+        :param problem: Problem - The problem instance.
+        :param X: np.ndarray - Input data array.
+        :param Y: np.ndarray - Output data array. If None, it will be computed.
+
+        :return: List[str] - List of labels for the most sensitive variables.
+        """
+        
+        from itertools import product
+        
+        self.setProblem(problem)
+        
+        nInput = problem.nInput
+        
+        nNeighbors = self.getParaValue('nNeighbors')
+        
+        if Y is None:
+            Y = self.evaluate(X)
+        
+        X, Y=self.__check_and_scale_xy__(X, Y)
+        
+        combinations = list(product([0, 1], repeat=nInput))
+        
+        objs = np.zeros((len(combinations), 1))
+        
+        for i in range(len(combinations)):
+            x_ = np.array(combinations[i])
+            Indices = np.where(x_ == 1)[0]
+            XSub = X[:, Indices]
+            
+            if np.sum(x_) == 0:
+                objs[i] = np.inf
+            else:
+                objs[i] = self._cal_delta(XSub, Y, nNeighbors)
+        
+        best_index = np.argmin(objs)
+        best_combination = combinations[best_index]
+        
+        return [problem.xLabels[i] for i in range(nInput) if best_combination[i] == 1]
+    
     #--------------------Private Function--------------------------#
-    def _cal_delta(self, X, Y, nNeighbors):
+    def _cal_delta(self, X: np.ndarray, Y: np.ndarray, nNeighbors: int):
         """
         Calculate the Delta value using KDTree for nearest neighbor search.
 
-        Parameters:
-            X (np.ndarray): 
-                The input data array.
-            Y (np.ndarray): 
-                The output data array.
-            nNeighbors (int): 
-                The number of nearest neighbors to consider.
+        :param X: np.ndarray - The input data array.
+        :param Y: np.ndarray - The output data array.
+        :param nNeighbors: int - The number of nearest neighbors to consider.
 
-        Returns:
-            float: 
-                The calculated Delta value.
+        :return: float - The calculated Delta value.
         """
         N, _ = X.shape
         
