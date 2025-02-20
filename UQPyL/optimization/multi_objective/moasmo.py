@@ -14,39 +14,11 @@ class MOASMO(Algorithm):
     '''
     Multi-Objective Adaptive Surrogate Modelling-based Optimization <Multi-objective> <Surrogate>
     -----------------------------------------------------------------
-    Attributes:
-        problem: Problem
-        the problem you want to solve, including the following attributes:
-            n_input: int
-                the input number of the problem
-            ub: 1d-np.ndarray or float
-                the upper bound of the problem
-            lb: 1d-np.ndarray or float
-                the lower bound of the problem
-            evaluate: Callable
-                the function to evaluate the input
-        surrogates: Surrogates
-            the surrogates you want to use, you should implement Mo_Surrogate class
-        Pct: float, default=0.2
-            the percentage of the population to be selected for infilling
-        n_init: int, default=50
-            the number of initial samples
-        n_pop: int, default=100
-            the number of population for evolution optimizer
-        maxFEs: int, default=1000
-            the maximum number of function evaluations
-        maxIter: int, default=100
-            the maximum number of iterations
-        x_init: 2d-np.ndarray, default=None
-            the initial input samples
-        y_init: 2d-np.ndarray, default=None
-            the initial output samples
-        advance_infilling: bool, default=False
-            the switch to use advanced infilling or not
-            
+    This class implements a multi-objective optimization algorithm using adaptive surrogate models.
+    
     Methods:
         run()
-            run the optimization
+            Executes the optimization process.
     
     References:
         [1] W. Gong et al., Multiobjective adaptive surrogate modeling-based optimization for parameter estimation of large, complex geophysical models, 
@@ -64,18 +36,39 @@ class MOASMO(Algorithm):
                  maxIterTimes: int=100,
                  maxTolerateTimes=None, tolerate=1e-6,
                  verbose=True, verboseFreq=1, logFlag=True, saveFlag=False):
-
+        '''
+        Initialize the MOASMO algorithm with user-defined parameters.
+        
+        :param surrogates: Surrogates - The surrogate models to use.
+        :param optimizer: Algorithm - The optimization algorithm to use.
+        :param pct: float - Percentage of the population for infilling.
+        :param nInit: int - Number of initial samples.
+        :param nPop: int - Population size for the optimizer.
+        :param advance_infilling: bool - Use advanced infilling if True.
+        :param maxFEs: int - Maximum number of function evaluations.
+        :param maxIterTimes: int - Maximum number of iterations.
+        :param maxTolerateTimes: int - Maximum number of tolerated iterations without improvement.
+        :param tolerate: float - Tolerance for improvement.
+        :param verbose: bool - Enable verbose output if True.
+        :param verboseFreq: int - Frequency of verbose output.
+        :param logFlag: bool - Enable logging if True.
+        :param saveFlag: bool - Enable saving results if True.
+        '''
+        
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
+        # Set user-defined parameters
         self.setParameters('pct', pct)
         self.setParameters('nInit', nInit)
         self.setParameters('advance_infilling', advance_infilling)
         
+        # Initialize surrogate models
         if surrogates is not None:
             self.surrogates = surrogates
         else:
             self.surrogates = Mo_Surrogates(n_surrogates=3, models_list=[RBF(), RBF(), RBF()])
         
+        # Initialize optimizer
         if optimizer is not None:
             self.optimizer = optimizer
         else:
@@ -84,25 +77,36 @@ class MOASMO(Algorithm):
     @Verbose.decoratorRun
     @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
+        '''
+        Execute the MOASMO algorithm on the specified problem.
+
+        :param problem: Problem - The problem instance to solve.
+        :param xInit: 2d-np.ndarray - Initial input samples.
+        :param yInit: 2d-np.ndarray - Initial output samples.
         
+        :return Result: An instance of the Result class, which contains the
+                        optimization results, including the best decision variables,
+                        objective values, and constraint violations encountered during
+                        the optimization process.
+        '''
+        
+        # Retrieve parameter values
         pct = self.getParaValue('pct')
         nInit = self.getParaValue('nInit')
         advance_infilling = self.getParaValue('advance_infilling')
         
         nInfilling = int(pct*nInit)
         
+        # Initialize termination conditions
         self.FEs=0; self.iters=0; self.tolerateTimes=0
         
-        #Problem
+        # Set the problem to solve
         self.problem = problem
         
-        #SubProblem
+        # Create a subproblem for surrogate model optimization
         subProblem = Problem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
         
-        #Termination Condition Setting
-        self.FEs = 0; self.iters = 0; self.tolerateTimes =0
-        
-        #Population Generation
+        # Generate initial population
         if xInit is not None:
             if yInit is not None:
                 pop = Population(xInit, yInit)
@@ -116,12 +120,13 @@ class MOASMO(Algorithm):
         else: 
             pop = self.initialize(nInit)
         
+        # Iterative optimization process
         while self.checkTermination():
             
-            #Build surrogate models
+            # Build surrogate models
             self.surrogates.fit(pop.decs, pop.objs)
             
-            #Run optimization
+            # Run optimization on the surrogate model
             res = self.optimizer.run(subProblem)
             
             offSpring = Population(decs=res.bestDec, objs=res.bestObj)
@@ -167,6 +172,7 @@ class MOASMO(Algorithm):
                     BestY = np.copy(np.array(added_points_Y))
                     bestOff = Population(decs = BestX, objs = BestY)
             
+            # Evaluate the selected offspring
             self.evaluate(bestOff)
             pop.add(bestOff)
             self.record(pop)

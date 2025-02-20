@@ -6,9 +6,20 @@ from ..population import Population
 from ...utility import Verbose
 from ..utility_functions import tournamentSelection, uniformPoint, NDSort, crowdingDistance
 from ..utility_functions.operation_GA import operationGA
+
 class NSGAIII(Algorithm):
     '''
     Non-dominated Sorting Genetic Algorithm III <Multi>
+    This class implements a multi-objective genetic algorithm for optimization.
+    
+    Methods:
+        run(problem, xInit=None, yInit=None): 
+            Executes the NSGA-III algorithm on a given problem.
+            - problem: Problem
+                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
+    
+    References:
+        [1] K. Deb and H. Jain, An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems with Box Constraints, 2014.
     '''
     
     name = "NSGAIII"
@@ -20,77 +31,147 @@ class NSGAIII(Algorithm):
                  maxTolerateTimes=None, tolerate=1e-6, 
                  verbose=True, verboseFreq=10, 
                  logFlag=True, saveFlag=True):
+        '''
+        Initialize the NSGA-III algorithm with user-defined parameters.
+        
+        :param proC: Crossover probability.
+        :param disC: Crossover distribution index.
+        :param proM: Mutation probability.
+        :param disM: Mutation distribution index.
+        :param nPop: Population size.
+        :param maxFEs: Maximum number of function evaluations.
+        :param maxIterTimes: Maximum number of iterations.
+        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
+        :param tolerate: Tolerance for improvement.
+        :param verbose: Flag to enable verbose output.
+        :param verboseFreq: Frequency of verbose output.
+        :param logFlag: Flag to enable logging.
+        :param saveFlag: Flag to enable saving results.
+        '''
         
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
+        # Set user-defined parameters
         self.setParameters('proC', proC)
         self.setParameters('disC', disC)
         self.setParameters('proM', proM)
         self.setParameters('disM', disM)
         self.setParameters('nPop', nPop)
         
-        #-------------------------Public Functions------------------------#
+    #-------------------------Public Functions------------------------#
     @Verbose.decoratorRun
     @Algorithm.initializeRun
     def run(self, problem, xInit=None, yInit=None):
+        '''
+        Execute the NSGA-III algorithm on the specified problem.
+
+        :param problem: An instance of a class derived from ProblemABC.
+                        This object defines the optimization problem, including
+                        the number of inputs (nInput), number of outputs (nOutput),
+                        upper bounds (ub), lower bounds (lb), and evaluation methods.
         
-        #Parameter Setting
-        proC, disC, proM, disM=self.getParaValue('proC', 'disC', 'proM', 'disM')
+        :return Result: An instance of the Result class, which contains the
+                        optimization results, including the best decision variables,
+                        objective values, and constraint violations encountered during
+                        the optimization process.
+        '''
+        
+        # Parameter Setting
+        proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaValue('nPop')
         
-        #Problem
+        # Set the problem to solve
         self.setProblem(problem)
         
+        # Generate uniform reference points
         Z, nPop = uniformPoint(nPop, problem.nOutput)
         
-        #Termination Condition Setting
-        self.FEs=0; self.iters=0
+        # Initialize termination conditions
+        self.FEs = 0; self.iters = 0
         
-        #Population Generation
+        # Generate initial population
         pop = self.initialize(nPop)
         
+        # Iterative process
         while self.checkTermination():
             
+            # Perform non-dominated sorting
             frontNo, _ = NDSort(pop)
+            # Calculate crowding distance
             crowdDis = crowdingDistance(pop, frontNo)
+            # Select mating pool using tournament selection
             matingPool = tournamentSelection(pop, 2, len(pop), frontNo, -crowdDis)
             
+            # Generate offspring using genetic operations
             offspring = operationGA(matingPool, self.problem.ub, self.problem.lb, proC, disC, proM, disM)
             
+            # Evaluate the offspring
             self.evaluate(offspring)
             
+            # Merge offspring with current population
             pop.merge(offspring)
             
+            # Update the minimum objective values
             Zmin = np.min(pop.objs, axis=0).reshape(1,-1)
             
+            # Select the best individuals to form the new population
             pop = self.environmentSelection(pop, Z, Zmin)
             
+            # Record the current state of the population
             self.record(pop)
         
+        # Return the final result
         return self.result
     
     def environmentSelection(self, pop, Z, Zmin):
+        '''
+        Perform environmental selection to choose the next generation.
+
+        :param pop: Current population.
+        :param Z: Reference points.
+        :param Zmin: Minimum objective values.
+        
+        :return: Selected offspring for the next generation.
+        '''
         
         N = Z.shape[0]
         
+        # Perform non-dominated sorting
         frontNo, maxFNo = NDSort(pop, N)
         
+        # Determine which individuals to keep
         next = frontNo < maxFNo
         
-        last = np.where(frontNo==maxFNo)[0]
+        # Identify the last front
+        last = np.where(frontNo == maxFNo)[0]
         
+        # Separate the population into selected and last front individuals
         popObjs1 = pop.objs[next]
         popObjs2 = pop.objs[last]
         
-        choose = self.lastSelection(popObjs1, popObjs2, N-popObjs1.shape[0], Z, Zmin)
+        # Select individuals from the last front
+        choose = self.lastSelection(popObjs1, popObjs2, N - popObjs1.shape[0], Z, Zmin)
         
+        # Update the selection
         next[last[choose]] = True
         
+        # Return the selected offspring
         offSpring = pop[next]
         
         return offSpring
         
     def lastSelection(self, PopObj1, PopObj2, K, Z, Zmin):
+        '''
+        Select individuals from the last front based on reference points.
+
+        :param PopObj1: Objective values of selected individuals.
+        :param PopObj2: Objective values of individuals in the last front.
+        :param K: Number of individuals to select.
+        :param Z: Reference points.
+        :param Zmin: Minimum objective values.
+        
+        :return: Boolean array indicating selected individuals.
+        '''
         
         from scipy.spatial.distance import cdist
         PopObj = np.vstack((PopObj1, PopObj2)) - Zmin
@@ -102,7 +183,7 @@ class NSGAIII(Algorithm):
         # Normalization
         # Detect the extreme points
         Extreme = np.zeros(M, dtype=int)
-        w = np.zeros((M,M))+ 1e-6 + np.eye(M)
+        w = np.zeros((M, M)) + 1e-6 + np.eye(M)
         for i in range(M):
             Extreme[i] = np.argmin(np.max(PopObj / w[i], axis=1))
 

@@ -49,11 +49,12 @@ class MARS_SA(SA):
         :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
         '''
         
-        # Attribute
+        # Attribute indicating the types of sensitivity indices calculated
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = False
         
+        # Initialize the base class with provided scalers and flags
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
     
     def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic')):
@@ -69,8 +70,10 @@ class MARS_SA(SA):
         
         nInput = problem.nInput
         
+        # Generate samples using the specified sampler
         X = sampler.sample(N, nInput)
         
+        # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
@@ -83,32 +86,42 @@ class MARS_SA(SA):
         :param Y: np.ndarray, optional - A 1D array of length `N` representing the output values corresponding to `X`. 
                   If None, it will be computed by evaluating the problem with `X`.
 
-        :return: Result - A class containing the sensitivity result, you can use `res.si` to obtain results.
+        :return: Result - An object containing the sensitivity indices 'S1', 'S2', and 'ST', 
+                          representing first-order, second-order, and total-order indices. 
+                          You can use result.Si to get the sensitivity indices.
         '''
+        # Set the problem instance for analysis
         self.setProblem(problem)
         
+        # Evaluate the problem if Y is not provided
         if Y is None:
             Y = self.evaluate(X)
         
+        # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
         nInput = problem.nInput
         
+        # Initialize an array to store first-order sensitivity indices
         S1 = np.zeros(nInput)
         
-        # Main process    
+        # Main process: Fit the MARS model and calculate sensitivity indices
         mars = MARS(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
         mars.fit(X, Y)
         base_gcv = mars.gcv_
         
+        # Calculate first-order sensitivity indices for each input variable
         for i in range(nInput):
             X_sub = np.delete(X, [i], axis=1)
             mars = MARS(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
             mars.fit(X_sub, Y)
             S1[i] = np.abs(base_gcv - mars.gcv_)
             
+        # Normalize the sensitivity indices
         S1_sum = sum(S1)
         S1 /= S1_sum
         
+        # Record the calculated sensitivity indices
         self.record('S1', problem.xLabels, S1)
         
+        # Return the result object containing all sensitivity indices
         return self.result

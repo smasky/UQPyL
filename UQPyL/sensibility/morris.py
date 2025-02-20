@@ -40,7 +40,7 @@ class Morris(SA):
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the Morris method for sensitivity analysis.
-
+        ----------------------------------------------------------------
         :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
         :param numLevels: int - The number of levels for each input factor. Recommended values are between 4 and 10. Defaults to 4.
         :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
@@ -48,20 +48,21 @@ class Morris(SA):
         :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
         """
         
-        # Attribute
+        # Attribute indicating the types of sensitivity indices calculated
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
         
+        # Initialize the base class with provided scalers and flags
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
-        # Parameter Setting
+        # Set the number of levels for each input factor
         self.setParameters("numLevels", numLevels)
         
     def sample(self, problem: Problem, numTrajectory: int = None, numLevels: Optional[int] = None) -> np.ndarray:
         """
         Generate a sample for Morris analysis.
-
+        -----------------------------------------------------
         :param problem: Problem - The problem instance defining the input space.
         :param numTrajectory: int, optional - The number of trajectories. Each trajectory is a sequence of input points used to compute the elementary effects. Defaults to 500.
         :param numLevels: int, optional - The number of levels for each input factor. If not provided, the initialized value of `numLevels` is used.
@@ -78,41 +79,52 @@ class Morris(SA):
         
         nInput = problem.nInput
         
+        # Initialize the sample array
         X = np.zeros((nt*(nInput+1), nInput))
         
+        # Generate trajectories for each input factor
         for i in range(nt):
             X[i*(nInput+1):(i+1)*(nInput+1), :] = self._generate_trajectory(nInput, numLevels)
         
+        # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None) -> dict:
         """
         Perform Morris analysis.
-
+        --------------------------------------------
         :param problem: Problem - The problem instance defining the input and output space.
         :param X: np.ndarray - A 2D array representing the input data for analysis.
         :param Y: np.ndarray, optional - A 1D array representing the output values corresponding to `X`. If None, it will be computed by evaluating the problem with `X`.
 
-        :return: dict - A dictionary containing the sensitivity indices 'mu', 'mu_star', and 'sigma', which represent the mean, absolute mean, and standard deviation of the elementary effects, respectively.
+        :return: Result - An object containing the sensitivity indices 'S1', 'S2', and 'ST', 
+                          representing first-order, second-order, and total-order indices. 
+                          You can use result.Si to get the sensitivity indices.
         """
+        # Retrieve the number of levels for each input factor
         numLevels = self.getParaValue("numLevels")
         
+        # Set the problem instance for analysis
         self.setProblem(problem)
         
         nInput = problem.nInput
         
+        # Evaluate the problem if Y is not provided
         if Y is None:
             Y = self.evaluate(X)
             
         numTrajectory = int(X.shape[0]/(nInput+1))
         
+        # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
 
+        # Initialize an array to store elementary effects
         EE = np.zeros((nInput, numTrajectory))
         
         N = int(X.shape[0]/numLevels)
         
+        # Calculate elementary effects for each trajectory
         for i in range(numTrajectory):
             X_sub = X[i*(nInput+1):(i+1)*(nInput+1), :]
             Y_sub = Y[i*(nInput+1):(i+1)*(nInput+1), :]
@@ -125,22 +137,31 @@ class Morris(SA):
             ee = Y_diff/delta_diff
             EE[:, i:i+1] = ee[indice]
             
+        # Calculate mean, absolute mean, and standard deviation of elementary effects
         mu = np.mean(EE, axis=1)
         mu_star= np.mean(np.abs(EE), axis=1)
         sigma = np.std(EE, axis=1, ddof=1)
         
+        # Record the calculated sensitivity indices
         self.record('mu', problem.xLabels, mu)
         self.record('mu_star', problem.xLabels, mu_star)
         self.record('sigma', problem.xLabels, sigma)
 
+        # Record scaled sensitivity indices
         self.record('S1(scaled)', problem.xLabels, mu_star/np.sum(mu_star))
         
+        # Return the result object containing all sensitivity indices
         return self.result
     
     #-------------------------Private Function-------------------------------------#
     def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
         """
         Generate a random trajectory from Reference[1].
+        -------------------------------------------------
+        :param nx: int - The number of input factors.
+        :param num_levels: int - The number of levels for each input factor.
+
+        :return: np.ndarray - A 2D array of shape `(nx + 1, nx)`, representing the generated trajectory.
         """
         delta = num_levels/(2*(num_levels-1))
         
@@ -165,7 +186,3 @@ class Morris(SA):
         B_star = element_a + (delta / 2.0) * (element_d + J)
     
         return B_star
-        
-    def _default_sample(self):
-        
-        return self.sample(500)

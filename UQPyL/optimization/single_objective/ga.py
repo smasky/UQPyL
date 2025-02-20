@@ -7,58 +7,24 @@ from ..algorithmABC import Algorithm, Verbose, Result
 from ..population import Population
 from ..utility_functions.operation_GA import operationGA
 from ..utility_functions.tournament_selection import tournamentSelection
+
 class GA(Algorithm):
     '''
-        Genetic Algorithm <single> <real>/<mix>
-        -------------------------------
-        Attributes:
-        
-            nPop: int, default=50
-                the population size of the algorithm
-            proC: float, default=1
-                the probability of crossover
-            disC: float, default=20
-                the distribution index of crossover
-            proM: float, default=1
-                the probability of mutation
-            disM: float, default=20
-                the distribution index of mutation
-                
-            maxIterTimes: int, default=10000
-                the maximum iteration times
-            maxFEs: int, default=2000000
-                the maximum function evaluations
-            maxTolerateTimes: int, default=1000
-                the maximum tolerate times which the best objective value does not change
-            tolerate: float, default=1e-6
-                the tolerate value which the best objective value does not change
-        
-        Methods:
-            run(problem): 
-                run the algorithm
-                - problem: Problem
-                the problem you want to solve, including the following attributes:
-                
-                    nInput: int
-                        the input number of the problem
-                    ub: 1d-np.ndarray or float
-                        the upper bound of the problem
-                    lb: 1d-np.ndarray or float
-                        the lower bound of the problem
-                    evaluate: Callable
-                        the function to evaluate the input
-                        
-                    Optional:
-                    var_type: np.array
-                        the type of variables of the problem
-                    var_set: list
-                        the sets of discrete variables of the problem
-        
-        References:
-            [1] D. E. Goldberg, Genetic Algorithms in Search, Optimization, and Machine Learning, 1989.
-            [2] M. Mitchell, An Introduction to Genetic Algorithms, 1998.
-            [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
-            [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
+    Genetic Algorithm <single> <real>/<mix>
+    -------------------------------
+    This class implements a single-objective genetic algorithm for optimization.
+    
+    Methods:
+        run(problem): 
+            Executes the genetic algorithm on a given problem.
+            - problem: Problem
+                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
+    
+    References:
+        [1] D. E. Goldberg, Genetic Algorithms in Search, Optimization, and Machine Learning, 1989.
+        [2] M. Mitchell, An Introduction to Genetic Algorithms, 1998.
+        [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
+        [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
     '''
     
     name = "GA"
@@ -70,12 +36,29 @@ class GA(Algorithm):
                  maxFEs: int = 50000,
                  maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
+        '''
+        Initialize the genetic algorithm with user-defined parameters.
+        
+        :param nPop: Population size.
+        :param proC: Crossover probability.
+        :param disC: Crossover distribution index.
+        :param proM: Mutation probability.
+        :param disM: Mutation distribution index.
+        :param maxIterTimes: Maximum number of iterations.
+        :param maxFEs: Maximum number of function evaluations.
+        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
+        :param tolerate: Tolerance for improvement.
+        :param verboseFlag: Flag to enable verbose output.
+        :param verboseFreq: Frequency of verbose output.
+        :param logFlag: Flag to enable logging.
+        :param saveFlag: Flag to enable saving results.
+        '''
         
         super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
                          maxTolerateTimes=maxTolerateTimes, tolerate=tolerate,
                          verboseFlag=verboseFlag, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
-        #user-define setting
+        # Set user-defined parameters
         self.setParameters('proC', proC)
         self.setParameters('disC', disC)
         self.setParameters('proM', proM)
@@ -86,37 +69,56 @@ class GA(Algorithm):
     @Verbose.decoratorRun
     @Algorithm.initializeRun
     def run(self, problem):
+        '''
+        Execute the genetic algorithm on the specified problem.
+
+        :param problem: An instance of a class derived from ProblemABC.
+                        This object defines the optimization problem, including
+                        the number of inputs (nInput), number of outputs (nOutput),
+                        upper bounds (ub), lower bounds (lb), and evaluation methods.
         
-        #Initialization
-        #Parameter Setting
+        :return Result: An instance of the Result class, which contains the
+                        optimization results, including the best decision variables,
+                        objective values, and constraint violations encountered during
+                        the optimization process.
+        '''
+        
+        # Initialization
+        # Retrieve parameter values
         proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaValue('nPop')
         
-        #Problem
+        # Set the problem to solve
         self.setProblem(problem)
         
-        #Termination Condition Setting
+        # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
-        #Population Generation
+        # Generate initial population
         pop = self.initialize(nPop)
         
-        #Record
+        # Record initial population state
         self.record(pop)
         
-        #Iterative
+        # Iterative process
         while self.checkTermination():
-            
+            # Select mating pool using tournament selection
             matingPool = tournamentSelection(pop, 2, len(pop), pop.objs, pop.cons)
             
+            # Generate offspring using genetic operations
             offspring = operationGA(matingPool, problem.ub, problem.lb, proC, disC, proM, disM)
             
+            # Evaluate the offspring
             self.evaluate(offspring)
             
+            # Merge offspring with current population
             pop = pop.merge(offspring)
             
+            # Select the best individuals to form the new population
             pop = pop.getBest(nPop)
             
+            # Record the current state of the population
             self.record(pop)
-            
+        
+        # Return the final result
         return self.result

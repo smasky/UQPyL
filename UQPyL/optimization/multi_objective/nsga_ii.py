@@ -1,48 +1,21 @@
 # Non-dominated Sorting Genetic Algorithm II (NSGA-II) <Multi>
 import numpy as np
 
-
 from ..utility_functions import NDSort, crowdingDistance, tournamentSelection
 from ..utility_functions.operation_GA import operationGA
 
 from ..algorithmABC import Algorithm
 from ..population import Population
 from ...utility import Verbose
+
 class NSGAII(Algorithm):
     '''
     Non-dominated Sorting Genetic Algorithm II <Multi>
     ------------------------------------------------
-    Attributes:
-        problem: Problem
-            the problem you want to solve, including the following attributes:
-            n_input: int
-                the input number of the problem
-            ub: 1d-np.ndarray or float
-                the upper bound of the problem
-            lb: 1d-np.ndarray or float
-                the lower bound of the problem
-            evaluate: Callable
-                the function to evaluate the input
-        n_samples: int, default=50
-            the number of samples for each generation
-        x_init: np.ndarray, default=None
-            the initial input
-        y_init: np.ndarray, default=None
-            the initial output
-        proC: float, default=1
-            the probability of crossover
-        disC: float, default=20
-            the distribution index of crossover
-        proM: float, default=1
-            the probability of mutation
-        disM: float, default=20
-            the distribution index of mutation
-        maxFEs: int, default=50000
-            the maximum number of function evaluations
-        maxIters: int, default=1000
-            the maximum number of iterations
+    This class implements the NSGA-II algorithm for multi-objective optimization.
+    
     Methods:
-        run: run the NSGA-II
+        run: Run the NSGA-II algorithm.
         
     References:
         [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
@@ -57,9 +30,27 @@ class NSGAII(Algorithm):
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes=None, tolerate=1e-6, 
                  verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
+        '''
+        Initialize the NSGA-II algorithm with user-defined parameters.
+        
+        :param proC: Crossover probability.
+        :param disC: Crossover distribution index.
+        :param proM: Mutation probability.
+        :param disM: Mutation distribution index.
+        :param nPop: Population size.
+        :param maxFEs: Maximum number of function evaluations.
+        :param maxIterTimes: Maximum number of iterations.
+        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
+        :param tolerate: Tolerance for improvement.
+        :param verbose: Flag to enable verbose output.
+        :param verboseFreq: Frequency of verbose output.
+        :param logFlag: Flag to enable logging.
+        :param saveFlag: Flag to enable saving results.
+        '''
         
         super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
         
+        # Set user-defined parameters
         self.setParameters('proC', proC)
         self.setParameters('disC', disC)
         self.setParameters('proM', proM)
@@ -70,54 +61,88 @@ class NSGAII(Algorithm):
     @Verbose.decoratorRun
     @Algorithm.initializeRun
     def run(self, problem):
+        '''
+        Execute the NSGA-II algorithm on the specified problem.
+
+        :param problem: An instance of a class derived from ProblemABC.
+                        This object defines the optimization problem, including
+                        the number of inputs (nInput), number of outputs (nOutput),
+                        upper bounds (ub), lower bounds (lb), and evaluation methods.
         
-        #Parameter Setting
+        :return Result: An instance of the Result class, which contains the
+                        optimization results, including the best decision variables,
+                        objective values, and constraint violations encountered during
+                        the optimization process.
+        '''
+        
+        # Parameter Setting
         proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaValue('nPop')
         
-        #Problem
+        # Set the problem to solve
         self.setProblem(problem)
         
-        #Termination Condition Setting
+        # Initialize termination conditions
         self.FEs = 0; self.iters = 0
         
-        #Population Generation
+        # Generate initial population
         pop = self.initialize(nPop)
         
+        # Perform environmental selection
         _, frontNo, CrowdDis = self.environmentalSelection(pop, nPop)
         
+        # Iterative process
         while self.checkTermination():
-            
+            # Select mating pool using tournament selection
             matingPool = tournamentSelection(pop, 2, len(pop), frontNo, -CrowdDis)
             
+            # Generate offspring using genetic operations
             offspring = operationGA(matingPool, problem.ub, problem.lb, proC, disC, proM, disM)
             
+            # Evaluate the offspring
             self.evaluate(offspring)
             
+            # Merge offspring with current population
             pop.merge(offspring)
             
+            # Perform environmental selection
             pop, frontNo, CrowdDis = self.environmentalSelection(pop, nPop)
             
+            # Record the current state of the population
             self.record(pop)
             
+        # Return the final result
         return self.result
     
     #-------------------------Private Functions--------------------------#
     def environmentalSelection(self, pop, n):
+        '''
+        Perform environmental selection to choose the next generation.
+
+        :param pop: Current population.
+        :param n: Number of individuals to select.
+        
+        :return: The next population, front numbers, and crowding distances.
+        '''
        
+        # Non-dominated sorting
         frontNo, maxFNo = NDSort(pop, n)
         
+        # Determine the next population
         next = frontNo < maxFNo
         
+        # Calculate crowding distance
         crowdDis = crowdingDistance(pop, frontNo)
         
+        # Handle the last front
         last = np.where(frontNo == maxFNo)[0]
         rank = np.argsort(-crowdDis[last])
         numSelected = n - np.sum(next)
         next[last[rank[:numSelected]]] = True
         
-        nextPop=pop[next]
-        nextFrontNo=frontNo[next]
-        nextCrowdDis=np.copy(crowdDis[next])
+        # Form the next population
+        nextPop = pop[next]
+        nextFrontNo = frontNo[next]
+        nextCrowdDis = np.copy(crowdDis[next])
         
         return nextPop, nextFrontNo, nextCrowdDis

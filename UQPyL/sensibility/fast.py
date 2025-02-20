@@ -51,13 +51,15 @@ class FAST(SA):
         :param saveFlag: bool - If True, saves the results to a file. Defaults to False.
         """
         
-        # Attribute
+        # Attributes indicating the types of sensitivity indices calculated
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = True
     
+        # Initialize the base class with provided scalers and flags
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
         
+        # Set the parameter for the number of harmonics
         self.setParameters("M", M)
 
     def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = None):
@@ -68,10 +70,10 @@ class FAST(SA):
         :param N: int, optional - The number of sample points for each sequence. Defaults to 500.
         :param M: int, optional - The Fourier frequency. If None, uses the initialized value of M.
 
-        :return: Result - A class containing the sensitivity result, you can use `res.si` to obtain results.
+        :return: np.ndarray - A 2D array representing the generated sample points.
         """
         
-        # 
+        # Use the initialized value of M if not provided
         if M is None:
             M = self.getParaValue('M')
         else:
@@ -79,18 +81,22 @@ class FAST(SA):
         
         nInput = problem.nInput
         
+        # Ensure the number of samples is sufficient
         if N < 4 * M**2:
             raise ValueError("The number of sample must be greater than 4*M**2! \n Default M = 4 .")
         
+        # Initialize frequency array
         w = np.zeros(nInput)
         w[0] = np.floor((N - 1) / (2 * M))
         max_wi = np.floor(w[0] / (2 * M))
         
+        # Assign frequencies to input variables
         if max_wi >= nInput - 1:
             w[1:] = np.floor(np.linspace(1, max_wi, nInput - 1))
         else:
             w[1:] = np.arange(nInput - 1) % max_wi + 1
         
+        # Generate the sample points
         s = (2 * np.pi / N) * np.arange(N)
         
         X = np.zeros((N * nInput, nInput))
@@ -98,14 +104,15 @@ class FAST(SA):
         
         for i in range(nInput):
             w_tmp[i] = w[0]
-            idx = list(range(i))+list(range(i+1,nInput))
+            idx = list(range(i)) + list(range(i + 1, nInput))
             w_tmp[idx] = w[1:]
-            idx = range(i*N, (i+1)*N)   
-            phi = 2*np.pi*np.random.rand()    
-            sin_result = np.sin(w_tmp[:,None]*s+phi)
-            arsin_result = (1/np.pi)*np.arcsin(sin_result) #saltelli formula
-            X[idx, :] = 0.5+arsin_result.transpose()
+            idx = range(i * N, (i + 1) * N)   
+            phi = 2 * np.pi * np.random.rand()    
+            sin_result = np.sin(w_tmp[:, None] * s + phi)
+            arsin_result = (1 / np.pi) * np.arcsin(sin_result)  # Saltelli formula
+            X[idx, :] = 0.5 + arsin_result.transpose()
         
+        # Transform the samples to the problem's input space
         return problem._unit_X_transform(X)
     
     @Verbose.decoratorAnalyze
@@ -117,40 +124,51 @@ class FAST(SA):
         :param X: np.ndarray - A 2D array of shape `(N * nInput, nInput)`, representing the input data for analysis.
         :param Y: np.ndarray, optional - A 1D array of length `N` representing the output values corresponding to `X`. 
                   If None, it will be computed by evaluating the problem with `X`.
+
+        :return: Result - An object containing the sensitivity indices 'S1', 'S2', and 'ST', 
+                          representing first-order, second-order, and total-order indices. 
+                          You can use result.Si to get the sensitivity indices.
         """
-        #Parameter Setting
+        # Retrieve the parameter for the number of harmonics
         M = self.getParaValue('M')
         
-        #Set problem
+        # Set the problem instance for analysis
         self.setProblem(problem)
         
+        # Evaluate the problem if Y is not provided
         if Y is None:
             Y = self.evaluate(X)
         
+        # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
         
-        nInput = problem.nInput; 
+        nInput = problem.nInput
         n = int(X.shape[0] / nInput)
         
-        S1 = np.zeros(nInput); ST = np.zeros(nInput)
+        # Initialize arrays to store sensitivity indices
+        S1 = np.zeros(nInput)
+        ST = np.zeros(nInput)
         
-        #main process
-        w_0 = np.floor((n-1)/(2*M))
+        # Calculate the base frequency
+        w_0 = np.floor((n - 1) / (2 * M))
              
+        # Calculate sensitivity indices for each input variable
         for i in range(nInput):
-            idx = np.arange(i*n, (i+1)*n)
+            idx = np.arange(i * n, (i + 1) * n)
             Y_sub = Y[idx]
             f = np.fft.fft(Y_sub.ravel())
             Sp = np.power(np.absolute(f[np.arange(1, np.ceil(n / 2), dtype=np.int32)]) / n, 2)
-            V = 2.0*np.sum(Sp)
-            Di = 2.0*np.sum(Sp[np.int32(np.arange(1, M+1, dtype=np.int32)*w_0-1)]) #pw<=(NS-1)/2 w_0=(NS-1)/M
-            Dt = 2.0*np.sum(Sp[np.arange(np.floor(w_0/2.0), dtype=np.int32)])
+            V = 2.0 * np.sum(Sp)
+            Di = 2.0 * np.sum(Sp[np.int32(np.arange(1, M + 1, dtype=np.int32) * w_0 - 1)])  # pw <= (NS-1)/2 w_0 = (NS-1)/M
+            Dt = 2.0 * np.sum(Sp[np.arange(np.floor(w_0 / 2.0), dtype=np.int32)])
             
-            S1[i] = Di/V
-            ST[i] = 1.0-Dt/V
+            S1[i] = Di / V
+            ST[i] = 1.0 - Dt / V
         
+        # Record the calculated sensitivity indices
         self.record('S1', problem.xLabels, S1)
         self.record('ST', problem.xLabels, ST)
         
+        # Return the result object containing all sensitivity indices
         return self.result
     
