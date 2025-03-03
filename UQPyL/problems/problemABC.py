@@ -21,6 +21,8 @@ class ProblemABC(metaclass=abc.ABCMeta):
         if varType==None:
             self.varType = np.zeros(self.nInput)
             self.idxF = np.arange(self.nInput)
+            self.idxI = np.array([])
+            self.idxD = np.array([])
         else:
             if len(varType) != nInput:
                 raise ValueError("The length of varType is not equal to nInput.")
@@ -124,19 +126,21 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
     def _transform_discrete_var(self, X):
         
-        for i in self.idxD:
-            S = self.varSet[i]
-            num_interval = len(S)
-            bins = np.linspace(self.lb[0, i], self.ub[0, i], num_interval+1)
-            indices = np.digitize(X[:, i], bins, right=False) - 1
-            indices[indices == num_interval] = num_interval-1
-            X[:, i] = np.array([S[i] for i in indices])
+        if self.idxD.size != 0:
+            for i in self.idxD:
+                S = self.varSet[i]
+                num_interval = len(S)
+                bins = np.linspace(self.lb[0, i], self.ub[0, i], num_interval+1)
+                indices = np.digitize(X[:, i], bins, right=False) - 1
+                indices[indices == num_interval] = num_interval-1
+                X[:, i] = np.array([S[i] for i in indices])
         
         return X
     
     def _transform_int_var(self, X):
         
-        X[:, self.idxI] = np.round(X[:, self.idxI])
+        if self.idxI.size != 0:
+            X[:, self.idxI] = np.round(X[:, self.idxI])
 
         return X
     

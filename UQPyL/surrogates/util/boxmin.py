@@ -1,6 +1,8 @@
 import numpy as np
 class Boxmin():
     
+    type = "MP"
+    
     def __init__(self) -> None:
         
         pass
@@ -14,7 +16,7 @@ class Boxmin():
         if xInit is None:
             xInit=np.random.uniform(problem.lb.ravel(), problem.ub.ravel(), problem.nInput)
             
-        self.func=problem.evaluate
+        self.func=problem.objFunc
         self.nv=0; 
         
         self._start(xInit)

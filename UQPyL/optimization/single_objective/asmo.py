@@ -34,7 +34,7 @@ class ASMO(Algorithm):
     name = "ASMO"
     type = "EA"
     
-    def __init__(self, nInit: int = 50,
+    def __init__(self, nInit: int = 50, 
                  surrogate: Surrogate = None,
                  optimizer: Algorithm = None,
                  maxFEs: int = 1000,
@@ -85,7 +85,10 @@ class ASMO(Algorithm):
         :param yInit: Optional initial objective values.
         :param oneStep: If True, the algorithm performs only one iteration.
         
-        :return: The result of the optimization process.
+        :return Result: An instance of the Result class, which contains the
+                        optimization results, including the best decision variables,
+                        objective values, and constraint violations encountered during
+                        the optimization process.
         '''
         
         # Initialization

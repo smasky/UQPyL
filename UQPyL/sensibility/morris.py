@@ -67,7 +67,7 @@ class Morris(SA):
         :param numTrajectory: int, optional - The number of trajectories. Each trajectory is a sequence of input points used to compute the elementary effects. Defaults to 500.
         :param numLevels: int, optional - The number of levels for each input factor. If not provided, the initialized value of `numLevels` is used.
 
-        :return: np.ndarray - A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, representing the generated sample points.
+        :return X: np.ndarray - A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, representing the generated sample points.
         """
         
         nt = numTrajectory

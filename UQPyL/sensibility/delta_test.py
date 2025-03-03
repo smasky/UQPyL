@@ -20,6 +20,8 @@ class Delta_Test(SA):
     Methods:
         sample: Generate a sample for Delta Test analysis
         analyze: Perform Delta Test analysis from the X and Y you provided.
+        findCombEA: Find the best combination using Evolutionary Algorithm.
+        findCombVio: Find the best combination using brute-force approach.
     
     Examples:
         # `problem` is an instance of ProblemABC or Problem from UQPyL.problems
@@ -128,7 +130,6 @@ class Delta_Test(SA):
 
         return self.result
     
-    # TODO: Find the best GCV as the most sensitive combination
     def findCombEA(self, problem, X: np.ndarray, Y: np.ndarray = None, 
                    FEs: int = 10000, 
                    verboseFlag: bool = True, saveFlag: bool = True):

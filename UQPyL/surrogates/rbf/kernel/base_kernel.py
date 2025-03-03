@@ -25,6 +25,9 @@ class BaseKernel(metaclass=abc.ABCMeta):
     def evaluate(self, pdist):
         pass
     
+    def initialize(self, nInput):
+        pass
+    
     def get_A_Matrix(self, xTrain):
         
         dist = squareform(pdist(xTrain,'euclidean'))

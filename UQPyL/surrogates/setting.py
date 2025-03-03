@@ -32,7 +32,15 @@ class Setting():
             T.append(self.parasType[name])
             
         return paraInfos, np.concatenate(ub), np.concatenate(lb)
+    
+    def removeSetting(self, setting):
         
+        self.parasValue.pop(setting.parasValue.keys())
+        self.parasUb.pop(setting.parasUb.keys())
+        self.parasLb.pop(setting.parasLb.keys())
+        self.parasSet.pop(setting.parasSet.keys())
+        self.parasType.pop(setting.parasType.keys())
+    
     def mergeSetting(self, setting):
         
         self.parasValue.update(setting.parasValue)
@@ -57,6 +65,15 @@ class Setting():
         lb = np.array([lb]) if not isinstance(lb, np.ndarray) else lb.ravel()
         ub = np.array([ub]) if not isinstance(ub, np.ndarray) else ub.ravel()
         
+        if T == 0:
+            lb = lb.astype(np.float64)
+            ub = ub.astype(np.float64)
+            value = value.astype(np.float64)
+        else:
+            lb = lb.astype(np.int32)
+            ub = ub.astype(np.int32)
+            value = value.astype(np.int32)
+            
         self.parasValue[name] = value
         self.parasUb[name] = ub
         self.parasLb[name] = lb

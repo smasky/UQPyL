@@ -18,20 +18,18 @@ class GPR(Surrogate):
     name = "GPR"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 polyFeature: PolynomialFeatures = None,
-                 kernel: BaseKernel = RBF(),
-                 optimizer: Algorithm = 'Boxmin', n_restarts_optimizer: int = 0,
-                 fitMode: Literal['likelihood', 'predictError', 'direct'] = 'likelihood',
-                 C: float = 1e-9, C_ub: float = 1e-6, C_lb: float = 1e-12):
+                    polyFeature: PolynomialFeatures = None,
+                        kernel: BaseKernel = RBF(),
+                            optimizer: Algorithm = 'Boxmin', nRestartTimes: int = 0,
+                                    C: float = 1e-9, C_ub: float = 1e-6, C_lb: float = 1e-12):
         
         super().__init__(scalers=scalers, polyFeature=polyFeature)
+        self.kernel = None
         
         self.setPara("C", C, C_lb, C_ub)
         
-        self.fitMode = fitMode
-        
         if isinstance(optimizer, Algorithm):
-            # optimizer.verbose = False
+            optimizer.verboseFlag = True
             optimizer.saveFlag = False
             optimizer.logFlag = False
         else:
@@ -39,26 +37,18 @@ class GPR(Surrogate):
             
         self.optimizer = optimizer
         
-        self.kernel = kernel
-        self.addSetting(kernel.setting)
+        self.setKernel(kernel)
         
-        self.n_restarts_optimizer = n_restarts_optimizer
+        self.nRes = nRestartTimes
         
 ###---------------------------------public function---------------------------------------###
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
         
-        self.setKernel(self.kernel, xTrain.shape[1])
+        self.kernel.initialize( xTrain.shape[1] )
         
-        if self.fitMode == 'likelihood':
-            self._fitLikelihood(xTrain, yTrain)
-            
-        elif self.fitMode == 'predictError':
-            self._fitPredictError(xTrain, yTrain)
-        
-        else:
-            self._fitPure(xTrain, yTrain)
+        self._fitLikelihood( xTrain, yTrain )
             
     def predict(self, xPred: np.ndarray, Output_std: bool=False):
         
@@ -83,82 +73,82 @@ class GPR(Surrogate):
         return self.__Y_inverse_transform__(y_mean)
     
 ###--------------------------private functions--------------------###
-    def _fitPredictError(self, xTrain, yTrain):
+    # def _fitPredictError(self, xTrain, yTrain):
         
-        tol_xTrain = np.copy(xTrain)
-        tol_yTrain = np.copy(yTrain)
+    #     tol_xTrain = np.copy(xTrain)
+    #     tol_yTrain = np.copy(yTrain)
         
-        #TODO cross-validation KFold Method
+    #     #TODO cross-validation KFold Method
         
-        RS = RandSelect(10)
-        train, test = RS.split(tol_xTrain)
+    #     RS = RandSelect(10)
+    #     train, test = RS.split(tol_xTrain)
         
-        xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
-        xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
+    #     xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
+    #     xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
         
-        self.xTrain = xTrain; self.yTrain = yTrain
-        nameList = list(self.setting.parasValue.keys())
+    #     self.xTrain = xTrain; self.yTrain = yTrain
+    #     nameList = list(self.setting.parasValue.keys())
         
-        paraInfos, ub, lb = self.setting.getParaInfos(nameList)
-        nInput = ub.size #TODO
+    #     paraInfos, ub, lb = self.setting.getParaInfos(nameList)
+    #     nInput = ub.size #TODO
         
-        if self.optimizer.type=="MP":
+    #     if self.optimizer.type=="MP":
             
-            def objFunc(varValue):
+    #         def objFunc(varValue):
                 
-                self.assignPara(paraInfos, np.exp(varValue))
-                obj = self._objfunc(xTrain, yTrain, record=True)
-                if obj==-np.inf:
-                    obj = obj*-1  
-                else:
-                    yPred = self.predict(self.__X_inverse_transform__(xTest))
-                    obj = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+    #             self.assignPara(paraInfos, np.exp(varValue))
+    #             obj = self._objfunc(xTrain, yTrain, record=True)
+    #             if obj==-np.inf:
+    #                 obj = obj*-1  
+    #             else:
+    #                 yPred = self.predict(self.__X_inverse_transform__(xTest))
+    #                 obj = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
                 
-                return obj
+    #             return obj
             
-            problem=Problem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
+    #         problem=Problem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
             
-            bestDec, bestObj = self.optimizer.run(problem)
+    #         bestDec, bestObj = self.optimizer.run(problem)
             
-        elif self.optimizer.type=="EA":
+    #     elif self.optimizer.type=="EA":
             
-            def objFunc(varValues):
+    #         def objFunc(varValues):
                 
-                varValues = np.exp(varValues)
-                objs = np.ones(varValues.shape[0])
+    #             varValues = np.exp(varValues)
+    #             objs = np.ones(varValues.shape[0])
                 
-                for i, varValue in enumerate(varValues):
+    #             for i, varValue in enumerate(varValues):
                     
-                    self.assignPara(paraInfos, varValue)
+    #                 self.assignPara(paraInfos, varValue)
 
-                    obj=self._objfunc(xTrain, yTrain, record=True)
+    #                 obj=self._objfunc(xTrain, yTrain, record=True)
                     
-                    if obj==-np.inf:
-                        objs[i] = obj*-1
+    #                 if obj==-np.inf:
+    #                     objs[i] = obj*-1
                         
-                    else:
-                        yPred = self.predict(self.__X_inverse_transform__(xTest))
-                        objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
+    #                 else:
+    #                     yPred = self.predict(self.__X_inverse_transform__(xTest))
+    #                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
 
-                return objs.reshape( (-1, 1) )
+    #             return objs.reshape( (-1, 1) )
             
-            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
-            res = self.optimizer.run(problem)
-            bestDec, bestObj = res.bestDec, res.bestObj
+    #         problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+    #         res = self.optimizer.run(problem)
+    #         bestDec, bestObj = res.bestDec, res.bestObj
 
-            for _ in range(self.n_restarts_optimizer):
-                res = self.optimizer.run(problem)
-                dec, obj = res.bestDec, res.bestObj
-                if obj < bestObj:
-                    bestDec, bestObj = dec, obj
-        #TODO     
-        if bestObj>-0.99:
-            self.xTrain = tol_xTrain; self.yTrain = tol_yTrain
-        else:
-            self.xTrain = xTrain; self.yTrain = yTrain
+    #         for _ in range(self.nRes):
+    #             res = self.optimizer.run(problem)
+    #             dec, obj = res.bestDec, res.bestObj
+    #             if obj < bestObj:
+    #                 bestDec, bestObj = dec, obj
+    #     #TODO     
+    #     if bestObj > -0.99:
+    #         self.xTrain = tol_xTrain; self.yTrain = tol_yTrain
+    #     else:
+    #         self.xTrain = xTrain; self.yTrain = yTrain
             
-        self.assignPara(paraInfos, np.exp(bestDec))
-        self._objfunc(self.xTrain, self.yTrain, record=True) #TODO
+    #     self.assignPara(paraInfos, np.exp(bestDec))
+    #     self._objfunc(self.xTrain, self.yTrain, record=True) #TODO
     
     def _fitPure(self, xTrain, yTrain):
         
@@ -171,6 +161,7 @@ class GPR(Surrogate):
         nameList = list(self.setting.parasValue.keys())
         
         paraInfos, ub, lb = self.setting.getParaInfos(nameList)
+        
         nInput = ub.size
         
         if self.optimizer.type=="MP":
@@ -182,37 +173,37 @@ class GPR(Surrogate):
                 return -self._objfunc(xTrain, yTrain, record=False)
                 
             problem = Problem(nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), objFunc = objFunc)
-            bestDec, bestObj = self.optimizer.run(problem)
+            bestDec, bestObj = self.optimizer.run(problem, xInit=np.ones(nInput)*1e-5)
             
         elif self.optimizer.type=="EA":
             
             def objFunc(varValues):
                 
-                objs=np.zeros(varValues.shape[0])
+                objs = np.zeros(varValues.shape[0])
                 
-                varValues=np.exp(varValues)
+                varValues = np.exp(varValues)
                 
                 for i, value in enumerate(varValues):
                     
                     self.assignPara(paraInfos, value)
                     
-                    objs[i]=-1*self._objfunc(xTrain, yTrain, record=False)
+                    objs[i] = -1*self._objfunc(xTrain, yTrain, record=False)
                     
                 return objs.reshape((-1, 1))
             
-            problem=Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
-            res=self.optimizer.run(problem)
-            bestDec, bestObj=res.bestDec, res.bestObj
+            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            res = self.optimizer.run(problem)
+            bestDecs, bestObj = res.bestDecs, res.bestObjs
             
-            for _ in range(self.n_restarts_optimizer):
+            for _ in range(self.nRes):
                 
-                res=self.optimizer.run(problem)
-                dec, obj=res.bestDec, res.bestObj
+                res = self.optimizer.run(problem)
+                dec, obj = res.bestDecs, res.bestObjs
                 
                 if obj < bestObj:
-                    bestDec, bestTheta=dec, obj
+                    bestDec, bestTheta = dec, obj
                     
-        self.assignPara(paraInfos, np.exp(bestDec))
+        self.assignPara(paraInfos, np.exp(bestDecs.ravel()))
         
         #Prepare for prediction
         self.xTrain = xTrain; self.yTrain = yTrain
@@ -223,45 +214,33 @@ class GPR(Surrogate):
             log_marginal_likelihood
         """
         
-        K=self.kernel(xTrain)
+        K = self.kernel(xTrain)
         
-        C=self.getPara("C")
+        C = self.getPara("C")
         
-        K[np.diag_indices_from(K)]+=C
+        K[np.diag_indices_from(K)] += C
         
         try:
-            L=cholesky(K, lower=True, check_finite=False)
+            L = cholesky(K, lower = True, check_finite = False)
         except np.linalg.LinAlgError:
             return -np.inf
         
-        alpha=cho_solve((L, True), yTrain, check_finite=False)
-        log_likelihood_dims= -0.5* np.einsum("ik,ik->k", yTrain, alpha)
-        log_likelihood_dims-=np.log(np.diag(L)).sum()
-        log_likelihood_dims-=K.shape[0]/2 * np.log(2*np.pi)
-        log_likelihood=np.sum(log_likelihood_dims)
+        alpha = cho_solve((L, True), yTrain, check_finite=False)
+        log_likelihood_dims =  -0.5* np.einsum("ik,ik->k", yTrain, alpha)
+        log_likelihood_dims -= np.log(np.diag(L)).sum()
+        log_likelihood_dims -= K.shape[0]/2 * np.log(2*np.pi)
+        log_likelihood = np.sum(log_likelihood_dims)
         
         if record:
-            self.L_=L
-            self.alpha_=alpha
+            self.L_ = L
+            self.alpha_ = alpha
 
         return log_likelihood
     
-    def setKernel(self, kernel: BaseKernel, N):
+    def setKernel(self, kernel: BaseKernel):
         
-        self.kernel=kernel
-        kernel.initialize(N)
+        if self.kernel is not None:
+            self.setting.removeSetting(self.kernel.setting) 
+        
+        self.kernel = kernel
         self.setting.mergeSetting(self.kernel.setting)
-        
-        
-        
-             
-        
-        
-        
-        
-        
-          
-
-
-
-

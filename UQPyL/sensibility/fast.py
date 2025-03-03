@@ -43,7 +43,7 @@ class FAST(SA):
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the FAST method.
-
+        ----------------------------------------------------------------
         :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
         :param M: int - The interference parameter, i.e., the number of harmonics to sum in the Fourier series decomposition. Defaults to 4.
         :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
@@ -65,7 +65,7 @@ class FAST(SA):
     def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = None):
         """
         Generate a sample set for the FAST method.
-
+        ----------------------------------------------------------------
         :param problem: Problem - The problem instance defining the input space.
         :param N: int, optional - The number of sample points for each sequence. Defaults to 500.
         :param M: int, optional - The Fourier frequency. If None, uses the initialized value of M.
@@ -119,7 +119,7 @@ class FAST(SA):
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):
         """
         Perform the FAST analysis on the input data.
-
+        ----------------------------------------------------------------
         :param problem: Problem - The problem instance that defines the input and output space.
         :param X: np.ndarray - A 2D array of shape `(N * nInput, nInput)`, representing the input data for analysis.
         :param Y: np.ndarray, optional - A 1D array of length `N` representing the output values corresponding to `X`. 

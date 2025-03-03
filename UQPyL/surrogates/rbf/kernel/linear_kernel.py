@@ -5,7 +5,7 @@ class Linear(BaseKernel):
     
     name="Linear"
     
-    def __init__(self, epsilon: float=1.0, epsilon_ub: float=1e5, epsilon_lb: float=1e-5):
+    def __init__(self, epsilon: float = 1.0, epsilon_ub: float = 1e5, epsilon_lb: float = 1e-5):
         
         super().__init__()
         self.setPara("epsilon", epsilon, epsilon_lb, epsilon_ub)

@@ -2,7 +2,9 @@ from .base_kernel import BaseKernel
 import numpy as np
 class Cubic(BaseKernel):
     
-    def __init__(self, epsilon: float=1.0, epsilon_ub: float=1e5, epsilon_lb: float=1e-5):
+    name = "Cubic"
+    
+    def __init__(self, epsilon: float = 1.0, epsilon_ub: float = 1e5, epsilon_lb: float = 1e-5):
         
         super().__init__()
         
@@ -10,7 +12,7 @@ class Cubic(BaseKernel):
         
     def evaluate(self, dist):
         
-        epsilon=self.getPara("epsilon")
+        epsilon = self.getPara("epsilon")
     
         return np.power(dist*epsilon,3)
     

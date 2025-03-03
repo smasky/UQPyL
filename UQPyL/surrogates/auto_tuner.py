@@ -6,7 +6,7 @@ from ..optimization.algorithmABC import Algorithm
 from ..utility.model_selections import RandSelect
 from ..utility.metrics import r_square
 from ..problems.problem import Problem
-class autoTuner():
+class AutoTuner():
     def __init__(self, optimizer: Algorithm, model: Surrogate):
         
         self.optimizer = optimizer

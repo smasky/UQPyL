@@ -8,17 +8,7 @@ class SCE_UA(Algorithm):
     Shuffled Complex Evolution (SCE-UA) method <Single>
     ---------------------------------------------------
     This class implements the SCE-UA algorithm for single-objective optimization.
-    
-    Attributes:
-        problem: Problem
-            The problem to solve, including attributes like n_input, ub, lb, and evaluate.
-        ngs: int, default=0
-            Number of complexes (sub-populations), with 0 meaning ngs=n_input.
-        maxFE: int, default=50000
-            Maximum number of function evaluations.
-        maxIter: int, default=1000
-            Maximum number of iterations.
-    
+
     Methods:
         run:
             Executes the SCE-UA optimization algorithm.

@@ -10,13 +10,13 @@ def decoratorRescale(func):
         if len(args)>=3:
             
             problem=args[2]
-            return problem._unit_X_transform_to_bound(result)
+            return problem._transform_unit_X(result)
         
         if 'problem' in kwargs:
             problem=kwargs['problem']
             
             if problem:
-                return problem._unit_X_transform_to_bound(result)
+                return problem._transform_unit_X(result)
 
         return result
     return wrapper

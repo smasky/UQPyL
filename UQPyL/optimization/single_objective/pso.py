@@ -12,26 +12,6 @@ class PSO(Algorithm):
     -----------------------------
     This class implements a single-objective particle swarm optimization algorithm.
     
-    Attributes:
-        problem: Problem
-            The problem to solve, including attributes like n_input, ub, lb, and evaluate.
-        n_sample: int, default=50
-            The number of samples as the population.
-        w: float, default=0.1
-            The inertia weight.
-        c1: float, default=0.5
-            The cognitive parameter.
-        c2: float, default=0.5
-            The social parameter.
-        maxIterTimes: int, default=1000
-            The maximum iteration times.
-        maxFEs: int, default=50000
-            The maximum function evaluations.
-        maxTolerateTimes: int, default=1000
-            The maximum tolerate times which the best objective value does not change.
-        tolerate: float, default=1e-6
-            The tolerate value which the best objective value does not change.
-    
     Methods:
         run: Run the Particle Swarm Optimization.
     

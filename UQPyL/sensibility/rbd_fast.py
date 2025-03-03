@@ -45,7 +45,7 @@ class RBD_FAST(SA):
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the RBD-FAST method for global sensitivity analysis.
-        
+        ----------------------------------------------------------------
         :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data. Defaults to (None, None).
         :param M: int - The interference parameter, representing the number of harmonics to sum in the Fourier series decomposition. Defaults to 4.
         :param verboseFlag: bool - If True, enables verbose mode for logging. Defaults to False.
@@ -66,7 +66,7 @@ class RBD_FAST(SA):
     def sample(self, problem: Problem, N: int = 500, M: Optional[int] = None, sampler: Sampler = LHS('classic')) -> np.ndarray:
         """
         Generate samples for RBD-FAST analysis.
-
+        ---------------------------------------
         :param problem: Problem - The problem instance defining the input space.
         :param N: int, optional - The number of sample points. Defaults to 500.
         :param M: int, optional - The interference parameter. If None, uses the initialized value of M.
@@ -97,7 +97,7 @@ class RBD_FAST(SA):
     def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray = None) -> dict:
         """
         Perform RBD-FAST analysis.
-
+        ---------------------------------------
         :param problem: Problem - The problem instance defining the input and output space.
         :param X: np.ndarray - A 2D array representing the input data for analysis.
         :param Y: np.ndarray, optional - A 1D array representing the output values corresponding to `X`. If None, it will be computed by evaluating the problem with `X`.

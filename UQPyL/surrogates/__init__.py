@@ -7,4 +7,4 @@ from . import kriging
 from . import mars
 from . import svr
 from . import fnn
-from .auto_tuner import autoTuner
+from .auto_tuner import AutoTuner
