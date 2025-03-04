@@ -9,12 +9,12 @@ class RBF(BaseKernel):
         RBF kernel
     """
     def __init__(self, length_scale: Union[float, np.ndarray]=1.0,
-                 length_ub: Union[float, np.ndarray]=1e5, length_lb: Union[float, np.ndarray]=1,
+                 length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
                  heterogeneous: bool=False):
         
         super().__init__()
         
-        self.setPara("l", length_scale, length_lb, length_ub)
+        self.setPara("l", length_scale, length_attr)
         self.heterogeneous=heterogeneous
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):

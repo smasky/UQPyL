@@ -21,12 +21,16 @@ class GPR(Surrogate):
                     polyFeature: PolynomialFeatures = None,
                         kernel: BaseKernel = RBF(),
                             optimizer: Algorithm = 'Boxmin', nRestartTimes: int = 0,
-                                    C: float = 1e-9, C_ub: float = 1e-6, C_lb: float = 1e-12):
+                                    C: float = 1e-9,
+                                    C_attr: dict = {'ub': 1e-6, 'lb':1e-12, 
+                                                        'type': 'float', 
+                                                        'log': 'True'}):
         
         super().__init__(scalers=scalers, polyFeature=polyFeature)
+        
         self.kernel = None
         
-        self.setPara("C", C, C_lb, C_ub)
+        self.setPara("C", C, C_attr)
         
         if isinstance(optimizer, Algorithm):
             optimizer.verboseFlag = True
@@ -72,84 +76,7 @@ class GPR(Surrogate):
         
         return self.__Y_inverse_transform__(y_mean)
     
-###--------------------------private functions--------------------###
-    # def _fitPredictError(self, xTrain, yTrain):
-        
-    #     tol_xTrain = np.copy(xTrain)
-    #     tol_yTrain = np.copy(yTrain)
-        
-    #     #TODO cross-validation KFold Method
-        
-    #     RS = RandSelect(10)
-    #     train, test = RS.split(tol_xTrain)
-        
-    #     xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
-    #     xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
-        
-    #     self.xTrain = xTrain; self.yTrain = yTrain
-    #     nameList = list(self.setting.parasValue.keys())
-        
-    #     paraInfos, ub, lb = self.setting.getParaInfos(nameList)
-    #     nInput = ub.size #TODO
-        
-    #     if self.optimizer.type=="MP":
-            
-    #         def objFunc(varValue):
-                
-    #             self.assignPara(paraInfos, np.exp(varValue))
-    #             obj = self._objfunc(xTrain, yTrain, record=True)
-    #             if obj==-np.inf:
-    #                 obj = obj*-1  
-    #             else:
-    #                 yPred = self.predict(self.__X_inverse_transform__(xTest))
-    #                 obj = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-                
-    #             return obj
-            
-    #         problem=Problem(nInput = nInput, nOutput = 1, ub = np.log(ub), lb = np.log(lb), objFunc = objFunc)
-            
-    #         bestDec, bestObj = self.optimizer.run(problem)
-            
-    #     elif self.optimizer.type=="EA":
-            
-    #         def objFunc(varValues):
-                
-    #             varValues = np.exp(varValues)
-    #             objs = np.ones(varValues.shape[0])
-                
-    #             for i, varValue in enumerate(varValues):
-                    
-    #                 self.assignPara(paraInfos, varValue)
-
-    #                 obj=self._objfunc(xTrain, yTrain, record=True)
-                    
-    #                 if obj==-np.inf:
-    #                     objs[i] = obj*-1
-                        
-    #                 else:
-    #                     yPred = self.predict(self.__X_inverse_transform__(xTest))
-    #                     objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-
-    #             return objs.reshape( (-1, 1) )
-            
-    #         problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
-    #         res = self.optimizer.run(problem)
-    #         bestDec, bestObj = res.bestDec, res.bestObj
-
-    #         for _ in range(self.nRes):
-    #             res = self.optimizer.run(problem)
-    #             dec, obj = res.bestDec, res.bestObj
-    #             if obj < bestObj:
-    #                 bestDec, bestObj = dec, obj
-    #     #TODO     
-    #     if bestObj > -0.99:
-    #         self.xTrain = tol_xTrain; self.yTrain = tol_yTrain
-    #     else:
-    #         self.xTrain = xTrain; self.yTrain = yTrain
-            
-    #     self.assignPara(paraInfos, np.exp(bestDec))
-    #     self._objfunc(self.xTrain, self.yTrain, record=True) #TODO
-    
+###--------------------------private functions--------------------###    
     def _fitPure(self, xTrain, yTrain):
         
         self.xTrain = xTrain; self.yTrain = yTrain
@@ -168,12 +95,14 @@ class GPR(Surrogate):
             
             def objFunc(varValue):
 
-                self.assignPara(paraInfos, np.exp(varValue))
+                self.assignPara(paraInfos, varValue)
                 
-                return -self._objfunc(xTrain, yTrain, record=False)
+                return self._objfunc(xTrain, yTrain, record = False)
                 
-            problem = Problem(nInput=nInput, nOutput=1, ub=np.log(ub), lb=np.log(lb), objFunc = objFunc)
-            bestDec, bestObj = self.optimizer.run(problem, xInit=np.ones(nInput)*1e-5)
+            problem = Problem(nInput = nInput, nOutput = 1, ub = ub, lb = lb, 
+                                objFunc = objFunc)
+            
+            bestDecs, bestObj = self.optimizer.run(problem)
             
         elif self.optimizer.type=="EA":
             
@@ -181,17 +110,16 @@ class GPR(Surrogate):
                 
                 objs = np.zeros(varValues.shape[0])
                 
-                varValues = np.exp(varValues)
-                
                 for i, value in enumerate(varValues):
                     
                     self.assignPara(paraInfos, value)
                     
-                    objs[i] = -1*self._objfunc(xTrain, yTrain, record=False)
+                    objs[i] = self._objfunc(xTrain, yTrain, record=False)
                     
-                return objs.reshape((-1, 1))
+                return objs.reshape( (-1, 1) )
             
-            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
+            
             res = self.optimizer.run(problem)
             bestDecs, bestObj = res.bestDecs, res.bestObjs
             
@@ -203,7 +131,7 @@ class GPR(Surrogate):
                 if obj < bestObj:
                     bestDec, bestTheta = dec, obj
                     
-        self.assignPara(paraInfos, np.exp(bestDecs.ravel()))
+        self.assignPara(paraInfos, bestDecs.ravel() )
         
         #Prepare for prediction
         self.xTrain = xTrain; self.yTrain = yTrain
@@ -244,3 +172,4 @@ class GPR(Surrogate):
         
         self.kernel = kernel
         self.setting.mergeSetting(self.kernel.setting)
+        self.kernel.setting = self.setting

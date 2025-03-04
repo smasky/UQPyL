@@ -18,14 +18,6 @@ class BaseKernel():
             raise ValueError("Please make sure the type of value")
         
         return value
-        
-    def setPara(self, key, value, lb, ub):
-        
-        self.setting.setPara(key, value, lb, ub)
-    
-    def getPara(self, *args):
-        
-        return self.setting.getPara(*args)
     
     def initialize(self, nInput):
         

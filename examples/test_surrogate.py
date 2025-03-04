@@ -35,12 +35,14 @@ YTest = problem.objFunc(XTest)
 
 #Gaussian Process
 from UQPyL.surrogates.gp import GPR
-from UQPyL.surrogates.gp.kernel import RBF
+from UQPyL.surrogates.gp.kernel import RBF, Matern
 from UQPyL.optimization.single_objective import GA
 
-ga = GA(maxFEs= 5000)
-kernel = RBF()
-gpr = GPR(kernel=kernel, optimizer = ga)
+ga = GA(maxFEs = 5000)
+
+kernel2 = Matern(length_scale= 10.0, nu = 1.5, optimize_nu = True)
+gpr = GPR(kernel = kernel2, optimizer = ga)
+
 gpr.fit(X, Y)
 
 YPred = gpr.predict(XTest)
@@ -48,3 +50,5 @@ YPred = gpr.predict(XTest)
 r2 = r_square(YTest, YPred)
 
 print(r2)
+
+

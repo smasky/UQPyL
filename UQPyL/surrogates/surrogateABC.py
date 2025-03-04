@@ -32,6 +32,7 @@ class Surrogate(metaclass=abc.ABCMeta):
             raise ValueError('Please make sure the type of train_data is np.ndarry')
                 
         xTrain = np.atleast_2d(xTrain)
+        
         yTrain = np.atleast_2d(yTrain).reshape(-1, 1)
         
         if(xTrain.shape[0]==yTrain.shape[0]):
@@ -53,31 +54,69 @@ class Surrogate(metaclass=abc.ABCMeta):
         X = self.xScaler.transform(X) if self.xScaler else X
         
         X = self.polyFeature.transform(X) if self.polyFeature else X
-            
+        
         return X
     
     def __Y_transform__(self, Y: np.ndarray) -> np.ndarray:
         
         Y = self.yScaler.transform(Y.reshape(-1,1)) if self.yScaler else Y
-            
+        
         return Y
     
     def __Y_inverse_transform__(self, Y: np.ndarray) -> np.ndarray:
 
-        
         Y = self.yScaler.inverse_transform(Y.reshape(-1,1)) if self.yScaler else Y
             
         return Y
     
     def __X_inverse_transform__(self, X: np.ndarray) -> np.ndarray:
-                
+          
         X = self.xScaler.inverse_transform(X) if self.xScaler else X
         
         return X
     
-    def setPara(self, key, value, lb, ub, T = 0, S = None):
+    def setPara(self, key, value, attr = None):
         
-        self.setting.setPara(key, value, lb, ub, T, S)
+        if attr is not None:
+            lb, ub, T, S, log = self._check_attr__(attr)          
+            self.setting.setPara(key, value, lb, ub, T, S, log)
+        else:
+            self.setting.setPara(key, value)
+    
+    def _check_attr__(self, attr):
+        
+        if hasattr(attr, 'lb'):
+            lb = attr['lb']
+        else:
+            lb = 0.0
+            
+        if hasattr(attr, 'ub'):
+            ub = attr['ub']
+        else:
+            ub = 1.0
+            
+        if hasattr(attr, 'type'):
+            T = attr['type']
+            if T == 'int':
+                T = 1
+            elif T == 'float':
+                T = 0
+            else:
+                T = 2
+        else:
+            T = 0
+
+        if hasattr(attr, 'log'):
+            log = attr['log']
+        else:
+            log = False
+            
+        if hasattr(attr, 'S'):
+            S = attr['S']
+        else:
+            S = None
+        
+        return lb, ub, T, S, log
     
     def getPara(self, *args):
         

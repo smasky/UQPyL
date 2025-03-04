@@ -30,10 +30,8 @@ class AutoTuner():
         
         xDataCopy, yDataCopy = np.copy(xData), np.copy(yData) 
         
-        if self.model.name in ["GPR", "KRG"]:
-            self.model.setKernel(self.model.kernel, xData.shape[1])
-        elif self.model.name in ["RBF"]:
-            self.model.setKernel(self.model.kernel)
+        if self.model.name in ["GPR", "KRG", "RBF"]:
+            self.model.kernel.initialize(xData.shape[1])
         
         selector = RandSelect(ratio)
         
@@ -42,7 +40,7 @@ class AutoTuner():
         xTrain, yTrain = xData[trainIdx], yData[trainIdx]
         xTest, yTest = xData[testIdx], yData[testIdx]
         
-        paraInfos, ub, lb = self.model.setting.getParaInfos(paraList)
+        paraInfos, ub, lb, varType, varSet = self.model.setting.getParaInfos(paraList)
         nInput = ub.size
         
         if useLog:
@@ -80,20 +78,21 @@ class AutoTuner():
                 ub[idx] = np.log(ub[idx])
                 lb[idx] = np.log(lb[idx])
             
-            problem = Problem(nInput, 1, ub, lb, objFunc=objFunc)
+            problem = Problem(nInput = nInput, nOutput = 1, ub = ub, lb = lb, 
+                                objFunc = objFunc, varType = varType, varSet = varSet)
             
             res = self.optimizer.run(problem=problem)
             
-            bestDec = res.bestDec; bestObj = res.bestObj
+            bestDecs = res.bestDecs.ravel(); bestObj = res.bestObjs.ravel()
             
             if useLog:
-                bestDec[idx] = np.exp(bestDec[idx])
+                bestDecs[idx] = np.exp(bestDecs[idx])
             
-            self.model.setting.assignValues(paraInfos, bestDec)
+            self.model.setting.assignValues(paraInfos, bestDecs)
             
             self.model._fitPure(xDataCopy, yDataCopy)
             
-            return bestDec, bestObj
+            return bestDecs, bestObj
             
     def getParaList(self):
         

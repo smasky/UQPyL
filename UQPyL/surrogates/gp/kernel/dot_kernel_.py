@@ -9,19 +9,20 @@ class DotProduct(BaseKernel):
     
     """
     
-    def __init__(self, sigma: float=1.0, sigma_ub: float=1e5, sigma_lb=1e-5):
+    def __init__(self, sigma: float=1.0, 
+                 sigma_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True}):
         
         super().__init__()
         
-        self.sigma=sigma
-        self.sigma_ub=sigma_ub
-        self.sigma_lb=sigma_lb
+        self.setPara('sigma', sigma, sigma_attr)
     
     def __call__(self, trainX, trainY: Optional[np.ndarray]=None):
         
+        sigma = self.getPara('sigma')
+        
         if trainY is None:
-            K=np.inner(trainX, trainX) + self.sigma**2
+            K=np.inner(trainX, trainX) + sigma**2
         else:
-            K=np.inner(trainX, trainY) + self.sigma**2
+            K=np.inner(trainX, trainY) + sigma**2
         
         return K

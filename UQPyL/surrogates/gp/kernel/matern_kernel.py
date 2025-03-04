@@ -24,20 +24,22 @@ class Matern(BaseKernel):
  
     """
     def __init__(self, length_scale: Union[float, np.ndarray] = 1.0,
-                 length_ub: Union[float, np.ndarray] = 1e5, length_lb: Union[float, np.ndarray] = 1,
-                 heterogeneous: bool = False,
-                 nu: Literal[0.5, 1.5, 2.5, np.inf] = 1.5, optimize_nu: bool = False):
-        
+                 length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
+                 nu: Literal[0.5, 1.5, 2.5, np.inf] = 1.5,
+                 nu_attr: dict = {'ub': 1, 'lb': 0, 'type': 'discrete', 'log': False},
+                 optimize_nu: bool = False,
+                 heterogeneous: bool = False):
+
         super().__init__()
         
         self.optimize_nu = optimize_nu
         
         self.heterogeneous = heterogeneous
         
-        self.setPara("l", length_scale, length_lb, length_ub)
+        self.setPara("l", length_scale, length_attr)
 
         if self.optimize_nu:
-            self.setPara("nu", nu, 0.5, 2.5)
+            self.setPara("nu", nu, nu_attr)
         else:
             self.nu = nu
         

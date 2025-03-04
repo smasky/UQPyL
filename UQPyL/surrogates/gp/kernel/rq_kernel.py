@@ -14,13 +14,14 @@ class RationalQuadratic(BaseKernel):
     theta: the set of unknown parameters. np.vstack(length_scale, alpha)
 
     """
-    def __init__(self, length_scale: Union[float, np.ndarray]=1.0, length_ub: Union[float, np.ndarray]=1e5, length_lb: Union[float, np.ndarray]=1,
-                 heterogeneous: bool=False,
-                 alpha: float=1.0, alpha_ub: float=1e5, alpha_lb: float=1e-5):
+    def __init__(self, length_scale: Union[float, np.ndarray]=1.0, 
+                 length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
+                 alpha: float=1.0, alpha_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True},
+                 heterogeneous: bool=False):
         
         super().__init__()
-        self.setPara("l", length_scale, length_lb, length_ub)
-        self.setPara("alpha", alpha, alpha_lb, alpha_ub)
+        self.setPara("l", length_scale, length_attr)
+        self.setPara("alpha", alpha, alpha_attr)
         self.heterogeneous=heterogeneous
        
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
