@@ -75,60 +75,65 @@ class Surrogate(metaclass=abc.ABCMeta):
         
         return X
     
-    def setPara(self, key, value, attr = None):
+    def getParaList(self):
         
-        if attr is not None:
-            lb, ub, T, S, log = self._check_attr__(attr)          
-            self.setting.setPara(key, value, lb, ub, T, S, log)
-        else:
-            self.setting.setPara(key, value)
+        return list(self.setting.parVal.keys())
     
-    def _check_attr__(self, attr):
+    # Abandoned 
+    # def setPara(self, key, value, attr = None):
         
-        if hasattr(attr, 'lb'):
-            lb = attr['lb']
-        else:
-            lb = 0.0
+    #     if attr is not None:
+    #         lb, ub, T, S, log = self._check_attr__(attr)          
+    #         self.setting.setPara(key, value, lb, ub, T, S, log)
+    #     else:
+    #         self.setting.setPara(key, value)
+    
+    # def _check_attr__(self, attr):
+        
+    #     if hasattr(attr, 'lb'):
+    #         lb = attr['lb']
+    #     else:
+    #         lb = 0.0
             
-        if hasattr(attr, 'ub'):
-            ub = attr['ub']
-        else:
-            ub = 1.0
+    #     if hasattr(attr, 'ub'):
+    #         ub = attr['ub']
+    #     else:
+    #         ub = 1.0
             
-        if hasattr(attr, 'type'):
-            T = attr['type']
-            if T == 'int':
-                T = 1
-            elif T == 'float':
-                T = 0
-            else:
-                T = 2
-        else:
-            T = 0
+    #     if hasattr(attr, 'type'):
+    #         T = attr['type']
+    #         if T == 'int':
+    #             T = 1
+    #         elif T == 'float':
+    #             T = 0
+    #         else:
+    #             T = 2
+    #     else:
+    #         T = 0
 
-        if hasattr(attr, 'log'):
-            log = attr['log']
-        else:
-            log = False
+    #     if hasattr(attr, 'log'):
+    #         log = attr['log']
+    #     else:
+    #         log = False
             
-        if hasattr(attr, 'S'):
-            S = attr['S']
-        else:
-            S = None
+    #     if hasattr(attr, 'S'):
+    #         S = attr['S']
+    #     else:
+    #         S = None
         
-        return lb, ub, T, S, log
+    #     return lb, ub, T, S, log
     
-    def getPara(self, *args):
+    # def getPara(self, *args):
         
-        return self.setting.getPara(*args)
+    #     return self.setting.getPara(*args)
     
-    def assignPara(self, key, value):
+    # def assignPara(self, key, value):
         
-        self.setting.assignValues(key, value)
+    #     self.setting.assignValues(key, value)
     
-    def addSetting(self, setting):
+    # def addSetting(self, setting):
         
-        self.setting.mergeSetting(setting)
+    #     self.setting.mergeSetting(setting)
      
     @abc.abstractmethod
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):

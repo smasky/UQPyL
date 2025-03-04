@@ -25,32 +25,28 @@ class Matern(BaseKernel):
     """
     def __init__(self, length_scale: Union[float, np.ndarray] = 1.0,
                  length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
-                 nu: Literal[0.5, 1.5, 2.5, np.inf] = 1.5,
-                 nu_attr: dict = {'ub': 1, 'lb': 0, 'type': 'discrete', 'log': False},
+                 nu: Literal['0.5', '1.5', '2.5', 'np.inf'] = 1.5,
                  optimize_nu: bool = False,
                  heterogeneous: bool = False):
 
         super().__init__()
         
-        self.optimize_nu = optimize_nu
-        
         self.heterogeneous = heterogeneous
         
-        self.setPara("l", length_scale, length_attr)
+        self.setting.setPara("l", length_scale, length_attr)
 
-        if self.optimize_nu:
-            self.setPara("nu", nu, nu_attr)
+        if optimize_nu:
+            nu_attr = {'ub': 1, 'lb': 1e-5, 'type': 'discrete', 'log': True, 'set': [0.5, 1.5, 2.5, np.inf]}
         else:
-            self.nu = nu
+            nu_attr = None
+            
+        self.setting.setPara("nu", nu, nu_attr)
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale = self.getPara("l")
+        length_scale = self.setting.getVals("l")
         
-        if self.optimize_nu:
-            nu = self.getPara("nu")
-        else:
-            nu = self.nu
+        nu = self.setting.getVals("nu")
         
         if xTrain2 is None:
             dists = pdist(xTrain1/length_scale, metric="euclidean")

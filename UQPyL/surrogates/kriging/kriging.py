@@ -258,13 +258,16 @@ class KRG(Surrogate):
                 
         F, D = self._initialize(xTrain)  #fitPar
         
-        paraInfos, ub, lb = self.setting.getParaInfos(["theta"])
+        nameList = self.getParaList()
+        
+        paraInfos, ub, lb = self.setting.getParaInfos(nameList) #TODO
+        
         nInput = ub.size
         
         if self.optimizer.type=="MP":
             
             def objFunc(varValue):
-                self.assignPara(paraInfos, varValue)
+                self.setting.setVals(paraInfos, varValue)
                 return self._objFunc(yTrain, F, D, record=False)
             
             ###Using Mathematical Programming Method
@@ -285,7 +288,7 @@ class KRG(Surrogate):
                 objs = np.zeros((thetas.shape[0], 1))
                 thetas = np.exp(thetas)
                 for i, theta in enumerate(thetas):
-                    self.assignPara(paraInfos, theta)
+                    self.setting.setVals(paraInfos, theta)
                     objs[i, 0] = self._objFunc(yTrain, F, D, record=False)
                     
                 return objs
@@ -305,7 +308,7 @@ class KRG(Surrogate):
                     bestObj = obj
         
         self.xTrain = xTrain; self.yTrain = yTrain
-        self.assignPara(paraInfos, bestDec)
+        self.setting.setVals(paraInfos, bestDec)
         self._objFunc(yTrain, F, D, record=True)
         
     def _initialize(self, xTrain: np.ndarray):

@@ -30,7 +30,7 @@ class GPR(Surrogate):
         
         self.kernel = None
         
-        self.setPara("C", C, C_attr)
+        self.setting.setPara("C", C, C_attr)
         
         if isinstance(optimizer, Algorithm):
             optimizer.verboseFlag = True
@@ -85,17 +85,17 @@ class GPR(Surrogate):
         
     def _fitLikelihood(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        nameList = list(self.setting.parasValue.keys())
+        nameList = self.getParaList()
         
         paraInfos, ub, lb = self.setting.getParaInfos(nameList)
         
         nInput = ub.size
         
-        if self.optimizer.type=="MP":
+        if self.optimizer.type == "MP":
             
             def objFunc(varValue):
 
-                self.assignPara(paraInfos, varValue)
+                self.setting.setVals(paraInfos, varValue)
                 
                 return self._objfunc(xTrain, yTrain, record = False)
                 
@@ -104,7 +104,7 @@ class GPR(Surrogate):
             
             bestDecs, bestObj = self.optimizer.run(problem)
             
-        elif self.optimizer.type=="EA":
+        elif self.optimizer.type == "EA":
             
             def objFunc(varValues):
                 
@@ -112,7 +112,7 @@ class GPR(Surrogate):
                 
                 for i, value in enumerate(varValues):
                     
-                    self.assignPara(paraInfos, value)
+                    self.setting.setVals(paraInfos, value)
                     
                     objs[i] = self._objfunc(xTrain, yTrain, record=False)
                     
@@ -131,7 +131,7 @@ class GPR(Surrogate):
                 if obj < bestObj:
                     bestDec, bestTheta = dec, obj
                     
-        self.assignPara(paraInfos, bestDecs.ravel() )
+        self.setting.setVals(paraInfos, bestDecs.ravel() )
         
         #Prepare for prediction
         self.xTrain = xTrain; self.yTrain = yTrain
@@ -144,7 +144,7 @@ class GPR(Surrogate):
         
         K = self.kernel(xTrain)
         
-        C = self.getPara("C")
+        C = self.setting.getVals("C")
         
         K[np.diag_indices_from(K)] += C
         

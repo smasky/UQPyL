@@ -5,14 +5,15 @@ class Linear(BaseKernel):
     
     name="Linear"
     
-    def __init__(self, epsilon: float = 1.0, epsilon_ub: float = 1e5, epsilon_lb: float = 1e-5):
+    def __init__(self, epsilon: float = 1.0, 
+                 epsilon_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True}):
         
         super().__init__()
-        self.setPara("epsilon", epsilon, epsilon_lb, epsilon_ub)
+        self.setting.setPara("epsilon", epsilon, epsilon_attr)
     
     def evaluate(self, dist):
         
-        epsilon=self.getPara("epsilon")
+        epsilon=self.setting.getVals("epsilon")
         
         return dist*epsilon
     

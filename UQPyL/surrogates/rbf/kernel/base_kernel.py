@@ -50,11 +50,11 @@ class BaseKernel(metaclass=abc.ABCMeta):
     def get_degree(self, nSamples):
         return None
     
-    def setPara(self, key, value, lb, ub):
+    # def setPara(self, key, value, lb, ub):
         
-        self.setting.setPara(key, value, lb, ub)
+    #     self.setting.setPara(key, value, lb, ub)
     
-    def getPara(self, *args):
+    # def getPara(self, *args):
         
-        return self.setting.getPara(*args) 
+    #     return self.setting.getPara(*args) 
         

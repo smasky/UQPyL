@@ -38,9 +38,9 @@ from UQPyL.surrogates.gp import GPR
 from UQPyL.surrogates.gp.kernel import RBF, Matern
 from UQPyL.optimization.single_objective import GA
 
-ga = GA(maxFEs = 5000)
+ga = GA(maxFEs = 50000)
 
-kernel2 = Matern(length_scale= 10.0, nu = 1.5, optimize_nu = True)
+kernel2 = Matern(length_scale= 10.0, nu = 1.5, heterogeneous = True)
 gpr = GPR(kernel = kernel2, optimizer = ga)
 
 gpr.fit(X, Y)

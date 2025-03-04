@@ -22,7 +22,6 @@ class RBF(Surrogate):
         setKernel: Set the kernel function for the RBF network.
         fit: Fit the RBF model to training data.
         predict: Predict outputs for given input data.
-        getParaList: Get the list of parameters for the RBF model.
     """
     
     name = "RBF"
@@ -30,18 +29,18 @@ class RBF(Surrogate):
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
                     polyFeature: PolynomialFeatures = None,
                         kernel: Optional[BaseKernel] = Cubic(), 
-                            C_smooth: int = 0.0, C_smooth_lb: int = 1e-5, C_smooth_ub: int = 1e5):
+                            C_smooth: int = 0.0, 
+                            C_smooth_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True}):
         """
         :param scalers: Tuple of input and output scalers.
         :param polyFeature: Polynomial features to be used.
         :param kernel: Kernel function for the RBF network.
         :param C_smooth: Smoothing parameter.
-        :param C_smooth_lb: Lower bound for the smoothing parameter.
-        :param C_smooth_ub: Upper bound for the smoothing parameter.
+        :param C_smooth_attr: Attribute for the smoothing parameter.
         """
         super().__init__(scalers, polyFeature)
         
-        self.setPara("C_smooth", C_smooth, C_smooth_lb, C_smooth_ub)
+        self.setting.setPara("C_smooth", C_smooth, C_smooth_attr)
         
         self.kernel = kernel
         
@@ -86,7 +85,7 @@ class RBF(Surrogate):
         """
         nSample, nFeature = xTrain.shape
         
-        C_smooth = self.getPara("C_smooth")
+        C_smooth = self.setting.getVals("C_smooth")
         
         A_Matrix = self.kernel.get_A_Matrix(xTrain) + C_smooth
         
@@ -144,10 +143,10 @@ class RBF(Surrogate):
         
         return self.__Y_inverse_transform__(temp1 + temp2)
     
-    def getParaList(self):
-        """
-        Get the list of parameters for the RBF model.
+    # def getParaList(self):
+    #     """
+    #     Get the list of parameters for the RBF model.
         
-        :return: List of parameter names.
-        """
-        return list(self.setting.parasValue.keys())
+    #     :return: List of parameter names.
+    #     """
+    #     return list(self.setting.parasValue.keys())
