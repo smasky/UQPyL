@@ -49,7 +49,9 @@ class AutoTuner():
                         
                     obj = -1*r_square(self.model.__Y_inverse_transform__(yTest), yPred)
                 
-                except Exception:
+                except Exception as e:
+                    
+                    print(f"Warning: Error in fitting the model: {e}")
                     obj = np.inf
                 
                 Y[i, 0] = obj
