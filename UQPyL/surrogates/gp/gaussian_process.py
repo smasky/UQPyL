@@ -8,7 +8,7 @@ from ...problems import Problem
 from ..surrogateABC import Surrogate
 from ...optimization import Algorithm
 from ...optimization.single_objective import GA
-from ...utility.model_selections import RandSelect
+from ...utility.data_selections import RandSelect
 from ...utility.metrics import r_square
 from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
@@ -103,12 +103,14 @@ class GPR(Surrogate):
                                 objFunc = objFunc)
             
             bestDecs, bestObj = self.optimizer.run(problem)
-            
+            print(bestObj)
         elif self.optimizer.type == "EA":
             
             def objFunc(varValues):
                 
                 objs = np.zeros(varValues.shape[0])
+                
+                # varValues[0, :] = np.array([-26.22] + [11.513]*15)
                 
                 for i, value in enumerate(varValues):
                     

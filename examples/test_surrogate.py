@@ -34,21 +34,72 @@ YTest = problem.objFunc(XTest)
 
 
 #Gaussian Process
-from UQPyL.surrogates.gp import GPR
-from UQPyL.surrogates.gp.kernel import RBF, Matern
-from UQPyL.optimization.single_objective import GA
+# from UQPyL.surrogates.gp import GPR
+# from UQPyL.surrogates.gp.kernel import RBF, Matern
+# from UQPyL.optimization.single_objective import GA, PSO
+# from UQPyL.surrogates.auto_tuner import AutoTuner
+# ga = GA(maxFEs = 5000)
+# pso = PSO(maxFEs = 5000)
+# kernel = Matern(length_scale= 10.0, nu = 1.5, optimize_nu=True, heterogeneous=True)
+# gpr = GPR(kernel = kernel)
 
-ga = GA(maxFEs = 50000)
+# nameList = gpr.getParaList()
+# auto_tuner = AutoTuner(optimizer = pso, model = gpr)
+# auto_tuner.opTune(X, Y, nameList)
+# gpr.fit(X, Y)
 
-kernel2 = Matern(length_scale= 10.0, nu = 1.5, heterogeneous = True)
-gpr = GPR(kernel = kernel2, optimizer = ga)
+# YPred = gpr.predict(XTest)
 
-gpr.fit(X, Y)
+# r2 = r_square(YTest, YPred)
 
-YPred = gpr.predict(XTest)
+# print(r2)
 
-r2 = r_square(YTest, YPred)
 
-print(r2)
+#Radial Basis Function
+# from UQPyL.surrogates.rbf import RBF
+# from UQPyL.surrogates.rbf.kernel import Cubic
+# from UQPyL.surrogates.auto_tuner import AutoTuner
+# from UQPyL.optimization.single_objective import PSO
+# kernel = Cubic()
+# rbf = RBF(kernel = kernel)  
+
+# nameList = rbf.getParaList()
+# pso = PSO(maxFEs = 5000)
+# auto_tuner = AutoTuner(optimizer = pso, model = rbf)
+# auto_tuner.opTune(X, Y, nameList)
+
+# # rbf.fit(X, Y)   
+# YPred = rbf.predict(XTest)
+
+# r2 = r_square(YTest, YPred)
+
+# print(r2)
+
+# LR and PR
+# from UQPyL.surrogates.regression import LinearRegression
+# from UQPyL.surrogates.regression import PolynomialRegression
+# from UQPyL.surrogates.auto_tuner import AutoTuner
+# from UQPyL.optimization.single_objective import PSO
+
+# lr = LinearRegression(lossType = 'Lasso', C = 10, C_attr = {'ub': 100, 'lb': 1e-5, 'type': 'float', 'log': True})
+# pr = PolynomialRegression(degree = 2, lossType = 'Lasso', C = 1e-5, C_attr = {'ub': 100, 'lb': 1e-5, 'type': 'float', 'log': True})
+
+# nameList = lr.getParaList()
+# pso = PSO(maxFEs = 5000)
+# auto_tuner = AutoTuner(optimizer = pso, model = pr)
+# auto_tuner.opTune(X, Y, nameList)
+
+# lr.fit(X, Y)
+# pr.fit(X, Y)
+
+# YPred = lr.predict(XTest)
+# YPred = pr.predict(XTest)
+
+# r2 = r_square(YTest, YPred)
+
+# print(r2)
+
+
+
 
 

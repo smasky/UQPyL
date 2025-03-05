@@ -1,8 +1,9 @@
 import numpy as np
-from typing import Literal, Optional
+from typing import Literal, Optional, Tuple, Union
 
 from .core import svm_fit, svm_predict, Parameter 
 from ..surrogateABC import Surrogate
+from ...utility.scalers import Scaler
 from ...utility.polynomial_features import PolynomialFeatures
 LINEAR = 0
 POLYNOMIAL = 1
@@ -15,30 +16,26 @@ class SVR(Surrogate):
     name = "SVR"
     
     def __init__(self, 
-                 scalers=(None, None), 
-                 polyFeature: PolynomialFeatures=None,
-                 kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial']='rbf',
-                 C: float=0.1, C_ub: float=1e3, C_lb: float=1e-5,
-                 epsilon: float=0.1, epsilon_ub: float=1e3, epsilon_lb: float=1e-5,
-                 gamma: float=1.0, gamma_ub: float=1e3, gamma_lb: float=1e-5,
-                 coe0: float=0.1, coe0_ub: float=1e3, coe0_lb: float=1e-5,
+                 scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
+                 polyFeature: PolynomialFeatures = None,
+                 kernel: Literal['linear', 'rbf', 'sigmoid', 'polynomial'] = 'rbf',
+                 C: float = 0.1, C_attr: Union[dict, None] = {'ub': 1e3, 'lb': 1e-5, 'type': 'float', 'log': True},
+                 epsilon: float = 0.1, epsilon_attr: Union[dict, None] = {'ub': 1e3, 'lb': 1e-5, 'type': 'float', 'log': True},
+                 gamma: float = 1.0, gamma_attr: Union[dict, None] = {'ub': 1e3, 'lb': 1e-5, 'type': 'float', 'log': True},
+                 coe0: float = 0.1, coe0_attr: Union[dict, None] = {'ub': 1e3, 'lb': 1e-5, 'type': 'float', 'log': True},
                  degree: int=3, maxIter: int=1e5,  eps: float=0.001):
         
         super().__init__(scalers, polyFeature)
         
-        self.setPara("C", C, C_lb, C_ub)
-        self.setPara("epsilon", epsilon, epsilon_lb, epsilon_ub)
-        self.setPara("gamma", gamma, gamma_lb, gamma_ub)
-        
-        if kernel == 'sigmoid':
-            self.setPara("coe0", coe0, coe0_lb, coe0_ub)
-        
-        if kernel == "polynomial":
-            self.degree=degree
-        
         self.kernel = kernel
-        self.maxIter = maxIter
-        self.eps = eps
+        
+        self.setting.setPara("C", C, C_attr)
+        self.setting.setPara("epsilon", epsilon, epsilon_attr)
+        self.setting.setPara("gamma", gamma, gamma_attr)
+        self.setting.setPara("coe0", coe0, coe0_attr)
+        self.setting.setPara("degree", degree)
+        self.setting.setPara("maxIter", maxIter)
+        self.setting.setPara("eps", eps)
         
 ###-----------------------public functions--------------------------###
 

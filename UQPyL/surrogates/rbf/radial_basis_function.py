@@ -55,7 +55,7 @@ class RBF(Surrogate):
         
         self.kernel = kernel
         self.setting.mergeSetting(self.kernel.setting)
-    
+
     def _get_tail_matrix(self, kernel: BaseKernel, train_X: np.ndarray):
         """
         Get the tail matrix for the RBF network based on the kernel type.
@@ -142,11 +142,3 @@ class RBF(Surrogate):
                 temp2 = temp2 + np.repeat(self.coe_h[-1:, :], temp1.shape[0], axis=0)
         
         return self.__Y_inverse_transform__(temp1 + temp2)
-    
-    # def getParaList(self):
-    #     """
-    #     Get the list of parameters for the RBF model.
-        
-    #     :return: List of parameter names.
-    #     """
-    #     return list(self.setting.parasValue.keys())

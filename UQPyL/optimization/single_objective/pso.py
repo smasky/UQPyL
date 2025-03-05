@@ -30,7 +30,7 @@ class PSO(Algorithm):
                  maxIterTimes: int = 1000,
                  maxFEs: int = 50000,
                  maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
-                 verbose: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         '''
         Initialize the particle swarm optimization algorithm with user-defined parameters.
         
@@ -48,9 +48,9 @@ class PSO(Algorithm):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
+                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate, 
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         # Set user-defined parameters
         self.setParameters('w', w)
@@ -167,6 +167,7 @@ class PSO(Algorithm):
         
         # Determine number of particles to reinitialize
         n_to_reinit = int(0.1 * N)
+        n_to_reinit = n_to_reinit if n_to_reinit < D else D
         
         # Randomly select particles and dimensions to mutate
         rows_to_mutate = np.random.choice(N, size=n_to_reinit, replace=False)

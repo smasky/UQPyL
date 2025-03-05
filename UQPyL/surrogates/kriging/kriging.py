@@ -10,7 +10,7 @@ from ..surrogateABC import Surrogate
 from ...optimization.algorithmABC import Algorithm
 from ...optimization.single_objective import GA
 from ...utility.metrics import r_square
-from ...utility.model_selections import RandSelect
+from ...utility.data_selections import RandSelect
 from ...utility.scalers import Scaler, StandardScaler
 from ...utility.polynomial_features import PolynomialFeatures
 from ...problems import Problem
@@ -186,73 +186,6 @@ class KRG(Surrogate):
         F, D= self._initialize(xTrain)
         
         self._objFunc(yTrain, F, D, record=True)
-        
-    # Abandoned
-    # def _fit_predict_error(self, tol_xTrain, tol_yTrain):
-        
-    #     RS = RandSelect(20)
-    #     train, test = RS.split(tol_xTrain)
-        
-    #     xTest = tol_xTrain[test,:]; yTest = tol_yTrain[test,:]
-    #     xTrain = tol_xTrain[train,:]; yTrain = tol_yTrain[train,:]
-    #     self.xTrain = xTrain; self.yTrain = yTrain
-        
-    #     F, D = self._initialize(xTrain)
-        
-    #     paraInfos, ub, lb = self.setting.getParaInfos(["theta"])
-    #     nInput = ub.size
-        
-    #     if self.optimizer.type == "MP": 
-            
-    #         ###Using Mathematical Programming
-    #         def objFunc(varValue):
-    #             self.assignPara(paraInfos, varValue)
-    #             self._objFunc(yTrain, F, D, record=True)
-    #             yPred = self.predict(self.__X_inverse_transform__(xTest))
-    #             obj = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-                
-    #             return obj
-            
-    #         problem = Problem(nInput, 1, ub, lb, objFunc=objFunc)
-    #         bestDec, bestObj = self.optimizer.run(problem)
-            
-    #         for _ in range(self.nRes):
-                
-    #             dec, obj = self.optimizer.run(problem)
-    #             if obj < bestObj:
-    #                 bestDec = dec
-    #                 bestObj = obj
-                    
-    #     elif self.optimizer.type=="EA":
-    #         ###Using Evolutionary Algorithm
-    #         def objFunc(varValues):
-    #             n, _ = varValues.shape
-    #             objs = np.zeros(n)
-                
-    #             for i, varValue in enumerate(varValues):
-    #                 self.assignPara(paraInfos, varValue)
-    #                 self._objFunc(yTrain, F, D, record=True)
-    #                 yPred = self.predict(self.__X_inverse_transform__(xTest))
-    #                 objs[i] = -1*r_square(self.__Y_inverse_transform__(yTest), yPred)
-    #             return objs.reshape(-1, 1)
-            
-    #         problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
-            
-    #         res = self.optimizer.run(problem)
-    #         bestDec = res.bestDec; bestObj=res.bestObj
-            
-    #         for _ in range(self.nRes):
-    #             res = self.optimizer.run(problem)
-    #             obj = res.bestObj
-    #             if obj < bestObj:
-    #                 bestDec = res.bestDec
-    #                 bestObj = obj
-                    
-    #         self.assignPara(paraInfos, bestDec)
-        
-    #     self.xTrain = tol_xTrain; self.yTrain=tol_yTrain
-    #     F, D = self._initialize(tol_xTrain)
-    #     self._objFunc(self.yTrain, F, D, record=True)
         
     def _fit_likelihood(self, xTrain, yTrain):
                 

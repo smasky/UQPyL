@@ -72,7 +72,7 @@ class Setting():
         if 'set' in namelist:
             items = attr['set']
             interval = len(items)
-            bins = np.linspace(lb[0], ub[0], interval+1)
+            bins = np.linspace(lb, ub, interval+1)
             S = (items, bins)
         else:
             S = None
@@ -85,6 +85,8 @@ class Setting():
         I = 0
         ub = []
         lb = []
+        
+        
         
         for name in nameLists:
             
@@ -148,7 +150,7 @@ class Setting():
                 else:
                     S, bins = self.parSet[arg]
                     value = self.parVal[arg]
-                    I = np.digitize(value, bins, right=True) - 1
+                    I = np.digitize(value, bins, right=True)[0] - 1
                     values.append(S[I])
                 
         if len(args) > 1:

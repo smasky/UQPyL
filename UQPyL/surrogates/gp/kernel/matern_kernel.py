@@ -36,7 +36,7 @@ class Matern(BaseKernel):
         self.setting.setPara("l", length_scale, length_attr)
 
         if optimize_nu:
-            nu_attr = {'ub': 1, 'lb': 1e-5, 'type': 'discrete', 'log': True, 'set': [0.5, 1.5, 2.5, np.inf]}
+            nu_attr = {'ub': 1, 'lb': 0, 'type': 'discrete', 'log': False, 'set': [0.5, 1.5, 2.5, np.inf]}
         else:
             nu_attr = None
             
