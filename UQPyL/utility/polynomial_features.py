@@ -3,33 +3,33 @@ from math import comb
 
 class PolynomialFeatures():
     
-    def __init__(self, degree: int=2, include_bias: bool=False, interaction_only: bool=False):
+    def __init__(self, degree: int=2, includeBias: bool=False, onlyInteraction: bool=False):
         
-        self.degree=degree
-        self.include_bias=include_bias
-        self.interaction_only=interaction_only
+        self.degree = degree
+        self.includeBias = includeBias
+        self.onlyInteraction = onlyInteraction
     
     def transform(self, trainX: np.ndarray) -> np.ndarray:
         
-        n_samples, n_features=trainX.shape
+        n_samples, n_features = trainX.shape
         
-        if self.include_bias:
-            n_output_features=1
+        if self.includeBias:
+            n_output_features = 1
         else:
-            n_output_features=0
+            n_output_features = 0
         
-        if self.interaction_only:
+        if self.onlyInteraction:
             for d in range(1, self.degree+1):
-                n_output_features+=comb(n_features, d)
+                n_output_features += comb(n_features, d)
         else: 
             for d in range(1, self.degree+1):
-                n_output_features+=comb(d+(n_features-1),n_features-1)
+                n_output_features += comb(d+(n_features-1),n_features-1)
                     
         outTrainX=np.zeros((n_samples, n_output_features))
         
         ######################bias########################
-        if self.include_bias:
-            outTrainX[:, 0]=np.ones(n_samples)
+        if self.includeBias:
+            outTrainX[:, 0] = np.ones(n_samples)
             current_col=1
         else:
             current_col=0
@@ -45,7 +45,7 @@ class PolynomialFeatures():
             for feature_idx in range(n_features):
                 start = index[feature_idx]
                 new_index.append(current_col)
-                if self.interaction_only:
+                if self.onlyInteraction:
                     start += index[feature_idx + 1] - index[feature_idx]
                 next_col = current_col + end - start
                 if next_col <= current_col:
