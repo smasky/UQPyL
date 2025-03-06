@@ -19,10 +19,10 @@ class CSA(Algorithm):
     
     def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
                  nPop: int = 50,
-                 maxIterTimes: int=1000,
-                 maxFEs: int=50000,
-                 maxTolerateTimes: int=1000, tolerate: float=1e-6, 
-                 verbose: bool=True, verboseFreq: int=10, logFlag: bool=False, saveFlag: bool=True):
+                 maxIterTimes: int=  1000,
+                 maxFEs: int = 50000,
+                 maxTolerateTimes: int = 1000, tolerate: float = 1e-6, 
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True):
         """
         Initialize the CSA algorithm with user-defined parameters.
         
@@ -40,15 +40,15 @@ class CSA(Algorithm):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
+                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate, 
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('alpha', alpha)
-        self.setParameters('beta', beta)
-        self.setParameters('M', M)
-        self.setParameters('nPop', nPop)
+        self.setPara('alpha', alpha)
+        self.setPara('beta', beta)
+        self.setPara('M', M)
+        self.setPara('nPop', nPop)
            
     #------------------Public Function------------------#
     @Verbose.decoratorRun
@@ -70,8 +70,8 @@ class CSA(Algorithm):
         
         # Initialization
         # Retrieve parameter values
-        alpha, beta, M = self.getParaValue('alpha', 'beta', 'M')
-        nPop = self.getParaValue('nPop')
+        alpha, beta, M = self.getParaVal('alpha', 'beta', 'M')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.problem = problem

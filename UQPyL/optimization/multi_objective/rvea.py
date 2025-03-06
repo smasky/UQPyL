@@ -33,7 +33,7 @@ class RVEA(Algorithm):
                 maxFEs: int = 50000, 
                 maxIterTimes: int = 1000, 
                 maxTolerateTimes=None, tolerate=1e-6, 
-                verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
+                verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
         """
         Initialize the RVEA with user-defined parameters.
         
@@ -49,12 +49,13 @@ class RVEA(Algorithm):
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
         """
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+                         verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('alpha', alpha)
-        self.setParameters('fr', fr)
-        self.setParameters('nPop', nPop)
+        self.setPara('alpha', alpha)
+        self.setPara('fr', fr)
+        self.setPara('nPop', nPop)
     
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -74,8 +75,8 @@ class RVEA(Algorithm):
         """
         
         # Parameters setting
-        alpha, fr = self.getParaValue('alpha', 'fr')
-        nPop = self.getParaValue('nPop')
+        alpha, fr = self.getParaVal('alpha', 'fr')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.setProblem(problem)

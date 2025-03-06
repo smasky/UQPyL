@@ -54,16 +54,16 @@ class GA(Algorithm):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate,
-                         verboseFlag=verboseFlag, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
+                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate,
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('proC', proC)
-        self.setParameters('disC', disC)
-        self.setParameters('proM', proM)
-        self.setParameters('disM', disM)
-        self.setParameters('nPop', nPop)
+        self.setPara('proC', proC)
+        self.setPara('disC', disC)
+        self.setPara('proM', proM)
+        self.setPara('disM', disM)
+        self.setPara('nPop', nPop)
         
     #--------------------Public Functions---------------------#
     @Verbose.decoratorRun

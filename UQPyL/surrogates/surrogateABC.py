@@ -143,7 +143,7 @@ class Surrogate(metaclass=abc.ABCMeta):
     def predict(self, xPred: np.ndarray):
         pass
     
-class Mo_Surrogates():
+class MultiSurrogates():
     def __init__(self, n_surrogates, models_list=[]):
         from .surrogateABC import Surrogate
         self.n_surrogates=n_surrogates

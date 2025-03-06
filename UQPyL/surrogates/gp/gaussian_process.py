@@ -33,7 +33,7 @@ class GPR(Surrogate):
         self.setting.setPara("C", C, C_attr)
         
         if isinstance(optimizer, Algorithm):
-            optimizer.verboseFlag = True
+            optimizer.verboseFlag = False
             optimizer.saveFlag = False
             optimizer.logFlag = False
         else:

@@ -24,7 +24,7 @@ class ML_SCE_UA(Algorithm):
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
-                 verbose: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         """
         Initialize the SCE-UA algorithm with user-defined parameters.
         
@@ -45,18 +45,18 @@ class ML_SCE_UA(Algorithm):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs=maxFEs, maxIterTimes=maxIterTimes, 
-                         maxTolerateTimes=maxTolerateTimes, tolerate=tolerate, 
-                         verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
+                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate, 
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         # Set algorithm parameters
-        self.setParameters('ngs', ngs)
-        self.setParameters('npg', npg)
-        self.setParameters('nps', nps)
-        self.setParameters('nspl', nspl)
-        self.setParameters('alpha', alpha)
-        self.setParameters('beta', beta)
-        self.setParameters('sita', sita)
+        self.setPara('ngs', ngs)
+        self.setPara('npg', npg)
+        self.setPara('nps', nps)
+        self.setPara('nspl', nspl)
+        self.setPara('alpha', alpha)
+        self.setPara('beta', beta)
+        self.setPara('sita', sita)
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -78,8 +78,8 @@ class ML_SCE_UA(Algorithm):
         """
         
         # Retrieve parameter values
-        ngs, npg, nps, nspl = self.getParaValue('ngs', 'npg', 'nps', 'nspl')
-        alpha, beta, sita = self.getParaValue('alpha', 'beta', 'sita')
+        ngs, npg, nps, nspl = self.getParaVal('ngs', 'npg', 'nps', 'nspl')
+        alpha, beta, sita = self.getParaVal('alpha', 'beta', 'sita')
         
         # Set the problem to solve
         self.setProblem(problem)

@@ -31,8 +31,8 @@ class MOEAD(Algorithm):
                  nPop: int = 50,
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
-                 maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
+                 maxTolerateTimes = None, tolerate = 1e-6, 
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
         '''
         Initialize the MOEAD algorithm with user-defined parameters.
         
@@ -49,11 +49,12 @@ class MOEAD(Algorithm):
         '''
         
         # Initialize the base class with common parameters
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+                         verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set specific parameters for MOEAD
-        self.setParameters('aggregation', aggregation)
-        self.setParameters('nPop', nPop)
+        self.setPara('aggregation', aggregation)
+        self.setPara('nPop', nPop)
         
     #-------------------Public Functions-----------------------#
     @Verbose.decoratorRun
@@ -74,8 +75,8 @@ class MOEAD(Algorithm):
         '''
         
         # Retrieve parameter values
-        aggregation = self.getParaValue('aggregation')
-        nPop = self.getParaValue('nPop')
+        aggregation = self.getParaVal('aggregation')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.setProblem(problem)

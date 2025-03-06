@@ -24,7 +24,7 @@ class DE(Algorithm):
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes: int = 1000, tolerate: float = 1e-6, 
-                 verbose=True, verboseFreq = 10, logFlag = False, saveFlag = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         """
         Initialize the differential evolution algorithm with user-defined parameters.
 
@@ -41,12 +41,13 @@ class DE(Algorithm):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, 
+                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('cr', cr)
-        self.setParameters('f', f)
-        self.setParameters('nPop', nPop)
+        self.setPara('cr', cr)
+        self.setPara('f', f)
+        self.setPara('nPop', nPop)
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -66,8 +67,8 @@ class DE(Algorithm):
         """
         
         # Parameter Setting
-        cr, f = self.getParaValue('cr', 'f')
-        nPop = self.getParaValue('nPop')
+        cr, f = self.getParaVal('cr', 'f')
+        nPop = self.getParaVal('nPop')
         
         # Termination Condition Setting
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0

@@ -29,7 +29,7 @@ class ABC(Algorithm):
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
                  maxTolerateTimes = 1000, tolerate = 1e-6, 
-                 verbose = True, verboseFreq = 10, logFlag = False, saveFlag = False):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the ABC algorithm with user-defined parameters.
         
@@ -46,12 +46,13 @@ class ABC(Algorithm):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+                         verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('employedRate', employedRate)
-        self.setParameters('limit', limit)
-        self.setParameters('nPop', nPop)
+        self.setPara('employedRate', employedRate)
+        self.setPara('limit', limit)
+        self.setPara('nPop', nPop)
     
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -71,8 +72,8 @@ class ABC(Algorithm):
         """
         
         # Parameter Setting
-        employedRate, limit = self.getParaValue('employedRate', 'limit')
-        nPop = self.getParaValue('nPop')
+        employedRate, limit = self.getParaVal('employedRate', 'limit')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.setProblem(problem)

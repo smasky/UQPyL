@@ -53,10 +53,10 @@ class PSO(Algorithm):
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('w', w)
-        self.setParameters('c1', c1)
-        self.setParameters('c2', c2)
-        self.setParameters('nPop', nPop)
+        self.setPara('w', w)
+        self.setPara('c1', c1)
+        self.setPara('c2', c2)
+        self.setPara('nPop', nPop)
                 
     @Verbose.decoratorRun
     @Algorithm.initializeRun
@@ -73,8 +73,8 @@ class PSO(Algorithm):
         
         # Initialization
         # Retrieve parameter values
-        w, c1, c2 = self.getParaValue('w', 'c1', 'c2')
-        nPop = self.getParaValue('nPop')
+        w, c1, c2 = self.getParaVal('w', 'c1', 'c2')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.problem = problem

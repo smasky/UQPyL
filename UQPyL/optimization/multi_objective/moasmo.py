@@ -2,12 +2,12 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 
-from ...DoE import LHS
-from ..utility_functions import NDSort
-from ...problems import Problem
-from ...surrogates import Mo_Surrogates
-from ..algorithmABC import Algorithm, Population, Verbose
 from .nsga_ii import NSGAII
+from ..algorithmABC import Algorithm, Population, Verbose
+from ..utility_functions import NDSort
+from ...DoE import LHS
+from ...problems import Problem
+from ...surrogates import MultiSurrogates
 from ...surrogates.rbf.radial_basis_function import RBF
 
 class MOASMO(Algorithm):
@@ -25,17 +25,17 @@ class MOASMO(Algorithm):
                             Water Resour. Res., vol. 52, no. 3, pp. 1984–2008, Mar. 2016, doi: 10.1002/2015WR018230.
     '''
     
-    name="MOASMO"
-    type="MOEA"
+    name = "MOASMO"
+    type = "MOEA"
     
-    def __init__(self, surrogates: Mo_Surrogates=None,
-                 optimizer: Algorithm=None,
-                 pct: float=0.2, nInit: int=50, nPop: int=50, 
-                 advance_infilling=False,
-                 maxFEs: int=1000, 
-                 maxIterTimes: int=100,
-                 maxTolerateTimes=None, tolerate=1e-6,
-                 verbose=True, verboseFreq=1, logFlag=True, saveFlag=False):
+    def __init__(self, surrogates: MultiSurrogates = None,
+                 optimizer: Algorithm = None,
+                 pct: float = 0.2, nInit: int = 50, nPop: int = 50, 
+                 advance_infilling: bool = False,
+                 maxFEs: int = 1000, 
+                 maxIterTimes: int = 100,
+                 maxTolerateTimes: int = None, tolerate: float = 1e-6,
+                 verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag: bool = False):
         '''
         Initialize the MOASMO algorithm with user-defined parameters.
         
@@ -55,28 +55,31 @@ class MOASMO(Algorithm):
         :param saveFlag: bool - Enable saving results if True.
         '''
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+                         verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('pct', pct)
-        self.setParameters('nInit', nInit)
-        self.setParameters('advance_infilling', advance_infilling)
+        self.setPara('pct', pct)
+        self.setPara('nInit', nInit)
+        self.setPara('advance_infilling', advance_infilling)
         
         # Initialize surrogate models
         if surrogates is not None:
             self.surrogates = surrogates
         else:
-            self.surrogates = Mo_Surrogates(n_surrogates=3, models_list=[RBF(), RBF(), RBF()])
+            self.surrogates = MultiSurrogates(n_surrogates=3, models_list=[RBF(), RBF(), RBF()])
         
         # Initialize optimizer
         if optimizer is not None:
+            if not isinstance(optimizer, Algorithm):
+                raise ValueError("Please append the type of optimizer!")
             self.optimizer = optimizer
         else:
-            self.optimizer = NSGAII(maxFEs=10000, verbose=False, saveFlag=False, logFlag=False)
+            self.optimizer = NSGAII(maxFEs= 10000, verboseFlag = False, saveFlag = False, logFlag = False)
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None):
+    def run(self, problem, xInit = None, yInit = None):
         '''
         Execute the MOASMO algorithm on the specified problem.
 
@@ -91,20 +94,24 @@ class MOASMO(Algorithm):
         '''
         
         # Retrieve parameter values
-        pct = self.getParaValue('pct')
-        nInit = self.getParaValue('nInit')
-        advance_infilling = self.getParaValue('advance_infilling')
+        pct = self.getParaVal('pct')
+        nInit = self.getParaVal('nInit')
+        advance_infilling = self.getParaVal('advance_infilling')
         
         nInfilling = int(pct*nInit)
         
         # Initialize termination conditions
-        self.FEs=0; self.iters=0; self.tolerateTimes=0
+        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
         # Set the problem to solve
         self.problem = problem
         
         # Create a subproblem for surrogate model optimization
-        subProblem = Problem(self.surrogates.predict, problem.nInput, problem.nOutput, problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem = Problem(nInput = problem.nInput, nOutput = problem.nOutput, 
+                             ub = problem.ub, lb = problem.lb, objFunc = self.surrogates.predict,
+                             varType = problem.varType, 
+                             varSet = problem.varSet, optType = problem.optType, 
+                             xLabels = problem.xLabels)
         
         # Generate initial population
         if xInit is not None:
@@ -129,7 +136,7 @@ class MOASMO(Algorithm):
             # Run optimization on the surrogate model
             res = self.optimizer.run(subProblem)
             
-            offSpring = Population(decs=res.bestDec, objs=res.bestObj)
+            offSpring = Population(decs = res.bestDecs, objs = res.bestObjs)
             
             if advance_infilling==False:
                 
@@ -169,12 +176,14 @@ class MOASMO(Algorithm):
                         Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
                     
                     BestX = np.copy(np.array(added_points_X))
-                    BestY = np.copy(np.array(added_points_Y))
-                    bestOff = Population(decs = BestX, objs = BestY)
+                    # BestY = np.copy(np.array(added_points_Y))
+                    bestOff = Population(decs = BestX)
             
             # Evaluate the selected offspring
             self.evaluate(bestOff)
+            
             pop.add(bestOff)
+            
             self.record(pop)
                 
         return self.result

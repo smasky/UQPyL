@@ -39,7 +39,7 @@ class ASMO(Algorithm):
                  optimizer: Algorithm = None,
                  maxFEs: int = 1000,
                  maxTolerateTimes: int = 100,
-                 verbose: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = True):
+                 verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = True):
         '''
         Initialize the ASMO algorithm with user-defined parameters.
         
@@ -54,9 +54,10 @@ class ASMO(Algorithm):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs=maxFEs, maxTolerateTimes=maxTolerateTimes, verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        super().__init__(maxFEs = maxFEs, maxTolerateTimes = maxTolerateTimes, 
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
-        self.setParameters('nInit', nInit)
+        self.setPara('nInit', nInit)
         
         if surrogate is None:
             # Default surrogate model is Kriging with standard scaling
@@ -74,7 +75,7 @@ class ASMO(Algorithm):
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None, oneStep=False):
+    def run(self, problem, xInit = None, yInit = None, oneStep = False):
         '''
         Main procedure to execute the ASMO algorithm on the specified problem.
 
@@ -92,7 +93,7 @@ class ASMO(Algorithm):
         '''
         
         # Initialization
-        nInit = self.getParaValue('nInit')
+        nInit = self.getParaVal('nInit')
         
         # Set the problem to solve
         self.problem = problem

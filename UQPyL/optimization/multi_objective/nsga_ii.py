@@ -28,8 +28,8 @@ class NSGAII(Algorithm):
                  nPop: int =50,
                  maxFEs: int = 50000, 
                  maxIterTimes: int = 1000, 
-                 maxTolerateTimes=None, tolerate=1e-6, 
-                 verbose=True, verboseFreq=10, logFlag=True, saveFlag=True):
+                 maxTolerateTimes = None, tolerate=1e-6, 
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
         '''
         Initialize the NSGA-II algorithm with user-defined parameters.
         
@@ -48,14 +48,15 @@ class NSGAII(Algorithm):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, verbose, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+                         verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setParameters('proC', proC)
-        self.setParameters('disC', disC)
-        self.setParameters('proM', proM)
-        self.setParameters('disM', disM)
-        self.setParameters('nPop', nPop)
+        self.setPara('proC', proC)
+        self.setPara('disC', disC)
+        self.setPara('proM', proM)
+        self.setPara('disM', disM)
+        self.setPara('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
     @Verbose.decoratorRun
@@ -76,8 +77,8 @@ class NSGAII(Algorithm):
         '''
         
         # Parameter Setting
-        proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaValue('nPop')
+        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.setProblem(problem)

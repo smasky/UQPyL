@@ -101,7 +101,7 @@ class KRG(Surrogate):
                 print('The optimizer you input does not support! Here the GA would be used!')
                 self.optimizer = GA(maxFEs=10000, nPop=50)
             
-            self.optimizer.verbose = False
+            self.optimizer.verboseFlag = False
             self.optimizer.saveFlag = False
             self.optimizer.logFlag = False
         

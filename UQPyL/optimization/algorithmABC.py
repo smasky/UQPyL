@@ -10,38 +10,36 @@ class Algorithm(metaclass=abc.ABCMeta):
     """
     This is a baseclass for algorithms
     """
-    def __init__(self, maxFEs=None, maxIterTimes=None, maxTolerateTimes=None, tolerate=1e-6, 
-                 verboseFlag=True, verboseFreq=10, logFlag=True, saveFlag=False):
+    def __init__(self, maxFEs: int = None, maxIterTimes: int = None, maxTolerateTimes: int = None, tolerate: float = 1e-6, 
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = False):
         
-        self.setting=Setting()
-        self.result=Result(self)
+        self.setting = Setting()
+        self.result = Result(self)
         
-        self.problem=None
-        self.maxFEs=maxFEs
-        self.maxIter=maxIterTimes
-        self.maxTolerateTimes=maxTolerateTimes
-        self.tolerate=tolerate
+        self.problem = None
+        self.maxFEs = maxFEs
+        self.maxIter = maxIterTimes
+        self.maxTolerateTimes = maxTolerateTimes
+        self.tolerate = tolerate
         
-        self.verboseFlag=verboseFlag
-        self.verboseFreq=verboseFreq
-        self.logFlag=logFlag
-        self.saveFlag=saveFlag
+        self.verboseFlag = verboseFlag
+        self.verboseFreq = verboseFreq
+        self.logFlag = logFlag
+        self.saveFlag = saveFlag
         
     def initialize(self, nInit):
         
-        lhs=LHS('classic')
-        xInit=lhs.sample(nInit, self.problem.nInput)
-        xInit=self.problem._transform_unit_X(xInit, IFlag = False, DFlag = False)
-        
-        pop=Population(xInit)
-        
+        lhs = LHS('classic')
+        xInit = lhs.sample(nInit, self.problem.nInput)
+        xInit = self.problem._transform_unit_X(xInit, IFlag = False, DFlag = False)
+        pop = Population(xInit)
         self.evaluate(pop)
         
         return pop
     
     def setProblem(self, problem):
         
-        self.problem=problem
+        self.problem = problem
         
         self.setting.setParameter('optType', problem.optType)
     
@@ -50,8 +48,8 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         @functools.wraps(func)
         def wrapper(obj, *args, **kwargs):
-            obj.result=Result(obj)
-            res=func(obj, *args, **kwargs)
+            obj.result = Result(obj)
+            res = func(obj, *args, **kwargs)
             return res
         return wrapper
  
@@ -63,51 +61,50 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         pop.evaluate(self.problem)
         
-        self.FEs+=pop.nPop
+        self.FEs += pop.nPop
     
     def checkTermination(self):
         
         if self.FEs<self.maxFEs:
-            if self.maxIter is None or self.iters<=self.maxIter:
+            if self.maxIter is None or self.iters <= self.maxIter:
                 if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
                     
                     if hasattr(self.problem, 'GUI'):
                         self.problem.iterEmit.send()
-                        if self.problem.isStop==True:
-                            return False
-                        
-                    self.iters+=1
+                        if self.problem.isStop == True:
+                            return False     
+                    self.iters += 1
                     return True
                 
         return False
     
     def setProblem(self, problem):
         
-        self.problem=problem
+        self.problem = problem
         self.optType = self.problem.optType
     
     def saveResult(self):
         
-        if self.problem.nOutput>1:
-            self.result.save(type=1)
+        if self.problem.nOutput > 1:
+            self.result.save(type = 1)
         else:
             self.result.save()
     
     @Verbose.decoratorRecord
     def record(self, pop):
         
-        if self.problem.nOutput==1:
+        if self.problem.nOutput == 1:
             self.result.update(pop, self.problem, self.FEs, self.iters, 'EA')
         else:
             self.result.update(pop, self.problem, self.FEs, self.iters, 'MOEA')
             
-    def setParameters(self, key, value):
+    def setPara(self, key, value):
         
-        self.setting.setParameter(key, value)
+        self.setting.setPara(key, value)
     
-    def getParaValue(self, *args):
+    def getParaVal(self, *args):
         
-        return self.setting.getParaValue(*args)
+        return self.setting.getVal(*args)
     
 class Setting():
     """
@@ -115,23 +112,23 @@ class Setting():
     """
     
     def __init__(self):
-        self.keys=[]
-        self.values=[]
-        self.dicts={}
+        self.keys = []
+        self.values = []
+        self.dicts = {}
     
-    def setParameter(self, key, value):
+    def setPara(self, key, value):
         
-        self.dicts[key]=value
+        self.dicts[key] = value
         self.keys.append(key)
         self.values.append(value)
     
-    def getParaValue(self, *args):
+    def getVal(self, *args):
         
-        values=[]
+        values = []
         for arg in args:
             values.append(self.dicts[arg])
         
-        if len(args)>1:
+        if len(args) > 1:
             return tuple(values)
         else:
             return values[0]

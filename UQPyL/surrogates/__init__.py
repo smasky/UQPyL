@@ -1,4 +1,4 @@
-from .surrogateABC import Surrogate, Mo_Surrogates
+from .surrogateABC import Surrogate, MultiSurrogates
 from . import rbf
 from . import regression
 from . import fnn

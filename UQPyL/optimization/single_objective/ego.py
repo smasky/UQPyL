@@ -37,19 +37,22 @@ class EGO(Algorithm):
     def __init__(self, nInit: int = 50,
                  maxFEs: int = 1000,
                  maxTolerateTimes: int = 100,
-                 verbose: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = False):
+                 verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = False):
         """
         Initialize the EGO algorithm with user-defined parameters.
 
         :param nInit: Number of initial samples.
         :param maxFEs: Maximum number of function evaluations.
         :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param verbose: Flag to enable verbose output.
+        :param verboseFlag: Flag to enable verbose output.
         :param verboseFreq: Frequency of verbose output.
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
         """
-        super().__init__(maxFEs=maxFEs, maxTolerateTimes=maxTolerateTimes, verbose=verbose, verboseFreq=verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+        
+        super().__init__(maxFEs = maxFEs, maxTolerateTimes = maxTolerateTimes, 
+                            verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
+                            logFlag = logFlag, saveFlag = saveFlag)
         
         self.setParameters('nInit', nInit)
 
@@ -59,13 +62,12 @@ class EGO(Algorithm):
         self.surrogate = surrogate
         
         # Initialize the optimizer (Genetic Algorithm)
-        optimizer = GA(maxFEs=10000, verbose=False, saveFlag=False, logFlag=False)
+        optimizer = GA(maxFEs = 10000, verboseFlag = False, saveFlag = False, logFlag = False)
         self.optimizer = optimizer
-        self.optimizer.verbose = False
         
     @Verbose.decoratorRun
     @Algorithm.initializeRun
-    def run(self, problem, xInit=None, yInit=None):
+    def run(self, problem, xInit = None, yInit = None):
         """
         Execute the EGO algorithm on the specified problem.
 
@@ -91,8 +93,8 @@ class EGO(Algorithm):
         self.problem = problem
         
         # Define a sub-problem for the optimizer
-        subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc=self.EI, 
-                             var_type=problem.var_type, var_set=problem.var_set)
+        subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
+                             var_type = problem.var_type, var_set = problem.var_set)
         
         # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
@@ -123,7 +125,7 @@ class EGO(Algorithm):
             res = self.optimizer.run(subProblem)
             
             # Create offspring population
-            offSpring = Population(decs=res.bestDec)
+            offSpring = Population(decs = res.bestDec)
             
             # Evaluate the offspring
             self.evaluate(offSpring)
@@ -161,4 +163,3 @@ class EGO(Algorithm):
         ei = -(bestObj - objs) * norm.cdf((bestObj - objs) / s) - s * norm.pdf((bestObj - objs) / s)
         
         return ei
-        
