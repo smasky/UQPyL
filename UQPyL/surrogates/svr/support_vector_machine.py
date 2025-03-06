@@ -115,15 +115,16 @@ class SVR(Surrogate):
         yTrain = np.ascontiguousarray(yTrain).copy()
         xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
         
-        nu = self.setting.getPara("nu")
-        C = self.setting.getPara("C")
-        gamma = self.setting.getPara("gamma")
-        epsilon = self.setting.getPara("epsilon")
-        coe0 = self.setting.getPara("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
-        degree = self.setting.getPara("degree") if self.kernel in ['polynomial'] else 2
-        
+        nu = self.setting.getVals("nu")
+        C = self.setting.getVals("C")
+        gamma = self.setting.getVals("gamma")
+        epsilon = self.setting.getVals("epsilon")
+        coe0 = self.setting.getVals("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
+        degree = self.setting.getVals("degree") if self.kernel in ['polynomial'] else 2
+        maxIter = self.setting.getVals("maxIter")
+        eps = self.setting.getVals("eps")
         ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(self.maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(self.eps))     
+        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps))     
         self.innerModel = svm_fit(xTrain, yTrain.ravel(), par)
     
     def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
@@ -131,12 +132,14 @@ class SVR(Surrogate):
         xTrain = np.ascontiguousarray(xTrain).copy()
         yTrain = np.ascontiguousarray(yTrain).copy()
         
-        nu = self.setting.getPara("nu")
-        C = self.setting.getPara("C")
-        gamma = self.setting.getPara("gamma")
-        epsilon = self.setting.getPara("epsilon")
-        coe0 = self.setting.getPara("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
-        degree = self.setting.getPara("degree") if self.kernel in ['polynomial'] else 2
+        nu = self.setting.getVals("nu")
+        C = self.setting.getVals("C")
+        gamma = self.setting.getVals("gamma")
+        epsilon = self.setting.getVals("epsilon")
+        coe0 = self.setting.getVals("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
+        degree = self.setting.getVals("degree") if self.kernel in ['polynomial'] else 2
+        maxIter = self.setting.getVals("maxIter")
+        eps = self.setting.getVals("eps")
         ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(self.maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(self.eps))     
+        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps))     
         self.innerModel = svm_fit(xTrain, yTrain.ravel(), par)

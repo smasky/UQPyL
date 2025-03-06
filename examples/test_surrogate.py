@@ -18,7 +18,11 @@ Y = problem.objFunc(X)
 XTest = lhs.sample(nt = 100, problem = problem)
 YTest = problem.objFunc(XTest)
 
-# Kriging
+# ------------------------------------------- #
+#                   Kriging                   # 
+# ------------------------------------------- #
+
+
 # from UQPyL.surrogates.kriging import KRG
 # from UQPyL.surrogates.kriging.kernel import Guass
 
@@ -45,7 +49,7 @@ YTest = problem.objFunc(XTest)
 
 # nameList = gpr.getParaList()
 # auto_tuner = AutoTuner(optimizer = pso, model = gpr)
-# auto_tuner.opTune(X, Y, nameList)
+# auto_tuner.optTune(X, Y, nameList)
 # gpr.fit(X, Y)
 
 # YPred = gpr.predict(XTest)
@@ -55,7 +59,10 @@ YTest = problem.objFunc(XTest)
 # print(r2)
 
 
-#Radial Basis Function
+# ------------------------------------------- #
+#              Radial Basis Function          #
+# ------------------------------------------- #
+
 # from UQPyL.surrogates.rbf import RBF
 # from UQPyL.surrogates.rbf.kernel import Cubic
 # from UQPyL.surrogates.auto_tuner import AutoTuner
@@ -66,7 +73,7 @@ YTest = problem.objFunc(XTest)
 # nameList = rbf.getParaList()
 # pso = PSO(maxFEs = 5000)
 # auto_tuner = AutoTuner(optimizer = pso, model = rbf)
-# auto_tuner.opTune(X, Y, nameList)
+# auto_tuner.optTune(X, Y, nameList)
 
 # # rbf.fit(X, Y)   
 # YPred = rbf.predict(XTest)
@@ -75,7 +82,10 @@ YTest = problem.objFunc(XTest)
 
 # print(r2)
 
-# LR and PR
+# ------------------------------------------- #
+# Linear Regression and Polynomial Regression #
+# ------------------------------------------- #
+
 # from UQPyL.surrogates.regression import LinearRegression
 # from UQPyL.surrogates.regression import PolynomialRegression
 # from UQPyL.surrogates.auto_tuner import AutoTuner
@@ -87,7 +97,7 @@ YTest = problem.objFunc(XTest)
 # nameList = lr.getParaList()
 # pso = PSO(maxFEs = 5000)
 # auto_tuner = AutoTuner(optimizer = pso, model = pr)
-# auto_tuner.opTune(X, Y, nameList)
+# auto_tuner.optTune(X, Y, nameList)
 
 # lr.fit(X, Y)
 # pr.fit(X, Y)
@@ -100,6 +110,47 @@ YTest = problem.objFunc(XTest)
 # print(r2)
 
 
+# ------------------------------------------- #
+#              Support Vector Regression      #
+# ------------------------------------------- #
 
+from UQPyL.surrogates.svr import SVR
+from UQPyL.surrogates.auto_tuner import AutoTuner
+from UQPyL.optimization.single_objective import PSO
+
+svr = SVR(kernel = 'rbf')
+
+nameList = svr.getParaList()
+pso = PSO(maxFEs = 5000)
+# auto_tuner = AutoTuner(optimizer = pso, model = svr)
+# auto_tuner.optTune(X, Y, nameList)
+
+# nameDict = {'C' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100], 'epsilon' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100]}
+# auto_tuner = AutoTuner(model = svr)
+# auto_tuner.gridTune(X, Y, nameDict)
+
+# svr.fit(X, Y)
+
+# YPred = svr.predict(XTest)
+
+# r2 = r_square(YTest, YPred)
+
+# print(r2)
+
+# ------------------------------------------- #
+#  Multivariate Adaptive Regression Splines   #
+# ------------------------------------------- #
+
+# from UQPyL.surrogates.mars import MARS
+
+# mars = MARS(max_degree = 2)
+
+# mars.fit(X, Y)
+
+# YPred = mars.predict(XTest)
+
+# r2 = r_square(YTest, YPred)
+
+# print(r2)
 
 

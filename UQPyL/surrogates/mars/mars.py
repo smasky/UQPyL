@@ -183,7 +183,7 @@ class MARS(Surrogate):
 
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  polyFeature: PolynomialFeatures = None, 
-                 max_terms: Union[int] = None, 
+                 max_terms: Union[int] = 400, 
                  max_terms_attr: Union[dict, None] = {'ub': 400, 'lb': 10, 'type': 'int', 'log': False},
                  max_degree: int = 1, 
                  max_degree_attr: Union[dict, None] = {'ub': 10, 'lb': 1, 'type': 'int', 'log': False},
@@ -203,7 +203,7 @@ class MARS(Surrogate):
                  fast_h: int = 1,
                  smooth: bool = False,
                  enable_pruning: bool = True,
-                 feature_importance_type: str = None):
+                 feature_importance_type: str = 'gcv'):
         '''
         Initialize the MARS surrogate model.
         
