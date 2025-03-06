@@ -114,14 +114,14 @@ YTest = problem.objFunc(XTest)
 #              Support Vector Regression      #
 # ------------------------------------------- #
 
-from UQPyL.surrogates.svr import SVR
-from UQPyL.surrogates.auto_tuner import AutoTuner
-from UQPyL.optimization.single_objective import PSO
+# from UQPyL.surrogates.svr import SVR
+# from UQPyL.surrogates.auto_tuner import AutoTuner
+# from UQPyL.optimization.single_objective import PSO
 
-svr = SVR(kernel = 'rbf')
+# svr = SVR(kernel = 'rbf')
 
-nameList = svr.getParaList()
-pso = PSO(maxFEs = 5000)
+# nameList = svr.getParaList()
+# pso = PSO(maxFEs = 5000)
 # auto_tuner = AutoTuner(optimizer = pso, model = svr)
 # auto_tuner.optTune(X, Y, nameList)
 
