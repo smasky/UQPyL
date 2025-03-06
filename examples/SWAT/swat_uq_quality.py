@@ -22,13 +22,13 @@ from UQPyL.problems import ProblemABC as Problem
 from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
 
 def func_NSE_inverse(true_values, sim_values):
-    return -1*r_square(true_values.reshape(-1,1), sim_values.reshape(-1,1))
+    return -1 * r_square(true_values.reshape(-1,1), sim_values.reshape(-1,1))
 
 def func_RMSE(true_values, sim_values):
     return np.sqrt(np.mean(np.square(true_values-sim_values)))
 
 def func_PCC_inverse(true_values, sim_values):
-    return -1*np.corrcoef(true_values.ravel(), sim_values.ravel())[0,1]
+    return -1 * np.corrcoef(true_values.ravel(), sim_values.ravel())[0,1]
 
 def func_Pbias(true_values, sim_values):
     return np.sum(np.abs(true_values-sim_values)/true_values)*100
@@ -40,7 +40,7 @@ def func_KGE_inverse(true_values, sim_values):
     beta = np.std(sim_values) / np.std(true_values)
     gamma = np.mean(sim_values) / np.mean(true_values)
     kge = 1 - np.sqrt((r - 1)**2 + (beta - 1)**2 + (gamma - 1)**2)
-    return -1*kge
+    return -1 * kge
 
 def func_Mean(true_values, sim_values):
     return np.mean(sim_values)
@@ -53,55 +53,64 @@ VARNAME={6: "FLOW_OUT", 13: "ORGN", 15: "ORGP", 17: "NO3", 19: "NH4", 21: "NO2",
 OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
 
 
-class SWAT_UQ(Problem):
-    
-    hru_suffix=["chm", "gw", "hru", "mgt", "sdr", "sep", "sol", "ops"]
-    watershed_suffix=["pnd", "rte", "sub", "swq", "wgn", "wus"]
-    model_infos={}
-    observe_infos={}
-    n_hru=0
-    n_rch=0
-    n_sub=0
-    
-    def __init__(self, work_path: str, paras_file_name: str, 
-                 observed_file_name: str, swat_exe_name: str, special_paras_file: str=None, temp_path:str=None,
-                 user_eval: callable=None, nOutput=None,
-                 max_threads: int=12, num_parallel: int=5, verbose=False):
-        
-        self.verbose=verbose
+HRU = ["chm", "gw", "hru", "mgt", "sdr", "sep", "sol", "ops"]
+WATERSHED = ["pnd", "rte", "sub", "swq", "wgn", "wus"]
 
-        self.name="SWAT-UQ"
+class SWAT_UQ(Problem):
+    '''
+    This class is interface for running SWAT model with UQPyL.
+    It can calibrate the parameters of SWAT model with observed data.
+    It can also manage water resources system with multiple objectives using SWAT and UQPyL.
+    Importantly, it supports parallel running of SWAT model with multiple instances.
+    '''
+    
+    modelInfos = {}
+    observeInfos = {}
+    nHRU = 0
+    nRCH = 0
+    nSUB = 0
+    
+    def __init__(self, workPath: str, paraFileName: str, 
+                 obsFileName: str, swatExeName: str, specialParaFile: str = None, tempPath:str = None,
+                 userObjFunc: callable = None, nOutput = None,
+                 userConFunc: callable = None,
+                 maxThreads: int = 12, numParallel: int = 5, verboseFlag = False):
+        
+        self.verboseFlag = verboseFlag
+
+        self.name = "SWAT-UQ"
         
         #create the space for running multiple instance of SWAT
-        if temp_path is None:
-            #if dont set the temp_path, create a temp dir
-            self.work_temp_dir=tempfile.mkdtemp()
-            self.use_temp_dir=True
+        if tempPath is None:
+            #if dont set the tempPath, create a temp dir
+            self.work_temp_dir= tempfile.mkdtemp()
+            self.use_temp_dir = True
         else:
-            now_time=datetime.now().strftime("%m%d_%H%M%S")
-            temp_path=os.path.join(temp_path, now_time)
-            os.makedirs(temp_path)
-            self.work_temp_dir=temp_path
-            self.use_temp_dir=False
+            now_time = datetime.now().strftime("%m%d_%H%M%S")
+            tempPath = os.path.join(tempPath, now_time)
+            os.makedirs( tempPath )
+            self.work_temp_dir = tempPath
+            self.use_temp_dir = False
         
         #basic setting
-        self.work_path=work_path
-        self.paras_file_name=paras_file_name
-        self.observed_file_name=observed_file_name
-        self.special_paras_file=special_paras_file
-        self.swat_exe_name=swat_exe_name
+        self.workPath = workPath
+        self.paraFileName = paraFileName
+        self.obsFileName = obsFileName
+        self.specialParaFile = specialParaFile
+        self.swatExeName = swatExeName
         
-        self.max_workers=max_threads
-        self.num_parallel=num_parallel
+        self.maxWorkers = maxThreads
+        self.numParallel = numParallel
 
-        self.user_eval=user_eval
+        self.userObjFunc = userObjFunc
+        self.userConFunc = userConFunc
         
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"basic setting"+"="*25)
-            print("The path of SWAT project is: ", self.work_path)
-            print("The file name of optimizing parameters is: ", self.paras_file_name)
-            print("The file name of observed data is: ", self.observed_file_name)
-            print("The name of SWAT executable is: ", self.swat_exe_name)
+            print("The path of SWAT project is: ", self.workPath)
+            print("The file name of optimizing parameters is: ", self.paraFileName)
+            print("The file name of observed data is: ", self.obsFileName)
+            print("The name of SWAT executable is: ", self.swatExeName)
             print("Temporary directory has been created in: ", self.work_temp_dir)
             print("="*70)
             print("\n"*2)
@@ -110,87 +119,88 @@ class SWAT_UQ(Problem):
         self._record_default_values()
         self._get_observed_data()
         
-        self.work_path_queue=queue.Queue()
-        self.work_temp_dirs=[]
+        self.workPathQueue = queue.Queue()
+        self.workTempDirs = []
         
-        for i in range(num_parallel):
-            path=os.path.join(self.work_temp_dir, "instance{}".format(i))
-            self.work_temp_dirs.append(path)
-            self.work_path_queue.put(path)
+        for i in range(numParallel):
+            path = os.path.join(self.work_temp_dir, "instance{}".format(i))
+            self.workTempDirs.append(path)
+            self.workPathQueue.put(path)
                 
-        with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
-            futures = [executor.submit(copy_origin_to_tmp, self.work_path, work_temp) for work_temp in self.work_temp_dirs]
+        with ThreadPoolExecutor(maxWorkers=self.numParallel) as executor:
+            futures = [executor.submit(copy_origin_to_tmp, self.workPath, workTemp) for workTemp in self.workTempDirs]
         
         for future in futures:
             future.result()
         
         if nOutput is None:
-            self.n_output=self.txt_objs
+            self.nOutput = self.txtObjs
         else:
-            self.n_output=nOutput
+            self.nOutput = nOutput
             
-        super().__init__(nInput=len(self.paras_list), nOutput=self.n_output, lb=self.lb, ub=self.ub, var_type=self.disc_var, var_set=self.disc_range)
+        super().__init__(nInput = len(self.paras_list), nOutput = self.nOutput, 
+                            lb = self.lb, ub = self.ub, varType = self.disc_var, varSet = self.disc_range)
 
     def evaluate(self, X):
         
-        n=X.shape[0]
-        n_out=self.n_output
-        Y=np.zeros((n,n_out))
+        n = X.shape[0]
+        nOut = self.nOutput
+        Y = np.zeros((n,nOut))
         
-        with ThreadPoolExecutor(max_workers=self.num_parallel) as executor:
-            futures=[executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
+        with ThreadPoolExecutor(maxWorkers = self.numParallel) as executor:
+            futures = [executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
         
             for _ , future in enumerate(futures):
-                variables=future.result()
+                variables = future.result()
                 
-                id=variables['id']
-                if self.user_eval is None:
+                id = variables['id']
+                if self.userObjFunc is None:
                     #use default
-                    Y[id]=variables['txtObjs']
+                    Y[id] = variables['txtObjs']
                 else:
                     #use user define
-                    Y[id]=self.user_eval(variables)
+                    Y[id] = self.userObjFunc(variables)
 
         return Y
     
     def _subprocess(self, input_x, id):
         
-        work_path=self.work_path_queue.get()
-        self._set_values(work_path, input_x)
+        workPath = self.workPathQueue.get()
+        self._set_values(workPath, input_x)
         
-        process= subprocess.Popen(
-            os.path.join(work_path, self.swat_exe_name),
-            cwd=work_path,
-            stdin=subprocess.PIPE, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE,
-            text=True)
+        process = subprocess.Popen(
+            os.path.join(workPath, self.swatExeName),
+            cwd = workPath,
+            stdin = subprocess.PIPE, 
+            stdout = subprocess.PIPE, 
+            stderr = subprocess.PIPE,
+            text = True)
         process.wait()
         
-        total_objs=self.txt_objs
-        data_infos=self.observe_infos["observe_data"]
-        obj_comb=self.observe_infos["obj_comb"]
+        total_objs = self.txtObjs
+        data_infos = self.observeInfos["observe_data"]
+        obj_comb = self.observeInfos["obj_comb"]
         
-        obj_array=np.zeros(total_objs)
-        sim_series=[]
+        obj_array = np.zeros(total_objs)
+        sim_series = []
         for obj_id in range(1, total_objs+1):
-            series_comb=obj_comb[obj_id]
-            v_obj=0
+            series_comb = obj_comb[obj_id]
+            v_obj = 0
             for series_id in series_comb:
-                data_info=data_infos[series_id-1]
-                rch_id=data_info[1]
-                var_col=data_info[2]
-                obj_type=data_info[3]
-                obj_id=data_info[4]
-                weight=data_info[5]
-                read_lines=data_info[6]
-                observed_value=data_info[7]
+                data_info = data_infos[series_id-1]
+                rch_id = data_info[1]
+                var_col = data_info[2]
+                obj_type = data_info[3]
+                obj_id = data_info[4]
+                weight = data_info[5]
+                read_lines = data_info[6]
+                observed_value = data_info[7]
                 
-                sim_value_list=[]
+                sim_value_list = []
                 for lines in read_lines:
-                    startline=int(lines[0])
-                    endline=lines[1]
-                    sub_value=np.array(read_simulation(os.path.join(work_path, "output.rch"), var_col+1, rch_id, self.n_rch, startline, endline))
+                    startline = int(lines[0])
+                    endline = lines[1]
+                    sub_value = np.array(read_simulation(os.path.join(workPath, "output.rch"), var_col+1, rch_id, self.nRCH, startline, endline))
                     sim_value_list.append(sub_value)
                 sim_value=np.concatenate(sim_value_list, axis=0)
                 obj_value=eval(OBJTYPE[obj_type])(observed_value, sim_value)
@@ -198,9 +208,9 @@ class SWAT_UQ(Problem):
                 sim_series.append(sim_value)
             obj_array[obj_id-1]=v_obj
             
-        self.work_path_queue.put(work_path)
+        self.workPathQueue.put(workPath)
         
-        #txt_objs txt_sim_series x
+        #txtObjs txt_sim_series x
         variables={}
         variables['Objs']=obj_array
         variables['SimSeries']=sim_series
@@ -208,12 +218,12 @@ class SWAT_UQ(Problem):
         variables['id']=id
         return variables
     
-    def _set_values(self, work_path, paras_values):
+    def _set_values(self, workPath, paras_values):
         
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+        with ThreadPoolExecutor(maxWorkers=self.maxWorkers) as executor:
             futures=[]
             for file_name, infos in self.file_var_info.items():
-                future = executor.submit(write_value_to_file, work_path, file_name, 
+                future = executor.submit(write_value_to_file, workPath, file_name, 
                                          infos["name"], infos["default"], 
                                          infos["index"], infos["mode"],  infos["position"], infos["type"],
                                          paras_values.ravel())
@@ -223,14 +233,14 @@ class SWAT_UQ(Problem):
                 res=future.result()
     
     def _get_observed_data(self):
-        file_path=os.path.join(self.work_path, self.observed_file_name)
+        file_path=os.path.join(self.workPath, self.obsFileName)
         rch_ids=[]
         var_cols=[]
         rch_weights=[]
         obj_types=[]
         data=[]
         
-        print_flag=self.model_infos["print_flag"]
+        print_flag=self.modelInfos["print_flag"]
         
         try:
             with open(file_path, "r") as f:
@@ -244,11 +254,11 @@ class SWAT_UQ(Problem):
                 pattern_value=re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
                 
                 total_series=int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
-                num_objs=int(re.search(r'\d+', lines[1]).group())
+                numObjs=int(re.search(r'\d+', lines[1]).group())
                 
                 obj_comb={}
                 obj_ids=[]
-                for i in range(1, num_objs+1):
+                for i in range(1, numObjs+1):
                     obj_comb.setdefault(i, [])
                 
                 i=2; series_id=0
@@ -291,13 +301,13 @@ class SWAT_UQ(Problem):
                             _, time, year = map(int, match_data.groups()[:-1])
                             value = float(match_data.groups()[-1])
                             if print_flag==0:
-                                years=year-self.model_infos["begin_date"].year
+                                years=year-self.modelInfos["begin_date"].year
                                 if years==0:
-                                    index=time-self.model_infos["begin_date"].month
+                                    index=time-self.modelInfos["begin_date"].month
                                 else:
-                                    index=time+12-self.model_infos["begin_date"].month+(years-1)*12
+                                    index=time+12-self.modelInfos["begin_date"].month+(years-1)*12
                             else:
-                                index=(datetime(year, 1, 1)+timedelta(days=time-1)-self.model_infos["begin_record"]).days
+                                index=(datetime(year, 1, 1)+timedelta(days=time-1)-self.modelInfos["begin_record"]).days
                             data.append([series_id, rch_id, var_col, obj_type, obj_id, weight, int(index), int(year), int(time), value])
                             if n==num_data:
                                 break
@@ -325,17 +335,17 @@ class SWAT_UQ(Problem):
             read_lines=self._get_lines_for_output_(data_index)
             data_infos.append((series_id, rch_ids[series_id], var_cols[series_id], obj_types[series_id], obj_ids[series_id], rch_weights[series_id],  read_lines, data_value)) #TODO
 
-        self.observe_infos["total_series"]=total_series
-        self.observe_infos["observe_data"]=data_infos
-        self.observe_infos["obj_comb"]=obj_comb
+        self.observeInfos["total_series"]=total_series
+        self.observeInfos["observe_data"]=data_infos
+        self.observeInfos["obj_comb"]=obj_comb
         
-        self.txt_objs=num_objs
-        # self.n_output=num_objs #TODO
+        self.txtObjs=numObjs
+        # self.nOutput=numObjs #TODO
 
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"Observed Information"+"="*25)
             print("The number of observed data series is: ", total_series)
-            print("The number of objective functions is: ", num_objs)
+            print("The number of objective functions is: ", numObjs)
             series_id_formatted="{:^10}".format("Series_id")
             rch_formatted="{:^10}".format("Reach_id")
             variable_formatted= "{:^10}".format("Variable")
@@ -366,7 +376,7 @@ class SWAT_UQ(Problem):
         record default values from the swat file
         """
         
-        var_infos_path=os.path.join(self.work_path, self.paras_file_name)
+        var_infos_path=os.path.join(self.workPath, self.paraFileName)
         low_bound=[]
         up_bound=[]
         disc_var=[]
@@ -415,7 +425,7 @@ class SWAT_UQ(Problem):
         self.disc_var = disc_var
         self.n_input = len(self.paras_list)
         
-        if self.verbose:
+        if self.verboseFlag:
             print("="*50+"Parameter Information"+"="*50)
             name_formatted="{:^20}".format("Parameter name")
             type_formatted="{:^7}".format("Type")
@@ -436,9 +446,9 @@ class SWAT_UQ(Problem):
             print("\n"*1)
         self.file_var_info={}
         
-        watershed_hru=self.model_infos["watershed_hru"]
-        watershed_list=self.model_infos["watershed_list"]
-        hru_list=self.model_infos["hru_list"]
+        watershed_hru=self.modelInfos["watershed_hru"]
+        watershed_list=self.modelInfos["watershed_list"]
+        hru_list=self.modelInfos["hru_list"]
         
         for i, element in enumerate(self.paras_list):
             
@@ -450,7 +460,7 @@ class SWAT_UQ(Problem):
             else:
                 data_type_=1
             
-            if suffix in self.hru_suffix:
+            if suffix in HRU:
                 if assign_hru_id[i][0]=="all":
                     files=[e+".{}".format(suffix) for e in hru_list]
                 else:
@@ -467,7 +477,7 @@ class SWAT_UQ(Problem):
                                 code=f"{'0' * (9 - 4 - len(sub))}{sub}{'0'*(4-len(e))}{e}"
                                 files.append(f"{code}.{suffix}")
                                 
-            elif suffix in self.watershed_suffix:
+            elif suffix in WATERSHED:
                 if assign_hru_id[i][0]=="all":
                     files=[e+"."+suffix for e in watershed_list]
                 else:
@@ -498,10 +508,10 @@ class SWAT_UQ(Problem):
                 self.file_var_info[file].setdefault("type", [])
                 self.file_var_info[file]["type"].append(data_type_)
         
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+        with ThreadPoolExecutor(maxWorkers=self.maxWorkers) as executor:
             futures=[]
             for file_name, infos in self.file_var_info.items():
-                futures.append(executor.submit(read_value_swat, self.work_path, file_name , infos["name"], infos["position"], 1))
+                futures.append(executor.submit(read_value_swat, self.workPath, file_name , infos["name"], infos["position"], 1))
         
         for future in futures:
             res=future.result()
@@ -515,7 +525,7 @@ class SWAT_UQ(Problem):
         
         paras=["IPRINT", "NBYR", "IYR", "IDAF", "IDAL", "NYSKIP"]
         pos=["default"]*len(paras)
-        dict_values=read_value_swat(self.work_path, "file.cio", paras, pos, 0)
+        dict_values=read_value_swat(self.workPath, "file.cio", paras, pos, 0)
         begin_date=datetime(int(dict_values["IYR"][0]), 1, 1)+timedelta(int(dict_values['IDAF'][0])-1)
         end_date=datetime(int(dict_values["IYR"][0])+int(dict_values['NBYR'][0])-1, 1, 1)+timedelta(int(dict_values['IDAL'][0])-1)
         simulation_days=(end_date-begin_date).days+1
@@ -523,16 +533,16 @@ class SWAT_UQ(Problem):
         output_skip_days=(datetime(int(dict_values["IYR"][0])+output_skip_years, 1, 1)+timedelta(int(dict_values['IDAF'][0])-1)-begin_date).days
         begin_record=begin_date+timedelta(output_skip_days)
         
-        self.model_infos["print_flag"]=int(dict_values["IPRINT"][0])
-        self.model_infos["begin_date"]=begin_date
-        self.model_infos["end_date"]=end_date
-        self.model_infos["output_skip_years"]=output_skip_years
-        self.model_infos["simulation_days"]=simulation_days
-        self.model_infos["begin_record"]=begin_record
+        self.modelInfos["print_flag"]=int(dict_values["IPRINT"][0])
+        self.modelInfos["begin_date"]=begin_date
+        self.modelInfos["end_date"]=end_date
+        self.modelInfos["output_skip_years"]=output_skip_years
+        self.modelInfos["simulation_days"]=simulation_days
+        self.modelInfos["begin_record"]=begin_record
         
         #read control file fig.fig
         watershed={}
-        with open(os.path.join(self.work_path, "fig.fig"), "r") as f:
+        with open(os.path.join(self.workPath, "fig.fig"), "r") as f:
             lines=f.readlines()
             for line in lines:
                 match = re.search(r'(\d+)\.sub', line)
@@ -542,39 +552,39 @@ class SWAT_UQ(Problem):
         #read sub files
         for sub in watershed:
             file_name=sub+".sub"
-            with open(os.path.join(self.work_path, file_name), "r") as f:
+            with open(os.path.join(self.workPath, file_name), "r") as f:
                 lines=f.readlines()
                 for line in lines:
                     match = re.search(r'(\d+)\.mgt', line)
                     if match:
                         watershed[sub].append(match.group(1))
         
-        self.model_infos["watershed_list"]=list(watershed.keys())
-        self.model_infos["hru_list"] = list(itertools.chain.from_iterable(watershed.values()))
-        self.model_infos["watershed_hru"]=watershed
-        self.model_infos["n_hru"]=len(self.model_infos["hru_list"])
-        self.model_infos["n_watershed"]=len(self.model_infos["watershed_list"])
-        self.model_infos["n_rch"]=len(self.model_infos["watershed_list"])
-        self.n_rch=self.model_infos["n_rch"]
+        self.modelInfos["watershed_list"]=list(watershed.keys())
+        self.modelInfos["hru_list"] = list(itertools.chain.from_iterable(watershed.values()))
+        self.modelInfos["watershed_hru"]=watershed
+        self.modelInfos["nHRU"]=len(self.modelInfos["hru_list"])
+        self.modelInfos["n_watershed"]=len(self.modelInfos["watershed_list"])
+        self.modelInfos["nRCH"]=len(self.modelInfos["watershed_list"])
+        self.nRCH=self.modelInfos["nRCH"]
         
         #read the paras file
-        self.paras_file=pd.read_excel(os.path.join(self.work_path, 'SWAT_paras_files.xlsx'), index_col=0)
+        self.paras_file=pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
         #for special paras file
-        if self.special_paras_file is not None:
-            with open(os.path.join(self.work_path, self.special_paras_file), 'r') as f:
+        if self.specialParaFile is not None:
+            with open(os.path.join(self.workPath, self.specialParaFile), 'r') as f:
                 lines=f.readlines()
                 for line in lines:
                     tmp_list=line.split()
                     self.paras_file.loc[tmp_list[0]]=tmp_list[1:]
         
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"Model Information"+"="*25)
-            print("The time period of simulation is: ", self.model_infos["begin_date"].strftime("%Y%m%d"), " to ", self.model_infos["end_date"].strftime("%Y%m%d"))
-            print("The number of simulation days is: ", self.model_infos["simulation_days"])
-            print("The number of output skip years is: ", self.model_infos["output_skip_years"])
-            print("The number of HRUs is: ", self.model_infos["n_hru"])
-            print("The number of Reaches is: ", self.model_infos["n_rch"])
-            if self.model_infos["print_flag"]==0:
+            print("The time period of simulation is: ", self.modelInfos["begin_date"].strftime("%Y%m%d"), " to ", self.modelInfos["end_date"].strftime("%Y%m%d"))
+            print("The number of simulation days is: ", self.modelInfos["simulation_days"])
+            print("The number of output skip years is: ", self.modelInfos["output_skip_years"])
+            print("The number of HRUs is: ", self.modelInfos["nHRU"])
+            print("The number of Reaches is: ", self.modelInfos["nRCH"])
+            if self.modelInfos["print_flag"]==0:
                 print("The print flag of SWAT is: ", "monthly")
             else:
                 print("The print flag of SWAT is: ", "daily")
@@ -600,42 +610,42 @@ class SWAT_UQ(Problem):
     def _generate_data_lines(self, group):
         
         start=group[0];end=group[-1]
-        print_flag=self.model_infos["print_flag"]
-        n_rch=self.model_infos["n_rch"]
+        print_flag=self.modelInfos["print_flag"]
+        nRCH=self.modelInfos["nRCH"]
 
         lines=[]
         if print_flag==0:
-            begin_month=self.model_infos["begin_record"].month
+            begin_month=self.modelInfos["begin_record"].month
             first_period=12-begin_month
             if start<=first_period:
                 if end<=first_period:
                     end_in_year=end
-                    lines.append([10+n_rch*start, 9+n_rch*(end_in_year+1)])
+                    lines.append([10+nRCH*start, 9+nRCH*(end_in_year+1)])
                     return lines
                 else:
                     end_in_year=first_period
-                lines.append([10+n_rch*start, 9+n_rch*(end_in_year+1)])
+                lines.append([10+nRCH*start, 9+nRCH*(end_in_year+1)])
             else:
                 years=start//12
                 start_in_year=start
                 end_in_year=years*12+11
                 if end<=end_in_year:
-                    lines.append([10+n_rch*start_in_year+n_rch*years, 9+n_rch*(end+1)+n_rch*years])
+                    lines.append([10+nRCH*start_in_year+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
                     return lines
                 else:
-                    lines.append([10+n_rch*start_in_year, 9+n_rch*(end_in_year+1)+n_rch*years])
+                    lines.append([10+nRCH*start_in_year, 9+nRCH*(end_in_year+1)+nRCH*years])
             while True:
                 start_in_year=end_in_year+1
                 end_in_year=start_in_year+11
                 years=(start_in_year-first_period)//12+1
                 if end_in_year>=end:
-                    lines.append([10+n_rch*start_in_year+n_rch*years, 9+n_rch*(end+1)+n_rch*years])
+                    lines.append([10+nRCH*start_in_year+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
                     break
                 else:
-                    lines.append([10+n_rch*start_in_year, 9+n_rch*(end_in_year+1)+n_rch*years])
+                    lines.append([10+nRCH*start_in_year, 9+nRCH*(end_in_year+1)+nRCH*years])
             return lines 
         elif print_flag==1:
-            lines=[[10+n_rch*start, 9+n_rch*(end+1)]]
+            lines=[[10+nRCH*start, 9+nRCH*(end+1)]]
             return lines
     
 #================================================================
@@ -651,18 +661,18 @@ def evaluate(variables):
     return (obj1, obj2, obj3)
     
 file_path="D:\swat_opt\TxtInOut2"
-temp_path="D:\\swat_opt\\temp"
+tempPath="D:\\swat_opt\\temp"
 from UQPyL.DoE import LHS    
-swat_cup=SWAT_UQ(work_path=file_path,
-                    paras_file_name="paras_infos.txt",
-                    observed_file_name="observed.txt",
-                    temp_path=temp_path,
-                    swat_exe_name="SWAT_64rel.exe",
-                    special_paras_file="special_paras.txt",
-                    verbose=True,
-                    user_eval=evaluate,
+swat_cup=SWAT_UQ(workPath=file_path,
+                    paraFileName="paras_infos.txt",
+                    obsFileName="observed.txt",
+                    tempPath=tempPath,
+                    swatExeName="SWAT_64rel.exe",
+                    specialParaFile="special_paras.txt",
+                    verboseFlag=True,
+                    userObjFunc=evaluate,
                     nOutput=3,
-                    max_threads=10, num_parallel=10)  
+                    maxThreads=10, numParallel=10)  
 
 from UQPyL.optimization import NSGAII, MOASMO, MOEAD
 from UQPyL.surrogates.rbf import RBF
@@ -678,6 +688,6 @@ moead.run(swat_cup)
 # obj3=RBF()
 
 # surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2, obj3])
-# optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verbose=False, logFlag=False, saveFlag=False)
+# optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verboseFlag=False, logFlag=False, saveFlag=False)
 # moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, advance_infilling=True, maxFEs=300, saveFlag=True)
 # moasmo.run(problem=swat_cup)

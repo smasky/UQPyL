@@ -20,7 +20,6 @@ from UQPyL.problems import ProblemABC
 #C++ Module
 from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
 
-
 def func_NSE_inverse(true_values, sim_values):
     return -1*r_square(true_values.reshape(-1,1), sim_values.reshape(-1,1))
 
@@ -57,9 +56,9 @@ class SWAT_UQ_Flow(ProblemABC):
     
     def __init__(self, work_path: str, paras_file_name: str, 
                  observed_file_name: str, swat_exe_name: str, temp_path:str=None, 
-                 max_threads: int=12, num_parallel: int=5, verbose=False):
+                 max_threads: int=12, num_parallel: int=5, verboseFlag=False):
         
-        self.verbose=verbose
+        self.verboseFlag=verboseFlag
         
         #create the space for running multiple instance of SWAT
         if temp_path is None:
@@ -81,7 +80,7 @@ class SWAT_UQ_Flow(ProblemABC):
         self.max_workers=max_threads
         self.num_parallel=num_parallel
         
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"basic setting"+"="*25)
             print("The path of SWAT project is: ", self.work_path)
             print("The file name of optimizing parameters is: ", self.paras_file_name)
@@ -226,7 +225,7 @@ class SWAT_UQ_Flow(ProblemABC):
         
         self.paras_file=pd.read_excel(os.path.join(self.work_path, 'SWAT_paras_files.xlsx'), index_col=0)
 
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"Model Information"+"="*25)
             print("The time period of simulation is: ", self.model_infos["begin_date"].strftime("%Y%m%d"), " to ", self.model_infos["end_date"].strftime("%Y%m%d"))
             print("The number of simulation days is: ", self.model_infos["simulation_days"])
@@ -371,7 +370,7 @@ class SWAT_UQ_Flow(ProblemABC):
         self.observe_infos["obj_comb"]=obj_comb
         self.n_output=num_objs
 
-        if self.verbose:
+        if self.verboseFlag:
             print("="*25+"Observed Information"+"="*25)
             print("The number of observed data series is: ", total_series)
             print("The number of objective functions is: ", num_objs)
@@ -501,7 +500,7 @@ class SWAT_UQ_Flow(ProblemABC):
         self.disc_var=disc_var
         self.n_input=len(self.paras_list)
         
-        if self.verbose:
+        if self.verboseFlag:
             print("="*50+"Parameter Information"+"="*50)
             name_formatted="{:^20}".format("Parameter name")
             type_formatted="{:^7}".format("Type")
@@ -607,7 +606,7 @@ swat_cup=SWAT_UQ_Flow(work_path=file_path,
                     swat_exe_name=swat_exe_name,
                     temp_path=temp_path,
                     max_threads=10, num_parallel=1,
-                    verbose=True)
+                    verboseFlag=True)
 
 # x=np.array([-0.052000, 1.247500, 18.303900, 0.163000, 0.020000, 0.110000, 51.000000, 0.098500, 134.992706, 0.510000, 1540.000000, 0.570000, 1.940000]) 
 x=np.array([-0.118800, 6.492550, 1.000, 0.320500, 0.020000, 0.37500, 154.9000,  0.020690, 293.495900, 0.24900, 874.000, 0.666700, 1.00])
