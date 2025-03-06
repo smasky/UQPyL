@@ -15,7 +15,7 @@ class MARS(Surrogate):
     """
     Multivariate Adaptive Regression Splines(MARS)
     --------------------------------------
-    This class is MARS of py-earth python library.
+    This class is a implementation of MARS from py-earth python library.
     The Multivariate Adaptive Regression Splines(MARS) is a flexible regression method 
     that automatically searches for interactions and non-linear relationships.
     
