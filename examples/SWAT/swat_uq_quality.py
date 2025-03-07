@@ -34,11 +34,11 @@ def func_Pbias(true_values, sim_values):
     return np.sum(np.abs(true_values-sim_values)/true_values)*100
 
 def func_KGE_inverse(true_values, sim_values):
-    true_values = true_values.ravel()
-    sim_values = sim_values.ravel()
-    r, _ = pearsonr(true_values, sim_values)
-    beta = np.std(sim_values) / np.std(true_values)
-    gamma = np.mean(sim_values) / np.mean(true_values)
+    trueValues = true_values.ravel()
+    simValues = sim_values.ravel()
+    r, _ = pearsonr(trueValues, simValues)
+    beta = np.std(simValues) / np.std(trueValues)
+    gamma = np.mean(simValues) / np.mean(trueValues)
     kge = 1 - np.sqrt((r - 1)**2 + (beta - 1)**2 + (gamma - 1)**2)
     return -1 * kge
 
@@ -83,14 +83,14 @@ class SWAT_UQ(Problem):
         #create the space for running multiple instance of SWAT
         if tempPath is None:
             #if dont set the tempPath, create a temp dir
-            self.work_temp_dir= tempfile.mkdtemp()
-            self.use_temp_dir = True
+            self.workTempDir= tempfile.mkdtemp()
+            self.useTempDir = True
         else:
-            now_time = datetime.now().strftime("%m%d_%H%M%S")
-            tempPath = os.path.join(tempPath, now_time)
-            os.makedirs( tempPath )
-            self.work_temp_dir = tempPath
-            self.use_temp_dir = False
+            nowTime = datetime.now().strftime("%m%d_%H%M%S")
+            tempPath = os.path.join(tempPath, nowTime)
+            os.makedirs(tempPath)
+            self.workTempDir = tempPath
+            self.useTempDir = False
         
         #basic setting
         self.workPath = workPath
@@ -111,19 +111,19 @@ class SWAT_UQ(Problem):
             print("The file name of optimizing parameters is: ", self.paraFileName)
             print("The file name of observed data is: ", self.obsFileName)
             print("The name of SWAT executable is: ", self.swatExeName)
-            print("Temporary directory has been created in: ", self.work_temp_dir)
+            print("Temporary directory has been created in: ", self.workTempDir)
             print("="*70)
             print("\n"*2)
         
         self._initial()
         self._record_default_values()
-        self._get_observed_data()
+        self._get_obsData()
         
         self.workPathQueue = queue.Queue()
         self.workTempDirs = []
         
         for i in range(numParallel):
-            path = os.path.join(self.work_temp_dir, "instance{}".format(i))
+            path = os.path.join(self.workTempDir, "instance{}".format(i))
             self.workTempDirs.append(path)
             self.workPathQueue.put(path)
                 
@@ -138,8 +138,8 @@ class SWAT_UQ(Problem):
         else:
             self.nOutput = nOutput
             
-        super().__init__(nInput = len(self.paras_list), nOutput = self.nOutput, 
-                            lb = self.lb, ub = self.ub, varType = self.disc_var, varSet = self.disc_range)
+        super().__init__(nInput = len(self.varName), nOutput = self.nOutput, 
+                            lb = self.lb, ub = self.ub, varType = self.varType, varSet = self.varSet)
 
     def evaluate(self, X):
         
@@ -177,198 +177,194 @@ class SWAT_UQ(Problem):
             text = True)
         process.wait()
         
-        total_objs = self.txtObjs
-        data_infos = self.observeInfos["observe_data"]
-        obj_comb = self.observeInfos["obj_comb"]
+        totalObjs = self.txtObjs
+        dataInfos = self.observeInfos["observe_data"]
+        objComb = self.observeInfos["objComb"]
         
-        obj_array = np.zeros(total_objs)
-        sim_series = []
-        for obj_id in range(1, total_objs+1):
-            series_comb = obj_comb[obj_id]
-            v_obj = 0
-            for series_id in series_comb:
-                data_info = data_infos[series_id-1]
-                rch_id = data_info[1]
-                var_col = data_info[2]
-                obj_type = data_info[3]
-                obj_id = data_info[4]
-                weight = data_info[5]
-                read_lines = data_info[6]
-                observed_value = data_info[7]
+        objArray = np.zeros(totalObjs)
+        simSeries = []
+        for objId in range(1, totalObjs+1):
+            seriesComb = objComb[objId]
+            vObj = 0
+            for seriesId in seriesComb:
+                dataInfo = dataInfos[seriesId-1]
+                rchId = dataInfo[1]
+                varCol = dataInfo[2]
+                objType = dataInfo[3]
+                objId = dataInfo[4]
+                weight = dataInfo[5]
+                readLines = dataInfo[6]
+                observedValue = dataInfo[7]
                 
-                sim_value_list = []
-                for lines in read_lines:
+                simValueList = []
+                for lines in readLines:
                     startline = int(lines[0])
                     endline = lines[1]
-                    sub_value = np.array(read_simulation(os.path.join(workPath, "output.rch"), var_col+1, rch_id, self.nRCH, startline, endline))
-                    sim_value_list.append(sub_value)
-                sim_value=np.concatenate(sim_value_list, axis=0)
-                obj_value=eval(OBJTYPE[obj_type])(observed_value, sim_value)
-                v_obj+=obj_value*weight
-                sim_series.append(sim_value)
-            obj_array[obj_id-1]=v_obj
+                    subValue = np.array(read_simulation(os.path.join(workPath, "output.rch"), varCol+1, rchId, self.nRCH, startline, endline))
+                    simValueList.append(subValue)
+                simValue = np.concatenate(simValueList, axis=0)
+                objValue = eval(OBJTYPE[objType])(observedValue, simValue)
+                vObj += objValue*weight
+                simSeries.append(simValue)
+            objArray[objId-1] = vObj
             
         self.workPathQueue.put(workPath)
         
         #txtObjs txt_sim_series x
-        variables={}
-        variables['Objs']=obj_array
-        variables['SimSeries']=sim_series
-        variables['x']=input_x
-        variables['id']=id
+        variables = {}
+        variables['Objs'] = objArray
+        variables['SimSeries'] = simSeries
+        variables['x'] = input_x
+        variables['id'] = id
         return variables
     
     def _set_values(self, workPath, paras_values):
         
         with ThreadPoolExecutor(maxWorkers=self.maxWorkers) as executor:
-            futures=[]
-            for file_name, infos in self.file_var_info.items():
-                future = executor.submit(write_value_to_file, workPath, file_name, 
+            futures = []
+            for fileName, infos in self.varInfos.items():
+                future = executor.submit(write_value_to_file, workPath, fileName, 
                                          infos["name"], infos["default"], 
                                          infos["index"], infos["mode"],  infos["position"], infos["type"],
                                          paras_values.ravel())
                 futures.append(future)
             
             for future in futures:
-                res=future.result()
+                res = future.result()
     
-    def _get_observed_data(self):
-        file_path=os.path.join(self.workPath, self.obsFileName)
-        rch_ids=[]
-        var_cols=[]
-        rch_weights=[]
-        obj_types=[]
-        data=[]
+    def _get_obsData(self):
+        filePath = os.path.join(self.workPath, self.obsFileName)
+        rchIDs = []; varCols = []; rchWgts = []; objTypes = []; data = []
         
-        print_flag=self.modelInfos["print_flag"]
+        printFlag = self.modelInfos["printFlag"]
         
         try:
-            with open(file_path, "r") as f:
+            with open(filePath, "r") as f:
                 
-                lines=f.readlines()
+                lines = f.readlines()
                 
-                pattern_id=re.compile(r'REACH_ID_(\d+)\s+')
-                pattern_col=re.compile(r'VAR_COL_(\d+)\s+')
-                pattern_type=re.compile(r'TYPE_(\d+)\s+')
-                pattern_obj=re.compile(r'OBJ_(\d+)\s+')
-                pattern_value=re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
+                patternId = re.compile(r'REACH_ID_(\d+)\s+')
+                patternCol = re.compile(r'VAR_COL_(\d+)\s+')
+                patternType = re.compile(r'TYPE_(\d+)\s+')
+                patternObj = re.compile(r'OBJ_(\d+)\s+')
+                patternValue = re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
                 
-                total_series=int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
-                numObjs=int(re.search(r'\d+', lines[1]).group())
+                totalSeries = int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
+                numObjs = int(re.search(r'\d+', lines[1]).group())
                 
-                obj_comb={}
-                obj_ids=[]
+                objComb = {}
+                objIDs = []
                 for i in range(1, numObjs+1):
-                    obj_comb.setdefault(i, [])
+                    objComb.setdefault(i, [])
                 
-                i=2; series_id=0
-                while i<len(lines):
-                    line=lines[i]
-                    match_rch= pattern_id.match(line)
+                i = 2; seriesId = 0
+                while i < len(lines):
+                    line = lines[i]
+                    matchRch = patternId.match(line)
                     
-                    if match_rch:
-                        series_id+=1
+                    if matchRch:
+                        seriesId += 1
                         
-                        rch_id=int(match_rch.group(1))
-                        rch_ids.append(rch_id)
+                        rchID = int(matchRch.group(1))
+                        rchIDs.append(rchID)
                         
-                        var_col=int(pattern_col.match(lines[i+1]).group(1))
-                        var_cols.append(var_col)
+                        varCol = int(patternCol.match(lines[i+1]).group(1))
+                        varCols.append(varCol)
                         
-                        obj_type=int(pattern_type.match(lines[i+2]).group(1))
-                        obj_types.append(obj_type)
+                        objType = int(patternType.match(lines[i+2]).group(1))
+                        objTypes.append(objType)
                         
-                        obj_id=int(pattern_obj.match(lines[i+3]).group(1))
-                        obj_comb[obj_id].append(series_id)
-                        obj_ids.append(obj_id)
+                        objID = int(patternObj.match(lines[i+3]).group(1))
+                        objComb[objID].append(seriesId)
+                        objIDs.append(objID)
                         
-                        weight=float(re.search(r'\d+\.?\d*',lines[i+4]).group())
-                        rch_weights.append(weight)
+                        weight = float(re.search(r'\d+\.?\d*',lines[i+4]).group())
+                        rchWgts.append(weight)
                         
-                        num_data=int(re.search(r'\d+', lines[i+5]).group())
+                        numData = int(re.search(r'\d+', lines[i+5]).group())
                         
-                        i=i+6
+                        i = i+6
                         
-                        line=lines[i]
-                        while pattern_value.match(line) is None:
-                            i+=1
-                            line=lines[i]   
+                        line = lines[i]
+                        while patternValue.match(line) is None:
+                            i += 1
+                            line = lines[i]   
                                
-                        n=0
+                        n = 0
                         while True:
-                            line=lines[i];n+=1
-                            match_data = pattern_value.match(line)
-                            _, time, year = map(int, match_data.groups()[:-1])
-                            value = float(match_data.groups()[-1])
-                            if print_flag==0:
-                                years=year-self.modelInfos["begin_date"].year
-                                if years==0:
-                                    index=time-self.modelInfos["begin_date"].month
+                            line = lines[i]; n += 1
+                            matchData = patternValue.match(line)
+                            _, time, year = map(int, matchData.groups()[:-1])
+                            value = float(matchData.groups()[-1])
+                            if printFlag == 0:
+                                years = year - self.modelInfos["beginDate"].year
+                                if years == 0:
+                                    index = time - self.modelInfos["beginDate"].month
                                 else:
-                                    index=time+12-self.modelInfos["begin_date"].month+(years-1)*12
+                                    index = time + 12-self.modelInfos["beginDate"].month + (years-1)*12
                             else:
-                                index=(datetime(year, 1, 1)+timedelta(days=time-1)-self.modelInfos["begin_record"]).days
-                            data.append([series_id, rch_id, var_col, obj_type, obj_id, weight, int(index), int(year), int(time), value])
-                            if n==num_data:
+                                index = (datetime(year, 1, 1)+timedelta(days=time-1)-self.modelInfos["beginRecord"]).days
+                            data.append([seriesId, rchID, varCol, objType, objID, weight, int(index), int(year), int(time), value])
+                            if n == numData:
                                 break
                             else:
-                                i+=1              
-                    i+=1
+                                i += 1              
+                    i += 1
         except FileNotFoundError:
             raise FileNotFoundError("The observed data file is not found, please check the file name!")
         
         except Exception as e:
             raise ValueError("There is an error in observed data file, please check!")
         
-        if total_series!=series_id:
+        if totalSeries != seriesId:
             raise ValueError("The number of reaches in observed.txt is not equal to the number of reaches in flow data!")
         
         # dtype = {'series_id': int, 'rch_id': int, 'var_col': int, 'obj_type': int, 'obj_id': int, 'weight': float, 'index': int, 'year': int, 'time': int, 'value': float}                     
-        observed_data = pd.DataFrame(data, columns=['series_id', 'rch_id', 'var_col', 'obj_type', 'obj_id', 'weight','index', 'year', 'time', 'value'])
+        obsData = pd.DataFrame(data, columns=['series_id', 'rch_id', 'var_col', 'obj_type', 'obj_id', 'weight','index', 'year', 'time', 'value'])
                                      
-        data_infos=[]
-        for series_id in range(0, total_series):
-            id=series_id+1
-            data=observed_data.query('series_id==@id')
-            data_value=data['value'].to_numpy(dtype=float)
-            data_index=data['index'].to_numpy(dtype=int)
-            read_lines=self._get_lines_for_output_(data_index)
-            data_infos.append((series_id, rch_ids[series_id], var_cols[series_id], obj_types[series_id], obj_ids[series_id], rch_weights[series_id],  read_lines, data_value)) #TODO
+        dataInfos = []
+        for seriesId in range(0, totalSeries):
+            id = seriesId+1
+            data = obsData.query('series_id==@id')
+            dataVal = data['value'].to_numpy(dtype=float)
+            dataIndex = data['index'].to_numpy(dtype=int)
+            readLines = self._get_lines_for_output_(dataIndex)
+            dataInfos.append((seriesId, rchIDs[seriesId], varCols[seriesId], objTypes[seriesId], objIDs[seriesId], rchWgts[seriesId], readLines, dataVal)) #TODO
 
-        self.observeInfos["total_series"]=total_series
-        self.observeInfos["observe_data"]=data_infos
-        self.observeInfos["obj_comb"]=obj_comb
+        self.observeInfos["totalSeries"] = totalSeries
+        self.observeInfos["observe_data"] = dataInfos
+        self.observeInfos["objComb"] = objComb
         
-        self.txtObjs=numObjs
+        self.txtObjs = numObjs
         # self.nOutput=numObjs #TODO
 
         if self.verboseFlag:
             print("="*25+"Observed Information"+"="*25)
-            print("The number of observed data series is: ", total_series)
+            print("The number of observed data series is: ", totalSeries)
             print("The number of objective functions is: ", numObjs)
-            series_id_formatted="{:^10}".format("Series_id")
-            rch_formatted="{:^10}".format("Reach_id")
-            variable_formatted= "{:^10}".format("Variable")
-            obj_type_formatted= "{:^10}".format("Obj_type")
-            obj_id_formatted= "{:^10}".format("Obj_id")
-            weight_formatted= "{:^10}".format("Weight")
-            data_formatted= "{:<30}".format("Read_lines")
-            print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
-            for obj_id, series in obj_comb.items():
+            seriesIdFormatted = "{:^10}".format("Series_id")
+            rchFormatted = "{:^10}".format("Reach_id")
+            variableFormatted = "{:^10}".format("Variable")
+            objTypeFormatted = "{:^10}".format("Obj_type")
+            objIdFormatted = "{:^10}".format("Obj_id")
+            weightFormatted = "{:^10}".format("Weight")
+            dataFormatted = "{:<30}".format("readLines")
+            print(seriesIdFormatted+"||"+rchFormatted+"||"+variableFormatted+"||"+objTypeFormatted+"||"+objIdFormatted+"||"+weightFormatted+"||"+dataFormatted)
+            for objId, series in objComb.items():
                 for id in series:
-                    i=id-1
-                    series_id_formatted="{:^10}".format(id)
-                    rch_formatted="{:^10}".format(data_infos[i][1])
-                    variable_formatted= "{:^10}".format(VARNAME[data_infos[i][2]])
-                    obj_type_formatted= "{:^10}".format(OBJTYPENAME[data_infos[i][3]])
-                    obj_id_formatted= "{:^10}".format(data_infos[i][4])
-                    weight_formatted= "{:^10}".format(data_infos[i][5])
-                    lines=data_infos[i][6]
-                    line_str=""
+                    i = id-1
+                    seriesIdFormatted = "{:^10}".format(id)
+                    rchFormatted = "{:^10}".format(dataInfos[i][1])
+                    variableFormatted = "{:^10}".format(VARNAME[dataInfos[i][2]])
+                    objTypeFormatted = "{:^10}".format(OBJTYPENAME[dataInfos[i][3]])
+                    objIdFormatted = "{:^10}".format(dataInfos[i][4])
+                    weightFormatted = "{:^10}".format(dataInfos[i][5])
+                    lines = dataInfos[i][6]
+                    lineStr = ""
                     for line in lines:
-                        line_str+=str(line[0])+"-"+str(line[1])+" "
-                    data_formatted= "{:<30}".format(line_str)
-                    print(series_id_formatted+"||"+rch_formatted+"||"+variable_formatted+"||"+obj_type_formatted+"||"+obj_id_formatted+"||"+weight_formatted+"||"+data_formatted)
+                        lineStr += str(line[0])+"-"+str(line[1])+" "
+                    dataFormatted = "{:<30}".format(lineStr)
+                    print(seriesIdFormatted+"||"+rchFormatted+"||"+variableFormatted+"||"+objTypeFormatted+"||"+objIdFormatted+"||"+weightFormatted+"||"+dataFormatted)
             print("="*70)
         
     def _record_default_values(self):
@@ -376,174 +372,182 @@ class SWAT_UQ(Problem):
         record default values from the swat file
         """
         
-        var_infos_path=os.path.join(self.workPath, self.paraFileName)
-        low_bound=[]
-        up_bound=[]
-        disc_var=[]
-        disc_set=[]
-        var_name=[]
-        mode=[]
-        assign_hru_id=[]
+        varInfosPath = os.path.join(self.workPath, self.paraFileName)
+        LB=[]; UB=[]; varType=[]; varSet=[]; varName=[]; varMode=[]; setHruID=[]
         
-        with open(var_infos_path, 'r') as f:
+        with open(varInfosPath, 'r') as f:
             
-            lines=f.readlines()
-            
+            lines = f.readlines()
             for line in lines:
-                tmp_list=line.split()
-                var_name.append(tmp_list[0])
-                mode.append(tmp_list[1])
-                op_type=tmp_list[2]
-                lower_upper=tmp_list[3].split("_")
                 
-                if op_type=="c":
-                    low_bound.append(float(lower_upper[0]))
-                    up_bound.append(float(lower_upper[1]))
-                    disc_set.append(0)
-                    disc_var.append(0)
-                    
-                elif op_type=="i":
-                    low_bound.append(float(lower_upper[0]))
-                    up_bound.append(float(lower_upper[-1]))
-                    disc_set.append(0)
-                    disc_var.append(1)
-                    
+                tmpList = line.split()
+                name = tmpList[0]
+                mode = tmpList[1]
+                T = tmpList[2]
+                LB_UB =  tmpList[3].split("_")
+                HRUID = tmpList[4:]
+                
+                varName.append(name)
+                setHruID.append(HRUID)
+                
+                if mode in ['v', 'r', 'a']:
+                    varMode.append(mode)
                 else:
-                    low_bound.append(0)
-                    up_bound.append(1)
-                    disc_var.append(2)
-                    disc_set.append([float(e) for e in lower_upper])
+                    raise ValueError(f"The {name} mode is not valid, please check the mode!")
                 
-                assign_hru_id.append(tmp_list[4:])
-        
-        self.lb = np.array(low_bound).reshape(1,-1)
-        self.ub = np.array(up_bound).reshape(1,-1)
-        self.mode = mode
-        self.paras_list = var_name
-        self.x_labels = self.paras_list
-        self.disc_range = disc_set
-        self.disc_var = disc_var
-        self.n_input = len(self.paras_list)
+                if T in ['f', 'i', 'd']:
+                    raise ValueError(f"The {name} type is not valid, please check the type, only `f`, `i`, `d` are supported!")
+                
+                if T == "f": #float
+                    LB.append(float(LB_UB[0]))
+                    UB.append(float(LB_UB[1]))
+                    varType.append(0)
+                    varSet.append(0)
+                    
+                elif T == "i": #integer
+                    LB.append(float(LB_UB[0]))
+                    UB.append(float(LB_UB[1]))
+                    varType.append(1)
+                    varSet.append(0)
+                    
+                else: #discrete
+                    LB.append(0)
+                    UB.append(1)
+                    varType.append(2)
+                    varSet.append([float(e) for e in LB_UB]) #TODO
+                
+        self.lb = np.array(LB).reshape(1,-1)
+        self.ub = np.array(UB).reshape(1,-1)
+        self.varMode = varMode
+        self.varName = varName
+        self.xLabels = self.varName
+        self.varSet = varSet
+        self.varType = varType
+        self.nInput = len(self.varName)
         
         if self.verboseFlag:
             print("="*50+"Parameter Information"+"="*50)
-            name_formatted="{:^20}".format("Parameter name")
-            type_formatted="{:^7}".format("Type")
-            mode_formatted= "{:^7}".format("Mode")
-            low_bound_formatted="{:^15}".format("Lower bound")
-            up_bound_formatted="{:^15}".format("Upper bound")
-            assign_hru_id_formatted="{:^20}".format("HRU ID or Sub_HRU ID")
-            print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
-            for i in range(len(self.paras_list)):
-                name_formatted="{:^20}".format(self.paras_list[i])
-                type_formatted="{:^7}".format("Float" if self.disc_var[i]==0 else "int")
-                mode_formatted= "{:^7}".format(self.mode[i])
-                low_bound_formatted="{:^15}".format(self.lb[0][i])
-                up_bound_formatted="{:^15}".format(self.ub[0][i])
-                assign_hru_id_formatted="{:^20}".format(" ".join(assign_hru_id[i]))
-                print(name_formatted+"||"+type_formatted+"||"+mode_formatted+"||"+low_bound_formatted+"||"+up_bound_formatted+"||"+assign_hru_id_formatted)
+            nameFormatted = "{:^20}".format("Parameter name")
+            typeFormatted ="{:^7}".format("Type")
+            modeFormatted = "{:^7}".format("Mode")
+            LBFormatted = "{:^15}".format("Lower bound")
+            UBFormatted = "{:^15}".format("Upper bound")
+            HruFormatted = "{:^20}".format("HRU ID or Sub_HRU ID")
+            print(nameFormatted+"||"+typeFormatted+"||"+modeFormatted+"||"+LBFormatted+"||"+UBFormatted+"||"+HruFormatted)
+            for i in range(len(self.varName)):
+                nameFormatted = "{:^20}".format(self.varName[i])
+                typeFormatted = "{:^7}".format("Float" if self.varType[i]==0 else "int")
+                modeFormatted = "{:^7}".format(self.varMode[i])
+                LBFormatted = "{:^15}".format(self.lb[0][i])
+                UBFormatted = "{:^15}".format(self.ub[0][i])
+                HruFormatted = "{:^20}".format(" ".join(setHruID[i]))
+                print(nameFormatted+"||"+typeFormatted+"||"+modeFormatted+"||"+LBFormatted+"||"+UBFormatted+"||"+HruFormatted)
             print("="*120)
             print("\n"*1)
-        self.file_var_info={}
-        
-        watershed_hru=self.modelInfos["watershed_hru"]
-        watershed_list=self.modelInfos["watershed_list"]
-        hru_list=self.modelInfos["hru_list"]
-        
-        for i, element in enumerate(self.paras_list):
             
-            suffix=self.paras_file.query('para_name==@element')['file_name'].values[0]
-            position=self.paras_file.query('para_name==@element')['position'].values[0]
+        self.varInfos = {}
+        
+        watershedToHru = self.modelInfos["watershedToHru"]
+        watershedList = self.modelInfos["watershedList"]
+        hruList = self.modelInfos["hruList"]
+        
+        for i, element in enumerate(self.varName):
             
-            if(self.paras_file.query('para_name==@element')['type'].values[0]=="int"):
-                data_type_=0
+            suffix = self.paras_file.query('para_name==@element')['file_name'].values[0]
+            position = self.paras_file.query('para_name==@element')['position'].values[0]
+            
+            if(self.paras_file.query('para_name==@element')['type'].values[0] == "int"):
+                varType = 0 #integer
             else:
-                data_type_=1
+                varType = 1 #float
             
             if suffix in HRU:
-                if assign_hru_id[i][0]=="all":
-                    files=[e+".{}".format(suffix) for e in hru_list]
+                if setHruID[i][0] == "all":
+                    files = [e+".{}".format(suffix) for e in hruList]
                 else:
-                    files=[]
-                    for comb in assign_hru_id[i]:
+                    files = []
+                    for comb in setHruID[i]:
                         if "(" not in comb:
-                            code=f"{'0' * (9 - 4 - len(comb))}{comb}{'0'*4}"
-                            for hru in watershed_hru[code]:
+                            code = f"{'0' * (9 - 4 - len(comb))}{comb}{'0'*4}"
+                            for hru in watershedToHru[code]:
                                 files.append(f"{hru}.{suffix}")
                         else:
-                            sub=comb.split("(")[0]
-                            hru=comb.split("(")[1].strip(")").split(',')
+                            sub = comb.split("(")[0]
+                            hru = comb.split("(")[1].strip(")").split(',')
                             for e in hru:
-                                code=f"{'0' * (9 - 4 - len(sub))}{sub}{'0'*(4-len(e))}{e}"
+                                code = f"{'0' * (9 - 4 - len(sub))}{sub}{'0'*(4-len(e))}{e}"
                                 files.append(f"{code}.{suffix}")
                                 
             elif suffix in WATERSHED:
-                if assign_hru_id[i][0]=="all":
-                    files=[e+"."+suffix for e in watershed_list]
+                if setHruID[i][0] == "all":
+                    files = [e+"."+suffix for e in watershedList]
                 else:
-                    files=[]
-                    for e in assign_hru_id[i]: 
-                        code=f"{'0' * (9 - 4 - len(e))}{e}{'0'*4}"
+                    files = []
+                    for e in setHruID[i]: 
+                        code = f"{'0' * (9 - 4 - len(e))}{e}{'0'*4}"
                         files.append(code+"."+suffix)
                     
-            elif suffix=="bsn":
-                files=["basins.bsn"]
+            elif suffix == "bsn":
+                files = ["basins.bsn"]
             
             for file in files:
-                self.file_var_info.setdefault(file,{})
-                self.file_var_info[file].setdefault("index", [])
-                self.file_var_info[file]["index"].append(i)
-                self.file_var_info[file].setdefault("mode", [])
-                if self.mode[i]=="v":
-                    self.file_var_info[file]["mode"].append(0)
-                elif self.mode[i]=="r":
-                    self.file_var_info[file]["mode"].append(1)
-                elif self.mode[i]=="a":
-                    self.file_var_info[file]["mode"].append(2)
+                self.varInfos.setdefault(file,{})
+                self.varInfos[file].setdefault("index", [])
+                self.varInfos[file]["index"].append(i)
+                self.varInfos[file].setdefault("mode", [])
+                if self.varMode[i] == "v":
+                    self.varInfos[file]["mode"].append(0)
+                elif self.varMode[i] == "r":
+                    self.varInfos[file]["mode"].append(1)
+                elif self.varMode[i] == "a":
+                    self.varInfos[file]["mode"].append(2)
                 
-                self.file_var_info[file].setdefault("name", [])
-                self.file_var_info[file]["name"].append(element)
-                self.file_var_info[file].setdefault("position",[])
-                self.file_var_info[file]["position"].append(position)
-                self.file_var_info[file].setdefault("type", [])
-                self.file_var_info[file]["type"].append(data_type_)
+                self.varInfos[file].setdefault("name", [])
+                self.varInfos[file]["name"].append(element)
+                self.varInfos[file].setdefault("position",[])
+                self.varInfos[file]["position"].append(position)
+                self.varInfos[file].setdefault("type", [])
+                self.varInfos[file]["type"].append(varType)
         
-        with ThreadPoolExecutor(maxWorkers=self.maxWorkers) as executor:
-            futures=[]
-            for file_name, infos in self.file_var_info.items():
-                futures.append(executor.submit(read_value_swat, self.workPath, file_name , infos["name"], infos["position"], 1))
+        with ThreadPoolExecutor(maxWorkers = self.maxWorkers) as executor:
+            futures = []
+            for fileName, infos in self.varInfos.items():
+                futures.append(executor.submit(read_value_swat, self.workPath, fileName, infos["name"], infos["position"], 1))
         
         for future in futures:
-            res=future.result()
+            res = future.result()
             for key, items in res.items():
-                values=' '.join(str(value) for value in items)
-                paraName, file_name=key.split('|')
-                self.file_var_info[file_name].setdefault("default", {})
-                self.file_var_info[file_name]["default"][paraName]=values
+                values = ' '.join(str(value) for value in items)
+                paraName, fileName = key.split('|')
+                self.varInfos[fileName].setdefault("default", {})
+                self.varInfos[fileName]["default"][paraName] = values
           
     def _initial(self):
+        '''
+        This function is used to initialize the model information.
+        It reads the control file fig.fig and records the model information.
+        '''
+        paras = ["IPRINT", "NBYR", "IYR", "IDAF", "IDAL", "NYSKIP"]
+        pos = ["default"]*len(paras)
+        dictValues = read_value_swat(self.workPath, "file.cio", paras, pos, 0)
+        beginDate = datetime(int(dictValues["IYR"][0]), 1, 1) + timedelta(int(dictValues['IDAF'][0]) - 1)
+        endDate = datetime(int(dictValues["IYR"][0]) + int(dictValues['NBYR'][0]) - 1, 1, 1) + timedelta(int(dictValues['IDAL'][0]) - 1)
+        simulationDays = (endDate-beginDate).days + 1
+        outputSkipYears = int(dictValues["NYSKIP"][0])
+        outputSkipDays = (datetime(int(dictValues["IYR"][0])+outputSkipYears, 1, 1) + timedelta(int(dictValues['IDAF'][0])-1) - beginDate).days
+        beginRecord = beginDate + timedelta(outputSkipDays)
         
-        paras=["IPRINT", "NBYR", "IYR", "IDAF", "IDAL", "NYSKIP"]
-        pos=["default"]*len(paras)
-        dict_values=read_value_swat(self.workPath, "file.cio", paras, pos, 0)
-        begin_date=datetime(int(dict_values["IYR"][0]), 1, 1)+timedelta(int(dict_values['IDAF'][0])-1)
-        end_date=datetime(int(dict_values["IYR"][0])+int(dict_values['NBYR'][0])-1, 1, 1)+timedelta(int(dict_values['IDAL'][0])-1)
-        simulation_days=(end_date-begin_date).days+1
-        output_skip_years=int(dict_values["NYSKIP"][0])
-        output_skip_days=(datetime(int(dict_values["IYR"][0])+output_skip_years, 1, 1)+timedelta(int(dict_values['IDAF'][0])-1)-begin_date).days
-        begin_record=begin_date+timedelta(output_skip_days)
-        
-        self.modelInfos["print_flag"]=int(dict_values["IPRINT"][0])
-        self.modelInfos["begin_date"]=begin_date
-        self.modelInfos["end_date"]=end_date
-        self.modelInfos["output_skip_years"]=output_skip_years
-        self.modelInfos["simulation_days"]=simulation_days
-        self.modelInfos["begin_record"]=begin_record
+        self.modelInfos["printFlag"] = int(dictValues["IPRINT"][0])
+        self.modelInfos["beginDate"] = beginDate
+        self.modelInfos["endDate"] = endDate
+        self.modelInfos["outputSkipYears"] = outputSkipYears
+        self.modelInfos["simulationDays"] = simulationDays
+        self.modelInfos["beginRecord"] = beginRecord
         
         #read control file fig.fig
         watershed={}
         with open(os.path.join(self.workPath, "fig.fig"), "r") as f:
-            lines=f.readlines()
+            lines = f.readlines()
             for line in lines:
                 match = re.search(r'(\d+)\.sub', line)
                 if match:
@@ -551,40 +555,41 @@ class SWAT_UQ(Problem):
         
         #read sub files
         for sub in watershed:
-            file_name=sub+".sub"
-            with open(os.path.join(self.workPath, file_name), "r") as f:
-                lines=f.readlines()
+            fileName = sub+".sub"
+            with open(os.path.join(self.workPath, fileName), "r") as f:
+                lines = f.readlines()
                 for line in lines:
                     match = re.search(r'(\d+)\.mgt', line)
                     if match:
                         watershed[sub].append(match.group(1))
         
-        self.modelInfos["watershed_list"]=list(watershed.keys())
-        self.modelInfos["hru_list"] = list(itertools.chain.from_iterable(watershed.values()))
-        self.modelInfos["watershed_hru"]=watershed
-        self.modelInfos["nHRU"]=len(self.modelInfos["hru_list"])
-        self.modelInfos["n_watershed"]=len(self.modelInfos["watershed_list"])
-        self.modelInfos["nRCH"]=len(self.modelInfos["watershed_list"])
-        self.nRCH=self.modelInfos["nRCH"]
+        self.modelInfos["watershedList"] = list(watershed.keys())
+        self.modelInfos["hruList"] = list(itertools.chain.from_iterable(watershed.values()))
+        self.modelInfos["watershedToHru"] = watershed
+        self.modelInfos["nHRU"] = len(self.modelInfos["hruList"])
+        self.modelInfos["nWatershed"] = len(self.modelInfos["watershedList"])
+        self.modelInfos["nRCH"] = len(self.modelInfos["watershedList"])
+        self.nRCH = self.modelInfos["nRCH"] #TODO: check if this is correct
         
         #read the paras file
-        self.paras_file=pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
+        self.paras_file = pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
+        
         #for special paras file
         if self.specialParaFile is not None:
             with open(os.path.join(self.workPath, self.specialParaFile), 'r') as f:
-                lines=f.readlines()
+                lines = f.readlines()
                 for line in lines:
-                    tmp_list=line.split()
-                    self.paras_file.loc[tmp_list[0]]=tmp_list[1:]
+                    tmpList = line.split()
+                    self.paras_file.loc[tmpList[0]] = tmpList[1:]
         
         if self.verboseFlag:
             print("="*25+"Model Information"+"="*25)
-            print("The time period of simulation is: ", self.modelInfos["begin_date"].strftime("%Y%m%d"), " to ", self.modelInfos["end_date"].strftime("%Y%m%d"))
-            print("The number of simulation days is: ", self.modelInfos["simulation_days"])
-            print("The number of output skip years is: ", self.modelInfos["output_skip_years"])
+            print("The time period of simulation is: ", self.modelInfos["beginDate"].strftime("%Y%m%d"), " to ", self.modelInfos["endDate"].strftime("%Y%m%d"))
+            print("The number of simulation days is: ", self.modelInfos["simulationDays"])
+            print("The number of output skip years is: ", self.modelInfos["outputSkipYears"])
             print("The number of HRUs is: ", self.modelInfos["nHRU"])
             print("The number of Reaches is: ", self.modelInfos["nRCH"])
-            if self.modelInfos["print_flag"]==0:
+            if self.modelInfos["printFlag"] == 0:
                 print("The print flag of SWAT is: ", "monthly")
             else:
                 print("The print flag of SWAT is: ", "daily")
@@ -594,76 +599,76 @@ class SWAT_UQ(Problem):
     def _get_lines_for_output_(self, index):
         
         index.ravel().sort()
-        cur_group=[index[0]]; lines_group=[]
+        curGroup = [index[0]]; linesGroup=[]
         
         for i in range(1, len(index)):
-            if index[i]==cur_group[-1]+1:
-                cur_group.append(index[i])
+            if index[i] == curGroup[-1]+1:
+                curGroup.append(index[i])
             else:
-                lines_group+=self._generate_data_lines(cur_group)
-                cur_group=[index[i]]
+                linesGroup += self._generate_data_lines(curGroup)
+                curGroup = [index[i]]
         
-        lines_group+=self._generate_data_lines(cur_group)
+        linesGroup += self._generate_data_lines(curGroup)
         
-        return lines_group
+        return linesGroup
     
     def _generate_data_lines(self, group):
         
-        start=group[0];end=group[-1]
-        print_flag=self.modelInfos["print_flag"]
-        nRCH=self.modelInfos["nRCH"]
+        start = group[0]; end = group[-1]
+        printFlag = self.modelInfos["printFlag"]
+        nRCH = self.modelInfos["nRCH"]
 
-        lines=[]
-        if print_flag==0:
-            begin_month=self.modelInfos["begin_record"].month
-            first_period=12-begin_month
-            if start<=first_period:
-                if end<=first_period:
-                    end_in_year=end
-                    lines.append([10+nRCH*start, 9+nRCH*(end_in_year+1)])
+        lines = []
+        if printFlag == 0:
+            beginMonth = self.modelInfos["beginRecord"].month
+            firstPeriod = 12-beginMonth
+            if start <= firstPeriod:
+                if end <= firstPeriod:
+                    endInYear = end
+                    lines.append([10+nRCH*start, 9+nRCH*(endInYear+1)])
                     return lines
                 else:
-                    end_in_year=first_period
-                lines.append([10+nRCH*start, 9+nRCH*(end_in_year+1)])
+                    endInYear = firstPeriod
+                lines.append([10+nRCH*start, 9+nRCH*(endInYear+1)])
             else:
-                years=start//12
-                start_in_year=start
-                end_in_year=years*12+11
-                if end<=end_in_year:
-                    lines.append([10+nRCH*start_in_year+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
+                years= start//12
+                startInYear = start
+                endInYear = years*12+11
+                if end <= endInYear:
+                    lines.append([10+nRCH*startInYear+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
                     return lines
                 else:
-                    lines.append([10+nRCH*start_in_year, 9+nRCH*(end_in_year+1)+nRCH*years])
+                    lines.append([10+nRCH*startInYear, 9+nRCH*(endInYear+1)+nRCH*years])
             while True:
-                start_in_year=end_in_year+1
-                end_in_year=start_in_year+11
-                years=(start_in_year-first_period)//12+1
-                if end_in_year>=end:
-                    lines.append([10+nRCH*start_in_year+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
+                startInYear = endInYear+1
+                endInYear = startInYear+11
+                years = (startInYear-firstPeriod)//12+1
+                if endInYear >= end:
+                    lines.append([10+nRCH*startInYear+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
                     break
                 else:
-                    lines.append([10+nRCH*start_in_year, 9+nRCH*(end_in_year+1)+nRCH*years])
+                    lines.append([10+nRCH*startInYear, 9+nRCH*(endInYear+1)+nRCH*years])
             return lines 
-        elif print_flag==1:
-            lines=[[10+nRCH*start, 9+nRCH*(end+1)]]
+        elif printFlag == 1:
+            lines = [[10+nRCH*start, 9+nRCH*(end+1)]]
             return lines
     
 #================================================================
 
 def evaluate(variables):
     
-    obj1=variables['Objs'][0] #TOT N-MEAN
-    obj2=variables['Objs'][1] #TOT P-MEAN
+    obj1 = variables['Objs'][0] #TOT N-MEAN
+    obj2 = variables['Objs'][1] #TOT P-MEAN
     
-    x=variables['x']
-    obj3=x[0]*x[1]/10*4200*57*(x[3]+0.001)+x[2]*4000*600*(x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
+    x = variables['x']
+    obj3 = x[0]*x[1]/10*4200*57*(x[3]+0.001)+x[2]*4000*600*(x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
 
     return (obj1, obj2, obj3)
     
-file_path="D:\swat_opt\TxtInOut2"
-tempPath="D:\\swat_opt\\temp"
+filePath = "D:\swat_opt\TxtInOut2"
+tempPath = "D:\\swat_opt\\temp"
 from UQPyL.DoE import LHS    
-swat_cup=SWAT_UQ(workPath=file_path,
+swatCup = SWAT_UQ(workPath=filePath,
                     paraFileName="paras_infos.txt",
                     obsFileName="observed.txt",
                     tempPath=tempPath,
@@ -679,15 +684,5 @@ from UQPyL.surrogates.rbf import RBF
 from UQPyL.surrogates import Mo_Surrogates
 from UQPyL.problems.multi_objective import ZDT1
 
-moead=MOEAD(aggregation='TCH', nInit=100, nPop=100, maxFEs=5000, verboseFreq=1, saveFlag=True)
-moead.run(swat_cup)
-# zdt=ZDT1(nInput=15)
-
-# obj1=RBF()
-# obj2=RBF()
-# obj3=RBF()
-
-# surrogates=Mo_Surrogates(n_surrogates=2, models_list=[obj1, obj2, obj3])
-# optimizer=NSGAII(maxFEs=10000, nInit=100, nPop=100, verboseFlag=False, logFlag=False, saveFlag=False)
-# moasmo=MOASMO(surrogates=surrogates, optimizer=optimizer, advance_infilling=True, maxFEs=300, saveFlag=True)
-# moasmo.run(problem=swat_cup)
+moead = MOEAD(aggregation='TCH', nInit=100, nPop=100, maxFEs=5000, verboseFreq=1, saveFlag=True)
+moead.run(swatCup)

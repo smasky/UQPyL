@@ -2,7 +2,6 @@ import numpy as np
 from typing import Literal
 from scipy.special import comb
 from itertools import combinations
-from numpy import linspace, meshgrid, hstack, ceil
 
 def grid( N: int, M: int ):
     
