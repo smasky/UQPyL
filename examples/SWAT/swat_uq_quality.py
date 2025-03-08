@@ -5,7 +5,6 @@ sys.path.append(".")
 import os
 import re
 import queue
-import tempfile
 import itertools
 import subprocess
 from datetime import datetime, timedelta
@@ -17,6 +16,8 @@ from scipy.stats import pearsonr
 
 from UQPyL.utility.metrics import r_square
 from UQPyL.problems import ProblemABC as Problem
+
+from .SWAT_parameters import PARAMETERS
 
 #C++ Module
 from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
@@ -66,32 +67,29 @@ class SWAT_UQ(Problem):
     
     modelInfos = {}
     observeInfos = {}
-    nHRU = 0
-    nRCH = 0
-    nSUB = 0
+    nHRU = 0; nRCH = 0; nSUB = 0
     
     def __init__(self, workPath: str, paraFileName: str, 
                  obsFileName: str, swatExeName: str, specialParaFile: str = None, tempPath:str = None,
                  userObjFunc: callable = None, nOutput = None,
-                 userConFunc: callable = None,
-                 maxThreads: int = 12, numParallel: int = 5, verboseFlag = False):
+                 userConFunc: callable = None, nCons = 0,
+                 maxThreads: int = 12, numParallel: int = 5, verboseFlag = False,
+                 name: str = None):
         
         self.verboseFlag = verboseFlag
 
-        self.name = "SWAT-UQ"
+        self.name = name if name is not None else "SWAT-UQ"
         
         #create the space for running multiple instance of SWAT
         if tempPath is None:
-            #if dont set the tempPath, create a temp dir
-            self.workTempDir= tempfile.mkdtemp()
-            self.useTempDir = True
-        else:
-            nowTime = datetime.now().strftime("%m%d_%H%M%S")
-            tempPath = os.path.join(tempPath, nowTime)
-            os.makedirs(tempPath)
-            self.workTempDir = tempPath
-            self.useTempDir = False
-        
+            #if dont set the tempPath, create a temp dir in the current working directory
+            workDir = os.path.join(os.getcwd(), "temp")
+            tempPath = os.path.join(workDir, nowTime)
+        nowTime = datetime.now().strftime("%m%d_%H%M%S")
+        tempPath = os.path.join(tempPath, nowTime)
+        os.makedirs(tempPath)
+        self.workTempDir = tempPath
+
         #basic setting
         self.workPath = workPath
         self.paraFileName = paraFileName
@@ -106,14 +104,14 @@ class SWAT_UQ(Problem):
         self.userConFunc = userConFunc
         
         if self.verboseFlag:
-            print("="*25+"basic setting"+"="*25)
+            print("="*25 + "basic setting" + "="*25)
             print("The path of SWAT project is: ", self.workPath)
             print("The file name of optimizing parameters is: ", self.paraFileName)
             print("The file name of observed data is: ", self.obsFileName)
             print("The name of SWAT executable is: ", self.swatExeName)
             print("Temporary directory has been created in: ", self.workTempDir)
-            print("="*70)
-            print("\n"*2)
+            print("=" * 70)
+            print("\n" * 2)
         
         self._initial()
         self._record_default_values()
@@ -145,7 +143,9 @@ class SWAT_UQ(Problem):
         
         n = X.shape[0]
         nOut = self.nOutput
-        Y = np.zeros((n,nOut))
+        nCons = self.nCons
+        objs = np.zeros((n, nOut))
+        cons = np.zeros((n, nCons))
         
         with ThreadPoolExecutor(maxWorkers = self.numParallel) as executor:
             futures = [executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
@@ -154,14 +154,17 @@ class SWAT_UQ(Problem):
                 variables = future.result()
                 
                 id = variables['id']
+                
                 if self.userObjFunc is None:
                     #use default
-                    Y[id] = variables['txtObjs']
+                    objs[id] = variables['txtObjs']
+                    cons[id] = variables['txtCons']
                 else:
                     #use user define
-                    Y[id] = self.userObjFunc(variables)
+                    objs[id] = self.userObjFunc(variables)
+                    cons[id] = self.userConFunc(variables)
 
-        return Y
+        return {'objs': objs, 'cons': cons}
     
     def _subprocess(self, input_x, id):
         
@@ -198,11 +201,12 @@ class SWAT_UQ(Problem):
                 
                 simValueList = []
                 for lines in readLines:
-                    startline = int(lines[0])
-                    endline = lines[1]
-                    subValue = np.array(read_simulation(os.path.join(workPath, "output.rch"), varCol+1, rchId, self.nRCH, startline, endline))
+                    startLine = int(lines[0])
+                    endLine = lines[1]
+                    subValue = np.array(read_simulation(os.path.join(workPath, "output.rch"), varCol+1, rchId, self.modelInfos["nRCH"], startLine, endLine))
                     simValueList.append(subValue)
-                simValue = np.concatenate(simValueList, axis=0)
+                    
+                simValue = np.concatenate(simValueList, axis = 0)
                 objValue = eval(OBJTYPE[objType])(observedValue, simValue)
                 vObj += objValue*weight
                 simSeries.append(simValue)
@@ -453,10 +457,10 @@ class SWAT_UQ(Problem):
         
         for i, element in enumerate(self.varName):
             
-            suffix = self.paras_file.query('para_name==@element')['file_name'].values[0]
-            position = self.paras_file.query('para_name==@element')['position'].values[0]
+            suffix = self.parasInfos.query('para_name==@element')['file_name'].values[0]
+            position = self.parasInfos.query('para_name==@element')['position'].values[0]
             
-            if(self.paras_file.query('para_name==@element')['type'].values[0] == "int"):
+            if(self.parasInfos.query('para_name==@element')['type'].values[0] == "int"):
                 varType = 0 #integer
             else:
                 varType = 1 #float
@@ -528,7 +532,7 @@ class SWAT_UQ(Problem):
         It reads the control file fig.fig and records the model information.
         '''
         paras = ["IPRINT", "NBYR", "IYR", "IDAF", "IDAL", "NYSKIP"]
-        pos = ["default"]*len(paras)
+        pos = ["default"] * len(paras)
         dictValues = read_value_swat(self.workPath, "file.cio", paras, pos, 0)
         beginDate = datetime(int(dictValues["IYR"][0]), 1, 1) + timedelta(int(dictValues['IDAF'][0]) - 1)
         endDate = datetime(int(dictValues["IYR"][0]) + int(dictValues['NBYR'][0]) - 1, 1, 1) + timedelta(int(dictValues['IDAL'][0]) - 1)
@@ -545,17 +549,17 @@ class SWAT_UQ(Problem):
         self.modelInfos["beginRecord"] = beginRecord
         
         #read control file fig.fig
-        watershed={}
+        watershed = {}
         with open(os.path.join(self.workPath, "fig.fig"), "r") as f:
             lines = f.readlines()
             for line in lines:
                 match = re.search(r'(\d+)\.sub', line)
                 if match:
-                    watershed[match.group(1)]=[]
+                    watershed[match.group(1)] = []
         
         #read sub files
         for sub in watershed:
-            fileName = sub+".sub"
+            fileName = sub + ".sub"
             with open(os.path.join(self.workPath, fileName), "r") as f:
                 lines = f.readlines()
                 for line in lines:
@@ -569,10 +573,12 @@ class SWAT_UQ(Problem):
         self.modelInfos["nHRU"] = len(self.modelInfos["hruList"])
         self.modelInfos["nWatershed"] = len(self.modelInfos["watershedList"])
         self.modelInfos["nRCH"] = len(self.modelInfos["watershedList"])
-        self.nRCH = self.modelInfos["nRCH"] #TODO: check if this is correct
+        # self.nRCH = self.modelInfos["nRCH"] #TODO: check if this is correct
         
         #read the paras file
-        self.paras_file = pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
+        HEAD = ["para_name", "file_name", "position", "type"]
+        self.parasInfos = pd.DataFrame(PARAMETERS, columns=HEAD)
+        # self.parasInfos = pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
         
         #for special paras file
         if self.specialParaFile is not None:
@@ -580,10 +586,10 @@ class SWAT_UQ(Problem):
                 lines = f.readlines()
                 for line in lines:
                     tmpList = line.split()
-                    self.paras_file.loc[tmpList[0]] = tmpList[1:]
+                    self.parasInfos.loc[tmpList[0]] = tmpList[1:]
         
         if self.verboseFlag:
-            print("="*25+"Model Information"+"="*25)
+            print("="*25 + "Model Information" + "="*25)
             print("The time period of simulation is: ", self.modelInfos["beginDate"].strftime("%Y%m%d"), " to ", self.modelInfos["endDate"].strftime("%Y%m%d"))
             print("The number of simulation days is: ", self.modelInfos["simulationDays"])
             print("The number of output skip years is: ", self.modelInfos["outputSkipYears"])
@@ -593,8 +599,8 @@ class SWAT_UQ(Problem):
                 print("The print flag of SWAT is: ", "monthly")
             else:
                 print("The print flag of SWAT is: ", "daily")
-            print("="*70)
-            print("\n"*1)
+            print("=" * 70)
+            print("\n" * 1)
             
     def _get_lines_for_output_(self, index):
         
@@ -631,26 +637,26 @@ class SWAT_UQ(Problem):
                     endInYear = firstPeriod
                 lines.append([10+nRCH*start, 9+nRCH*(endInYear+1)])
             else:
-                years= start//12
+                years= start // 12
                 startInYear = start
-                endInYear = years*12+11
+                endInYear = years*12 + 11
                 if end <= endInYear:
-                    lines.append([10+nRCH*startInYear+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
+                    lines.append([10 + nRCH * startInYear + nRCH * years, 9 + nRCH * (end + 1) + nRCH * years])
                     return lines
                 else:
-                    lines.append([10+nRCH*startInYear, 9+nRCH*(endInYear+1)+nRCH*years])
+                    lines.append([10 + nRCH * startInYear, 9 + nRCH * (endInYear + 1) + nRCH * years])
             while True:
-                startInYear = endInYear+1
-                endInYear = startInYear+11
-                years = (startInYear-firstPeriod)//12+1
+                startInYear = endInYear + 1
+                endInYear = startInYear + 11
+                years = (startInYear - firstPeriod) // 12 + 1
                 if endInYear >= end:
-                    lines.append([10+nRCH*startInYear+nRCH*years, 9+nRCH*(end+1)+nRCH*years])
+                    lines.append([10 + nRCH * startInYear + nRCH * years, 9 + nRCH * (end + 1) + nRCH * years])
                     break
                 else:
-                    lines.append([10+nRCH*startInYear, 9+nRCH*(endInYear+1)+nRCH*years])
+                    lines.append([10 + nRCH * startInYear, 9 + nRCH * (endInYear + 1) + nRCH * years])
             return lines 
         elif printFlag == 1:
-            lines = [[10+nRCH*start, 9+nRCH*(end+1)]]
+            lines = [[10 + nRCH * start, 9 + nRCH * (end + 1)]]
             return lines
     
 #================================================================
@@ -661,7 +667,7 @@ def evaluate(variables):
     obj2 = variables['Objs'][1] #TOT P-MEAN
     
     x = variables['x']
-    obj3 = x[0]*x[1]/10*4200*57*(x[3]+0.001)+x[2]*4000*600*(x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
+    obj3 = x[0] * x[1] / 10 * 4200 * 57 * (x[3]+0.001) + x[2] * 4000 * 600 * (x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
 
     return (obj1, obj2, obj3)
     
