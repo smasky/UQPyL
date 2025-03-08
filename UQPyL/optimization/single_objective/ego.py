@@ -48,13 +48,12 @@ class EGO(Algorithm):
         :param verboseFreq: Frequency of verbose output.
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
-        """
-        
+        """      
         super().__init__(maxFEs = maxFEs, maxTolerateTimes = maxTolerateTimes, 
                             verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
                             logFlag = logFlag, saveFlag = saveFlag)
         
-        self.setParameters('nInit', nInit)
+        self.setPara('nInit', nInit)
 
         # Initialize the scaler and surrogate model
         scaler = (StandardScaler(0, 1), StandardScaler(0, 1))
@@ -87,7 +86,7 @@ class EGO(Algorithm):
         """
         
         # Initialization
-        nInit = self.getParaValue('nInit')
+        nInit = self.getParaVal('nInit')
         
         # Set the problem to solve
         self.problem = problem

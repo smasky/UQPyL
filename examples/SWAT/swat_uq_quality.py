@@ -17,7 +17,7 @@ from scipy.stats import pearsonr
 from UQPyL.utility.metrics import r_square
 from UQPyL.problems import ProblemABC as Problem
 
-from .SWAT_parameters import PARAMETERS
+from swat_parameters import PARAMETERS
 
 #C++ Module
 from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
@@ -53,11 +53,11 @@ OBJTYPE={1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_
 VARNAME={6: "FLOW_OUT", 13: "ORGN", 15: "ORGP", 17: "NO3", 19: "NH4", 21: "NO2",47: "TOT_N", 48: "TOT_P"}
 OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
 
-
 HRU = ["chm", "gw", "hru", "mgt", "sdr", "sep", "sol", "ops"]
 WATERSHED = ["pnd", "rte", "sub", "swq", "wgn", "wus"]
 
 class SWAT_UQ(Problem):
+    
     '''
     This class is interface for running SWAT model with UQPyL.
     It can calibrate the parameters of SWAT model with observed data.
@@ -560,7 +560,7 @@ class SWAT_UQ(Problem):
         #read sub files
         for sub in watershed:
             fileName = sub + ".sub"
-            with open(os.path.join(self.workPath, fileName), "r") as f:
+            with open(os.path.join(self.workPath, fileName), "r", encoding='utf-8', errors='ignore') as f:
                 lines = f.readlines()
                 for line in lines:
                     match = re.search(r'(\d+)\.mgt', line)
