@@ -4,6 +4,7 @@ sys.path.append(".")
 
 import os
 import re
+import json
 import queue
 import itertools
 import subprocess
@@ -17,10 +18,8 @@ from scipy.stats import pearsonr
 from UQPyL.utility.metrics import r_square
 from UQPyL.problems import ProblemABC as Problem
 
-from swat_parameters import PARAMETERS
-
 #C++ Module
-from swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
+from .swat_utility import read_value_swat, copy_origin_to_tmp, write_value_to_file, read_simulation
 
 def func_NSE_inverse(true_values, sim_values):
     return -1 * r_square(true_values.reshape(-1,1), sim_values.reshape(-1,1))
@@ -49,9 +48,9 @@ def func_Mean(true_values, sim_values):
 def func_Sum(true_values, sim_values):
     return np.sum(sim_values)
 
-OBJTYPE={1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_Pbias", 5: "func_KGE_inverse", 6: "func_Mean", 7:"func_Sum"}
-VARNAME={6: "FLOW_OUT", 13: "ORGN", 15: "ORGP", 17: "NO3", 19: "NH4", 21: "NO2",47: "TOT_N", 48: "TOT_P"}
-OBJTYPENAME={1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
+FUNC = {1: "func_NSE_inverse", 2: "func_RMSE", 3: "func_PCC_inverse", 4: "func_Pbias", 5: "func_KGE_inverse", 6: "func_Mean", 7:"func_Sum"}
+VAR = {6: "FLOW_OUT", 13: "ORGN", 15: "ORGP", 17: "NO3", 19: "NH4", 21: "NO2",47: "TOT_N", 48: "TOT_P"}
+FUNC_TYPE = {1: "NSE", 2:"RMSE", 3:"PCC", 4:"Pbias", 5:"KGE", 6:"Mean", 7:"Sum"}
 
 HRU = ["chm", "gw", "hru", "mgt", "sdr", "sep", "sol", "ops"]
 WATERSHED = ["pnd", "rte", "sub", "swq", "wgn", "wus"]
@@ -69,9 +68,9 @@ class SWAT_UQ(Problem):
     observeInfos = {}
     nHRU = 0; nRCH = 0; nSUB = 0
     
-    def __init__(self, workPath: str, paraFileName: str, 
-                 obsFileName: str, swatExeName: str, specialParaFile: str = None, tempPath:str = None,
-                 userObjFunc: callable = None, nOutput = None,
+    def __init__(self, nInput: int, nOutput: int, workPath: str, paraFileName: str, 
+                 evalFileName: str, swatExeName: str, specialParaList: list = None, tempPath:str = None,
+                 userObjFunc: callable = None,
                  userConFunc: callable = None, nCons = 0,
                  maxThreads: int = 12, numParallel: int = 5, verboseFlag = False,
                  name: str = None):
@@ -93,8 +92,8 @@ class SWAT_UQ(Problem):
         #basic setting
         self.workPath = workPath
         self.paraFileName = paraFileName
-        self.obsFileName = obsFileName
-        self.specialParaFile = specialParaFile
+        self.evalFileName = evalFileName
+        self.specialParaList = specialParaList
         self.swatExeName = swatExeName
         
         self.maxWorkers = maxThreads
@@ -107,7 +106,7 @@ class SWAT_UQ(Problem):
             print("="*25 + "basic setting" + "="*25)
             print("The path of SWAT project is: ", self.workPath)
             print("The file name of optimizing parameters is: ", self.paraFileName)
-            print("The file name of observed data is: ", self.obsFileName)
+            print("The file name of evaluation(observed) data is: ", self.evalFileName)
             print("The name of SWAT executable is: ", self.swatExeName)
             print("Temporary directory has been created in: ", self.workTempDir)
             print("=" * 70)
@@ -115,7 +114,7 @@ class SWAT_UQ(Problem):
         
         self._initial()
         self._record_default_values()
-        self._get_obsData()
+        self._get_evalData()
         
         self.workPathQueue = queue.Queue()
         self.workTempDirs = []
@@ -125,44 +124,46 @@ class SWAT_UQ(Problem):
             self.workTempDirs.append(path)
             self.workPathQueue.put(path)
                 
-        with ThreadPoolExecutor(maxWorkers=self.numParallel) as executor:
+        with ThreadPoolExecutor(max_workers = self.numParallel) as executor:
             futures = [executor.submit(copy_origin_to_tmp, self.workPath, workTemp) for workTemp in self.workTempDirs]
         
         for future in futures:
             future.result()
         
-        if nOutput is None:
-            self.nOutput = self.txtObjs
-        else:
-            self.nOutput = nOutput
-            
-        super().__init__(nInput = len(self.varName), nOutput = self.nOutput, 
+        if self.nInput != len(self.varName):
+            raise ValueError("The number of input variables is not equal to the number of parameters!")
+        
+        super().__init__(nInput = nInput, nOutput = nOutput, 
                             lb = self.lb, ub = self.ub, varType = self.varType, varSet = self.varSet)
 
     def evaluate(self, X):
         
         n = X.shape[0]
         nOut = self.nOutput
-        nCons = self.nCons
         objs = np.zeros((n, nOut))
-        cons = np.zeros((n, nCons))
+        nCons = self.nConstraints
+        cons = np.zeros((n, nCons)) if nCons > 0 else None
         
-        with ThreadPoolExecutor(maxWorkers = self.numParallel) as executor:
+        with ThreadPoolExecutor(max_workers = self.numParallel) as executor:
             futures = [executor.submit(self._subprocess, X[i, :], i) for i in range(n)]
         
             for _ , future in enumerate(futures):
-                variables = future.result()
+                attrs = future.result()
                 
-                id = variables['id']
+                id = attrs['id']
                 
                 if self.userObjFunc is None:
                     #use default
-                    objs[id] = variables['txtObjs']
-                    cons[id] = variables['txtCons']
+                    objs[id] = np.array(list(attrs['objs'].values()))
                 else:
                     #use user define
-                    objs[id] = self.userObjFunc(variables)
-                    cons[id] = self.userConFunc(variables)
+                    objs[id] = self.userObjFunc(attrs)
+                
+                if nCons > 0:
+                    if self.userConFunc is None:
+                        cons[id] = np.array(list(attrs['cons'].values()))
+                    else:
+                        cons[id] = self.userConFunc(attrs)
 
         return {'objs': objs, 'cons': cons}
     
@@ -171,60 +172,80 @@ class SWAT_UQ(Problem):
         workPath = self.workPathQueue.get()
         self._set_values(workPath, input_x)
         
-        process = subprocess.Popen(
-            os.path.join(workPath, self.swatExeName),
-            cwd = workPath,
-            stdin = subprocess.PIPE, 
-            stdout = subprocess.PIPE, 
-            stderr = subprocess.PIPE,
-            text = True)
-        process.wait()
-        
-        totalObjs = self.txtObjs
-        dataInfos = self.observeInfos["observe_data"]
-        objComb = self.observeInfos["objComb"]
-        
-        objArray = np.zeros(totalObjs)
-        simSeries = []
-        for objId in range(1, totalObjs+1):
-            seriesComb = objComb[objId]
-            vObj = 0
-            for seriesId in seriesComb:
-                dataInfo = dataInfos[seriesId-1]
-                rchId = dataInfo[1]
-                varCol = dataInfo[2]
-                objType = dataInfo[3]
-                objId = dataInfo[4]
-                weight = dataInfo[5]
-                readLines = dataInfo[6]
-                observedValue = dataInfo[7]
-                
-                simValueList = []
-                for lines in readLines:
-                    startLine = int(lines[0])
-                    endLine = lines[1]
-                    subValue = np.array(read_simulation(os.path.join(workPath, "output.rch"), varCol+1, rchId, self.modelInfos["nRCH"], startLine, endLine))
-                    simValueList.append(subValue)
-                    
-                simValue = np.concatenate(simValueList, axis = 0)
-                objValue = eval(OBJTYPE[objType])(observedValue, simValue)
-                vObj += objValue*weight
-                simSeries.append(simValue)
-            objArray[objId-1] = vObj
+        try:
+            process = subprocess.Popen(
+                os.path.join(workPath, self.swatExeName),
+                cwd = workPath,
+                stdin = subprocess.PIPE, 
+                stdout = subprocess.PIPE, 
+                stderr = subprocess.PIPE,
+                text = True)
+            process.wait()
             
-        self.workPathQueue.put(workPath)
+            dataInfos = self.observeInfos["obsData"]
+            funcComb = self.observeInfos["funcComb"]
+            funcCombTypes = self.observeInfos["funcCombTypes"]
+            
+            objDict = {}
+            consDict = {}
+            objSeries = {}
+            consSeries = {}
+            
+            for funcId in funcComb.keys():
+                seriesComb = funcComb[funcId]
+                funcCombType = funcCombTypes[funcId]
+                val = 0
+                
+                for serID in seriesComb:
+                    dataInfo = dataInfos[serID]
+                    funcID = dataInfo[1]
+                    funcCombType = dataInfo[2]
+                    funcType = dataInfo[3]
+                    rchId = dataInfo[4]
+                    varCol = dataInfo[5]
+                    weight = dataInfo[6]
+                    readLines = dataInfo[7]
+                    observedValue = dataInfo[8]
+                    
+                    simValueList = []
+                    for lines in readLines:
+                        startLine = int(lines[0])
+                        endLine = lines[1]
+                        subValue = np.array(read_simulation(os.path.join(workPath, "output.rch"), varCol+1, rchId, self.modelInfos["nRCH"], startLine, endLine))
+                        simValueList.append(subValue)
+                        
+                    simValue = np.concatenate(simValueList, axis = 0)
+                    val += eval(FUNC[funcType])(observedValue, simValue)*weight
+                    
+                    if funcCombType == "OBJ":
+                        objSeries[serID] = (observedValue, simValue)
+                    else:
+                        consSeries[serID] = (observedValue, simValue)
+                
+                if funcCombType == "OBJ":
+                    objDict[funcID] = val
+                else:
+                    consDict[funcID] = val  
+                
+            self.workPathQueue.put(workPath)
+            
+            #simulation attributes
+            attrs = {}
+            attrs['id'] = id
+            attrs['objs'] = objDict
+            attrs['cons'] = consDict
+            attrs['objSeries'] = objSeries
+            attrs['consSeries'] = consSeries
+            attrs['x'] = input_x
+            
+        except Exception as e:
+            attrs['error'] = e
         
-        #txtObjs txt_sim_series x
-        variables = {}
-        variables['Objs'] = objArray
-        variables['SimSeries'] = simSeries
-        variables['x'] = input_x
-        variables['id'] = id
-        return variables
+        return attrs
     
     def _set_values(self, workPath, paras_values):
         
-        with ThreadPoolExecutor(maxWorkers=self.maxWorkers) as executor:
+        with ThreadPoolExecutor(max_workers = self.maxWorkers) as executor:
             futures = []
             for fileName, infos in self.varInfos.items():
                 future = executor.submit(write_value_to_file, workPath, fileName, 
@@ -236,9 +257,15 @@ class SWAT_UQ(Problem):
             for future in futures:
                 res = future.result()
     
-    def _get_obsData(self):
-        filePath = os.path.join(self.workPath, self.obsFileName)
-        rchIDs = []; varCols = []; rchWgts = []; objTypes = []; data = []
+    def _get_evalData(self):
+        
+        filePath = os.path.join(self.workPath, self.evalFileName)
+        
+        serIDs = []; rchIDs = []; varCols = []; rchWgts = []; funcTypes = []; data = []; funcCombTypes = {}
+        funcCombs = {}
+        
+        self.obsObjs = 0
+        self.obsCons = 0
         
         printFlag = self.modelInfos["printFlag"]
         
@@ -247,47 +274,56 @@ class SWAT_UQ(Problem):
                 
                 lines = f.readlines()
                 
-                patternId = re.compile(r'REACH_ID_(\d+)\s+')
+                patternSeries = re.compile(r'SER_(\d+)\s+')
+                patternFunc = re.compile(r'([a-zA-Z]*)_(\d+)\s+')
+                patternReach = re.compile(r'REACH_ID_(\d+)\s+')
                 patternCol = re.compile(r'VAR_COL_(\d+)\s+')
                 patternType = re.compile(r'TYPE_(\d+)\s+')
-                patternObj = re.compile(r'OBJ_(\d+)\s+')
                 patternValue = re.compile(r'(\d+)\s+[a-zA-Z]*_?OUT_(\d+)_(\d+)\s+(\d+\.?\d*)')
                 
-                totalSeries = int(re.search(r'\d+', lines[0]).group()) #read the num of reaches
-                numObjs = int(re.search(r'\d+', lines[1]).group())
-                
-                objComb = {}
-                objIDs = []
-                for i in range(1, numObjs+1):
-                    objComb.setdefault(i, [])
-                
-                i = 2; seriesId = 0
+                i = 0
                 while i < len(lines):
                     line = lines[i]
-                    matchRch = patternId.match(line)
                     
-                    if matchRch:
-                        seriesId += 1
+                    matchSeries = patternSeries.match(line)
+                    
+                    if matchSeries:
+                    
+                        serID = int(matchSeries.group(1))
+                        if serID in serIDs:
+                            raise ValueError("The series ID is duplicated, please check the observed data file!")
+                        else:
+                            serIDs.append(serID)
                         
-                        rchID = int(matchRch.group(1))
+                        matchFunc = patternFunc.match(lines[i+1])
+                        funcCombType = matchFunc.group(1)
+                        if funcCombType == "OBJ":
+                            self.obsObjs += 1
+                        elif funcCombType == "CON":
+                            self.obsCons += 1
+                        else:
+                            raise ValueError("The function combination type is not valid, only `OBJ` and `CON` are supported, please check the observed data file!")
+                        funcID = int(matchFunc.group(2))
+                        funcCombTypes[funcID] = funcCombType
+                        if funcID not in funcCombs.keys():
+                            funcCombs[funcID] = []
+                        funcCombs[funcID].append(serID)
+                        
+                        funcType = int(patternType.match(lines[i+2]).group(1))
+                        funcTypes.append(funcType)
+                        
+                        rchID = int(patternReach.match(lines[i+3]).group(1))
                         rchIDs.append(rchID)
                         
-                        varCol = int(patternCol.match(lines[i+1]).group(1))
+                        varCol = int(patternCol.match(lines[i+4]).group(1))
                         varCols.append(varCol)
                         
-                        objType = int(patternType.match(lines[i+2]).group(1))
-                        objTypes.append(objType)
-                        
-                        objID = int(patternObj.match(lines[i+3]).group(1))
-                        objComb[objID].append(seriesId)
-                        objIDs.append(objID)
-                        
-                        weight = float(re.search(r'\d+\.?\d*',lines[i+4]).group())
+                        weight = float(re.search(r'\d+\.?\d*',lines[i+5]).group())
                         rchWgts.append(weight)
                         
-                        numData = int(re.search(r'\d+', lines[i+5]).group())
+                        numData = int(re.search(r'\d+', lines[i+6]).group())
                         
-                        i = i+6
+                        i = i+7
                         
                         line = lines[i]
                         while patternValue.match(line) is None:
@@ -308,7 +344,7 @@ class SWAT_UQ(Problem):
                                     index = time + 12-self.modelInfos["beginDate"].month + (years-1)*12
                             else:
                                 index = (datetime(year, 1, 1)+timedelta(days=time-1)-self.modelInfos["beginRecord"]).days
-                            data.append([seriesId, rchID, varCol, objType, objID, weight, int(index), int(year), int(time), value])
+                            data.append([serID, funcID, funcCombType, funcType, rchID, varCol, weight, int(index), int(year), int(time), value])
                             if n == numData:
                                 break
                             else:
@@ -320,55 +356,57 @@ class SWAT_UQ(Problem):
         except Exception as e:
             raise ValueError("There is an error in observed data file, please check!")
         
-        if totalSeries != seriesId:
-            raise ValueError("The number of reaches in observed.txt is not equal to the number of reaches in flow data!")
-        
         # dtype = {'series_id': int, 'rch_id': int, 'var_col': int, 'obj_type': int, 'obj_id': int, 'weight': float, 'index': int, 'year': int, 'time': int, 'value': float}                     
-        obsData = pd.DataFrame(data, columns=['series_id', 'rch_id', 'var_col', 'obj_type', 'obj_id', 'weight','index', 'year', 'time', 'value'])
-                                     
-        dataInfos = []
-        for seriesId in range(0, totalSeries):
-            id = seriesId+1
-            data = obsData.query('series_id==@id')
+        obsData = pd.DataFrame(data, columns=['series_id', 'func_id', 'func_comb_type', 'func_type', 'rch_id', 'var_col', 'weight','index', 'year', 'time', 'value'])        
+        dataInfos = {}
+        
+        for serID in serIDs:
+            data = obsData.query('series_id==@serID')
+            funcID = data['func_id'].iloc[0]
+            funcCombType = data['func_comb_type'].iloc[0]
+            funcType = data['func_type'].iloc[0]
+            rchID = data['rch_id'].iloc[0]
+            varCol = data['var_col'].iloc[0]
+            weight = data['weight'].iloc[0]
             dataVal = data['value'].to_numpy(dtype=float)
             dataIndex = data['index'].to_numpy(dtype=int)
             readLines = self._get_lines_for_output_(dataIndex)
-            dataInfos.append((seriesId, rchIDs[seriesId], varCols[seriesId], objTypes[seriesId], objIDs[seriesId], rchWgts[seriesId], readLines, dataVal)) #TODO
-
-        self.observeInfos["totalSeries"] = totalSeries
-        self.observeInfos["observe_data"] = dataInfos
-        self.observeInfos["objComb"] = objComb
+            dataInfos[serID] = (serID, funcID, funcCombType, funcType, rchID, varCol, weight, readLines, dataVal) #TODO
         
-        self.txtObjs = numObjs
-        # self.nOutput=numObjs #TODO
-
+        self.observeInfos["numSer"] = len(serIDs)
+        self.observeInfos["obsData"] = dataInfos
+        self.observeInfos["funcComb"] = funcCombs
+        self.observeInfos["funcCombTypes"] = funcCombTypes
+        
         if self.verboseFlag:
-            print("="*25+"Observed Information"+"="*25)
-            print("The number of observed data series is: ", totalSeries)
-            print("The number of objective functions is: ", numObjs)
-            seriesIdFormatted = "{:^10}".format("Series_id")
-            rchFormatted = "{:^10}".format("Reach_id")
-            variableFormatted = "{:^10}".format("Variable")
-            objTypeFormatted = "{:^10}".format("Obj_type")
-            objIdFormatted = "{:^10}".format("Obj_id")
+            print("="*25 + "Observed Information" + "="*25)
+            print("The number of observed data series is: ", len(serIDs))
+            print("The number of objective functions is: ", self.obsObjs)
+            print("The number of constraint functions is: ", self.obsCons)
+            seriesIDFormatted = "{:^10}".format("Series_ID")
+            funcIDFormatted = "{:^10}".format("Func_ID")
+            funcCombTypeFormatted = "{:^20}".format("Func_Comb_Type")
+            funcTypeFormatted = "{:^10}".format("Func_Type")
+            rchIDFormatted = "{:^10}".format("Reach_ID")
+            varColFormatted = "{:^10}".format("Var_Col")
             weightFormatted = "{:^10}".format("Weight")
             dataFormatted = "{:<30}".format("readLines")
-            print(seriesIdFormatted+"||"+rchFormatted+"||"+variableFormatted+"||"+objTypeFormatted+"||"+objIdFormatted+"||"+weightFormatted+"||"+dataFormatted)
-            for objId, series in objComb.items():
+            print(seriesIDFormatted + "||" + funcIDFormatted + "||" + funcCombTypeFormatted + "||" + funcTypeFormatted + "||"+rchIDFormatted + "||" + varColFormatted + "||" + weightFormatted + "||" + dataFormatted)
+            for _, series in funcCombs.items():
                 for id in series:
-                    i = id-1
-                    seriesIdFormatted = "{:^10}".format(id)
-                    rchFormatted = "{:^10}".format(dataInfos[i][1])
-                    variableFormatted = "{:^10}".format(VARNAME[dataInfos[i][2]])
-                    objTypeFormatted = "{:^10}".format(OBJTYPENAME[dataInfos[i][3]])
-                    objIdFormatted = "{:^10}".format(dataInfos[i][4])
-                    weightFormatted = "{:^10}".format(dataInfos[i][5])
-                    lines = dataInfos[i][6]
+                    seriesIDFormatted = "{:^10}".format(dataInfos[id][0])
+                    funcIDFormatted = "{:^10}".format(dataInfos[id][1])
+                    funcCombTypeFormatted = "{:^20}".format(dataInfos[id][2])
+                    funcTypeFormatted = "{:^10}".format(FUNC_TYPE[dataInfos[id][3]])
+                    rchIDFormatted = "{:^10}".format(dataInfos[id][4])
+                    varColFormatted = "{:^10}".format(dataInfos[id][5])
+                    weightFormatted = "{:^10}".format(dataInfos[id][6])
+                    readLines = dataInfos[id][7]
                     lineStr = ""
-                    for line in lines:
+                    for line in readLines:
                         lineStr += str(line[0])+"-"+str(line[1])+" "
                     dataFormatted = "{:<30}".format(lineStr)
-                    print(seriesIdFormatted+"||"+rchFormatted+"||"+variableFormatted+"||"+objTypeFormatted+"||"+objIdFormatted+"||"+weightFormatted+"||"+dataFormatted)
+                    print(seriesIDFormatted+"||"+funcIDFormatted+"||"+funcCombTypeFormatted+"||"+funcTypeFormatted+"||"+rchIDFormatted+"||"+varColFormatted+"||"+weightFormatted+"||"+dataFormatted)
             print("="*70)
         
     def _record_default_values(self):
@@ -377,12 +415,12 @@ class SWAT_UQ(Problem):
         """
         
         varInfosPath = os.path.join(self.workPath, self.paraFileName)
-        LB=[]; UB=[]; varType=[]; varSet=[]; varName=[]; varMode=[]; setHruID=[]
+        LB=[]; UB=[]; varType=[]; varSet={}; varName=[]; varMode=[]; setHruID=[]
         
         with open(varInfosPath, 'r') as f:
             
             lines = f.readlines()
-            for line in lines:
+            for i, line in enumerate(lines):
                 
                 tmpList = line.split()
                 name = tmpList[0]
@@ -399,26 +437,32 @@ class SWAT_UQ(Problem):
                 else:
                     raise ValueError(f"The {name} mode is not valid, please check the mode!")
                 
-                if T in ['f', 'i', 'd']:
+                if T not in ['f', 'i', 'd']:
                     raise ValueError(f"The {name} type is not valid, please check the type, only `f`, `i`, `d` are supported!")
                 
                 if T == "f": #float
                     LB.append(float(LB_UB[0]))
                     UB.append(float(LB_UB[1]))
                     varType.append(0)
-                    varSet.append(0)
+                    # varSet.append(None)
                     
                 elif T == "i": #integer
                     LB.append(float(LB_UB[0]))
                     UB.append(float(LB_UB[1]))
                     varType.append(1)
-                    varSet.append(0)
+                    # varSet.append(None)
                     
                 else: #discrete
                     LB.append(0)
                     UB.append(1)
                     varType.append(2)
-                    varSet.append([float(e) for e in LB_UB]) #TODO
+                    L = []
+                    for e in LB_UB:
+                        if '.' in e:
+                            L.append(float(e))
+                        else:
+                            L.append(int(e))
+                    varSet[i] = L
                 
         self.lb = np.array(LB).reshape(1,-1)
         self.ub = np.array(UB).reshape(1,-1)
@@ -513,7 +557,7 @@ class SWAT_UQ(Problem):
                 self.varInfos[file].setdefault("type", [])
                 self.varInfos[file]["type"].append(varType)
         
-        with ThreadPoolExecutor(maxWorkers = self.maxWorkers) as executor:
+        with ThreadPoolExecutor(max_workers = self.maxWorkers) as executor:
             futures = []
             for fileName, infos in self.varInfos.items():
                 futures.append(executor.submit(read_value_swat, self.workPath, fileName, infos["name"], infos["position"], 1))
@@ -576,17 +620,13 @@ class SWAT_UQ(Problem):
         # self.nRCH = self.modelInfos["nRCH"] #TODO: check if this is correct
         
         #read the paras file
-        HEAD = ["para_name", "file_name", "position", "type"]
-        self.parasInfos = pd.DataFrame(PARAMETERS, columns=HEAD)
-        # self.parasInfos = pd.read_excel(os.path.join(self.workPath, 'SWAT_paras_files.xlsx'), index_col=0)
+        HEAD = ["para_name",  "type", "file_name", "position"]
+        self.parasInfos = pd.DataFrame(self._load_parameters(), columns=HEAD)
         
         #for special paras file
-        if self.specialParaFile is not None:
-            with open(os.path.join(self.workPath, self.specialParaFile), 'r') as f:
-                lines = f.readlines()
-                for line in lines:
-                    tmpList = line.split()
-                    self.parasInfos.loc[tmpList[0]] = tmpList[1:]
+        if self.specialParaList is not None:
+            for para in self.specialParaList:
+                self.parasInfos.loc[para[0]] = para
         
         if self.verboseFlag:
             print("="*25 + "Model Information" + "="*25)
@@ -658,37 +698,17 @@ class SWAT_UQ(Problem):
         elif printFlag == 1:
             lines = [[10 + nRCH * start, 9 + nRCH * (end + 1)]]
             return lines
-    
+        
+    def _load_parameters(self, filePath = "swat_parameters.json"):
+       
+        try:
+            module_dir = os.path.dirname(os.path.abspath(__file__))
+            json_path = os.path.join(module_dir, filePath)
+        
+            with open(json_path, 'r', encoding='utf-8') as f:
+                params_dict = json.load(f)
+            return [(p["name"], p["type"], p["file_name"], p["position"]) for p in params_dict]
+        except Exception as e:
+            raise e
 #================================================================
 
-def evaluate(variables):
-    
-    obj1 = variables['Objs'][0] #TOT N-MEAN
-    obj2 = variables['Objs'][1] #TOT P-MEAN
-    
-    x = variables['x']
-    obj3 = x[0] * x[1] / 10 * 4200 * 57 * (x[3]+0.001) + x[2] * 4000 * 600 * (x[4]+0.001) #x[0]*x[1]/10表示面积 公顷；420为单位面积成本，57为子流域总数；400000为耕地面积，公顷
-
-    return (obj1, obj2, obj3)
-    
-filePath = "D:\swat_opt\TxtInOut2"
-tempPath = "D:\\swat_opt\\temp"
-from UQPyL.DoE import LHS    
-swatCup = SWAT_UQ(workPath=filePath,
-                    paraFileName="paras_infos.txt",
-                    obsFileName="observed.txt",
-                    tempPath=tempPath,
-                    swatExeName="SWAT_64rel.exe",
-                    specialParaFile="special_paras.txt",
-                    verboseFlag=True,
-                    userObjFunc=evaluate,
-                    nOutput=3,
-                    maxThreads=10, numParallel=10)  
-
-from UQPyL.optimization import NSGAII, MOASMO, MOEAD
-from UQPyL.surrogates.rbf import RBF
-from UQPyL.surrogates import Mo_Surrogates
-from UQPyL.problems.multi_objective import ZDT1
-
-moead = MOEAD(aggregation='TCH', nInit=100, nPop=100, maxFEs=5000, verboseFreq=1, saveFlag=True)
-moead.run(swatCup)

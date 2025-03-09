@@ -1,0 +1,1850 @@
+[
+    {
+        "name": "SHALLST",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "DEEPST",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "ALPHA_BF",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "GW_REVAP",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "RCHRG_DP",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "GWHT",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "GW_SPYLD",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "SHALLST_N",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "GWSOLP",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "HLIFE_NGW",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "LAT_ORGN",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "LAT_ORGP",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "GW_DELAY",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "ALPHA_BF_D",
+        "type": "float",
+        "file_name": "gw",
+        "position": "default"
+    },
+    {
+        "name": "HRU_FR",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SLSUBBSN",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "HRU_SLP",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "OV_N",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "LAT_TTIME",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "LAT_SED",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SLSOIL",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "CANMX",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "ESCO",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "EPCO",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "RSDIN",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "ERORGN",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "ERORGP",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_FR",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "FLD_FR",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "RIP_FR",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_TILE",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_VOLX",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_VOL",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_NSED",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_NO3L",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "DEP_IMP",
+        "type": "int",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "EVPOT",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "DIS_STREAM",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "CF",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "CFH",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "CFDEC",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SED_CON",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "ORGN_CON",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "ORGP_CON",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SOLN_CON",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SOLP_CON",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_SOLP",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "POT_K",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "N_REDUC",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "N_LAG",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "N_LN",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "N_LNCO",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "SURLAG",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "R2ADJ",
+        "type": "float",
+        "file_name": "hru",
+        "position": "default"
+    },
+    {
+        "name": "LAI_INIT",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "BIO_INIT",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "PHU_PLT",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "BIOMIX",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "CN2",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "USLE_P",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "BIO_MIN",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "FILTERW",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "FLOWMIN",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "DIVMAX",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "FLOWFR",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "DDRAIN",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "TDRAIN",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "GDRAIN",
+        "type": "float",
+        "file_name": "mgt",
+        "position": "default"
+    },
+    {
+        "name": "RE",
+        "type": "float",
+        "file_name": "sdr",
+        "position": "default"
+    },
+    {
+        "name": "SDRAIN",
+        "type": "float",
+        "file_name": "sdr",
+        "position": "default"
+    },
+    {
+        "name": "DRAIN_CO",
+        "type": "float",
+        "file_name": "sdr",
+        "position": "default"
+    },
+    {
+        "name": "PC",
+        "type": "float",
+        "file_name": "sdr",
+        "position": "default"
+    },
+    {
+        "name": "LATKSATF",
+        "type": "float",
+        "file_name": "sdr",
+        "position": "default"
+    },
+    {
+        "name": "SEP_CAP",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "BZ_AREA",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "ISEP_TFAIL",
+        "type": "int",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "BZ_Z",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "BZ_THK",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "SEP_STRM_DIST",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "SEP_DEN",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "BIO_BD",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_BOD_DC",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_BOD_CONV",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_FC1",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_FC2",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_FECAL",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_PLQ",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_MRT",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_RSP",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_SLG1",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_SLG2",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_NITR",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_DENITR",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_COEFF_PDISTRB",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_PSORPMAX",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_SOLPSLP",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "COEFF_SOLPINTC",
+        "type": "float",
+        "file_name": "sep",
+        "position": "default"
+    },
+    {
+        "name": "PND_FR",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_PSA",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_PVOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_ESA",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_EVOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_VOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_SED",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_NSED",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_K",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "NDTARG",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PSETLP1",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PSETLP2",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "NSETLP1",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "NSETLP2",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "CHLAP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "SECCIP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_NO3",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_SOLP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_ORGN",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_ORGP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PND_D50",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_FR",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_NSA",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_NVOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_MXSA",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_MXVOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_VOL",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_SED",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_NSED",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_K",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PSETLW1",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PSETLW2",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "NSETLW1",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "NSETLW2",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "CHLAW",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "SECCIW",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_NO3",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_SOLP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_ORGN",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WET_ORGP",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "PNDEVCOEFF",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "WETEVCOEFF",
+        "type": "float",
+        "file_name": "pnd",
+        "position": "default"
+    },
+    {
+        "name": "CHW2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CHD",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_S2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_L2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_N2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_K2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_COV1",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_COV2",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_WDR",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "ALPHA_BNK",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "ICANAL",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_ONCO",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_OPCO",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_SIDE",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BNK_BD",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BED_BD",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BNK_KD",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BED_KD",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BNK_D50",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BED_D50",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BNK_TC",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "CH_BED_TC",
+        "type": "float",
+        "file_name": "rte",
+        "position": "default"
+    },
+    {
+        "name": "SUB_KM",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "LATITUDE",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "ELEV",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "PLAPS",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "TLAPS",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "SNO_SUB",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CH_L1",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CH_S1",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CH_W1",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CH_K1",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CH_N1",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "CO2",
+        "type": "float",
+        "file_name": "sub",
+        "position": "default"
+    },
+    {
+        "name": "RS1",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS2",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS3",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS4",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS5",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS6",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RS7",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK1",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK2",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK3",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK4",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK5",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "RK6",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "BC1",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "BC2",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "BC3",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "BC4",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_REA",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_VOL",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_KOC",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_STL",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_RSP",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "CHPST_MIX",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "SEDPST_CONC",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "SEDPST_REA",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "SEDPST_BRY",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "SEDPST_ACT",
+        "type": "float",
+        "file_name": "swq",
+        "position": "default"
+    },
+    {
+        "name": "SFTMP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SMTMP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SMFMX",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SMFMN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "TIMP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SNOCOVMX",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SNO50COV",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "EVLAI",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "FFCB",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "ADJ_PKR",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PRF_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SPCON",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SPEXP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RCN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CMN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "N_UPDIS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "P_UPDIS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "NPERCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PPERCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PHOSKD",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PSP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RSDCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PERCOP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDPQ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGPQ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDLPQ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGLPQ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDPS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGPS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDLPS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGLPS",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BACTKDQ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "THBACT",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WOF_P",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WOF_LP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDPF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGPF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDLPF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WGLPF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "MSK_CO1",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "MSK_CO2",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "MSK_X",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "TRNSRCH",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "EVRCH",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CNCOEF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CDN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SDNCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BACT_SWF",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BACTMX",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BACTMINLP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BACTMINP",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDLPRCH",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDPRCH",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDLPRES",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "WDPRES",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "TB_ADJ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "DEPIMP_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "DDRAIN_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "TDRAIN_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "GDRAIN_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CN_FROZ",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "DORM_HR",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SMXCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "FIXCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "NFIXMX",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "ANION_EXCL_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CH_ONCO_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CH_OPCO_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "HLIFE_NGW_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RCN_SUB_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BC1_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BC2_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BC3_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BC4_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "DECR_MIN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "ICFAC",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RSD_COVCO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "VCRIT",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RES_STLR_CO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "BFLO_DIST 0-1 (1",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "UHALPHA",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "EROS_SPL",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RILL_MULT",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "EROS_EXPO",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SUBD_CHSED",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "C_FACTOR",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "CH_D50",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SIG_G",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "RE_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "SDRAIN_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "DRAIN_CO_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "PC_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "LATKSATF_BSN",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "IABSTR",
+        "type": "float",
+        "file_name": "bsn",
+        "position": "default"
+    },
+    {
+        "name": "Ave",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Ksat",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Depth",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Bulk",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Organic",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Clay",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Silt",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Sand",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Rock",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Albedo",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Erosion",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "Sanlinity",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "pH",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    },
+    {
+        "name": "CACO3",
+        "type": "float",
+        "file_name": "sol",
+        "position": "default"
+    }
+]
