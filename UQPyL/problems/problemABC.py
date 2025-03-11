@@ -9,6 +9,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
     def __init__(self, nInput:int, nOutput:int,
                  ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray],
+                 nConstraints: int = 0,
                  optType: Union[str, list] = 'min', conWgt: Optional[list] = None,
                  varType: Optional[list] = None, varSet: Optional[dict] = None,
                  xLabels: Optional[list] = None, yLabels: Optional[list] = None):
@@ -29,6 +30,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         self.nInput = nInput
         self.nOutput = nOutput
+        self.nConstraints = nConstraints
         
         # Set upper and lower bounds
         self._set_ub_lb(ub, lb)
@@ -246,9 +248,9 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.ub = np.ones((1, self.nInput)) * ub
         elif isinstance(ub, np.ndarray):
             self._check_bound(ub)
-            self.ub = ub[np.newaxis, :]
+            self.ub = np.atleast_2d(ub)
         elif isinstance(ub, list):
-            self.ub = np.array(ub)[np.newaxis, :]
+            self.ub = np.atleast_2d(ub)
             self._check_bound(self.ub)
         else:
             raise ValueError("The type of ub is not supported.")
@@ -257,9 +259,9 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.lb = np.ones((1, self.nInput)) * lb
         elif isinstance(lb, np.ndarray):
             self._check_bound(lb)
-            self.lb = lb[np.newaxis, :]
+            self.lb = np.atleast_2d(lb)
         elif isinstance(lb, list):
-            self.lb = np.array(lb)[np.newaxis, :]
+            self.lb = np.atleast_2d(lb)
             self._check_bound(self.lb)
         else:
             raise ValueError("The type of lb is not supported.")
