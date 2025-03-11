@@ -93,7 +93,7 @@ class EGO(Algorithm):
         
         # Define a sub-problem for the optimizer
         subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
-                             var_type = problem.var_type, var_set = problem.var_set)
+                             varType = problem.varType, varSet = problem.varSet)
         
         # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0

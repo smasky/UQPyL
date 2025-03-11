@@ -99,7 +99,7 @@ class ASMO(Algorithm):
         self.problem = problem
         
         # Define a subproblem using the surrogate model
-        subProblem = Problem(self.surrogate.predict, problem.nInput, 1, problem.ub, problem.lb, problem.var_type, problem.var_set)
+        subProblem = Problem(self.surrogate.predict, problem.nInput, 1, problem.ub, problem.lb, problem.varType, problem.varSet)
         
         # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
