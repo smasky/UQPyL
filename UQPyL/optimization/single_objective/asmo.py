@@ -69,7 +69,8 @@ class ASMO(Algorithm):
         if optimizer is None:
             # Default optimizer is SCE_UA
             optimizer = SCE_UA(maxFEs=5000, verbose=False, saveFlag=False, logFlag=False)
-            
+        
+        optimizer.verboseFlag, optimizer.logFlag, optimizer.saveFlag = False, False, False
         self.optimizer = optimizer
         self.optimizer.verbose = False
         
@@ -99,7 +100,7 @@ class ASMO(Algorithm):
         self.problem = problem
         
         # Define a subproblem using the surrogate model
-        subProblem = Problem(self.surrogate.predict, problem.nInput, 1, problem.ub, problem.lb, problem.varType, problem.varSet)
+        subProblem = Problem(objFunc = self.surrogate.predict, nInput = problem.nInput, nOutput = 1, ub = problem.ub, lb = problem.lb, varType = problem.varType, varSet = problem.varSet)
         
         # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
@@ -128,7 +129,7 @@ class ASMO(Algorithm):
             res = self.optimizer.run(subProblem)
             
             # Evaluate the offspring
-            offSpring = Population(decs=res.bestDec)
+            offSpring = Population(decs=res.bestDecs)
             self.evaluate(offSpring)
             
             # Merge offspring with current population

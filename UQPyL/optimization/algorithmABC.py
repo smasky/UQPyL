@@ -6,7 +6,7 @@ from .result import Result
 from ..DoE import LHS
 from ..utility import Verbose
 
-class Algorithm(metaclass=abc.ABCMeta):
+class Algorithm(metaclass = abc.ABCMeta):
     """
     This is a baseclass for algorithms
     """
@@ -67,7 +67,7 @@ class Algorithm(metaclass=abc.ABCMeta):
         
         if self.FEs<self.maxFEs:
             if self.maxIter is None or self.iters <= self.maxIter:
-                if self.maxTolerateTimes is None or self.tolerateTimes<=self.maxTolerateTimes:
+                if self.maxTolerateTimes is None or self.tolerateTimes <= self.maxTolerateTimes:
                     
                     if hasattr(self.problem, 'GUI'):
                         self.problem.iterEmit.send()

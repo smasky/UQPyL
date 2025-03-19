@@ -1,7 +1,6 @@
 # Genetic Algorithm <Single>
 
-import numpy as np
-import math
+from typing import Optional
 
 from ..algorithmABC import Algorithm, Verbose, Result
 from ..population import Population
@@ -34,7 +33,7 @@ class GA(Algorithm):
                  proC: float = 1, disC: float = 20, proM: float = 1, disM: float = 20,
                  maxIterTimes: int = 1000,
                  maxFEs: int = 50000,
-                 maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
+                 maxTolerateTimes: Optional[int] = None, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
         '''
         Initialize the genetic algorithm with user-defined parameters.
@@ -85,8 +84,8 @@ class GA(Algorithm):
         
         # Initialization
         # Retrieve parameter values
-        proC, disC, proM, disM = self.getParaValue('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaValue('nPop')
+        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
+        nPop = self.getParaVal('nPop')
         
         # Set the problem to solve
         self.setProblem(problem)

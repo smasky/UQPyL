@@ -36,8 +36,10 @@ YTest = problem.objFunc(XTest)
 
 # print(r2)
 
+#-------------------------------------------#
+#            Gaussian Process               #
+#-------------------------------------------#
 
-#Gaussian Process
 # from UQPyL.surrogates.gp import GPR
 # from UQPyL.surrogates.gp.kernel import RBF, Matern
 # from UQPyL.optimization.single_objective import GA, PSO
@@ -57,7 +59,6 @@ YTest = problem.objFunc(XTest)
 # r2 = r_square(YTest, YPred)
 
 # print(r2)
-
 
 # ------------------------------------------- #
 #              Radial Basis Function          #
@@ -108,7 +109,6 @@ YTest = problem.objFunc(XTest)
 # r2 = r_square(YTest, YPred)
 
 # print(r2)
-
 
 # ------------------------------------------- #
 #              Support Vector Regression      #

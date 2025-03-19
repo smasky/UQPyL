@@ -84,6 +84,14 @@ class Result():
             
             self.appearFEs = FEs
             self.appearIters = iter
+        
+            # tolerate
+            if self.bestObjs - localBestObjs > self.algorithm.tolerate: 
+                self.algorithm.tolerateTimes = 0
+            else:
+                self.algorithm.tolerateTimes += 1
+        else:
+            self.algorithm.tolerateTimes += 1
     
     def _update_MOEA(self, pop, FEs, iter, problem):
         
@@ -104,11 +112,17 @@ class Result():
         self.bestCons = localBestCons
         self.bestFeasible = localBestFeasible
         
-        self.bestMetric = HV(pop, refPoint = np.max(pop.objs, axis=0) * 1.1)
+        localHV = HV(pop, refPoint = np.max(pop.objs, axis=0) * 1.1)
+        self.bestMetric = localHV
         self.historyBestMetrics[FEs] = self.bestMetric
         
         self.appearFEs = FEs
         self.appearIters = iter
+        
+        if localHV - self.bestMetric > self.algorithm.tolerate:
+            self.algorithm.tolerateTimes = 0
+        else:
+            self.algorithm.tolerateTimes += 1
         
     def _update_history(self, pop, FEs, iters, problem):
         
