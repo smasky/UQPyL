@@ -12,7 +12,7 @@ lhs = LHS()
 
 problem = Sphere(nInput = 15)
 
-X = lhs.sample(nt = 200, problem = problem)
+X = lhs.sample(nt = 800, problem = problem)
 Y = problem.objFunc(X)
 
 XTest = lhs.sample(nt = 100, problem = problem)
@@ -23,18 +23,18 @@ YTest = problem.objFunc(XTest)
 # ------------------------------------------- #
 
 
-# from UQPyL.surrogates.kriging import KRG
-# from UQPyL.surrogates.kriging.kernel import Guass
+from UQPyL.surrogates.kriging import KRG
+from UQPyL.surrogates.kriging.kernel import Guass
 
-# kernel = Guass(heterogeneous = False)
-# krg = KRG(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)), kernel=kernel)
-# krg.fit(X, Y)
+kernel = Guass(heterogeneous = False)
+krg = KRG(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)), kernel=kernel)
+krg.fit(X, Y)
 
-# YPred = krg.predict(XTest)
+YPred = krg.predict(XTest)
  
-# r2 = r_square(YTest, YPred)
+r2 = r_square(YTest, YPred)
 
-# print(r2)
+print(r2)
 
 #-------------------------------------------#
 #            Gaussian Process               #

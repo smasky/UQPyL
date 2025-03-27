@@ -50,6 +50,18 @@ class GPR(Surrogate):
         
         xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
         
+        # 定义阈值
+        # threshold = 1
+
+        # # 去除重复的行
+        # unique_index = []
+        # for i, row in enumerate(xTrain):
+        #     if not any(np.allclose(row, xTrain[j], atol=threshold) for j in unique_index):
+        #         unique_index.append(i)
+                
+        # xTrain = xTrain[unique_index]
+        # yTrain = yTrain[unique_index]
+        
         self.kernel.initialize( xTrain.shape[1] )
         
         self._fitLikelihood( xTrain, yTrain )
@@ -103,7 +115,7 @@ class GPR(Surrogate):
                                 objFunc = objFunc)
             
             bestDecs, bestObj = self.optimizer.run(problem)
-            print(bestObj)
+        
         elif self.optimizer.type == "EA":
             
             def objFunc(varValues):
@@ -137,7 +149,9 @@ class GPR(Surrogate):
         
         #Prepare for prediction
         self.xTrain = xTrain; self.yTrain = yTrain
-        self._objfunc(xTrain, yTrain, record=True)
+        obj = self._objfunc(xTrain, yTrain, record=True)
+        print(obj)
+        
         
     def _objfunc(self, xTrain, yTrain, record=False):
         """
@@ -152,8 +166,9 @@ class GPR(Surrogate):
         
         try:
             L = cholesky(K, lower = True, check_finite = False)
-        except np.linalg.LinAlgError:
-            return -np.inf
+        except np.linalg.LinAlgError as e:
+            K[np.diag_indices_from(K)] += 1e-6
+            L = cholesky(K, lower = True, check_finite = False)
         
         alpha = cho_solve((L, True), yTrain, check_finite=False)
         log_likelihood_dims =  -0.5* np.einsum("ik,ik->k", yTrain, alpha)

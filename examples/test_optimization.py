@@ -5,8 +5,8 @@ import numpy as np
 
 #---------------------------------------------------------------------------------------#
 #Single Objective
-# from UQPyL.optimization.single_objective import GA, PSO, DE, CSA, SCE_UA, ABC
-# from UQPyL.problems.single_objective import Sphere
+from UQPyL.optimization.single_objective import GA, PSO, DE, CSA, SCE_UA, ABC
+from UQPyL.problems.single_objective import Sphere
 
 # problem = Sphere(30)
 
