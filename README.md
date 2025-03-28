@@ -1,7 +1,7 @@
 
 # UQPyL:Uncertainty Quantification Python Laboratory
-
-**UQPyL:** The **Uncertainty Quantification Python Laboratory** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
+![Logo](./docs/UQ.svg)
+**UQPyL** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
 
 ## Features
 1. **Comprehensive Sensitivity Analysis and Optimization Algorithm**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
