@@ -117,7 +117,7 @@ jobs:
           mv dist/*.tar.gz dist_sources/  # 移动生成的源码包到新的目录
 
       - name: Upload source distribution as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: source-distribution
           path: dist_sources/*
