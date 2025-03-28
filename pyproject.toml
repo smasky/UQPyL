@@ -13,6 +13,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "UQPyL"
 version = "2.0.11"
+dynamic = ["license"]
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
