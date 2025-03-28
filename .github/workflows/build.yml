@@ -88,7 +88,7 @@ jobs:
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: wheelhouse-${{ matrix.python-version }}-${{ matrix.buildplat.platform }}
+        name: wheelhouse-${{ matrix.python[1] }}-${{ matrix.buildplat.platform }}
         path: wheelhouse/*.whl
 
   package_source:
