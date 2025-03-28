@@ -88,12 +88,11 @@ jobs:
     - name: Save Wheel Package as Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: wheelhouse-${{ matrix.buildplat.platform }}-${{ matrix.python-version }}
+        name: wheelhouse-${{ matrix.buildplat.platform }}-${{ matrix.python-version[1] }}
         path: wheelhouse/*.whl
 
-
   package_source:
-    runs-on: ubuntu-latest  # 可以在任何平台上执行，这里假设选择Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -102,7 +101,7 @@ jobs:
       - name: Set up Python (for creating source distribution)
         uses: actions/setup-python@v2
         with:
-          python-version: '3.11'  # 您可以选择一个合适的Python版本来构建源码包
+          python-version: '3.11'
 
       - name: Install common dependencies
         run: |
@@ -110,7 +109,7 @@ jobs:
           pip install Cython numpy pybind11 scipy
 
       - name: Create source distribution
-        run: python setup.py sdist  # 假设您的项目有一个setup.py文件
+        run: python setup.py sdist 
 
       - name: Move source distribution to specific directory
         run: |
