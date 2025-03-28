@@ -323,6 +323,7 @@ class Ackley(ProblemABC):
         X*=0 0 0 ... 0
         F*=0
     '''
+    name = "Ackley"
     def __init__(self, nInput:int =30, 
                     ub: Union[int, float, list, np.ndarray] =32,
                         lb: Union[int, float, list, np.ndarray] =-32):
@@ -335,7 +336,7 @@ class Ackley(ProblemABC):
         
         Temp1 = np.exp(np.sqrt(np.sum(np.square(X),axis=1)/self.nInput)*-0.2)*-20
         Temp2 = np.exp(np.sum(np.cos(2*np.pi*X),axis=1)/self.nInput)*-1+20+np.e  
-        F = (Temp1+Temp2).reshape[:, np.newaxis]
+        F = (Temp1+Temp2)[:, np.newaxis]
         
         return F
     
@@ -507,12 +508,12 @@ class Weierstrass(ProblemABC):
         K = np.atleast_2d(np.linspace(1, self.kMax, self.kMax))
         aK = np.power(self.a, K)
         bK = np.power(self.b, K)
-        aK_expand = np.tile(aK.transpose(),(1, self.nInput))[:, np.newaxis]
-        bK_expand = np.tile(bK.transpose(),(1, self.nInput))[:, np.newaxis]
+        aK_expand = np.tile(aK,(1, self.nInput))
+        bK_expand = np.tile(bK,(1, self.nInput))
         
         
         X_expand = np.tile(X, (1, self.kMax))
-        Addition = np.sum(aK * np.cos(bK * np.pi), axis=1)[:, np.newaxis] * self.nInput
+        Addition = np.sum(aK * np.cos(bK * np.pi)) * self.nInput
         F = np.sum(np.cos(2 * np.pi * (X_expand + 0.5) * bK_expand) * aK_expand, axis=1)[:, np.newaxis] - Addition
         
         return F

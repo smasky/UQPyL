@@ -4,6 +4,9 @@ sys.path.insert(0, '.')
 import numpy as np
 from UQPyL.problems import Problem, ProblemABC
 
+from UQPyL.problems.single_objective.single_simple_problem import Ackley, Weierstrass
+from UQPyL.DoE import LHS
+
 #-----------------------------------------------#
 #Type1: Objective Function and Constraint Function are separate
 
