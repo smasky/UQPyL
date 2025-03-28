@@ -32,10 +32,11 @@ extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 
 setup(
     name="UQPyL",
     author="wmtSky",
-    version="2.0.11",
+    version="2.1.0",
     author_email="wmtsky@hhu.edu.cn",
     ext_modules=extensions,  
     packages=find_packages(),
+    license="MIT",
     description="A python package for parameter uncertainty quantification and optimization",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",  # 如果是Markdown格式
