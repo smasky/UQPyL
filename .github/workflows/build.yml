@@ -25,8 +25,8 @@ jobs:
           #   arch: x86_64
           
 
-        python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
-
+        # python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+          python: [["cp311", "3.11"]]
     runs-on: ${{ matrix.buildplat.platform }}
 
     # if: startsWith(github.ref, 'refs/tags/v')
@@ -146,4 +146,5 @@ jobs:
       - name: Publish to TestPyPI
         run: |
           pip install twine
+          python -m pip install -U packaging
           twine upload --repository-url  https://upload.pypi.org/legacy/  wheelhouse/*.whl source_distribution/*.tar.gz
