@@ -1,10 +1,9 @@
 
-# Uncertainty Quantification Python Laboratory (UQPyL)
+# UQPyL:Uncertainty Quantification Python Laboratory
 
 **UQPyL:** The **Uncertainty Quantification Python Laboratory** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
 
-## Main Characteristics
-
+## Features
 1. **Comprehensive Sensitivity Analysis and Optimization Algorithm**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
 2. **Advanced Surrogate Modeling**: Integrates diverse surrogate models equipped to solve computationally expensive problems.
 3. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly.
@@ -23,7 +22,6 @@
 
 ### Sensitivity Analysis
 
-(All methods support surrogate models)
 - Sobol'
 - Delta Test (DT)
 - Extended Fourier Amplitude Sensitivity Test (eFAST)
@@ -32,17 +30,18 @@
 - Morris
 - Regional Sensitivity Analysis (RSA)
 
+🎉 **All above methods support for using surrogate models**
+
 ### Optimization Algorithms
 
 (* indicates solving computational expensive optimization problem)
 - **Single Objective Optimization**: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
 - **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, NSGA-III, MOASMO*
 
-*Note: The library is still being updated. If you need other algorithms, please contact us.*
+👀 **The library is still being updated. If you need other algorithms, please contact us**
 
 ### Surrogate Models
 
-- Fully Connected Neural Network (FCNN)
 - Kriging (KRG)
 - Gaussian Process (GP)
 - Linear Regression (LR)
