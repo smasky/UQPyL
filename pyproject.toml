@@ -18,7 +18,7 @@ authors = [
 ]
 description = "A python package for parameter uncertainty quantification and optimization"
 readme = "README.md"
-license = {file = "LICENSE.md"}
+license = {text = "MIT"} 
 dependencies = [
   "numpy",
   "scipy",

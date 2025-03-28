@@ -35,7 +35,6 @@ setup(
     version="2.0.11",
     author_email="wmtsky@hhu.edu.cn",
     ext_modules=extensions,  
-    license="MIT",
     packages=find_packages(),
     description="A python package for parameter uncertainty quantification and optimization",
     long_description=open("README.md").read(),
