@@ -1,1 +1,74 @@
-<svg id="图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 141.98 67.76"><defs><style>.cls-1,.cls-2{font-size:60px;font-family:Like-Eat, Like Eat;}.cls-1{fill:#e7532d;}.cls-1,.cls-2,.cls-4{stroke:#231815;stroke-miterlimit:10;}.cls-2{fill:#048ac7;}.cls-3{opacity:0.86;}.cls-4{font-size:24px;fill:#c7db9c;font-family:RecursiveMonoCslSt-Black, Recursive Mono Casual Static;font-weight:800;letter-spacing:0.05em;}</style></defs><text class="cls-1" transform="translate(0.5 52.43)">U</text><text class="cls-2" transform="translate(34.23 51.45) rotate(3.19)">Q</text><rect class="cls-3" x="88.8" y="32.1" width="51.27" height="20.37" rx="5.63"/><text class="cls-4" transform="translate(92.15 50.45)">PyL</text></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="图层_1"
+   data-name="图层 1"
+   viewBox="0 0 137 52"
+   version="1.1"
+   sodipodi:docname="UQ.svg"
+   width="137"
+   height="52"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview30"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="9.6069872"
+     inkscape:cx="67.76318"
+     inkscape:cy="29.249545"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="图层_1" />
+  <defs
+     id="defs19">
+    <rect
+       x="-6.5577273"
+       y="2.0818181"
+       width="151.76454"
+       height="59.74818"
+       id="rect264" />
+    <style
+       id="style17">.cls-1,.cls-2{font-size:60px;font-family:Like-Eat, Like Eat;}.cls-1{fill:#e7532d;}.cls-1,.cls-2,.cls-4{stroke:#231815;stroke-miterlimit:10;}.cls-2{fill:#048ac7;}.cls-3{opacity:0.86;}.cls-4{font-size:24px;fill:#c7db9c;font-family:RecursiveMonoCslSt-Black, Recursive Mono Casual Static;font-weight:800;letter-spacing:0.05em;}</style>
+  </defs>
+  <text
+     class="cls-1"
+     id="text21"
+     x="-2.7520001"
+     y="47.702">U</text>
+  <text
+     class="cls-2"
+     transform="rotate(3.19)"
+     id="text23"
+     x="33.529949"
+     y="44.925762">Q</text>
+  <rect
+     class="cls-3"
+     x="85.548004"
+     y="27.371996"
+     width="51.27"
+     height="20.370001"
+     rx="5.6300001"
+     id="rect25" />
+  <text
+     class="cls-4"
+     id="text27"
+     x="88.898003"
+     y="45.722">PyL</text>
+  <text
+     xml:space="preserve"
+     id="text262"
+     style="white-space:pre;shape-inside:url(#rect264);fill:#000000"
+     transform="translate(-3.2519999,-4.7280018)" />
+</svg>
