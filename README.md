@@ -1,6 +1,8 @@
 
 # UQPyL:Uncertainty Quantification Python Lab
-<p align="center"><img src="./docs/UQ.svg" width="400"/></p>
+<p align="center"><img src="./docs/UQ.svg" width="400"/></p><br>
+
+[![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) 
 
 **UQPyL** provides comprehensive workflows tailored for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). 
 
