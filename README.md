@@ -4,7 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
-**UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated applications (e.g., model calibration, resource scheduling, product design). It includes a wide methods for Design of Experiments, Sensitivity Analysis, Optimization Algorithms. Especially, **Surrogate Models** are built-in for computationally expensive problems.  
+**UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods for Design of Experiments, Sensitivity Analysis, Optimization Algorithms (Single- and Multi-objective). Especially, **Surrogate Models** are built-in for solving computationally expensive problems.
 
 
 ---
