@@ -4,14 +4,14 @@
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
-**UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Importantly, **Surrogate Models** are built-in for solving computationally expensive problems.
+**UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Additionally, **Surrogate Models** are built-in for solving computationally expensive problems.
 
 ---
 
 ## Main Features
 1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
-2. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and Auto-tunning technique to enhance these model performances.
-3. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (✅**Planing:** For water science research, we are currently customizing the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ)).
+2. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning technique to enhance these model performances.
+3. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (✅**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ), **if you have interest, please contact us to collaborate.**).
 4. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
 ## Installation
@@ -35,7 +35,6 @@ git clone https://github.com/smasky/UQPyL.git
 cd UQPyL
 pip install .
 ```
-
 
 ## Useful Links
 
@@ -77,9 +76,6 @@ pip install .
 - Radial Basis Function (RBF)
 - Support Vector Machine (SVM)
 - Multivariate Adaptive Regression Splines (MARS)
-
----
-
 
 ---
 
