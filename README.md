@@ -1,6 +1,6 @@
 
 # UQPyL:  Uncertainty Quantification Python Lab
-<p align="center"><img src="./docs/UQ.svg" width="400"/></p><br>
+<p align="center"><img src="./docs/UQ.svg" width="400"/></p>
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange)  
 ---
