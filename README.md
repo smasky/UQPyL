@@ -14,12 +14,37 @@
 3. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (✅**Planing:** For water science research, we are currently customizing the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ)).
 4. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
-## Quick Links
+## Installation
 
-&nbsp &nbsp 👉**Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**#TODO**: Needs update)
-  👉**Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
-👉**Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (**#TODO**: Being updating )
-  👉**Citation Infos**: [UQPyL 2.0](**#TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+ ![Static Badge](https://img.shields.io/badge/Python-3.6%2C%203.7%2C%203.8%2C%203.9%2C%203.10%2C%203.11%2C%203.12-blue) ![Static Badge](https://img.shields.io/badge/OS-Windows%2C%20Linux-orange)
+
+**Recommended (PyPi or Conda):**
+
+```bash
+pip install UQPyL
+```
+
+```bash
+conda install UQPyL
+```
+
+Alternatively:
+
+```bash
+git clone https://github.com/smasky/UQPyL.git 
+cd UQPyL
+pip install .
+```
+
+
+## Useful Links
+
+- **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**#TODO**: Needs update)
+- **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
+- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (**#TODO**: Being updating )
+- **Citation Infos**: [UQPyL 2.0](**#TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+
+---
 
 ## Included Methods and Algorithms
 
@@ -55,25 +80,6 @@
 
 ---
 
-## Installation
-
-Recommended (PyPi or Conda):
-
-```bash
-pip install UQPyL
-```
-
-```bash
-conda install UQPyL
-```
-
-Alternatively:
-
-```bash
-git clone https://github.com/smasky/UQPyL.git 
-cd UQPyL
-pip install .
-```
 
 ---
 
