@@ -48,7 +48,7 @@ pip install .
 
 ### Sensitivity Analysis
 
-| Abbr. | Full Name | References |
+| Abbreviation | Full Name | References |
 | -------|------------|----------|
 | Sobol' | \ |[Sobol(2010)](https://www.sciencedirect.com/science/article/pii/S0378475400002706), [Saltelli (2002)](https://www.sciencedirect.com/science/article/pii/S0010465502002801)|
 | DT| Delta Test| [Eirola et al. (2008)](https://www.semanticscholar.org/paper/Using-the-Delta-Test-for-Variable-Selection-Eirola-Liiti%C3%A4inen/fa131898bbd99e848e706837f4072a310e1109e5?p2df)|
