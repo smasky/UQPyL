@@ -1,0 +1,5 @@
+# _config.yml
+
+title: "UQPyL"
+description: "UQPyL is a Python library for uncertainty quantification."
+theme: jekyll-theme-slate

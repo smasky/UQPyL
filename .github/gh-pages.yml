@@ -1,0 +1,32 @@
+name: Build and Deploy Jekyll site
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Build the Jekyll site
+        run: |
+          bundle exec jekyll build
+
+      - name: Deploy to GitHub Pages
+        run: |
+          bundle exec jekyll serve --destination ./_site
