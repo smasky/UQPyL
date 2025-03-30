@@ -84,14 +84,15 @@ pip install .
 👀 **This modular is still being updated. If you need other algorithms, please contact us**
 
 ### Surrogate Models
-
-- Kriging (KRG)
-- Gaussian Process (GP)
-- Linear Regression (LR)
-- Polynomial Regression (PR)
-- Radial Basis Function (RBF)
-- Support Vector Machine (SVM)
-- Multivariate Adaptive Regression Splines (MARS)
+| Abbreviation | Full Name | Features |
+|--------------|------------|---------|
+| KRG | Kriging | Support `guass`, `cubic`, `exp` kernel functions |
+| GP | Gaussian Process | Support `const`, `rbf`, `dot`, `matern`, `rq` kernel functions |
+| LR | Linear Regression | Support `origin`, `ridge`, `lasso` loss functions|
+| PR | Polynomial Regression | Support `origin`, `ridge`, `lasso` loss functions|
+| RBF | Radial Basis Function |Support `cubic`, `guass`, `linear`, `mq`, `tps` kernel functions and their corresponding hyper-parameters|
+| SVM | Support Vector Machine | Use [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) as the core library |
+| MARS | Multivariate Adaptive Regression Splines | Use [Earth](http://www.milbo.users.sonic.net/earth/) package as the core library |
 
 ---
 
