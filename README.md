@@ -6,13 +6,11 @@
 
 **UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Additionally, **Surrogate Models** are built-in for solving computationally expensive problems.
 
----
-
 ## Main Features
 1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
-2. **Running History and Result Save**: Enable users to track and save the history and results of their running.
+2. **Running Display and Result Save**: Enable users to track and save the history and results of their running.
 3. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning technique to enhance these model performances.
-4. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (✅**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
+4. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (👉**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
 5. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
 ## Installation
@@ -22,11 +20,11 @@
 **Recommended (PyPi or Conda):**
 
 ```bash
-pip install UQPyL
+pip install -U UQPyL
 ```
 
 ```bash
-conda install UQPyL
+conda install UQPyL --upgrade
 ```
 
 Alternatively:
@@ -46,9 +44,14 @@ pip install .
 
 ---
 
-## Included Methods and Algorithms
+## Overview of Methods and Algorithms
 
 ### Sensitivity Analysis
+
+| Method | References |
+| -------|------------|
+| Sobol' |[Sobol(2010)](https://www.sciencedirect.com/science/article/pii/S0378475400002706), |
+|
 
 - Sobol'
 - Delta Test (DT)
@@ -66,7 +69,7 @@ pip install .
 - **Single Objective Optimization**: SCE-UA, ML-SCE-UA, GA, CSA, PSO, DE, ABC, ASMO*, EGO*
 - **Multi-Objective Optimization**: MOEA/D, NSGA-II, RVEA, NSGA-III, MOASMO*
 
-👀 **The library is still being updated. If you need other algorithms, please contact us**
+👀 **This modular is still being updated. If you need other algorithms, please contact us**
 
 ### Surrogate Models
 
