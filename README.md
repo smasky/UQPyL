@@ -98,10 +98,14 @@ pip install .
 
 ## Quick Start
 
-To use UQPyL, define the problem you want to solve. The problem usually contains three important properties:
-1. `func` (the mapping from X to Y)
-2. The dimensions of decisions and outputs
-3. The bounds of decisions (ub, lb)
+To effectively use UQPyL, the first step is to clearly define the problem you aim to solve. 
+The problem usually contains following properties:
+1. The information of input decisions, e.g., **dimensions**, **range (bound) **, **whether each input is float, int, or discrete**.
+2. The mapping from input variables (x) to output objectives (obj), i.e., how the output is obtained from the inputs, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions.
+
+
+
+
 
 ### Benchmark Problems
 
