@@ -101,21 +101,21 @@ pip install .
 
 | Name | Formula | Optimal Solution | Optima | 
 |------|---------|------------------|--------|
-|Sphere| <img src="./docs/formula/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_22| <img src="./docs/formula/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_1_22| <img src="./docs/formula/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_21| <img src="./docs/formula/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_26 | <img src="./docs/formula/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
-| Rosenbrock | <img src="./docs/formula/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Step | <img src="./docs/formula/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Quartic | <img src="./docs/formula/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Trid | <img src="./docs/formula/Trid.svg" /> | <img src="./docs/formula/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
-| Bent_Cigar | <img src="./docs/formula/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
-| Discus | <img src="./docs/formula/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
-| Weierstrass | <img src="./docs/formula/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+|Sphere| <img src="./docs/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="./docs/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="./docs/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="./docs/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="./docs/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="./docs/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="./docs/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="./docs/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="./docs/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="./docs/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="./docs/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Trid | <img src="./docs/pic/Trid.svg" /> | <img src="./docs/pic/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
+| Bent_Cigar | <img src="./docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="./docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="./docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
 ### Multi-objective Problems
 | Name | Num. of Objective | Shape of the Pareto Front | Feature |
@@ -142,9 +142,24 @@ pip install .
 ## Quick Start
 
 To effectively use UQPyL, the first step is to clearly define the problem you aim to solve. 
+
 The problem usually contains following properties:
-1. The information of input decisions, e.g., **dimensions**, **range (bound) **, **whether each input is float, int, or discrete**.
-2. The mapping from input variables (x) to output objectives (obj), i.e., how the output is obtained from the inputs, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions.
+
+1. The information of input decisions, e.g., dimensions, range (bound), the variable type of each input (float, int, or discrete).
+
+2. The function from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions named `concFunc`.
+
+UQPyL provide a python class named `Problem` to simplify above work.
+
+Use the following problem as example:
+
+<p align="center"><img src="./docs/pic/Problem1.svg" width=240/></p>
+
+
+
+
+
+ 
 
 
 
