@@ -153,7 +153,7 @@ UQPyL provide a python class named `Problem` to simplify above work.
 
 Use the following problem as example:
 
-<p align="center"><img src="./docs/pic/Problem1.svg" width=240/></p>
+<p align="center"><img src="./docs/pic/Problem1.svg" width=400/></p>
 
 
 

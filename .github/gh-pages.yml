@@ -3,7 +3,7 @@ name: Build and Deploy Jekyll site
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   deploy:
