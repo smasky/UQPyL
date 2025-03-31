@@ -44,7 +44,7 @@ pip install .
 
 ---
 
-## Overview of Methods and Algorithms
+## Overview of Methods, Algorithms and Problems
 
 ### Sensitivity Analysis
 
@@ -84,8 +84,9 @@ pip install .
 👀 **This modular is still being updated. If you need other algorithms, please contact us**
 
 ### Surrogate Models
+
 | Abbreviation | Full Name | Features |
-|--------------|------------|---------|
+|--------------|-----------|----------|
 | KRG | Kriging | Support `guass`, `cubic`, `exp` kernel functions |
 | GP | Gaussian Process | Support `const`, `rbf`, `dot`, `matern`, `rq` kernel functions |
 | LR | Linear Regression | Support `origin`, `ridge`, `lasso` loss functions|
@@ -94,8 +95,13 @@ pip install .
 | SVM | Support Vector Machine | Use [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) as the core library |
 | MARS | Multivariate Adaptive Regression Splines | Use [Earth](http://www.milbo.users.sonic.net/earth/) package as the core library |
 
+🫡 **Here, we provide the Auto-tuning tool to optimally build surrogate models, so you don't need to worry about hyper-parameters.**  
 
-🫡 **We provide the Auto-tuning tool to optimally build surrogate models, so you don't need to worry about hyper-parameters.**  
+### Single-Objective Problems
+
+| Name | Formula |
+|------|---------|
+|Sphere| $F= \sum x_i$ |
 
 ---
 
