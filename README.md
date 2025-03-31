@@ -112,7 +112,7 @@ pip install .
 | Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Trid | <img src="./docs/formula/Trid.svg" /> | <img src="./docs/formula/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
+| Trid | <img src="./docs/formula/Trid.svg" /> | x_d=d(D+1-d), d=1,2..D| `-D(D+4)(D-1)/6` |
 | Bent_Cigar | <img src="./docs/formula/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
 | Discus | <img src="./docs/formula/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 | Weierstrass | <img src="./docs/formula/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
