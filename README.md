@@ -133,6 +133,10 @@ pip install .
 | DTLZ6 | >=3 (user define) |         Line         | Multimodal|
 | DTLZ7 | >=3 (user define) | Discrete Surface        | Multimodal|
 
+### Practical Problems
+
+**#TODO:** We are planning to incorporate some common hydrological model calibration (like SWAT, SAC...) or related water resource optimization cases into UQPyL.
+
 ---
 
 ## Quick Start
