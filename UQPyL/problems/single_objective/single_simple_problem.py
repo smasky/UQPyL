@@ -14,7 +14,7 @@ class Sphere(ProblemABC):
         Single Optimization Unimodal
         
     F1->Sphere Function:
-        F= \sum x_i
+        \sum_{d=1}^{D}x^d
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*100;LB->np.ones(1,30)*-100
@@ -51,7 +51,7 @@ class Schwefel_2_22(ProblemABC):
         Single Optimization Unimodal
         
     F2-> Schwefel_2_22 Function:
-        F= \sum \left | x_i \right |+ \prod \left | x_i \right |
+        F= \textstyle \sum_{d=1}^{D} \left | x_d \right |+ \textstyle  \prod_{d=1}^{D} \left | x_d \right |
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*10;LB->np.ones(1,30)*-10
@@ -82,7 +82,7 @@ class Schwefel_1_22(ProblemABC):
         Single Optimization Unimodal
         
     F3-> Schwefel_1_22 Function:
-        F= \sum_{i}  \left ( \sum_{j}^{i} x_j \right )^2
+        F=\textstyle  \sum_{d=1}^{D} \sum_{i=1}^{d} x_i^2
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*100;LB->np.ones(1,30)*-100
@@ -118,7 +118,7 @@ class Schwefel_2_21(ProblemABC):
         Single Optimization Unimodal
         
     F4-> Schwefel_1_22 Function:
-        F= \max_{i} \left | x_i \right | 
+        F=\textstyle  \max_{d\in {1, 2, 3...D} } \left | x_d \right | 
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*100;LB->np.ones(1,30)*-100
@@ -151,7 +151,7 @@ class Rosenbrock(ProblemABC):
         Single Optimization Unimodal
         
     F5-> Rosenbrock Function:
-        F= \sum \left ( 100\left ( x_{i+1} - x_i^2 \right ) ^2 - \left ( x_i-1 \right ) ^2 \right )
+        F=\textstyle  \sum_{d=1}^{D} \left ( 100\left ( x_{d+1} - x_d^2 \right ) ^2 - \left ( x_d-1 \right ) ^2 \right )
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*30;LB->np.ones(1,30)*-30
@@ -185,7 +185,7 @@ class Step(ProblemABC):
         Single Optimization Unimodal
         
     F6-> Step Function:
-        F= \sum \left ( \left \lfloor x_i+0.5  \right \rfloor \right ) ^2
+        F=\textstyle \sum_{d=1}^{D} \left ( \left \lfloor x_d+0.5  \right \rfloor \right ) ^2
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*100;LB->np.ones(1,30)*-100
@@ -216,7 +216,7 @@ class Quartic(ProblemABC):
         Single Optimization Unimodal
         
     F7-> Quartic Function:
-        F= \sum \left ( ix_i^4 \right )+random \left [ 0 , 1 \right )
+        F=\textstyle \sum_{d=1}^{D} \left ( dx_d^4 \right )+random \left [ 0 , 1 \right )
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*1.28;LB->np.ones(1,30)*-1.28
@@ -248,7 +248,7 @@ class Schwefel_2_26(ProblemABC):
         Single Optimization Multimodal
         
     F8-> Quartic Function:
-        F= \sum \left( x_i sin\left ( \sqrt{ \left | x_i \right |} \right ) \right)
+        F=\textstyle  \sum_{d=1}^{D} \left( x_d sin\left ( \sqrt{ \left | x_d \right |} \right ) \right)
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*500;LB->np.ones(1,30)*-500
@@ -281,7 +281,7 @@ class Rastrigin(ProblemABC):
         Single Optimization Multimodal
         
     F9-> Rastrigin Function:
-        F= \sum \left [ x_i^2 - 10 cos\left ( 2 \pi x_i   +10 \right ) \right ]
+        F=\textstyle \sum_{d=1}^{D} \left [ x_d^2 - 10 cos\left ( 2 \pi x_d   +10 \right ) \right ]
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*5.12;LB->np.ones(1,30)*-5.12
@@ -313,8 +313,8 @@ class Ackley(ProblemABC):
         Single Optimization Multimodal
         
     F10-> Ackley Function:
-        F= -20 \exp \left ( -0.2 \sqrt{ \frac{1}{nInput} \sum x_i^2 } \right ) 
-                  - \exp \left ( \frac{1}{nInput} \sum cos 2 \pi x_i \right ) + 20 + e
+        F=\textstyle  -20 \exp \left ( -0.2 \sqrt{ \frac{1}{D} \sum_{d=1}^{D} x_d^2 } \right ) 
+                  - \exp \left ( \frac{1}{D} \sum_{d=1}^{D} cos 2 \pi x_d \right ) + 20 + e
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*32;LB->np.ones(1,30)*-32
@@ -346,7 +346,7 @@ class Griewank(ProblemABC):
         Single Optimization Multimodal
         
     F11-> Griewank Function:
-        F= \frac{1}{4000} \sum x_i^2 - \prod \cos \left ( \frac{x_i}{\sqrt{i}} \right ) + 1
+        F=\textstyle \frac{1}{4000} \sum_{d=1}^{D} x_d^2 - \prod_{d=1}^{D} \cos \left ( \frac{x_d}{\sqrt{d}} \right ) + 1
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*600;LB->np.ones(1,30)*-600
@@ -383,7 +383,7 @@ class Trid(ProblemABC):
         Single Optimization Multimodal
         
     F12-> Trid Function:
-        F= \sum_{i=1}{D} \left ( x_i - 1 \right )^2 - \sum_{i=2}^{D} \left ( x_i x_{i-1} \right ) 
+        F=\textstyle \sum_{d=1}^{D} \left ( x_d - 1 \right )^2 - \sum_{d=2}^{D} \left ( x_d x_{d-1} \right  ) \right ) 
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*(30^2);LB->np.ones(1,30)*-(30^2)
@@ -414,7 +414,7 @@ class Bent_Cigar(ProblemABC):
         Single Optimization Multimodal
         
     F13-> Bent Cigar Function:
-        F= x_1^2 + 10^6 \sum_{i=2}^{D} x_i^2
+        F=\textstyle  x_1^2 + 10^6 \sum_{d=2}^{D} x_d^2
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*10;LB->np.ones(1,30)*-10
@@ -446,7 +446,7 @@ class Discus(ProblemABC):
         Single Optimization Multimodal
         
     F14-> Discus Function:
-        F= 10^6 x_1^2 +  \sum_{i=2}^{D} x_i^2
+        F=\textstyle 10^6 x_1^2 +  \sum_{d=2}^{D} x_d^2
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*10;LB->np.ones(1,30)*-10
@@ -478,7 +478,7 @@ class Weierstrass(ProblemABC):
         Single Optimization Multimodal
         
     F15-> Weierstrass Function:
-        F= \sum_{i=1}^{D} \left ( \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \left( x_i + 0.5 \right) \right) \right )-
+       F=\textstyle  \sum_{d=1}^{D} \left ( \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \left( x_d + 0.5 \right) \right) \right )-
                 \sum_{k=0}^{k_{max}} a^k \cos \left( \pi b^k \right)
         
     Default setting:

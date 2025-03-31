@@ -9,7 +9,7 @@
 ## Main Features
 1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
 2. **Running Display and Result Save**: Enable users to track and save the history and results of their running.
-3. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning technique to enhance these model performances.
+3. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning tool to enhance these model performances.
 4. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (👉**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
 5. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
@@ -44,7 +44,7 @@ pip install .
 
 ---
 
-## Overview of Methods and Algorithms
+## Overview of Methods, Algorithms and Problems
 
 ### Sensitivity Analysis
 
@@ -84,8 +84,9 @@ pip install .
 👀 **This modular is still being updated. If you need other algorithms, please contact us**
 
 ### Surrogate Models
+
 | Abbreviation | Full Name | Features |
-|--------------|------------|---------|
+|--------------|-----------|----------|
 | KRG | Kriging | Support `guass`, `cubic`, `exp` kernel functions |
 | GP | Gaussian Process | Support `const`, `rbf`, `dot`, `matern`, `rq` kernel functions |
 | LR | Linear Regression | Support `origin`, `ridge`, `lasso` loss functions|
@@ -93,6 +94,48 @@ pip install .
 | RBF | Radial Basis Function |Support `cubic`, `guass`, `linear`, `mq`, `tps` kernel functions and their corresponding hyper-parameters|
 | SVM | Support Vector Machine | Use [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) as the core library |
 | MARS | Multivariate Adaptive Regression Splines | Use [Earth](http://www.milbo.users.sonic.net/earth/) package as the core library |
+
+🫡 **Here, we provide the Auto-tuning tool to optimally build surrogate models, so you don't need to worry about hyper-parameters.**  
+
+### Single-objective Problems
+
+| Name | Formula | Optimal Solution | Optima | 
+|------|---------|------------------|--------|
+|Sphere| <img src="./docs/formula/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="./docs/formula/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="./docs/formula/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="./docs/formula/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="./docs/formula/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="./docs/formula/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="./docs/formula/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="./docs/formula/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Trid | <img src="./docs/formula/Trid.svg" /> | <img src="./docs/formula/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
+| Bent_Cigar | <img src="./docs/formula/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="./docs/formula/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="./docs/formula/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+
+### Multi-objective Problems
+| Name | Num. of Objective | Shape of the Pareto Front | Feature |
+|------|-------------------|---------------------------|---------|
+| ZDT1 |         2         |           Line            | Convex  |
+| ZDT2 |         2         |           Line            | Concave |
+| ZDT3 |         2         |           Line            | Disconnected |
+| ZDT4 |         2         |           Line            | Convex |
+| ZDT6 |         2         |           Line            | Concave |
+| DTLZ1 | >=3 (user define) |         Surface          | Multimodal |
+| DTLZ2 | >=3 (user define) |         Surface          | Single-peaked |
+| DTLZ3 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ4 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ5 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ6 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ7 | >=3 (user define) | Discrete Surface        | Multimodal|
+
+### Practical Problems
+
+**#TODO:** We are planning to incorporate some common hydrological model calibration (like SWAT, SAC...) or related water resource optimization cases into UQPyL.
 
 ---
 
