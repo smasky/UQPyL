@@ -414,7 +414,7 @@ class Bent_Cigar(ProblemABC):
         Single Optimization Multimodal
         
     F13-> Bent Cigar Function:
-        F= x_1^2 + 10^6 \sum_{i=2}^{D} x_i^2
+        F=\textstyle  x_1^2 + 10^6 \sum_{d=2}^{D} x_d^2
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*10;LB->np.ones(1,30)*-10
@@ -446,7 +446,7 @@ class Discus(ProblemABC):
         Single Optimization Multimodal
         
     F14-> Discus Function:
-        F= 10^6 x_1^2 +  \sum_{i=2}^{D} x_i^2
+        F=\textstyle 10^6 x_1^2 +  \sum_{d=2}^{D} x_d^2
         
     Default setting:
         Dims->30;Ub->np.ones(1,30)*10;LB->np.ones(1,30)*-10
@@ -478,7 +478,7 @@ class Weierstrass(ProblemABC):
         Single Optimization Multimodal
         
     F15-> Weierstrass Function:
-        F= \sum_{i=1}^{D} \left ( \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \left( x_i + 0.5 \right) \right) \right )-
+       F=\textstyle  \sum_{d=1}^{D} \left ( \sum_{k=0}^{k_{max}} a^k \cos \left( 2 \pi b^k \left( x_d + 0.5 \right) \right) \right )-
                 \sum_{k=0}^{k_{max}} a^k \cos \left( \pi b^k \right)
         
     Default setting:
