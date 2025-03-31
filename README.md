@@ -110,7 +110,9 @@ pip install .
 | Quartic | <img src="./docs/formula/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0 |
 |Schwefel_2_26 | <img src="./docs/formula/Schwefel_2_26.svg" /> | (420.9687 420.9687 ... 420.9687) | -12569.5 |
 | Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0 |
-
+| Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0 |
+| Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0 |
+| Trid | <img src="./docs/formula/Trid.svg" /> | <img src="./docs/formula/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
 
 ---
 
