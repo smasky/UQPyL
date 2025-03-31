@@ -105,10 +105,10 @@ pip install .
 |Schwefel_2_22| <img src="./docs/formula/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 |Schwefel_1_22| <img src="./docs/formula/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 |Schwefel_2_21| <img src="./docs/formula/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="./docs/formula/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
 | Rosenbrock | <img src="./docs/formula/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Step | <img src="./docs/formula/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
 | Quartic | <img src="./docs/formula/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-|Schwefel_2_26 | <img src="./docs/formula/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
 | Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
