@@ -153,7 +153,13 @@ UQPyL provide a python class named `Problem` to simplify above work.
 
 Use the following problem as example:
 
-<p align="center"><img src="./docs/pic/Problem1.svg" width=400/></p>
+<p align="center"><img src="./docs/pic/Problem1.svg" width=300/></p>
+
+This problem is a variant of the Rosenbrock function. We have added additional constraint functions ($x_1^2+x_2^2 \ge 4$) and changed the variable types, from the origin `continuous` and `float` to `int` ($x_1$) and `discrete` ($x_2$).
+
+
+
+
 
 
 
