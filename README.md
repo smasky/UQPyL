@@ -102,7 +102,7 @@ pip install .
 | Name | Formula | Optimal Solution | Optima | 
 |------|---------|------------------|--------|
 |Sphere| $\sum_{d=1}^{D} x^d$ | `0, 0, 0 ... 0` | `0` |
-|Schwefel_2_22| F= \sum_{d=1}^{D} \textbar x_i \textbar | | |
+|Schwefel_2_22| <img src="./docs/formula/Schwefel_2_22.svg" /> | | |
 
 ---
 
