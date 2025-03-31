@@ -99,9 +99,10 @@ pip install .
 
 ### Single-Objective Problems
 
-| Name | Formula |
-|------|---------|
-|Sphere| $F= \sum x_i$ |
+| Name | Formula | Optimal Solution | Optima | 
+|------|---------|------------------|--------|
+|Sphere| $\sum_{d=1}^{D} x^d$ | `0, 0, 0 ... 0` | `0` |
+|Schwefel_2_22| F= \sum_{d=1}^{D} \textbar x_i \textbar | | |
 
 ---
 

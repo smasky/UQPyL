@@ -14,7 +14,7 @@ class Sphere(ProblemABC):
         Single Optimization Unimodal
         
     F1->Sphere Function:
-        F= \sum x_i
+        \sum_{d=1}^{D}x^d
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*100;LB->np.ones(1,30)*-100
