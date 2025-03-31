@@ -97,7 +97,7 @@ pip install .
 
 🫡 **Here, we provide the Auto-tuning tool to optimally build surrogate models, so you don't need to worry about hyper-parameters.**  
 
-### Single-Objective Problems
+### Single-objective Problems
 
 | Name | Formula | Optimal Solution | Optima | 
 |------|---------|------------------|--------|
@@ -112,10 +112,26 @@ pip install .
 | Rastrigin | <img src="./docs/formula/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Ackley | <img src="./docs/formula/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
 | Griewank | <img src="./docs/formula/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Trid | <img src="./docs/formula/Trid.svg" /> | x_d=d(D+1-d), d=1,2..D| `-D(D+4)(D-1)/6` |
+| Trid | <img src="./docs/formula/Trid.svg" /> | <img src="./docs/formula/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
 | Bent_Cigar | <img src="./docs/formula/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
 | Discus | <img src="./docs/formula/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 | Weierstrass | <img src="./docs/formula/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+
+### Multi-objective Problems
+| Name | Num. of Objective | Shape of the Pareto Front | Feature |
+|------|-------------------|---------------------------|---------|
+| ZDT1 |         2         |           Line            | Convex  |
+| ZDT2 |         2         |           Line            | Concave |
+| ZDT3 |         2         |           Line            | Disconnected |
+| ZDT4 |         2         |           Line            | Convex |
+| ZDT6 |         2         |           Line            | Concave |
+| DTLZ1 | >=3 (user define) |         Surface          | Multimodal |
+| DTLZ2 | >=3 (user define) |         Surface          | Single-peaked |
+| DTLZ3 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ4 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ5 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ6 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ7 | >=3 (user define) | Discrete Surface        | Multimodal|
 
 ---
 
