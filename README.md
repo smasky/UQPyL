@@ -142,29 +142,74 @@ pip install .
 
 ## Quick Start
 
-To effectively use UQPyL, the **first step** is to define the problem you solve:  
+To effectively use UQPyL, the **first step** is to define the problem you solve, which should contain following properties:  
 1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
-2. The function from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions named `concFunc`.
+2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
 
-UQPyL provide a python class named `Problem` to simplify above work.
-
-Use the following problem as example:
+Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_1$) and `discrete` ($x_2$).
 
 <p align="center"><img src="./docs/pic/Problem1.svg" width=300/></p>
 
-This problem is a variant of the Rosenbrock function. We have added additional constraint functions ($x_1^2+x_2^2 \ge 4$) and changed the variable types, from the origin `continuous` and `float` to `int` ($x_1$) and `discrete` ($x_2$).
+UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
+```python
+#Step 1: import Problem class from UQPyL's problem module
+from UQPyL.problem import Problem
 
+#Step 2: define objFunc Function
+#Here, X is default to a numpy 2-dimensional matrix. 
+#Each row in X represents a candidate solution (i.e., an individual in the population) 
+#and each column corresponds to a decision variable (i.e., a feature or parameter to be optimized).
+#
+#The objective function (objFunc) needs to return the objective values (objs) for each solution.
+#To keep consistency in data structure, objs should also be a 2-dimensional matrix.
+#The number of rows in objs should match the number of rows in X (i.e., the number of candidate solutions),
+#and the number of columns should match the number of objectives.
+#For a single-objective problem, objs will have shape (N, 1);
+#For a multi-objective problem with M objectives, objs will have shape (N, M),
+#Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
+def objFunc(X):
+    N, D = X.shape 
+    objs = (1 - X[0, :])**2 + 100 * (X[1, :] - X[0, :]**2)**2
+    return objs
 
+#Another way to define objFunc Function
+#For problems that involve using computational models, the UQPyL package provides a decorator 
+#to enable a "single run mode", which means that the objective function will be evaluated 
+#for one solution at a time, rather than processing multiple solutions in a batch.
+#The decorator @singleFunc ensures that the function operates on a single solution (i.e., one row from X) 
+#for each call, which is particularly useful in scenarios where each evaluation is computationally expensive
+#or when the model is designed to handle one solution at a time.
+#Therefore, the input X is a numpy 1-dimensional array.
+#In this example, objFunc_ calculates the objective for a single solution X (with two variables). 
+#The function returns the objective value corresponding to this solution.
+from UQPyL.problem import singleFunc
 
+@singleFunc
+def objFunc_(X):
+    obj = (1 - X[0])**2 + 100 * (X[1] - X[0]**2)**2
+    return obj
 
+# Step 3: Define concFunc Function
+# Similar to the objFunc function, there are also two ways to define the constraint function.
+# Note that the return value of concFunc reflects how much the constraints are violated.
+# - If the return value is less than 0, it indicates that the constraint is violated. 
+#   The smaller the value, the more severely the constraint is violated.
+# - If the return value is greater than 0, it means the constraint is satisfied (normal solution).
+#Therefore, users may need to modify or re-formulate the constraint functions.
 
+# Matrix Mode
+def concFunc(X):
+    concs = X[0, :]**2 + X[1, :]**2 -4
+    return concs
 
+# Single Run Mode
+@singleFunc
+def concFunc(X):
+    conc = X[0]**2 + X[1]**2 -4
+    return conc
 
-
- 
-
-
+```
 
 
 

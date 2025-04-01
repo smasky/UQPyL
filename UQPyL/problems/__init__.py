@@ -4,7 +4,7 @@ from .single_objective import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_
 
 from .multi_objective import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 from .multi_objective import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6
-from .problemABC import ProblemABC
+from .problemABC import ProblemABC, ProblemABC.singleFunc
 from .problem import Problem
 
 single_objective_problems=["Sphere", "Schwefel_2_22", "Schwefel_1_22", "Schwefel_2_21", "Rosenbrock",
@@ -18,5 +18,6 @@ multi_objective_problem=["ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6",
 __all__=[
     single_objective_problems,
     multi_objective_problem,
-    "ProblemABC"
+    "ProblemABC",
+    "singleFunc"
 ]
