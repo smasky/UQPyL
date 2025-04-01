@@ -118,6 +118,7 @@ pip install .
 | Weierstrass | <img src="./docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
 ### Multi-objective Problems
+
 | Name | Num. of Objective | Shape of the Pareto Front | Feature |
 |------|-------------------|---------------------------|---------|
 | ZDT1 |         2         |           Line            | Convex  |
@@ -141,12 +142,9 @@ pip install .
 
 ## Quick Start
 
-To effectively use UQPyL, the first step is to clearly define the problem you aim to solve. 
-
-The problem usually contains following properties:
+To effectively use UQPyL, the **first step** is to define the problem you solve:
 
 1. The information of input decisions, e.g., dimensions, range (bound), the variable type of each input (float, int, or discrete).
-
 2. The function from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions named `concFunc`.
 
 UQPyL provide a python class named `Problem` to simplify above work.
