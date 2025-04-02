@@ -415,7 +415,7 @@ bestObjs = res.bestObjs
 
 ### Surrogate Modeling
 
-# Use RBF model to predict Sphere Function as an example
+Use RBF model to predict Sphere Function as an example
 
 ```python
 from UQPyL.problems import Sphere
@@ -454,7 +454,8 @@ r2 = r_square(yTest, yPred)
 print(r2)
 ```
 
-🔥🔥🔥For more advanced features and use cases, please refer to the [documentation](https://uqpyl.readthedocs.io/en/latest/). (**updating**)
+🔥🔥🔥# More advanced features and examples are coming soon — check out the  [documentation](https://uqpyl.readthedocs.io/en/latest/) (updates in progress, thanks for bearing with us)!
+
 
 ---
 
