@@ -218,7 +218,8 @@ ub = [0, 0] # It can be a float, int, list, or numpy array.
 # In this case, both input variables (X[0] and X[1]) have an upper bound of 0. 
 
 # Lower bound of X.
-lb = [10, 10] # It can also be a float, int, list, or numpy array. # In this case, both input variables (X[0] and X[1]) have a lower bound of 10.
+lb = [10, 10] # It can also be a float, int, list, or numpy array. 
+# In this case, both input variables (X[0] and X[1]) have a lower bound of 10.
 
 # Types of variables.
 varType = [1, 2]  
@@ -253,7 +254,17 @@ problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFun
                     ub = ub, lb = lb, varType = varType, varSet = varSet,
                         xLabel = xLabel, yLabel = yLabel, name = name)
 
-#Now, you can use all methods and algorithms in UQPyL
+# Step 6: Use optimization methods from UQPyL
+# All methods and algorithms in UQPyL operate by reading the 'problem' object
+# In this example, we are using the Genetic Algorithm (GA) for optimization
+from UQPyL.optimization.single_objective import ga
+
+# Create an instance of the Genetic Algorithm (GA). By default, GA will output optimization history
+# and final results in the command line.
+GA = ga()
+
+# Run the Genetic Algorithm optimization by passing the defined 'problem' object
+ga.run(problem = problem)
 
 ```
 
