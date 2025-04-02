@@ -142,7 +142,7 @@ pip install .
 
 ## Quick Start
 
-To effectively use UQPyL, the **first step** is to define the problem you solve, which should contain following properties:  
+To effectively use UQPyL, the first is to define the problem you solve, which should contain following properties:  
 1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
 2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
 
@@ -153,36 +153,35 @@ Following problem is a variant of the Rosenbrock function, which adds additional
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
 ```python
-#Step 1: import Problem class from UQPyL's problem module
+# Step 1: import Problem class from UQPyL's problem module
 from UQPyL.problem import Problem
 
-#Step 2: define objFunc Function
-#Here, X is default to a numpy 2-dimensional matrix. 
-#Each row in X represents a candidate solution (i.e., an individual in the population) 
-#and each column corresponds to a decision variable (i.e., a feature or parameter to be optimized).
+# Step 2: define objFunc Function
+# Here, X is default to a numpy 2-dimensional matrix. 
+# Each row in X represents a candidate solution (i.e., an individual in the population) 
+# and each column corresponds to a decision variable (i.e., a feature or parameter to be optimized).
 #
-#The objective function (objFunc) needs to return the objective values (objs) for each solution.
-#To keep consistency in data structure, objs should also be a 2-dimensional matrix.
-#The number of rows in objs should match the number of rows in X (i.e., the number of candidate solutions),
+# The objective function (objFunc) needs to return the objective values (objs) for each solution, which should also be a 2-dimensional matrix.
+# The number of rows in objs should match the number of rows in X (i.e., the number of candidate solutions),
 #and the number of columns should match the number of objectives.
-#For a single-objective problem, objs will have shape (N, 1);
-#For a multi-objective problem with M objectives, objs will have shape (N, M),
-#Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
+# For a single-objective problem, objs will have shape (N, 1);
+# For a multi-objective problem with M objectives, objs will have shape (N, M),
+# Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
 def objFunc(X):
     N, D = X.shape 
     objs = (1 - X[0, :])**2 + 100 * (X[1, :] - X[0, :]**2)**2
     return objs
 
-#Another way to define objFunc Function
-#For problems that involve using computational models, the UQPyL package provides a decorator 
-#to enable a "single run mode", which means that the objective function will be evaluated 
-#for one solution at a time, rather than processing multiple solutions in a batch.
-#The decorator @singleFunc ensures that the function operates on a single solution (i.e., one row from X) 
-#for each call, which is particularly useful in scenarios where each evaluation is computationally expensive
-#or when the model is designed to handle one solution at a time.
-#Therefore, the input X is a numpy 1-dimensional array.
-#In this example, objFunc_ calculates the objective for a single solution X (with two variables). 
-#The function returns the objective value corresponding to this solution.
+# Another way to define objFunc Function
+# For problems that involve using computational models, the UQPyL package provides a decorator 
+# to enable a "single run mode", which means that the objective function will be evaluated 
+# for one solution at a time, rather than processing multiple solutions in a batch.
+# The decorator @singleFunc ensures that the function operates on a single solution (i.e., one row from X) 
+# for each call, which is particularly useful in scenarios where each evaluation is computationally expensive
+# or when the model is designed to handle one solution at a time.
+# Therefore, the input X is a numpy 1-dimensional array.
+# In this example, objFunc_ calculates the objective for a single solution X (with two variables). 
+# The function returns the objective value corresponding to this solution.
 from UQPyL.problem import singleFunc
 
 @singleFunc
@@ -208,6 +207,53 @@ def concFunc(X):
 def concFunc(X):
     conc = X[0]**2 + X[1]**2 -4
     return conc
+
+# Step 4: describe the properties of X
+
+nInput = 2 # number of input variables (X), here it's 2 inputs.
+nOutput = 1 # number of outputs (objective functions), here it's 1 objective.
+
+#Upper bound of X.
+ub = [0, 0] # It can be a float, int, list, or numpy array. 
+# In this case, both input variables (X[0] and X[1]) have an upper bound of 0. 
+
+# Lower bound of X.
+lb = [10, 10] # It can also be a float, int, list, or numpy array. # In this case, both input variables (X[0] and X[1]) have a lower bound of 10.
+
+# Types of variables.
+varType = [1, 2]  
+# varType[0] = 1: The first input (X[0]) is an integer.
+# varType[1] = 2: The second input (X[1]) is a discrete variable.
+# 0 for continuous, 1 for integer, and 2 for discrete.
+
+# The set of possible values for discrete variables.
+varSet = {1: [2, 3.4, 5.1, 7]} 
+# varSet is a dictionary where the key indicates the index of the variable (1 refers to the second variable, X[1]).
+# The value associated with key 1 specifies the set of possible values for X[1]: [2, 3.4, 5.1, 7].
+# This means that X[1] can only take one of these four values: 2, 3.4, 5.1, or 7.
+
+# The optimization type: 'min' for minimization, 'max' for maximization.
+optType = 'min'
+
+# Names (or labels) for the input variables.
+xLabel = ['x1', 'x2'] 
+# If the optimization problem has named variables, you can set them here.
+# Otherwise, default names like 'x1', 'x2', etc., can be used.
+
+# Names (or labels) for the objective functions.
+yLabel = ['obj1'] # Similar to xLabel, if your objective(s) have specific names, you can set them here.
+# Otherwise, use default labels like 'obj1', 'obj2', etc.
+
+# Name of the optimization problem
+name = 'Rosenbrock'
+# Useful for identifying the problem instance, organizing results, saving files, etc.
+
+#Step 5: Initialize the problem instance
+problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc
+                    ub = ub, lb = lb, varType = varType, varSet = varSet,
+                        xLabel = xLabel, yLabel = yLabel, name = name)
+
+#Now, you can use all methods and algorithms in UQPyL
 
 ```
 
