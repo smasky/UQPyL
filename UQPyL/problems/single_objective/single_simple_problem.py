@@ -151,7 +151,7 @@ class Rosenbrock(ProblemABC):
         Single Optimization Unimodal
         
     F5-> Rosenbrock Function:
-        F=\textstyle  \sum_{d=1}^{D} \left ( 100\left ( x_{d+1} - x_d^2 \right ) ^2 - \left ( x_d-1 \right ) ^2 \right )
+        F=\textstyle  \sum_{d=1}^{D} \left ( 100\left ( x_{d+1} - x_d^2 \right ) ^2 + \left ( x_d-1 \right ) ^2 \right )
      
     Default setting:
         Dims->30;Ub->np.ones(1,30)*30;LB->np.ones(1,30)*-30

@@ -146,15 +146,15 @@ To effectively use UQPyL, the first is to define the problem you solve, which sh
 1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
 2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
 
-Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_1$) and `discrete` ($x_2$).
+Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2+x_3^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_2$) and `discrete` ($x_3$).
 
-<p align="center"><img src="./docs/pic/Problem1.svg" width=300/></p>
+<p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
 
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
 ```python
 # Step 1: import Problem class from UQPyL's problem module
-from UQPyL.problem import Problem
+from UQPyL.problems import Problem
 
 # Step 2: define objFunc Function
 # Here, X is default to a numpy 2-dimensional matrix. 
@@ -169,8 +169,10 @@ from UQPyL.problem import Problem
 # Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
 def objFunc(X):
     N, D = X.shape 
-    objs = (1 - X[0, :])**2 + 100 * (X[1, :] - X[0, :]**2)**2
-    return objs
+    #This is a vectorized operation over the input matrix X.
+    objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
+            (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
+    return objs[:, None]
 
 # Another way to define objFunc Function
 # For problems that involve using computational models, the UQPyL package provides a decorator 
@@ -182,11 +184,13 @@ def objFunc(X):
 # Therefore, the input X is a numpy 1-dimensional array.
 # In this example, objFunc_ calculates the objective for a single solution X (with two variables). 
 # The function returns the objective value corresponding to this solution.
-from UQPyL.problem import singleFunc
+from UQPyL.problems import singleFunc
 
 @singleFunc
 def objFunc_(X):
-    obj = (1 - X[0])**2 + 100 * (X[1] - X[0]**2)**2
+    #This is element-wise operation on the 1-dimensional individual of X.
+    obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \\
+            (1 - X[1])**2 + (1 - X[0])**2 
     return obj
 
 # Step 3: Define concFunc Function
@@ -198,51 +202,52 @@ def objFunc_(X):
 #Therefore, users may need to modify or re-formulate the constraint functions.
 
 # Matrix Mode
-def concFunc(X):
-    concs = X[0, :]**2 + X[1, :]**2 -4
-    return concs
+def conFunc(X):
+    cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 -4 
+    return cons[:, None]
 
 # Single Run Mode
 @singleFunc
-def concFunc(X):
-    conc = X[0]**2 + X[1]**2 -4
-    return conc
+def conFunc(X):
+    con = X[0]**2 + X[1]**2 + X[2]**2 -4 
+    return con
 
 # Step 4: describe the properties of X
 
-nInput = 2 # number of input variables (X), here it's 2 inputs.
+nInput = 3 # number of input variables (X), here it's 3 inputs.
 nOutput = 1 # number of outputs (objective functions), here it's 1 objective.
 
 #Upper bound of X.
-ub = [0, 0] # It can be a float, int, list, or numpy array. 
-# In this case, both input variables (X[0] and X[1]) have an upper bound of 0. 
+ub = [0, 0, 0] # It can be a float, int, list, or numpy array. 
+# In this case, both input variables have an upper bound of 0. 
 
 # Lower bound of X.
-lb = [10, 10] # It can also be a float, int, list, or numpy array. 
-# In this case, both input variables (X[0] and X[1]) have a lower bound of 10.
+lb = [10, 10, 10] # It can also be a float, int, list, or numpy array. 
+# In this case, both input variables have a lower bound of 10.
 
 # Types of variables.
-varType = [1, 2]  
-# varType[0] = 1: The first input (X[0]) is an integer.
-# varType[1] = 2: The second input (X[1]) is a discrete variable.
-# 0 for continuous, 1 for integer, and 2 for discrete.
+# type 0 for continuous, 1 for integer, and 2 for discrete.
+varType = [0, 1, 2]  
+# varType[0] = 0: The first input (X[0]) is a float.
+# varType[1] = 1: The second input (X[1]) is an integer variable.
+# varType[2] = 2: The second input (X[2]) is a discrete variable.
 
 # The set of possible values for discrete variables.
-varSet = {1: [2, 3.4, 5.1, 7]} 
-# varSet is a dictionary where the key indicates the index of the variable (1 refers to the second variable, X[1]).
-# The value associated with key 1 specifies the set of possible values for X[1]: [2, 3.4, 5.1, 7].
-# This means that X[1] can only take one of these four values: 2, 3.4, 5.1, or 7.
+varSet = {2: [2, 3.4, 5.1, 7]} 
+# varSet is a dictionary where the key indicates the index of the variable (2 refers to the third variable, X[2]). It follows Python's zero-based indexing.
+# The value associated with key 2 specifies the set of possible values for X[2]: [2, 3.4, 5.1, 7].
+# This means that X[2] can only take one of these four values: 2, 3.4, 5.1, or 7.
 
 # The optimization type: 'min' for minimization, 'max' for maximization.
 optType = 'min'
 
 # Names (or labels) for the input variables.
-xLabel = ['x1', 'x2'] 
+xLabels = ['x1', 'x2', 'x3'] 
 # If the optimization problem has named variables, you can set them here.
-# Otherwise, default names like 'x1', 'x2', etc., can be used.
+# Otherwise, default names like 'x1', 'x2', 'x3', etc., can be used.
 
 # Names (or labels) for the objective functions.
-yLabel = ['obj1'] # Similar to xLabel, if your objective(s) have specific names, you can set them here.
+yLabels = ['obj1'] # Similar to xLabel, if your objective(s) have specific names, you can set them here.
 # Otherwise, use default labels like 'obj1', 'obj2', etc.
 
 # Name of the optimization problem
@@ -250,25 +255,36 @@ name = 'Rosenbrock'
 # Useful for identifying the problem instance, organizing results, saving files, etc.
 
 #Step 5: Initialize the problem instance
-problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc
+problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc,
                     ub = ub, lb = lb, varType = varType, varSet = varSet,
-                        xLabel = xLabel, yLabel = yLabel, name = name)
+                        xLabels = xLabels, yLabels = yLabels, name = name)
 
 # Step 6: Use optimization methods from UQPyL
 # All methods and algorithms in UQPyL operate by reading the 'problem' object
 # In this example, we are using the Genetic Algorithm (GA) for optimization
-from UQPyL.optimization.single_objective import ga
+from UQPyL.optimization.single_objective import GA
 
 # Create an instance of the Genetic Algorithm (GA). By default, GA will output optimization history
 # and final results in the command line.
-GA = ga()
+ga = GA()
 
 # Run the Genetic Algorithm optimization by passing the defined 'problem' object
 ga.run(problem = problem)
-
+# Output:
+# Time:  0.0 day | 0.0 hour | 0.0 minute |  1.17 second
+# Used FEs:    50000  |  Iters:  999
+# Best Objs and Best Decision with the FEs
+# +-------------------+-------------------+-------------------+-------------------+
+# |        FEs        |       Iters       |      OptType      |      Feasible     |
+# +-------------------+-------------------+-------------------+-------------------+
+# |         50        |         0         |        min        |        True       |
+# +-------------------+-------------------+-------------------+-------------------+
+# +-------------------+-------------------+-------------------+-------------------+
+# |        obj1       |         x1        |         x2        |         x3        |
+# +-------------------+-------------------+-------------------+-------------------+
+# |      4.0e+02      |       0.000       |       0.000       |       2.000       |
+# +-------------------+-------------------+-------------------+-------------------+
 ```
-
-
 
 ### Benchmark Problems
 
