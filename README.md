@@ -309,13 +309,61 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 
 ### Sensitivity Analysis
 
+Here, use Ishigami Function as example.
+<p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
+
 ```python
+import numpy as np
+from UQPyL.problems import Problem
+# Define Ishigami Function
+def objFunc(X):
+    objs = np.sin(X[:, 0]) + 7 * np.sin(X[:, 1])**2 + \
+                 0.1 * X[:, 2]**4 * np.sin(X[:, 0])
+    return objs[:, None]
+
+Ishigami = Problem(nInput = 3, nOutput = 1, objFunc = objFunc,
+                    ub = np.pi, lb = -1*np.pi, varType = [0, 0, 0],
+                    name = "Ishigami")
+                    
 from UQPyL.sensibility import Sobol
 
-sobol = Sobol()  # Instantiate and set hyper-parameters
-sobol.analyze(problem)
-```
+# Instantiate a Sobol sensitivity analysis object
+sobol = Sobol()
+# N = 512 defines the base sample size; 
+# total number of evaluations will be larger due to Sobol' method structure
+X = sobol.sample(problem = Ishigami, N = 512)
 
+# Evaluate the objective function (i.e., Ishigami function) on the sample points
+# Returns an array of function outputs corresponding to each input in X
+Obj = problem.objFunc(X)
+
+# Perform Sobol' sensitivity analysis
+# Inputs:
+#   - problem: the problem instance (defines bounds and function)
+#   - X: the input samples
+#   - Obj: the function evaluations at X
+sobol.analyze(problem, X, Obj)
+
+# By default, the following results will be obtained:
+# =======================Attribute=======================
+# First Order Sensitivity: True
+# Second Order Sensitivity: False
+# Total Order Sensitivity: True
+# ======================Conclusion=============================
+# --------------------------S1---------------------------------
+# +-------------------+-------------------+-------------------+
+# |        x_1        |        x_2        |        x_3        |
+# +-------------------+-------------------+-------------------+
+# |       0.3222      |       0.4531      |       0.0175      |
+# +-------------------+-------------------+-------------------+
+# --------------------------ST---------------------------------
+# +-------------------+-------------------+-------------------+
+# |        x_1        |        x_2        |        x_3        |
+# +-------------------+-------------------+-------------------+
+# |       0.5436      |       0.4306      |       0.2416      |
+# +-------------------+-------------------+-------------------+
+
+```
 ### Optimization
 
 ```python

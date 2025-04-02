@@ -40,7 +40,7 @@ class FAST(SA):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  M: int = 4,
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the FAST method.
         ----------------------------------------------------------------
@@ -113,7 +113,7 @@ class FAST(SA):
             X[idx, :] = 0.5 + arsin_result.transpose()
         
         # Transform the samples to the problem's input space
-        return problem._unit_X_transform(X)
+        return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):

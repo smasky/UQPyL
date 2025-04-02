@@ -40,7 +40,7 @@ class RSA(SA):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  nRegion: int = 20,
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the RSA method for sensitivity analysis.
         

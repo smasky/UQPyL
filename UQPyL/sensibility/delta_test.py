@@ -39,7 +39,7 @@ class Delta_Test(SA):
     """
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
                  nNeighbors: int = 2,
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the Delta Test method.
         ------------------------------------------------------------

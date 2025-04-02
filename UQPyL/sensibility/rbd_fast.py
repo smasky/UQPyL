@@ -42,7 +42,7 @@ class RBD_FAST(SA):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
                  M: int = 4, 
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the RBD-FAST method for global sensitivity analysis.
         ----------------------------------------------------------------

@@ -43,7 +43,7 @@ class Sobol(SA):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  calSecondOrder: bool = False,
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         '''
         Initialize the Sobol' method for sensitivity analysis.
         
@@ -143,7 +143,7 @@ class Sobol(SA):
         
         X = SS
          
-        return problem._unit_X_transform(X)
+        return problem._transform_unit_X(X)
     
     @Verbose.decoratorAnalyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None):
