@@ -415,33 +415,52 @@ bestObjs = res.bestObjs
 
 ### Surrogate Modeling
 
+# Use RBF model to predict Sphere Function as an example
+
 ```python
+from UQPyL.problems import Sphere
+#Instantiate the problem
+sphere = Sphere(nInput = 10)
+
+# Import Latin Hypercube Sampling (LHS) for generating design of experiments
 from UQPyL.DoE import LHS
 
+# Generate 200 training samples in the input space using LHS
 lhs = LHS(problem)
 xTrain = lhs.sample(200, problem.nInput)
-yTrain = problem.evaluate(xTrain)
 
+# Evaluate the true objective function at training points
+yTrain = problem.objFunc(xTrain)
+
+# Generate 50 test samples for model validation
 xTest = lhs.sample(50, problem.nInput)
+# Evaluate the true function at test points
 yTest = problem.evaluate(xTest)
 
+# Import Radial Basis Function (RBF) surrogate model
 from UQPyL.surrogate.rbf import RBF
 
+# Initialize and fit the RBF surrogate model
 rbf = RBF()
 rbf.fit(xTrain, yTrain)
+
+# Use the trained RBF model to predict outputs on test inputs
 yPred = rbf.predict(xTest)
 
+# Import R² metric to evaluate surrogate model performance
 from UQPyL.utility.metric import r_square
+# Compute R² score between true and predicted test outputs
 r2 = r_square(yTest, yPred)
+print(r2)
 ```
 
-For more advanced usage, please refer to the documentation (**#TODO**).
+🔥🔥🔥For more advanced features and use cases, please refer to the [documentation](https://uqpyl.readthedocs.io/en/latest/). (**updating**)
 
 ---
 
 ## Call for Contributions
 
-We welcome contributions to expand our library with more sophisticated UQ methods, optimization algorithms and engineering problems.
+We welcome contributions to expand our library with more advanced UQ methods, optimization algorithms and engineering problems.
 
 ---
 
@@ -450,14 +469,11 @@ We welcome contributions to expand our library with more sophisticated UQ method
 For any inquiries or contributions, please contact:
 
 **wmtSky**  
-Email: [wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn), [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)
+Email: [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)(priority), [wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn)
 
 ---
 
 *This project is licensed under the MIT License - see the [LICENSE](https://github.com/smasky/UQPyL/LICENSE) file for details.*
-
-![GitHub Stars](https://img.shields.io/github/stars/smasky/UQPyL?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/smasky/UQPyL?style=social)
 
 
 
