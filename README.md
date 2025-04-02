@@ -312,6 +312,8 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 Here, use Ishigami Function as example.
 <p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
 
+Reasonable result in first order: `x1-0.314`, `x2-0.442`, `x3-0`; total order: `x1-0.558`, `x2-0.442`, `x3-0.244`
+
 ```python
 import numpy as np
 from UQPyL.problems import Problem
@@ -366,13 +368,49 @@ sobol.analyze(problem, X, Obj)
 ```
 ### Optimization
 
+Here's an example using SCE-UA to optimize the Sphere function
+
 ```python
+
+# Import the Sphere benchmark function
+from UQPyL.problems.single_objective import Sphere
+
+# Instantiate the problem with 10 input dimensions; other settings use defaults
+sphere = Sphere(nInput = 10) #Other settings use default
+
+# Import the SCE-UA optimization algorithm
 from UQPyL.optimization.single_objective import SCE_UA
 
+# Instantiate the optimizer with default settings
 sce = SCE_UA()
-res = sce.run(problem)
-bestDec = res.bestDec
-bestObj = res.bestObj
+
+# Run the optimization on the Sphere problem
+res = sce.run(sphere)
+
+# Extract the best decision variables and objective values
+bestDecs = res.bestDecs
+bestObjs = res.bestObjs
+
+# The program would display the optimization history in the command line
+# =========Conclusion================================= 
+# Time:  0.0 day | 0.0 hour | 0.0 minute |  5.32 second
+# Used FEs:    24356  |  Iters:  1000
+# Best Objs and Best Decision with the FEs
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       FEs       |      Iters      |     OptType     |     Feasible    |       y_1       |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      24122      |       990       |       min       |       True      |     4.6e-12     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       x_1       |       x_2       |       x_3       |       x_4       |       x_5       |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      -0.000     |      -0.000     |      0.000      |      0.000      |      -0.000     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       x_6       |       x_7       |       x_8       |       x_9       |       x_10      |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      -0.000     |      -0.000     |      0.000      |      -0.000     |      -0.000     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
 ```
 
 ### Surrogate Modeling
