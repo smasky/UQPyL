@@ -454,7 +454,7 @@ r2 = r_square(yTest, yPred)
 print(r2)
 ```
 
-🔥🔥🔥# More advanced features and examples are coming soon — check out the  [documentation](https://uqpyl.readthedocs.io/en/latest/) (updates in progress, thanks for bearing with us)!
+🔥🔥🔥 More advanced features and examples are coming soon — check out the  [documentation](https://uqpyl.readthedocs.io/en/latest/) (updates in progress, thanks for bearing with us)!
 
 
 ---
