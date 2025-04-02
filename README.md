@@ -142,7 +142,7 @@ pip install .
 
 ## Quick Start
 
-### Define Problem
+### Define User Problems
 To effectively use UQPyL, the first is to define the problem you solve, which should contain following properties:  
 1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
 2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
@@ -169,7 +169,6 @@ from UQPyL.problems import Problem
 # For a multi-objective problem with M objectives, objs will have shape (N, M),
 # Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
 def objFunc(X):
-    N, D = X.shape 
     #This is a vectorized operation over the input matrix X.
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
             (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
@@ -190,7 +189,7 @@ from UQPyL.problems import singleFunc
 @singleFunc
 def objFunc_(X):
     #This is element-wise operation on the 1-dimensional individual of X.
-    obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \\
+    obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
             (1 - X[1])**2 + (1 - X[0])**2 
     return obj
 
@@ -204,13 +203,13 @@ def objFunc_(X):
 
 # Matrix Mode
 def conFunc(X):
-    cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 -4 
+    cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
     return cons[:, None] #keep 2-dimension matrix
 
 # Single Run Mode
 @singleFunc
 def conFunc(X):
-    con = X[0]**2 + X[1]**2 + X[2]**2 -4 
+    con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
     return con
 
 # Step 4: describe the properties of X
@@ -288,17 +287,25 @@ ga.run(problem = problem)
 ```
 
 ### Benchmark Problems
-UQPyL provides built-in benchmark problems (inheriting from Problem) to test your algorithms.
+UQPyL provides built-in benchmark problems (inheriting from `Problem` class) to test methods.
 ```python
 from UQPyL.problems.single_objective import Sphere, Ackley
 from UQPyL.problems.multi_objective import ZDT1, DTLZ1
 
-problem1 = Sphere(nInput=10, ub=100, lb=-100)
-problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)
-problem3 = ZDT1(nInput = 5)
-problem4 = DTLZ1(nInput = 15)
-```
+# Create benchmark problems for testing algorithms
+# You can easily customize the input dimension and variable bounds as needed
 
+# Single-objective benchmark problems
+problem1 = Sphere(nInput=10, ub=100, lb=-100)  # Sphere function with 10 dimensions, bounds [-100, 100]
+problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)  # Ackley function with 10 dimensions
+
+# Multi-objective benchmark problems
+problem3 = ZDT1(nInput=5)   # ZDT1 problem with 5 decision variables
+problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
+
+# UQPyL provides ready-to-use benchmark problems for both single and multi-objective optimization.
+# You can easily adjust input dimensions and variable bounds to suit your testing needs.
+```
 
 ### Sensitivity Analysis
 
