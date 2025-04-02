@@ -142,6 +142,7 @@ pip install .
 
 ## Quick Start
 
+### Define Problem
 To effectively use UQPyL, the first is to define the problem you solve, which should contain following properties:  
 1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
 2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
@@ -172,7 +173,7 @@ def objFunc(X):
     #This is a vectorized operation over the input matrix X.
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
             (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
-    return objs[:, None]
+    return objs[:, None] #keep 2-dimension matrix
 
 # Another way to define objFunc Function
 # For problems that involve using computational models, the UQPyL package provides a decorator 
@@ -204,7 +205,7 @@ def objFunc_(X):
 # Matrix Mode
 def conFunc(X):
     cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 -4 
-    return cons[:, None]
+    return cons[:, None] #keep 2-dimension matrix
 
 # Single Run Mode
 @singleFunc
@@ -287,31 +288,17 @@ ga.run(problem = problem)
 ```
 
 ### Benchmark Problems
-
+UQPyL provides built-in benchmark problems (inheriting from Problem) to test your algorithms.
 ```python
-from UQPyL.problems.single_objective import Sphere
+from UQPyL.problems.single_objective import Sphere, Ackley
+from UQPyL.problems.multi_objective import ZDT1, DTLZ1
 
-problem = Sphere(nInput=10, ub=100, lb=-100)
-problem = Sphere(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)
+problem1 = Sphere(nInput=10, ub=100, lb=-100)
+problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)
+problem3 = ZDT1(nInput = 5)
+problem4 = DTLZ1(nInput = 15)
 ```
 
-### Practical Problems
-
-Define the evaluation function:
-
-```python
-from UQPyL.problems import PracticalProblem
-
-def func(X):
-    Y = np.sum(X, axis=1).reshape(-1, 1)
-    return Y
-
-problem = PracticalProblem(func=func, nInput=10, nOutput=1, ub=100, lb=-100, name="Sphere")
-```
-
-**Note:** The `func` needs to accept a matrix of X and return a matrix of Y, with columns equal to dimensions and rows equal to samples. X and Y should be np.ndarray.
-
-After defining the problem, you can use any methods in UQPyL.
 
 ### Sensitivity Analysis
 
