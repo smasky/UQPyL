@@ -58,9 +58,9 @@ pip install .
 |Morris| \ |[Morris, (2012)](https://www.tandfonline.com/doi/abs/10.1080/00401706.1991.10484804)|
 |RSA| Regional Sensitivity Analysis | [Hornberger, Spear, (1981)](https://www.osti.gov/biblio/6396608), [Pianosi (2016)](https://www.sciencedirect.com/science/article/pii/S1364815216300287) |  
 
-💡**Noted:** All methods now support for using surrogate models.
+💡 **Noted:** All methods now support for using surrogate models.
 
-🚀**Credits:** Special thanks to the [SALib](https://github.com/SALib/SALib) project for inspiring parts of the implementation.  
+🚀 **Credits:** Special thanks to the [SALib](https://github.com/SALib/SALib) project for inspiring parts of the implementation.  
 
 ### Optimization Algorithms
 
