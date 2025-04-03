@@ -6,14 +6,14 @@
 
 **UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Additionally, **Surrogate Models** are built-in for solving computationally expensive problems.
 
-## Main Features
+## ✨ Main Features
 1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
 2. **Running Display and Result Save**: Enable users to track and save the history and results of their running.
 3. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning tool to enhance these model performances.
 4. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (👉**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
 5. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
-## Installation
+## ⚙️ Installation
 
  ![Static Badge](https://img.shields.io/badge/Python-3.6%2C%203.7%2C%203.8%2C%203.9%2C%203.10%2C%203.11%2C%203.12-blue) ![Static Badge](https://img.shields.io/badge/OS-Windows%2C%20Linux-orange)
 
@@ -35,16 +35,16 @@ cd UQPyL
 pip install .
 ```
 
-## Useful Links
+## 🔗 Useful Links
 
-- **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**#TODO**: Needs update)
+- **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**TODO**: Needs update)
 - **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
-- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (**#TODO**: Being updating )
-- **Citation Infos**: [UQPyL 2.0](**#TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (**TODO**: Being updating )
+- **Citation Infos**: [UQPyL 2.0](**TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
 
 ---
 
-## Overview of Methods, Algorithms and Problems
+## 🎉 Overview of Methods, Algorithms and Problems
 
 ### Sensitivity Analysis
 
@@ -58,7 +58,9 @@ pip install .
 |Morris| \ |[Morris, (2012)](https://www.tandfonline.com/doi/abs/10.1080/00401706.1991.10484804)|
 |RSA| Regional Sensitivity Analysis | [Hornberger, Spear, (1981)](https://www.osti.gov/biblio/6396608), [Pianosi (2016)](https://www.sciencedirect.com/science/article/pii/S1364815216300287) |  
 
-🎉 **some ideas of above methods refer to [SALib](https://github.com/SALib/SALib).** and 🚀 **All methods now support for using surrogate models.**
+💡**Noted:** All methods now support for using surrogate models.
+
+🚀**Credits:** Special thanks to the [SALib](https://github.com/SALib/SALib) project for inspiring parts of the implementation.  
 
 ### Optimization Algorithms
 
@@ -81,7 +83,7 @@ pip install .
 
 (The label `Surrogate` indicates solving computational expensive optimization problem)
 
-👀 **This modular is still being updated. If you need other algorithms, please contact us**
+💡 **Noted:** This modular is still being updated. If you need other algorithms, please contact us.
 
 ### Surrogate Models
 
@@ -95,7 +97,7 @@ pip install .
 | SVM | Support Vector Machine | Use [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) as the core library |
 | MARS | Multivariate Adaptive Regression Splines | Use [Earth](http://www.milbo.users.sonic.net/earth/) package as the core library |
 
-🫡 **Here, we provide the Auto-tuning tool to optimally build surrogate models, so you don't need to worry about hyper-parameters.**  
+ ❤️ Here, we provide the **Auto-tuning tool** to optimally build surrogate models, so you don't need to worry about hyper-parameters.
 
 ### Single-objective Problems
 
@@ -140,7 +142,7 @@ pip install .
 
 ---
 
-## Quick Start
+## 🍭 Quick Start
 
 ### Define User Problems
 To effectively use UQPyL, the first is to define the problem you solve, which should contain following properties:  
@@ -454,18 +456,17 @@ r2 = r_square(yTest, yPred)
 print(r2)
 ```
 
-🔥🔥🔥 More advanced features and examples are coming soon — check out the  [documentation](https://uqpyl.readthedocs.io/en/latest/) (updates in progress, thanks for bearing with us)!
-
+💡 **Noted:** More advanced features and examples are coming soon — check out the  [documentation](https://uqpyl.readthedocs.io/en/latest/) (updates in progress, thanks for bearing with us)!
 
 ---
 
-## Call for Contributions
+## 🔥 Call for Contributions
 
 We welcome contributions to expand our library with more advanced UQ methods, optimization algorithms and engineering problems.
 
 ---
 
-## Contact
+## 📧 Contact
 
 For any inquiries or contributions, please contact:
 
