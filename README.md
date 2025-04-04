@@ -11,8 +11,18 @@
 
 ## Contents
 
--[Main Features](#-main-features)
--[Installation](#️-installation)
+- [Main Features](#-main-features)
+- [Installation](#️-installation)
+- [Useful Links](#-useful-links)
+- [Overview of Methods, Algorithms and Problem](#-overview-of-methods-algorithms-and-problems)
+   - [Sensitivity Analysis](#sensitivity-analysis)
+   - [Optimization Algorithms](#optimization-algorithms)
+   - [Surrogate Models](#surrogate-models)
+   - [Single-objective Problems](#single-objective-problems)
+   - [Multi-objective Problems](#multi-objective-problems)
+- [Quick Start](#-quick-start)
+- [Call for Contributions](#-call-for-contributions)
+- [Contact](#-contact)
 
 
 ## ✨ Main Features
@@ -153,16 +163,9 @@ pip install .
 
 ## 🍭 Quick Start
 
-<<<<<<< HEAD:README_EN.md
 To effectively use UQPyL, the **first step** is to define the problem you solve:  
 1. The **information** of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
 2. The **function** from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions named `concFunc`.
-=======
-### Define User Problems
-To effectively use UQPyL, the first is to define the problem you solve, which should contain following properties:  
-1. The information of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
-2. The function `objFunc` from input variables `x` to output objective, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions `concFunc`.
->>>>>>> 5c51ab5aa94da387a6ead22e471764569158fb59:README.md
 
 Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2+x_3^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_2$) and `discrete` ($x_3$).
 
