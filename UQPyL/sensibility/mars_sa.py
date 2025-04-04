@@ -39,7 +39,7 @@ class MARS_SA(SA):
     name = "MARS_SA"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         '''
         Initialize the MARS_SA method.
         
