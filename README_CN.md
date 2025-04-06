@@ -4,7 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
-UQPyL 是一个功能全面的 Python 工具包，专注于参数不确定性分析与优化，适用于数值模型校准、资源调度、产品设计等工程优化问题。该工具包同时集成了多种常用方法，包括实验设计 (Design of Experiments)、敏感性分析 (Sensitivity Analysis) 以及参数优化 (支持单目标与多目标) 。此外，内置的替代模型 (Surrogate Models) 模块可用于计算代价昂贵问题 (Computational Expensive Problem) 的求解。
+UQPyL是一个功能全面的Python工具包，专注参数不确定性分析与优化，广泛适用数值模型校准、资源优化调度、产品设计等各类工程问题。该工具包目前已形成完整的方法体系，包括实验设计 (Design of Experiments)、敏感性分析 (Sensitivity Analysis) 以及支持单目标与多目标的参数优化。此外，UQPyL还内置了替代模型 (Surrogate Models) 模块，可用于计算代价昂贵问题 (Computational Expensive Problem)的高效求解。
 
 👉[English Doc](./README.md)
 
@@ -24,11 +24,11 @@ UQPyL 是一个功能全面的 Python 工具包，专注于参数不确定性分
 - [联系方式](#-联系方式)
 
 ## ✨ 功能特点
-1. **全面支持敏感性分析与优化**: 实现了当前广泛使用的敏感性分析方法和优化算法。
-2. **运行显示与结果保存**: 允许用户跟踪并保存运行历史和结果。
-3. **先进的替代模型**: 集成了多种替代模型及自动调优工具，以提升模型性能。
-4. **丰富的应用资源**: 提供了全面的基准问题和实际案例，帮助用户快速上手。(👉 近期规划： 针对水科学研究，我们计划定制特定模型专用的程序接口，将水利相关模型与 UQPyL 集成，提升可用性和功能性，类似于我们已开发的[SWAT-UQ](https://github.com/smasky/SWAT-UQ)。如果您感兴趣，欢迎联系我们进行合作。)
-5. **模块化与可扩展的架构**: 设计了统一的敏感性分析与优化架构，支持用户快速开发新方法或算法(我们非常欢迎并感谢您对UQPyL的贡献)。
+1. **集成主流敏感性分析与优化方法**: 实现了当前广泛使用的敏感性分析方法和优化算法，满足多样化求解需求。
+2. **支持运行过程可视化与结果存储**: 可记录执行历史，并自动保存分析结果，便于用户回溯分析流程、管理输出数据。
+3. **内置先进替代模型与自动调优工具**: 集成多种替代模型，并支持自动化参数优化，以提升模型效果。
+4. **应用资源全面覆盖**: 提供丰富的基准测试问题与实际应用案例，便于用户快速入门与方法验证。(👉 近期规划：针对水科学领域，我们计划开发定制化程序接口，将水利模型与UQPyL平台深度融合，以增强其在实际工程中的适用性(例如：[SWAT-UQ](https://github.com/smasky/SWAT-UQ))。欢迎有兴趣的研究者与我们开展合作。)
+5. **模块化与可扩展架构**: 构建了统一的敏感性分析与优化架构，支持用户灵活扩展与自定义新方法(我们诚挚欢迎各类贡献，共同推动 UQPyL 的发展)。
 
 ## ⚙️ 安装指南
 ![Static Badge](https://img.shields.io/badge/Python-3.6%2C%203.7%2C%203.8%2C%203.9%2C%203.10%2C%203.11%2C%203.12-blue) ![Static Badge](https://img.shields.io/badge/OS-Windows%2C%20Linux-orange)
@@ -56,7 +56,7 @@ pip install .
 - **官网网站**: [参数敏感性分析及优化实验室](http://www.uq-pyl.com) (**TODO**: 需要更新)
 - **开源代码**: [GitHub 仓库](https://github.com/smasky/UQPyL/)
 - **官方文档**: [查看文档](https://uqpyl.readthedocs.io/en/latest/) (**TODO**: 正在更新中... )
-- **引用信息**: [UQPyL 2.0](**TODO**: 需要更新), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+- **文章引用**: UQPyL 2.0(**TODO**: 需要更新), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
 
 ---
 
@@ -75,9 +75,9 @@ pip install .
 |RSA| Regional Sensitivity Analysis | [Hornberger, Spear, (1981)](https://www.osti.gov/biblio/6396608), [Pianosi (2016)](https://www.sciencedirect.com/science/article/pii/S1364815216300287) |
 
 
-💡 **提示:** 以上方法现在均支持使用替代模型。
+💡 **提示:** 当前上述方法均支持使用替代模型，缓解高计算成本带来的挑战。
 
-🚀 **致谢:** UQPyL敏感性分析模块的部分想法参考[SALib](https://github.com/SALib/SALib)。
+🚀 **致谢:**  在开发敏感性分析模块过程中，部分方法参考了[SALib](https://github.com/SALib/SALib)项目，特此致谢其贡献。
 
 ### 优化算法
 
@@ -98,9 +98,9 @@ pip install .
 | RVEA | Reference Vector guided Evolutionary Algorithm | Multiple | [Cheng et al. (2016)](https://ieeexplore.ieee.org/document/7386636)|
 |MO-ASMO|Multi-Objective Adaptive Surrogate Modelling-based Optimization| Multiple, Surrogate | [Gong et al. (2015)](https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2015WR018230)|  
 
-(标签 `Surrogate` 表示该算法可用于解决计算代价昂贵wenti)
+(标签 `Surrogate` 表示该算法可用于解决计算代价昂贵问题)
 
-💡 **提示:** 该模块正在持续更新先进算法中，如果您有需要其它算法，请联系我们。
+💡 **提示:** 我们正在不断更新和完善模块中的算法。如果您有特定需求，欢迎随时与我们联系！
 
 ### 替代模型
 
@@ -114,7 +114,7 @@ pip install .
 | SVM | Support Vector Machine | 使用 [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) 作为核心库 |
 | MARS | Multivariate Adaptive Regression Splines | 使用 [Earth](http://www.milbo.users.sonic.net/earth/) 作为核心库 |
 
-❤️ 在这里，我们还提供了替代模型的**自动校准工具**，因此不再需要担心选取替代模型的超参数，保证模型的最优构建。
+❤️ 为进一步优化使用体验，UQPyL提供了替代模型的**自动校准工具**，无需手动设定超参数，即可实现模型的高效构建。
 
 ### 单目标优化基准问题
 
@@ -136,10 +136,9 @@ pip install .
 | Discus | <img src="./docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 | Weierstrass | <img src="./docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
-
 ### 多目标优化基准问题
 
-| 名称 | 目标数量 | 帕累托前沿形状 | 特性 |
+| 名称 | 目标数量 | 帕累托前沿特征 | 问题特性 |
 |------|-------------------|---------------------------|---------|
 | ZDT1 |         2         |           Line            | Convex  |
 | ZDT2 |         2         |           Line            | Concave |
@@ -156,19 +155,19 @@ pip install .
 
 ### 实际问题
 
-**TODO:** 我们计划将一些常见的水文模型校准方法（如 SWAT、SAC 等）或相关的水资源优化案例纳入 UQPyL。
+**TODO:** 正在计划将一些常见的水文模型校准案例（如 SWAT、SAC 等）或相关水资源优化调度问题纳入UQPyL。
 
 ---
 
 ## 🍭 快速开始
 
 ### 问题定义
-为了高效使用UQPyL, 首先定义需要解决的问题，包括以下两个方面：
+为了高效使用UQPyL, 需要定义拟解决的问题，包括：
 
-1. **给出决策变量的信息**，例如决策变量的维度，每个变量取值范围以及变量类型 (支持float, int 以及 discrete)。
-2. **定义目标函数**，即说明如何根据决策变量`x`获得输出目标`obj`。在UQPyL中，目标函数被命名为`objFunc`。这个函数可以是解析函数、计算模型，或外部黑盒过程。如有约束条件，也需要定义相应的约束函数，命名为 conFunc。
+1. **提供问题基本信息**，例如决策变量的维度，优化目标的个数，每个变量取值范围以及变量类型，参数名称等。
+2. **定义目标函数**，即说明如何根据决策变量`x`获得输出目标`obj`。在UQPyL，目标函数被命名为`objFunc`。这个函数可以是解析函数、可以包含计算模型，或外部黑盒过程。如有约束条件，也需要定义相应的约束函数，命名为`conFunc`。
 
-以下问题是一个Rosenbrock函数的变体，它在原始函数的基础上增加了一个约束条件($x_1^2+x_2^2+x_3^2 \ge 4$)，并更改了变量的类型：原本都是连续型，即float类型，现在将$x_2$设置为整数(int)，$x_3$设置为离散变量(discrete)。
+以下问题是一个Rosenbrock函数的变体，它在原始函数的基础上增加了一个约束条件($x_1^2+x_2^2+x_3^2 \ge 4$)，并更改了变量的类型：原本都是连续型，即float类型，现在将$x_2$设置为整数(int)，$x_3$设置为离散变量(discrete)。以此为例，具体说明问题定义的步骤。
 
 <p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
 
@@ -179,46 +178,47 @@ UQPyL提供了一个名为`Problem`的Python类，用于简化问题定义的工
 from UQPyL.problems import Problem
 
 # 第2步: 定义objFunc函数
-# objFunc是一个接收numpy的二维矩阵X并返回numpy的二维矩阵objs的函数, 其中:
-# 矩阵X的每一行代表一组决策变量，每一列对应同一变量的不同取值
-# 返回的矩阵objs的行数应与X相同，列数则等于该问题的目标数
+# objFunc是一个接收numpy格式的二维矩阵X并返回numpy格式的二维矩阵objs的函数, 其中:
+# 二维矩阵X的行向量代表一组决策变量，列向量则对应同一变量的不同取值
+# 返回的矩阵objs的行数应与X相同，列数则与该问题的目标数相等。
 # 具体来说:
 # 对于单目标问题，二维矩阵objs的形状应为 (N, 1)
 # 对于多目标问题，二维矩阵objs的形状应为 (N, M)
 # 其中，N 表示输入的决策变量组合数，M 表示目标函数的个数。
+# 用户应自行保证返回的矩阵objs的形状满足上述要求
 
 def objFunc(X):
     
-    # 如果条件允许，建议对矩阵 X 进行向量化操作，以提升计算效率
+    # 如果条件允许，建议对矩阵X进行向量化操作，提升计算效率
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
             (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
 
-    return objs[:, None] #需要确保返回的矩阵objs是二维的，即使UQPyL后续会帮你进行检查
+    return objs[:, None] # 尽管UQPyL会做进一步检查，请自行确保返回的objs是二维矩阵。
 
-# UQPyL还提供另外一种定义objFunc函数的方式。
-# 对于涉及数值计算模型的问题，通常不能对矩阵X进行向量化操作
-# UQPyL提供一种装饰器函数`@singleFunc`，来启用`单例模式`
-# objFunc函数将只接收numpy的一维array或者python的list格式的变量
-# 因此，该函数一次只能处理一组决策，这在每次评估计算开销较大或模型设计为一次处理一个解的情况下特别有用
+# UQPyL 还支持另一种定义 objFunc 函数的方式。
+# 对于涉及数值计算模型的问题，通常无法对矩阵 X 进行向量化操作。
+# 为此，UQPyL 提供了装饰器函数 @singleFunc，用于启用“单例模式”。
+# 在该模式下，objFunc 仅接收 Python list 或一维 numpy array 作为输入，
+# 每次仅处理一组决策变量，适用于结构复杂或难以向量化的目标函数定义。
 
-# 首先，导入开启单例模式的装饰器
+# 首先，从UQPyL的problems模块导入启用单例模式的装饰器
 from UQPyL.problems import singleFunc
 
 @singleFunc
-def objFunc_(X): # 变量X应为numpy的一维array或者python的list格式
-    #对变量X进行逐元素操作
+def objFunc_(X): # 输入 X 应为 numpy 一维 array 或 Python list
+    # 对 X 中的每个元素执行计算
     obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
             (1 - X[1])**2 + (1 - X[0])**2 
-    return obj #此处应返回数值、一维array、list形式的函数值obj
+    return obj # 返回目标函数值：单目标优化时返回数值，多目标优化时返回一维 array 或 list
 
-# 第3步: 定义conFunc函数
-# 与 objFunc 函数类似，约束函数 concFunc 也有两种定义方式可选。
-# 需要注意的是，concFunc 的返回值表示约束的违反程度：
-# - 返回值小于 0 表示约束被违反，且值越小，违反程度越严重；
-# - 返回值大于 0 表示满足约束，即为正常可行解。
-# 因此，用户有时需要对问题的实际约束函数进行修改或重新建模，以满足上述约定。
+# 第3步：定义约束函数 conFunc
+# 与 objFunc 类似，conFunc 也支持两种定义方式。
+# 注意：conFunc 的返回值表示约束的满足情况：
+# - 小于 0 表示约束被违反，且值越小，违反程度越严重；
+# - 大于 0 表示满足约束，即为可行解。
+# 因此，用户在建模时可能需要调整原始约束函数，以符合上述约定。
 
-# 矩阵模式
+# 矢量模式
 def conFunc(X):
     cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
     return cons[:, None]
@@ -229,64 +229,65 @@ def conFunc(X):
     con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
     return con
 
-# 第4步: 给出问题的其它信息
+# 第4步：设置问题的基础信息
 
-nInput = 3 #决策变量的输入维数，这里，它等于3
-nOutput = 1 #输出目标的个数，这里，它等于1
+nInput = 3 # 决策变量的维度（输入维数），此处为3
+nOutput = 1  # 目标函数数量（输出维数），此处为1
 
-# 决策变量的取值上界
-ub = [10, 10, 10] # ub 可以是python的float，int，list格式或者是numpy格式
-# 在本例，所有变量的上界均为10，因此也可使用 `ub = 10`
+# 设置决策变量的取值范围
+ub = [10, 10, 10] # 上界，可为 float、int、list 或 numpy 格式；此处所有变量上界均为10，也可设为 ub = 10
 
-# 决策变量的取值下界
-lb = [0, 0, 0]
-# 在本例，所有变量的下界均为0，因此也可使用`lb = 0`
+lb = [0, 0, 0] # 下界，同理可简写为 lb = 0
 
-# 定义变量的类型
-# 0 表示 连续型即float，1表示整数(int)型，2表示离散(discrete)型
-varType = [0, 1, 2] #不给定的情况下，默认所有变量均为连续型
 
-# 指定变量类型为离散型之后，需要指定该变量的可行解
+# 定义变量类型：0=连续型(float)、1=整数型(int)、2=离散型(discrete)
+varType = [0, 1, 2] # 若未指定，默认所有变量为连续型（0）
+
+# 指定离散型变量的可行取值集合
 varSet = {2: [2, 3.4, 5.1, 7]} 
-# varSet 是一个字典，其中键表示变量的索引（2 表示第三个变量x3）。它遵循 Python 的零基索引规则。
-# 与键2相关联的值指定了x3的可能取值集合 [2, 3.4, 5.1, 7]。
-# 这意味着x3只能取这四个值之一：2、3.4、5.1 或 7。
+# 键为变量索引（从0开始），值为该变量允许的取值列表
+# 例如：第3个变量 x3 只能取 2、3.4、5.1 或 7
 
-# 指定优化类型， 'min' 表示最小化， 'max' 表示极大化
+# 设置优化方向：'min' 表示最小化，'max' 表示最大化
 optType = 'min'
 
-# 如果决策变量具有对应的名称，可以为其指定名称。
-xLabels = ['x1', 'x2', 'x3'] 
-# 要不然, UQPyL为其指定默认名字'x1', 'x2', 'x3', 等.
+# 可选：为决策变量指定名称
+xLabels = ['x1', 'x2', 'x3'] # 若未指定，将默认命名为 'x1', 'x2', ...
 
-# 如果目标值有名称，也可为其指定
-yLabels = ['obj1']
-# 要不然，UQPyL为其指定默认名字'obj1','obj2'等
+# 可选：为目标函数指定名称
+yLabels = ['obj1']   # 若未指定，将默认命名为 'obj1', 'obj2', ...
 
-# 问题名称
+# 可选：设置问题名称，用于标识、记录或保存结果
 name = 'Rosenbrock'
-# 可用于标识问题实例、整理结果、保存文件等用途。
 
-# 第5步: 实例化当前问题
+# 第5步：实例化问题对象
+problem = Problem(
+    nInput=nInput,
+    nOutput=nOutput,
+    objFunc=objFunc,
+    concFunc=concFunc,
+    ub=ub,
+    lb=lb,
+    varType=varType,
+    varSet=varSet,
+    xLabels=xLabels,
+    yLabels=yLabels,
+    name=name
+)
+# Problem 类将收集以上信息，用于后续优化过程
 
-problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc,
-                    ub = ub, lb = lb, varType = varType, varSet = varSet,
-                        xLabels = xLabels, yLabels = yLabels, name = name)
-# nInput, nOutput, objFunc, conFunc, ub, lb, varType, varSet, xLabels, yLabels, name等均为Problem类的参数名称
-
-# 第6步: 使用优化算法求解
-# UQPyL中的所有方法或算法都可以读取'problem'类来获取足够问题信息
-# 这里，我们使用遗传算法作为例子
+# 第6步：使用优化算法求解问题
+# UQPyL 提供多种优化算法，可通过读取 problem 实例获取所需信息
+# 本例以遗传算法（GA）为例
 
 from UQPyL.optimization.single_objective import GA
 
-# 创建遗传算法的实例
+# 创建遗传算法实例（可选传参，此处使用默认参数）
+ga = GA()
 
-ga = GA() # 对于GA类存在可选参数，此处采用默认参数
-
-# 导入problem来运行遗传算法
-
+# 调用遗传算法的run方法进行求解
 ga.run(problem = problem)
+# 所有优化算法均提供统一的 .run(problem) 方法接口，用于执行优化。
 
 # 输出:
 # Time:  0.0 day | 0.0 hour | 0.0 minute |  1.17 second
@@ -306,34 +307,33 @@ ga.run(problem = problem)
 
 ### 基准测试问题
 
-UQPyL提供了大量基准测试问题(继承于'Problem'类)，用于测试算法。
+UQPyL 提供多种内置的基准测试问题（均继承自 Problem 类），用于评估优化算法性能。
+用户可灵活设定变量维度、取值范围等参数，以满足不同测试需求。
 
 ```python
 from UQPyL.problems.single_objective import Sphere, Ackley
 from UQPyL.problems.multi_objective import ZDT1, DTLZ1
 
-# 实例化基准测试问题，用于测试算法
-# 用户可以轻松定制基准测试问题的变量维数、变量取值范围等
-
 # 单目标基准测试问题
-problem1 = Sphere(nInput=10, ub=100, lb=-100)  # 10维 Sphere 函数, 取值范围 [-100, 100]
-problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)  # 10维 Ackley
+problem1 = Sphere(nInput=10, ub=100, lb=-100)   # 10维 Sphere 问题，变量取值范围 [-100, 100]
+problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)   # 10维 Ackley 问题，支持向量化边界设置
 
 # 多目标基准测试问题
 problem3 = ZDT1(nInput=5)   # 5维 ZDT1问题
 problem4 = DTLZ1(nInput=15) # 15维 DTLZ1问题
 
-# UQPyL 提供了现成的基准问题，适用于单目标和多目标优化。
-# 用户可以轻松调整输入维度和变量范围，以满足您的测试需求。
+# 这些基准问题适用于单目标和多目标优化算法的验证与对比。
 ```
 
 ### 敏感性分析
 
-这里，使用Ishigami函数作为例子。
+此处以 Ishigami 函数为例，演示敏感性分析模块方法的使用流程。
 
 <p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
 
-各变量一阶敏感性应为: `x1-0.314`, `x2-0.442`, `x3-0`; 总敏感性应为: `x1-0.558`, `x2-0.442`, `x3-0.244`
+Ishigami 函数的理论敏感性指数如下：
+一阶敏感性：x1 = 0.314，x2 = 0.442，x3 = 0.000
+总敏感性：  x1 = 0.558，x2 = 0.442，x3 = 0.244
 
 ```python
 import numpy as np
@@ -345,30 +345,31 @@ def objFunc(X):
                  0.1 * X[:, 2]**4 * np.sin(X[:, 0])
     return objs[:, None]
 
+# 构建 Problem 实例
 Ishigami = Problem(nInput = 3, nOutput = 1, objFunc = objFunc,
                     ub = np.pi, lb = -1*np.pi, varType = [0, 0, 0],
                     name = "Ishigami")
                     
 from UQPyL.sensibility import Sobol
 
-# 实例化Sobol方法
+# 初始化 Sobol 方法
 sobol = Sobol()
 
-# N = 512 定义了基础样本数量 
-# 由于 Sobol 方法的结构，总的评估次数将会更多。
-# 对决策空间采样获得矩阵X
+# 定义基础样本数量 N
+# 注意：由于 Sobol 方法需要构造多个样本组合，实际调用目标函数的次数将远大于 N。
 X = sobol.sample(problem = Ishigami, N = 512)
+# 所有敏感性分析方法均提供统一的 .sample(problem) 方法接口，用于对参数空间采样。
 
-# 使用problem实例的'objFunc'方法计算矩阵X对应的目标值Obj
-# 
+# 计算采样点对应的目标值
 Obj = problem.objFunc(X)
 
 # 执行敏感性分析
-# Inputs:
-#   - problem: 问题实例，即problem
-#   - X: 采样样本，即X
-#   - Obj: 采样样本对应的目标值，即Obj
+# 参数说明：
+#   - problem: 问题实例
+#   - X: 采样样本
+#   - Obj: 目标函数输出
 sobol.analyze(problem, X, Obj)
+# 所有敏感性分析方法均提供统一的 .analyze(problem, X, Obj) 方法接口，用于执行敏感性分析。
 
 # 输出：
 # =======================Attribute=======================
@@ -393,31 +394,31 @@ sobol.analyze(problem, X, Obj)
 
 ### 参数优化
 
-这里，使用SCE-UA算法优化Sphere问题作为例子
+本示例使用 SCE-UA 算法对 Sphere 问题进行优化。
 
 ```python
 
-# 首先，从problems模块导入Sphere类
+# 导入 Sphere 测试问题
 from UQPyL.problems.single_objective import Sphere
 
-# 实例化Sphere类，并设置参数维数为10
+# 实例化 Sphere 问题，设定维数为 10，其他参数使用默认值
 sphere = Sphere(nInput = 10) #其余设置采用默认
 
-# 从optimization模块导入SCE_UA算法
+# 导入 SCE-UA 优化算法
 from UQPyL.optimization.single_objective import SCE_UA
 
-# 采用默认设置实例化SCE_UA算法
+# 实例化 SCE-UA 算法，使用默认配置
 sce = SCE_UA()
 
-# 传入sphere实例，运用SCE_UA求解
+# 执行优化
+# 输入为优化问题实例，输出为 Result 类对象
 res = sce.run(sphere)
 
-# 从变量'res'提取最优解及最优值
-# res 是 Result 类的实例，其中 bestDecs 和 bestObjs 属性分别表示优化问题的最优解和对应的最优值
-bestDecs = res.bestDecs 
-bestObjs = res.bestObjs
+# 提取最优解及其对应的目标函数值
+bestDecs = res.bestDecs   # 最优决策变量
+bestObjs = res.bestObjs   # 最优目标值
 
-# 上述优化历史将显示在终端上
+# 优化过程将自动在终端打印历史信息与最终结果
 # 输出如下: 
 # =========Conclusion================================= 
 # Time:  0.0 day | 0.0 hour | 0.0 minute |  5.32 second
@@ -442,43 +443,47 @@ bestObjs = res.bestObjs
 
 ### 替代模型
 
-使用RBF模型预测Sphere问题为例
+以使用 RBF 模型拟合并预测 Sphere 问题的目标函数为例
 
 ```python
 from UQPyL.problems import Sphere
-# 实例化Sphere类
+
+# 实例化 Sphere 问题（维数为 10）
 sphere = Sphere(nInput = 10)
 
-# 从DoE模块导入超立方拉丁采样(LHS)法, 用于构建训练集和测试集
+# 从DoE模块导入超立方拉丁采样（LHS）方法，用于生成训练集和测试集
 from UQPyL.DoE import LHS
 
-# 使用LHS法生成200组训练样本
+# 使用 LHS 方法生成 200 个训练样本
 lhs = LHS(problem)
 xTrain = lhs.sample(200, problem.nInput)
 
-# 计算这些训练样本对应的目标值
+# 计算训练样本的目标函数值
 yTrain = problem.objFunc(xTrain)
 
-# 生成50组测试样本
+# 使用相同方法生成 50 个测试样本
 xTest = lhs.sample(50, problem.nInput)
-# 计算这些测试样本对应的目标值
+
+# 计算测试样本的真实目标值
 yTest = problem.evaluate(xTest)
 
-# 从surrogate模块导入RBF模型
+# 从surrogate模块导入 RBF 替代模型
 from UQPyL.surrogate.rbf import RBF
 
-# 采用默认设置实例化RBF模型
+# 实例化 RBF 模型（默认参数）
 rbf = RBF()
-# 传入训练样本及对应的目标值 xTrain, yTrain 训练rbf模型
+
+# 用训练数据拟合 RBF 模型
 rbf.fit(xTrain, yTrain)
 
-# 使用测试样本xTest，获得rbf对这些样本的预测值yPred
+# 对测试样本进行预测
 yPred = rbf.predict(xTest)
 
-# 从utility模块导入R-square指标
+# 导入 R² 评估指标
 from UQPyL.utility.metric import r_square
-# 计算测试样本的真实值与预测值之间的R-square指标
+# 计算预测结果的 R² 分数，衡量模型拟合效果
 r2 = r_square(yTest, yPred)
+# 输出 R² 分数
 print(r2)
 ```
 
@@ -488,11 +493,11 @@ print(r2)
 
 ## 🔥 欢迎合作
 
-欢迎大家参与贡献，共同扩展我们的库，加入更多先进的UQ方法、优化算法以及实际工程问题的示例。
+欢迎大家参与贡献，共同扩展UQPyL，加入更多先进的敏感性方法、优化算法以及实际工程问题的示例。
 
 ## 📧 联系方式
 
-有任何问题，请联系：
+如有任何问题，请联系：
 
 **wmtSky**  
 Email: [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)(优先), [wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn)
