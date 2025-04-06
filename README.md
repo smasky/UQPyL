@@ -12,7 +12,7 @@
 ## Contents
 
 - [Main Features](#-main-features)
-- [Installation](#️-installation)
+- [Installation](#-installation)
 - [Useful Links](#-useful-links)
 - [Overview of Methods, Algorithms and Problem](#-overview-of-methods-algorithms-and-problems)
    - [Sensitivity Analysis](#sensitivity-analysis)
@@ -163,11 +163,11 @@ pip install .
 
 ## 🍭 Quick Start
 
-To effectively use UQPyL, the **first step** is to define the problem you solve:  
-1. The **information** of input decisions, e.g., the dimension, range, value type  (float, int, or discrete) of each variable.
-2. The **function** from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, computational model, or external black-box process. If necessary, it also includes the constraint functions named `concFunc`.
+To effectively use UQPyL, the **first step** is to define the problem you solve:
+1. The **basic information** of  the problem, e.g., the dimension, range, value type  (float, int, or discrete) of each variable, name of the problem, decisions, objectives.
+2. The **function** from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, or include running computational model, external black-box process. If necessary, the constraint functions named `concFunc` should be implemented.
 
-Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2+x_3^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_2$) and `discrete` ($x_3$).
+Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2+x_3^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_2$) and `discrete` ($x_3$). Take this as an example to illustrate the specific steps of problem definition. 
 
 <p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
 
@@ -178,55 +178,49 @@ UQPyL provide a python class named `Problem` to simplify the workflow of definin
 from UQPyL.problems import Problem
 
 # Step 2: define objFunc Function
-# Here, X is default to a numpy 2-dimensional matrix. 
-# Each row in X represents a candidate solution (i.e., an individual in the population) 
-# and each column corresponds to a decision variable (i.e., a feature or parameter to be optimized).
-#
-# The objective function (objFunc) needs to return the objective values (objs) for each solution, which should also be a 2-dimensional matrix.
-# The number of rows in objs should match the number of rows in X (i.e., the number of candidate solutions),
-#and the number of columns should match the number of objectives.
-# For a single-objective problem, objs will have shape (N, 1);
-# For a multi-objective problem with M objectives, objs will have shape (N, M),
-# Where N is the number of candidate solutions (rows of X), and M is the number of objectives.
+# The 'objFunc' function is one that accepts a 2D numpy array 'X' as input and returns a 2D numpy array 'objs'. Specifically:
+# The rows of the 2D array 'X' represent a set of decision variables, while the columns correspond to different values of the same variable.
+# The returned 2D array 'objs' should have the same number of rows as 'X', and the number of columns should equal the number of objectives in the problem.
+# For a single-objective problem, the shape of the 2D array 'objs' should be (N, 1), where 'N' is the number of input variables.
+# For a multi-objective problem, the shape of the 2D array 'objs' should be (N, M), where 'M' is the number of objective functions.
+# Users should ensure that the returned 2D array 'objs' satisfies the above shape requirements.
+
 def objFunc(X):
-    #This is a vectorized operation over the input matrix X.
+    # If possible, advise vectorizing operations on matrix X to improve computational efficiency.
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
             (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
-    return objs[:, None] #keep 2-dimension matrix
+    return objs[:, None] # Although UQPyL performs further checks, please ensure the returned `objs` is a 2D array.
 
-# Another way to define objFunc Function
-# For problems that involve using computational models, the UQPyL package provides a decorator 
-# to enable a "single run mode", which means that the objective function will be evaluated 
-# for one solution at a time, rather than processing multiple solutions in a batch.
-# The decorator @singleFunc ensures that the function operates on a single solution (i.e., one row from X) 
-# for each call, which is particularly useful in scenarios where each evaluation is computationally expensive
-# or when the model is designed to handle one solution at a time.
-# Therefore, the input X is a numpy 1-dimensional array.
-# In this example, objFunc_ calculates the objective for a single solution X (with two variables). 
-# The function returns the objective value corresponding to this solution.
+# UQPyL also supports an alternative way of defining the objFunc function.
+# For problems involving numerical simulation models, it's often not feasible to vectorize operations on matrix 'X'.
+# To address this, UQPyL provides a decorator function @singleFunc that enables single running mode.
+# In single running mode, The 'objFunc' function only accepts a Python list or 1D numpy array as input.
+# It processes one decision variable combination at a time, making it suitable for complex or non-vectorizable objective functions.
+
+
+# First, import the decorator that enables singleton mode from UQPyL
 from UQPyL.problems import singleFunc
 
 @singleFunc
-def objFunc_(X):
-    #This is element-wise operation on the 1-dimensional individual of X.
+def objFunc_(X):  # Input X should be a 1D numpy array or Python list
+     # Perform calculations for each element in X
     obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
             (1 - X[1])**2 + (1 - X[0])**2 
-    return obj
+    return obj # Return the objective value: a scalar for single-objective, or a 1D array/list for multi-objective
 
 # Step 3: Define concFunc Function
-# Similar to the objFunc function, there are also two ways to define the constraint function.
-# Note that the return value of concFunc reflects how much the constraints are violated.
-# - If the return value is less than 0, it indicates that the constraint is violated. 
-#   The smaller the value, the more severely the constraint is violated.
-# - If the return value is greater than 0, it means the constraint is satisfied (normal solution).
-#Therefore, users may need to modify or re-formulate the constraint functions.
+# Similar to objFunc, the conFunc function supports two definition modes.
+# Note: The return value of conFunc indicates whether the constraints are satisfied:
+# - A negative value indicates a violation of the constraint — the smaller the value, the more severe the violation.
+# - A positive value indicates the constraint is satisfied, i.e., the solution is feasible.
+# As a result, users may need to reformulate their original constraint expressions to follow this convention.
 
 # Matrix Mode
 def conFunc(X):
     cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
-    return cons[:, None] #keep 2-dimension matrix
+    return cons[:, None] 
 
-# Single Run Mode
+# Single Running Mode
 @singleFunc
 def conFunc(X):
     con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
@@ -254,7 +248,7 @@ varType = [0, 1, 2]
 
 # The set of possible values for discrete variables.
 varSet = {2: [2, 3.4, 5.1, 7]} 
-# varSet is a dictionary where the key indicates the index of the variable (2 refers to the third variable, X[2]). It follows Python's zero-based indexing.
+# varSet is a dictionary where the key indicates the index of the variable (2 refers to the third variable, x3). It follows Python's zero-based indexing.
 # The value associated with key 2 specifies the set of possible values for X[2]: [2, 3.4, 5.1, 7].
 # This means that X[2] can only take one of these four values: 2, 3.4, 5.1, or 7.
 
@@ -494,6 +488,3 @@ Email: [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)(priority), [wmtsky@hhu.
 ---
 
 *This project is licensed under the MIT License - see the [LICENSE](https://github.com/smasky/UQPyL/LICENSE) file for details.*
-
-
-
