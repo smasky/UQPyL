@@ -162,7 +162,8 @@ pip install .
 
 ## 🍭 快速开始
 
-为了高效使用UQPyL, 首先是描述要解决的问题，包括以下两个方面：
+### 问题定义
+为了高效使用UQPyL, 首先定义需要解决的问题，包括以下两个方面：
 
 1. **给出决策变量的信息**，例如决策变量的维度，每个变量取值范围以及变量类型 (支持float, int 以及 discrete)。
 2. **定义目标函数**，即说明如何根据决策变量`x`获得输出目标`obj`。在UQPyL中，目标函数被命名为`objFunc`。这个函数可以是解析函数、计算模型，或外部黑盒过程。如有约束条件，也需要定义相应的约束函数，命名为 conFunc。
@@ -196,7 +197,7 @@ def objFunc(X):
 
 # UQPyL还提供另外一种定义objFunc函数的方式。
 # 对于涉及数值计算模型的问题，通常不能对矩阵X进行向量化操作
-# UQPyL提供一种装饰器函数`@singleFunc`，来启用`单例运行模式`
+# UQPyL提供一种装饰器函数`@singleFunc`，来启用`单例模式`
 # objFunc函数将只接收numpy的一维array或者python的list格式的变量
 # 因此，该函数一次只能处理一组决策，这在每次评估计算开销较大或模型设计为一次处理一个解的情况下特别有用
 
@@ -302,6 +303,206 @@ ga.run(problem = problem)
 # |      4.0e+02      |       0.000       |       0.000       |       2.000       |
 # +-------------------+-------------------+-------------------+-------------------+
 ```
+
+### 基准测试问题
+
+UQPyL提供了大量基准测试问题(继承于'Problem'类)，用于测试算法。
+
+```python
+from UQPyL.problems.single_objective import Sphere, Ackley
+from UQPyL.problems.multi_objective import ZDT1, DTLZ1
+
+# 实例化基准测试问题，用于测试算法
+# 用户可以轻松定制基准测试问题的变量维数、变量取值范围等
+
+# 单目标基准测试问题
+problem1 = Sphere(nInput=10, ub=100, lb=-100)  # 10维 Sphere 函数, 取值范围 [-100, 100]
+problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)  # 10维 Ackley
+
+# 多目标基准测试问题
+problem3 = ZDT1(nInput=5)   # 5维 ZDT1问题
+problem4 = DTLZ1(nInput=15) # 15维 DTLZ1问题
+
+# UQPyL 提供了现成的基准问题，适用于单目标和多目标优化。
+# 用户可以轻松调整输入维度和变量范围，以满足您的测试需求。
+```
+
+### 敏感性分析
+
+这里，使用Ishigami函数作为例子。
+
+<p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
+
+各变量一阶敏感性应为: `x1-0.314`, `x2-0.442`, `x3-0`; 总敏感性应为: `x1-0.558`, `x2-0.442`, `x3-0.244`
+
+```python
+import numpy as np
+from UQPyL.problems import Problem
+
+# 定义 Ishigami 函数
+def objFunc(X):
+    objs = np.sin(X[:, 0]) + 7 * np.sin(X[:, 1])**2 + \
+                 0.1 * X[:, 2]**4 * np.sin(X[:, 0])
+    return objs[:, None]
+
+Ishigami = Problem(nInput = 3, nOutput = 1, objFunc = objFunc,
+                    ub = np.pi, lb = -1*np.pi, varType = [0, 0, 0],
+                    name = "Ishigami")
+                    
+from UQPyL.sensibility import Sobol
+
+# 实例化Sobol方法
+sobol = Sobol()
+
+# N = 512 定义了基础样本数量 
+# 由于 Sobol 方法的结构，总的评估次数将会更多。
+# 对决策空间采样获得矩阵X
+X = sobol.sample(problem = Ishigami, N = 512)
+
+# 使用problem实例的'objFunc'方法计算矩阵X对应的目标值Obj
+# 
+Obj = problem.objFunc(X)
+
+# 执行敏感性分析
+# Inputs:
+#   - problem: 问题实例，即problem
+#   - X: 采样样本，即X
+#   - Obj: 采样样本对应的目标值，即Obj
+sobol.analyze(problem, X, Obj)
+
+# 输出：
+# =======================Attribute=======================
+# First Order Sensitivity: True
+# Second Order Sensitivity: False
+# Total Order Sensitivity: True
+# ======================Conclusion=============================
+# --------------------------S1---------------------------------
+# +-------------------+-------------------+-------------------+
+# |        x_1        |        x_2        |        x_3        |
+# +-------------------+-------------------+-------------------+
+# |       0.3222      |       0.4531      |       0.0175      |
+# +-------------------+-------------------+-------------------+
+# --------------------------ST---------------------------------
+# +-------------------+-------------------+-------------------+
+# |        x_1        |        x_2        |        x_3        |
+# +-------------------+-------------------+-------------------+
+# |       0.5436      |       0.4306      |       0.2416      |
+# +-------------------+-------------------+-------------------+
+
+```
+
+### 参数优化
+
+这里，使用SCE-UA算法优化Sphere问题作为例子
+
+```python
+
+# 首先，从problems模块导入Sphere类
+from UQPyL.problems.single_objective import Sphere
+
+# 实例化Sphere类，并设置参数维数为10
+sphere = Sphere(nInput = 10) #其余设置采用默认
+
+# 从optimization模块导入SCE_UA算法
+from UQPyL.optimization.single_objective import SCE_UA
+
+# 采用默认设置实例化SCE_UA算法
+sce = SCE_UA()
+
+# 传入sphere实例，运用SCE_UA求解
+res = sce.run(sphere)
+
+# 从变量'res'提取最优解及最优值
+# res 是 Result 类的实例，其中 bestDecs 和 bestObjs 属性分别表示优化问题的最优解和对应的最优值
+bestDecs = res.bestDecs 
+bestObjs = res.bestObjs
+
+# 上述优化历史将显示在终端上
+# 输出如下: 
+# =========Conclusion================================= 
+# Time:  0.0 day | 0.0 hour | 0.0 minute |  5.32 second
+# Used FEs:    24356  |  Iters:  1000
+# Best Objs and Best Decision with the FEs
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       FEs       |      Iters      |     OptType     |     Feasible    |       y_1       |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      24122      |       990       |       min       |       True      |     4.6e-12     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       x_1       |       x_2       |       x_3       |       x_4       |       x_5       |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      -0.000     |      -0.000     |      0.000      |      0.000      |      -0.000     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |       x_6       |       x_7       |       x_8       |       x_9       |       x_10      |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+# |      -0.000     |      -0.000     |      0.000      |      -0.000     |      -0.000     |
+# +-----------------+-----------------+-----------------+-----------------+-----------------+
+```
+
+### 替代模型
+
+使用RBF模型预测Sphere问题为例
+
+```python
+from UQPyL.problems import Sphere
+# 实例化Sphere类
+sphere = Sphere(nInput = 10)
+
+# 从DoE模块导入超立方拉丁采样(LHS)法, 用于构建训练集和测试集
+from UQPyL.DoE import LHS
+
+# 使用LHS法生成200组训练样本
+lhs = LHS(problem)
+xTrain = lhs.sample(200, problem.nInput)
+
+# 计算这些训练样本对应的目标值
+yTrain = problem.objFunc(xTrain)
+
+# 生成50组测试样本
+xTest = lhs.sample(50, problem.nInput)
+# 计算这些测试样本对应的目标值
+yTest = problem.evaluate(xTest)
+
+# 从surrogate模块导入RBF模型
+from UQPyL.surrogate.rbf import RBF
+
+# 采用默认设置实例化RBF模型
+rbf = RBF()
+# 传入训练样本及对应的目标值 xTrain, yTrain 训练rbf模型
+rbf.fit(xTrain, yTrain)
+
+# 使用测试样本xTest，获得rbf对这些样本的预测值yPred
+yPred = rbf.predict(xTest)
+
+# 从utility模块导入R-square指标
+from UQPyL.utility.metric import r_square
+# 计算测试样本的真实值与预测值之间的R-square指标
+r2 = r_square(yTest, yPred)
+print(r2)
+```
+
+💡 **提示:** 更多高级功能与示例即将上线——请查看我们的[官方文档](https://uqpyl.readthedocs.io/en/latest/)(正在更新中，感谢您的耐心等待！)
+
+---
+
+## 🔥 欢迎合作
+
+欢迎大家参与贡献，共同扩展我们的库，加入更多先进的UQ方法、优化算法以及实际工程问题的示例。
+
+## 📧 联系方式
+
+有任何问题，请联系：
+
+**wmtSky**  
+Email: [wmtsmasky@gmail.com](mailto:wmtsmasky@gmail.com)(优先), [wmtsky@hhu.edu.cn](mailto:wmtsky@hhu.edu.cn)
+
+---
+
+
+**本项目遵循 MIT 许可协议 - 具体内容详见 [LICENSE](https://github.com/smasky/UQPyL/LICENSE)**
+
+
 
 
 
