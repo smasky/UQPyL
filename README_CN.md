@@ -174,7 +174,7 @@ pip install .
 
 UQPyL提供了一个名为`Problem`的Python类，用于简化问题定义的工作流程。
 
-```Python
+```python
 # 第1步: 从UQPyL的problems模块导入Problem类
 from UQPyL.problems import Problem
 
