@@ -13,13 +13,13 @@ UQPyL 是一个功能全面的 Python 工具包，专注于参数不确定性分
 - [功能特点](#-功能特点)
 - [安装指南](#-安装指南)
 - [实用链接](#-实用链接)
-- [方法与基准问题预览](#-方法与基准问题预览)
-   - [Sensitivity Analysis](#sensitivity-analysis)
-   - [Optimization Algorithms](#optimization-algorithms)
-   - [Surrogate Models](#surrogate-models)
-   - [Single-objective Problems](#single-objective-problems)
-   - [Multi-objective Problems](#multi-objective-problems)
-- [Quick Start](#-quick-start)
+- [方法预览](#-方法预览)
+   - [敏感性分析方法](#敏感性分析方法)
+   - [优化算法](#优化算法)
+   - [替代模型](#替代模型)
+   - [单目标优化基准问题](#单目标优化基准问题)
+   - [多目标优化基准问题](#多目标优化基准问题)
+- [快速开始](#快速开始)
 - [Call for Contributions](#-call-for-contributions)
 - [Contact](#-contact)
 
@@ -60,7 +60,7 @@ pip install .
 
 ---
 
-## 🎉 方法与基准问题预览
+## 🎉 方法预览
 
 ### 敏感性分析方法
 
@@ -135,6 +135,175 @@ pip install .
 | Bent_Cigar | <img src="./docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
 | Discus | <img src="./docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 | Weierstrass | <img src="./docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+
+
+### 多目标优化基准问题
+
+| 名称 | 目标数量 | 帕累托前沿形状 | 特性 |
+|------|-------------------|---------------------------|---------|
+| ZDT1 |         2         |           Line            | Convex  |
+| ZDT2 |         2         |           Line            | Concave |
+| ZDT3 |         2         |           Line            | Disconnected |
+| ZDT4 |         2         |           Line            | Convex |
+| ZDT6 |         2         |           Line            | Concave |
+| DTLZ1 | >=3 (user define) |         Surface          | Multimodal |
+| DTLZ2 | >=3 (user define) |         Surface          | Single-peaked |
+| DTLZ3 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ4 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ5 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ6 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ7 | >=3 (user define) | Discrete Surface        | Multimodal|
+
+### 实际问题
+
+**TODO:** 我们计划将一些常见的水文模型校准方法（如 SWAT、SAC 等）或相关的水资源优化案例纳入 UQPyL。
+
+---
+
+## 🍭 快速开始
+
+为了高效使用UQPyL, 首先是描述要解决的问题，包括以下两个方面：
+
+1. **给出决策变量的信息**，例如决策变量的维度，每个变量取值范围以及变量类型 (支持float, int 以及 discrete)。
+2. **定义目标函数**，即说明如何根据决策变量`x`获得输出目标`obj`。在UQPyL中，目标函数被命名为`objFunc`。这个函数可以是解析函数、计算模型，或外部黑盒过程。如有约束条件，也需要定义相应的约束函数，命名为 conFunc。
+
+以下问题是一个Rosenbrock函数的变体，它在原始函数的基础上增加了一个约束条件($x_1^2+x_2^2+x_3^2 \ge 4$)，并更改了变量的类型：原本都是连续型，即float类型，现在将$x_2$设置为整数(int)，$x_3$设置为离散变量(discrete)。
+
+<p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
+
+UQPyL提供了一个名为`Problem`的Python类，用于简化问题定义的工作流程。
+
+```Python
+# 第1步: 从UQPyL的problems模块导入Problem类
+from UQPyL.problems import Problem
+
+# 第2步: 定义objFunc函数
+# objFunc是一个接收numpy的二维矩阵X并返回numpy的二维矩阵objs的函数, 其中:
+# 矩阵X的每一行代表一组决策变量，每一列对应同一变量的不同取值
+# 返回的矩阵objs的行数应与X相同，列数则等于该问题的目标数
+# 具体来说:
+# 对于单目标问题，二维矩阵objs的形状应为 (N, 1)
+# 对于多目标问题，二维矩阵objs的形状应为 (N, M)
+# 其中，N 表示输入的决策变量组合数，M 表示目标函数的个数。
+
+def objFunc(X):
+    
+    # 如果条件允许，建议对矩阵 X 进行向量化操作，以提升计算效率
+    objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
+            (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
+
+    return objs[:, None] #需要确保返回的矩阵objs是二维的，即使UQPyL后续会帮你进行检查
+
+# UQPyL还提供另外一种定义objFunc函数的方式。
+# 对于涉及数值计算模型的问题，通常不能对矩阵X进行向量化操作
+# UQPyL提供一种装饰器函数`@singleFunc`，来启用`单例运行模式`
+# objFunc函数将只接收numpy的一维array或者python的list格式的变量
+# 因此，该函数一次只能处理一组决策，这在每次评估计算开销较大或模型设计为一次处理一个解的情况下特别有用
+
+# 首先，导入开启单例模式的装饰器
+from UQPyL.problems import singleFunc
+
+@singleFunc
+def objFunc_(X): # 变量X应为numpy的一维array或者python的list格式
+    #对变量X进行逐元素操作
+    obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
+            (1 - X[1])**2 + (1 - X[0])**2 
+    return obj #此处应返回数值、一维array、list形式的函数值obj
+
+# 第3步: 定义conFunc函数
+# 与 objFunc 函数类似，约束函数 concFunc 也有两种定义方式可选。
+# 需要注意的是，concFunc 的返回值表示约束的违反程度：
+# - 返回值小于 0 表示约束被违反，且值越小，违反程度越严重；
+# - 返回值大于 0 表示满足约束，即为正常可行解。
+# 因此，用户有时需要对问题的实际约束函数进行修改或重新建模，以满足上述约定。
+
+# 矩阵模式
+def conFunc(X):
+    cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
+    return cons[:, None]
+
+# 单例模式
+@singleFunc
+def conFunc(X):
+    con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
+    return con
+
+# 第4步: 给出问题的其它信息
+
+nInput = 3 #决策变量的输入维数，这里，它等于3
+nOutput = 1 #输出目标的个数，这里，它等于1
+
+# 决策变量的取值上界
+ub = [10, 10, 10] # ub 可以是python的float，int，list格式或者是numpy格式
+# 在本例，所有变量的上界均为10，因此也可使用 `ub = 10`
+
+# 决策变量的取值下界
+lb = [0, 0, 0]
+# 在本例，所有变量的下界均为0，因此也可使用`lb = 0`
+
+# 定义变量的类型
+# 0 表示 连续型即float，1表示整数(int)型，2表示离散(discrete)型
+varType = [0, 1, 2] #不给定的情况下，默认所有变量均为连续型
+
+# 指定变量类型为离散型之后，需要指定该变量的可行解
+varSet = {2: [2, 3.4, 5.1, 7]} 
+# varSet 是一个字典，其中键表示变量的索引（2 表示第三个变量x3）。它遵循 Python 的零基索引规则。
+# 与键2相关联的值指定了x3的可能取值集合 [2, 3.4, 5.1, 7]。
+# 这意味着x3只能取这四个值之一：2、3.4、5.1 或 7。
+
+# 指定优化类型， 'min' 表示最小化， 'max' 表示极大化
+optType = 'min'
+
+# 如果决策变量具有对应的名称，可以为其指定名称。
+xLabels = ['x1', 'x2', 'x3'] 
+# 要不然, UQPyL为其指定默认名字'x1', 'x2', 'x3', 等.
+
+# 如果目标值有名称，也可为其指定
+yLabels = ['obj1']
+# 要不然，UQPyL为其指定默认名字'obj1','obj2'等
+
+# 问题名称
+name = 'Rosenbrock'
+# 可用于标识问题实例、整理结果、保存文件等用途。
+
+# 第5步: 实例化当前问题
+
+problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc,
+                    ub = ub, lb = lb, varType = varType, varSet = varSet,
+                        xLabels = xLabels, yLabels = yLabels, name = name)
+# nInput, nOutput, objFunc, conFunc, ub, lb, varType, varSet, xLabels, yLabels, name等均为Problem类的参数名称
+
+# 第6步: 使用优化算法求解
+# UQPyL中的所有方法或算法都可以读取'problem'类来获取足够问题信息
+# 这里，我们使用遗传算法作为例子
+
+from UQPyL.optimization.single_objective import GA
+
+# 创建遗传算法的实例
+
+ga = GA() # 对于GA类存在可选参数，此处采用默认参数
+
+# 导入problem来运行遗传算法
+
+ga.run(problem = problem)
+
+# 输出:
+# Time:  0.0 day | 0.0 hour | 0.0 minute |  1.17 second
+# Used FEs:    50000  |  Iters:  999
+# Best Objs and Best Decision with the FEs
+# +-------------------+-------------------+-------------------+-------------------+
+# |        FEs        |       Iters       |      OptType      |      Feasible     |
+# +-------------------+-------------------+-------------------+-------------------+
+# |         50        |         0         |        min        |        True       |
+# +-------------------+-------------------+-------------------+-------------------+
+# +-------------------+-------------------+-------------------+-------------------+
+# |        obj1       |         x1        |         x2        |         x3        |
+# +-------------------+-------------------+-------------------+-------------------+
+# |      4.0e+02      |       0.000       |       0.000       |       2.000       |
+# +-------------------+-------------------+-------------------+-------------------+
+```
+
+
 
 
 

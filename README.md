@@ -238,12 +238,12 @@ nInput = 3 # number of input variables (X), here it's 3 inputs.
 nOutput = 1 # number of outputs (objective functions), here it's 1 objective.
 
 #Upper bound of X.
-ub = [0, 0, 0] # It can be a float, int, list, or numpy array. 
-# In this case, both input variables have an upper bound of 0. 
+ub = [10, 10, 10] # It can be a float, int, list, or numpy array. 
+# In this case, both input variables have an upper bound of 10. 
 
 # Lower bound of X.
-lb = [10, 10, 10] # It can also be a float, int, list, or numpy array. 
-# In this case, both input variables have a lower bound of 10.
+lb = [0, 0, 0] # It can also be a float, int, list, or numpy array. 
+# In this case, both input variables have a lower bound of 0.
 
 # Types of variables.
 # type 0 for continuous, 1 for integer, and 2 for discrete.
@@ -275,7 +275,7 @@ name = 'Rosenbrock'
 # Useful for identifying the problem instance, organizing results, saving files, etc.
 
 #Step 5: Initialize the problem instance
-problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, concFunc = concFunc,
+problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, conFunc = conFunc,
                     ub = ub, lb = lb, varType = varType, varSet = varSet,
                         xLabels = xLabels, yLabels = yLabels, name = name)
 
