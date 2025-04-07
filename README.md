@@ -269,9 +269,19 @@ name = 'Rosenbrock'
 # Useful for identifying the problem instance, organizing results, saving files, etc.
 
 #Step 5: Initialize the problem instance
-problem = Problem(nInput = nInput, nOutput = nOutput, objFunc = objFunc, conFunc = conFunc,
-                    ub = ub, lb = lb, varType = varType, varSet = varSet,
-                        xLabels = xLabels, yLabels = yLabels, name = name)
+problem = Problem(
+    nInput=nInput,
+    nOutput=nOutput,
+    objFunc=objFunc,
+    conFunc=conFunc,
+    ub=ub,
+    lb=lb,
+    varType=varType,
+    varSet=varSet,
+    xLabels=xLabels,
+    yLabels=yLabels,
+    name=name
+)
 
 # Step 6: Use optimization methods from UQPyL
 # All methods and algorithms in UQPyL operate by reading the 'problem' object
