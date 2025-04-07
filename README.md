@@ -173,6 +173,9 @@ Following problem is a variant of the Rosenbrock function, which adds additional
 
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
+
+📘 [在线查看 Jupyter Notebook 示例](https://nbviewer.org/samsky/UQPyL/notebooks/defefine_problem.ipynb)
+
 ```python
 # Step 1: import Problem class from UQPyL's problem module
 from UQPyL.problems import Problem
@@ -196,7 +199,6 @@ def objFunc(X):
 # To address this, UQPyL provides a decorator function @singleFunc that enables single running mode.
 # In single running mode, The 'objFunc' function only accepts a Python list or 1D numpy array as input.
 # It processes one decision variable combination at a time, making it suitable for complex or non-vectorizable objective functions.
-
 
 # First, import the decorator that enables singleton mode from UQPyL
 from UQPyL.problems import singleFunc
