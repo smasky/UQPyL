@@ -173,6 +173,10 @@ pip install .
 
 UQPyL提供了一个名为`Problem`的Python类，用于简化问题定义的工作流程。
 
+
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/defefine_problem.ipynb" target="_blank">📘 在线查看 Jupyter Notebook 示例 </a>
+
+
 ```python
 # 第1步: 从UQPyL的problems模块导入Problem类
 from UQPyL.problems import Problem
@@ -335,6 +339,9 @@ Ishigami 函数的理论敏感性指数如下：
 一阶敏感性：x1 = 0.314，x2 = 0.442，x3 = 0.000
 总敏感性：  x1 = 0.558，x2 = 0.442，x3 = 0.244
 
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/sensitivity_analysis.ipynb" target="_blank">📘 在线查看 Jupyter Notebook 示例 </a>
+
+
 ```python
 import numpy as np
 from UQPyL.problems import Problem
@@ -396,6 +403,8 @@ sobol.analyze(problem, X, Obj)
 
 本示例使用 SCE-UA 算法对 Sphere 问题进行优化。
 
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/optimization.ipynb" target="_blank">📘 在线查看 Jupyter Notebook 示例 </a>
+
 ```python
 
 # 导入 Sphere 测试问题
@@ -444,6 +453,8 @@ bestObjs = res.bestObjs   # 最优目标值
 ### 替代模型
 
 以使用 RBF 模型拟合并预测 Sphere 问题的目标函数为例
+
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/surrogate_modelling.ipynb" target="_blank">📘 在线查看 Jupyter Notebook 示例 </a>
 
 ```python
 from UQPyL.problems import Sphere

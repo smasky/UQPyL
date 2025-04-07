@@ -174,7 +174,8 @@ Following problem is a variant of the Rosenbrock function, which adds additional
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
 
-📘 [在线查看 Jupyter Notebook 示例](https://nbviewer.org/samsky/UQPyL/notebooks/defefine_problem.ipynb)
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/defefine_problem.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
+
 
 ```python
 # Step 1: import Problem class from UQPyL's problem module
@@ -333,6 +334,8 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 # You can easily adjust input dimensions and variable bounds to suit your testing needs.
 ```
 
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/sensitivity_analysis.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
+
 ### Sensitivity Analysis
 
 Here, use Ishigami Function as example.
@@ -398,6 +401,9 @@ sobol.analyze(problem, X, Obj)
 
 Here's an example using SCE-UA to optimize the Sphere function
 
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/optimization.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
+
+
 ```python
 
 # Import the Sphere benchmark function
@@ -444,6 +450,8 @@ bestObjs = res.bestObjs
 ### Surrogate Modeling
 
 Use RBF model to predict Sphere Function as an example
+
+<a href="https://https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/surrogate_modelling.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
 
 ```python
 from UQPyL.problems import Sphere
