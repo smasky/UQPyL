@@ -455,17 +455,17 @@ sphere = Sphere(nInput = 10)
 from UQPyL.DoE import LHS
 
 # 使用 LHS 方法生成 200 个训练样本
-lhs = LHS(problem)
+lhs = LHS()
 xTrain = lhs.sample(200, problem.nInput)
 
 # 计算训练样本的目标函数值
-yTrain = problem.objFunc(xTrain)
+yTrain = sphere.objFunc(xTrain)
 
 # 使用相同方法生成 50 个测试样本
 xTest = lhs.sample(50, problem.nInput)
 
 # 计算测试样本的真实目标值
-yTest = problem.evaluate(xTest)
+yTest = sphere.objFunc(xTest)
 
 # 从surrogate模块导入 RBF 替代模型
 from UQPyL.surrogate.rbf import RBF
@@ -482,6 +482,7 @@ yPred = rbf.predict(xTest)
 # 导入 R² 评估指标
 from UQPyL.utility.metric import r_square
 # 计算预测结果的 R² 分数，衡量模型拟合效果
+
 r2 = r_square(yTest, yPred)
 # 输出 R² 分数
 print(r2)

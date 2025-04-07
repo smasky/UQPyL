@@ -452,16 +452,16 @@ sphere = Sphere(nInput = 10)
 from UQPyL.DoE import LHS
 
 # Generate 200 training samples in the input space using LHS
-lhs = LHS(problem)
-xTrain = lhs.sample(200, problem.nInput)
+lhs = LHS()
+xTrain = lhs.sample(200, problem.nInput, problem = sphere)
 
 # Evaluate the true objective function at training points
-yTrain = problem.objFunc(xTrain)
+yTrain = sphere.objFunc(xTrain)
 
 # Generate 50 test samples for model validation
-xTest = lhs.sample(50, problem.nInput)
+xTest = lhs.sample(50, problem.nInput, problem = sphere)
 # Evaluate the true function at test points
-yTest = problem.evaluate(xTest)
+yTest = sphere.objFunc(xTest)
 
 # Import Radial Basis Function (RBF) surrogate model
 from UQPyL.surrogate.rbf import RBF
