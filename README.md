@@ -326,7 +326,9 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 Here, use Ishigami Function as example.
 <p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
 
-Reasonable result in first order: `x1-0.314`, `x2-0.442`, `x3-0`; total order: `x1-0.558`, `x2-0.442`, `x3-0.244`
+The theoretical sensitivity indices of the Ishigami function are as follows:
+First-order sensitivity indices: x1 = 0.314, x2 = 0.442, x3 = 0.000
+Total-order sensitivity indices: x1 = 0.558, x2 = 0.442, x3 = 0.244
 
 ```python
 import numpy as np
