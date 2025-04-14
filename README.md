@@ -1,4 +1,3 @@
-
 # UQPyL:  Uncertainty Quantification Python Lab
 
 <p align="center"><img src="./docs/UQ.svg" width="400"/></p>
@@ -100,7 +99,7 @@ pip install .
 | RVEA | Reference Vector guided Evolutionary Algorithm | Multiple | [Cheng et al. (2016)](https://ieeexplore.ieee.org/document/7386636)|
 |MO-ASMO|Multi-Objective Adaptive Surrogate Modelling-based Optimization| Multiple, Surrogate | [Gong et al. (2015)](https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2015WR018230)|  
 
-(The label `Surrogate` indicates solving computational expensive optimization problem)
+(The label `Surrogate` indicates solving computationally expensive optimization problem)
 
 💡 **Noted:** This modular is still being updated. If you need other algorithms, please contact us.
 

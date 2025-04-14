@@ -8,6 +8,7 @@ requires = [
     "numpy",
     
 ]
+
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
@@ -15,7 +16,7 @@ license-files = []
 
 [project]
 name = "UQPyL"
-version = "2.1.0"
+version = "2.1.1"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]

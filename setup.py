@@ -32,15 +32,14 @@ extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 
 setup(
     name="UQPyL",
     author="wmtSky",
-    version="2.1.0",
-    author_email="wmtsky@hhu.edu.cn",
+    version="2.1.1",
+    author_email="wmtsmasky@gmail.com",
     ext_modules=extensions,  
     packages=find_packages(),
-    description="A python package for parameter uncertainty quantification and optimization",
+    description="A Python package for parameter uncertainty quantification and optimization",
     long_description=open("README.md").read(),
-    long_description_content_type="text/markdown",  # 如果是Markdown格式
+    long_description_content_type="text/markdown",
     classifiers=[
-        # 添加适合的类目，例如
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
