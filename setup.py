@@ -32,7 +32,7 @@ extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 
 setup(
     name="UQPyL",
     author="wmtSky",
-    version="2.1.1",
+    version="2.1.2",
     author_email="wmtsmasky@gmail.com",
     ext_modules=extensions,  
     packages=find_packages(),

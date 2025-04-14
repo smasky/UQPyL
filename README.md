@@ -121,21 +121,21 @@ pip install .
 
 | Name | Formula | Optimal Solution | Optima | 
 |------|---------|------------------|--------|
-|Sphere| <img src="./docs/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_22| <img src="./docs/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_1_22| <img src="./docs/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_21| <img src="./docs/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_26 | <img src="./docs/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
-| Rosenbrock | <img src="./docs/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Step | <img src="./docs/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Quartic | <img src="./docs/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Rastrigin | <img src="./docs/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Ackley | <img src="./docs/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Griewank | <img src="./docs/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Trid | <img src="./docs/pic/Trid.svg" /> | <img src="./docs/pic/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
-| Bent_Cigar | <img src="./docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
-| Discus | <img src="./docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
-| Weierstrass | <img src="./docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+|Sphere| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Trid | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Trid.svg" /> | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
+| Bent_Cigar | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
 ### Multi-objective Problems
 
@@ -168,7 +168,7 @@ To effectively use UQPyL, the **first step** is to define the problem you solve:
 
 Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ($x_1^2+x_2^2+x_3^2 \ge 4$) and changes the variable types, from the origin `continuous` and `float` to `int` ($x_2$) and `discrete` ($x_3$). Take this as an example to illustrate the specific steps of problem definition. 
 
-<p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Problem1.svg" width=500/></p>
 
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
@@ -338,7 +338,7 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 ### Sensitivity Analysis
 
 Here, use Ishigami Function as example.
-<p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Problem2.svg" width=400 /></p>
 
 The theoretical sensitivity indices of the Ishigami function are as follows:
 First-order sensitivity indices: x1 = 0.314, x2 = 0.442, x3 = 0.000
