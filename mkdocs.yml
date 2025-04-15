@@ -2,7 +2,6 @@ site_name: UQPyL
 theme:
   name: material
 nav:
-  - Introduction: introduction.md
   - Quick Start: quick_start.md
   - Advancing: advancing.md
   - Tutorial: tutorial.md
