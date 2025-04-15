@@ -6,7 +6,7 @@
 
 **UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Additionally, **Surrogate Models** are built-in for solving computationally expensive problems. 
 
-👉[中文文档](./README_CN.md)
+👉[中文文档](https://github.com/smasky/UQPyL/blob/dev/README_CN.md)
 
 ## Contents
 
