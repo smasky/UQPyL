@@ -17,6 +17,10 @@ extra_css:
 markdown_extensions:
   - pymdownx.emoji
   - pymdownx.superfences
+  - pymdownx.arithmatex
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
 
 site_url: https://UQPyL.readthedocs.io/
 repo_url: https://github.com/smasky/UQPyL

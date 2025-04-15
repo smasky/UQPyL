@@ -1,10 +1,15 @@
 .md-content{
-    min-width: 50%;
+    min-width: 70%;
 }
 
 .md-typeset h1{
     color: black;
     font-weight: bold;
+}
+
+.md-typeset .highlight {
+    overflow-x: auto; /* 允许水平滚动 */
+    white-space: pre-wrap; /* 保持换行 */
 }
 
 .md-typeset h2{
