@@ -8,7 +8,7 @@ To effectively use UQPyL, the **first step** is to define the problem you solve:
 
 Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ( $x_1^2+x_2^2+x_3^2 \ge 4$ ) and changes the variable types, from the origin `continuous` and `float` to `int` ( $x_2$ ) and `discrete` ( $x_3$ ). Take this as an example to illustrate the specific steps of problem definition. 
 
-<p align="center"><img src="/pic/Problem1.svg" width=700/></p>
+<p align="center"><img src="../pic/Problem1.svg" width=700/></p>
 
 UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
 
