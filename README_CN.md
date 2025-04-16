@@ -1,6 +1,6 @@
 # UQPyL: 参数不确定性分析及优化工具包
 
-<p align="center"><img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/UQ.svg" width="400"/></p>
+<p align="center"><img src="docs/UQ.svg" width="400"/></p>
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
@@ -120,21 +120,21 @@ pip install .
 
 | 名称 | 公式 | 最优解 | 最优值 | 
 |------|---------|------------------|--------|
-|Sphere| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_22| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_1_22| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_21| <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_26 | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
-| Rosenbrock | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Step | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Quartic | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Rastrigin | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Ackley | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Griewank | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Trid | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Trid.svg" /> | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
-| Bent_Cigar | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
-| Discus | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
-| Weierstrass | <img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+|Sphere| <img src="docs/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="docs/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="docs/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="docs/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="docs/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="docs/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="docs/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="docs/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="docs/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="docs/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="docs/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Trid | <img src="docs/pic/Trid.svg" /> | <img src="docs/pic/Trid_solution.svg">| `-D(D+4)(D-1)/6` |
+| Bent_Cigar | <img src="docs/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="docs/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="docs/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
 ### 多目标优化基准问题
 
@@ -169,7 +169,7 @@ pip install .
 
 以下问题是一个Rosenbrock函数的变体，它在原始函数的基础上增加了一个约束条件($x_1^2+x_2^2+x_3^2 \ge 4$)，并更改了变量的类型：原本都是连续型，即float类型，现在将 $x_2$ 设置为整数(int)， $x_3$ 设置为离散变量(discrete)。以此为例，具体说明问题定义的步骤。
 
-<p align="center"><img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Problem1.svg" width=500/></p>
+<p align="center"><img src="docs/pic/Problem1.svg" width=500/></p>
 
 UQPyL提供了一个名为`Problem`的Python类，用于简化问题定义的工作流程。
 
@@ -333,7 +333,7 @@ problem4 = DTLZ1(nInput=15) # 15维 DTLZ1问题
 
 此处以 Ishigami 函数为例，演示敏感性分析模块方法的使用流程。
 
-<p align="center"><img src="https://raw.githubusercontent.com/smasky/UQPyL/dev/docs/pic/Problem2.svg" width=400 /></p>
+<p align="center"><img src="docs/pic/Problem2.svg" width=400 /></p>
 
 Ishigami 函数的理论敏感性指数如下：
 一阶敏感性：x1 = 0.314，x2 = 0.442，x3 = 0.000
