@@ -2,20 +2,20 @@
     min-width: 70%;
 }
 
-/* .md-typeset h1{
+.md-typeset h1{
     color: black;
     font-weight: bold;
-} */
+}
 
-/* .md-typeset .highlight {
+.md-typeset .highlight {
     overflow-x: auto; 
     white-space: pre-wrap; 
-} */
+}
 
-/* .md-typeset h2{
+.md-typeset h2{
     color: black;
     font-weight: 500;
-} */
+}
 
 .md-typeset pre code {
     white-space: pre-wrap;
