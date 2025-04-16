@@ -18,9 +18,18 @@
 } */
 
 .md-typeset pre code {
-    white-space: pre-wrap; 
-    word-wrap: break-word; 
+    white-space: pre-wrap;
+    word-break: break-word;
+    /* 不要使用 background: unset 或 color: unset */
 }
+
+
+/* .md-typeset pre code {
+    white-space: pre-wrap !important;
+    word-break: break-word;
+    background: unset !important;
+    color: unset !important;
+} */
 
 ul {
     list-style-type: disc; 

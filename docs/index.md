@@ -34,17 +34,17 @@ Extension Project: [SWAT-UQ](https://github.com/smasky/SWAT-UQ), which provide d
 
 **Recommended (PyPi or Conda):**
 
-```bash
+```python
 pip install -U UQPyL
 ```
 
-```bash
+```python
 conda install UQPyL --upgrade
 ```
 
 Alternatively:
 
-```bash
+```python
 git clone https://github.com/smasky/UQPyL.git 
 cd UQPyL
 pip install .
