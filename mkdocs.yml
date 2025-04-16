@@ -1,7 +1,11 @@
 site_name: UQPyL
 theme:
   name: material
-  highlight: monokai
+  palette:
+    scheme: light
+  code:
+    highlight_theme:  monokai
+
 nav:
   - Introduction: index.md
   - Quick Start: quick_start.md
