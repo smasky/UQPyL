@@ -1,7 +1,9 @@
 site_name: UQPyL
 theme:
   name: material
+  highlight: monokai
 nav:
+  - Introduction: index.md
   - Quick Start: quick_start.md
   - Advancing: advancing.md
   - Tutorial: tutorial.md
