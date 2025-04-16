@@ -178,7 +178,7 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 ### Sensitivity Analysis
 
 Here, use Ishigami Function as example.
-<p align="center"><img src="/pic/Problem2.svg" width=500 /></p>
+<p align="center"><img src=../pic/Problem2.svg" width=500 /></p>
 
 The theoretical sensitivity indices of the Ishigami function are as follows:
 First-order sensitivity indices: x1 = 0.314, x2 = 0.442, x3 = 0.000

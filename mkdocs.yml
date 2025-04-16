@@ -19,6 +19,7 @@ extra_css:
   - css/nav_.css
   - css/head_.css
   - css/content_.css
+  - pic/
   
 markdown_extensions:
   - pymdownx.emoji
@@ -30,3 +31,6 @@ extra_javascript:
 
 site_url: https://UQPyL.readthedocs.io/
 repo_url: https://github.com/smasky/UQPyL
+use_directory_urls: false
+extra:
+  static_path: docs
