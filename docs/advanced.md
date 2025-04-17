@@ -113,4 +113,6 @@ class NewProblem(ProblemABC):
 
 Once defined, the `NewProblem` class can be seamlessly used with all optimization methods and algorithms available in UQPyL.
 
+## Optimization
 
+### 

@@ -1,16 +1,22 @@
 ## Problem Define
-To effectively use UQPyL, the **first step** is to define the problem you solve:
 
-1. The **basic information** of  the problem, e.g., the dimension, range, value type  (float, int, or discrete) of each variable, name of the problem, decisions, objectives.
+To effectively use UQPyL, the key is to define the solved problem, including:
 
-2. The **function** from input variables `x` to output objective `obj` named `objFunc` in UQPyL, i.e., how the output `obj` is obtained from the inputs `x`, which could be an analytical function, or include running computational model, external black-box process. If necessary, the constraint functions named `concFunc` should be implemented.
+1. The **basic information** of  the problem, e.g., the dimension, range, type (float, int, or discrete) of each variable, the name of the problem, decisions, objectives, constraints.
 
-Following problem is a variant of the Rosenbrock function, which adds additional constraint functions ( $x_1^2+x_2^2+x_3^2 \ge 4$ ) and changes the variable types, from the origin `continuous` and `float` to `int` ( $x_2$ ) and `discrete` ( $x_3$ ). Take this as an example to illustrate the specific steps of problem definition. 
+2. The **objective function** that describe how the output `obj` is obtained from the inputs `x`, referred to as  `objFunc` in UQPyL. The `objFunc` can be a mathematical formula, computational model with pre- and post-processing, or external black-box process. 
 
-<p align="center"><img src="./pic/Problem1.svg" width=550/></p>
+3. If required, the **constraint function** should be implemented, referred to as `conFunc`, which contains one or more constraints that the inputs x must satisfy.
 
-UQPyL provide a python class named `Problem` to simplify the workflow of defining problems.
+Take the variant of the Rosenbrock function as example: 
 
+<p align="center"><img src="./pic/Problem1.svg" width=650/></p>
+
+Compared to original Rosenbrock, this problem involve extra constraint functions ( $x_1^2+x_2^2+x_3^2 \ge 4$ ) and changes the variable types, from the origin `continuous` and `float` to `int` ( $x_2$ ) and `discrete` ( $x_3$ ).  
+
+<br>
+
+Now, we use this problem to specifically 
 
 <a href="https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/defefine_problem.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
 
