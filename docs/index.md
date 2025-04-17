@@ -63,6 +63,16 @@ pip install .
 
 - [UQPyL](https://github.com/smasky/UQPyL), a Python package for **Uncertainty Quantification** and **Parameter Optimization**.
 
-- [SWAT-UQ](https://github.com/smasky/SWAT-UQ), which provide Develop and GUI versions to integrate UQPyL and the Soil and Water Assessment Tool (**SWAT**) model. 
+<figure align="center">
+  <img src="./pic/UQPyL_overview.svg" alt="UQPyL Overview" width="800"/>
+  <figcaption>Overview of UQPyL</figcaption>
+</figure>
+
+- [SWAT-UQ](https://github.com/smasky/SWAT-UQ), providing script-based (Develop) and GUI versions to integrate UQPyL and the Soil and Water Assessment Tool (**SWAT**) model. 
+
+<figure align="center">
+  <img src="./pic/SWAT-UQ.jpg" alt="SWAT-UQ GUI Version" width="500"/>
+  <figcaption>SWAT-UQ GUI Version</figcaption>
+</figure>
 
 ---
