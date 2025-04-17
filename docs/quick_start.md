@@ -1,5 +1,4 @@
-## Quick Start
-
+## Problem Define
 To effectively use UQPyL, the **first step** is to define the problem you solve:
 
 1. The **basic information** of  the problem, e.g., the dimension, range, value type  (float, int, or discrete) of each variable, name of the problem, decisions, objectives.
@@ -29,10 +28,13 @@ from UQPyL.problems import Problem
 # Users should ensure that the returned 2D array 'objs' satisfies the above shape requirements.
 
 def objFunc(X):
+
     # If possible, advise vectorizing operations on matrix X to improve computational efficiency.
+
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
             (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
-    return objs[:, None] # Although UQPyL performs further checks, please ensure the returned `objs` is a 2D array.
+
+    return objs[:, None] # ensure the returned `objs` is a 2D array.
 
 # UQPyL also supports an alternative way of defining the objFunc function.
 # For problems involving numerical simulation models, it's often not feasible to vectorize operations on matrix 'X'.
@@ -44,10 +46,15 @@ def objFunc(X):
 from UQPyL.problems import singleFunc
 
 @singleFunc
-def objFunc_(X):  # Input X should be a 1D numpy array or Python list
-     # Perform calculations for each element in X
+def objFunc_(X):  
+
+    # Input X should be a 1D numpy array or Python list
+
+    # Perform calculations for each element in X
+
     obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
             (1 - X[1])**2 + (1 - X[0])**2 
+
     return obj # Return the objective value: a scalar for single-objective, or a 1D array/list for multi-objective
 
 # Step 3: Define concFunc Function
@@ -59,13 +66,17 @@ def objFunc_(X):  # Input X should be a 1D numpy array or Python list
 
 # Matrix Mode
 def conFunc(X):
+
     cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
-    return cons[:, None] 
+
+    return cons[:, None] #keep np.2d-array
 
 # Single Running Mode
 @singleFunc
 def conFunc(X):
+
     con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
+
     return con
 
 # Step 4: describe the properties of X
@@ -152,7 +163,7 @@ ga.run(problem = problem)
 # +-------------------+-------------------+-------------------+-------------------+
 ```
 
-### Benchmark Problems
+## Benchmark Problems
 UQPyL provides built-in benchmark problems (inheriting from `Problem` class) to test methods.
 ```python
 from UQPyL.problems.single_objective import Sphere, Ackley
@@ -173,15 +184,15 @@ problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
 # You can easily adjust input dimensions and variable bounds to suit your testing needs.
 ```
 
-
-
-### Sensitivity Analysis
+## Sensitivity Analysis
 
 Here, use Ishigami Function as example.
-<p align="center"><img src="./pic/Problem2.svg" width=500 /></p>
+<p align="center"><img src="./pic/Problem2.svg" width=400 /></p>
 
 The theoretical sensitivity indices of the Ishigami function are as follows:
+
 First-order sensitivity indices: x1 = 0.314, x2 = 0.442, x3 = 0.000
+
 Total-order sensitivity indices: x1 = 0.558, x2 = 0.442, x3 = 0.244
 
 <a href="https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/sensitivity_analysis.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
@@ -238,7 +249,7 @@ sobol.analyze(problem, X, Obj)
 # +-------------------+-------------------+-------------------+
 
 ```
-### Optimization
+## Optimization
 
 Here's an example using SCE-UA to optimize the Sphere function
 
@@ -287,7 +298,7 @@ bestObjs = res.bestObjs
 # +-----------------+-----------------+-----------------+-----------------+-----------------+
 ```
 
-### Surrogate Modeling
+## Surrogate Modeling
 
 Use RBF model to predict Sphere Function as an example
 
