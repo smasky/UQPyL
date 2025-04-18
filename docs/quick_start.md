@@ -16,143 +16,176 @@ Compared to original Rosenbrock, this problem involve extra constraint functions
 
 <br>
 
-Now, we use this problem to specifically 
+Now, we use this problem to specifically introducing:
 
 <a href="https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/defefine_problem.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
 
 
 ```python
-# Step 1: import Problem class from UQPyL's problem module
+# For simplifying the process of defining problem, UQPyL provide a `Problem` class
+
+# Step 1: Import `Problem` class from the `problems` module of UQPyL
 from UQPyL.problems import Problem
 
-# Step 2: define objFunc Function
-# The 'objFunc' function is one that accepts a 2D numpy array 'X' as input and returns a 2D numpy array 'objs'. Specifically:
-# The rows of the 2D array 'X' represent a set of decision variables, while the columns correspond to different values of the same variable.
-# The returned 2D array 'objs' should have the same number of rows as 'X', and the number of columns should equal the number of objectives in the problem.
-# For a single-objective problem, the shape of the 2D array 'objs' should be (N, 1), where 'N' is the number of input variables.
-# For a multi-objective problem, the shape of the 2D array 'objs' should be (N, M), where 'M' is the number of objective functions.
-# Users should ensure that the returned 2D array 'objs' satisfies the above shape requirements.
+# Step 2: Defining the `objFunc` function
+# The `objFunc` function takes a 2-dimensional(2D) NumPy array `X` as input and  
+# returns a 2D NumPy array `objs` as output.
+# 
+# Input:
+#   X = [ [1, 2, 3],   # Each row represents a decision (or solution)
+#         [4, 5, 6],   # Each column represents a specific variable
+#         [7, 8, 9] ]
+#
+# Output:
+#   objs = [ [1],      # Each row represents the objective value(s) 
+#            [2],                     corresponding to a decision in `X`
+#            [3] ]
+#
+# Note:
+#   - If there are N decisions and M objectives, the shape of `objs` should be (N, M)
+#   - Users must ensure that `objs` is a 2D NumPy array
 
-def objFunc(X):
-
-    # If possible, advise vectorizing operations on matrix X to improve computational efficiency.
+def objFunc(X): 
+    # If possible, advise vectorizing operations on matrix X 
+    # to improve computational efficiency.
 
     objs =100 * (X[:, 2] - X[:, 1]**2)**2+ 100 * (X[:, 1] - X[:, 0]**2)**2  + \
-            (1 - X[:, 1])**2 + (1 - X[:, 0])**2 
+            (1 - X[:, 1])**2 + (1 - X[:, 0])**2  
 
-    return objs[:, None] # ensure the returned `objs` is a 2D array.
+    return objs[:, None] # Ensure the returned `objs` is a 2D numpy array.
 
-# UQPyL also supports an alternative way of defining the objFunc function.
-# For problems involving numerical simulation models, it's often not feasible to vectorize operations on matrix 'X'.
-# To address this, UQPyL provides a decorator function @singleFunc that enables single running mode.
-# In single running mode, The 'objFunc' function only accepts a Python list or 1D numpy array as input.
-# It processes one decision variable combination at a time, making it suitable for complex or non-vectorizable objective functions.
 
-# First, import the decorator that enables singleton mode from UQPyL
+# Alternative Usage:
+#
+# When using computational models where vectorized operations on the input `X` are not feasible,
+# UQPyL provides a convenient alternative: the `@singleFunc` decorator.
+#
+# This decorator enables "single-run" mode, where `objFunc` accepts 
+# a single input at a time. The input should be a Python list or 1D NumPy array.
+#
+# `objFunc` would returns a scalar value (int or float) for single-objective problems,
+# or a list / 1D NumPy array for multi-objective problems.
+
+# First, import the decorator from UQPyL.problems
 from UQPyL.problems import singleFunc
 
 @singleFunc
 def objFunc_(X):  
-
-    # Input X should be a 1D numpy array or Python list
 
     # Perform calculations for each element in X
 
     obj = 100 * (X[2] - X[1]**2)**2 + 100 * (X[1] - X[0]**2)**2 + \
             (1 - X[1])**2 + (1 - X[0])**2 
 
-    return obj # Return the objective value: a scalar for single-objective, or a 1D array/list for multi-objective
+    return obj
 
-# Step 3: Define concFunc Function
-# Similar to objFunc, the conFunc function supports two definition modes.
-# Note: The return value of conFunc indicates whether the constraints are satisfied:
-# - A negative value indicates a violation of the constraint — the smaller the value, the more severe the violation.
-# - A positive value indicates the constraint is satisfied, i.e., the solution is feasible.
-# As a result, users may need to reformulate their original constraint expressions to follow this convention.
 
-# Matrix Mode
+# Step 3: Define `conFunc` function
+# Similar to `objFunc`, `conFunc` also supports two modes.
+# 
+# Note: 
+#   The return of `conFunc` require whether the constraints are satisfied:
+#       - A negative value indicates a violation of the constraint — the smaller the
+#         value, the more severe the violation.
+#       - A positive value indicates the constraint is satisfied, i.e., the solution
+#         is feasible.
+# Therefore, users need to reformulate their original constraint expressions 
+# to follow this convention.
+
+# Array Mode
 def conFunc(X):
 
     cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
 
-    return cons[:, None] #keep np.2d-array
+    return cons[:, None] #keep 2D numpy array
 
-# Single Running Mode
+# Single-run Mode
 @singleFunc
 def conFunc(X):
 
     con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
 
-    return con
+    return con # scaler value is feasible
 
-# Step 4: describe the properties of X
+# Step 4: Describe the properties of X
 
-nInput = 3 # number of input variables (X), here it's 3 inputs.
-nOutput = 1 # number of outputs (objective functions), here it's 1 objective.
+nInput = 3 # number of input variables, here it's 3 inputs.
+nOutput = 1 # number of outputs, here it's 1 objective.
 
-#Upper bound of X.
-ub = [10, 10, 10] # It can be a float, int, list, or numpy array. 
+# Upper bound of X.
+# It can be a float, int, list, or numpy array. 
+ub = [10, 10, 10] 
 # In this case, both input variables have an upper bound of 10. 
+# Optional way:
+ub_ = 10
 
 # Lower bound of X.
-lb = [0, 0, 0] # It can also be a float, int, list, or numpy array. 
-# In this case, both input variables have a lower bound of 0.
+lb = [0, 0, 0]
+lb_ = 0
 
-# Types of variables.
-# type 0 for continuous, 1 for integer, and 2 for discrete.
+# Type of variables.
+# Where `0` for continuous, `1` for integer, and `2` for discrete.
 varType = [0, 1, 2]  
-# varType[0] = 0: The first input (X[0]) is a float.
-# varType[1] = 1: The second input (X[1]) is an integer variable.
-# varType[2] = 2: The second input (X[2]) is a discrete variable.
+# corresponding to float, integer, discrete
 
-# The set of possible values for discrete variables.
-varSet = {2: [2, 3.4, 5.1, 7]} 
-# varSet is a dictionary where the key indicates the index of the variable (2 refers to the third variable, x3). It follows Python's zero-based indexing.
-# The value associated with key 2 specifies the set of possible values for X[2]: [2, 3.4, 5.1, 7].
-# This means that X[2] can only take one of these four values: 2, 3.4, 5.1, or 7.
+# For discrete variables, users should indicate the set of possible values
+varSet = {2: [2, 3.4, 5.1, 7]}
+# Here, following Python zero-based indexing, `2` refers to the third variable.
+# This means that x3 can only take one of these four values: 2, 3.4, 5.1, or 7.
 
-# The optimization type: 'min' for minimization, 'max' for maximization.
+# Optimization type: 
+# Where 'min' for minimization, 'max' for maximization.
 optType = 'min'
+# Note:
+# For multi-objective problems, users can specify the optimization direction 
+# (e.g., `min` or `max`) 
+# for each objective individually using a list, 
+# or define a global direction that applies to all objectives.
 
-# Names (or labels) for the input variables.
+# Labels of each input variables.
 xLabels = ['x1', 'x2', 'x3'] 
-# If the optimization problem has named variables, you can set them here.
-# Otherwise, default names like 'x1', 'x2', 'x3', etc., can be used.
+# If the optimization problem includes named variables, you can define them here.
+# Otherwise, default names such as 'x1', 'x2', 'x3', etc., will be automatically generated.
 
-# Names (or labels) for the objective functions.
-yLabels = ['obj1'] # Similar to xLabel, if your objective(s) have specific names, you can set them here.
-# Otherwise, use default labels like 'obj1', 'obj2', etc.
+
+# Labels of each objective.
+yLabels = ['obj1'] 
+# Similar to `xLabel`, if your objective(s) have specific names, you can define them here.
+# Otherwise, default labels such as 'obj1', 'obj2', etc., will be used.
 
 # Name of the optimization problem
-name = 'Rosenbrock'
-# Useful for identifying the problem instance, organizing results, saving files, etc.
+name = 'Rosenbrock'  
+# Useful for identifying the problem instance, managing results, saving files, etc.
 
 #Step 5: Initialize the problem instance
 problem = Problem(
-    nInput=nInput,
-    nOutput=nOutput,
-    objFunc=objFunc,
-    conFunc=conFunc,
-    ub=ub,
-    lb=lb,
-    varType=varType,
-    varSet=varSet,
-    xLabels=xLabels,
-    yLabels=yLabels,
-    name=name
+    nInput = nInput,
+    nOutput = nOutput,
+    objFunc = objFunc,
+    conFunc = conFunc,
+    ub = ub,
+    lb = lb,
+    varType = varType,
+    varSet = varSet,
+    xLabels = xLabels,
+    yLabels = yLabels,
+    name = name
 )
 
-# Step 6: Use optimization methods from UQPyL
-# All methods and algorithms in UQPyL operate by reading the 'problem' object
-# In this example, we are using the Genetic Algorithm (GA) for optimization
+# Step 6: Optimization
+# All methods and algorithms of UQPyL run by reading the `problem` objective
+# Use the Genetic Algorithm (GA) as example
 from UQPyL.optimization.single_objective import GA
 
-# Create an instance of the Genetic Algorithm (GA). By default, GA will output optimization history
+# Create an instance of GA. 
+# By default, GA would output optimizing history
 # and final results in the command line.
+# please check tutorial for specific usage.
 ga = GA()
 
-# Run the Genetic Algorithm optimization by passing the defined 'problem' object
+# Run `ga` by input `problem` object
 ga.run(problem = problem)
+
 # Output:
 # Time:  0.0 day | 0.0 hour | 0.0 minute |  1.17 second
 # Used FEs:    50000  |  Iters:  999
@@ -170,29 +203,38 @@ ga.run(problem = problem)
 ```
 
 ## Benchmark Problems
-UQPyL provides built-in benchmark problems (inheriting from `Problem` class) to test methods.
+
+UQPyL provides some built-in benchmark problems (inheriting from `Problem` class) to test algorithms.
+
 ```python
+
+# Import single-objective problems from UQPyL.problems.single_objective
 from UQPyL.problems.single_objective import Sphere, Ackley
+
+# Import multi-objective problems from UQPyL.problems.multi_objective
 from UQPyL.problems.multi_objective import ZDT1, DTLZ1
 
-# Create benchmark problems for testing algorithms
-# You can easily customize the input dimension and variable bounds as needed
+# Users can easily customize the input dimension and variable bounds as needed
 
 # Single-objective benchmark problems
-problem1 = Sphere(nInput=10, ub=100, lb=-100)  # Sphere function with 10 dimensions, bounds [-100, 100]
-problem2 = Ackley(nInput=10, ub=np.ones(10)*100, lb=np.ones(10)*-100)  # Ackley function with 10 dimensions
+# Sphere function with 10 dimensions, bounds of all variables is [-100, 100]
+problem1 = Sphere(nInput=10, ub=100, lb=-100) 
+
+# Ackley function with 15 dimensions, bounds of all variables is [-100, 100]
+problem2 = Ackley(nInput=15, ub=np.ones(10)*100, lb=np.ones(10)*-100)  #
 
 # Multi-objective benchmark problems
-problem3 = ZDT1(nInput=5)   # ZDT1 problem with 5 decision variables
-problem4 = DTLZ1(nInput=15) # DTLZ1 problem with 15 decision variables
+# ZDT1 problem with 5 decision variables, bounds use default.
+problem3 = ZDT1(nInput=5)
 
-# UQPyL provides ready-to-use benchmark problems for both single and multi-objective optimization.
-# You can easily adjust input dimensions and variable bounds to suit your testing needs.
+# DTLZ1 problem with 15 decision variables, bounds use default.
+problem4 = DTLZ1(nInput=15) 
+
 ```
 
 ## Sensitivity Analysis
 
-Here, use Ishigami Function as example.
+Take Ishigami Function as example.
 <p align="center"><img src="./pic/Problem2.svg" width=400 /></p>
 
 The theoretical sensitivity indices of the Ishigami function are as follows:
@@ -205,8 +247,10 @@ Total-order sensitivity indices: x1 = 0.558, x2 = 0.442, x3 = 0.244
 
 ```python
 import numpy as np
+
 from UQPyL.problems import Problem
-# Define Ishigami Function
+
+# Define Ishigami problem
 def objFunc(X):
     objs = np.sin(X[:, 0]) + 7 * np.sin(X[:, 1])**2 + \
                  0.1 * X[:, 2]**4 * np.sin(X[:, 0])
@@ -215,24 +259,25 @@ def objFunc(X):
 Ishigami = Problem(nInput = 3, nOutput = 1, objFunc = objFunc,
                     ub = np.pi, lb = -1*np.pi, varType = [0, 0, 0],
                     name = "Ishigami")
-                    
+
+# Import sensibility analysis methods from UQPyL.sensibility
 from UQPyL.sensibility import Sobol
 
-# Instantiate a Sobol sensitivity analysis object
+# Create a instance of `Sobol`
 sobol = Sobol()
+
+# Sampling sample
 # N = 512 defines the base sample size; 
-# total number of evaluations will be larger due to Sobol' method structure
 X = sobol.sample(problem = Ishigami, N = 512)
 
-# Evaluate the objective function (i.e., Ishigami function) on the sample points
-# Returns an array of function outputs corresponding to each input in X
+# Evaluate the objective of sample points
 Obj = problem.objFunc(X)
 
 # Perform Sobol' sensitivity analysis
 # Inputs:
 #   - problem: the problem instance (defines bounds and function)
 #   - X: the input samples
-#   - Obj: the function evaluations at X
+#   - Obj: the objective of X
 sobol.analyze(problem, X, Obj)
 
 # By default, the following results will be obtained:
@@ -255,6 +300,8 @@ sobol.analyze(problem, X, Obj)
 # +-------------------+-------------------+-------------------+
 
 ```
+
+
 ## Optimization
 
 Here's an example using SCE-UA to optimize the Sphere function
@@ -263,20 +310,21 @@ Here's an example using SCE-UA to optimize the Sphere function
 
 ```python
 
-# Import the Sphere benchmark function
+# Import Sphere 
 from UQPyL.problems.single_objective import Sphere
 
-# Instantiate the problem with 10 input dimensions; other settings use defaults
-sphere = Sphere(nInput = 10) #Other settings use default
+# Create an instance of Sphere
+sphere = Sphere(nInput = 10)
 
-# Import the SCE-UA optimization algorithm
+# Import SCE-UA from UQPyL.optimization.single_objective
 from UQPyL.optimization.single_objective import SCE_UA
 
-# Instantiate the optimizer with default settings
+# Create an instance of Sphere
 sce = SCE_UA()
 
-# Run the optimization on the Sphere problem
+# Run
 res = sce.run(sphere)
+# Return object `res` is a python dict, which containing optimization history and the best results
 
 # Extract the best decision variables and objective values
 bestDecs = res.bestDecs
@@ -311,8 +359,9 @@ Use RBF model to predict Sphere Function as an example
 <a href="https://nbviewer.org/github/smasky/UQPyL/blob/dev/notebooks/surrogate_modelling.ipynb" target="_blank">📘 View Jupyter Notebook example online </a>
 
 ```python
+
+# Generating training data
 from UQPyL.problems import Sphere
-#Instantiate the problem
 sphere = Sphere(nInput = 10)
 
 # Import Latin Hypercube Sampling (LHS) for generating design of experiments
@@ -322,27 +371,32 @@ from UQPyL.DoE import LHS
 lhs = LHS()
 xTrain = lhs.sample(200, problem.nInput, problem = sphere)
 
-# Evaluate the true objective function at training points
+# Evaluate the true objective of training points
 yTrain = sphere.objFunc(xTrain)
 
 # Generate 50 test samples for model validation
 xTest = lhs.sample(50, problem.nInput, problem = sphere)
-# Evaluate the true function at test points
+# Evaluate the true objective of test points
 yTest = sphere.objFunc(xTest)
 
 # Import Radial Basis Function (RBF) surrogate model
 from UQPyL.surrogate.rbf import RBF
 
-# Initialize and fit the RBF surrogate model
+# Create an instance of RBF
 rbf = RBF()
+# fit the model
 rbf.fit(xTrain, yTrain)
 
-# Use the trained RBF model to predict outputs on test inputs
+# Use the trained RBF model to predict outputs of test inputs
 yPred = rbf.predict(xTest)
 
-# Import R² metric to evaluate surrogate model performance
+# Import R² to evaluate surrogate model performance
 from UQPyL.utility.metric import r_square
+
 # Compute R² score between true and predicted test outputs
 r2 = r_square(yTest, yPred)
 print(r2)
 ```
+
+💡Note:
+        For advanced usage, please check [advanced](./advanced.md) or [tutorial](./tutorial.md)
