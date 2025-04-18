@@ -23,16 +23,19 @@
 }
 
 /* Style for scroll-based navigation */
-/* .md-nav__item > .md-nav {
+.md-nav__item > .md-nav {
     display: none;
 }
 
 .md-nav__item--active > .md-nav {
     display: block;
-} */
+}
 
-/* 修改导航菜单显示效果 */
+/* Add transition effect */
 .md-nav__item > .md-nav {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
     transition: all 0.3s ease-out;
 }
 

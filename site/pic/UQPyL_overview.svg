@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="1280"
+   height="580"
+   viewBox="0 0 1280 580"
+   sodipodi:docname="UQPyL_overview.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview276"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="1.065625"
+     inkscape:cx="640"
+     inkscape:cy="360.35191"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g8" />
+  <defs
+     id="defs6">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath18">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path16" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath30">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path28" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath46">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path44" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath62">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path60" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath78">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path76" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath94">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path92" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath110">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path108" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath222">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path220" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath298">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path296" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath422">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path420" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath498">
+      <path
+         d="M 0,0 H 960 V 540 H 0 Z"
+         id="path496" />
+    </clipPath>
+  </defs>
+  <g
+     id="g8"
+     transform="matrix(1.3333333,0,0,-1.3333333,0,720)">
+    <g
+       id="g12">
+      <g
+         id="g14"
+         clip-path="url(#clipPath18)">
+        <g
+           id="g20"
+           transform="translate(8.65,278.5002)">
+          <path
+             d="m 0,0 c 0,10.134 8.215,18.35 18.35,18.35 h 117.5 c 10.135,0 18.35,-8.216 18.35,-18.35 v -151.101 c 0,-10.134 -8.215,-18.349 -18.35,-18.349 H 18.35 C 8.215,-169.45 0,-161.235 0,-151.101 Z"
+             style="fill:#dae3f5;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+             id="path22" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g24">
+      <g
+         id="g26"
+         clip-path="url(#clipPath30)">
+        <g
+           id="g32"
+           transform="translate(1.15,392.7832)">
+          <path
+             d="m 0,0 c 0,5.228 4.238,9.467 9.467,9.467 h 130.766 c 5.229,0 9.467,-4.239 9.467,-9.467 v -37.866 c 0,-5.229 -4.238,-9.467 -9.467,-9.467 H 9.467 C 4.238,-47.333 0,-43.095 0,-37.866 Z"
+             style="fill:#91ace0;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path34" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,57.9459,367.1815)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text38"><tspan
+         x="0 12.6 26.1"
+         y="0"
+         id="tspan36">DOE</tspan></text>
+    <g
+       id="g40">
+      <g
+         id="g42"
+         clip-path="url(#clipPath46)">
+        <g
+           id="g48"
+           transform="translate(203.65,391.4832)">
+          <path
+             d="m 0,0 c 0,5.228 4.238,9.467 9.467,9.467 h 130.766 c 5.229,0 9.467,-4.239 9.467,-9.467 v -37.866 c 0,-5.229 -4.238,-9.467 -9.467,-9.467 H 9.467 C 4.238,-47.333 0,-43.095 0,-37.866 Z"
+             style="fill:#91ace0;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path50" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,267.774,365.9049)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text54"><tspan
+         x="0 9.3000002"
+         y="0"
+         id="tspan52">SA</tspan></text>
+    <g
+       id="g56">
+      <g
+         id="g58"
+         clip-path="url(#clipPath62)">
+        <g
+           id="g64"
+           transform="translate(405.15,390.4998)">
+          <path
+             d="m 0,0 c 0,5.219 4.231,9.45 9.45,9.45 h 130.9 c 5.219,0 9.45,-4.231 9.45,-9.45 v -37.8 c 0,-5.219 -4.231,-9.45 -9.45,-9.45 H 9.45 C 4.231,-47.25 0,-43.019 0,-37.8 Z"
+             style="fill:#91ace0;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path66" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,426.125,364.9254)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text70"><tspan
+         x="0 13.5 24.1 31 35.900002 52.200001 57.099998 64.802002 74.501999 81.402 86.302002 97.101997"
+         y="0"
+         id="tspan68">Optimization</tspan></text>
+    <g
+       id="g72">
+      <g
+         id="g74"
+         clip-path="url(#clipPath78)">
+        <g
+           id="g80"
+           transform="translate(605.25,390.4998)">
+          <path
+             d="m 0,0 c 0,5.219 4.231,9.45 9.45,9.45 h 130.8 c 5.219,0 9.45,-4.231 9.45,-9.45 v -37.799 c 0,-5.22 -4.231,-9.451 -9.45,-9.451 H 9.45 c -5.219,0 -9.45,4.231 -9.45,9.451 z"
+             style="fill:#91ace0;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path82" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,639.7064,364.9255)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text86"><tspan
+         x="0 9.5 20.200001 27.299999 34.200001 45 54.200001 63.900002 70.599998"
+         y="0"
+         id="tspan84">Surrogate</tspan></text>
+    <g
+       id="g88">
+      <g
+         id="g90"
+         clip-path="url(#clipPath94)">
+        <g
+           id="g96"
+           transform="translate(788.25,390.4998)">
+          <path
+             d="m 0,0 c 0,5.219 4.231,9.45 9.45,9.45 h 137 c 5.219,0 9.45,-4.231 9.45,-9.45 v -37.8 c 0,-5.219 -4.231,-9.45 -9.45,-9.45 H 9.45 C 4.231,-47.25 0,-43.019 0,-37.8 Z"
+             style="fill:#91ace0;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path98" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,830.9855,364.9255)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text102"><tspan
+         x="0 10.6 17.5 28.299999 39 43.900002 54"
+         y="0"
+         id="tspan100">Problem</tspan></text>
+    <g
+       id="g104">
+      <g
+         id="g106"
+         clip-path="url(#clipPath110)">
+        <g
+           id="g112"
+           transform="translate(404.65,518.7999)">
+          <path
+             d="m 0,0 c 0,5.219 4.231,9.45 9.45,9.45 h 130.9 c 5.219,0 9.45,-4.231 9.45,-9.45 v -37.8 c 0,-5.219 -4.231,-9.45 -9.45,-9.45 H 9.45 C 4.231,-47.25 0,-43.019 0,-37.8 Z"
+             style="fill:#2e54a1;fill-opacity:1;fill-rule:evenodd;stroke:#192d54;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+             id="path114" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,440.638,490.5521)"
+       style="font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28px;font-family:Calibri;-inkscape-font-specification:Calibri-Bold;writing-mode:lr-tb;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text118"><tspan
+         x="0 18.312 37.5116 52.612 65.912003"
+         y="0"
+         id="tspan116">UQPyL</tspan></text>
+    <g
+       id="g120"
+       transform="translate(75.9,409.8)">
+      <path
+         d="M 0,0 V 40.378 H 790.205 V -2.256"
+         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path122" />
+    </g>
+    <g
+       id="g124"
+       transform="translate(861.6041,409.0438)">
+      <path
+         d="M 0,0 4.5,-9 9,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path126" />
+    </g>
+    <g
+       id="g128"
+       transform="translate(71.3996,411.2997)">
+      <path
+         d="M 0,0 4.5,-9 9,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path130" />
+    </g>
+    <g
+       id="g132"
+       transform="translate(278.4,408.4999)">
+      <path
+         d="M 0,0 V 41.357 H 401.632 V -0.979"
+         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path134" />
+    </g>
+    <g
+       id="g136"
+       transform="translate(675.5319,409.0203)">
+      <path
+         d="M 0,0 4.5,-9 9,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path138" />
+    </g>
+    <g
+       id="g140"
+       transform="translate(273.8995,409.9997)">
+      <path
+         d="M 0,0 4.5,-9 9,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path142" />
+    </g>
+    <g
+       id="g144"
+       transform="translate(479.5,471.6)">
+      <path
+         d="M 0,0 0.438,-64.086"
+         style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path146" />
+    </g>
+    <g
+       id="g148"
+       transform="translate(484.4282,409.0445)">
+      <path
+         d="M 0,0 -4.439,-9.03 -9,-0.061 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path150" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,268.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text154"><tspan
+         x="0"
+         y="0"
+         id="tspan152"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,268.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text158"><tspan
+         x="0 9.1999998 18.4"
+         y="0"
+         id="tspan156">FFD</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,244.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text162"><tspan
+         x="0"
+         y="0"
+         id="tspan160"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,244.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text166"><tspan
+         x="0 8.3999996 20.9"
+         y="0"
+         id="tspan164">LHS</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,220.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text170"><tspan
+         x="0"
+         y="0"
+         id="tspan168"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,220.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text174"><tspan
+         x="0 10.9 20.5 31 41.5 52"
+         y="0"
+         id="tspan172">Random</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,196.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text178"><tspan
+         x="0"
+         y="0"
+         id="tspan176"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,196.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text182"><tspan
+         x="0 9.1999998 18.799999 23.4 29.9 39.900002 44.5 49.099998"
+         y="0"
+         id="tspan180">Saltelli</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,172.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text186"><tspan
+         x="0"
+         y="0"
+         id="tspan184"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,172.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text190"><tspan
+         x="0 9.1999998 19.700001 30.200001 40.700001 45.299999 49.900002 59.099998 68.699997 84.699997 95.199997 99.800003"
+         y="0"
+         id="tspan188">Sobol Sample</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,148.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text194"><tspan
+         x="0"
+         y="0"
+         id="tspan192"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,148.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text198"><tspan
+         x="0 8.1000004 19.700001 28.799999 38.5 43.099998 52.299999 61.900002 77.900002 88.400002 93"
+         y="0"
+         id="tspan196">FAST Sample</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,19.7679,124.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text202"><tspan
+         x="0"
+         y="0"
+         id="tspan200"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,42.2679,124.2028)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text206"><tspan
+         x="0 17.1 27.6 34.599998 39.200001 47 51.599998 60.799999 70.400002 86.400002 96.900002 101.5"
+         y="0"
+         id="tspan204">Moris Sample</tspan></text>
+    <g
+       id="g208"
+       transform="translate(67.75,319.95)">
+      <path
+         d="m 0,0 h 6.35 v 13.6 h 12.7 L 19.05,0 H 25.4 L 12.7,-12.7 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path210" />
+    </g>
+    <g
+       id="g212"
+       transform="translate(67.75,319.95)">
+      <path
+         d="m 0,0 h 6.35 v 13.6 h 12.7 L 19.05,0 H 25.4 L 12.7,-12.7 Z"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path214" />
+    </g>
+    <g
+       id="g216">
+      <g
+         id="g218"
+         clip-path="url(#clipPath222)">
+        <g
+           id="g224"
+           transform="translate(202.95,278.5121)">
+          <path
+             d="M 0,0 C 0,10.128 8.21,18.338 18.338,18.338 H 135.762 C 145.89,18.338 154.1,10.128 154.1,0 v -151.124 c 0,-10.128 -8.21,-18.338 -18.338,-18.338 H 18.338 C 8.21,-169.462 0,-161.252 0,-151.124 Z"
+             style="fill:#dae3f5;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+             id="path226" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g228"
+       transform="translate(266.25,320)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path230" />
+    </g>
+    <g
+       id="g232"
+       transform="translate(266.25,319.9999)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path234" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,267.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text238"><tspan
+         x="0"
+         y="0"
+         id="tspan236"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,267.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text242"><tspan
+         x="0 12.1"
+         y="0"
+         id="tspan240">DT</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,243.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text246"><tspan
+         x="0"
+         y="0"
+         id="tspan244"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,243.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text250"><tspan
+         x="0 8.1000004 19.700001 28.799999"
+         y="0"
+         id="tspan248">FAST</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,219.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text254"><tspan
+         x="0"
+         y="0"
+         id="tspan252"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,219.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text258"><tspan
+         x="0 10.9 21.799999 34.099998 40.200001 48.299999 59.900002 69"
+         y="0"
+         id="tspan256">RBD-FAST</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,195.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text262"><tspan
+         x="0"
+         y="0"
+         id="tspan260"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,195.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text266"><tspan
+         x="0 17.1 28.700001 39.299999 48.5 58.5 67.599998"
+         y="0"
+         id="tspan264">MARS_SA</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,171.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text270"><tspan
+         x="0"
+         y="0"
+         id="tspan268"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,171.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text274"><tspan
+         x="0 17.1 27.6 34.599998 39.200001"
+         y="0"
+         id="tspan272">Moris</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,147.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text278"><tspan
+         x="0"
+         y="0"
+         id="tspan276"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,147.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text282"><tspan
+         x="0 10.6 19.700001"
+         y="0"
+         id="tspan280">RSA</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,225.7265,123.7131)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text286"><tspan
+         x="0"
+         y="0"
+         id="tspan284"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,248.2265,123.7131)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text290"><tspan
+         x="0 9.1999998 19.700001 30.200001 40.700001"
+         y="0"
+         id="tspan288">Sobol</tspan></text>
+    <g
+       id="g292">
+      <g
+         id="g294"
+         clip-path="url(#clipPath298)">
+        <g
+           id="g300"
+           transform="translate(383.15,274.9899)">
+          <path
+             d="M 0,0 C 0,12.349 10.011,22.36 22.36,22.36 H 181.44 C 193.789,22.36 203.8,12.349 203.8,0 v -143.18 c 0,-12.349 -10.011,-22.36 -22.36,-22.36 H 22.36 C 10.011,-165.54 0,-155.529 0,-143.18 Z"
+             style="fill:#dae3f5;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+             id="path302" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g304"
+       transform="translate(470.75,321)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path306" />
+    </g>
+    <g
+       id="g308"
+       transform="translate(470.75,320.9999)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path310" />
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,394.8713,270.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text314"><tspan
+         x="0"
+         y="0"
+         id="tspan312"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.3713,270.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text318"><tspan
+         x="0 9.1999998 19.9 29.700001 35.799999 48.200001"
+         y="0"
+         id="tspan316">SCE-UA</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,394.8713,246.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text322"><tspan
+         x="0"
+         y="0"
+         id="tspan320"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.3713,246.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text326"><tspan
+         x="0 11.6 22.5"
+         y="0"
+         id="tspan324">ABC</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,394.8713,222.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text330"><tspan
+         x="0"
+         y="0"
+         id="tspan328"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.3713,222.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text334"><tspan
+         x="0 12.3"
+         y="0"
+         id="tspan332">DE</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,394.8713,198.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text338"><tspan
+         x="0"
+         y="0"
+         id="tspan336"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.3713,198.6525)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text342"><tspan
+         x="0 11.6 20.799999 37.900002"
+         y="0"
+         id="tspan340">ASMO</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,489.3969,271.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text346"><tspan
+         x="0"
+         y="0"
+         id="tspan344"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,511.8969,271.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text350"><tspan
+         x="0 12.6"
+         y="0"
+         id="tspan348">GA</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,489.3969,247.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text354"><tspan
+         x="0"
+         y="0"
+         id="tspan352"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,511.8969,247.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text358"><tspan
+         x="0 10.7 19.799999"
+         y="0"
+         id="tspan356">CSA</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,489.3969,223.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text362"><tspan
+         x="0"
+         y="0"
+         id="tspan360"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,511.8969,223.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text366"><tspan
+         x="0 10.3 19.5"
+         y="0"
+         id="tspan364">PSO</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,489.3969,199.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text370"><tspan
+         x="0"
+         y="0"
+         id="tspan368"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,511.8969,199.1422)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text374"><tspan
+         x="0 9.6000004 22.200001"
+         y="0"
+         id="tspan372">EGO</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,395.3611,169.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text378"><tspan
+         x="0"
+         y="0"
+         id="tspan376"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.8611,169.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text382"><tspan
+         x="0 12.9 22.1 34.700001 46.299999 51.299999"
+         y="0"
+         id="tspan380">NSGAII</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,395.3611,145.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text386"><tspan
+         x="0"
+         y="0"
+         id="tspan384"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.8611,145.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text390"><tspan
+         x="0 12.9 22.1 34.700001 46.299999 51.299999 56.299999"
+         y="0"
+         id="tspan388">NSGAIII</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,395.3611,121.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text394"><tspan
+         x="0"
+         y="0"
+         id="tspan392"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,417.8611,121.4383)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text398"><tspan
+         x="0 17.1 30.1 41.700001 50.900002 68"
+         y="0"
+         id="tspan396">MOASMO</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,490.3765,168.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text402"><tspan
+         x="0"
+         y="0"
+         id="tspan400"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,512.8765,168.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text406"><tspan
+         x="0 17.1 30.299999 39.900002 51.5 59.200001"
+         y="0"
+         id="tspan404">MOEA/D</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,490.3765,144.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text410"><tspan
+         x="0"
+         y="0"
+         id="tspan408"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,512.8765,144.713)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text414"><tspan
+         x="0 10.6 21.9 31.5"
+         y="0"
+         id="tspan412">RVEA</tspan></text>
+    <g
+       id="g416">
+      <g
+         id="g418"
+         clip-path="url(#clipPath422)">
+        <g
+           id="g424"
+           transform="translate(605.55,279.0121)">
+          <path
+             d="M 0,0 C 0,10.128 8.21,18.338 18.338,18.338 H 135.762 C 145.89,18.338 154.1,10.128 154.1,0 v -151.224 c 0,-10.128 -8.21,-18.338 -18.338,-18.338 H 18.338 C 8.21,-169.562 0,-161.352 0,-151.224 Z"
+             style="fill:#dae3f5;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+             id="path426" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,268.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text430"><tspan
+         x="0"
+         y="0"
+         id="tspan428"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,268.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text434"><tspan
+         x="0 10.4 21.1"
+         y="0"
+         id="tspan432">KRG</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,244.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text438"><tspan
+         x="0"
+         y="0"
+         id="tspan436"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,244.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text442"><tspan
+         x="0 12.6"
+         y="0"
+         id="tspan440">GP</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,220.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text446"><tspan
+         x="0"
+         y="0"
+         id="tspan444"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,220.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text450"><tspan
+         x="0 10.9 21.799999"
+         y="0"
+         id="tspan448">RBF</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,196.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text454"><tspan
+         x="0"
+         y="0"
+         id="tspan452"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,196.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text458"><tspan
+         x="0 9.1000004 20.4"
+         y="0"
+         id="tspan456">SVR</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,172.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text462"><tspan
+         x="0"
+         y="0"
+         id="tspan460"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,172.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text466"><tspan
+         x="0 10.3"
+         y="0"
+         id="tspan464">PR</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,148.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text470"><tspan
+         x="0"
+         y="0"
+         id="tspan468"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,148.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text474"><tspan
+         x="0 8.3999996"
+         y="0"
+         id="tspan472">LR</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,637.9673,124.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text478"><tspan
+         x="0"
+         y="0"
+         id="tspan476"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,660.4673,124.2029)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text482"><tspan
+         x="0 17.1 28.700001 39.299999"
+         y="0"
+         id="tspan480">MARS</tspan></text>
+    <g
+       id="g484"
+       transform="translate(669.25,321.4)">
+      <path
+         d="m 0,0 h 6.375 v 13.45 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path486" />
+    </g>
+    <g
+       id="g488"
+       transform="translate(669.25,321.4)">
+      <path
+         d="m 0,0 h 6.375 v 13.45 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path490" />
+    </g>
+    <g
+       id="g492">
+      <g
+         id="g494"
+         clip-path="url(#clipPath498)">
+        <g
+           id="g500"
+           transform="translate(785.45,279.0121)">
+          <path
+             d="M 0,0 C 0,10.128 8.21,18.338 18.338,18.338 H 135.762 C 145.89,18.338 154.1,10.128 154.1,0 v -151.224 c 0,-10.128 -8.21,-18.338 -18.338,-18.338 H 18.338 C 8.21,-169.562 0,-161.352 0,-151.224 Z"
+             style="fill:#dae3f5;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+             id="path502" />
+        </g>
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,830.2168,257.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text506"><tspan
+         x="0"
+         y="0"
+         id="tspan504"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,852.7168,257.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text510"><tspan
+         x="0 9.1999998 22.4"
+         y="0"
+         id="tspan508">SOP</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,830.2168,233.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text514"><tspan
+         x="0"
+         y="0"
+         id="tspan512"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,852.7168,233.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text518"><tspan
+         x="0 9.3999996 21.5"
+         y="0"
+         id="tspan516">ZDT</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,830.2168,209.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text522"><tspan
+         x="0"
+         y="0"
+         id="tspan520"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,852.7168,209.5936)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text526"><tspan
+         x="0 12.1 21.799999 30.200001"
+         y="0"
+         id="tspan524">DTLZ</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,830.7065,139.749)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;font-family:Wingdings;-inkscape-font-specification:Wingdings-Regular;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text530"><tspan
+         x="0"
+         y="0"
+         id="tspan528"></tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(1,0,0,-1,853.2065,139.749)"
+       style="font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;font-family:Calibri;-inkscape-font-specification:Calibri;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="text534"><tspan
+         x="0 9.1000004 26 36"
+         y="0"
+         id="tspan532">SWAT</tspan></text>
+    <g
+       id="g536"
+       transform="translate(849.75,322.5)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         id="path538" />
+    </g>
+    <g
+       id="g540"
+       transform="translate(849.75,322.4999)">
+      <path
+         d="m 0,0 h 6.375 v 13.55 h 12.75 V 0 H 25.5 L 12.75,-12.75 Z"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:none;stroke-opacity:1"
+         id="path542" />
+    </g>
+    <g
+       id="g544"
+       transform="translate(387.65,191.45)">
+      <path
+         d="M 0,0 H 203.759"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+         id="path546" />
+    </g>
+    <g
+       id="g548"
+       transform="translate(786.55,188.1433)">
+      <path
+         d="M 0,0 153.049,1.407"
+         style="fill:none;stroke:#000000;stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:8;stroke-dasharray:9, 6.75;stroke-dashoffset:0;stroke-opacity:1"
+         id="path550" />
+    </g>
+  </g>
+</svg>

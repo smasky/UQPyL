@@ -51,7 +51,7 @@ pip install .
 ## 🚀 Getting Started
 
 -  [Quick Start](quick_start.md)
--  [Tutorial](tutorial.md)
+-  [Tutorial](overview.md)
 -  [Examples](examples.md)
 -  [API Reference](api_reference.md)
 -  [Changlog](chang_log.md)

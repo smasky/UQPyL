@@ -5,14 +5,19 @@ theme:
     scheme: light
   code:
   highlight_theme: monokai
+  features:
+    - navigation.expand
+    - navigation.indexes
 
 nav:
-  - Introduction: index.md
-  - Quick Start: quick_start.md
-  - Tutorial: tutorial.md
-  - Example Collections: examples.md
-  - API Reference: api_reference.md
-  - ChangLog: chang_log.md
+  - Introduction: 'index.md'
+  - Quick Start: 'quick_start.md'
+  - Tutorial:
+      - Overview: 'overview.md'
+      - Problem: 'problems.md'
+  - Example Collections: 'examples.md'
+  - API Reference: 'api_reference.md'
+  - ChangLog: 'chang_log.md'
 
 extra_css:
   - css/nav_.css

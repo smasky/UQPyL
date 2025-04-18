@@ -397,4 +397,4 @@ r2 = r_square(yTest, yPred)
 print(r2)
 ```
 
-💡**Note**: For advanced usage, please check [tutorial](./tutorial.md)
+💡**Note**: For advanced usage, please check tutorial page.
