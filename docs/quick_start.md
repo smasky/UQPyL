@@ -1,4 +1,4 @@
-## Problem Define
+## 🍊 Define Problem
 
 To effectively use UQPyL, the key is to define the solved problem, including:
 
@@ -202,7 +202,7 @@ ga.run(problem = problem)
 # +-------------------+-------------------+-------------------+-------------------+
 ```
 
-## Benchmark Problems
+## 🍇 Benchmark Problems
 
 UQPyL provides some built-in benchmark problems (inheriting from `Problem` class) to test algorithms.
 
@@ -232,7 +232,7 @@ problem4 = DTLZ1(nInput=15)
 
 ```
 
-## Sensitivity Analysis
+## 🍎 Sensitivity Analysis
 
 Take Ishigami Function as example.
 <p align="center"><img src="./pic/Problem2.svg" width=400 /></p>
@@ -301,8 +301,7 @@ sobol.analyze(problem, X, Obj)
 
 ```
 
-
-## Optimization
+## 🍒 Optimization
 
 Here's an example using SCE-UA to optimize the Sphere function
 
@@ -352,7 +351,7 @@ bestObjs = res.bestObjs
 # +-----------------+-----------------+-----------------+-----------------+-----------------+
 ```
 
-## Surrogate Modeling
+## 🍓 Surrogate Modeling
 
 Use RBF model to predict Sphere Function as an example
 
@@ -398,5 +397,4 @@ r2 = r_square(yTest, yPred)
 print(r2)
 ```
 
-💡Note:
-        For advanced usage, please check [advanced](./advanced.md) or [tutorial](./tutorial.md)
+💡**Note**: For advanced usage, please check [tutorial](./tutorial.md)
