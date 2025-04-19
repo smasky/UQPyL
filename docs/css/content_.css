@@ -1,16 +1,17 @@
 .md-content{
     min-width: 70%;
-    margin-left: 1rem;
 }
+
+
 
 /* Adjust the main content area width */
-.md-main__inner {
+/* .md-main__inner {
     margin-left: 0;
     margin-right: 0;
-}
+} */
 
 /* Adjust the primary sidebar (first column) */
-.md-sidebar--primary {
+/* .md-sidebar--primary {
     width: 13rem;
     margin-left: 2rem;
     padding-left: 1rem;
@@ -20,7 +21,7 @@
     width: 15rem;
     margin-left: -0.5rem;
     padding-left: 1rem;
-}
+} */
 
 /* Style for scroll-based navigation */
 /* .md-nav__item > .md-nav {
@@ -32,14 +33,14 @@
 } */
 
 /* 修改导航菜单显示效果 */
-.md-nav__item > .md-nav {
+/* .md-nav__item > .md-nav {
     transition: all 0.3s ease-out;
-}
+} */
 
-.md-nav__item--active > .md-nav {
+/* .md-nav__item--active > .md-nav {
     opacity: 1;
-    max-height: 1000px; /* 根据实际内容调整 */
-}
+    max-height: 1000px;
+} */
 
 /* Adjust the table of contents sidebar width */
 .md-sidebar--secondary {
@@ -101,9 +102,9 @@ ul {
     margin-bottom: 0.5em;
 }
 
-/* 设置图片标题为非斜体 */
+
 figcaption {
-    font-style: normal;
+    font-style: normal !important;
     margin-top: 8px;
     text-align: center;
 }

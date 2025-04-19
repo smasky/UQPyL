@@ -6,7 +6,6 @@ theme:
   code:
   highlight_theme: monokai
   features:
-    - navigation.expand
     - navigation.indexes
 
 nav:

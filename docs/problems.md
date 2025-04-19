@@ -18,13 +18,13 @@ Here, we give API reference of `Problem` class.
 
 ---
 
-**Problem Class:**
+**Class `Problem`**
 
 ```
 The `Problem` class is designed to define specific optimization problems. It extends the abstract base class `ProblemABC` and allows users to specify custom objective and constraint functions.
 ```
 
-**Constructor**
+**Constructor:**
 ```
 __init__
 
@@ -40,11 +40,11 @@ Initializes a new instance of the Problem class.
     - evaluate(callable): User custom evaluation function. Default: None
     - conWgt(list): weights for combining constraints.
     - varType(list): List of variable types. 0 for continuous, 1 for integer, 2 for discrete.
-    - varSet (list): Sets of possible values for discrete variables.
-    - optType (str, list): Optimization type. 'min' for minimization, 'max' for maximization.
-    - xLabels (list): Labels for input variables.
-    - yLabels (list): Labels for output variables.
-    - name (str): Name of the problem.
+    - varSet(list): Sets of possible values for discrete variables.
+    - optType(str, list): Optimization type. 'min' for minimization, 'max' for maximization.
+    - xLabels(list): Labels for input variables.
+    - yLabels(list): Labels for output variables.
+    - name(str): Name of the problem.
 ```
 
 **Methods:**
