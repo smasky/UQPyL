@@ -1,78 +1,3 @@
-.md-content{
-    min-width: 70%;
-}
-
-/* 防止滚动条出现/消失导致的布局移动 */
-html {
-    overflow-y: scroll;
-}
-
-body {
-    width: 100%;
-    box-sizing: border-box;
-    /* padding-right: calc(100vw - 100%); */
-}
-
-.md-grid {
-    max-width: 70%;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-/* 确保侧边栏固定宽度 */
-.md-sidebar {
-    padding: 0 0.5rem;
-    width: 14rem;
-    position: sticky;
-}
-
-/* 固定主内容区域 */
-/* .md-main__inner {
-    margin: 0 a;
-} */
-
-/* Adjust the main content area width */
-/* .md-main__inner {
-    margin-left: 0;
-    margin-right: 0;
-} */
-
-/* Adjust the primary sidebar (first column) */
-/* .md-sidebar--primary {
-    width: 13rem;
-    margin-left: 2rem;
-    padding-left: 1rem;
-}
-
-.md-nav {
-    width: 15rem;
-    margin-left: -0.5rem;
-    padding-left: 1rem;
-} */
-
-/* Style for scroll-based navigation */
-/* .md-nav__item > .md-nav {
-    display: none;
-}
-
-.md-nav__item--active > .md-nav {
-    display: block;
-} */
-
-/* 修改导航菜单显示效果 */
-/* .md-nav__item > .md-nav {
-    transition: all 0.3s ease-out;
-} */
-
-/* .md-nav__item--active > .md-nav {
-    opacity: 1;
-    max-height: 1000px;
-} */
-
-/* Adjust the table of contents sidebar width */
-/* .md-sidebar--secondary {
-    width: 20rem;
-} */
 
 .md-typeset h1{
     color: black;
@@ -94,14 +19,6 @@ body {
     word-break: break-word;
     /* 不要使用 background: unset 或 color: unset */
 }
-
-
-/* .md-typeset pre code {
-    white-space: pre-wrap !important;
-    word-break: break-word;
-    background: unset !important;
-    color: unset !important;
-} */
 
 ul {
     list-style-type: disc; 

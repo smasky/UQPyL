@@ -13,8 +13,9 @@ nav:
   - Quick Start: 'quick_start.md'
   - Tutorial:
       - Overview: 'overview.md'
+      - Design of Experiment: 'doe.md'
       - Problem: 'problems.md'
-      - Design of Experiment: 'design_of_experiment.md'
+     
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'
   - ChangLog: 'chang_log.md'
@@ -31,7 +32,6 @@ markdown_extensions:
 
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
-  - js/nav-scroll.js
 
 site_url: https://UQPyL.readthedocs.io/
 repo_url: https://github.com/smasky/UQPyL

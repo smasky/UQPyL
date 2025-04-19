@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // 检测是否为移动设备
+    const isMobile = window.innerWidth <= 600;
+    
     // 获取所有二级标题
     const headers = document.querySelectorAll('.md-content h2');
+    
+    // 如果是移动设备且没有足够的二级标题，不执行滚动导航
+    if (isMobile && headers.length < 2) {
+        return;
+    }
     
     // 创建一个函数来获取元素的绝对位置
     function getAbsoluteTop(element) {
@@ -10,6 +18,18 @@ document.addEventListener('DOMContentLoaded', function() {
             element = element.offsetParent;
         }
         return top;
+    }
+
+    // 节流函数，限制事件触发频率
+    function throttle(func, delay) {
+        let lastCall = 0;
+        return function(...args) {
+            const now = new Date().getTime();
+            if (now - lastCall >= delay) {
+                lastCall = now;
+                return func.apply(this, args);
+            }
+        };
     }
 
     // 更新导航状态
@@ -68,8 +88,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // 使用节流函数优化滚动事件
+    const throttledUpdate = throttle(updateNavigation, 100);
+    
     // 监听滚动事件
-    window.addEventListener('scroll', updateNavigation);
+    window.addEventListener('scroll', throttledUpdate);
+    
+    // 监听窗口大小变化事件
+    window.addEventListener('resize', function() {
+        // 重新检测是否为移动设备
+        const newIsMobile = window.innerWidth <= 600;
+        if (newIsMobile !== isMobile) {
+            // 强制刷新页面以重置导航状态
+            window.location.reload();
+        }
+    });
     
     // 初始化时检查当前可见的标题
     setTimeout(updateNavigation, 100);
