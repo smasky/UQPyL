@@ -2,7 +2,34 @@
     min-width: 70%;
 }
 
+/* 防止滚动条出现/消失导致的布局移动 */
+html {
+    overflow-y: scroll;
+}
 
+body {
+    width: 100%;
+    box-sizing: border-box;
+    /* padding-right: calc(100vw - 100%); */
+}
+
+.md-grid {
+    max-width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* 确保侧边栏固定宽度 */
+.md-sidebar {
+    padding: 0 0.5rem;
+    width: 14rem;
+    position: sticky;
+}
+
+/* 固定主内容区域 */
+/* .md-main__inner {
+    margin: 0 a;
+} */
 
 /* Adjust the main content area width */
 /* .md-main__inner {
@@ -43,14 +70,9 @@
 } */
 
 /* Adjust the table of contents sidebar width */
-.md-sidebar--secondary {
+/* .md-sidebar--secondary {
     width: 20rem;
-}
-
-/* Ensure proper spacing between columns */
-.md-sidebar {
-    padding: 0 0.5rem;
-}
+} */
 
 .md-typeset h1{
     color: black;

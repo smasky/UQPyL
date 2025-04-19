@@ -4,7 +4,7 @@
 
 ## 🥕 What is the Problem?
 
-**Problem** is the foundational interface for UQPyL. It encapsulates the core elements required to define and solve a computational problem. Specifically, a problem instance should include:
+**Problem** is the foundational interface for UQPyL. It integrates necessary elements to define and solve a analysis or optimization problem. Specifically, a problem instance should include:
 
 1. **Decision Variables:** - Information about the decision dimension, variable names, ranges, and types.
 
@@ -14,7 +14,7 @@
 
 For convenience, the `UQPyL.problems` module provide the `Problem` class, served as a container for all essential information required to define a problem instance.
 
-Here, we give API reference of `Problem` class.
+Here, we give API reference for `Problem` class.
 
 ---
 
@@ -110,15 +110,15 @@ Compared to original Rosenbrock, this problem is involve extra constraint functi
 from UQPyL.problems import Problem
 
 # Step 2: Defining the `objFunc` function
-# The `objFunc` function takes a 2-dimensional(2D) NumPy array `X` as input and  
-# returns a 2D NumPy array `objs` as output.
+# The `objFunc` function accepts a 2-dimensional(2D) NumPy array `X` and  
+# returns a 2D NumPy array `objs`.
 # 
-# Input:
+# Accept:
 #   X = [ [1, 2, 3],   # Each row represents a decision (or solution)
 #         [4, 5, 6],   # Each column represents a specific variable
 #         [7, 8, 9] ]
 #
-# Output:
+# Return:
 #   objs = [ [1],      # Each row represents the objective value(s) 
 #            [2],                     corresponding to a decision in `X`
 #            [3] ]
@@ -203,6 +203,7 @@ ub_ = 10
 
 # Lower bound of X.
 lb = [0, 0, 0]
+# or
 lb_ = 0
 
 # Type of variables.
@@ -286,6 +287,7 @@ ga.run(problem = problem)
 ```
 
 ## 🥑 Use `evaluate` function to replace `objFunc` and `conFunc`
+
 Some practical problems  may be difficult to separately define the `objFunc` and `conFunc`. UQPyL recommends using `evaluate` function of the Problem class, instead.
 
 Still, take this problem as example:
@@ -424,3 +426,66 @@ class NewProblem(ProblemABC):
 Once defined, the `NewProblem` class can be seamlessly used with all optimization methods and algorithms available in UQPyL. Base on this characteristic, we have developed [SWAT-UQ](https://github.com/smasky/SWAT-UQ).
 
 ## 🥦 Benchmark problems
+
+In real-world applications, optimization problems are often complex and lack known solutions. This makes it difficult to:
+
+- Evaluate the quality of a solution
+- Compare the effectiveness of different algorithms
+- Understand the strengths or limitations of a new algorithm
+
+**Benchmark problems** provide standardized, well-understood test cases with known properties, allowing for reproducible, objective, and quantifiable performance analysis. Therefore, they play a crucial role in the evaluation and comparison of optimization algorithms.
+
+UQPyL provides some built-in benchmark problems:
+
+<br>
+
+**For single-objective:**
+
+| Name | Formula | Optimal Solution | Optima | 
+|------|---------|------------------|--------|
+|Sphere| <img src="/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Bent_Cigar | <img src="/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+
+<br>
+
+**For multi-objective:**
+
+| Name | Num. of Objective | Shape of the Pareto Front | Feature |
+|------|-------------------|---------------------------|---------|
+| ZDT1 |         2         |           Line            | Convex  |
+| ZDT2 |         2         |           Line            | Concave |
+| ZDT3 |         2         |           Line            | Disconnected |
+| ZDT4 |         2         |           Line            | Convex |
+| ZDT6 |         2         |           Line            | Concave |
+| DTLZ1 | >=3 (user define) |         Surface          | Multimodal |
+| DTLZ2 | >=3 (user define) |         Surface          | Single-peaked |
+| DTLZ3 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ4 | >=3 (user define) |         Surface          | Multimodal|
+| DTLZ5 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ6 | >=3 (user define) |         Line         | Multimodal|
+| DTLZ7 | >=3 (user define) | Discrete Surface        | Multimodal|
+
+
+All benchmark problems are implemented in the `UQPyL.problems` module, and are categorized into `single_objective` and `multi_objective` submodules.
+
+User can define `nInput`, `ub`, `lb` for benchmark problems.
+
+```python
+
+from UQPyL.problems.single_objective import Shpere
+
+problem = Sphere(nInput = 20, ub = 10, lb = -10)
+
+```

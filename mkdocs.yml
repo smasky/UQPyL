@@ -14,6 +14,7 @@ nav:
   - Tutorial:
       - Overview: 'overview.md'
       - Problem: 'problems.md'
+      - Design of Experiment: 'design_of_experiment.md'
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'
   - ChangLog: 'chang_log.md'
