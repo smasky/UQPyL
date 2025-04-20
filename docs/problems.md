@@ -443,20 +443,20 @@ UQPyL provides some built-in benchmark problems:
 
 | Name | Formula | Optimal Solution | Optima | 
 |------|---------|------------------|--------|
-|Sphere| <img src="/pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_22| <img src="/pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_1_22| <img src="/pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_21| <img src="/pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-|Schwefel_2_26 | <img src="/pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
-| Rosenbrock | <img src="/pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Step | <img src="/pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Quartic | <img src="/pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
-| Rastrigin | <img src="/pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Ackley | <img src="/pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
-| Griewank | <img src="/pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
-| Bent_Cigar | <img src="/pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
-| Discus | <img src="/pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
-| Weierstrass | <img src="/pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+|Sphere| <img src="./pic/Sphere.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_22| <img src="./pic/Schwefel_2_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_1_22| <img src="./pic/Schwefel_1_22.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_21| <img src="./pic/Schwefel_2_21.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+|Schwefel_2_26 | <img src="./pic/Schwefel_2_26.svg" /> | (420.9687 ... 420.9687) | -12569.5 |
+| Rosenbrock | <img src="./pic/Rosenbrock.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Step | <img src="./pic/Step.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Quartic | <img src="./pic/Quartic.svg" /> | ( 1, 1, 1 ... 1) | 0.0 |
+| Rastrigin | <img src="./pic/Rastrigin.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Ackley | <img src="./pic/Ackley.svg" /> | ( 0, 0, 0 ... 0 ) | 0.0 |
+| Griewank | <img src="./pic/Griewank.svg" /> | ( 0, 0, 0 ... 0) | 0.0 |
+| Bent_Cigar | <img src="./pic/Bent_Cigar.svg" /> |(0, 0, 0 ... 0) | 0.0 |
+| Discus | <img src="./pic/Discus.svg" /> | (0, 0, 0 ... 0) | 0.0 |
+| Weierstrass | <img src="./pic/Weierstrass.svg" /> | (0, 0, 0 ... 0) | 0.0 |
 
 <br>
 
