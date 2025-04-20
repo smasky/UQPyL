@@ -26,6 +26,7 @@ extra_css:
   - css/head_.css
   - css/content_.css
   - css/table_.css
+  - pic
   
 markdown_extensions:
   - pymdownx.emoji
