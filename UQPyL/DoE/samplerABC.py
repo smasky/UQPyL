@@ -5,6 +5,7 @@ from ..problems import ProblemABC as Problem
 
 def decoratorRescale(func):
     def wrapper(self, *args, **kwargs):
+        
         result=func(self, *args, **kwargs)
         
         if len(args)>=3:

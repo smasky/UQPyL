@@ -13,8 +13,8 @@ nav:
   - Quick Start: 'quick_start.md'
   - Tutorial:
       - Overview: 'overview.md'
-      - Design of Experiment: 'doe.md'
       - Problem: 'problems.md'
+      - Design of Experiment: 'doe.md'
      
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'

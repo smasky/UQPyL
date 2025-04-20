@@ -24,7 +24,7 @@ class Sphere(ProblemABC):
         F*=0
     '''
     
-    name = "Shpere"
+    name = "Sphere"
     
     def __init__(self, nInput:int =30, 
                     ub: Union[int, float, list, np.ndarray] = 100, 

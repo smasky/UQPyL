@@ -59,7 +59,7 @@ This method is used to compute objective values for a given 2D NumPy array of in
     - X(np.2darray): A 2D NumPy array where each row corresponds to a set of input variables for which the objective value is to be evaluated.
 
 - Returns:
-    - `np.2darray`:  A 2D NumPy array containing the objective values corresponding to each input set. 
+    - np.2darray:  A 2D NumPy array containing the objective values corresponding to each input set. 
 ```
 
 ```
@@ -73,7 +73,7 @@ This method is used to compute constraint values for a given 2D NumPy array of i
     - X(np.2darray): A 2D NumPy array where each row corresponds to a set of input variables for which the constraint value is to be evaluated.
 
 - Returns:
-    - `np.2darray`:  A 2D NumPy array containing the objective values corresponding to each input set. 
+    - np.2darray:  A 2D NumPy array containing the objective values corresponding to each input set. 
 
 ```
 
@@ -88,9 +88,9 @@ The method is used for calculating both objectives and constraints. By default, 
     - X(np.2darray): A 2D NumPy array where each row corresponds to a set of input variables for which the constraint value is to be evaluated.
 
 - Returns:
-    - `dict`: A dictionary containing:
-        - `'objs'`: A 2D NumPy array of objective values.
-        - `'cons'`: A 2D NumPy array of constraint values (if defined).
+    - dict: A dictionary containing:
+        - 'objs': A 2D NumPy array of objective values.
+        - 'cons': A 2D NumPy array of constraint values (if defined).
 ```
 
 ---
