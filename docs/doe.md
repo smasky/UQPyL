@@ -4,7 +4,7 @@
 
 ## 🌳 What is the Design of Experiment?
 
-Design of Experiment (DoE) refers to a structured, strategic approach for selecting samples withing decision space to efficiently system's behavior. DoE aims to extract the the maximum amount of information with a minimal number of experiments or simulations. Therefore, DoE methods are the essential for uncertainty quantification, optimization, or surrogate modeling.
+**Design of Experiment (DoE)** refers to a structured, strategic approach for selecting samples withing decision space to efficiently system's behavior. DoE aims to extract the the maximum amount of information with a minimal number of experiments or simulations. Therefore, DoE methods are the essential for uncertainty quantification, optimization, or surrogate modeling.
 
 ## 🌿 Overview of `UQPyL.DoE` module
 
@@ -85,7 +85,7 @@ There are two modes of operation:
       the number of rows may differ due to internal padding requirements.
 ```
 
-## 🍁 How to samples?
+## 🍁 How to obtain samples?
 
 ```python
 

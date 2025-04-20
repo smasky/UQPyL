@@ -1,0 +1,59 @@
+/* 表格样式美化 */
+.md-typeset table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 25px 0;
+}
+
+.md-typeset table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: bold;
+    background-color: #5b8ba0;
+    color: white;
+    border-top: none;
+    vertical-align: middle; 
+}
+
+.md-typeset table tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.md-typeset table tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+.md-typeset table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.md-typeset table td {
+    padding: 10px 15px;
+    border: none;
+    vertical-align: middle; /* 单元格内容垂直居中 */
+}
+
+/* 针对小屏幕的响应式布局 */
+@media only screen and (max-width: 760px) {
+    .md-typeset table {
+        box-shadow: none;
+    }
+    
+    .md-typeset table, 
+    .md-typeset table tbody, 
+    .md-typeset table tr, 
+    .md-typeset table td, 
+    .md-typeset table th {
+        display: block;
+    }
+    
+    .md-typeset table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+} 

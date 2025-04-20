@@ -15,6 +15,7 @@ nav:
       - Overview: 'overview.md'
       - Problem: 'problems.md'
       - Design of Experiment: 'doe.md'
+      - Sensitivity Analysis: 'sensibility.md'
      
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'
@@ -24,6 +25,7 @@ extra_css:
   - css/nav_.css
   - css/head_.css
   - css/content_.css
+  - css/table_.css
   
 markdown_extensions:
   - pymdownx.emoji
