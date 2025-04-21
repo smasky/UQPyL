@@ -2,13 +2,13 @@
 
 ---
 
-## 🍍 What is the Sensitivity Analysis
+## What is the Sensitivity Analysis
 
 **Sensitivity Analysis** is widely used to determine how different input variables influence the output of a model. It helps identify which inputs have the most significant impact on the results, providing valuable insights for **model optimization**, **uncertainty quantification**, and **decision-making**. By systematically varying inputs and observing changes in the output, the behavior of complex systems can be better understood.
 
 
 
-## 🥭 Overview of `UQPyL.sensibility`
+## Overview of `UQPyL.sensibility`
 
 The `sensibility` module of UQPyL provide comprehensive methods, including:
 
@@ -121,7 +121,7 @@ It is used to store and manage the results of sensitivity analysis.
 - totalOrder(bool) : If True,  the Si contains `ST`.
 ```
 
-## 🍌 How to perform sensitivity analysis
+## How to perform sensitivity analysis
 
 Take Ishigami Function as example.
 <p align="center"><img src="./pic/Problem2.svg" width=400 /></p>
@@ -169,7 +169,7 @@ res = fast.analyze(problem = problem, X = X, Y = Y)
 print(res)
 ```
 
-## 🍉 Check the result of sensitivity analysis (.hdf)
+## Check the result of sensitivity analysis (.hdf)
 
 When creating an instance of a sensitivity analysis (SA) method, setting the `saveFlag` or `logFlag` to `True` will trigger automatic saving of the results to specific folders — either 'Result/Data' or 'Result/Log'.
 

@@ -1,6 +1,8 @@
 # Optimization
 
-## 🫐 What is the optimization
+---
+
+## What is the optimization
 
 **Optimization** refers to the process of finding the best solution from feasible space, typically by minimizing or maximizing a specific objective function. In the context of modelling and simulation, optimization is used to identify input parameters that yield the most desirable output — for example, the highest fidelity, the lowest cost, or the best performance.
 
@@ -14,7 +16,7 @@ A optimization problem should include:
 
 In addition, optimization problems can be categorized as **single-objective** or **multi-objective**, depending on how many objectives need to be optimized.
 
-## 🫛 Overview of `UQPyL.optimization`
+## Overview of `UQPyL.optimization`
 
 Optimization is essential for modeling and solving real-world problems. The `optimization` module in UQPyL provides a collection of widely used algorithms, organized into two submodules: `single_objective` and `multi_objective`.
 
@@ -155,7 +157,7 @@ It is used to store and manage the history and results of optimization.
 - historyCons(dict) : Constraint values record at each FE count.
 ```
 
-## 🍄‍🟫 How to optimization
+## How to run optimization
 
 **For single-objective optimization:**
 
@@ -217,7 +219,7 @@ print( res.bestObjs ) # The shape is (N, 2)
 
 ```
 
-## 🍒 Check the result of optimization(.hdf)
+## Check the result of optimization(.hdf)
 
 When creating an instance of an optimization algorithm, setting the `saveFlag` or `logFlag` to `True` will trigger automatic saving of the results to specific folders — either 'Result/Data' or 'Result/Log'.
 

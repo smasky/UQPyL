@@ -2,7 +2,7 @@
 
 ---
 
-## 🍕 What is the Surrogate Model
+## What is the Surrogate Model
 
 **Surrogate Model** is the approximate model used to mimic the behavior of a more complex and expensive-to-evaluate function or model. In sensitivity analysis and optimization, surrogate models are often employed to reduce the number of costly evaluations (e.g., simulations, real-world experiments) by providing fast predictions of objective or constraint values. 
 
@@ -18,7 +18,7 @@ Surrogate models include Gaussian Processes (or called Kriging), Radial Basis Fu
 
 Overall, surrogate models show great potential in expensive-to-evaluate problems. And involving surrogate modelling has become the most distinctive and important features of UQPyL.
 
-## 🌭 Overview of `UQPyL.surrogates`
+## Overview of `UQPyL.surrogates`
 
 The `surrogates` module provides a collection of carefully implemented surrogate models designed to seamlessly support sensitivity analysis and parameter optimization tasks:
 
@@ -82,7 +82,7 @@ Accepts input data `X` and returns the predicted output values based on the trai
     A 2D NumPy array of shape (n_samples, 1), containing the predicted output values corresponding to each input sample in `X`.
 ```
 
-## 🥩 How to import surrogate model
+## How to import surrogate model
 
 Each surrogate model in UQPyL is implemented in a separate submodule for better modularity and ease of use.
 
@@ -105,7 +105,73 @@ rbf = RBF(kernel = Cubic())
 
 💡 **Noted:** Except RBF model, the Gaussian Process, Kriging model also contain kernel functions. And the usage of these kernel are same with RBF model. Each kernel class contain hyper-parameters, please check API reference.
 
-## 🍟 Fitting and Predicting with the Model
+## Fitting and predicting with surrogate models
+
+Use an RBF model with a cubic kernel to predict the output of the Sphere function.
+
+```python
+from UQPyL.problems.single_objective import Sphere
+
+# Define the problem: Sphere function with 15 inputs
+problem = Sphere(nInput = 15, ub = 100, lb = -100)
+
+# Generate training data using Latin Hypercube Sampling (LHS)
+from UQPyL.DoE import LHS
+lhs = LHS()
+
+# 300 training samples
+trainX = lhs.sample(nt = 300, problem = problem)
+
+# Evaluate training outputs
+trainY = problem.objFunc(trainX)
+
+# Generate testing data
+predictX = lhs.sample(nt = 50, problem = problem)
+
+# Create and configure the RBF surrogate model
+from UQPyL.surrogates.rbf import RBF
+from UQPyL.surrogate.rbf.kernel import Cubic
+
+# Instantiate a Cubic kernel
+kernel = Cubic()
+
+# Instantiate RBF model with Cubic kernel
+model = RBF(kernel = kernel)
+
+# Train the surrogate model
+model.fit(trainX, trainY)
+
+# Predict outputs for new inputs
+predictY = model.predict(predictX)
+
+# Evaluate model performance using R² metric
+from UQPyL.utility.metric import R_square
+
+R2 = R_square(trainY, predictY)
+
+print(R2)
+```
+
+## Use auto-tuner tool to build the surrogate model
+
+The construction of surrogate models is a crucial step prior to their deployment. To facilitate this, UQPyL offers an auto-tuning utility named `AutoTuner`, available in the `UQPyL.surrogates` module. This tool assists in identifying optimal hyperparameter settings for surrogate models.
+
+<br>
+
+`AutoTuner` supports two search strategies for identifying hyper-parameters:
+
+- **Grid Search**  
+   This method evaluates all possible combinations of specified hyper-parameters.  
+   It is simple, reliable, and time-efficient for small search spaces, but it may not always locate the global optimum.
+
+- **Evolution Search**  
+   This approach uses evolutionary algorithms to explore the hyperparameter space.  
+   It is more suitable for complex or large search spaces and has a higher chance of finding global optima.  
+   However, it can be computationally more demanding than Grid Search.
+
+
+
+
 
 
 

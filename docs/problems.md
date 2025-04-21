@@ -2,7 +2,7 @@
 
 ---
 
-## 🥕 What is the Problem
+## What is the Problem
 
 **Problem** is the foundational interface for UQPyL. It integrates necessary elements to define and solve a analysis or optimization problem. Specifically, a problem instance should include:
 
@@ -10,7 +10,7 @@
 
 2. **Problem Function:** - Python functions that maps decision variables to output values, including objectives and/or constraints. 
 
-## 🌶️ Overview of `Problem` class
+## Overview of `Problem` class
 
 For convenience, the `UQPyL.problems` module provide the `Problem` class, served as a container for all essential information required to define a problem instance.
 
@@ -95,7 +95,7 @@ The method is used for calculating both objectives and constraints. By default, 
 
 ---
 
-## 🍆 How to define problem
+## How to define problem
 
 Take the variant of the Rosenbrock function as example: 
 
@@ -286,7 +286,7 @@ ga.run(problem = problem)
 # +-------------------+-------------------+-------------------+-------------------+
 ```
 
-## 🥑 Use `evaluate` function to replace `objFunc` and `conFunc`
+## Use `evaluate` function to replace `objFunc` and `conFunc`
 
 Some practical problems  may be difficult to separately define the `objFunc` and `conFunc`. UQPyL recommends using `evaluate` function of the Problem class, instead.
 
@@ -368,7 +368,7 @@ problem = Problem(
 💡**Note:** When calling `Problem.evaluate`, the return value is a Python dictionary. Use the keys `'objs'` and `'cons'` to access the objective values and constraints, respectively — e.g., `res['objs']`, `res['cons']`.
 
 
-## 🌰 Implement `NewProblem` class, which inherits from `ProblemABC` base class
+## Implement `NewProblem` class, which inherits from `ProblemABC` base class
 
 UQPyL allows users to customize problem-based classes by extending the built-in `Problem` class. To do so, simply inherit from the abstract base class `ProblemABC`.
 
@@ -425,7 +425,7 @@ class NewProblem(ProblemABC):
 
 Once defined, the `NewProblem` class can be seamlessly used with all optimization methods and algorithms available in UQPyL. Base on this characteristic, we have developed [SWAT-UQ](https://github.com/smasky/SWAT-UQ).
 
-## 🥦 Benchmark problems
+## Benchmark problems
 
 In real-world applications, optimization problems are often complex and lack known solutions. This makes it difficult to:
 
