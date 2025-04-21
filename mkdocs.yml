@@ -16,6 +16,7 @@ nav:
       - Problem: 'problems.md'
       - Design of Experiment: 'doe.md'
       - Sensitivity Analysis: 'sensibility.md'
+      - Optimization: 'optimization.md'
      
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'

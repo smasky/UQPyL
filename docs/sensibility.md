@@ -173,14 +173,13 @@ print(res)
 
 When creating an instance of a sensitivity analysis (SA) method, setting the `saveFlag` or `logFlag` to `True` will trigger automatic saving of the results to specific folders — either 'Result/Data' or 'Result/Log'.
 
-<br>
-
-The output file containing the analysis results is named using the format "A_B_I.hdf", where: A denotes the name of the SA method used; B represents the name of the problem being analyzed; I is the index indicating the iteration or repetition of the same analysis.
-
-<br>
+The output file containing the analysis results is named following the format `A_B_I.hdf`, where: where: A denotes the name of the SA method used; B represents the name of the problem being analyzed; I is the index indicating the iteration or repetition of the same analysis.
 
 For example, a file named 'FAST_Ishigami_3.hdf' refers to the third execution of the FAST method on the Ishigami function.
 
-<br>
+To visualize the results, we recommend installing H5Web, a VSCode extension that allows interactive viewing of HDF5 files directly within the editor.
 
-To visualization, we advise to install the H5Web, a plug-in of VSCode, that can Visualize HDF5 files in VSCode. 
+<figure align="center">
+  <img src="./pic/H5Web.png" alt="H5Web in VSCode" width="500"/>
+  <figcaption>H5Web in VSCode</figcaption>
+</figure>
