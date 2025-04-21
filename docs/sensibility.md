@@ -2,7 +2,7 @@
 
 ---
 
-## 🍍 What is the Sensitivity Analysis?
+## 🍍 What is the Sensitivity Analysis
 
 **Sensitivity Analysis** is widely used to determine how different input variables influence the output of a model. It helps identify which inputs have the most significant impact on the results, providing valuable insights for **model optimization**, **uncertainty quantification**, and **decision-making**. By systematically varying inputs and observing changes in the output, the behavior of complex systems can be better understood.
 
@@ -121,7 +121,7 @@ It is used to store and manage the results of sensitivity analysis.
 - totalOrder(bool) : If True,  the Si contains `ST`.
 ```
 
-## 🍌 How to perform sensitivity analysis?
+## 🍌 How to perform sensitivity analysis
 
 Take Ishigami Function as example.
 <p align="center"><img src="./pic/Problem2.svg" width=400 /></p>

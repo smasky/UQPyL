@@ -2,7 +2,7 @@
 
 ---
 
-## 🥕 What is the Problem?
+## 🥕 What is the Problem
 
 **Problem** is the foundational interface for UQPyL. It integrates necessary elements to define and solve a analysis or optimization problem. Specifically, a problem instance should include:
 

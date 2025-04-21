@@ -17,6 +17,7 @@ nav:
       - Design of Experiment: 'doe.md'
       - Sensitivity Analysis: 'sensibility.md'
       - Optimization: 'optimization.md'
+      - Surrogate Model: 'surrogate_model.md'
      
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'

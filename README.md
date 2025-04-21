@@ -57,7 +57,7 @@ pip install .
 
 - **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**TODO**: Needs update)
 - **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
-- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (**TODO**: Being updating )
+- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (Being updating )
 - **Citation Infos**: [UQPyL 2.0](**TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
 
 ---

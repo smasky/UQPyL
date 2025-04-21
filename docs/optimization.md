@@ -217,7 +217,7 @@ print( res.bestObjs ) # The shape is (N, 2)
 
 ```
 
-## 🍒 Check the result of optimization
+## 🍒 Check the result of optimization(.hdf)
 
 When creating an instance of an optimization algorithm, setting the `saveFlag` or `logFlag` to `True` will trigger automatic saving of the results to specific folders — either 'Result/Data' or 'Result/Log'.
 

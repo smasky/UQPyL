@@ -1,3 +1,6 @@
+.md-content{
+    min-width: 63%;
+}
 
 .md-typeset h1{
     color: black;
