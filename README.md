@@ -172,7 +172,7 @@ To effectively use UQPyL, the key is to define the solved problem, including:
 
 Take the variant of the Rosenbrock function as example: 
 
-<p align="center"><img src="./docs/pic/Problem1.svg" width=650/></p>
+<p align="center"><img src="./docs/pic/Problem1.svg" width=500/></p>
 
 Compared to original Rosenbrock, this problem involve extra constraint functions ( $x_1^2+x_2^2+x_3^2 \ge 4$ ) and changes the variable types, from the origin `continuous` and `float` to `int` ( $x_2$ ) and `discrete` ( $x_3$ ).  
 
@@ -394,7 +394,7 @@ problem4 = DTLZ1(nInput=15)
 ### Sensitivity Analysis
 
 Take Ishigami Function as example.
-<p align="center"><img src="./pic/Problem2.svg" width=400 /></p>
+<p align="center"><img src="./docs/pic/Problem2.svg" width=400 /></p>
 
 The theoretical sensitivity indices of the Ishigami function are as follows:
 
