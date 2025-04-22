@@ -12,3 +12,5 @@ f\left ( x \right )  = \sin \left ( x_1 \right ) + a\cdot \sin^2 \left ( x_2 \ri
 x_1, x_2,x_3\in \left [ -\pi,\pi  \right ] \\
 a=7,b=0.1
 \end{array}
+
+\frac{2^{1 - \nu}}{\Gamma(\nu)} \left( \frac{\sqrt{2\nu}}{l} d_{ij} \right)^\nu K_\nu \left( \frac{\sqrt{2\nu}}{l} d_{ij} \right)

@@ -4,8 +4,6 @@
 
 **UQPyL** is a Python package that provides a comprehensive set of methods for supporting various workflows, including design of experiments, sensitivity analysis, optimization, data mining, and their integration. To facilitate these workflows, UQPyL is organized into several modules: a. **DoE** (Design of Experiments); b. **problems**; c. **sensibility**; d. **optimization**; e. **surrogates**. 
 
-<br>
-
 All methods and algorithms are implemented within a unified and consistent framework.
 As a result, UQPyL enables the construction of complete workflows such as:
 

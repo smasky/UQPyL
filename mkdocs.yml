@@ -17,7 +17,7 @@ nav:
       - Design of Experiment: 'doe.md'
       - Sensitivity Analysis: 'sensibility.md'
       - Optimization: 'optimization.md'
-      - Surrogate Model: 'surrogate_model.md'
+      - Surrogate Models: 'surrogate_model.md'
      
   - Example Collections: 'examples.md'
   - API Reference: 'api_reference.md'
@@ -28,7 +28,6 @@ extra_css:
   - css/head_.css
   - css/content_.css
   - css/table_.css
-  - pic
   
 markdown_extensions:
   - pymdownx.emoji

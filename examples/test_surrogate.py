@@ -23,33 +23,34 @@ YTest = problem.objFunc(XTest)
 # ------------------------------------------- #
 
 
-from UQPyL.surrogates.kriging import KRG
-from UQPyL.surrogates.kriging.kernel import Guass
+# from UQPyL.surrogates.kriging import KRG
+# from UQPyL.surrogates.kriging.kernel import Guass
 
-kernel = Guass(heterogeneous = False)
-krg = KRG(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)), kernel=kernel)
-krg.fit(X, Y)
+# kernel = Guass(heterogeneous = False)
+# krg = KRG(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)), kernel=kernel)
+# krg.fit(X, Y)
 
-YPred = krg.predict(XTest)
+# YPred = krg.predict(XTest)
  
-r2 = r_square(YTest, YPred)
+# r2 = r_square(YTest, YPred)
 
-print(r2)
+# print(r2)
 
 #-------------------------------------------#
 #            Gaussian Process               #
 #-------------------------------------------#
 
-# from UQPyL.surrogates.gp import GPR
-# from UQPyL.surrogates.gp.kernel import RBF, Matern
-# from UQPyL.optimization.single_objective import GA, PSO
-# from UQPyL.surrogates.auto_tuner import AutoTuner
-# ga = GA(maxFEs = 5000)
-# pso = PSO(maxFEs = 5000)
-# kernel = Matern(length_scale= 10.0, nu = 1.5, optimize_nu=True, heterogeneous=True)
-# gpr = GPR(kernel = kernel)
+from UQPyL.surrogates.gp import GPR
+from UQPyL.surrogates.gp.kernel import RBF, Matern
+from UQPyL.optimization.single_objective import GA, PSO
+from UQPyL.surrogates.auto_tuner import AutoTuner
+ga = GA(maxFEs = 5000)
+pso = PSO(maxFEs = 5000)
+kernel = Matern(length_scale= 10.0, nu = 1.5, optimize_nu=True, heterogeneous=True)
+gpr = GPR(kernel = kernel)
 
-# nameList = gpr.getParaList()
+nameList = gpr.getParaList()
+
 # auto_tuner = AutoTuner(optimizer = pso, model = gpr)
 # auto_tuner.optTune(X, Y, nameList)
 # gpr.fit(X, Y)
