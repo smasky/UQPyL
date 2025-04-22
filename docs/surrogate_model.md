@@ -271,7 +271,7 @@ The hyper-parameter is :
 
 - $c$ : The regularization parameter that controls the strength of the L1 penalty. A larger $c$ encourages more coefficients to shrink to zero, promoting sparsity in the model.
 
-We give a example of using LR with Lasso loss function to approximate Sphere function.
+We give a code example of using LR with Lasso loss function to approximate Sphere function.
 
 ```python
 # Step 1: Prepare training and testing data
@@ -354,8 +354,11 @@ The framework can be:
   <figcaption>The framework to sensitivity analysis with surrogate models</figcaption>
 </figure>
 
+In this framework, expensive evaluations of the true model occur only during the sampling phase, which is entirely controlled by the user.  
 
+Afterward, the surrogate model can be coupled with sensitivity analysis. This process is theoretically negligible in computational cost.
 
+Code Example:
 ```python
 
 # Step 1: Define the problem
@@ -408,7 +411,84 @@ print(res)
 
 ```
 
+## Single-objective optimization with surrogate models
 
+Optimization algorithms have proven effective in solving a wide range of problems. Most research on these methods assumes that evaluating objective or constraint functions is inexpensive and near-instantaneous. However, this assumption does not suitable for many real-world applications, particularly those involving simulation-based or physical experiment-based evaluations.
+
+To address this challenge, surrogate-assisted optimization algorithms have been developed.  
+Our team has published several works focused on solving expensive optimization problems, including: [ASMO (2014)](https://www.sciencedirect.com/science/article/pii/S1364815214001698), [ASMO-PODE (2017)](https://www.sciencedirect.com/science/article/pii/S1364815216310830), [AMSMO (2023)](https://www.sciencedirect.com/science/article/pii/S0020025523008939) ... 
+
+As an example, we use ASMO to demonstrate how surrogate models assist the optimization. Its framework is shown blew:
+
+<figure align="center">
+  <img src="./pic/opWithSurrogate.svg" width="600"/>
+  <figcaption>The framework of ASMO</figcaption>
+</figure>
+
+The process begins with a Design of Experiment (DoE) to sample initial solutions, which are then evaluated on the original expensive problem and stored in a database. Based on this data, a surrogate model is constructed to approximate the true objective function. Optimization is then performed using the surrogate model, which is computationally cheap. The best solutions found in the surrogate space are subjected to true evaluation on the original problem. **These evaluated results are used to update the database, and the surrogate model is reconstructed accordingly**. This iterative loop continues until a termination criterion is met, after which the final output is reported. The framework significantly reduces the number of expensive evaluations by leveraging the surrogate model throughout the optimization process.
+
+Overall, within this framework, the well-trained surrogate model would be coupled with the optimization algorithm. In addition, the surrogate model would be iteratively rebuilt, effectively avoiding potential accuracy issues.
+
+Unlike the original [ASMO (2014)](https://www.sciencedirect.com/science/article/pii/S1364815214001698), the ASMO implemented in UQPyL serves as a fundamental and general-purpose surrogate-assisted optimization framework that supports various surrogate models and optimization algorithms.
+
+Code Example for combining RBF model and GA within ASMO framework:
+```python
+# Step 1: Define the Sphere problem (assumed to be computationally expensive)
+from UQPyL.problems.single_objective import Sphere
+problem = Sphere(nInput=10)
+
+# Step 2: Instantiate the RBF surrogate model
+from UQPyL.surrogates.rbf import RBF
+rbf = RBF()
+
+# Step 3: Instantiate the Genetic Algorithm (GA) optimizer
+from UQPyL.optimization.single_objective import GA
+ga = GA(nPop=50, maxFEs=10000, verboseFlag=False)
+
+# Step 4: Import the ASMO framework and initialize it with the surrogate and optimizer
+from UQPyL.optimization.single_objective import ASMO
+asmo = ASMO(surrogate=rbf, optimizer=ga, saveFlag = True)
+
+# Step 5: Run the ASMO framework on the problem and retrieve the result
+res = asmo.run(problem=problem)
+
+```
+
+## Multi-objective optimization with surrogate models
+
+The framework of multi-objective optimization with surrogate models, named MO-ASMO, is similar with **ASMO**. But for multiple objectives, MO-ASMO would train a surrogate model for each objective.
+
+Code Example for combining RBF, KRG model and NSGAII within MO-ASMO framework:
+
+```python
+
+# Step 1: Define the ZDT1 problem (assumed to be computationally expensive)
+from UQPyL.optimization.multi_objective import ZDT1
+zdt1 = ZDT1()
+
+# Step 2: Instantiate surrogate models to be used
+from UQPyL.surrogates.rbf import RBF
+rbf = RBF()
+
+from UQPyL.surrogates.kriging import KRG
+krg = KRG()
+
+# Step 3: Combine multiple surrogate models using the MultiSurrogates class
+from UQPyL.surrogates import MultiSurrogates
+surrogates = MultiSurrogates(n_surrogates=2, models_list=[rbf, krg])
+
+# Step 4: Instantiate the NSGA-II optimizer
+from UQPyL.optimization.multi_objective import NSGAII
+nsgaii = NSGAII(nPop=50, maxFEs=10000, verboseFlag=False)
+
+# Step 5: Import the MOASMO framework and initialize it with the surrogate models and optimizer
+from UQPyL.optimization.multi_objective import MOASMO
+moasmo = MOASMO(surrogates=surrogates, optimizer=nsgaii, saveFlag = True)
+
+# Step 6: Run the MOASMO framework on the problem
+moasmo.run(problem=zdt1)
+
+```
 
 
 
