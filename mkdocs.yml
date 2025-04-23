@@ -4,7 +4,7 @@ theme:
   palette:
     scheme: light
   code:
-  highlight_theme: monokai
+    highlight_theme: monokai
   features:
     - navigation.indexes
 
