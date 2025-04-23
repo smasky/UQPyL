@@ -6,7 +6,9 @@
 
 UQPyL是一个功能全面的Python工具包，专注参数不确定性分析与优化，广泛适用数值模型校准、资源优化调度、产品设计等各类工程问题。该工具包目前已形成完整的方法体系，包括实验设计 (Design of Experiments)、敏感性分析 (Sensitivity Analysis) 以及支持单目标与多目标的参数优化。此外，UQPyL还内置了替代模型 (Surrogate Models) 模块，可用于计算代价昂贵问题 (Computational Expensive Problem)的高效求解。
 
-👉[English Doc](./README.md)
+👉[English Readme](./README.md)
+
+👉[说明文档](https://uqpyl.readthedocs.io/en/latest/)
 
 ## Contents
 
@@ -55,8 +57,8 @@ pip install .
 
 - **官网网站**: [参数敏感性分析及优化实验室](http://www.uq-pyl.com) (**TODO**: 需要更新)
 - **开源代码**: [GitHub 仓库](https://github.com/smasky/UQPyL/)
-- **官方文档**: [查看文档](https://uqpyl.readthedocs.io/en/latest/) (**TODO**: 正在更新中... )
-- **文章引用**: UQPyL 2.0(**TODO**: 需要更新), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+- **说明文档**: [查看文档](https://uqpyl.readthedocs.io/en/latest/)
+- **文章引用**: UQPyL 2.0(未来将更新), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
 
 ---
 

@@ -6,7 +6,9 @@
 
 **UQPyL** is a Python package for **Uncertainty Quantification** and **Optimization** of computational models and their associated problems (e.g., model calibration, resource scheduling, product design). It includes a wide range of methods and algorithms for Design of Experiments, Sensitivity Analysis, Optimization (Single- and Multi-objective). Additionally, **Surrogate Models** are built-in for solving computationally expensive problems. 
 
-👉[中文文档](https://github.com/smasky/UQPyL/blob/dev/README_CN.md)
+👉[中文简介](https://github.com/smasky/UQPyL/blob/dev/README_CN.md)
+
+👉[Detailed Documentation](https://uqpyl.readthedocs.io/en/latest/)
 
 ## Contents
 
@@ -25,10 +27,10 @@
 
 
 ## ✨ Main Features
-1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methodologies and optimization algorithms.
+1. **Comprehensive Sensitivity Analysis and Optimization**: Implements widely used sensitivity analysis methods and optimization algorithms.
 2. **Running Display and Result Save**: Enable users to track and save the history and results of their running.
-3. **Advanced Surrogate Modeling**: Integrates diverse surrogate models and auto-tunning tool to enhance these model performances.
-4. **Rich Application Resources**: Provides a comprehensive suite of benchmark problems and practical case studies, enabling users to get started quickly. (👉**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
+3. **Advanced Surrogate Modeling**: Integrate various surrogate models and an auto-tunning tool to enhance these model performances.
+4. **Rich Application Resources**: Provides a suite of benchmark problems and practical case studies, enabling users to get started quickly. (👉**Recent Planing:** For water science research, we plan to customize the interface to integrate water-related models with UQPyL, enhancing usability and functionality, like [SWAT-UQ](https://github.com/smasky/SWAT-UQ). So, **if you have interest, please contact us to collaborate.**).
 5. **Modular and Extensible Architecture**: Encourages and facilitates the development of novel methods or algorithms by users, aligning with our commitment to openness and collaboration. (**We appreciate and welcome contributions**)
 
 ## ⚙️ Installation
@@ -57,8 +59,8 @@ pip install .
 
 - **Website**: [UQPyL Official Site](http://www.uq-pyl.com) (**TODO**: Needs update)
 - **Source Code**: [GitHub Repository](https://github.com/smasky/UQPyL/)
-- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/) (Being updating )
-- **Citation Infos**: [UQPyL 2.0](**TODO**: Needs update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
+- **Documentation**: [ReadTheDocs](https://uqpyl.readthedocs.io/en/latest/)
+- **Citation Infos**: [UQPyL 2.0](Future update), [UQPyL 1.0](https://www.sciencedirect.com/science/article/pii/S1364815215300955)
 
 ---
 
@@ -76,7 +78,7 @@ pip install .
 |Morris| \ |[Morris, (2012)](https://www.tandfonline.com/doi/abs/10.1080/00401706.1991.10484804)|
 |RSA| Regional Sensitivity Analysis | [Hornberger, Spear, (1981)](https://www.osti.gov/biblio/6396608), [Pianosi (2016)](https://www.sciencedirect.com/science/article/pii/S1364815216300287) |  
 
-💡 **Noted:** All methods now support for using surrogate models.
+💡 **Noted:** All methods now support for integrating surrogate models. (Please check [this tutorial](https://uqpyl.readthedocs.io/en/latest/surrogate_model.html#sensitivity-analysis-with-surrogate-models))
 
 🚀 **Credits:** Special thanks to the [SALib](https://github.com/SALib/SALib) project for inspiring parts of the implementation.  
 
