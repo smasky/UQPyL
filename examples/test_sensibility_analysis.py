@@ -16,21 +16,21 @@ import numpy as np
 
 from UQPyL.problems import Problem
 
-# def objFunc(X):
+def objFunc(X):
     
-#     Y = np.sin(X[:, 0]) + 7* (np.sin(X[:, 1])**2) + 0.1* X[:, 2]**4*np.sin(X[:, 0])
+    Y = np.sin(X[:, 0]) + 7* (np.sin(X[:, 1])**2) + 0.1* X[:, 2]**4*np.sin(X[:, 0])
     
-#     return Y[:, np.newaxis]
+    return Y[:, np.newaxis]
 
-# setting = {
-#     'nInput' : 3,
-#     'nOutput' : 1,
-#     'ub' : np.pi,
-#     'lb' : -np.pi,
-#     'objFunc' : objFunc
-# }
+setting = {
+    'nInput' : 3,
+    'nOutput' : 1,
+    'ub' : np.pi,
+    'lb' : -np.pi,
+    'objFunc' : objFunc
+}
 
-# problem = Problem(**setting)
+problem = Problem(**setting)
 
 #Sobol
 # from UQPyL.sensibility import Sobol
@@ -43,12 +43,12 @@ from UQPyL.problems import Problem
 # print(res)
 
 #FAST
-# from UQPyL.sensibility import FAST
-# fast = FAST(verboseFlag = True)
+from UQPyL.sensibility import FAST
+fast = FAST(verboseFlag = True)
 
-# X = fast.sample(problem)
+X = fast.sample(problem)
 
-# res = fast.analyze(problem, X)
+res = fast.analyze(problem, X)
 
 # print(res)
 
