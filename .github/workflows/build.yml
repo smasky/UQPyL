@@ -17,7 +17,7 @@ jobs:
             manylinux_type: ""
             os_name: win
             arch: AMD64
-          - platform: ubuntu-20.04
+          - platform: ubuntu-latest
             manylinux_type: manylinux
             arch: x86_64
           # - platform: ubuntu-20.04
