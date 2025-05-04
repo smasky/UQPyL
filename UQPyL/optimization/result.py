@@ -107,7 +107,7 @@ class Result():
         self.bestObjs = localBestObjs
         
         self.bestTrueObjs = localBestObjs * opt
-        self.bestTrueDecs = problem._transform_to_I_D(localBestDecs, IFlag = False, DFlag = False)
+        self.bestTrueDecs = problem._transform_to_I_D(localBestDecs, IFlag = True, DFlag = True)
         
         self.bestCons = localBestCons
         self.bestFeasible = localBestFeasible
