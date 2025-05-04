@@ -8,7 +8,7 @@
 
 👉[中文简介](https://github.com/smasky/UQPyL/blob/dev/README_CN.md)
 
-👉[Detailed Documentation](https://uqpyl.readthedocs.io/en/latest/)
+👉[Documentation](https://uqpyl.readthedocs.io/en/latest/)
 
 ## Contents
 
