@@ -84,7 +84,7 @@ class NSGAII(Algorithm):
         self.setProblem(problem)
         
         # Initialize termination conditions
-        self.FEs = 0; self.iters = 0
+        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
         # Generate initial population
         pop = self.initialize(nPop)

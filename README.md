@@ -8,7 +8,9 @@
 
 👉[中文简介](https://github.com/smasky/UQPyL/blob/dev/README_CN.md)
 
-👉[Detailed Documentation](https://uqpyl.readthedocs.io/en/latest/)
+👉[中文文档](https://swat-uq.readthedocs.io/en/latest/zh/index.html)
+
+👉[Documentation](https://uqpyl.readthedocs.io)
 
 ## Contents
 
