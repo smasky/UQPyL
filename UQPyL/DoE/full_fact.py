@@ -2,8 +2,8 @@ import numpy as np
 from typing import Union, Optional
 from itertools import product
 
-from .samplerABC import Sampler, decoratorRescale
-from ..problems import ProblemABC as Problem
+from .base import Sampler
+from ..problem import ProblemABC as Problem
 
 class FFD(Sampler):
     """
@@ -39,28 +39,22 @@ class FFD(Sampler):
         
         return H
     
-    @decoratorRescale
-    def sample(self, levels: Union[np.ndarray, int, list], nx: Optional[int] = None, problem: Optional[Problem] = None, random_seed: Optional[int] = None):
+    # @decoratorRescale
+    def sample(self, problem: Problem, levels: Union[np.ndarray, int, list], random_seed: Optional[int] = None):
         """
         Generate a full factorial design sample.
         
-        :param levels: Levels for each input dimension. Can be an integer, list, or ndarray.
-        :param nx: Number of input dimensions.
         :param problem: Problem instance to use bounds for sampling.
+        :param levels: Levels for each input dimension. Can be an integer, list, or ndarray.
         :param random_seed: Random seed for reproducibility.
+        
         :return: A 2D array of full factorial design samples.
         """
         if random_seed is not None:
             self.random_state = np.random.RandomState(random_seed)
         else:
             self.random_state = np.random.RandomState()
-        
-        if problem is not None and nx is not None:
-            if problem.nInput != nx:
-                raise ValueError('The input dimensions of the problem and the samples must be the same')
-        elif problem is None and nx is None:
-            raise ValueError('Either the problem or the input dimensions must be provided')
-        
-        nx = problem.nInput if problem is not None else nx
+                
+        nx = problem.nInput
 
-        return self._generate(levels, nx)
+        return problem._transform_unit_X(self._generate(levels, nx))

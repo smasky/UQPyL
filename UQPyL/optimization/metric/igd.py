@@ -1,9 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 
-def IGD(pop, optimum):
-    
-    popObjs = pop.getBest().objs
+def IGD(popObjs, optimum):
     
     distances = cdist(optimum, popObjs, metric='euclidean')
     

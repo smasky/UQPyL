@@ -1,8 +1,7 @@
 import numpy as np
 import copy
 
-from .utility_functions.ndsort import NDSort
-from .utility_functions.crowding_distance import crowdingDistance
+from .util import NDSort, crowdingDist
 
 class Population():
     
@@ -24,6 +23,9 @@ class Population():
             self.cons = None
             
         self.nPop, self.D = self.decs.shape
+        
+        self.frontNo = None
+        self.crowdDis = None
     
     def copy(self):
         
@@ -48,44 +50,34 @@ class Population():
             
         self.nPop=self.decs.shape[0]
     
-    def getBest(self, k: int = None):
+    def getBest(self, k: int = 1):
         
         '''
         Get the `k` best individual in the population.
         '''
         
         if self.nOutput == 1:
-            return self._getBestSingle(k)
+            return self._bestSingle(k)
         else:
-            return self._getBestMulti(k)
+            return self._bestMulti()
     
-    def _getBestSingle(self, k: int = None):
+    def _bestSingle(self, k: int = None):
+                
+        args = self.argsort()
         
-        if self.cons is not None:
-            
-            CV = self.conWgt * self.cons if self.conWgt is not None else self.cons
-            CV = np.sum(np.maximum(0, CV), axis=1)
-            feasible = CV <= 0
-            
-            combinedObjs = np.where(feasible[:, None],
-                                      self.objs,
-                                      self.objs + CV[:, None])
-        else:
-            combinedObjs = self.objs
+        Idx = args[:k] if k is not None else args[:1]
         
-        sortedIdx = np.argsort(combinedObjs.ravel())
-        
-        if k is not None:
-            sortedIdx = sortedIdx[:k]
-        else:
-            sortedIdx = sortedIdx[:1]
-        
-        return Population(self.decs[sortedIdx],
-                          self.objs[sortedIdx],
-                          self.cons[sortedIdx] if self.cons is not None else None,
+        return Population(self.decs[Idx],
+                          self.objs[Idx],
+                          self.cons[Idx] if self.cons is not None else None,
                           self.conWgt)
     
-    def _getBestMulti(self, k: int = None):
+    def _bestMulti(self, k: int = None):
+        
+        if self.frontNo is None:
+            frontNo, _ = NDSort(self.objs, self.cons)
+        else:
+            frontNo = self.frontNo
         
         if self.cons is not None:
             
@@ -96,7 +88,6 @@ class Population():
             feasiblePop = self[feasible]
             
             if len(feasiblePop) > 0:
-                frontNo, _ = NDSort(feasiblePop)
                 nonDominated = frontNo == 1
                 bestPop = feasiblePop[nonDominated]
             
@@ -106,12 +97,14 @@ class Population():
                 bestPop = self[sortedIdx[:k]]
                 return bestPop
         else:
-            frontNo, _ = NDSort(self)
             nonDominated = frontNo == 1
             bestPop = self[nonDominated]
         
         if k is not None and len(bestPop) > k:
-            crowDis = crowdingDistance(self, frontNo)
+            if self.crowdDis is None:
+                crowDis = crowdingDist(self.objs, frontNo)
+            else:
+                crowDis = self.crowdDis
             sortedIdx = np.lexsort((-crowDis, frontNo))
             bestPop = self[sortedIdx[:k]]
         
@@ -128,7 +121,7 @@ class Population():
             feasiblePop = self[feasible]
             
             if len(feasiblePop) > 0:
-                frontNo, _ = NDSort(feasiblePop)
+                frontNo, _ = NDSort(feasiblePop.objs, feasiblePop.cons)
                 nonDominated = frontNo == 1
                 bestPop = feasiblePop[nonDominated]
                 
@@ -137,7 +130,7 @@ class Population():
                 bestPop = self[sortedIdx[:10]]
                 return bestPop
         else:
-            frontNo, _ = NDSort(self)
+            frontNo, _ = NDSort(self.objs, self.cons)
             nonDominated = frontNo == 1
             bestPop = self[nonDominated]
 
@@ -148,24 +141,27 @@ class Population():
         if self.nOutput == 1:
             
             if self.cons is not None:
+                # TODO: validate this
+                infeasible = (self.cons > 0).any(axis=1).astype(int).reshape(-1, 1)
                 
-                popCons_ = np.maximum(0 , self.cons)
+                viol = np.maximum(0.0, self.cons)
+                violMax = np.max(viol, axis=0); violMin = np.min(viol, axis=0)
+                denom = violMax - violMin + 1e-12
+                viol_norm = (viol - v_min) / denom * 1e6
+                              
+                viol_weighted = viol_norm * self.conWgt if self.conWgt is not None else viol_norm
                 
-                popCons = popCons_ * self.conWgt if self.conWgt is not None else popCons_ * 1e6
-                
-                popSumCon = np.sum( popCons, axis=1 ).reshape(-1, 1)
-                
-                infeasible = (popSumCon > 0).astype(int)
-                
+                popSumCon = viol_weighted.sum(axis=1, keepdims=True)
+                 
             integration = self.objs + infeasible * popSumCon if self.cons is not None else self.objs
                 
             args = np.argsort(integration.ravel())
             
         else:
             
-            frontNo, _ = NDSort(self)
+            frontNo, _ = NDSort(self.objs, self.cons)
             
-            crowDis = crowdingDistance(self, frontNo)
+            crowDis = crowdingDist(self.objs, frontNo)
             
             args = np.lexsort((-crowDis, frontNo))
         

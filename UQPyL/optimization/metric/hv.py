@@ -1,16 +1,7 @@
 import numpy as np
 
-def HV(pop, refPoint=None, normalize=True):
-    """计算Pareto前沿的超体积指标。
-    
-    参数:
-        pop: Population对象, 包含目标函数值
-        refPoint: numpy数组, 参考点。如果为None, 将自动生成。
-                  参考点应在所有目标维度上比任何解要差。
-        
-    返回:
-        float: 计算得到的超体积值
-    """
+def HV(pop, refPoint = None, normalize = True):
+
     popObjs = pop.getBest().objs
     _, m = popObjs.shape
     

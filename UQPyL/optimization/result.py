@@ -2,6 +2,7 @@ import numpy as np
 
 from .population import Population
 from .metric import HV
+
 class Result():
 
     def __init__(self, algorithm):
@@ -40,11 +41,10 @@ class Result():
         
     def update(self, pop: Population, problem, FEs, iter, algType):
         
-        decs = np.copy(pop.decs)
-        
         opt = problem.opt
         
         if problem.encoding == 'mix':
+            decs = np.copy(pop.decs)
             decs = problem._transform_discrete_var(decs)
         
         if algType == 'EA':
@@ -85,13 +85,13 @@ class Result():
             self.appearFEs = FEs
             self.appearIters = iter
         
-            # tolerate
-            if self.bestObjs - localBestObjs > self.algorithm.tolerate: 
-                self.algorithm.tolerateTimes = 0
-            else:
-                self.algorithm.tolerateTimes += 1
-        else:
-            self.algorithm.tolerateTimes += 1
+        #     # tolerate
+        #     if self.bestObjs - localBestObjs > self.algorithm.tolerate: 
+        #         self.algorithm.tolerateTimes = 0
+        #     else:
+        #         self.algorithm.tolerateTimes += 1
+        # else:
+        #     self.algorithm.tolerateTimes += 1
     
     def _update_MOEA(self, pop, FEs, iter, problem):
         
@@ -113,16 +113,17 @@ class Result():
         self.bestFeasible = localBestFeasible
         
         localHV = HV(pop, refPoint = np.max(pop.objs, axis=0) * 1.1)
+        
         self.bestMetric = localHV
         self.historyBestMetrics[FEs] = self.bestMetric
         
         self.appearFEs = FEs
         self.appearIters = iter
         
-        if localHV - self.bestMetric > self.algorithm.tolerate:
-            self.algorithm.tolerateTimes = 0
-        else:
-            self.algorithm.tolerateTimes += 1
+        # if localHV - self.bestMetric > self.algorithm.tolerate:
+        #     self.algorithm.tolerateTimes = 0
+        # else:
+        #     self.algorithm.tolerateTimes += 1
         
     def _update_history(self, pop, FEs, iters, problem):
         
@@ -197,11 +198,11 @@ class Result():
             
         #global best record
         globalBest={}
-        globalBest["Best Decisions"] = self.bestDecs
-        globalBest["Best Objectives"] = self.bestTrueObjs
+        globalBest["Best Decisions in Algorithm"] = self.bestDecs
+        globalBest["Best Objectives in Algorithm"] = self.bestObjs
         
-        globalBest["Best True Decisions"] = self.bestTrueDecs
-        globalBest["Best True Objectives"] = self.bestTrueObjs
+        globalBest["Best Decisions in Reality"] = self.bestTrueDecs
+        globalBest["Best Objectives in Reality"] = self.bestTrueObjs
         
         if self.bestCons is not None:
             globalBest["Best Constrains"] = self.bestCons
@@ -209,15 +210,19 @@ class Result():
         globalBest["FEs"] = self.appearFEs
         globalBest["Iter"] = self.appearIters
         
-        result = {
-            "History_Population_Algorithm" : historyPopulation,
-            "History_Best_Algorithm" : historyBest,
-            "History_Population_Reality" : historyPopulation_True,
-            "History_Best_Reality" : historyBest_True,
-            "Global_Best" : globalBest,
-            "Max_Iter" : self.algorithm.iters,
-            "Max_FEs" : self.algorithm.FEs }
+        result = {}
+        result['Results'] = globalBest
+        result['History'] = {
+            "Algorithm" : {'History Population' : historyPopulation, 'History Best' : historyBest},
+            "Reality" : {'History Population' : historyPopulation_True, 'History Best' : historyBest_True},
+        }
         
+        result['Infos'] = {
+            "Max Iter" : self.algorithm.iters,
+            "Max FEs" : self.algorithm.FEs,
+            "Algorithm Name" : self.algorithm.name,
+        }
+                
         return result
         
     def reset(self):

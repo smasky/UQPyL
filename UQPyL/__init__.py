@@ -1,13 +1,14 @@
-from . import problems, surrogates, optimization, sensibility, DoE, utility
+from . import problem, surrogate, optimization, analysis, doe, util
 
 __version__ = "2.1.3"
 __author__ = "wmtSky"
 
 __all__=[
-    "problems",
-    "surrogates",
+    "problem",
+    "surrogate",
     "optimization",
-    "sensibility",
-    "DoE",
-    "utility"
+    "analysis",
+    "doe",
+    "inference",
+    "util"
 ]

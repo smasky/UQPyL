@@ -2,10 +2,10 @@ from typing import Literal, Optional
 import numpy as np
 from scipy.spatial.distance import pdist
 
-from .samplerABC import Sampler, decoratorRescale
-from ..problems import ProblemABC as Problem
+from .base import Sampler
+from ..problem import ProblemABC as Problem
 
-def _lhs_classic(nt: int, nx: int, random_state=None) -> np.ndarray:
+def _lhs_classic(nt: int, nx: int, random_state = None):
     """
     Generate a classic Latin Hypercube Sampling (LHS) design.
     
@@ -36,9 +36,7 @@ def _lhs_classic(nt: int, nx: int, random_state=None) -> np.ndarray:
     
     return H
     
-################################################################################
-
-def _lhs_centered(nt: int, nx: int, random_state=None) -> np.ndarray:
+def _lhs_centered(nt: int, nx: int, random_state = None):
     """
     Generate a centered Latin Hypercube Sampling (LHS) design.
     
@@ -66,9 +64,7 @@ def _lhs_centered(nt: int, nx: int, random_state=None) -> np.ndarray:
     
     return H
     
-################################################################################
-
-def _lhs_maximin(nt: int, nx: int, iterations: int, random_state=None)-> np.ndarray:
+def _lhs_maximin(nt: int, nx: int, iterations: int, random_state = None):
     """
     Generate a maximin Latin Hypercube Sampling (LHS) design.
     
@@ -95,7 +91,7 @@ def _lhs_maximin(nt: int, nx: int, iterations: int, random_state=None)-> np.ndar
     
     return H
 
-def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state=None)-> np.ndarray:
+def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state = None):
     """
     Generate a centered maximin Latin Hypercube Sampling (LHS) design.
     
@@ -106,7 +102,7 @@ def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state=None)-
     :return: A 2D array of centered maximin LHS samples.
     """
     if random_state is None:
-        random_state=np.random.RandomState()
+        random_state = np.random.RandomState()
     
     maxdist = 0
     
@@ -122,7 +118,7 @@ def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state=None)-
     return H
 ################################################################################
 
-def _lhs_correlate(nt: int, nx: int, iterations: int, random_state=None) -> np.ndarray:
+def _lhs_correlate(nt: int, nx: int, iterations: int, random_state = None):
     """
     Generate a correlation-optimized Latin Hypercube Sampling (LHS) design.
     
@@ -133,7 +129,7 @@ def _lhs_correlate(nt: int, nx: int, iterations: int, random_state=None) -> np.n
     :return: A 2D array of correlation-optimized LHS samples.
     """
     if random_state is None:
-        random_state=np.random.RandomState()
+        random_state = np.random.RandomState()
     
     mincorr = np.inf
     
@@ -149,8 +145,8 @@ def _lhs_correlate(nt: int, nx: int, iterations: int, random_state=None) -> np.n
 
     return H
 
-Criterion=Literal['classic','center','maximin','center_maximin','correlation']
-LHS_METHOD={'classic': _lhs_classic, 'center': _lhs_centered, 'maximin': _lhs_maximin,
+Criterion = Literal['classic','center','maximin','center_maximin','correlation']
+LHS_METHOD = {'classic': _lhs_classic, 'center': _lhs_centered, 'maximin': _lhs_maximin,
              'center_maximin': _lhs_centered_maximin, 'correlation': _lhs_correlate}
 
 class LHS(Sampler):
@@ -162,16 +158,16 @@ class LHS(Sampler):
     
             
     """
-    def __init__(self, criterion: Criterion ='classic', iterations: int=5):
+    def __init__(self, criterion: Criterion ='classic', iterations = 5):
         """
         Initialize the LHS sampler with a specified criterion and number of iterations.
         
         :param criterion: The LHS criterion to use.
         :param iterations: Number of iterations for optimization methods.
         """
-        self.criterion=criterion
-        self.iterations=iterations
-        
+
+        self.criterion = criterion
+        self.iterations = iterations
         #initial random state
         super().__init__()
         
@@ -196,8 +192,8 @@ class LHS(Sampler):
         
         return xInit
     
-    @decoratorRescale
-    def sample(self, nt: int, nx: int = None, problem: Problem = None, random_seed: Optional[int] = None) -> np.ndarray:
+    # @decoratorRescale
+    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
         """
         Generate a Latin-hypercube design.
         
@@ -208,17 +204,8 @@ class LHS(Sampler):
         :return: A 2D array of LHS samples.
         """
         
-        if random_seed is not None:
-            self.random_state = np.random.RandomState(random_seed)
-        else:
-            self.random_state = np.random.RandomState()
+        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+                
+        nx = problem.nInput
         
-        if problem is not None and nx is not None:
-            if problem.nInput != nx:
-                raise ValueError('The input dimensions of the problem and the samples must be the same')
-        elif problem is None and nx is None:
-            raise ValueError('Either the problem or the input dimensions must be provided')
-        
-        nx = problem.nInput if problem is not None else nx
-        
-        return self._generate(nt, nx)
+        return problem._transform_unit_X(self._generate(nt, nx))

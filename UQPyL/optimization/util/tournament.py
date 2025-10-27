@@ -1,0 +1,57 @@
+import numpy as np
+
+def tourSelect(K, N, *fitnesses):
+    """
+    K-tournament selection with lexicographic ranking on multiple 2D fitness arrays.
+
+    Parameters:
+    - K: The number of candidates to compete in each tournament.
+    - N: The number of selections to make.
+    - fitnesses: The fitness values of the candidates (can be more than 2).
+
+    Returns:
+    - indices of the selected solutions.
+    """
+    
+    if len(fitnesses) == 0:
+        raise ValueError("At least one fitness matrix is required.")
+    
+    validFitnesses = [f for f in fitnesses if f is not None]
+    
+    # Stack all fitness columns
+    F = np.column_stack(validFitnesses) 
+    
+    n = F.shape[0]
+    if n == 0:
+        return np.array([], dtype=int)
+    
+    order = np.lexsort(np.fliplr(F).T)
+    rank = np.empty(n, dtype=int); rank[order] = np.arange(n)
+    
+    candidates = np.random.randint(0, n, size=(N, K))
+    winners = candidates[np.arange(N), np.argmin(rank[candidates], axis=1)]
+    
+    return winners
+    
+    # fitnessList = []
+    
+    # for fitness in fitnesses:
+    #     if isinstance(fitness, np.ndarray):
+    #         fitness_2d = fitness.reshape(-1, 1) if fitness.ndim == 1 else fitness
+    #         fitnessList += [fitness_2d[:, i] for i in range(fitness_2d.shape[1])]
+            
+    # # Combine the fitness values and sort candidates based on all fitnesses in reverse order
+    # lexsort_keys = tuple(fitness.ravel() for fitness in reversed(fitnessList))
+    
+    # # Rank based on the combined fitness values
+    # rankIndex = np.lexsort(lexsort_keys).reshape(-1, 1)
+    # rank = np.argsort(rankIndex, axis=0).ravel()
+
+    # # Perform K-tournament selection
+    # tourSelection = np.random.randint(0, high=fitnessList[0].shape[0], size=(N, K))
+
+    # # Find the winners based on rank within each tournament
+    # winner_indices_in_tournament = np.argmin(rank[tourSelection], axis=1).ravel()
+    # winners_original_order = tourSelection[np.arange(N), winner_indices_in_tournament]
+
+    # return winners_original_order.ravel()

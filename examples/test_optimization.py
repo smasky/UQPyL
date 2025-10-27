@@ -1,58 +1,104 @@
 import sys
 sys.path.insert(0, '.')
 
-import numpy as np
+#---------------------------------------------#
+# Single Objective Optimization
+from UQPyL.problem.sop import Sphere
 
-#---------------------------------------------------------------------------------------#
-#Single Objective
-# from UQPyL.optimization.single_objective import GA, PSO, DE, CSA, SCE_UA, ABC
-# from UQPyL.problems.single_objective import Sphere
+problem = Sphere(30)
 
-# problem = Sphere(30)
+# ------------------------------------------- #
+#                    GA                       # 
+# ------------------------------------------- #
 
-#GA
-# ga = GA()
-# res = ga.run(problem)
+from UQPyL.optimization.soea import GA
 
-#PSO
+ga = GA()
+res = ga.run(problem)
+
+# ------------------------------------------- #
+#                    PSO                      # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import PSO
 # pso = PSO()
 # res = pso.run(problem)
 
-#DE
+# ------------------------------------------- #
+#                    DE                       # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import DE
 # de = DE()
 # res = de.run(problem)
 
-#CSA
+# ------------------------------------------- #
+#                   CSA                       # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import CSA
 # csa = CSA()
 # res = csa.run(problem)
 
-#SCE_UA
+# ------------------------------------------- #
+#                  SCE-UA                     # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import SCE_UA
 # sce_ua = SCE_UA()
 # res = sce_ua.run(problem)
 
-#ABC
+# ------------------------------------------- #
+#                  ML-SCE-UA                  # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import ML_SCE_UA
+# ml_sce_ua = ML_SCE_UA()
+# res = ml_sce_ua.run(problem)
+
+# ------------------------------------------- #
+#                    ABC                      # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.soea import ABC
 # abc = ABC()
 # res = abc.run(problem)
 
-#-----------------------------------------------------------------------------------#
-#Multi Objective
-from UQPyL.optimization.multi_objective import NSGAII, NSGAIII, MOEAD, RVEA
-from UQPyL.problems.multi_objective import ZDT1
+#---------------------------------------------#
+# Multi Objective Optimization
 
+from UQPyL.problem.mop import ZDT1
 problem = ZDT1(30)
 
-#NSGAII
-nsgaii = NSGAII()
-res = nsgaii.run(problem)
+# ------------------------------------------- #
+#                    NSGAII                   # 
+# ------------------------------------------- #
 
-#NSGAIII
+# from UQPyL.optimization.moea import NSGAII
+# nsgaii = NSGAII()
+# res = nsgaii.run(problem)
+
+# ------------------------------------------- #
+#                   NSGAIII                   # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.moea import NSGAIII
 # nsgaiii = NSGAIII()
 # res = nsgaiii.run(problem)
 
-#MOEAD
-# moead = MOEAD()
+# ------------------------------------------- #
+#                   MOEA/D                    # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.moea import MOEAD
+# moead = MOEAD(aggregation='PBI')
 # res = moead.run(problem)
 
-# RVEA
+# ------------------------------------------- #
+#                     RVEA                    # 
+# ------------------------------------------- #
+
+# from UQPyL.optimization.moea import RVEA
 # rvea = RVEA()
 # res = rvea.run(problem)
+

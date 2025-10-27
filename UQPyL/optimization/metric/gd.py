@@ -1,9 +1,9 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 
-def GD(pop, optimum):
+def GD(popObjs, optimum):
     
-    distances = cdist(pop, optimum, metric='euclidean')
+    distances = cdist(optimum, popObjs, metric='euclidean')
     
     minDist = np.min(distances, axis=1)
     

@@ -2,19 +2,17 @@ import sys
 sys.path.insert(0, '.')
 
 import numpy as np
+from UQPyL.problem import Problem
 
-#Ishigami Function
-#S1 = 0.314
-#S2 = 0.442
-#S3 = 0
-#S12 = 0
-#S13 = 0.244
-#S23 = 0 
-#ST1 = 0.558
-#ST2 = 0.442
-#ST3 = 0.244
 
-from UQPyL.problems import Problem
+
+# ------------------------------------------- #
+#              Ishigami Function              # 
+# ------------------------------------------- #
+
+# S1 0.314 0.442 0.000
+# S2 0 0.244 0
+# ST 0.558 0.442 0.244
 
 def objFunc(X):
     
@@ -32,104 +30,132 @@ setting = {
 
 problem = Problem(**setting)
 
-#Sobol
-# from UQPyL.sensibility import Sobol
 
-# sobol = Sobol(calSecondOrder = True)
+# ------------------------------------------- #
+#     Non-monotonic Sobol G Function          # 
+# ------------------------------------------- #
 
-# X = sobol.sample(problem, 512)
-
-# res = sobol.analyze(problem, X)
-# print(res)
-
-#FAST
-from UQPyL.sensibility import FAST
-fast = FAST(verboseFlag = True)
-
-X = fast.sample(problem)
-
-res = fast.analyze(problem, X)
-
-# print(res)
-
-#RBD-FAST
-# from UQPyL.sensibility import RBD_FAST
-
-# rbd_fast =  RBD_FAST()
-
-# X = rbd_fast.sample(problem, 500)
-
-# res = rbd_fast.analyze(problem, X)
-
-# print(res)
-
-
-#Non-monotonic Sobol G Function (8 parameters)
 # First-order indices
 # S1: 0.7065 0.1791 0.0237 0.0072 0.000 0.0 0.0 0.0 0.0
 
-def objFunc(X):
+# def objFunc(X):
     
-    a = np.array([0, 1, 4.5, 9, 99, 99, 99, 99])
-    alpha = np.ones_like(a)
-    Ytemp = np.zeros(X.shape)
+#     a = np.array([0, 1, 4.5, 9, 99, 99, 99, 99])
+#     alpha = np.ones_like(a)
+#     Ytemp = np.zeros(X.shape)
 
-    for i in range(8):
+#     for i in range(8):
         
-        Ytemp[:, i] = ((1 + alpha[i]) * np.abs(2 * X[:, i] - 1) ** alpha[i] + a[i]) / (1 + a[i])
+#         Ytemp[:, i] = ((1 + alpha[i]) * np.abs(2 * X[:, i] - 1) ** alpha[i] + a[i]) / (1 + a[i])
         
-    Y = Ytemp.prod(axis=1)[:, np.newaxis]
+#     Y = Ytemp.prod(axis=1)[:, np.newaxis]
     
-    return Y
+#     return Y
 
-setting = {
-    'nInput' : 8,
-    'nOutput' : 1,
-    'ub' : 1,
-    'lb' : 0,
-    'objFunc' : objFunc
-}
+# setting = {
+#     'nInput' : 8,
+#     'nOutput' : 1,
+#     'ub' : 1,
+#     'lb' : 0,
+#     'objFunc' : objFunc
+# }
 
-problem = Problem(**setting)
+# problem = Problem(**setting)
 
-# from UQPyL.sensibility import Morris
+# ------------------------------------------- #
+#                   Sobol                     # 
+# ------------------------------------------- #
 
-# morris = Morris()
+from UQPyL.analysis import Sobol
+
+sobol = Sobol(saveFlag = True)
+
+X = sobol.sample(problem, 512, secondOrder = True)
+
+Y = problem.objFunc(X)
+
+res = sobol.analyze(problem, X, Y, secondOrder = True)
+
+# ------------------------------------------- #
+#                   FAST                      # 
+# ------------------------------------------- #
+
+# from UQPyL.analysis import FAST
+
+# fast = FAST(verboseFlag = True, saveFlag = True)
+
+# X = fast.sample(problem, N = 512)
+
+# Y = problem.objFunc(X)
+
+# res = fast.analyze(problem, X, Y)
+
+# ------------------------------------------- #
+#                   RBD-FAST                  # 
+# ------------------------------------------- #
+
+# from UQPyL.analysis import RBDFAST
+
+# rbd_fast =  RBDFAST(saveFlag = True)
+
+# X = rbd_fast.sample(problem, 500)
+
+# Y = problem.objFunc(X)
+
+# res = rbd_fast.analyze(problem, X, Y)
+
+# ------------------------------------------- #
+#                   Morris                    # 
+# ------------------------------------------- #
+
+# from UQPyL.analysis import Morris
+
+# morris = Morris(saveFlag = True)
 
 # X = morris.sample(problem, numTrajectory=500)
 
-# res = morris.analyze(problem, X)
-# print(res)
+# Y = problem.objFunc(X)
 
-#RSA
-# from UQPyL.sensibility import RSA
+# res = morris.analyze(problem, X, Y)
 
-# rsa = RSA()
+# ------------------------------------------- #
+#                   RSA                       # 
+# ------------------------------------------- #
+
+# from UQPyL.analysis import RSA
+
+# rsa = RSA(saveFlag = True)
 
 # X = rsa.sample(problem, N = 1000)
 
-# res = rsa.analyze(problem, X)
-# print(res)
+# Y = problem.objFunc(X)
 
-#MARS-SA
-# from UQPyL.sensibility import MARS_SA
+# res = rsa.analyze(problem, X, Y)
 
-# mars_sa = MARS_SA()
+# ------------------------------------------- #
+#                   MARS                      # 
+# ------------------------------------------- #
 
-# X = mars_sa.sample(problem, N = 1000)
+# from UQPyL.analysis import MARS
 
-# res = mars_sa.analyze(problem, X)
+# mars = MARS(saveFlag = True)
 
-# print(res)
+# X = mars.sample(problem, N = 1000)
 
-#Delta_Test
-from UQPyL.sensibility import Delta_Test
+# Y = problem.objFunc(X)
 
-delta_test = Delta_Test()
+# res = mars.analyze(problem, X, Y)
 
-X = delta_test.sample(problem, N = 1000 )
+# ------------------------------------------- #
+#                   Delta-Test                # 
+# ------------------------------------------- #
 
-# res = delta_test.analyze(problem, X)
-res = delta_test.findCombEA(problem, X, FEs = 1000)
-# res = delta_test.findCombVio(problem, X)
-# print(res)
+# from UQPyL.analysis import DeltaTest
+
+# delta_test = DeltaTest(saveFlag = True)
+
+# X = delta_test.sample(problem, N = 1000 )
+
+# Y = problem.objFunc(X)
+
+# res = delta_test.analyze(problem, X, Y)
