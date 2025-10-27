@@ -76,6 +76,8 @@ class ML_SCE_UA(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
+        # reset history
+        self.reset()
         
         # Retrieve parameter values
         ngs, npg, nps, nspl = self.getParaVal('ngs', 'npg', 'nps', 'nspl')

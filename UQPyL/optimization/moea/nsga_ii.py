@@ -72,6 +72,8 @@ class NSGAII(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
+        # reset history
+        self.reset()
         
         # Parameter Setting
         proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')

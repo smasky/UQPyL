@@ -179,21 +179,21 @@ YTest = problem.objFunc(XTest)
 #           Radial Basis Function           #
 #-------------------------------------------#
 
-from UQPyL.surrogate.rbf import RBF
-from UQPyL.surrogate.rbf.kernel import Cubic
-from UQPyL.surrogate.auto_tuner import AutoTuner
+# from UQPyL.surrogate.rbf import RBF
+# from UQPyL.surrogate.rbf.kernel import Cubic
+# from UQPyL.surrogate.auto_tuner import AutoTuner
 
-kernel = Cubic()
-rbf = RBF(kernel = kernel)
+# kernel = Cubic()
+# rbf = RBF(kernel = kernel)
 
-paraList = rbf.getParaList()
+# paraList = rbf.getParaList()
 
-paraGrid = {'C_smooth' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100], 'epsilon' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100]}
+# paraGrid = {'C_smooth' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100], 'epsilon' : [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100]}
 
-auto_tuner = AutoTuner(model = rbf)
-paraVals, bestObj = auto_tuner.gridTune(X, Y, paraGrid)
+# auto_tuner = AutoTuner(model = rbf)
+# paraVals, bestObj = auto_tuner.gridTune(X, Y, paraGrid)
 
-rbf.fit(X, Y)
-YPred = rbf.predict(XTest)
-r2 = r_square(YTest, YPred)
-print(r2)
+# rbf.fit(X, Y)
+# YPred = rbf.predict(XTest)
+# r2 = r_square(YTest, YPred)
+# print(r2)

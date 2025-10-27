@@ -70,6 +70,8 @@ class MOEAD(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
+        # reset history
+        self.reset()
         
         # Retrieve parameter values
         aggregation = self.getParaVal('aggregation')

@@ -71,6 +71,8 @@ class ABC(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
+        # reset history
+        self.reset()
         
         # Parameter Setting
         employedRate, limit = self.getParaVal('employedRate', 'limit')

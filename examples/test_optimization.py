@@ -11,10 +11,10 @@ problem = Sphere(30)
 #                    GA                       # 
 # ------------------------------------------- #
 
-from UQPyL.optimization.soea import GA
+# from UQPyL.optimization.soea import GA
 
-ga = GA()
-res = ga.run(problem)
+# ga = GA()
+# res = ga.run(problem)
 
 # ------------------------------------------- #
 #                    PSO                      # 

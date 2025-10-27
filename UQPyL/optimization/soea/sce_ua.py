@@ -70,6 +70,8 @@ class SCE_UA(AlgorithmABC):
         
         :return: The result of the optimization process.
         '''
+        # reset history
+        self.reset()
         
         # Retrieve parameter values
         ngs, npg, nps, nspl = self.getParaVal('ngs', 'npg', 'nps', 'nspl')

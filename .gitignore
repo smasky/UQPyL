@@ -6,6 +6,8 @@ result.json
 dist
 UQPyL.egg-info
 
+Result
+
 Test/*.pickle
 Test/*.pdf
 Test/*.eps

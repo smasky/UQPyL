@@ -70,6 +70,8 @@ class RVEA(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
+        # reset history
+        self.reset()
         
         # Parameters setting
         alpha, fr = self.getParaVal('alpha', 'fr')

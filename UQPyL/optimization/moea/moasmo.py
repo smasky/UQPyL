@@ -4,8 +4,9 @@ from scipy.spatial.distance import cdist
 
 from .nsga_ii import NSGAII
 from ..base import AlgorithmABC, Verbose
-
 from ..util import NDSort
+from ..population import Population
+
 from ...doe import LHS
 from ...problem import Problem
 from ...surrogate import MultiSurrogate
@@ -60,23 +61,20 @@ class MOASMO(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
-        self.setPara('pct', pct)
-        self.setPara('nInit', nInit)
-        self.setPara('advance_infilling', advance_infilling)
+        self.setParaVal('pct', pct)
+        self.setParaVal('nInit', nInit)
+        self.setParaVal('advance_infilling', advance_infilling)
         
         # Initialize surrogate models
-        if surrogates is not None:
-            self.surrogates = surrogates
-        else:
-            self.surrogates = MultiSurrogate(n_surrogates=3, models_list=[RBF(), RBF(), RBF()])
-        
+        self.surrogates = surrogates
+
         # Initialize optimizer
         if optimizer is not None:
             if not isinstance(optimizer, AlgorithmABC):
                 raise ValueError("Please append the type of optimizer!")
             self.optimizer = optimizer
         else:
-            self.optimizer = NSGAII(maxFEs= 5000)
+            self.optimizer = NSGAII(maxFEs = 5000)
         
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
         
@@ -94,6 +92,13 @@ class MOASMO(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
+        # reset history
+        self.reset()
+        
+        # Initialize surrogate models
+        if self.surrogates is None:
+            self.surrogates = MultiSurrogate(n_surrogates = problem.nOutput, models_list=[RBF() for _ in range(problem.nOutput)])
+
         
         # Retrieve parameter values
         pct = self.getParaVal('pct')
@@ -130,7 +135,7 @@ class MOASMO(AlgorithmABC):
             pop = self.initialize(nInit)
         
         # Iterative optimization process
-        while self.checkTermination():
+        while self.checkTermination(pop):
             
             # Build surrogate models
             self.surrogates.fit(pop.decs, pop.objs)
@@ -185,9 +190,7 @@ class MOASMO(AlgorithmABC):
             self.evaluate(bestOff)
             
             pop.add(bestOff)
-            
-            self.record(pop)
-                
+                            
         return self.result
           
         

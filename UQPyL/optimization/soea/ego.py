@@ -2,6 +2,8 @@
 import numpy as np
 from scipy.stats import norm
 
+from UQPyL.util import MinMaxScaler
+
 from .ga import GA
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
@@ -37,8 +39,10 @@ class EGO(AlgorithmABC):
     
     def __init__(self, nInit: int = 50,
                  maxFEs: int = 1000,
-                 maxTolerateTimes: int = 100,
+                 maxIterTimes: int = 1000,
+                 maxTolerateTimes: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = False):
+        
         """
         Initialize the EGO algorithm with user-defined parameters.
 
@@ -50,11 +54,11 @@ class EGO(AlgorithmABC):
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
         """      
-        super().__init__(maxFEs = maxFEs, maxTolerateTimes = maxTolerateTimes, 
+        super().__init__(maxFEs = maxFEs,maxIterTimes = maxIterTimes, maxTolerateTimes = maxTolerateTimes, 
                             verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
                             logFlag = logFlag, saveFlag = saveFlag)
         
-        self.setPara('nInit', nInit)
+        self.setParaVal('nInit', nInit)
 
         # Initialize the scaler and surrogate model
         scalers = (StandardScaler(0, 1), StandardScaler(0, 1))
@@ -92,7 +96,7 @@ class EGO(AlgorithmABC):
         
         # Define a sub-problem for the optimizer
         subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
-                             varType = problem.varType, varSet = problem.varSet)
+                             varType = problem.varType, varSet = problem.varSet, optType = "min")
         
         # Initialize termination conditions
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
@@ -112,7 +116,7 @@ class EGO(AlgorithmABC):
             pop = self.initialize(nInit)
         
         # Iterative process
-        while self.checkTermination():
+        while self.checkTermination(pop):
             
             # Build surrogate model
             self.surrogate.fit(pop.decs, pop.objs)
@@ -121,7 +125,7 @@ class EGO(AlgorithmABC):
             res = self.optimizer.run(subProblem)
             
             # Create offspring population
-            offSpring = Population(decs = res.bestDec)
+            offSpring = Population(decs = res.bestDecs)
             
             # Evaluate the offspring
             self.evaluate(offSpring)
@@ -129,9 +133,6 @@ class EGO(AlgorithmABC):
             # Add offspring to the current population
             pop.add(offSpring)
             
-            # Record the current state of the population
-            self.record(pop)
-    
         # Return the final result
         return self.result
     
@@ -149,13 +150,21 @@ class EGO(AlgorithmABC):
         # Predict objective values and mean squared errors using the surrogate model
         objs, mses = self.surrogate.predict(X, only_value=False)
         
+        tmp, mse= self.surrogate.predict(self.result.bestDecs, only_value=False)
+        
+        ss = np.sqrt(mse)
+        
+        
+        
         # Calculate the standard deviation
         s = np.sqrt(mses)
         
         # Retrieve the best objective value found so far
-        bestObj = self.result.bestObj
+        bestObjs = self.result.bestObjs
         
         # Calculate the expected improvement
-        ei = -(bestObj - objs) * norm.cdf((bestObj - objs) / s) - s * norm.pdf((bestObj - objs) / s)
+        ei = -(bestObjs - objs) * norm.cdf((bestObjs - objs) / s) - s * norm.pdf((bestObjs - objs) / s)
+        
+        e = -(bestObjs - tmp) * norm.cdf((bestObjs - tmp) / ss) - ss * norm.pdf((bestObjs - tmp) / ss)
         
         return ei

@@ -72,6 +72,8 @@ class PSO(AlgorithmABC):
         
         :return: The result of the optimization process.
         '''
+        # reset history
+        self.reset()
         
         # Initialization
         # Retrieve parameter values

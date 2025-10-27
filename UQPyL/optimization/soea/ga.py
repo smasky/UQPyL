@@ -84,7 +84,9 @@ class GA(AlgorithmABC):
                         the optimization process.
         '''
         
-        # Initialization
+        # reset history
+        self.reset()
+        
         # Retrieve parameter values
         proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaVal('nPop')

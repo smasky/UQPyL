@@ -40,7 +40,8 @@ class ASMO(AlgorithmABC):
                  surrogate: SurrogateABC = None,
                  optimizer: AlgorithmABC = None,
                  maxFEs: int = 1000,
-                 maxTolerateTimes: int = 100,
+                 maxIterTimes: int = 1000,
+                 maxTolerateTimes: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = True):
         '''
         Initialize the ASMO algorithm with user-defined parameters.
@@ -56,10 +57,10 @@ class ASMO(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs = maxFEs, maxTolerateTimes = maxTolerateTimes, 
+        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, maxTolerateTimes = maxTolerateTimes, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
-        self.setPara('nInit', nInit)
+        self.setParaVal('nInit', nInit)
         
         if surrogate is None:
             # Default surrogate model is Kriging with standard scaling
@@ -92,6 +93,8 @@ class ASMO(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
+        # reset history
+        self.reset()
         
         # Initialization
         nInit = self.getParaVal('nInit')
@@ -122,7 +125,7 @@ class ASMO(AlgorithmABC):
             pop = self.initialize(nInit)
         
         # Iterative process
-        while self.checkTermination():
+        while self.checkTermination(pop):
             
             # Build surrogate model
             self.surrogate.fit(pop.decs, pop.objs)
@@ -137,9 +140,6 @@ class ASMO(AlgorithmABC):
             
             # Merge offspring with current population
             pop.add(offSpring)
-            
-            # Record the current state of the population
-            self.record(pop)
             
             if oneStep:
                 break

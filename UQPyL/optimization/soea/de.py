@@ -65,6 +65,8 @@ class DE(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
+        #reset history
+        self.reset()
         
         # Parameter Setting
         cr, f = self.getParaVal('cr', 'f')

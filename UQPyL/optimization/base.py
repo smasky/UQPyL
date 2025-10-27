@@ -26,6 +26,11 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.verboseFreq = verboseFreq
         self.logFlag = logFlag
         self.saveFlag = saveFlag
+    
+    def reset(self):
+        
+        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
+        self.result.reset()
         
     def initialize(self, nInit):
         

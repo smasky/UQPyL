@@ -66,15 +66,15 @@ problem = Problem(**setting)
 #                   Sobol                     # 
 # ------------------------------------------- #
 
-from UQPyL.analysis import Sobol
+# from UQPyL.analysis import Sobol
 
-sobol = Sobol(saveFlag = True)
+# sobol = Sobol(saveFlag = True)
 
-X = sobol.sample(problem, 512, secondOrder = True)
+# X = sobol.sample(problem, 512, secondOrder = True)
 
-Y = problem.objFunc(X)
+# Y = problem.objFunc(X)
 
-res = sobol.analyze(problem, X, Y, secondOrder = True)
+# res = sobol.analyze(problem, X, Y, secondOrder = True)
 
 # ------------------------------------------- #
 #                   FAST                      # 
