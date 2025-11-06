@@ -52,7 +52,7 @@ class RSA(AnalysisABC):
         # Initialize the base class with provided scalers and flags
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
     
-    def sample(self, problem: Problem, N: int, sampler: Sampler = LHS('classic')):
+    def sample(self, problem: Problem, N: int, sampler: Sampler = LHS('classic'), seed: Optional[int] = None):
         """
         Generate samples for RSA analysis
         ---------------------------------------
@@ -67,15 +67,18 @@ class RSA(AnalysisABC):
         :return: np.ndarray - A 2D array representing the generated sample points, with shape `(N, nInput)`.
         """
         
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         nInput = problem.nInput
         
         # Generate samples using the specified sampler
-        X = sampler.sample(problem, N)
+        sampler_seed = self.rng.integers(1, 1000000)
+        X = sampler.sample(problem, N, seed = sampler_seed)
         
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
         
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray = None, target = 'objFunc', index = 'all', nRegion: int = 20):
         """
         Perform RSA analysis
@@ -105,17 +108,21 @@ class RSA(AnalysisABC):
         nInput = problem.nInput
         
         # Evaluate the problem if Y is not provided
-        Y = self.check_Y(Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         
         # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
         
         numY = Y.shape[1]
         outputLabel = "obj" if target == "objFunc" else "con"
-            
+        
+        S1 = np.zeros((numY, nInput))
+        S1_scaled = np.zeros((numY, nInput))
+        
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
         for i in range(numY):
-            
-            label = f"{outputLabel}{i+1}"
             
             Y_i = Y[:, i:i+1]
         
@@ -149,12 +156,16 @@ class RSA(AnalysisABC):
             # Calculate the mean sensitivity index for each input factor
             results_star = np.mean(results, axis=0)
             
-            self.record(label, 'S1', problem.xLabels, results_star.tolist())
-            self.record(label, 'S1(scaled)', problem.xLabels, (results_star / np.sum(results_star)).tolist())
-                    
-        self.saveHistory(X, Y)
+            S1[i] = results_star
+            S1_scaled[i] = results_star / np.sum(results_star)
         
-        return self.result.res['Results']
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('S1_scale', S1_scaled, row_label, col_label_1, 'decsDim1')]
+        
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
+        
+        return self.result.generateNetCDF()
     
     def _has_samples(self, y, sel):
         """

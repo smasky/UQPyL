@@ -23,9 +23,11 @@ class SobolSequence(Sampler):
         :param scramble: Whether to scramble the Sobol sequence.
         :param skipValue: Number of initial points to skip in the sequence.
         """
+        
         super().__init__()
         
         self.scramble = scramble
+        
         self.skipValue = skipValue
         
     def _generate(self, nt: int, nx: int):
@@ -36,13 +38,15 @@ class SobolSequence(Sampler):
         :param nx: Input dimensions of sampled points.
         :return: A 2D array of Sobol sequence samples.
         """
-        sampler = Sobol(d=nx, scramble=self.scramble)
+        sobol_seed = self.rng.integers(1, 1000000)
+        
+        sampler = Sobol(d=nx, scramble=self.scramble, seed = sobol_seed)
+        
         xInit = sampler.random(nt + self.skipValue)
         
         return xInit[self.skipValue:, :]
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
         """
         Generate a Sobol sequence sample.
         
@@ -53,8 +57,8 @@ class SobolSequence(Sampler):
         :return: A 2D array of Sobol sequence samples.
         """
                 
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
         
-        return self._generate(nt, nx)   
+        return self._generate(nt, nx)

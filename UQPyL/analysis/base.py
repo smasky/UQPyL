@@ -1,6 +1,8 @@
 import abc
 from typing import Tuple, Optional
 import numpy as np
+import xarray as xr
+from datetime import datetime
 
 from ..util import Scaler
 from ..problem import ProblemABC as Problem
@@ -81,27 +83,7 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         
         self.problem = problem
     
-    def record(self, target, indicator, labels, values):
-
-        """
-        Record the analysis results.
-        
-        :param target: str - The target of the objective function or constraint function.
-        :param indicator: str - The indicator of the analysis.
-        :param labels: list - The labels for the input variables.
-        :param value: list - The sensitivity indices.
-        """
-                        
-        self.result.res['Results'].setdefault(target, {})
-        self.result.res['Results'][target].setdefault(indicator, {})
-        
-        for label, v in zip(labels, values):
-            
-            self.result.res['Results'][target][indicator][label] = v
-        
-        self.result.res['Results'][target][indicator]['array'] = np.array(values)
-    
-    def check_Y(self, Y, target = 'objFunc', index = 'all'):
+    def check_Y(self, X, Y, target = 'objFunc', index = 'all'):
         # Evaluate the problem if Y is not provided
         if Y is None:
             if target == 'objFunc':
@@ -122,16 +104,51 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         
         return Y
     
-    def saveHistory(self, X, Y):
+    def recordResult(self, X, Y, res):
         
-        self.result.res['History'] = {
-            'methodName' : self.name, 
-            'problemName' : self.problem.name, 
-            'X' : X, 
-            'Y' : Y, 
-            'settings' : self.setting.dict
-            }
- 
+        self.result.res['history'] = (X, Y)
+        self.result.res['results'] = res
+        
+        self.result.res['verbose'] = {}
+        
+        for (name, val, row, col, _) in res:
+            
+            for i, t in enumerate(row):
+                self.record(t, name, col, val[i])
+        
+        
+    def record(self, target, indicator, labels, values):
+
+        """
+        Record the analysis results.
+        
+        :param target: str - The target of the objective function or constraint function.
+        :param indicator: str - The indicator of the analysis.
+        :param labels: list - The labels for the input variables.
+        :param value: list - The sensitivity indices.
+        """
+                        
+        self.result.res['verbose'].setdefault(target, {})
+        self.result.res['verbose'][target].setdefault(indicator, {})
+        
+        for label, v in zip(labels, values):
+            
+            self.result.res['verbose'][target][indicator][label] = v
+        
+        self.result.res['verbose'][target][indicator]['array'] = np.array(values)
+        
+
+    def __reverse_X_Y__(self, X, Y):
+        
+        if self.xScale:
+            X = self.xScale.inverse_transform(X)
+        
+        if self.yScale:
+            Y = self.yScale.inverse_transform(Y)
+            
+        return X, Y
+    
+    
     def __check_and_scale_xy__(self, X, Y):
         
         """
@@ -201,40 +218,62 @@ class Result():
         :param obj: The analysis object.
         """
         
-        self.res = {
-            'History': {}, 
-            'Results': {}
-            }
+        self.res = { }
         
         self.obj = obj
     
-    def generateHDF5(self):
-        """
-        Generate a dictionary representation of the results for HDF5 storage.
-
-        :return: dict - The results formatted for HDF5 storage.
-        """
-
-        return self.res
-    
-    # def __str__(self):
-    #     """
-    #     String representation of the results.
-
-    #     :return: str - The formatted results as a string.
+    def generateNetCDF(self):
         
-    #     """
+        X = self.res['history'][0]; Y = self.res['history'][1]
+        res = self.res['results']
         
-    #     res = self.res
-    #     output = ""
+        decsDim1 = X.shape[1]
+        n = X.shape[0]
+        nI = X.shape[1]
+        nO = Y.shape[1]
+        decsDim2 = int(X.shape[1] * (X.shape[1] - 1) / 2)
         
-    #     for key, (labels, value) in res.items():
-    #         output += f"{key}:\n"
-    #         for label, v in zip(labels, value.ravel()):
-    #             output += f"  {label}: {v:.5f}\n"
-    #         output += '\n'
+        ds = xr.Dataset(
             
-    #     return output
+            data_vars = {
+                "X" : (("n", "nI"), X, {"description": "decision variables"}),
+                "Y" : (("n", "nO"), Y, {"description": "objectives or constraints"}),
+            },
+            
+            coords = {
+                'decsDim1': ("decsDim1", np.arange(decsDim1), {"description": "First-order or total-order indices of decision variables"}),
+                'decsDim2': ("decsDim2", np.arange(decsDim2), {"description": "Second-order sensitivity indices of decision variables"}),
+                'nI': ("nI", np.arange(nI), {"description": "decision variables dimensions"}),
+                'nO': ("nO", np.arange(nO), {"description": "Number of outputs"}),
+                'idx' : ("idx", np.arange(n), {"description": "Number of samples"}),
+            },
+            attrs = {
+                "problem" : f"{self.obj.problem.name}_{self.obj.problem.nInput}D_{self.obj.problem.nOutput}O_{self.obj.problem.nCons}C",
+                "method" : self.obj.name,
+                "created": datetime.now().isoformat(timespec='seconds'),
+                **self.setting.dicts,
+            }
+            
+        )
+        
+        for (name, val, row, col, col_dim) in res:
+            
+            ds[name] = xr.DataArray(
+                val,
+                dims=["nO", col_dim]
+            )
+
+            if "target" not in ds.coords:
+                ds = ds.assign_coords({"target": ("nO", row, {"description": "target labels"})})
+
+            if "firstIdx" not in ds.coords and col_dim == "decsDim1":
+                ds = ds.assign_coords({"firstIdx": ("decsDim1", col, {"description": "first order indices of decision variables"})})
+                ds = ds.assign_coords({"totalIdx": ("decsDim1", col, {"description": "total order indices of decision variables"})})
+            
+            if "secondIdx" not in ds.coords and col_dim == "decsDim2":
+                ds = ds.assign_coords({"secondIdx": ("decsDim2", col, {"description": "second order indices of decision variables"})})
+                        
+        return ds
 
 class Setting():
     """

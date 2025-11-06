@@ -2,7 +2,7 @@
 import numpy as np
 from scipy.stats import norm
 
-from UQPyL.util import MinMaxScaler
+from typing import Optional
 
 from .ga import GA
 from ..base import AlgorithmABC, Verbose
@@ -68,8 +68,8 @@ class EGO(AlgorithmABC):
         optimizer = GA(maxFEs = 10000, verboseFlag = False, saveFlag = False, logFlag = False)
         self.optimizer = optimizer
         
-    @Verbose.Run
-    def run(self, problem, xInit = None, yInit = None):
+    @Verbose.run
+    def run(self, problem, xInit = None, yInit = None, seed: Optional[int] = None):
         """
         Execute the EGO algorithm on the specified problem.
 
@@ -87,20 +87,16 @@ class EGO(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Initialization
         nInit = self.getParaVal('nInit')
-        
-        # Set the problem to solve
-        self.problem = problem
         
         # Define a sub-problem for the optimizer
         subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
                              varType = problem.varType, varSet = problem.varSet, optType = "min")
         
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-    
         # Generate initial population
         if xInit is not None:
             if yInit is not None:
@@ -110,10 +106,10 @@ class EGO(AlgorithmABC):
                 self.evaluate(pop)
             
             if nInit > len(pop):
-                pop.merge(self.initialize(nInit - len(pop)))
+                pop.merge(self.initPop(nInit - len(pop)))
             
         else:
-            pop = self.initialize(nInit)
+            pop = self.initPop(nInit)
         
         # Iterative process
         while self.checkTermination(pop):

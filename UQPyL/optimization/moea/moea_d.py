@@ -1,7 +1,7 @@
 # Multi-objective Evolutionary Algorithm based on Decomposition (MOEAD) <Multi>
 import math
 import numpy as np
-from typing import Literal
+from typing import Literal, Optional
 from scipy.spatial import distance
 
 from ..base import AlgorithmABC, Verbose
@@ -55,8 +55,8 @@ class MOEAD(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #-------------------Public Functions-----------------------#
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the MOEAD algorithm on the specified problem.
 
@@ -70,19 +70,13 @@ class MOEAD(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Retrieve parameter values
         aggregation = self.getParaVal('aggregation')
         
         nPop = self.getParaVal('nPop')
-        
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
         # Determine the number of neighbors
         T = math.ceil(nPop / 10)
@@ -99,7 +93,7 @@ class MOEAD(AlgorithmABC):
         B = B[:, 0:T]
         
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
         
         # Initialize the ideal point
         Z = np.min(pop.objs, axis=0).reshape(1, -1)

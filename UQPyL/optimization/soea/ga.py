@@ -1,4 +1,5 @@
 # Genetic Algorithm <Single>
+import numpy as np
 
 from typing import Optional
 
@@ -68,8 +69,8 @@ class GA(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #--------------------Public Functions---------------------#
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the genetic algorithm on the specified problem.
 
@@ -77,28 +78,23 @@ class GA(AlgorithmABC):
                         This object defines the optimization problem, including
                         the number of inputs (nInput), number of outputs (nOutput),
                         upper bounds (ub), lower bounds (lb), and evaluation methods.
+                        
+        :param seed: Random seed for reproducibility.
         
         :return Result: An instance of the Result class, which contains the
                         optimization results, including the best decision variables,
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
-        
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Retrieve parameter values
         proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaVal('nPop')
         
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
        
         # Iterative process
         while self.checkTermination(pop):

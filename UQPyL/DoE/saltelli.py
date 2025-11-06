@@ -29,8 +29,7 @@ class SaltelliSequence(Sampler):
         self.skipValue = skipValue
         self.secondOrder = secondOrder
         
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
         """
         Generate a Saltelli sequence sample.
         
@@ -41,7 +40,7 @@ class SaltelliSequence(Sampler):
         :return: A 2D array of Saltelli sequence samples.
         """
         
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
         
@@ -71,7 +70,9 @@ class SaltelliSequence(Sampler):
         elif skipValue < 0 or not isinstance(skipValue, int):
             raise ValueError("skip value must be a positive integer!")
         
-        sampler = qmc.Sobol(nInput * 2, scramble=self.scramble, seed=1)
+        sobol_seed = self.rng.integers(1, 1000000)
+        
+        sampler = qmc.Sobol(nInput * 2, scramble=self.scramble, seed = sobol_seed)
         
         if M:
             sampler.fast_forward(M)

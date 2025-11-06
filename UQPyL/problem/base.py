@@ -9,7 +9,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
 
     def __init__(self, nInput:int, nOutput:int,
                  ub: Union[int, float, list, np.ndarray], lb: Union[int, float, list, np.ndarray],
-                 nConstraints: int = 0,
+                 nCons: int = 0,
                  optType: Union[str, list] = 'min', conWgt: Optional[list] = None,
                  varType: Optional[list] = None, varSet: Optional[dict] = None,
                  xLabels: Optional[list] = None, yLabels: Optional[list] = None):
@@ -30,7 +30,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
         
         self.nInput = nInput
         self.nOutput = nOutput
-        self.nConstraints = nConstraints
+        self.nCons = nCons
         
         # Set upper and lower bounds
         self._set_ub_lb(ub, lb)

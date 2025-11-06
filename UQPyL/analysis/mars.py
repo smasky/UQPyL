@@ -54,7 +54,7 @@ class MARS(AnalysisABC):
         # Initialize the base class with provided scalers and flags
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
     
-    def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic')):
+    def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic'), seed: Optional[int] = None):
         '''
         Generate a sample set for the MARS method.
 
@@ -65,15 +65,18 @@ class MARS(AnalysisABC):
         :return: np.ndarray - A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
         '''
         
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         nInput = problem.nInput
         
         # Generate samples using the specified sampler
-        X = sampler.sample(problem, N)
+        sampler_seed = self.rng.integers(1, 1000000)
+        X = sampler.sample(problem, N, seed = sampler_seed)
         
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X, Y: np.ndarray = None, target = 'objFunc', index = 'all'):
         '''
         Perform the MARS analysis on the input data.
@@ -93,7 +96,7 @@ class MARS(AnalysisABC):
         self.setProblem(problem)
         
         # Evaluate the problem if Y is not provided
-        Y = self.check_Y(Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
         # Scale the input and output data if scalers are provided
@@ -102,11 +105,14 @@ class MARS(AnalysisABC):
         
         outputLabel = "obj" if target == "objFunc" else "con"
         
+        S1 = np.zeros((numY, nInput))
+        S1_scaled = np.zeros((numY, nInput))
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
         for i in range(numY):
-            label = f"{outputLabel}{i+1}"
             
             Y_i = Y[:, i:i+1]
-            S1 = []
         
             # Main process: Fit the MARS model and calculate sensitivity indices
             mars = MARSModel(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
@@ -118,13 +124,14 @@ class MARS(AnalysisABC):
                 X_sub = np.delete(X, [j], axis=1)
                 mars = MARSModel(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
                 mars.fit(X_sub, Y_i)
-                S1.append(np.abs(base_gcv - mars.gcv_))
+                S1[i, j] = np.abs(base_gcv - mars.gcv_)
             
-            self.record(label, 'S1', problem.xLabels, S1) 
-                       
-            S1_scaled = S1 / np.sum(S1)
-            self.record(label, 'S1(scaled)', problem.xLabels, S1_scaled.tolist())
+            S1_scaled[i] = S1[i] / np.sum(S1[i])
         
-        self.saveHistory(X, Y)
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('S1_scale', S1_scaled, row_label, col_label_1, 'decsDim1')]
         
-        return self.result.res['Results']
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
+        
+        return self.result.generateNetCDF()

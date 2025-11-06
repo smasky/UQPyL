@@ -76,8 +76,8 @@ class ASMO(AlgorithmABC):
         self.optimizer = optimizer
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
         
-    @Verbose.Run
-    def run(self, problem, xInit = None, yInit = None, oneStep = False):
+    @Verbose.run
+    def run(self, problem, xInit = None, yInit = None, seed = None, oneStep = False):
         '''
         Main procedure to execute the ASMO algorithm on the specified problem.
 
@@ -93,22 +93,17 @@ class ASMO(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Initialization
         nInit = self.getParaVal('nInit')
         
-        # Set the problem to solve
-        self.problem = problem
-        
         # Define a subproblem using the surrogate model
         subProblem = Problem(objFunc = self.surrogate.predict, nInput = problem.nInput, 
                                 nOutput = 1, ub = problem.ub, lb = problem.lb, 
-                                    varType = problem.varType, varSet = problem.varSet)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
+                                    varType = problem.varType, varSet = problem.varSet, 
+                                        optType = problem.optType)
         
         # Generate initial population
         if xInit is not None:
@@ -119,10 +114,10 @@ class ASMO(AlgorithmABC):
                 self.evaluate(pop)
             
             if nInit > len(pop):
-                pop.merge(self.initialize(nInit - len(pop)))
+                pop.merge(self.initPop(nInit - len(pop)))
                 
         else:
-            pop = self.initialize(nInit)
+            pop = self.initPop(nInit)
         
         # Iterative process
         while self.checkTermination(pop):

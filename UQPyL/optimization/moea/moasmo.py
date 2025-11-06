@@ -1,6 +1,7 @@
 ### Multi-Objective Adaptive Surrogate Modelling-based Optimization
 import numpy as np
 from scipy.spatial.distance import cdist
+from typing import Optional
 
 from .nsga_ii import NSGAII
 from ..base import AlgorithmABC, Verbose
@@ -78,8 +79,8 @@ class MOASMO(AlgorithmABC):
         
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
         
-    @Verbose.Run
-    def run(self, problem, xInit = None, yInit = None):
+    @Verbose.run
+    def run(self, problem, xInit = None, yInit = None, seed: Optional[int] = None):
         '''
         Execute the MOASMO algorithm on the specified problem.
 
@@ -92,26 +93,19 @@ class MOASMO(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Initialize surrogate models
         if self.surrogates is None:
             self.surrogates = MultiSurrogate(n_surrogates = problem.nOutput, models_list=[RBF() for _ in range(problem.nOutput)])
 
-        
         # Retrieve parameter values
         pct = self.getParaVal('pct')
         nInit = self.getParaVal('nInit')
         advance_infilling = self.getParaVal('advance_infilling')
         
         nInfilling = int(pct*nInit)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
-        # Set the problem to solve
-        self.problem = problem
         
         # Create a subproblem for surrogate model optimization
         subProblem = Problem(nInput = problem.nInput, nOutput = problem.nOutput, 
@@ -129,10 +123,10 @@ class MOASMO(AlgorithmABC):
                 self.evaluate(pop)
             
             if nInit > len(pop):
-                pop.merge(self.initialize(nInit-len(pop)))
+                pop.merge(self.initPop(nInit-len(pop)))
             
         else: 
-            pop = self.initialize(nInit)
+            pop = self.initPop(nInit)
         
         # Iterative optimization process
         while self.checkTermination(pop):

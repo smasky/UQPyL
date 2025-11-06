@@ -39,8 +39,7 @@ class FFD(Sampler):
         
         return H
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, levels: Union[np.ndarray, int, list], random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None):
         """
         Generate a full factorial design sample.
         
@@ -50,10 +49,8 @@ class FFD(Sampler):
         
         :return: A 2D array of full factorial design samples.
         """
-        if random_seed is not None:
-            self.random_state = np.random.RandomState(random_seed)
-        else:
-            self.random_state = np.random.RandomState()
+        
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
                 
         nx = problem.nInput
 

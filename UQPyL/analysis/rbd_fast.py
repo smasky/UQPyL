@@ -63,7 +63,7 @@ class RBDFAST(AnalysisABC):
         # Set the parameter for the number of harmonics
         self.setParaValue("M", 4)
     
-    def sample(self, problem: Problem, N: int = 512, M: int = 4, sampler: Sampler = LHS('classic')) -> np.ndarray:
+    def sample(self, problem: Problem, N: int = 512, M: int = 4, sampler: Sampler = LHS('classic'), seed: Optional[int] = None):
         """
         Generate samples for RBD-FAST analysis.
         ---------------------------------------
@@ -75,6 +75,8 @@ class RBDFAST(AnalysisABC):
         :return: np.ndarray - A 2D array representing the generated sample points.
         """
         
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         self.setParaValue("M", M)
             
         nInput = problem.nInput
@@ -84,12 +86,13 @@ class RBDFAST(AnalysisABC):
             raise ValueError("The number of sample must be greater than 4*M**2!")
         
         # Generate samples using the specified sampler
-        X = sampler.sample(problem, N)
+        sampler_seed = self.rng.integers(1, 1000000)
+        X = sampler.sample(problem, N, seed = sampler_seed)
 
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: np.ndarray = None, target = 'objFunc', index = 'all'):
         """
         Perform RBD-FAST analysis.
@@ -114,7 +117,7 @@ class RBDFAST(AnalysisABC):
         nInput = problem.nInput
         
         # Evaluate the problem if Y is not provided
-        Y = self.check_Y(Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         
         # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
@@ -124,14 +127,14 @@ class RBDFAST(AnalysisABC):
         
         # Initialize an array to store first-order sensitivity indices
         
+        S1 = np.zeros((numY, nInput))
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
         
         for i in range(numY):
             
-            label = f"{outputLabel}{i+1}"
-            
             Y_i = Y[:, i:i+1]
             
-            S1 = []
             # Calculate sensitivity indices for each input variable
             for j in range(nInput):
                 idx = np.argsort(X[:, j])
@@ -148,11 +151,13 @@ class RBDFAST(AnalysisABC):
                 lamb = (2 * M) / Y.shape[0]
                 S1_sub = S1_sub - lamb / (1 - lamb) * (1 - S1_sub)
                 
-                S1.append(S1_sub)
-                
-            self.record(label, 'S1', problem.xLabels, S1)
+                S1[i, j] = S1_sub
         
-        self.saveHistory(X, Y)
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1')]
+        
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
         
         # Return the result object containing all sensitivity indices
-        return self.result.res['Results']
+        return self.result.generateNetCDF()

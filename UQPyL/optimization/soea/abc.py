@@ -1,6 +1,8 @@
 # Artificial Bee Colony Algorithm <Single>
 import numpy as np
 
+from typing import Optional
+
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
 from ...util import Verbose
@@ -56,8 +58,8 @@ class ABC(AlgorithmABC):
         self.setParaVal('limit', limit)
         self.setParaVal('nPop', nPop)
     
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         """
         Execute the ABC algorithm on the specified problem.
 
@@ -71,21 +73,15 @@ class ABC(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Parameter Setting
         employedRate, limit = self.getParaVal('employedRate', 'limit')
         nPop = self.getParaVal('nPop')
         
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
             
         beeType = np.zeros(nPop, dtype=np.int32)
         limitCount = np.zeros(nPop)

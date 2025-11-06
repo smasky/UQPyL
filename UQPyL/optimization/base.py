@@ -1,5 +1,5 @@
 import abc
-import functools
+import numpy as np
 
 from .population import Population
 from .result import Result
@@ -30,12 +30,31 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
     def reset(self):
         
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        self.result.reset()
         
-    def initialize(self, nInit):
+        self.result.reset()
+    
+    def setup(self, problem, seed):
+        
+        self.setProblem(problem)
+        
+        self.reset()
+        
+        if seed is not None:
+            np.random.seed(seed)
+        else:
+            seed = np.random.randint(0, 1000000)
+            np.random.seed(seed)
+        
+        self.setParaVal('seed', seed)
+    
+    def initPop(self, nInit):
         
         lhs = LHS('classic')
-        xInit = lhs.sample(self.problem, nInit)
+        
+        # TODO
+        seed = np.random.randint(0, 1000000)
+        xInit = lhs.sample(self.problem, nInit, seed)
+        
         xInit = self.problem._transform_unit_X(xInit, IFlag = False, DFlag = False)
         
         pop = Population(xInit)
@@ -49,10 +68,6 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.problem = problem
         
         self.setParaVal('optType', problem.optType)
-     
-    @abc.abstractmethod
-    def run(self, problem, xInit=None, yInit=None):
-        pass
     
     def evaluate(self, pop):
         
@@ -63,8 +78,6 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
     def checkTermination(self, pop):
         
         signalFlag = False
-        
-        
         
         if self.FEs < self.maxFEs:
             if self.maxIter is None or self.iters <= self.maxIter:
@@ -104,7 +117,7 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         else:
             self.result.save()
     
-    @Verbose.Record
+    @Verbose.record
     def record(self, pop):
 
         if self.problem.nOutput == 1:

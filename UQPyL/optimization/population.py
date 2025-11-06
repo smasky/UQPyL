@@ -147,7 +147,7 @@ class Population():
                 viol = np.maximum(0.0, self.cons)
                 violMax = np.max(viol, axis=0); violMin = np.min(viol, axis=0)
                 denom = violMax - violMin + 1e-12
-                viol_norm = (viol - v_min) / denom * 1e6
+                viol_norm = (viol - violMin) / denom * 1e6
                               
                 viol_weighted = viol_norm * self.conWgt if self.conWgt is not None else viol_norm
                 
@@ -196,7 +196,7 @@ class Population():
         
         self.objs, self.cons = res['objs'], res['cons']
         
-        self.objs = self.objs * problem.opt
+        self.objs = self.objs * problem.opt  # TODO: min
         
     def merge(self, otherPop):
         

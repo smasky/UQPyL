@@ -1,5 +1,6 @@
 # Non-dominated Sorting Genetic Algorithm II (NSGA-II) <Multi>
 import numpy as np
+from typing import Optional
 
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
@@ -57,8 +58,8 @@ class NSGAII(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the NSGA-II algorithm on the specified problem.
 
@@ -72,21 +73,15 @@ class NSGAII(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         '''
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Parameter Setting
         proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
         nPop = self.getParaVal('nPop')
         
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
         
         # Perform environmental selection
         _, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)

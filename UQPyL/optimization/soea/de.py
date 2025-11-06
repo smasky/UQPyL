@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from typing import Optional
+
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
 from ..util.tournament import tourSelect
@@ -50,8 +52,8 @@ class DE(AlgorithmABC):
         self.setParaVal('f', f)
         self.setParaVal('nPop', nPop)
         
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         """
         Execute the differential evolution algorithm on the specified problem.
 
@@ -65,21 +67,15 @@ class DE(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
-        #reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Parameter Setting
         cr, f = self.getParaVal('cr', 'f')
         nPop = self.getParaVal('nPop')
         
-        # Termination Condition Setting
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
-        # Problem
-        self.setProblem(problem)
-        
         # Population Generation
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
         
         # Iterative process
         while self.checkTermination(pop):

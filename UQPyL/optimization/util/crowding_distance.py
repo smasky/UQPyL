@@ -33,6 +33,7 @@ def crowdingDist(popObjs, frontNo = None):
         denom = fmax - fmin
         
         valid_dim = denom > 0
+        
         if not np.any(valid_dim):
             
             crowdDis[front_idx[0]]   = np.inf

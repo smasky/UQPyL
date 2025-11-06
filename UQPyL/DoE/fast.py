@@ -57,15 +57,14 @@ class FASTSequence(Sampler):
             idx = list(range(i)) + list(range(i + 1, nx))
             w_tmp[idx] = w[1:]
             idx = range(i * nt, (i + 1) * nt)
-            phi = 2 * np.pi * np.random.rand()
+            phi = 2 * np.pi * self.rng.random()
             sin_result = np.sin(w_tmp[:, None] * s + phi)
             arsin_result = (1 / np.pi) * np.arcsin(sin_result)  # Saltelli's formula
             xInit[idx, :] = 0.5 + arsin_result.transpose()
         
         return xInit
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: int = None):
         """
         Generate a sample for the FAST method.
         
@@ -77,7 +76,7 @@ class FASTSequence(Sampler):
         :return: A 2D array of FAST samples.
         """
         
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
         

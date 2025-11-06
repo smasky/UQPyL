@@ -1,6 +1,7 @@
 # Reference vector guided evolutionary algorithm (RVEA) <Multi>
 import numpy as np
 from scipy.spatial.distance import cdist
+from typing import Optional
 
 from ..base import AlgorithmABC, Verbose
 from ..util import uniformPoint, gaOperator
@@ -55,8 +56,8 @@ class RVEA(AlgorithmABC):
         self.setParaVal('fr', fr)
         self.setParaVal('nPop', nPop)
     
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         """
         Execute the RVEA on the specified multi-objective problem.
 
@@ -70,25 +71,19 @@ class RVEA(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Parameters setting
         alpha, fr = self.getParaVal('alpha', 'fr')
         nPop = self.getParaVal('nPop')
-        
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
+    
         # Generate initial reference vectors
         V0, nPop = uniformPoint(nPop, problem.nOutput)
         V = np.copy(V0)
         
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
         
         # Iterative process
         while self.checkTermination(pop):

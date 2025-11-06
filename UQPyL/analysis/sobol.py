@@ -1,5 +1,6 @@
 # Sobol sensibility analysis
 import numpy as np
+import xarray as xr
 import itertools
 from scipy.stats import qmc
 from typing import Optional, Tuple
@@ -63,7 +64,7 @@ class Sobol(AnalysisABC):
                 
     #-------------------------Public Functions--------------------------------#
     def sample(self, problem: Problem, N: Optional[int] = 512, secondOrder: bool = True,
-               skipValue: Optional[int] = 0, scramble: Optional[bool] = False):
+               skipValue: Optional[int] = 0, scramble: Optional[bool] = False, seed: Optional[int] = None):
         '''
         Generate a sample for Sobol' analysis
         ---------------------------------------
@@ -78,7 +79,9 @@ class Sobol(AnalysisABC):
 
         :return: np.ndarray - A 2D array representing the generated sample points, with shape determined by the number of input variables and whether second-order indices are calculated.
         '''
-                
+        
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         nInput = problem.nInput
                       
         # Validate the skip value
@@ -100,7 +103,8 @@ class Sobol(AnalysisABC):
             raise ValueError(f"The sample number must be a power of 2! \n You can use {int(np.power(2, np.ceil(np.log2(N))))}")
         
         # Create a Sobol' sequence sampler
-        sampler = qmc.Sobol(nInput * 2, scramble=scramble, seed=1)
+        sobol_seed = self.rng.integers(1, 1000000)
+        sampler = qmc.Sobol(nInput * 2, scramble = scramble, seed = sobol_seed)
         
         # Skip initial samples if specified
         if skipValue > 0:
@@ -138,7 +142,7 @@ class Sobol(AnalysisABC):
         
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, secondOrder: bool = True, target = 'objFunc', index = 'all'):
         
         '''
@@ -160,12 +164,14 @@ class Sobol(AnalysisABC):
         
         # Set the problem instance for the analysis
         self.setProblem(problem)
+        
         self.setParaValue('secondOrder', secondOrder)
         
         # If Y is not provided, evaluate the problem to obtain Y
-        Y = self.check_Y(Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         
         numY = Y.shape[1]
+        
         nInput = problem.nInput
         
         # Scale the input and output data if scalers are provided
@@ -186,13 +192,21 @@ class Sobol(AnalysisABC):
                
         outputLabel = "obj" if target == 'objFunc' else "con"
         
+        
+        S1 = np.zeros((numY, nInput))
+        ST = np.zeros((numY, nInput))
+        
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
+        if secondOrder:
+            col_label_2 = [f"{a}-{b}" for a, b in itertools.combinations(problem.xLabels, 2)]
+            S2 = np.zeros((numY, len(col_label_2)))
+
         for i in range(numY):
             
-            label = f"{outputLabel}{i+1}"
-            
-            S1 = []
-            ST = []
-            
+            # label = f"{outputLabel}{i+1}"
+             
             Y_i = Y[:, i:i+1]
             
             # Separate the output values into different arrays for analysis
@@ -200,26 +214,29 @@ class Sobol(AnalysisABC):
         
             # Calculate first-order and total-order sensitivity indices for each input variable
             for j in range(nInput):
-                S1.append(self._firstOrder(A, AB[:, j:j + 1], B))
-                ST.append(self._totalOrder(A, AB[:, j:j + 1], B))
-
-            self.record(label, 'S1', problem.xLabels, S1)
-            self.record(label, 'ST', problem.xLabels, ST)
-            
-            
+                S1[i] = self._firstOrder(A, AB[:, j:j + 1], B)
+                ST[i] = self._totalOrder(A, AB[:, j:j + 1], B)
+                
             if secondOrder:
-                S2 = []
+                # S2 = []
                 # Calculate second-order sensitivity indices for each pair of input variables
+                n = 0
                 for j in range(nInput):
                     for k in range(j + 1, nInput):
-                        S2.append(self._secondOrder(A, AB[:, j:j + 1], AB[:, k:k + 1], BA[:, j:j + 1], B))   
-                
-                self.record(label, 'S2', [f"{a}-{b}" for a, b in itertools.combinations(problem.xLabels, 2)], S2)
-                
-        self.saveHistory(X, Y)
+                        S2[i, n] = self._secondOrder(A, AB[:, j:j + 1], AB[:, k:k + 1], BA[:, j:j + 1], B)
+                        n += 1
+        
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('ST', ST, row_label, col_label_1, 'decsDim1')]
+        if secondOrder:
+            res.append(('S2', S2, row_label, col_label_2, 'decsDim2'))
+         
+        # save result to nc
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
         
         # Return the result object containing all sensitivity indices
-        return self.result.res['Results']
+        return self.result.generateNetCDF()
 
 #------------------------------------Private Functions--------------------------------------#
     def _secondOrder(self, A, AB1, AB2, BA, B):

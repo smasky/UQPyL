@@ -11,10 +11,10 @@ problem = Sphere(30)
 #                    GA                       # 
 # ------------------------------------------- #
 
-# from UQPyL.optimization.soea import GA
+from UQPyL.optimization.soea import GA
 
-# ga = GA()
-# res = ga.run(problem)
+ga = GA()
+res = ga.run(problem)
 
 # ------------------------------------------- #
 #                    PSO                      # 
@@ -75,7 +75,9 @@ problem = ZDT1(30)
 # ------------------------------------------- #
 
 # from UQPyL.optimization.moea import NSGAII
+
 # nsgaii = NSGAII()
+
 # res = nsgaii.run(problem)
 
 # ------------------------------------------- #

@@ -1,8 +1,7 @@
 import numpy as np
 
-def HV(pop, refPoint = None, normalize = True):
-
-    popObjs = pop.getBest().objs
+def HV(popObjs, refPoint = None, normalize = True):
+    
     _, m = popObjs.shape
     
     if popObjs.size == 0:

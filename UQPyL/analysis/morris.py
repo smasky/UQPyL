@@ -53,7 +53,7 @@ class Morris(AnalysisABC):
         # Set the number of levels for each input factor
         self.setParaValue("numLevels", 4)
         
-    def sample(self, problem: Problem, numTrajectory: int = 100, numLevels: Optional[int] = 4) -> np.ndarray:
+    def sample(self, problem: Problem, numTrajectory: int = 100, numLevels: Optional[int] = 4, seed: Optional[int] = None):
         """
         Generate a sample for Morris analysis.
         -----------------------------------------------------
@@ -63,6 +63,8 @@ class Morris(AnalysisABC):
 
         :return X: np.ndarray - A 2D array of shape `(numTrajectory * (nInput + 1), nInput)`, representing the generated sample points.
         """
+        
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nt = numTrajectory
         
@@ -80,7 +82,7 @@ class Morris(AnalysisABC):
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, target = 'objFunc', index = 'all') -> dict:
         """
         Perform Morris analysis.
@@ -98,7 +100,7 @@ class Morris(AnalysisABC):
         # Set the problem instance for analysis
         self.setProblem(problem)
         
-        self.check_Y(Y, target, index)
+        self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
         nInput = problem.nInput
@@ -110,9 +112,15 @@ class Morris(AnalysisABC):
 
         outputLabel = "obj" if target == "objFunc" else "con"
         
+        mu = np.zeros((numY, nInput))
+        mu_star = np.zeros((numY, nInput))
+        sigma = np.zeros((numY, nInput))
+        S1_scaled = np.zeros((numY, nInput))
+        
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
         for i in range(numY):
-            
-            label = f"{outputLabel}{i+1}"
             
             Y_i = Y[:, i:i+1]
             
@@ -133,21 +141,24 @@ class Morris(AnalysisABC):
                 delta_diff = np.sum(np.diff(X_sub, axis=0), axis=1).reshape(-1,1)
                 ee = Y_diff/delta_diff
                 EE[:, j:j+1] = ee[indice]
-                
-            mu = np.mean(EE, axis=1)
-            mu_star = np.mean(np.abs(EE), axis=1)
-            sigma = np.std(EE, axis=1, ddof=1)
-            S1_scaled = mu/np.sum(mu)
-            
-            self.record(label, 'mu', problem.xLabels, mu.tolist())
-            self.record(label, 'mu_star', problem.xLabels, mu_star.tolist())
-            self.record(label, 'sigma', problem.xLabels, sigma.tolist())
-            self.record(label, 'S1(scaled)', problem.xLabels, S1_scaled.tolist())
         
-        self.saveHistory(X, Y)
+
+            mu[i] = np.mean(EE, axis=1)
+            mu_star[i] = np.mean(np.abs(EE), axis=1)
+            sigma[i] = np.std(EE, axis=1, ddof=1)
+            S1_scaled[i] = mu[i]/np.sum(mu[i])
+            
+        res = [('mu', mu, row_label, col_label_1, 'decsDim1'), 
+               ('mu_star', mu_star, row_label, col_label_1, 'decsDim1'), 
+               ('sigma', sigma, row_label, col_label_1, 'decsDim1'), 
+               ('S1_scale', S1_scaled, row_label, col_label_1, 'decsDim1')]
+        
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
         
         # Return the result object containing all sensitivity indices
-        return self.result.res['Results']
+        return self.result.generateNetCDF()
     
     #-------------------------Private Function-------------------------------------#
     def _generate_trajectory(self, nx: int, num_levels: int=4) -> np.ndarray:
@@ -164,14 +175,14 @@ class Morris(AnalysisABC):
         B = np.tril(np.ones([nx + 1, nx], dtype=int), -1)
         
         # from paper[1] page 164
-        D_star = np.diag(np.random.choice([-1, 1], nx)) #step1
+        D_star = np.diag(self.rng.choice([-1, 1], nx)) #step1
         J = np.ones((nx+1, nx))
         
         levels_grids = np.linspace(0, 1-delta, int(num_levels / 2))
-        x_star = np.random.choice(levels_grids, nx).reshape(1,-1) #step2
+        x_star = self.rng.choice(levels_grids, nx).reshape(1,-1) #step2
         
         P_star = np.zeros((nx,nx))
-        cols = np.random.choice(nx, nx, replace=False)
+        cols = self.rng.choice(nx, nx, replace=False)
         P_star[np.arange(nx), cols]=1 #step3
         
         element_a = J[0, :] * x_star

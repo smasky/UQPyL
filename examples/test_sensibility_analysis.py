@@ -76,6 +76,8 @@ problem = Problem(**setting)
 
 # res = sobol.analyze(problem, X, Y, secondOrder = True)
 
+# print(res.info)
+
 # ------------------------------------------- #
 #                   FAST                      # 
 # ------------------------------------------- #
@@ -89,6 +91,8 @@ problem = Problem(**setting)
 # Y = problem.objFunc(X)
 
 # res = fast.analyze(problem, X, Y)
+
+# print(res.info)
 
 # ------------------------------------------- #
 #                   RBD-FAST                  # 
@@ -104,6 +108,8 @@ problem = Problem(**setting)
 
 # res = rbd_fast.analyze(problem, X, Y)
 
+# print(res.info)
+
 # ------------------------------------------- #
 #                   Morris                    # 
 # ------------------------------------------- #
@@ -117,6 +123,8 @@ problem = Problem(**setting)
 # Y = problem.objFunc(X)
 
 # res = morris.analyze(problem, X, Y)
+
+# print(res.info)
 
 # ------------------------------------------- #
 #                   RSA                       # 
@@ -132,6 +140,8 @@ problem = Problem(**setting)
 
 # res = rsa.analyze(problem, X, Y)
 
+# print(res.info)
+
 # ------------------------------------------- #
 #                   MARS                      # 
 # ------------------------------------------- #
@@ -146,6 +156,8 @@ problem = Problem(**setting)
 
 # res = mars.analyze(problem, X, Y)
 
+# print(res.info)
+
 # ------------------------------------------- #
 #                   Delta-Test                # 
 # ------------------------------------------- #
@@ -159,3 +171,5 @@ problem = Problem(**setting)
 # Y = problem.objFunc(X)
 
 # res = delta_test.analyze(problem, X, Y)
+
+# print(res.info)

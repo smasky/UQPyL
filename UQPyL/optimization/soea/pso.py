@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from typing import Optional
+
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
 
@@ -61,8 +63,8 @@ class PSO(AlgorithmABC):
         self.setParaVal('c2', c2)
         self.setParaVal('nPop', nPop)
                 
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the particle swarm optimization on the specified problem.
 
@@ -72,22 +74,17 @@ class PSO(AlgorithmABC):
         
         :return: The result of the optimization process.
         '''
-        # reset history
-        self.reset()
+        
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Initialization
         # Retrieve parameter values
         w, c1, c2 = self.getParaVal('w', 'c1', 'c2')
         nPop = self.getParaVal('nPop')
         
-        # Set the problem to solve
-        self.problem = problem
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
                 
         # Initialize personal best and global best
         pBest = pop  # Personal best

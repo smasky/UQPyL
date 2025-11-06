@@ -45,8 +45,7 @@ class MorrisSequence(Sampler):
         
         return xInit
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
         """
         Generate a sample for the Morris method.
         
@@ -57,7 +56,7 @@ class MorrisSequence(Sampler):
         :return: A 2D array of samples.
         """
         
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
         
@@ -75,14 +74,14 @@ class MorrisSequence(Sampler):
         B = np.tril(np.ones([nx + 1, nx], dtype=int), -1)
         
         # From paper[1] page 164
-        D_star = np.diag(np.random.choice([-1, 1], nx))  # Step 1
+        D_star = np.diag(self.rng.choice([-1, 1], nx))  # Step 1
         J = np.ones((nx + 1, nx))
         
         levels_grids = np.linspace(0, 1 - delta, int(self.numLevels / 2))
-        x_star = np.random.choice(levels_grids, nx).reshape(1, -1)  # Step 2
+        x_star = self.rng.choice(levels_grids, nx).reshape(1, -1)  # Step 2
         
         P_star = np.zeros((nx, nx))
-        cols = np.random.choice(nx, nx, replace=False)
+        cols = self.rng.choice(nx, nx, replace=False)
         P_star[np.arange(nx), cols] = 1  # Step 3
         
         element_a = J[0, :] * x_star

@@ -24,12 +24,11 @@ class Random(Sampler):
         :param nx: Input dimensions of sampled points.
         :return: A 2D array of random samples.
         """
-        H = np.random.random((nt, nx))
+        H = self.rng.random((nt, nx))
         
         return H
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
         """
         Generate a sample with random values between zero and one.
         
@@ -39,7 +38,7 @@ class Random(Sampler):
         :return: A 2D array of random samples.
         """
         
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
         

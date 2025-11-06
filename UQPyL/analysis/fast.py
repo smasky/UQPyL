@@ -55,7 +55,7 @@ class FAST(AnalysisABC):
         # Set the parameter for the number of harmonics
         self.setParaValue("M", 4)
 
-    def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = 4):
+    def sample(self, problem: Problem, N: Optional[int] = 500, M: Optional[int] = 4, seed: Optional[int] = None):
         """
         Generate a sample set for the FAST method.
         ----------------------------------------------------------------
@@ -65,6 +65,8 @@ class FAST(AnalysisABC):
 
         :return: np.ndarray - A 2D array representing the generated sample points.
         """
+        
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         # Use the initialized value of M if not provided
         self.setParaValue("M", M)
@@ -96,7 +98,7 @@ class FAST(AnalysisABC):
             idx = list(range(i)) + list(range(i + 1, nInput))
             w_tmp[idx] = w[1:]
             idx = range(i * N, (i + 1) * N)   
-            phi = 2 * np.pi * np.random.rand()    
+            phi = 2 * np.pi * self.rng.random()    
             sin_result = np.sin(w_tmp[:, None] * s + phi)
             arsin_result = (1 / np.pi) * np.arcsin(sin_result)  # Saltelli formula
             X[idx, :] = 0.5 + arsin_result.transpose()
@@ -104,7 +106,7 @@ class FAST(AnalysisABC):
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, target = 'objFunc', index = 'all'):
         """
         Perform the FAST analysis on the input data.
@@ -125,7 +127,7 @@ class FAST(AnalysisABC):
         # Set the problem instance for analysis
         self.setProblem(problem)
         
-        self.check_Y(Y, target, index)
+        self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
         # Scale the input and output data if scalers are provided
@@ -140,10 +142,15 @@ class FAST(AnalysisABC):
         # Calculate the base frequency
         w_0 = np.floor((n - 1) / (2 * M))
         
+        S1 = np.zeros((numY, nInput))
+        ST = np.zeros((numY, nInput))
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
         for i in range(numY):
-            label = f"{outputLabel}{i+1}"
+
             Y_i = Y[:, i:i+1]
-            S1 = []; ST = []
+  
             # Calculate sensitivity indices for each input variable
             for j in range(nInput):
                 idx = np.arange(j * n, (j + 1) * n)
@@ -154,13 +161,14 @@ class FAST(AnalysisABC):
                 Di = 2.0 * np.sum(Sp[np.int32(np.arange(1, M + 1, dtype=np.int32) * w_0 - 1)])  # pw <= (NS-1)/2 w_0 = (NS-1)/M
                 Dt = 2.0 * np.sum(Sp[np.arange(np.floor(w_0 / 2.0), dtype=np.int32)])
                 
-                S1.append(Di / V)
-                ST.append(1.0 - Dt / V)
-
-            self.record(label, 'S1', problem.xLabels, S1)
-            self.record(label, 'ST', problem.xLabels, ST)
-            
-        self.saveHistory(X, Y)
+                S1[i, j] = Di / V
+                ST[i, j] = 1.0 - Dt / V
+                
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('ST', ST, row_label, col_label_1, 'decsDim1')]
+        
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
         
         # Return the result object containing all sensitivity indices
-        return self.result.res['Results']
+        return self.result.generateNetCDF()

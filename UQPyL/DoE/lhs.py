@@ -5,23 +5,21 @@ from scipy.spatial.distance import pdist
 from .base import Sampler
 from ..problem import ProblemABC as Problem
 
-def _lhs_classic(nt: int, nx: int, random_state = None):
+def _lhs_classic(nt: int, nx: int, rng):
     """
     Generate a classic Latin Hypercube Sampling (LHS) design.
     
     :param nt: Number of samples.
     :param nx: Number of dimensions.
-    :param random_state: Random state for reproducibility.
+    :param rng: Random state for reproducibility.
     :return: A 2D array of LHS samples.
     """
-    if random_state is None:
-        random_state = np.random.RandomState()
-    
+
     # Generate the intervals
     cut = np.linspace(0, 1, nt + 1)
     
     # Fill points uniformly in each interval
-    u = random_state.rand(nt, nx)
+    u = rng.random((nt, nx))
     a = cut[:nt]
     b = cut[1:nt + 1]
     rdpoints = np.zeros_like(u)
@@ -31,28 +29,26 @@ def _lhs_classic(nt: int, nx: int, random_state = None):
     # Make the random pairings
     H = np.zeros_like(rdpoints)
     for j in range(nx):
-        order = random_state.permutation(range(nt))
+        order = rng.permutation(range(nt))
         H[:, j] = rdpoints[order, j]
     
     return H
     
-def _lhs_centered(nt: int, nx: int, random_state = None):
+def _lhs_centered(nt: int, nx: int, rng):
     """
     Generate a centered Latin Hypercube Sampling (LHS) design.
     
     :param nt: Number of samples.
     :param nx: Number of dimensions.
-    :param random_state: Random state for reproducibility.
+    :param rng: Random state for reproducibility.
     :return: A 2D array of centered LHS samples.
     """
-    if random_state is None:
-        random_state = np.random.RandomState()
-    
+
     # Generate the intervals
     cut = np.linspace(0, 1, nt + 1)    
     
     # Fill points uniformly in each interval
-    u = random_state.rand(nt, nx)
+    u = rng.random(nt, nx)
     a = cut[:nt]
     b = cut[1:nt + 1]
     _center = (a + b)/2
@@ -60,29 +56,27 @@ def _lhs_centered(nt: int, nx: int, random_state = None):
     # Make the random pairings
     H = np.zeros_like(u)
     for j in range(nx):
-        H[:, j] = random_state.permutation(_center)
+        H[:, j] = rng.permutation(_center)
     
     return H
     
-def _lhs_maximin(nt: int, nx: int, iterations: int, random_state = None):
+def _lhs_maximin(nt: int, nx: int, iterations: int, rng):
     """
     Generate a maximin Latin Hypercube Sampling (LHS) design.
     
     :param nt: Number of samples.
     :param nx: Number of dimensions.
     :param iterations: Number of iterations to maximize the minimum distance.
-    :param random_state: Random state for reproducibility.
+    :param rng: Random state for reproducibility.
     :return: A 2D array of maximin LHS samples.
     """
-    if random_state is None:
-        random_state=np.random.RandomState()
-        
+     
     maxdist = 0
     
     # Maximize the minimum distance between points
     for i in range(iterations):
 
-        H_candidate = _lhs_classic(nt, nx, random_state)
+        H_candidate = _lhs_classic(nt, nx, rng)
 
         d = pdist(H_candidate,'euclidean')
         if maxdist<np.min(d):
@@ -91,25 +85,23 @@ def _lhs_maximin(nt: int, nx: int, iterations: int, random_state = None):
     
     return H
 
-def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state = None):
+def _lhs_centered_maximin(nt: int, nx: int, iterations: int, rng):
     """
     Generate a centered maximin Latin Hypercube Sampling (LHS) design.
     
     :param nt: Number of samples.
     :param nx: Number of dimensions.
     :param iterations: Number of iterations to maximize the minimum distance.
-    :param random_state: Random state for reproducibility.
+    :param rng: Random state for reproducibility.
     :return: A 2D array of centered maximin LHS samples.
     """
-    if random_state is None:
-        random_state = np.random.RandomState()
-    
+
     maxdist = 0
     
     # Maximize the minimum distance between points
     for i in range(iterations):
 
-        H_candidate = _lhs_centered(nt, nx, random_state)
+        H_candidate = _lhs_centered(nt, nx, rng)
         d = pdist(H_candidate,'euclidean')
         if maxdist<np.min(d):
             maxdist = np.min(d)
@@ -118,25 +110,23 @@ def _lhs_centered_maximin(nt: int, nx: int, iterations: int, random_state = None
     return H
 ################################################################################
 
-def _lhs_correlate(nt: int, nx: int, iterations: int, random_state = None):
+def _lhs_correlate(nt: int, nx: int, iterations: int, rng = None):
     """
     Generate a correlation-optimized Latin Hypercube Sampling (LHS) design.
     
     :param nt: Number of samples.
     :param nx: Number of dimensions.
     :param iterations: Number of iterations to minimize correlation.
-    :param random_state: Random state for reproducibility.
+    :param rng: Random state for reproducibility.
     :return: A 2D array of correlation-optimized LHS samples.
     """
-    if random_state is None:
-        random_state = np.random.RandomState()
     
     mincorr = np.inf
     
     # Minimize the components correlation coefficients
     for _ in range(iterations):
         # Generate a random LHS
-        H_candidate = _lhs_classic(nt, nx, random_state)
+        H_candidate = _lhs_classic(nt, nx, rng)
         R = np.corrcoef(H_candidate)
         if np.max(np.abs(R[R!=1]))<mincorr:
             mincorr = np.max(np.abs(R-np.eye(R.shape[0])))
@@ -186,26 +176,25 @@ class LHS(Sampler):
         Sampling_method = LHS_METHOD[self.criterion]
         
         if self.criterion in ['maximin', 'center_maximin', 'correlation']:
-            xInit = Sampling_method(nt, nx, self.iterations, self.random_state)
+            xInit = Sampling_method(nt, nx, self.iterations, self.rng)
         else:
-            xInit = Sampling_method(nt, nx, self.random_state)
+            xInit = Sampling_method(nt, nx, self.rng)
         
         return xInit
     
-    # @decoratorRescale
-    def sample(self, problem: Problem, nt: int, random_seed: Optional[int] = None):
+    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
         """
         Generate a Latin-hypercube design.
         
         :param nt: Number of sampled points.
         :param nx: Input dimensions of sampled points.
         :param problem: Problem instance to use bounds for sampling.
-        :param random_seed: Random seed for reproducibility.
+        :param seed: Random seed for reproducibility.
         :return: A 2D array of LHS samples.
         """
         
-        self.random_state = np.random.RandomState(random_seed) if random_seed is not None else np.random.RandomState()
-                
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         nx = problem.nInput
         
         return problem._transform_unit_X(self._generate(nt, nx))

@@ -56,7 +56,7 @@ class DeltaTest(AnalysisABC):
         super().__init__(scalers, verboseFlag, logFlag, saveFlag)
 
         
-    def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic')):
+    def sample(self, problem: Problem, N: int = 500, sampler: Sampler = LHS('classic'), seed: Optional[int] = None):
         """
         Generate a sample set for the Delta Test.
         --------------------------------------------------
@@ -67,15 +67,18 @@ class DeltaTest(AnalysisABC):
         :return: np.ndarray - A 2D array of shape `(N, nInput)`, where `nInput` is the number of input variables.
         """
         
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+        
         nInput = problem.nInput
         
         # Generate samples using the specified sampler
-        X = sampler.sample(problem, N)
+        sampler_seed = self.rng.integers(1, 1000000)
+        X = sampler.sample(problem, N, seed = sampler_seed)
         
         # Transform the samples to the problem's input space
         return problem._transform_unit_X(X)
     
-    @Verbose.decoratorAnalyze
+    @Verbose.analyze
     def analyze(self, problem, X: np.ndarray, Y: np.ndarray = None, target = 'objFunc', index = 'all', nNeighbors: int = 2):
         """
         Perform the Delta Test analysis on the input data.
@@ -100,7 +103,7 @@ class DeltaTest(AnalysisABC):
         self.setParaValue('nNeighbors', nNeighbors)
         
         # Evaluate the problem if Y is not provided
-        Y = self.check_Y(Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         
         # Scale the input and output data if scalers are provided
         X, Y = self.__check_and_scale_xy__(X, Y)
@@ -108,31 +111,27 @@ class DeltaTest(AnalysisABC):
         numY = Y.shape[1]
         
         outputLabel = "obj" if target == "objFunc" else "con"
-                
+        
+        S1 = np.zeros((numY, nInput))
+        S1_scaled = np.zeros((numY, nInput))
+        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        col_label_1 = problem.xLabels
+        
         for i in range(numY):
-            label = f"{outputLabel}{i+1}"
-            S1 = np.zeros(nInput)
-            
             Y_i = Y[:, i:i+1]
-            # Calculate the base Delta value
             base = self._cal_delta(X, Y_i, nNeighbors)
-            
-            # Calculate first-order sensitivity indices for each input variable
             for j in range(nInput):
                 XSub = np.delete(X, [j], axis=1)
-                S1[j] = self._cal_delta(XSub, Y_i, nNeighbors)
-            
-            # Adjust the sensitivity indices
-            S1 = S1 - base 
-            S1 = S1 - np.min(S1)
-            S1_scaled = S1 / np.sum(S1)
-            
-            self.record(label, 'S1', problem.xLabels, S1.tolist())
-            self.record(label, 'S1(scaled)', problem.xLabels, S1_scaled.tolist())
-        
-        self.saveHistory(X, Y)
+                S1[i, j] = self._cal_delta(XSub, Y_i, nNeighbors)
+            S1_scaled[i] = S1[i] / np.sum(S1[i])
 
-        return self.result.res['Results']
+        res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('S1_scale', S1_scaled, row_label, col_label_1, 'decsDim1')]
+        
+        X, Y = self.__reverse_X_Y__(X, Y)
+        
+        self.recordResult(X, Y, res)
+
+        return self.result.generateNetCDF()
     
     def findCombEA(self, problem, X: np.ndarray, Y: np.ndarray = None, 
                    FEs: int = 10000, 

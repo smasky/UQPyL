@@ -1,6 +1,8 @@
 # Cooperation search algorithm <Single>
 import numpy as np
 
+from typing import Optional
+
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
 
@@ -52,8 +54,8 @@ class CSA(AlgorithmABC):
         self.setParaVal('nPop', nPop)
            
     #------------------Public Function------------------#
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         """
         Execute the CSA algorithm on the specified problem.
 
@@ -67,22 +69,15 @@ class CSA(AlgorithmABC):
                         objective values, and constraint violations encountered during
                         the optimization process.
         """
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
-        # Initialization
         # Retrieve parameter values
         alpha, beta, M = self.getParaVal('alpha', 'beta', 'M')
         nPop = self.getParaVal('nPop')
         
-        # Set the problem to solve
-        self.problem = problem
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
         # Generate initial population
-        pop = self.initialize(nPop)
+        pop = self.initPop(nPop)
         
         # Initial personal best and global best
         pBest = pop.copy()  # Personal Best

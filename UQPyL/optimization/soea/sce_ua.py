@@ -1,6 +1,8 @@
 # Shuffled Complex Evolution-UA
 import numpy as np
 
+from typing import Optional
+
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
 
@@ -59,8 +61,8 @@ class SCE_UA(AlgorithmABC):
         self.setParaVal('alpha', alpha)
         self.setParaVal('beta', beta)
         
-    @Verbose.Run
-    def run(self, problem):
+    @Verbose.run
+    def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the SCE-UA algorithm on the specified problem.
 
@@ -70,19 +72,13 @@ class SCE_UA(AlgorithmABC):
         
         :return: The result of the optimization process.
         '''
-        # reset history
-        self.reset()
+        # setup algorithm
+        self.setup(problem, seed)
         
         # Retrieve parameter values
         ngs, npg, nps, nspl = self.getParaVal('ngs', 'npg', 'nps', 'nspl')
         alpha, beta = self.getParaVal('alpha', 'beta')
-        
-        # Set the problem to solve
-        self.setProblem(problem)
-        
-        # Initialize termination conditions
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
-        
+                    
         # Adjust ngs if necessary
         if ngs == 0:
             ngs = problem.nInput 
@@ -96,7 +92,7 @@ class SCE_UA(AlgorithmABC):
         nInit = npg * ngs
         
         # Generate initial population
-        pop = self.initialize(nInit)
+        pop = self.initPop(nInit)
         
         # Sort the population by increasing function values
         pop = pop[pop.argsort()]
