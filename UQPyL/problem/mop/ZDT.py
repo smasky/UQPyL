@@ -42,11 +42,11 @@ class ZDT1(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         
         R=self.getOptimum(100)
         
-        return R
+        return (R[:,0], R[:,1])
 
 class ZDT2(ProblemABC):
     
@@ -81,11 +81,11 @@ class ZDT2(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         
         R = self.getOptimum(100)
         
-        return R
+        return (R[:,0], R[:,1])
     
 class ZDT3(ProblemABC):
     
@@ -112,7 +112,7 @@ class ZDT3(ProblemABC):
     
     def getOptimum(self, N=100):
         
-        from ..util.NDsort import NDSort
+        from ..util.non_dominated_sort import NDSort
         
         R = np.zeros((N, self.nOutput))
         R[:,0] = np.linspace(0,1,N)
@@ -123,11 +123,11 @@ class ZDT3(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         
         R = self.getOptimum(300)
         
-        return R
+        return (R[:,0], R[:,1])
 
 class ZDT4(ProblemABC):
     
@@ -166,7 +166,7 @@ class ZDT4(ProblemABC):
         
         R = self.getOptimum(100)
         
-        return R
+        return (R[:,0], R[:,1])
 
 class ZDT6(ProblemABC):
     
@@ -202,8 +202,8 @@ class ZDT6(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         
         R=self.getOptimum(100)
         
-        return R
+        return (R[:,0], R[:,1])

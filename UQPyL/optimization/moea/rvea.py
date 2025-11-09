@@ -30,8 +30,8 @@ class RVEA(AlgorithmABC):
     def __init__(self, alpha: float=2.0, fr: float=0.1,
                 nPop: int=50,
                 maxFEs: int = 50000, 
-                maxIterTimes: int = 1000, 
-                maxTolerateTimes=None, tolerate=1e-6, 
+                maxIters: int = 1000, 
+                maxTolerates=None, tolerate=1e-6, 
                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
         """
         Initialize the RVEA with user-defined parameters.
@@ -48,7 +48,7 @@ class RVEA(AlgorithmABC):
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
         """
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+        super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters

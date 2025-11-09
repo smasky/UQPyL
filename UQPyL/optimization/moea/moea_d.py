@@ -28,8 +28,8 @@ class MOEAD(AlgorithmABC):
     def __init__(self, aggregation: Literal['PBI', 'TCH', 'TCH_N', 'TCH_M'] = 'TCH',
                  nPop: int = 50,
                  maxFEs: int = 50000, 
-                 maxIterTimes: int = 1000, 
-                 maxTolerateTimes = None, tolerate = 1e-6, 
+                 maxIters: int = 1000, 
+                 maxTolerates = None, tolerate = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
         '''
         Initialize the MOEAD algorithm with user-defined parameters.
@@ -47,7 +47,7 @@ class MOEAD(AlgorithmABC):
         '''
         
         # Initialize the base class with common parameters
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+        super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set specific parameters for MOEAD

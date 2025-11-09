@@ -15,15 +15,15 @@ class MH(InferenceABC):
     
     name = "Metropolis-Hastings"
     
-    def __init__(self, nChain: int = 1, warmUp: int = 1000, 
+    def __init__(self, nChains: int = 1, warmUp: int = 1000, 
                        propDist: Literal['gauss', 'uniform'] = 'gauss',
-                       maxIter: int = 10000,
+                       maxIters: int = 10000,
                        verboseFlag: bool = True, verboseFreq: int = 10,
                        logFlag: bool = False, saveFlag: bool = True):
         
-        super().__init__(maxIter, verboseFlag, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxIters, verboseFlag, verboseFreq, logFlag, saveFlag)
                 
-        self.setParaVal('nChain', nChain)
+        self.setParaVal('nChains', nChains)
         self.setParaVal('warmUp', warmUp)
         
         if propDist not in ['gauss', 'uniform']:
@@ -37,25 +37,25 @@ class MH(InferenceABC):
         self.setup(problem, seed)
         
         # get user-define parameters
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         warmUp = self.getParaVal('warmUp')
         propDist = self.getParaVal('propDist')
         
         # Initial sampling
-        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChain, seed)
+        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains, seed)
         
         # init chains list
-        chains = self.initChains(nChain, X_init, Objs_init, Cons_init)
+        chains = self.initChains(nChains, X_init, Objs_init, Cons_init)
         
         # calculate proposal covariance
         gamma = self._check_gamma_(gamma)
         propCovs = []
 
-        for i in range(nChain):
+        for i in range(nChains):
             cov = (gamma[i] * (problem.ub - problem.lb))**2
             propCovs.append(np.diag(cov.ravel()))
 
-        ac_rate = np.zeros(nChain)
+        ac_rate = np.zeros(nChains)
         
         X_cur = X_init; Objs_cur = Objs_init; Cons_cur = Cons_init
         
@@ -66,7 +66,7 @@ class MH(InferenceABC):
             
             Objs_star, Cons_star = self.evaluate(X_star)
             
-            for i in range(nChain):
+            for i in range(nChains):
                 
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
@@ -88,7 +88,7 @@ class MH(InferenceABC):
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
                     
-                    ac_rate[i] += 1 / self.maxIter
+                    ac_rate[i] += 1 / self.maxIters
                     
                     X_cur[i] = X_star[i]; Objs_cur[i] = Objs_star[i]
                     if problem.nCons > 0:
@@ -108,7 +108,7 @@ class MH(InferenceABC):
                 "acceptanceRate_mean" : ((), mean_ac_rate, {"long_name": "mean of acceptance rate for all chains",  "description": "mean of acceptance rate for all chains"})
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
             },
         )
         
@@ -122,7 +122,7 @@ class MH(InferenceABC):
             },
             
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "draw": np.arange(self.iter),
                 "objsDim": np.arange(self.problem.nOutput),
             },

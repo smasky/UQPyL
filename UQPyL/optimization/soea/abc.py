@@ -30,9 +30,9 @@ class ABC(AlgorithmABC):
     def __init__(self, employedRate: float = 0.3,  limit: int = 50,
                  nPop: int = 50, 
                  maxFEs: int = 50000, 
-                 maxIterTimes: int = 1000, 
-                 maxTolerateTimes = 1000, tolerate = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = False):
+                 maxIters: int = 1000, 
+                 maxTolerates = 1000, tolerate = 1e-6, 
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         """
         Initialize the ABC algorithm with user-defined parameters.
         
@@ -50,7 +50,7 @@ class ABC(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+        super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters

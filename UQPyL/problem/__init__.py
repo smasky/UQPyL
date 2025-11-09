@@ -3,7 +3,7 @@ from .sop import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbroc
                          Trid, Bent_Cigar, Discus, Weierstrass, RosenbrockWithCon)
 
 from .mop import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
-from .mop import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6
+from .mop import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
 from .base import ProblemABC
 from .problem import Problem
 

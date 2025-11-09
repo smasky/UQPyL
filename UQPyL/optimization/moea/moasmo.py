@@ -36,8 +36,8 @@ class MOASMO(AlgorithmABC):
                  pct: float = 0.2, nInit: int = 50, nPop: int = 50, 
                  advance_infilling: bool = False,
                  maxFEs: int = 1000, 
-                 maxIterTimes: int = 100,
-                 maxTolerateTimes: int = None, tolerate: float = 1e-6,
+                 maxIters: int = 100,
+                 maxTolerates: int = None, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag: bool = False):
         '''
         Initialize the MOASMO algorithm with user-defined parameters.
@@ -58,7 +58,7 @@ class MOASMO(AlgorithmABC):
         :param saveFlag: bool - Enable saving results if True.
         '''
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+        super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters

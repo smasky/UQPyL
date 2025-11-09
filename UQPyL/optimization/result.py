@@ -224,7 +224,7 @@ class Result():
                 "problem": self.algorithm.problem.name,
                 "maxIter": self.algorithm.iters,
                 "maxFEs": self.algorithm.FEs,
-                "runtime": self.runtime,
+                "runtime": f"{self.runtime:.2f}",
                 "nInput": nInput,
                 "nOutput": nOutput,
                 **({"nCons": nCons} if nCons > 0 else {}),

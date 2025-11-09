@@ -39,8 +39,8 @@ class EGO(AlgorithmABC):
     
     def __init__(self, nInit: int = 50,
                  maxFEs: int = 1000,
-                 maxIterTimes: int = 1000,
-                 maxTolerateTimes: int = None,
+                 maxIters: int = 1000,
+                 maxTolerates: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = False):
         
         """
@@ -54,7 +54,7 @@ class EGO(AlgorithmABC):
         :param logFlag: Flag to enable logging.
         :param saveFlag: Flag to enable saving results.
         """      
-        super().__init__(maxFEs = maxFEs,maxIterTimes = maxIterTimes, maxTolerateTimes = maxTolerateTimes, 
+        super().__init__(maxFEs = maxFEs, maxIters = maxIters, maxTolerates = maxTolerates, 
                             verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
                             logFlag = logFlag, saveFlag = saveFlag)
         

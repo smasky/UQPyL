@@ -224,9 +224,12 @@ class Verbose():
     @staticmethod
     def saveToNetCDF(filepath, res):
         
-        for key, ds in res.items():
-            ds.to_netcdf(filepath, group = key, mode = "a")
-    
+        if isinstance(res, xr.Dataset):
+            res.to_netcdf(filepath, mode = "a")
+        else:
+            for key, ds in res.items():
+                ds.to_netcdf(filepath, group = key, mode = "a")
+
     @staticmethod
     def saveLog(obj, folderLog):
         

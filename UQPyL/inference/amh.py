@@ -14,13 +14,13 @@ class AMH(InferenceABC):
     
     name = "Adaptive Metropolis-Hastings"
     
-    def __init__(self, nChain: int = 1, warmUp: int = 1000, maxIterTimes: int = 1000, 
+    def __init__(self, nChains: int = 1, warmUp: int = 1000, maxIterTimes: int = 1000, 
                        propDist: Literal['gauss', 'uniform'] = 'gauss',
                        verboseFlag: bool = True, verboseFreq: int = 10,
                        logFlag: bool = False, saveFlag: bool = True):
         super().__init__(maxIterTimes, verboseFlag, verboseFreq, logFlag, saveFlag)
                 
-        self.setParaVal('nChain', nChain)
+        self.setParaVal('nChains', nChains)
         self.setParaVal('warmUp', warmUp)
         self.setParaVal('propDist', propDist)
         
@@ -35,7 +35,7 @@ class AMH(InferenceABC):
         
         self.setup(problem, seed)
         
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         warmUp = self.getParaVal('warmUp')
         propDist = self.getParaVal('propDist')
         self.setParaVal('gamma', gamma)
@@ -43,19 +43,19 @@ class AMH(InferenceABC):
         gamma = self._check_gamma_(gamma)
         sd = 2.38**2 / problem.nInput
         
-        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChain)
+        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains)
         
-        chains = self.initChains(nChain, X_init, Objs_init, Cons_init)
+        chains = self.initChains(nChains, X_init, Objs_init, Cons_init)
         
         # calculate proposal covariance matrix
         gamma = self._check_gamma_(gamma)
         propCovs = []
         
-        for i in range(nChain):
+        for i in range(nChains):
             cov = (gamma[i] * (problem.ub - problem.lb))**2
             propCovs.append(np.diag(cov.ravel()))
         
-        ac_rate = np.zeros(nChain)
+        ac_rate = np.zeros(nChains)
         
         X_cur = X_init; Objs_cur = Objs_init; Cons_cur = Cons_init
         
@@ -65,7 +65,7 @@ class AMH(InferenceABC):
             
             Objs_star, Cons_star = self.evaluate(X_star)
             
-            for i in range(nChain):
+            for i in range(nChains):
                 
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
@@ -86,7 +86,7 @@ class AMH(InferenceABC):
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
                     
-                    ac_rate[i] += 1 / self.maxIter
+                    ac_rate[i] += 1 / self.maxIters
                     
                     X_cur[i] = X_star[i]; Objs_cur[i] = Objs_star[i]
                     
@@ -110,7 +110,7 @@ class AMH(InferenceABC):
                 "acceptanceRate_mean" : ((), mean_ac_rate, {"long_name": "mean of acceptance rate for all chains",  "description": "mean of acceptance rate for all chains"})
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
             },
         )
         
@@ -121,7 +121,7 @@ class AMH(InferenceABC):
                 "lg" : (("chain", "draw", "objsDim"), lg, {"long_name": "log probability",  "description": "log probability for each sample"}),
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "draw": np.arange(self.iter),
                 "objsDim": np.arange(self.problem.nOutput),
             },
@@ -144,21 +144,21 @@ class AMH(InferenceABC):
     
     def _check_alpha(self, gamma):
         
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         nInput = self.problem.nInput
         
         if isinstance(gamma, float):
-            gamma = np.full((nChain, nInput), gamma)
+            gamma = np.full((nChains, nInput), gamma)
             
         elif isinstance(gamma, np.ndarray):
             gamma = np.atleast_2d(gamma)
             n, _ = gamma.shape
             if n == 1:
-                gamma = np.tile(gamma, (nChain, 1))
-            elif n == nChain:
+                gamma = np.tile(gamma, (nChains, 1))
+            elif n == nChains:
                 gamma = gamma
             else:
-                raise ValueError("The shape of gamma must be (nChain, nInput) or (1, nInput)")
+                raise ValueError("The shape of gamma must be (nChains, nInput) or (1, nInput)")
         else:
             raise ValueError("gamma must be a float or a numpy array")
         

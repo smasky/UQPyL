@@ -15,8 +15,8 @@ class DTLZ1(ProblemABC):
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -35,14 +35,11 @@ class DTLZ1(ProblemABC):
     
     name="DTLZ1"
     
-    def __init__(self, nInput:int =30, nOutput: int=3, 
-                    ub: Union[int,float,np.ndarray] =1, 
-                        lb: Union[int,float,np.ndarray] =0):
+    def __init__(self, nInput:int = 30, nOutput: int = 3, 
+                    ub: Union[int,float,np.ndarray] = 1, 
+                        lb: Union[int,float,np.ndarray] = 0):
         
         super().__init__(nInput, nOutput, ub, lb)
-        
-        if nOutput!=3:
-            raise ValueError("DTLZ1 is a three-objective optimization problem")
     
     def objFunc(self, X):
         '''
@@ -51,9 +48,7 @@ class DTLZ1(ProblemABC):
         Parameters:
         X: np.ndarray(2d-array)
             input variables
-        unit: bool
-            if True, the input variables will be transformed to the zero-one bound of the problem.
-        
+                    
         Returns:
         Y: np.ndarray(2d-array)
             the outputs of the problem.
@@ -61,44 +56,70 @@ class DTLZ1(ProblemABC):
         
         X = self._check_X_2d(X)
         
-        g = 100 * (self.nInput - self.nOutput + 1 + \
-                   np.sum((X[:, self.nOutput:] - 0.5) ** 2 - \
-                          np.cos(20. * np.pi * (X[:, self.nOutput:] - 0.5)), axis=1))
+        n_samples = X.shape[0]
         
-        Y = 0.5 * np.tile(1 + g, (self.nOutput, 1)).T \
-            * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), X[:, :self.nOutput - 1]]), axis=1)) \
-            * np.hstack([np.ones((X.shape[0], 1)), 1 - X[:, self.nOutput - 2::-1]])
+        g = 100 * (self.nInput - self.nOutput + 1 + \
+               np.sum((X[:, self.nOutput-1:] - 0.5) ** 2 - \
+                      np.cos(20. * np.pi * (X[:, self.nOutput-1:] - 0.5)), axis=1))
+        
+        Y = np.zeros((n_samples, self.nOutput))
+        
+        for i in range(self.nOutput):
+           
+            if i < self.nOutput - 1:
+                prefix_prod = np.prod(X[:, :self.nOutput-1-i], axis=1)
+            else:
+                prefix_prod = np.ones(n_samples)
+            
+            if i == 0:
+                suffix_term = np.ones(n_samples)
+            else:
+                suffix_term = 1 - X[:, self.nOutput-1-i]
+          
+            Y[:, i] = 0.5 * (1 + g) * prefix_prod * suffix_term
         
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, n):
+        
         '''
         Return the optimum of the problem.
         '''
+        
         from ..util.uniformPoint import uniformPoint
-        R,_= uniformPoint(N, self.nOutput)
-        R=R/2
+        
+        R, _ = uniformPoint(N, self.nOutput)
+        
+        R = R * 0.5
+        
+        R = np.maximum(R, 0)
         
         return R
 
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        #TODO 
-        a = np.linspace(0, 1, 10).reshape(-1, 1)
-        R = [a.dot(a.T)/2, a.dot((1 - a.T))/2, (1 - a).dot(np.ones(a.T.shape))/2]
-        Y = np.array(list(itertools.product(R[0], R[1], R[2])))
-          
-        return Y
+        
+        if self.nOutput == 3:
+            res = 201  
+            s, t = np.meshgrid(np.linspace(0.0, 1.0, res),
+                            np.linspace(0.0, 1.0, res))
+        
+            f1 = 0.5 * s * (1.0 - t)
+            f2 = 0.5 * (1.0 - s) * (1.0 - t)
+            f3 = 0.5 * t
+
+            return (f1, f2, f3)
+
 class DTLZ2(ProblemABC):
     '''
     Multi-Objective problem named DTLZ2 of the DTLZ suit.
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -152,7 +173,7 @@ class DTLZ2(ProblemABC):
         
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -162,24 +183,31 @@ class DTLZ2(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        a = np.linspace(0, np.pi / 2, 10).reshape(-1, 1)
-        R = [np.sin(a) * np.cos(a.T), np.sin(a) * np.sin(a.T), np.cos(a) * np.ones(a.shape).T]
-        Y = np.array(list(itertools.product(R[0], R[1], R[2])))
         
-        return Y
+        if self.nOutput == 3:
+            res = 101 
+            theta = np.linspace(0.0, np.pi/2, res) 
+            phi   = np.linspace(0.0, np.pi/2, res) 
+            T, P = np.meshgrid(theta, phi)
 
+            f1 = np.cos(T) * np.cos(P)
+            f2 = np.cos(T) * np.sin(P)
+            f3 = np.sin(T)
+
+            return (f1, f2, f3)
+    
 class DTLZ3(ProblemABC):
     '''
     Multi-Objective problem named DTLZ3 of the DTLZ suit.
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -225,7 +253,7 @@ class DTLZ3(ProblemABC):
         Y = (1 + g[:, None]) * np.fliplr(np.cumprod(np.hstack([np.ones((X.shape[0], 1)), np.cos(X[:, :self.nOutput-1] * np.pi / 2)]), axis=1)) * np.hstack([np.ones((X.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -235,15 +263,22 @@ class DTLZ3(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        a = np.linspace(0, np.pi / 2, 10)
-        R = [np.sin(a) * np.cos(a), np.sin(a) * np.sin(a), np.cos(a) * np.ones(a.shape)]
-        # Y = np.array(list(itertools.product(R[0], R[1], R[2])))
-        #TODO 
-        return R
+        
+        if self.nOutput == 3:
+            res = 101  
+            theta = np.linspace(0.0, np.pi/2, res) 
+            phi   = np.linspace(0.0, np.pi/2, res) 
+            T, P = np.meshgrid(theta, phi)
+
+            f1 = np.cos(T) * np.cos(P)
+            f2 = np.cos(T) * np.sin(P)
+            f3 = np.sin(T)
+
+            return (f1, f2, f3)
 
 class DTLZ4(ProblemABC):
     '''
@@ -251,8 +286,8 @@ class DTLZ4(ProblemABC):
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -302,7 +337,7 @@ class DTLZ4(ProblemABC):
         
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -311,24 +346,32 @@ class DTLZ4(ProblemABC):
         R /= np.sqrt(np.sum(R**2, axis=1))[:, np.newaxis]
         return R
 
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        a = np.linspace(0, np.pi/2, 10)
-        R = [np.sin(a) * np.cos(a), np.sin(a) * np.sin(a), np.cos(a) * np.ones_like(a)]
-        Y = np.array(list(itertools.product(R[0], R[1], R[2])))
-        #TODO 
-        return Y
-    
+        
+        if self.nOutput == 3:
+        
+            res = 101 
+            theta = np.linspace(0.0, np.pi/2, res)  
+            phi   = np.linspace(0.0, np.pi/2, res)  
+            T, P = np.meshgrid(theta, phi)
+
+            f1 = np.cos(T) * np.cos(P)
+            f2 = np.cos(T) * np.sin(P)
+            f3 = np.sin(T)
+
+            return (f1, f2, f3)
+        
 class DTLZ5(ProblemABC):
     '''
     Multi-Objective problem named DTLZ5 of the DTLZ suit.
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -378,7 +421,7 @@ class DTLZ5(ProblemABC):
                 * np.hstack([np.ones((g.shape[0], 1)), np.sin(X[:, self.nOutput-2::-1] * np.pi / 2)])
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -395,12 +438,24 @@ class DTLZ5(ProblemABC):
         
         return R
 
-    def get_pf(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        #TODO 
-        return self.get_optimum(100)
+        
+        if self.nOutput == 3:
+        
+            N = 200  
+            theta1 = np.linspace(0.0, np.pi/2, N)   
+            c = np.cos(theta1)
+            s = np.sin(theta1)
+            coef = 1.0 / np.sqrt(2.0)             
+
+            f1 = (coef * c)[:, np.newaxis]  
+            f2 = (coef * c)[:, np.newaxis]   
+            f3 = (s)[:, np.newaxis]
+                
+            return (f1, f2, f3)
 
 class DTLZ6(ProblemABC):
     '''
@@ -408,8 +463,8 @@ class DTLZ6(ProblemABC):
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -462,7 +517,7 @@ class DTLZ6(ProblemABC):
         
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -475,12 +530,23 @@ class DTLZ6(ProblemABC):
 
         return R
     
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
-        #TODO 
-        return self.get_optimum(100)
+        
+        if self.nOutput == 3:
+            N = 200  
+            theta1 = np.linspace(0.0, np.pi/2, N)   
+            c = np.cos(theta1)
+            s = np.sin(theta1)
+            coef = 1.0 / np.sqrt(2.0)             
+
+            f1 = (coef * c)[:, np.newaxis]  
+            f2 = (coef * c)[:, np.newaxis]   
+            f3 = (s)[:, np.newaxis]
+                
+            return (f1, f2, f3)
 
 class DTLZ7(ProblemABC):
     '''
@@ -488,8 +554,8 @@ class DTLZ7(ProblemABC):
     
     Methods:
     objFunc: Returns the function value of the problem if provide the X.
-    get_PF: Returns the Pareto Front of the problem.
-    get_optimum: Returns the Pareto Optimum of the problem.
+    getPF: Returns the Pareto Front of the problem.
+    getOptimum: Returns the Pareto Optimum of the problem.
     
     Attributes:
     nInput: int
@@ -508,13 +574,13 @@ class DTLZ7(ProblemABC):
     
     name="DTLZ7"
     
-    def __init__(self, nInput:int =30, nOutput: int=3, 
-                    ub: Union[int,float,np.ndarray] =1, 
-                        lb: Union[int,float,np.ndarray] =0):
+    def __init__(self, nInput:int = 30, nOutput: int = 3, 
+                    ub: Union[int,float,np.ndarray] = 1, 
+                        lb: Union[int,float,np.ndarray] = 0):
         
         super().__init__(nInput, nOutput, ub, lb)
         
-        if nOutput!=3:
+        if nOutput != 3:
             raise ValueError("DTLZ6 is a three-objective optimization problem")
         
     def objFunc(self, X):
@@ -546,7 +612,7 @@ class DTLZ7(ProblemABC):
         
         return Y
     
-    def get_optimum(self, N):
+    def getOptimum(self, N):
         '''
         Return the optimum of the problem.
         '''
@@ -563,9 +629,30 @@ class DTLZ7(ProblemABC):
         
         return R
     
-    def get_PF(self):
+    def getPF(self):
         '''
         Return the pareto front of the problem.
         '''
         
-        return self.get_optimum(100)
+        if self.nOutput == 3:
+            
+            from ..util.non_dominated_sort import NDSort
+            
+            f1, f2 = np.meshgrid(np.linspace(0.0, 1.0, 51),
+                            np.linspace(0.0, 1.0, 51))
+            
+            f3 = 2 * (3
+                - 0.5 * f1 * (1 + np.sin(3 * np.pi * f1))
+                - 0.5 * f2 * (1 + np.sin(3 * np.pi * f2)))
+            
+            F = np.stack([f1.ravel(), f2.ravel(), f3.ravel()], axis=1)
+            
+            frontNo, _ = NDSort(F)
+            
+            nd = frontNo == 1
+            nd = nd.reshape(f3.shape)
+            
+            f3_plot = f3.copy()
+            f3_plot[~nd] = np.nan
+            
+            return (f1, f2, f3_plot)

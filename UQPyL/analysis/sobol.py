@@ -214,8 +214,8 @@ class Sobol(AnalysisABC):
         
             # Calculate first-order and total-order sensitivity indices for each input variable
             for j in range(nInput):
-                S1[i] = self._firstOrder(A, AB[:, j:j + 1], B)
-                ST[i] = self._totalOrder(A, AB[:, j:j + 1], B)
+                S1[i, j] = self._firstOrder(A, AB[:, j:j + 1], B)
+                ST[i, j] = self._totalOrder(A, AB[:, j:j + 1], B)
                 
             if secondOrder:
                 # S2 = []

@@ -20,12 +20,13 @@ class CSA(AlgorithmABC):
     alg_type = "EA" 
     
     def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
-                 nPop: int = 50,
-                 maxIterTimes: int=  1000,
+                 nPop: int = 25,
+                 maxIters: int=  1000,
                  maxFEs: int = 50000,
-                 maxTolerateTimes: int = 1000, tolerate: float = 1e-6, 
+                 maxTolerates: int = 1000, tolerate: float = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True):
         """
+        
         Initialize the CSA algorithm with user-defined parameters.
         
         :param alpha: Control parameter for team communication.
@@ -43,8 +44,8 @@ class CSA(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
-                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate, 
+        super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
+                         maxTolerates = maxTolerates, tolerate = tolerate, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         # Set user-defined parameters

@@ -40,8 +40,8 @@ class ASMO(AlgorithmABC):
                  surrogate: SurrogateABC = None,
                  optimizer: AlgorithmABC = None,
                  maxFEs: int = 1000,
-                 maxIterTimes: int = 1000,
-                 maxTolerateTimes: int = None,
+                 maxIters: int = 1000,
+                 maxTolerates: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = True):
         '''
         Initialize the ASMO algorithm with user-defined parameters.
@@ -57,7 +57,7 @@ class ASMO(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, maxTolerateTimes = maxTolerateTimes, 
+        super().__init__(maxFEs = maxFEs, maxIters = maxIters, maxTolerates = maxTolerates, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         self.setParaVal('nInit', nInit)

@@ -15,17 +15,17 @@ class DREAM_ZS(InferenceABC):
     
     name = "Differential Evolution Adaptive Metropolis Z-score"
     
-    def __init__(self, nChain: int = 10, warmUp: int = 1000, 
+    def __init__(self, nChains: int = 10, warmUp: int = 1000, 
                        ps: float = 0.1, k: int = 1, jitter: float = 0.1,
                        adpInterval: int = 50, archSize: int = 10,
                        acTarget: float = 0.25, nCR: int = 5,
-                       maxIter: int = 1000,
+                       maxIters: int = 1000,
                        verboseFlag: bool = True, verboseFreq: int = 10,
                        logFlag: bool = False, saveFlag: bool = True):
         
-        super().__init__(maxIter, verboseFlag, verboseFreq, logFlag, saveFlag)
+        super().__init__(maxIters, verboseFlag, verboseFreq, logFlag, saveFlag)
         
-        self.setParaVal('nChain', nChain)
+        self.setParaVal('nChains', nChains)
         self.setParaVal('warmUp', warmUp)
         self.setParaVal('ps', ps)
         self.setParaVal('k', k)
@@ -40,7 +40,7 @@ class DREAM_ZS(InferenceABC):
         
         self.setup(problem, seed)
         
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         warmUp = self.getParaVal('warmUp')
         ps = self.getParaVal('ps')
         jitter = self.getParaVal('jitter')
@@ -60,11 +60,11 @@ class DREAM_ZS(InferenceABC):
         gamma = self._check_gamma_(gamma)
         gamma_scale = 1.0
         
-        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChain)
+        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains)
 
         # init chains
-        chains = self.initChains(nChain, X_init, Objs_init, Cons_init)
-        archSize = int(nChain * archSize)
+        chains = self.initChains(nChains, X_init, Objs_init, Cons_init)
+        archSize = int(nChains * archSize)
         archive = [x for x in X_init]
         
         # warm up
@@ -90,8 +90,8 @@ class DREAM_ZS(InferenceABC):
                     archive = archive[-archSize:]
         
         # main loop
-        ac_rate = np.zeros(nChain)
-        ac_local = np.zeros(nChain)
+        ac_rate = np.zeros(nChains)
+        ac_local = np.zeros(nChains)
         while self.checkTermination(chains):
             
             X_star, Q_ratio, crIdxs = self.f_prop_ratio(X_cur, archive, ps, k, jitter, gamma, gamma_scale, crSet, pCR, problem.ub, problem.lb)
@@ -136,7 +136,7 @@ class DREAM_ZS(InferenceABC):
                 "acceptanceRate_mean" : ((), mean_ac_rate, {"long_name": "mean of acceptance rate for all chains",  "description": "mean of acceptance rate for all chains"})
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
             },
         )
         
@@ -147,7 +147,7 @@ class DREAM_ZS(InferenceABC):
                 "lg" : (("chain", "draw", "objsDim"), lg, {"long_name": "log probability",  "description": "log probability for each sample"}),
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "draw": np.arange(self.iter),
                 "objsDim": np.arange(self.problem.nOutput),
             },
@@ -190,17 +190,17 @@ class DREAM_ZS(InferenceABC):
 
     def f_prop_ratio(self, X_cur, archive, ps, k, jitter, gamma, gamma_scale, crSet, pCR, ub, lb):
         
-        nChain = X_cur.shape[0]
+        nChains = X_cur.shape[0]
         
         X_star = np.zeros_like(X_cur)
   
-        Q_ratio = np.ones(nChain)
+        Q_ratio = np.ones(nChains)
         
-        crIdxs = np.full(nChain, -1)
+        crIdxs = np.full(nChains, -1)
         
         gamma = gamma * gamma_scale * (1.0 + jitter * np.random.normal(0, 1))
         
-        for i in range(nChain):
+        for i in range(nChains):
             
             if np.random.rand() < ps:
                 X_star[i], q_ratio = self.snooker_update(i, X_cur, archive, gamma[i])

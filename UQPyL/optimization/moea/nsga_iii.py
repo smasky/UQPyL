@@ -26,8 +26,8 @@ class NSGAIII(AlgorithmABC):
     
     def __init__(self, proC: float=1.0, disC: float=20.0, proM: float=1.0, disM: float=20.0,
                  nPop: int=50,
-                 maxFEs=50000, maxIterTimes=1000, 
-                 maxTolerateTimes=None, tolerate=1e-6, 
+                 maxFEs=50000, maxIters=1000, 
+                 maxTolerates=None, tolerate=1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, 
                  logFlag: bool = True, saveFlag: bool = True):
         '''
@@ -48,7 +48,7 @@ class NSGAIII(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, tolerate, 
+        super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
                          verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters

@@ -11,7 +11,7 @@ from ..util import Verbose
 
 class InferenceABC(metaclass = abc.ABCMeta):
     
-    def __init__(self, maxIter: int = 1000,
+    def __init__(self, maxIters: int = 1000,
                  verboseFlag: bool = True, verboseFreq: int = 10, 
                  logFlag: bool = False, saveFlag: bool = False):
         
@@ -20,7 +20,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
         self.logFlag = logFlag
         self.saveFlag = saveFlag
         
-        self.maxIter = maxIter
+        self.maxIters = maxIters
         
         self.setting = Setting()
         
@@ -43,11 +43,11 @@ class InferenceABC(metaclass = abc.ABCMeta):
         self.setParaVal('seed', seed)
         np.random.seed(seed)
     
-    def initialSampling(self, problem: ProblemABC, nChain: int, seed: int = None):
+    def initialSampling(self, problem: ProblemABC, nChains: int, seed: int = None):
         
         sampler = LHS()
         sample_seed = np.random.randint(1, 1000000)
-        X0 = sampler.sample(self.problem, nChain, sample_seed)
+        X0 = sampler.sample(self.problem, nChains, sample_seed)
         Objs0, Cons0 = self.evaluate(X0)
         
         return X0, Objs0, Cons0
@@ -63,12 +63,12 @@ class InferenceABC(metaclass = abc.ABCMeta):
     
     def _check_gamma_(self, gamma):
         
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         nInput = self.problem.nInput
         
         if isinstance(gamma, float):
             
-            gamma = np.full((nChain, nInput), gamma)
+            gamma = np.full((nChains, nInput), gamma)
             
         elif isinstance(gamma, np.ndarray):
             
@@ -77,11 +77,11 @@ class InferenceABC(metaclass = abc.ABCMeta):
             n, _ = gamma.shape
             
             if n == 1:
-                gamma = np.tile(gamma, (nChain, 1))
-            elif n == nChain:
+                gamma = np.tile(gamma, (nChains, 1))
+            elif n == nChains:
                 gamma = gamma
             else:
-                raise ValueError("The shape of gamma must be (nChain, nInput) or (1, nInput)")
+                raise ValueError("The shape of gamma must be (nChains, nInput) or (1, nInput)")
         else:
             raise ValueError("gamma must be a float or a numpy array")
         
@@ -95,7 +95,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
         
         nI = self.problem.nInput; nO = self.problem.nOutput; nC = self.problem.nCons
         
-        iters = self.maxIter
+        iters = self.maxIters
         
         chains = []
         
@@ -118,7 +118,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
             
             Verbose.verboseInference(verbRes, self.problem)
            
-        if self.iter >= self.maxIter:
+        if self.iter >= self.maxIters:
             return False
         
         return True 
@@ -173,7 +173,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
         
         res = {};
         
-        nChain = len(chains); draw = chains[0].count
+        nChains = len(chains); draw = chains[0].count
         
         nInput = problem.nInput; nOutput = problem.nOutput; nCons = problem.nCons
         
@@ -185,7 +185,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
             cons = np.stack([c.cons for c in chains])
             feasibleMask = (cons <= 0).all("consDim")
         else:
-            feasibleMask = np.ones((nChain, decs.shape[1]), dtype=bool)
+            feasibleMask = np.ones((nChains, decs.shape[1]), dtype=bool)
         
         posterior_ds = xr.Dataset(
             data_vars = {
@@ -197,7 +197,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
                 "proLB" : (("decsDim"), problem.lb.ravel(), {"long_name": "lower bound of decision variables / parameters",  "description": "lower bound of decision variables / parameters"}),
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "draw": np.arange(draw),
                 "decsDim": np.arange(nInput),
                 "objsDim": np.arange(nOutput),
@@ -222,7 +222,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
         bestDecs = []
         bestObjs = []
         
-        for i in range(nChain):
+        for i in range(nChains):
             
             decs_i = decs[i]
             objs_i = objs_min[i]
@@ -282,7 +282,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
                 "stdAll" : (("decsDim"), stdAll, {"long_name": "standard deviation of feasible decision variables for all chains",  "description": "standard deviation of feasible decision variables for all chains"}),
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "decsDim": np.arange(nInput),
                 "objsDim": np.arange(nOutput),
                 **({"consDim": np.arange(nCons)} if nCons > 0 else {}),
@@ -309,7 +309,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
                 },
                 
                 coords = {
-                    "chain": np.arange(nChain),
+                    "chain": np.arange(nChains),
                     "decsDim": np.arange(nInput),
                     "objsDim": np.arange(nOutput),
                 },

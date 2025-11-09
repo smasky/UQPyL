@@ -15,14 +15,14 @@ class DEMC(InferenceABC):
     
     name = "Differential Evolution Markov Chain"
     
-    def __init__(self,  nChain: int = 1, warmUp: int = 1000, 
+    def __init__(self,  nChains: int = 1, warmUp: int = 1000, 
                         maxIterTimes: int = 1000, 
                         verboseFlag: bool = True, verboseFreq: int = 10,
                         logFlag: bool = False, saveFlag: bool = True):
         
         super().__init__(maxIterTimes, verboseFlag, verboseFreq, logFlag, saveFlag)
                 
-        self.setParaVal('nChain', nChain)
+        self.setParaVal('nChains', nChains)
         self.setParaVal('warmUp', warmUp)
     
     @Verbose.inference
@@ -30,13 +30,13 @@ class DEMC(InferenceABC):
         
         self.setup(problem, seed)
         
-        nChain = self.getParaVal('nChain'); warmUp = self.getParaVal('warmUp')
+        nChains = self.getParaVal('nChains'); warmUp = self.getParaVal('warmUp')
         
-        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChain)
+        X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains)
         
-        chains = self.initChains(nChain, X_init, Objs_init, Cons_init)
+        chains = self.initChains(nChains, X_init, Objs_init, Cons_init)
         
-        ac_rate = np.zeros(nChain)
+        ac_rate = np.zeros(nChains)
         
         X_cur = X_init; Objs_cur = Objs_init; Cons_cur = Cons_init
         
@@ -50,7 +50,7 @@ class DEMC(InferenceABC):
             
             Objs_star, Cons_star = self.evaluate(X_star)
             
-            for i in range(nChain):
+            for i in range(nChains):
                 
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
@@ -61,7 +61,7 @@ class DEMC(InferenceABC):
                         Cons_cur[i] = Cons_star[i]
                     
         # main loop
-        ac_rate = np.zeros(nChain)
+        ac_rate = np.zeros(nChains)
         while self.checkTermination(chains):
             
             X_star = self.f_prop(X_cur, problem.ub, problem.lb, gamma)
@@ -73,7 +73,7 @@ class DEMC(InferenceABC):
                 if np.log(np.random.rand()) < (self.log_prob(Objs_star[i]) - self.log_prob(Objs_cur[i])) \
                     and (problem.nCons == 0 or (problem.nCons > 0 and all(Cons_star[i] <= 0))):
                     
-                    ac_rate[i] += 1 / self.maxIter
+                    ac_rate[i] += 1 / self.maxIters
                     
                     X_cur[i] = X_star[i]; Objs_cur[i] = Objs_star[i]
                     
@@ -94,7 +94,7 @@ class DEMC(InferenceABC):
                 "acceptanceRate_mean" : ((), mean_ac_rate, {"long_name": "mean of acceptance rate for all chains",  "description": "mean of acceptance rate for all chains"})
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
             },
         )
         
@@ -105,7 +105,7 @@ class DEMC(InferenceABC):
                 "lg" : (("chain", "draw", "objsDim"), lg, {"long_name": "log probability",  "description": "log probability for each sample"}),
             },
             coords = {
-                "chain": np.arange(nChain),
+                "chain": np.arange(nChains),
                 "draw": np.arange(self.iter),
                 "objsDim": np.arange(self.problem.nOutput),
             },
@@ -119,21 +119,21 @@ class DEMC(InferenceABC):
     
     def _check_alpha(self, alpha):
         
-        nChain = self.getParaVal('nChain')
+        nChains = self.getParaVal('nChains')
         nInput = self.problem.nInput
         
         if isinstance(alpha, float):
-            alpha = np.full((nChain, nInput), alpha)
+            alpha = np.full((nChains, nInput), alpha)
             
         elif isinstance(alpha, np.ndarray):
             alpha = np.atleast_2d(alpha)
             n, _ = alpha.shape
             if n == 1:
-                alpha = np.tile(alpha, (nChain, 1))
-            elif n == nChain:
+                alpha = np.tile(alpha, (nChains, 1))
+            elif n == nChains:
                 alpha = alpha
             else:
-                raise ValueError("The shape of alpha must be (nChain, nInput) or (1, nInput)")
+                raise ValueError("The shape of alpha must be (nChains, nInput) or (1, nInput)")
         else:
             raise ValueError("alpha must be a float or a numpy array")
         
@@ -153,15 +153,15 @@ class DEMC(InferenceABC):
         
         X_star = np.zeros_like(X_cur)
         
-        nChain = X_cur.shape[0]
+        nChains = X_cur.shape[0]
         
         if gamma is None:
-            gamma = np.full(nChain, 2.38 / np.sqrt(2 * self.problem.nInput))
+            gamma = np.full(nChains, 2.38 / np.sqrt(2 * self.problem.nInput))
         
         
-        for i in range(nChain):
+        for i in range(nChains):
             
-            idx = [j for j in range(nChain) if j != i]
+            idx = [j for j in range(nChains) if j != i]
             j, k = np.random.choice(idx, 2, replace=False)
             
             X_star[i] = X_cur[i] + gamma[i] * (X_cur[j] - X_cur[k]) + 1e-6 * gamma[i]

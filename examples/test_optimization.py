@@ -11,10 +11,11 @@ problem = Sphere(30)
 #                    GA                       # 
 # ------------------------------------------- #
 
-from UQPyL.optimization.soea import GA
+# from UQPyL.optimization.soea import GA
 
-ga = GA()
-res = ga.run(problem)
+# for i in range(9):
+#     ga = GA()
+#     res = ga.run(problem)
 
 # ------------------------------------------- #
 #                    PSO                      # 
@@ -70,15 +71,22 @@ res = ga.run(problem)
 from UQPyL.problem.mop import ZDT1
 problem = ZDT1(30)
 
+
+from UQPyL.problem.mop import DTLZ7, DTLZ2
+
+dtlz7 = DTLZ7(10)
+
+dtlz2 = DTLZ2(10)
+
 # ------------------------------------------- #
 #                    NSGAII                   # 
 # ------------------------------------------- #
 
-# from UQPyL.optimization.moea import NSGAII
+from UQPyL.optimization.moea import NSGAII
 
-# nsgaii = NSGAII()
+nsgaii = NSGAII()
 
-# res = nsgaii.run(problem)
+res = nsgaii.run(dtlz2)
 
 # ------------------------------------------- #
 #                   NSGAIII                   # 
@@ -87,6 +95,9 @@ problem = ZDT1(30)
 # from UQPyL.optimization.moea import NSGAIII
 # nsgaiii = NSGAIII()
 # res = nsgaiii.run(problem)
+
+
+
 
 # ------------------------------------------- #
 #                   MOEA/D                    # 

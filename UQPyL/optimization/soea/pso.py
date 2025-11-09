@@ -31,9 +31,9 @@ class PSO(AlgorithmABC):
     
     def __init__(self, w: float = 0.1, c1: float = 0.5, c2: float = 0.5,
                  nPop: int = 50,
-                 maxIterTimes: int = 1000,
+                 maxIters: int = 1000,
                  maxFEs: int = 50000,
-                 maxTolerateTimes: int = 1000, tolerate: float = 1e-6,
+                 maxTolerates: int = 1000, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         '''
         Initialize the particle swarm optimization algorithm with user-defined parameters.
@@ -53,8 +53,8 @@ class PSO(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         '''
         
-        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
-                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate, 
+        super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
+                         maxTolerates = maxTolerates, tolerate = tolerate, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
         
         # Set user-defined parameters

@@ -236,8 +236,8 @@ class Result():
         ds = xr.Dataset(
             
             data_vars = {
-                "X" : (("n", "nI"), X, {"description": "decision variables"}),
-                "Y" : (("n", "nO"), Y, {"description": "objectives or constraints"}),
+                "X" : (("idx", "nI"), X, {"description": "decision variables"}),
+                "Y" : (("idx", "nO"), Y, {"description": "objectives or constraints"}),
             },
             
             coords = {
@@ -251,7 +251,10 @@ class Result():
                 "problem" : f"{self.obj.problem.name}_{self.obj.problem.nInput}D_{self.obj.problem.nOutput}O_{self.obj.problem.nCons}C",
                 "method" : self.obj.name,
                 "created": datetime.now().isoformat(timespec='seconds'),
-                **self.setting.dicts,
+                **{
+                    k: (str(v) if isinstance(v, bool) else v)
+                    for k, v in self.obj.setting.dict.items()
+                }
             }
             
         )

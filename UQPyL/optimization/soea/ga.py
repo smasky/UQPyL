@@ -33,8 +33,8 @@ class GA(AlgorithmABC):
     def __init__(self, nPop: int = 50,
                  proC: float = 1, disC: float = 20, proM: float = 1, disM: float = 20,
                  maxFEs: int = 50000,
-                 maxIterTimes: int = 1000,
-                 maxTolerateTimes: Optional[int] = None, tolerate: float = 1e-6,
+                 maxIters: int = 1000,
+                 maxTolerates: Optional[int] = None, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
         '''
         Initialize the genetic algorithm with user-defined parameters.
@@ -57,8 +57,8 @@ class GA(AlgorithmABC):
         
         '''
         
-        super().__init__(maxFEs = maxFEs, maxIterTimes = maxIterTimes, 
-                         maxTolerateTimes = maxTolerateTimes, tolerate = tolerate,
+        super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
+                         maxTolerates = maxTolerates, tolerate = tolerate,
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         # Set user-defined parameters

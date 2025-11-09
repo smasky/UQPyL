@@ -10,7 +10,7 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
     """
     Baseclass for algorithms
     """
-    def __init__(self, maxFEs: int = None, maxIterTimes: int = None, maxTolerateTimes: int = None, tolerate: float = 1e-6, 
+    def __init__(self, maxFEs: int = None, maxIters: int = None, maxTolerates: int = None, tolerate: float = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = False):
         
         self.setting = Setting()
@@ -18,8 +18,8 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         
         self.problem = None
         self.maxFEs = maxFEs
-        self.maxIter = maxIterTimes
-        self.maxTolerateTimes = maxTolerateTimes
+        self.maxIter = maxIters
+        self.maxTolerates = maxTolerates
         self.tolerate = tolerate
         
         self.verboseFlag = verboseFlag
@@ -81,7 +81,7 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         
         if self.FEs < self.maxFEs:
             if self.maxIter is None or self.iters <= self.maxIter:
-                if self.maxTolerateTimes is None or self.tolerateTimes <= self.maxTolerateTimes:
+                if self.maxTolerates is None or self.tolerateTimes <= self.maxTolerates:
                     
                     signalFlag = True
                     

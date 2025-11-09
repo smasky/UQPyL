@@ -38,7 +38,7 @@ class RBDFAST(AnalysisABC):
     -------------------------------------------------
     """
     
-    name = "RBD_FAST"
+    name = "RBDFAST"
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
                  M: int = 4, 

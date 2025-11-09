@@ -25,8 +25,8 @@ class DE(AlgorithmABC):
     def __init__(self, cr: float = 0.9, f: float = 0.5,
                  nPop: int = 50,
                  maxFEs: int = 50000, 
-                 maxIterTimes: int = 1000, 
-                 maxTolerateTimes: int = 1000, tolerate: float = 1e-6, 
+                 maxIters: int = 1000, 
+                 maxTolerates: int = 1000, tolerate: float = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
         """
         Initialize the differential evolution with user-defined parameters.
@@ -44,7 +44,7 @@ class DE(AlgorithmABC):
         :param saveFlag: Flag to enable saving results.
         """
         
-        super().__init__(maxFEs, maxIterTimes, maxTolerateTimes, 
+        super().__init__(maxFEs, maxIters, maxTolerates, 
                             tolerate, verboseFlag, verboseFreq, logFlag, saveFlag)
         
         # Set user-defined parameters
