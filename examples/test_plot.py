@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, '.')
 
-from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_sa
+from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_sa, plot_surrogate
 
 # source = {
 #     "GA": "./Result/Data/GA_Sphere_D30_M1_1.nc",
@@ -49,4 +49,44 @@ from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_s
 # }
 
 # plot_sa(source = source, fontsize = 20)
+
+# from UQPyL.problem import Sphere
+# from UQPyL.doe import LHS
+
+# lhs = LHS()
+
+# problem = Sphere(nInput = 15)
+
+# X = lhs.sample(nt = 800, problem = problem)
+# Y = problem.objFunc(X)
+
+# XTest = lhs.sample(nt = 100, problem = problem)
+# YTest = problem.objFunc(XTest)
+
+# from UQPyL.surrogate.rbf import RBF
+
+# rbf = RBF()
+
+# rbf.fit(X, Y)
+
+# YPred = rbf.predict(XTest)
+
+# plot_surrogate(name = "RBF", yPred = YPred, yTrue = YTest, ylim = [20000, 90000], yMajorLocator = 10000)
+
+
+# from UQPyL.util import plot_infer_trace
+
+# filepath = "./Result/Data/MH_Gaussian4_D4_M1_1.nc"
+
+# plot_infer_trace(filepath = filepath, fontsize = 20, burnIn = 100)
+
+
+# from UQPyL.util import plot_infer_stat, plot_infer_stat_combined
+
+# filepath = "./Result/Data/MH_Gaussian4_D4_M1_1.nc"
+
+# plot_infer_stat(filepath = filepath, fontsize = 20, burnIn = 100)
+
+# plot_infer_stat_combined(filepath = filepath, fontsize = 20, burnIn = 100, showCI = True, CI = 0.95)
+
 

@@ -13,7 +13,7 @@ class DEMC(InferenceABC):
     # Differential Evolution Markov Chain
     # ---------------------------------- #
     
-    name = "Differential Evolution Markov Chain"
+    name = "DEMC"
     
     def __init__(self,  nChains: int = 1, warmUp: int = 1000, 
                         maxIterTimes: int = 1000, 

@@ -13,7 +13,7 @@ class DREAM_ZS(InferenceABC):
     # Differential Evolution Adaptive Metropolis Z-score
     # ---------------------------------------- #
     
-    name = "Differential Evolution Adaptive Metropolis Z-score"
+    name = "DREAM-ZS"
     
     def __init__(self, nChains: int = 10, warmUp: int = 1000, 
                        ps: float = 0.1, k: int = 1, jitter: float = 0.1,

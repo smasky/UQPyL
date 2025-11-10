@@ -12,7 +12,7 @@ class AMH(InferenceABC):
     # Adaptive Metropolis-Hastings
     # ---------------------------- #
     
-    name = "Adaptive Metropolis-Hastings"
+    name = "AMH"
     
     def __init__(self, nChains: int = 1, warmUp: int = 1000, maxIterTimes: int = 1000, 
                        propDist: Literal['gauss', 'uniform'] = 'gauss',

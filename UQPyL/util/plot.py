@@ -270,7 +270,7 @@ def plot_op_pareto(filepath: str, optima: np.ndarray = None, fontsize = 20,
     
     import matplotlib.pyplot as plt
     plt.rcParams['font.family'] = 'Arial'
-    from matplotlib.ticker import MultipleLocator, LogLocator, NullFormatter
+    from matplotlib.ticker import MultipleLocator
     from mpl_toolkits.mplot3d import Axes3D
     
     ds = xr.open_dataset(filepath, group= "result")
@@ -436,3 +436,337 @@ def plot_sa(source: dict,
         ax.set_title(title, fontsize = fontsize)
     
     plt.show()
+
+def plot_surrogate(name: str, yPred: np.ndarray, yTrue: np.ndarray, 
+                   fontsize = 20, markersize: float = 300, 
+                   xLabel: Optional[str] = "True Value", yLabel: Optional[str] = "Predicted Value",
+                   title: Optional[str] = None,
+                   ylim: Optional[list] = None, yMajorLocator: Optional[int] = None):
+    
+    from .metric import r_square, mse
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import MultipleLocator
+    plt.rcParams['font.family'] = 'Arial'
+    
+    yTrue = yTrue.ravel()
+    yPred = yPred.ravel()
+    
+    yMax = np.max(np.concatenate([yTrue, yPred])) * 1.1
+    yMin = np.min(np.concatenate([yTrue, yPred])) * 0.9
+    
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    
+    r2 = r_square(yTrue, yPred)
+    rmse = np.sqrt(mse(yTrue, yPred))
+    
+    colors = ['#F08080' if pred > true else '#4682B4' for pred, true in zip(yPred, yTrue)]
+    
+    ax.scatter(yTrue, yPred, c = colors, s= markersize, alpha = 1.0,
+               edgecolor = 'black', linewidth = 1.5)
+    
+    ax.scatter([], [], c = '#F08080', s = markersize, alpha = 1.0,
+               edgecolor = 'black', linewidth = 1.5, label = 'Overestimated')
+    
+    ax.scatter([], [], c = '#4682B4', s = markersize, alpha = 1.0,
+               edgecolor = 'black', linewidth = 1.5, label = 'Underestimated')
+    
+    ax.legend(loc = 'lower right', frameon = True, fancybox = True, shadow = True,
+              fontsize = int(fontsize * 0.9), ncol = 1)
+
+    if ylim is not None:
+        ax.set_xlim(ylim)
+        ax.set_ylim(ylim)
+        ax.plot([ylim[0], ylim[1]], [ylim[0], ylim[1]], '--', color = "#C34C50", lw = 5)
+    else:
+        ax.set_xlim(yMin, yMax)
+        ax.set_ylim(yMin, yMax)
+        ax.plot([yMin, yMax], [yMin, yMax], '--', color = "#C34C50", lw = 5)
+
+    if yMajorLocator is not None:
+        ax.yaxis.set_major_locator(MultipleLocator(yMajorLocator))
+        ax.xaxis.set_major_locator(MultipleLocator(yMajorLocator))
+        
+    for spine in ax.spines.values():
+        spine.set_linewidth(2)
+        spine.set_color('black')
+
+    ax.set_xlabel(xLabel, fontweight='bold', fontsize = fontsize)
+    ax.set_ylabel(yLabel, fontweight='bold', fontsize = fontsize)
+
+    if title is not None:
+        ax.set_title(title, fontweight = 'bold', fontsize = fontsize)
+
+    letter = chr(97)  # a, b, c, d
+    ax.text(0.5, -0.15, f"({letter}) {name}", fontweight = 'bold',
+            transform=ax.transAxes, ha='center', va='top', fontsize = int(fontsize * 0.9))
+
+    # 添加性能指标
+    ax.text(0.05, 0.95, f"$R^2$ = {r2:.3f}, RMSE = {rmse:.3f}",
+            transform=ax.transAxes, ha='left', va='top', fontsize = int(fontsize * 0.9),
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
+    
+    # tick label
+    ax.tick_params(axis = 'both', which = 'both', width = 2, length = 4, direction = 'in', labelsize = int(fontsize * 0.9))
+    
+    plt.show()
+
+
+def plot_infer_trace(filepath: str, 
+                     fontsize = 20, 
+                     burnIn: int = 0,
+                     colors: Optional[Union[List[str]]] = None,
+                     linewidth: float = 2.0,
+                     xLabel: Optional[str] = "Iterations",
+                     yLabel: Optional[str] = "Value",
+                     subtitle: Optional[Union[List[str]]] = None,
+                     idx: Optional[list] = None,
+                     gridOn: bool = True):
+
+    import xarray as xr
+    import matplotlib.pyplot as plt
+    import math
+
+    plt.rcParams['font.family'] = 'Arial'
+
+    ds = xr.open_dataset(filepath, group="posterior")
+    decs = ds["decs"].values
+
+    nChains, nSamples, nDim = decs.shape
+
+    if idx is not None:
+        decs = decs[:, :, idx]
+        nDim = len(idx)
+    
+    nCols = 1 if nDim <= 2 else 2
+    nRows = math.ceil(nDim / nCols)
+
+    base_height = 3.5
+    base_width = 9 if nCols == 1 else 8
+    fig_height = max(4.5, nRows * base_height) + 2
+    fig_width  = base_width * nCols + 1
+
+    fig, axes = plt.subplots(nRows, nCols, figsize=(fig_width, fig_height), sharex=False)
+    axes = axes.flatten() if nDim > 1 else [axes]
+
+    if colors is None:
+        colors = plt.cm.tab10.colors
+    else:
+        colors = _check_plot_var_(colors, nChains, plt.cm.tab10.colors)
+
+    for i in range(nDim):
+        ax = axes[i]
+        for j in range(nChains):
+            ax.plot(np.arange(burnIn, nSamples), decs[j, burnIn:, i].ravel(),
+                    lw = linewidth,
+                    color = colors[j % len(colors)],
+                    label = f"Chain {j+1}")
+
+        if subtitle is not None:
+            ax.set_title(subtitle[i], fontsize=int(fontsize * 0.9))
+        else:
+            ax.set_title(
+                f"Decision Variable {i+1}" if idx is None else f"Decision Variable {idx[i]+1}",
+                fontsize=int(fontsize * 0.9)
+            )
+            
+        ax.set_xlabel(xLabel, fontsize=int(fontsize * 0.85))
+        ax.set_ylabel(yLabel, fontsize=int(fontsize * 0.85))
+        
+        ax.tick_params(axis='both', which='both', width=1.6, length=4,
+                       direction='in', labelsize=int(fontsize * 0.8))
+        
+        for spine in ax.spines.values():
+            spine.set_linewidth(2)
+            spine.set_color('black')
+        
+        if gridOn:
+            ax.grid(alpha = 0.8, linestyle = '--', linewidth = 1.5)
+
+        ax.set_xlim(burnIn, nSamples)
+        
+    for k in range(nDim, len(axes)):
+        fig.delaxes(axes[k])
+
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels,
+               loc  = 'lower center',
+               ncol = int(nChains / 2),
+               fontsize = int(fontsize * 0.85),
+               frameon = True,
+               bbox_to_anchor = (0.5, 0.01))
+
+    plt.tight_layout(rect=[0, 0.1, 1, 1])
+    
+    plt.show()
+    
+    return fig, axes
+
+
+def plot_infer_stat(filepath: str, 
+                    fontsize = 18, 
+                    burnIn: int = 0,
+                    bins = 30, hist = True, kde = True,
+                    idx: Optional[List[int]] = None,
+                    legendOn = True,
+                    gridOn = True):
+    
+    import xarray as xr
+    import matplotlib.pyplot as plt
+    
+    plt.rcParams['font.family'] = 'Arial'
+    
+    ds = xr.open_dataset(filepath, group="posterior")
+    
+    decs = ds["decs"].values[:, burnIn:, :]
+    
+    if idx is not None:
+        decs = decs[:, :, idx]
+    
+    fig, axes = _plot_infer_core(
+        decs, bins = bins, hist = hist, kde = kde, mode = "chains",
+        fontsize = fontsize, legendOn = legendOn, gridOn = gridOn, idx = idx
+    )
+    
+    plt.show()
+    
+    return fig, axes
+
+
+def plot_infer_stat_combined(filepath: str, fontsize = 18, burnIn: int = 0,
+                             bins = 30, 
+                             hist = True, 
+                             kde = True,
+                             showCI: bool = False, CI: float = 0.95,
+                             legendOn: bool = False):
+    import xarray as xr
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+     
+    plt.rcParams['font.family'] = 'Arial'
+    
+    ds = xr.open_dataset(filepath, group="posterior")
+    
+    decs = ds["decs"].values[:, burnIn:, :]
+    
+    fig, axes = _plot_infer_core(
+        decs, bins = bins, hist = hist, kde = kde, mode = "combined",
+        fontsize = fontsize, legendOn = legendOn
+    )
+    
+    if showCI:
+      
+        alpha_low = (1.0 - CI) / 2.0 * 100.0
+        q_low, q_high = alpha_low, 100.0 - alpha_low
+
+        ci_color = "red"
+        line_width = 2.2
+        span_alpha = 0.15
+        
+        import numpy as _np
+        axes = _np.atleast_1d(axes).ravel()
+
+        nDim = decs.shape[2]
+        for i in range(nDim):
+            ax = axes[i]
+            data = decs[:, :, i].ravel()
+
+            median = np.median(data)
+            ci_low, ci_high = np.percentile(data, [q_low, q_high])
+
+            ax.axvline(median, color=ci_color, lw=line_width)
+            ax.axvspan(ci_low, ci_high, color=ci_color, alpha=span_alpha)
+
+            handles = [
+                plt.Line2D([], [], color = ci_color, lw = line_width, label = 'Median'),
+                Patch(facecolor = ci_color, alpha = span_alpha, label = f'{int(CI*100)}% CI')
+            ]
+            ax.legend(handles = handles, fontsize = int(fontsize*0.9), frameon = True, loc = 'best')
+                   
+    plt.show()
+    
+    return fig, axes
+
+def _plot_infer_core(decs, *, 
+                     bins = 30, 
+                     hist = True, 
+                     kde = True,
+                     mode = "chains", 
+                     fontsize = 18,
+                     gridOn = True,
+                     idx: Optional[List[int]] = None,
+                     legendOn = True):
+        
+    import numpy as np, math
+    import matplotlib.pyplot as plt, seaborn as sns
+
+    nChains, nSamples, nDim = decs.shape
+    
+    n_cols = int(math.ceil(np.sqrt(nDim)))
+    n_rows = int(math.ceil(nDim / n_cols))
+    
+    fig, axes = plt.subplots(n_rows, n_cols, figsize = ( 9 * n_cols, 8 * n_rows) )
+    
+    axes = np.atleast_1d(axes).ravel()
+
+    colors = plt.cm.tab10.colors
+    handles = []
+
+    for i in range(nDim):
+        
+        ax = axes[i]
+        
+        if mode == "combined":
+            
+            if idx is not None:
+                data = decs[:, :, idx[i]].ravel()
+            else:
+                data = decs[:, :, i].ravel()
+            
+            if hist:
+                sns.histplot(data, bins = bins, stat = 'density', alpha = 0.28,
+                             color = colors[0], ax = ax, edgecolor = 'black')
+            if kde:
+                sns.kdeplot(data, ax = ax, lw = 2, color = 'black', alpha = 0.9)
+                
+        else:  # mode == 'chains'
+            
+            for j in range(nChains):
+                c = colors[j % len(colors)]
+                if hist:
+                    sns.histplot(decs[j, :, i], bins = bins, stat = 'density',
+                                 alpha = 0.28, color = c, ax = ax, edgecolor = 'black')
+                if kde:
+                    sns.kdeplot(decs[j, :, i], ax = ax, lw = 2.0, color = c, alpha = 0.9)
+                if i == 0 and j < len(colors):
+                    handles.append(plt.Line2D([], [], color = c, lw = 2.0, label = f"Chain {j+1}"))
+
+        ax.set_title(f"Decision Variable {idx[i]+1}" if idx is not None else f"Decision Variable {i+1}", fontsize = int(fontsize*0.95))
+        ax.set_xlabel("Value", fontsize = int(fontsize*0.9))
+        ax.set_ylabel("Density", fontsize = int(fontsize*0.9))
+        ax.tick_params(labelsize = int(fontsize*0.85))
+        
+        ax.tick_params(axis = 'both', which = 'both', width = 1.6, length = 4.0,
+                       direction = 'in', labelsize = int(fontsize * 0.8))
+        
+        for spine in ax.spines.values():
+            spine.set_linewidth(2)
+            spine.set_color('black')
+        
+        if gridOn:
+            ax.grid(alpha = 0.8, linestyle = '--', linewidth = 1.5)
+
+    for k in range(nDim, len(axes)):
+        fig.delaxes(axes[k])
+
+    if legendOn and mode == "chains" and handles:
+        
+        plt.tight_layout(rect=[0, 0.10, 1, 1])
+        fig.legend(handles = handles, ncol = int(len(handles) / 2.0),
+                    fontsize = int(fontsize*0.8), frameon = True,
+                    loc = "lower center", bbox_to_anchor = (0.5, 0.02),
+                    bbox_transform = fig.transFigure)
+        
+    else:
+        plt.tight_layout()
+
+    return fig, axes

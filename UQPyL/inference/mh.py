@@ -13,7 +13,7 @@ class MH(InferenceABC):
     # Metropolis–Hastings
     # ------------------- #
     
-    name = "Metropolis-Hastings"
+    name = "MH"
     
     def __init__(self, nChains: int = 1, warmUp: int = 1000, 
                        propDist: Literal['gauss', 'uniform'] = 'gauss',

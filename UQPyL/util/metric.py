@@ -20,7 +20,7 @@ def mse(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """
     Mean square error
     """
-    return np.mean(np.square(true_Y-pre_Y), axis=0)
+    return np.mean(np.square(true_Y - pre_Y), axis=0)
 
 def rank_score(true_Y: np.ndarray, pre_Y: np.ndarray) -> np.ndarray:
     """

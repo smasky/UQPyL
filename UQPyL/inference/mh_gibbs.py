@@ -13,7 +13,7 @@ class MH_Gibbs(InferenceABC):
     # MH-Gibbs
     # --------- #
     
-    name = "MH with Gibbs"
+    name = "MH-Gibbs"
     
     def __init__(self, nChains: int = 1, warmUp: int = 1000, maxIters: int = 1000, 
                        propDist: Literal['gauss', 'uniform'] = 'gauss',
