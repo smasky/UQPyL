@@ -95,7 +95,7 @@ def objFunc_(X):
 # Array Mode
 def conFunc(X):
 
-    cons = X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2 - 4 
+    cons = 4 - X[:, 0]**2 + X[:, 1]**2 + X[:, 2]**2
 
     return cons[:, None] #keep 2D numpy array
 
@@ -103,7 +103,7 @@ def conFunc(X):
 @singleFunc
 def conFunc(X):
 
-    con = X[0]**2 + X[1]**2 + X[2]**2 - 4 
+    con = 4 - X[0]**2 + X[1]**2 + X[2]**2
 
     return con # scaler value is feasible
 

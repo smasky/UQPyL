@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0, '.')
-
 from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_sa, plot_surrogate
 
 # source = {
@@ -8,6 +5,12 @@ from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_s
 #     "PSO": "./Result/Data/PSO_Sphere_D30_M1_1.nc",
 #     "DE": "./Result/Data/DE_Sphere_D30_M1_1.nc",
 #     "ABC": "./Result/Data/ABC_Sphere_D30_M1_1.nc",
+# }
+
+# source = {
+#     "SCE-UA" : "./Result/Data/SCE-UA_Sphere_D4_M1_1.nc",
+#     "PSO" : "./Result/Data/PSO_Sphere_D4_M1_1.nc",
+#     "GA" : "./Result/Data/GA_Sphere_D4_M1_1.nc",
 # }
 
 # plot_op_curve(source = source, yLog = True, ySmooth = True, markevery = 40, xlim = [0, 1000], xMajorLocator = 100)
@@ -31,13 +34,13 @@ from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_s
 
 # three-objective problems
 
-# from UQPyL.problem import DTLZ7
+# from UQPyL.problem import DTLZ2
 
-# dtlz = DTLZ7(10)
+# dtlz = DTLZ2(10)
 
 # optima = dtlz.getPF()
 
-# filepath = "./Result/Data/NSGAII_DTLZ7_D10_M3_1.nc"
+# filepath = "./Result/Data/NSGAII_DTLZ2_D10_M3_1.nc"
 
 # plot_op_pareto(filepath = filepath, optima = optima, xlim = [0, 1], xMajorLocator = 0.1, ylim = [0, 1], yMajorLocator = 0.1)
 
@@ -46,6 +49,13 @@ from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_s
 #     "RBDFAST": "./Result/Data/RBDFAST_Problem_D8_M1_1.nc",
 #     "Sobol" : "./Result/Data/Sobol_Problem_D8_M1_1.nc",
 #     "MARS" : "./Result/Data/MARS_Problem_D8_M1_1.nc",
+# }
+
+# source = {
+#     "Sobol" : "./Result/Data/Sobol_Problem_D3_M1_1.nc",
+#     "RBD-FAST" : "./Result/Data/RBDFAST_Problem_D3_M1_1.nc",
+#     "FAST" : "./Result/Data/FAST_Problem_D3_M1_1.nc",
+#     "MARS" : "./Result/Data/MARS_Problem_D3_M1_1.nc",
 # }
 
 # plot_sa(source = source, fontsize = 20)
@@ -83,10 +93,8 @@ from UQPyL.util import plot_op_curve, plot_op_curve_stat, plot_op_pareto, plot_s
 
 # from UQPyL.util import plot_infer_stat, plot_infer_stat_combined
 
-# filepath = "./Result/Data/MH_Gaussian4_D4_M1_1.nc"
+# filepath = "./Result/Data/MH_Problem_D2_M1_1.nc"
 
 # plot_infer_stat(filepath = filepath, fontsize = 20, burnIn = 100)
 
 # plot_infer_stat_combined(filepath = filepath, fontsize = 20, burnIn = 100, showCI = True, CI = 0.95)
-
-

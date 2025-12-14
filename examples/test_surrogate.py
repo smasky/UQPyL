@@ -1,22 +1,28 @@
-import sys
-sys.path.insert(0, '.')
-
 import numpy as np
-from UQPyL.problem import Sphere
+from UQPyL.problem import Sphere, Rosenbrock
 
 from UQPyL.util.scaler import MinMaxScaler
 from UQPyL.doe import LHS
 from UQPyL.util.metric import r_square
 
+import time
+
 lhs = LHS()
+problem =Rosenbrock(nInput = 15)
+X = lhs.sample(nt = 300, problem = problem)
 
-problem = Sphere(nInput = 15)
+for i in range(85):
 
-X = lhs.sample(nt = 800, problem = problem)
-Y = problem.objFunc(X)
+    
+    if (i>0):
+        X1 = lhs.sample(nt = 20, problem = problem)
+    
+        X = np.concatenate((X, X1), axis=0)
+        
+    Y = problem.objFunc(X)
 
-XTest = lhs.sample(nt = 100, problem = problem)
-YTest = problem.objFunc(XTest)
+    XTest = lhs.sample(nt = 50, problem = problem, seed=100)
+    YTest = problem.objFunc(XTest)
 
 # --------------Ordinary Usage--------------- #
 
@@ -54,6 +60,7 @@ YTest = problem.objFunc(XTest)
 
 # gpr.fit(X, Y)
 
+
 # YPred = gpr.predict(XTest)
 
 # r2 = r_square(YTest, YPred)
@@ -64,18 +71,18 @@ YTest = problem.objFunc(XTest)
 #              Radial Basis Function          #
 # ------------------------------------------- #
 
-# from UQPyL.surrogate.rbf import RBF
-# from UQPyL.surrogate.rbf.kernel import Cubic
+    from UQPyL.surrogate.rbf import RBF
+    from UQPyL.surrogate.rbf.kernel import Cubic
 
-# kernel = Cubic()
-# rbf = RBF(kernel = kernel)
+    kernel = Cubic()
+    rbf = RBF(kernel = kernel)
 
-# rbf.fit(X, Y)
+    rbf.fit(X, Y)
 
-# YPred = rbf.predict(XTest)
-# r2 = r_square(YTest, YPred)
+    YPred = rbf.predict(XTest)
+    r2 = r_square(YTest, YPred)
 
-# print(r2)
+    print(f"i: {i}, r2: {r2}")
 
 # ------------------------------------------- #
 #               Linear Regression             #
@@ -117,7 +124,13 @@ YTest = problem.objFunc(XTest)
 
 # svr = SVR(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)), kernel = 'rbf')
 
+# a = time.time()
+
 # svr.fit(X, Y)
+
+# b = time.time()
+
+# print(b - a)
 
 # YPred = svr.predict(XTest)
 
@@ -193,7 +206,9 @@ YTest = problem.objFunc(XTest)
 # auto_tuner = AutoTuner(model = rbf)
 # paraVals, bestObj = auto_tuner.gridTune(X, Y, paraGrid)
 
+
 # rbf.fit(X, Y)
+
 # YPred = rbf.predict(XTest)
 # r2 = r_square(YTest, YPred)
 # print(r2)

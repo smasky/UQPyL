@@ -1,5 +1,3 @@
-import sys
-sys.path.insert(0, '.')
 import numpy as np
 import xarray as xr
 
@@ -33,43 +31,47 @@ def objFunc(X):
 
 gauss = Problem(nInput = 2, nOutput = 1, objFunc = objFunc, ub = 10, lb = -10)
 
-
 # ------------------------------- #
 #      Gaussian Mixture 4D        #
 # ------------------------------- #
 
-def objFunc(X):
+# def objFunc(X):
 
-    X = np.atleast_2d(X)
-    _, D = X.shape
+#     X = np.atleast_2d(X)
+#     _, D = X.shape
 
-    mu1 = np.array([-5.0, 0.0, 0.0, 0.0])
-    mu2 = np.array([ 5.0, 0.0, 0.0, 0.0])
+#     mu1 = np.array([-5.0, 0.0, 0.0, 0.0])
+#     mu2 = np.array([ 5.0, 0.0, 0.0, 0.0])
 
-    Sigma1 = np.eye(D)
-    Sigma2 = np.eye(D)
+#     Sigma1 = np.eye(D)
+#     Sigma2 = np.eye(D)
 
-    inv1 = np.linalg.inv(Sigma1)
-    inv2 = np.linalg.inv(Sigma2)
+#     inv1 = np.linalg.inv(Sigma1)
+#     inv2 = np.linalg.inv(Sigma2)
 
-    e1 = 0.5 * np.sum((X - mu1) @ inv1 * (X - mu1), axis=1)
-    e2 = 0.5 * np.sum((X - mu2) @ inv2 * (X - mu2), axis=1)
+#     e1 = 0.5 * np.sum((X - mu1) @ inv1 * (X - mu1), axis=1)
+#     e2 = 0.5 * np.sum((X - mu2) @ inv2 * (X - mu2), axis=1)
 
-    f = -np.log(0.5 * np.exp(-e1) + 0.5 * np.exp(-e2))
+#     f = -np.log(0.5 * np.exp(-e1) + 0.5 * np.exp(-e2))
 
-    return f[:, np.newaxis]
+#     return f[:, np.newaxis]
 
-gauss4 = Problem(nInput = 4, nOutput = 1, objFunc = objFunc, ub = 10, lb = -10, name = "Gaussian4")
+# gauss4 = Problem(nInput = 4, nOutput = 1, objFunc = objFunc, ub = 10, lb = -10, name = "Gaussian4")
 
 # ------------------------------------------- #
 #             Metropolis-Hastings             # 
 # ------------------------------------------- #
 
-from UQPyL.inference import MH
+# from UQPyL.inference import MH
 
-mh = MH(nChains = 10, warmUp = 10, maxIters = 1000, propDist = 'gauss', verboseFlag = True, verboseFreq = 1)
+# mh = MH(nChains = 10, warmUp = 10, maxIters = 1000, propDist = 'gauss', 
+#             verboseFlag = True, verboseFreq = 1)
 
-res = mh.run(problem = gauss4)
+# res = mh.run(problem = gauss)
+
+# print(res['posterior'].info)
+# print(res['stats'].info)
+# print(res['optimization'].info)
 
 # ------------------------------------------- #
 #                  MH-Gibbs                   # 

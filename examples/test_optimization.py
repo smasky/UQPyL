@@ -1,11 +1,8 @@
-import sys
-sys.path.insert(0, '.')
-
 #---------------------------------------------#
 # Single Objective Optimization
 from UQPyL.problem.sop import Sphere
 
-problem = Sphere(30)
+problem = Sphere(4)
 
 # ------------------------------------------- #
 #                    GA                       # 
@@ -13,10 +10,10 @@ problem = Sphere(30)
 
 # from UQPyL.optimization.soea import GA
 
-# for i in range(9):
-#     ga = GA()
-#     res = ga.run(problem)
+# ga = GA()
+# res = ga.run(problem)
 
+# A=1
 # ------------------------------------------- #
 #                    PSO                      # 
 # ------------------------------------------- #
@@ -37,16 +34,16 @@ problem = Sphere(30)
 #                   CSA                       # 
 # ------------------------------------------- #
 
-# from UQPyL.optimization.soea import CSA
-# csa = CSA()
-# res = csa.run(problem)
+from UQPyL.optimization.soea import CSA
+csa = CSA()
+res = csa.run(problem)
 
 # ------------------------------------------- #
 #                  SCE-UA                     # 
 # ------------------------------------------- #
 
 # from UQPyL.optimization.soea import SCE_UA
-# sce_ua = SCE_UA()
+# sce_ua = SCE_UA(verboseFreq = 10)
 # res = sce_ua.run(problem)
 
 # ------------------------------------------- #
