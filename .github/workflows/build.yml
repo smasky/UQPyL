@@ -80,9 +80,9 @@ jobs:
       run: |
         pip install cibuildwheel
         if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
-          cibuildwheel --output-dir wheelhouse --platform windows --arch ${{ matrix.buildplat.arch }}
+          cibuildwheel --output-dir wheelhouse --platform windows --archs ${{ matrix.buildplat.arch }}
         else
-          cibuildwheel --output-dir wheelhouse --platform linux --arch ${{ matrix.buildplat.arch }}
+          cibuildwheel --output-dir wheelhouse --platform linux --archs ${{ matrix.buildplat.arch }}
         fi
 
     - name: Save Wheel Package as Artifact
