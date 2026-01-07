@@ -129,7 +129,7 @@ class ASMO(AlgorithmABC):
             res = self.optimizer.run(subProblem)
             
             # Evaluate the offspring
-            offSpring = Population(decs=res.bestDecs)
+            offSpring = Population(decs=res['result']['bestDecs'])
             
             self.evaluate(offSpring)
             

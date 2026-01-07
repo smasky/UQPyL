@@ -149,8 +149,8 @@ class MOASMO(AlgorithmABC):
             else:
                 
                 if offSpring.nPop > nInfilling:
-                    Known_FrontNo, _ = NDSort(pop)
-                    Unknown_FrontNo, _ = NDSort(offSpring)
+                    Known_FrontNo, _ = NDSort(pop.objs, pop.cons)
+                    Unknown_FrontNo, _ = NDSort(offSpring.objs, offSpring.cons)
                     
                     Known_best_Y = pop.objs[np.where(Known_FrontNo==1)]
                     Unknown_best_Y = offSpring.objs[np.where(Unknown_FrontNo==1)]

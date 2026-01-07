@@ -69,7 +69,7 @@ class Verbose():
         
         heads = ["FEs"]+["Iters"]+["OptType"]+["Feasible"]+yLabels+xLabels
         
-        values = [FEs, iters]+[problem.optType]+[feasible]+[format(item, ".1e") for item in obj.ravel()]+[format(item, ".3f") for item in dec.ravel()]
+        values = [FEs, iters]+[problem.optType]+[feasible]+[format(item, ".1e") for item in obj.ravel()]+[format(item, ".4f") for item in dec.ravel()]
         
         table = PrettyTable(heads)
         table.add_row([" "]*len(heads))

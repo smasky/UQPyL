@@ -27,6 +27,9 @@ dependencies = [
   "scipy",
   "prettytable",
   "h5py",
+  "xarray",
+  "netcdf4",
+  "h5netcdf"
 ]
 classifiers = [
     "Programming Language :: Python :: 3.8",

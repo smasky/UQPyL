@@ -49,40 +49,42 @@ for i in range(85):
 #            Gaussian Process               #
 #-------------------------------------------#
 
-# from UQPyL.surrogate.gp import GPR
-# from UQPyL.surrogate.gp.kernel import RBF, Matern
-# from UQPyL.surrogate.auto_tuner import AutoTuner
-# from UQPyL.optimization.soea import PSO
+from UQPyL.surrogate.gp import GPR
+from UQPyL.surrogate.gp.kernel import RBF, Matern
+from UQPyL.surrogate.auto_tuner import AutoTuner
+from UQPyL.optimization.soea import PSO, GA
 
-# kernel = RBF(length_scale = 10.0, heterogeneous = False)
+kernel = RBF(length_scale = 10.0, heterogeneous = False)
 
-# gpr = GPR(kernel = kernel)
+ga = GA(maxFEs = 10000, verboseFlag = False, logFlag = False, saveFlag = False)
+ga.type = "EA"
+gpr = GPR(kernel = kernel, optimizer = ga)
 
-# gpr.fit(X, Y)
+gpr.fit(X, Y)
 
 
-# YPred = gpr.predict(XTest)
+YPred = gpr.predict(XTest)
 
-# r2 = r_square(YTest, YPred)
+r2 = r_square(YTest, YPred)
 
-# print(r2)
+print(r2)
 
 # ------------------------------------------- #
 #              Radial Basis Function          #
 # ------------------------------------------- #
 
-    from UQPyL.surrogate.rbf import RBF
-    from UQPyL.surrogate.rbf.kernel import Cubic
+    # from UQPyL.surrogate.rbf import RBF
+    # from UQPyL.surrogate.rbf.kernel import Cubic
 
-    kernel = Cubic()
-    rbf = RBF(kernel = kernel)
+    # kernel = Cubic()
+    # rbf = RBF(kernel = kernel)
 
-    rbf.fit(X, Y)
+    # rbf.fit(X, Y)
 
-    YPred = rbf.predict(XTest)
-    r2 = r_square(YTest, YPred)
+    # YPred = rbf.predict(XTest)
+    # r2 = r_square(YTest, YPred)
 
-    print(f"i: {i}, r2: {r2}")
+    # print(f"i: {i}, r2: {r2}")
 
 # ------------------------------------------- #
 #               Linear Regression             #

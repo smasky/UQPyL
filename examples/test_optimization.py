@@ -4,6 +4,9 @@ from UQPyL.problem.sop import Sphere
 
 problem = Sphere(4)
 
+
+
+
 # ------------------------------------------- #
 #                    GA                       # 
 # ------------------------------------------- #
@@ -65,25 +68,25 @@ res = csa.run(problem)
 #---------------------------------------------#
 # Multi Objective Optimization
 
-from UQPyL.problem.mop import ZDT1
-problem = ZDT1(30)
+# from UQPyL.problem.mop import ZDT1
+# problem = ZDT1(30)
 
 
-from UQPyL.problem.mop import DTLZ7, DTLZ2
+# from UQPyL.problem.mop import DTLZ7, DTLZ2
 
-dtlz7 = DTLZ7(10)
+# dtlz7 = DTLZ7(10)
 
-dtlz2 = DTLZ2(10)
+# dtlz2 = DTLZ2(10)
 
 # ------------------------------------------- #
 #                    NSGAII                   # 
 # ------------------------------------------- #
 
-from UQPyL.optimization.moea import NSGAII
+# from UQPyL.optimization.moea import NSGAII
 
-nsgaii = NSGAII()
+# nsgaii = NSGAII()
 
-res = nsgaii.run(dtlz2)
+# res = nsgaii.run(dtlz2)
 
 # ------------------------------------------- #
 #                   NSGAIII                   # 
