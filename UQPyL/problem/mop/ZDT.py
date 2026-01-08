@@ -118,7 +118,9 @@ class ZDT3(ProblemABC):
         R[:,0] = np.linspace(0,1,N)
         R[:,1] = 1 - np.sqrt(R[:,0]) - R[:, 0] * np.sin(10 * np.pi * R[:, 0])
         
-        FrontNo, _= NDSort(R,1)
+        # `NDSort(popObjs, popCons=None, nSort=None)`:
+        # second positional argument is constraints, so pass nSort by keyword.
+        FrontNo, _ = NDSort(R, nSort=1)
         R[FrontNo>1,:] = np.nan
         
         return R

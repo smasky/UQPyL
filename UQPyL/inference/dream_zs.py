@@ -110,7 +110,9 @@ class DREAM_ZS(InferenceABC):
                     if problem.nCons > 0:
                         Cons_cur[i] = Cons_star[i]
                     
-                    ac_local[i] += 1 / warmUp
+                    # warmUp can be 0 (skip warmup). Avoid division by zero.
+                    denom = warmUp if warmUp and warmUp > 0 else max(self.maxIters, 1)
+                    ac_local[i] += 1 / denom
                     
                     archive.append(X_cur[i])
                     

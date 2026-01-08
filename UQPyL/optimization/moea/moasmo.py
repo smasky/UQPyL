@@ -29,7 +29,7 @@ class MOASMO(AlgorithmABC):
     '''
     
     name = "MOASMO"
-    type = "MOEA"
+    alg_type = "MOEA"
     
     def __init__(self, surrogates: MultiSurrogate = None,
                  optimizer: AlgorithmABC = None,
@@ -135,9 +135,10 @@ class MOASMO(AlgorithmABC):
             self.surrogates.fit(pop.decs, pop.objs)
             
             # Run optimization on the surrogate model
-            res = self.optimizer.run(subProblem)
-            
-            offSpring = Population(decs = res.bestDecs, objs = res.bestObjs)
+            res_nc = self.optimizer.run(subProblem)
+            bestDecs = np.asarray(res_nc["result"]["bestDecs"].data)
+            bestObjs = np.asarray(res_nc["result"]["bestObjs"].data)
+            offSpring = Population(decs=bestDecs, objs=bestObjs)
             
             if advance_infilling==False:
                 

@@ -94,8 +94,8 @@ class KRG(SurrogateABC):
             self.optimizer = Boxmin()
         
         elif isinstance(optimizer, AlgorithmABC):
-            
-            if optimizer.type=="EA":
+            alg_type = getattr(optimizer, "alg_type", getattr(optimizer, "type", None))
+            if alg_type == "EA":
                 self.optimizer = optimizer
             else:
                 print('The optimizer you input does not support! Here the GA would be used!')
@@ -197,7 +197,8 @@ class KRG(SurrogateABC):
         
         nInput = ub.size
         
-        if self.optimizer.type=="MP":
+        alg_type = getattr(self.optimizer, "alg_type", getattr(self.optimizer, "type", None))
+        if alg_type == "MP":
             
             def objFunc(varValue):
                 self.setting.setVals(paraInfos, varValue)
@@ -215,7 +216,7 @@ class KRG(SurrogateABC):
                     bestDec = dec
                     bestObj = obj
                                
-        elif self.optimizer.type=="EA":
+        elif alg_type == "EA":
             ###Using Evolutionary Algorithm
             def objFunc(thetas):
                 objs = np.zeros((thetas.shape[0], 1))

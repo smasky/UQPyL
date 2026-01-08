@@ -88,7 +88,8 @@ class GPR(SurrogateABC):
         
         nInput = ub.size
         
-        if self.optimizer.type == "MP":
+        alg_type = getattr(self.optimizer, "alg_type", getattr(self.optimizer, "type", None))
+        if alg_type == "MP":
             
             def objFunc(varValue):
 
@@ -101,7 +102,7 @@ class GPR(SurrogateABC):
             
             bestDecs, bestObj = self.optimizer.run(problem)
         
-        elif self.optimizer.type == "EA":
+        elif alg_type == "EA":
             
             def objFunc(varValues):
                 

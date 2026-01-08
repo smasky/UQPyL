@@ -31,13 +31,22 @@ class Population():
         
         return copy.deepcopy(self)
     
-    def add(self, decs, objs, cons = None):
-        
-        otherPop = Population(decs, objs, cons, self.conWgt)
-        
-        self.add(otherPop)
-    
-    def add(self, otherPop):
+    def add(self, *args, **kwargs):
+        """
+        Add individuals into this population.
+
+        Supports:
+        - add(otherPop: Population)
+        - add(decs, objs, cons=None)
+        """
+        if len(args) == 1 and isinstance(args[0], Population):
+            otherPop = args[0]
+        elif len(args) >= 2:
+            decs, objs = args[0], args[1]
+            cons = args[2] if len(args) >= 3 else kwargs.get("cons", None)
+            otherPop = Population(decs, objs, cons, self.conWgt)
+        else:
+            raise TypeError("add() expects a Population or (decs, objs, cons=None)")
         
         if self.decs is not None:
             self.decs = np.vstack((self.decs, otherPop.decs))
@@ -59,7 +68,7 @@ class Population():
         if self.nOutput == 1:
             return self._bestSingle(k)
         else:
-            return self._bestMulti()
+            return self._bestMulti(k)
     
     def _bestSingle(self, k: int = None):
                 

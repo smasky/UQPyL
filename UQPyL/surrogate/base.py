@@ -92,14 +92,14 @@ class MultiSurrogate():
         
         for model in models_list:
             if not isinstance(model, SurrogateABC):
-                ValueError("Please append the type of surrogate!") 
+                raise ValueError("Please append the type of surrogate!") 
                          
         self.models_list=models_list
         
     def append(self, model):
               
         if not isinstance(model, SurrogateABC):
-            ValueError("Please append the type of surrogate!")
+            raise ValueError("Please append the type of surrogate!")
             
         self.models_list.append(model)
     

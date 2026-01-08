@@ -34,7 +34,9 @@ def _NBI(N: int, M:int):
             W2 = (np.hstack([W2, np.zeros((W2.shape[0], 1)) + H2]) - np.hstack([np.zeros((W2.shape[0], 1)), W2])) / H2
             W = np.vstack([W, W2 / 2 + 1 / (2 * M)])
     
+    # ensure strictly positive values, then renormalize to keep points on the simplex
     W = np.maximum(W, 1e-6)
+    W = W / np.sum(W, axis=1, keepdims=True)
     N = W.shape[0]
     
     return W, N

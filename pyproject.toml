@@ -41,3 +41,29 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[tool.pytest.ini_options]
+# Only collect tests from the real test suite.
+# NOTE: `examples/test_*.py` are runnable example scripts (top-level code),
+# and importing them during pytest collection can look like "pytest is stuck".
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+norecursedirs = [
+  "examples",
+  "build",
+  "Result",
+  ".GUI",
+  ".history",
+  ".ipynb_checkpoints",
+  ".pytest_cache",
+]
+addopts = "-ra"
+filterwarnings = [
+  # Massive noisy warning emitted indirectly during MARS training in tests.
+  # It is safe to ignore in test output; fix requires deeper changes in the embedded MARS implementation.
+  "ignore:The truth value of an empty array is ambiguous.*:DeprecationWarning",
+  # Harmless but noisy in some environments.
+  "ignore:The NumPy module was reloaded.*:UserWarning",
+  # Environment-level binary mismatch warning (wheel/conda mix); does not affect unit test logic here.
+  "ignore:numpy\\.ndarray size changed.*:RuntimeWarning",
+]

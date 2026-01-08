@@ -48,7 +48,7 @@ def _lhs_centered(nt: int, nx: int, rng):
     cut = np.linspace(0, 1, nt + 1)    
     
     # Fill points uniformly in each interval
-    u = rng.random(nt, nx)
+    u = rng.random((nt, nx))
     a = cut[:nt]
     b = cut[1:nt + 1]
     _center = (a + b)/2

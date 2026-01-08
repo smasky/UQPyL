@@ -712,7 +712,8 @@ class MARS(SurrogateABC):
 
             coef, resid = np.linalg.lstsq(B, weighted_y[:, i], rcond=None)[0:2]
             self.coef_.append(coef)
-            if not resid:
+            # `resid` is a numpy array; don't use it as a boolean (DeprecationWarning).
+            if resid.size == 0:
                 resid = np.array(
                     [np.sum((np.dot(B, coef) - weighted_y[:, i]) ** 2)])
             resid_.append(resid)

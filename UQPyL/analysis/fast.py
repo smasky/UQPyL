@@ -73,7 +73,9 @@ class FAST(AnalysisABC):
         nInput = problem.nInput
         
         # Ensure the number of samples is sufficient
-        if N < 4 * M**2:
+        # NOTE: for nInput>2, the frequency allocation below requires N to be strictly greater than 4*M^2,
+        # otherwise `max_wi` can become 0 and lead to invalid modulo / NaNs.
+        if N <= 4 * M**2:
             raise ValueError("The number of sample must be greater than 4*M**2! \n Default M = 4 .")
         
         # Initialize frequency array
@@ -127,7 +129,7 @@ class FAST(AnalysisABC):
         # Set the problem instance for analysis
         self.setProblem(problem)
         
-        self.check_Y(X, Y, target, index)
+        Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
         # Scale the input and output data if scalers are provided

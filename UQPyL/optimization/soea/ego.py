@@ -35,7 +35,7 @@ class EGO(AlgorithmABC):
     """
     
     name = "EGO"
-    type = "EA" 
+    alg_type = "EA"
     
     def __init__(self, nInit: int = 50,
                  maxFEs: int = 1000,
@@ -117,11 +117,12 @@ class EGO(AlgorithmABC):
             # Build surrogate model
             self.surrogate.fit(pop.decs, pop.objs)
             
-            # Run optimizer on the sub-problem
-            res = self.optimizer.run(subProblem)
-            
+            # Run optimizer on the sub-problem (Verbose.run returns a NetCDF dict)
+            res_nc = self.optimizer.run(subProblem)
+            bestDecs = np.asarray(res_nc["result"]["bestDecs"].data)
+
             # Create offspring population
-            offSpring = Population(decs = res.bestDecs)
+            offSpring = Population(decs=bestDecs)
             
             # Evaluate the offspring
             self.evaluate(offSpring)

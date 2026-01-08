@@ -196,7 +196,7 @@ class Verbose():
 
         allFiles = [f for f in os.listdir(folderData) if os.path.isfile(os.path.join(folderData, f))]
         
-        pattern = f"{filename}_(\d+)"
+        pattern = rf"{filename}_(\d+)"
         
         maxNum = 0
         for file in allFiles:
@@ -237,7 +237,7 @@ class Verbose():
 
         allFiles = [f for f in os.listdir(folderLog) if os.path.isfile(os.path.join(folderLog, f))]
         
-        pattern = f"{filename}_(\d+)"
+        pattern = rf"{filename}_(\d+)"
         
         maxNum = 0
         for file in allFiles:

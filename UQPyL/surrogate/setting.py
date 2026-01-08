@@ -77,15 +77,15 @@ class Setting():
         Remove the parameter setting
         :param setting: Setting, the setting to be removed
         '''
-        self.parVal.pop(setting.parVal.keys())
-        self.parCon.pop(setting.parCon.keys())
-        
-        self.parUB.pop(setting.parUB.keys())
-        self.parLB.pop(setting.parLB.keys())
-        
-        self.parSet.pop(setting.parSet.keys())
-        self.parType.pop(setting.parType.keys())
-        self.parLog.pop(setting.parLog.keys())
+        for k in list(setting.parVal.keys()):
+            self.parVal.pop(k, None)
+            self.parUB.pop(k, None)
+            self.parLB.pop(k, None)
+            self.parSet.pop(k, None)
+            self.parType.pop(k, None)
+            self.parLog.pop(k, None)
+        for k in list(setting.parCon.keys()):
+            self.parCon.pop(k, None)
         
     def mergeSetting(self, setting):
         '''

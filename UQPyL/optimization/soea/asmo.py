@@ -1,5 +1,7 @@
 # Adaptive Surrogate Modelling-based Optimization <Single> <Surrogate>
 
+import numpy as np
+
 from .sce_ua import SCE_UA
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
@@ -34,7 +36,7 @@ class ASMO(AlgorithmABC):
     '''
     
     name = "ASMO"
-    type = "EA"
+    alg_type = "EA"
     
     def __init__(self, nInit: int = 50, 
                  surrogate: SurrogateABC = None,
@@ -71,7 +73,7 @@ class ASMO(AlgorithmABC):
         
         if optimizer is None:
             # Default optimizer is SCE_UA
-            optimizer = SCE_UA(maxFEs=5000, verbose=False, saveFlag=False, logFlag=False)
+            optimizer = SCE_UA(maxFEs=5000, verboseFlag=False, saveFlag=False, logFlag=False)
         
         self.optimizer = optimizer
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
@@ -129,7 +131,8 @@ class ASMO(AlgorithmABC):
             res = self.optimizer.run(subProblem)
             
             # Evaluate the offspring
-            offSpring = Population(decs=res['result']['bestDecs'])
+            bestDecs = np.asarray(res["result"]["bestDecs"].data)
+            offSpring = Population(decs=bestDecs)
             
             self.evaluate(offSpring)
             

@@ -9,8 +9,14 @@ class RandSelect():
     def split(self, X: np.ndarray) -> Tuple[list, list]:
         nSample,_ = X.shape
         
-        nTest = int(nSample*self.pTest)
-        nSets = math.floor(nSample/nTest)
+        # Ensure at least 1 test sample to avoid division-by-zero for small datasets.
+        if nSample <= 1:
+            index = np.arange(nSample)
+            return index.copy(), np.array([], dtype=int)
+
+        nTest = int(nSample * self.pTest)
+        nTest = max(1, min(nTest, nSample - 1))
+        nSets = max(1, math.floor(nSample / nTest))
         
         index = np.arange(nSample)
         np.random.shuffle(index)

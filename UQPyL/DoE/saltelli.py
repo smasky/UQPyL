@@ -43,8 +43,9 @@ class SaltelliSequence(Sampler):
         self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
-        
-        return self._generate(nt, nx)
+
+        # Map unit-hypercube samples to the problem bounds, consistent with other samplers.
+        return problem._transform_unit_X(self._generate(nt, nx))
     
     def _generate(self, nt: int, nx: int):
         """
@@ -57,7 +58,7 @@ class SaltelliSequence(Sampler):
         N = nt
         nInput = nx
         skipValue = self.skipValue
-        calSecondOrder = self.calSecondOrder
+        calSecondOrder = self.secondOrder
         
         M = None
         if skipValue > 0 and isinstance(skipValue, int):

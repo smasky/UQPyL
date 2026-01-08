@@ -64,10 +64,10 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         return pop
     
     def setProblem(self, problem):
-        
         self.problem = problem
-        
-        self.setParaVal('optType', problem.optType)
+        self.optType = getattr(problem, "optType", None)
+        if hasattr(problem, "optType"):
+            self.setParaVal('optType', problem.optType)
     
     def evaluate(self, pop):
         
@@ -95,8 +95,10 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
             self.record(pop)
             
         # Check termination for single-objective optimization
-        if self.problem.nOutput == 1 and self.tolerate is not None:
-            if abs(self.result.bestObjs - pop.getBest().objs) > self.tolerate: 
+        if self.problem.nOutput == 1 and self.tolerate is not None and self.result.bestObjs is not None:
+            old_best = float(np.ravel(self.result.bestObjs)[0])
+            new_best = float(np.ravel(pop.getBest(k=1).objs)[0])
+            if abs(old_best - new_best) > self.tolerate:
                 self.tolerateTimes = 0
             else:
                 self.tolerateTimes += 1
@@ -105,10 +107,7 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         
         return signalFlag
     
-    def setProblem(self, problem):
-        
-        self.problem = problem
-        self.optType = self.problem.optType
+    # NOTE: setProblem is defined above; keep a single implementation.
     
     def saveResult(self):
         

@@ -31,7 +31,8 @@ class RationalQuadratic(BaseKernel):
         
         if xTrain2 is None:
             dists=squareform(pdist(xTrain1/length_scale, metric="sqeuclidean"))
-            np.fill_diagonal(dists,1)
+            # For identical points, squared distance must be 0 so that K(x, x) == 1.
+            np.fill_diagonal(dists, 0.0)
             tmp= dists / (2*alpha)
             base=1 + tmp
             K=base**-alpha

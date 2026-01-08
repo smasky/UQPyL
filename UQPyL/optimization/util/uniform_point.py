@@ -39,6 +39,8 @@ def NBI( N: int, M:int ):
             W = np.vstack([W, W2 / 2 + 1 / (2 * M)])
 
     W = np.maximum(W, 1e-6)
+    # Re-normalize after clipping so each row sums to 1 (simplex weights).
+    W = W / np.sum(W, axis=1, keepdims=True)
     N = W.shape[0]
     
     return W, N

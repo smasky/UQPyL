@@ -27,8 +27,27 @@ class Adam():
         self.loss_curve=[]
 ############################Interface Function##########################
     def run(self, params, func: Callable, arg: Tuple):
-        for _ in range(self.epoch):
-            loss, grad=func(*arg)
+        """
+        Run Adam optimization loop.
+
+        Parameters
+        ----------
+        params : list[np.ndarray]
+            Parameters to be updated in-place.
+        func : Callable
+            Should return (loss: float, grads: list[np.ndarray]).
+        arg : tuple
+            Extra arguments forwarded to func.
+        """
+        self.best_loss = np.inf
+        self.loss_curve = []
+        for _ in range(int(self.epoch)):
+            loss, grads = func(*arg)
+            self.loss_curve.append(float(loss))
+            if loss < self.best_loss:
+                self.best_loss = float(loss)
+            self.update_params(params, grads)
+        return params, self.best_loss
             
     def update_params(self, params, grads):
         """Update parameters with given gradients

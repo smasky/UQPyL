@@ -60,5 +60,6 @@ class SobolSequence(Sampler):
         self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
         
         nx = problem.nInput
-        
-        return self._generate(nt, nx)
+
+        # Map unit-hypercube samples to the problem bounds, consistent with other samplers.
+        return problem._transform_unit_X(self._generate(nt, nx))

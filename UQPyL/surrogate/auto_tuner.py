@@ -76,8 +76,13 @@ class AutoTuner():
                             objFunc = objFunc, optType = 'max')
         
         res = self.optimizer.run(problem=problem)
-        
-        bestTrueDecs = res.bestDecs.ravel(); bestTrueObj = res.bestObjs.ravel()
+        # Some optimizers in this repo return a NetCDF dict via Verbose.run.
+        if isinstance(res, dict):
+            bestTrueDecs = np.asarray(res["result"]["bestDecs"].data).ravel()
+            bestTrueObj = np.asarray(res["result"]["bestObjs"].data).ravel()
+        else:
+            bestTrueDecs = res.bestDecs.ravel()
+            bestTrueObj = res.bestObjs.ravel()
         
         self.model.setting.setVals(paraInfos, bestTrueDecs)
         
@@ -127,6 +132,9 @@ class AutoTuner():
                 yPred = self.model.predict(self.model.__X_inverse_transform__(xTest))
                 
                 obj = r_square(self.model.__Y_inverse_transform__(yTest), yPred)
+                # Guard against NaN/Inf (e.g., degenerate test split).
+                if not np.isfinite(obj):
+                    obj = -np.inf
             
             except Exception as e:
                 
@@ -138,6 +146,9 @@ class AutoTuner():
                 bestObj = obj
                 bestDecs = paraComb
                 
+        # If all candidates failed (or produced NaN), fall back to the first combination.
+        if bestDecs is None:
+            bestDecs = paraCombs[0]
         self.model.setting.setVals(paraInfos, bestDecs)
         
         self.model._fitPure(xDataCopy, yDataCopy)

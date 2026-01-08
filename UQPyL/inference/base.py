@@ -1,6 +1,5 @@
 import abc
 import numpy as np
-from pandas.compat import F
 import xarray as xr
 from datetime import datetime
 
@@ -133,8 +132,8 @@ class InferenceABC(metaclass = abc.ABCMeta):
         objs_min = objs * self.problem.opt
         
         if nC > 0:
-            cons = np.vstack([c.cons[:self.iter] for c in chains.values()])
-            feasibleMask = (cons <= 0).all(axis = 1)
+            cons = np.vstack([c.cons[:self.iter] for c in chains])
+            feasibleMask = (cons <= 0).all(axis=1)
         else:
             feasibleMask = np.ones(decs.shape[0], dtype=bool)
         
@@ -183,7 +182,8 @@ class InferenceABC(metaclass = abc.ABCMeta):
         
         if nCons > 0:
             cons = np.stack([c.cons for c in chains])
-            feasibleMask = (cons <= 0).all("consDim")
+            # cons: (chain, draw, consDim)
+            feasibleMask = (cons <= 0).all(axis=2)
         else:
             feasibleMask = np.ones((nChains, decs.shape[1]), dtype=bool)
         

@@ -80,7 +80,7 @@ class DTLZ1(ProblemABC):
         
         return Y
     
-    def getOptimum(self, n):
+    def getOptimum(self, N):
         
         '''
         Return the optimum of the problem.
