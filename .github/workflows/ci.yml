@@ -33,7 +33,15 @@ jobs:
           # Build requirements + runtime deps (setup.py imports numpy/scipy/pybind11/Cython)
           # Pin numpy<2 for compatibility with the bundled cython/pybind extensions.
           python -m pip install "numpy<2" "scipy<2" "Cython<3" pybind11
-          python -m pip install prettytable xarray netcdf4
+          python -m pip install prettytable xarray
+
+      - name: Install netCDF4 (py38 pinned to avoid source build)
+        run: |
+          if "${{ matrix.python-version }}" == "3.8" (
+            python -m pip install "netcdf4<1.7"
+          ) else (
+            python -m pip install netcdf4
+          )
 
       - name: Build native extensions (in-place)
         run: |

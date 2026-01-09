@@ -27,7 +27,10 @@ dependencies = [
   "scipy",
   "prettytable",
   "xarray",
-  "netcdf4",
+  # netCDF4 wheels for py38 on Windows can be missing for newer releases,
+  # causing pip to fall back to a source build that requires HDF5 headers.
+  "netcdf4<1.7; python_version<'3.9'",
+  "netcdf4; python_version>='3.9'",
 ]
 classifiers = [
     "Programming Language :: Python :: 3.8",
