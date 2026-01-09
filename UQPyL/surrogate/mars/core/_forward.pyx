@@ -108,7 +108,10 @@ cdef class ForwardPasser:
             content = FastHeapContent(idx=0)
             heappush(self.fast_heap, content)
             
-        self.mwork = np.empty(shape=self.m, dtype=int)
+        # Workspace is passed into cython functions expecting INT_t (np.int32).
+        # On some platforms (e.g. Linux) `dtype=int` becomes int64, which causes:
+        # "Buffer dtype mismatch, expected 'INT_t' but got 'long long'".
+        self.mwork = np.empty(shape=self.m, dtype=INT)
         
         self.B = np.ones(
             shape=(self.m, self.max_terms + 4), order='F', dtype=np.float64)
