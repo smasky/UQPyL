@@ -28,8 +28,15 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          python -m pip install --upgrade setuptools wheel
           python -m pip install pytest pytest-cov
-          python -m pip install numpy scipy prettytable h5py xarray netcdf4 h5netcdf
+          # Build requirements + runtime deps (setup.py imports numpy/scipy/pybind11/Cython)
+          python -m pip install numpy scipy Cython pybind11
+          python -m pip install prettytable h5py xarray netcdf4 h5netcdf
+
+      - name: Build native extensions (in-place)
+        run: |
+          python setup.py build_ext --inplace
 
       - name: Run tests
         env:
