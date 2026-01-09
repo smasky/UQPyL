@@ -15,7 +15,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9"]
+        # Build native extensions in CI; keep a single stable interpreter to avoid
+        # old-Python wheels disappearing (e.g. py38 + latest h5py -> source build needing HDF5 headers).
+        python-version: ["3.9"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +33,8 @@ jobs:
           python -m pip install --upgrade setuptools wheel
           python -m pip install pytest pytest-cov
           # Build requirements + runtime deps (setup.py imports numpy/scipy/pybind11/Cython)
-          python -m pip install numpy scipy Cython pybind11
+          # Pin numpy<2 for compatibility with the bundled cython/pybind extensions.
+          python -m pip install "numpy<2" "scipy<2" "Cython<3" pybind11
           python -m pip install prettytable h5py xarray netcdf4 h5netcdf
 
       - name: Build native extensions (in-place)
