@@ -1,7 +1,6 @@
 import os
 import re
 import time
-import h5py
 import math
 import xarray as xr
 import functools
@@ -502,13 +501,16 @@ class Verbose():
 
 
 def save_dict_to_hdf5(h5file, d):
-    
-    for key, value in d.items():
-        if isinstance(value, dict):
-            group = h5file.create_group(str(key))
-            save_dict_to_hdf5(group, value)
-        else:
-            h5file.create_dataset(key, data = value)
+    """
+    Deprecated: HDF5 support has been removed from UQPyL.
+
+    We keep this symbol for backward compatibility, but it will always raise.
+    Use NetCDF (`xarray.Dataset.to_netcdf`) instead.
+    """
+    raise NotImplementedError(
+        "HDF5 output has been removed from UQPyL. "
+        "Please use NetCDF (`xarray.Dataset.to_netcdf`) instead."
+    )
             
 
 # def save_dict_to_nc(ncfile, d):

@@ -1,7 +1,6 @@
 import os
 from types import SimpleNamespace
 
-import h5py
 import numpy as np
 import pytest
 import xarray as xr
@@ -126,11 +125,7 @@ def test_verbose_inference_decorator_smoke(monkeypatch, tmp_path):
 
 
 def test_save_dict_to_hdf5_nested(tmp_path):
-    d = {"a": 1, "b": {"c": np.array([1, 2, 3])}}
-    fp = tmp_path / "t.h5"
-    with h5py.File(fp, "w") as f:
-        save_dict_to_hdf5(f, d)
-    with h5py.File(fp, "r") as f:
-        assert "a" in f and "b" in f
-        assert "c" in f["b"]
+    # HDF5 support was removed; keep a small guard test for the old API.
+    with pytest.raises(NotImplementedError):
+        save_dict_to_hdf5(None, {"a": 1, "b": {"c": np.array([1, 2, 3])}})
 
