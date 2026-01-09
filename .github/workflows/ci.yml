@@ -37,11 +37,11 @@ jobs:
 
       - name: Install netCDF4 (py38 pinned to avoid source build)
         run: |
-          if "${{ matrix.python-version }}" == "3.8" (
+          if ("${{ matrix.python-version }}" -eq "3.8") {
             python -m pip install "netcdf4<1.7"
-          ) else (
+          } else {
             python -m pip install netcdf4
-          )
+          }
 
       - name: Build native extensions (in-place)
         run: |
