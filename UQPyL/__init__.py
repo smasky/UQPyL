@@ -32,7 +32,7 @@ from . import problem, surrogate, optimization, analysis, util, inference  # noq
 # Keep `doe` attribute if available
 doe = _doe_mod  # noqa: E402
 
-__version__ = "2.1.4"
+__version__ = "2.1.5"
 __author__ = "wmtSky"
 
 __all__=[

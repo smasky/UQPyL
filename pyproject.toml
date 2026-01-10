@@ -16,7 +16,7 @@ license-files = []
 
 [project]
 name = "UQPyL"
-version = "2.1.4"
+version = "2.1.5"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
