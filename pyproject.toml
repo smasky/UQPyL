@@ -5,7 +5,7 @@ requires = [
     "wheel",
     "Cython",
     "pybind11",
-    "numpy",
+    "numpy<2",
     
 ]
 
@@ -23,7 +23,7 @@ authors = [
 description = "A python package for parameter uncertainty quantification and optimization"
 readme = "README.md"
 dependencies = [
-  "numpy",
+  "numpy<2",
   "scipy",
   "prettytable",
   "xarray",
