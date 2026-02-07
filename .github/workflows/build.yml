@@ -25,7 +25,7 @@ jobs:
           #   arch: x86_64
           
 
-        python: [["cp36", "3.6"],["cp37", "3.7"],["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
+        python: [["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
 
     runs-on: ${{ matrix.buildplat.platform }}
 
@@ -77,12 +77,14 @@ jobs:
       env:
         CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}
         CIBW_ARCHS: ${{ matrix.buildplat.arch }}
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+        CIBW_ENVIRONMENT_LINUX: 'CFLAGS="-Wno-error=incompatible-pointer-types"'
       run: |
         pip install cibuildwheel
         if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
-          cibuildwheel --output-dir wheelhouse --platform windows --arch ${{ matrix.buildplat.arch }}
+          cibuildwheel --output-dir wheelhouse --platform windows --archs ${{ matrix.buildplat.arch }}
         else
-          cibuildwheel --output-dir wheelhouse --platform linux --arch ${{ matrix.buildplat.arch }}
+          cibuildwheel --output-dir wheelhouse --platform linux --archs ${{ matrix.buildplat.arch }}
         fi
 
     - name: Save Wheel Package as Artifact

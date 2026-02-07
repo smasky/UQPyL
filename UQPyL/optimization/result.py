@@ -1,7 +1,10 @@
 import numpy as np 
+from datetime import datetime
+import xarray as xr
 
 from .population import Population
 from .metric import HV
+
 class Result():
 
     def __init__(self, algorithm):
@@ -14,38 +17,38 @@ class Result():
         self.bestFeasible = False
         
         #Current best solution - reality
-        self.bestTrueDecs = None
-        self.bestTrueObjs = None
+        self.bestDecs_True = None
+        self.bestObjs_True = None
         
         #Current best solution appearance
         self.appearFEs = None
         self.appearIters = None
         
         #History Records - Algorithm
-        self.historyBestDecs = {}
-        self.historyBestObjs = {}
-        self.historyBestCons = {}
-        self.historyBestMetrics = {}
+        self.historyBestDecs = []
+        self.historyBestObjs = []
+        self.historyBestCons = []
+        self.historyBestMetrics = []
         
         #History Records - reality
-        self.historyBestTrueDecs = {}
-        self.historyBestTrueObjs = {}
+        self.historyDecs_True = []
+        self.historyObjs_True = []
+        self.historyBestDecs_True = []
+        self.historyBestObjs_True = []
         
-        self.historyDecs = {}
-        self.historyObjs = {}
-        self.historyCons = {}
-        self.historyFEs = {}
+        self.historyDecs = []
+        self.historyObjs = []
+        self.historyCons = []
+        self.iterToFEs = [] # iter -> FEs
         
         self.algorithm = algorithm
+        self.runtime = 0
         
     def update(self, pop: Population, problem, FEs, iter, algType):
-        
-        decs = np.copy(pop.decs)
-        
-        opt = problem.opt
-        
-        if problem.encoding == 'mix':
-            decs = problem._transform_discrete_var(decs)
+
+        # if problem.encoding == 'mix':
+        #     decs = np.copy(pop.decs)
+        #     decs = problem._transform_discrete_var(decs)
         
         if algType == 'EA':
             self._update_EA(pop, FEs, iter, problem)
@@ -55,14 +58,12 @@ class Result():
         self._update_history(pop, FEs, iter, problem)
       
     def _update_EA(self, pop, FEs, iter, problem):
-        
-        opt = problem.opt
-        
+          
         #Obtain local optima solutions
-        bestPop = pop.getBest(k=1)
-        localBestDecs = bestPop.decs[0, :][np.newaxis, :]
-        localBestObjs = bestPop.objs[0, :][np.newaxis, :]
-        localBestCons = bestPop.cons[0, :][np.newaxis, :] if bestPop.cons is not None else None
+        bestPop = pop.getBest(k = 1)
+        localBestDecs = bestPop.decs[0:1, :]
+        localBestObjs = bestPop.objs[0:1, :]
+        localBestCons = bestPop.cons[0:1, :] if bestPop.cons is not None else None
         localBestFeasible = True if localBestCons is None else np.all(np.maximum(0, localBestCons) <= 0)
         
         # update global optima solutions
@@ -75,8 +76,8 @@ class Result():
             self.bestObjs = localBestObjs
             
             # for displaying results
-            self.bestTrueObjs = localBestObjs * opt
-            self.bestTrueDecs = problem._transform_to_I_D(localBestDecs, IFlag = True, DFlag = True)
+            self.bestObjs_True = localBestObjs * problem.opt  # TODO: min
+            self.bestDecs_True = problem._transform_to_I_D(localBestDecs, IFlag = True, DFlag = True)
             
             # for running algorithm
             self.bestCons = localBestCons
@@ -84,19 +85,9 @@ class Result():
             
             self.appearFEs = FEs
             self.appearIters = iter
-        
-            # tolerate
-            if self.bestObjs - localBestObjs > self.algorithm.tolerate: 
-                self.algorithm.tolerateTimes = 0
-            else:
-                self.algorithm.tolerateTimes += 1
-        else:
-            self.algorithm.tolerateTimes += 1
     
     def _update_MOEA(self, pop, FEs, iter, problem):
-        
-        opt = problem.opt
-        
+             
         bestPop = pop.getBest()
         localBestDecs = bestPop.decs
         localBestObjs = bestPop.objs
@@ -106,119 +97,148 @@ class Result():
         self.bestDecs = localBestDecs
         self.bestObjs = localBestObjs
         
-        self.bestTrueObjs = localBestObjs * opt
-        self.bestTrueDecs = problem._transform_to_I_D(localBestDecs, IFlag = True, DFlag = True)
+        self.bestObjs_True = localBestObjs * problem.opt # TODO: min
+        self.bestDecs_True = problem._transform_to_I_D(localBestDecs, IFlag = True, DFlag = True)
         
         self.bestCons = localBestCons
         self.bestFeasible = localBestFeasible
         
-        localHV = HV(pop, refPoint = np.max(pop.objs, axis=0) * 1.1)
+        localHV = HV(localBestObjs, refPoint = np.max(localBestObjs, axis=0) * 1.1)
+        
         self.bestMetric = localHV
-        self.historyBestMetrics[FEs] = self.bestMetric
+        self.historyBestMetrics.append(self.bestMetric)
         
         self.appearFEs = FEs
         self.appearIters = iter
         
-        if localHV - self.bestMetric > self.algorithm.tolerate:
-            self.algorithm.tolerateTimes = 0
-        else:
-            self.algorithm.tolerateTimes += 1
-        
     def _update_history(self, pop, FEs, iters, problem):
         
-        opt = problem.opt
+        self.historyDecs.append(pop.decs)
+        self.historyObjs.append(pop.objs)
+        self.historyCons.append(pop.cons) if pop.cons is not None else None
         
-        self.historyDecs[FEs] = pop.decs
-        self.historyObjs[FEs] = pop.objs * opt
-        self.historyCons[FEs] = pop.cons
-        self.historyFEs[FEs] = iters
+        self.historyDecs_True.append(problem._transform_to_I_D(pop.decs, IFlag = True, DFlag = True))
+        self.historyObjs_True.append(pop.objs * problem.opt)
         
-        self.historyBestDecs[FEs] = self.bestDecs
-        self.historyBestObjs[FEs] = self.bestObjs
-        self.historyBestCons[FEs] = self.bestCons
+        self.iterToFEs.append([iters, FEs])
         
-        self.historyBestTrueDecs[FEs] = self.bestTrueDecs
-        self.historyBestTrueObjs[FEs] = self.bestTrueObjs
+        self.historyBestDecs.append(self.bestDecs_True)
+        self.historyBestObjs.append(self.bestObjs_True)
+        self.historyBestCons.append(self.bestCons) if self.bestCons is not None else None
     
-    def generateHDF5(self):
+    def generateNetCDF(self):
         
-        alghType = 1 if self.algorithm.problem.nOutput > 1 else 0
+        algType = 1 if self.algorithm.problem.nOutput > 1 else 0
         
-        historyPopulation = {}
-        historyPopulation_True = {}
+        nInput = self.algorithm.problem.nInput
+        nOutput = self.algorithm.problem.nOutput
+        nCons = self.algorithm.problem.nCons
+        iters = self.algorithm.iters
         
-        digit = len(str(abs(self.algorithm.iters)))
+        # History
         
-        for key in self.historyDecs.keys():
+        historyDecs_ = np.vstack(self.historyDecs)
+        historyObjs_ = np.vstack(self.historyObjs)
+        
+        historyDecs = np.vstack(self.historyDecs_True)
+        historyObjs = np.vstack(self.historyObjs_True)
+        historyCons = np.vstack(self.historyCons) if len(self.historyCons) > 0 else None
+        
+        iterToFEs = np.array(self.iterToFEs)
+        
+        iters = iterToFEs[:, 0].astype(int)
+        FEs = iterToFEs[:, 1].astype(int)
+        
+        counts = np.array([d.shape[0] for d in self.historyDecs])
+        iterStart = np.concatenate([[0], np.cumsum(counts)[:-1]])
+        
+        history = xr.Dataset(
             
-            decs = self.historyDecs[key]
-            objs = self.historyObjs[key]
-            iter = self.historyFEs[key]
+            data_vars={
+                "decs": (("idx", "nI"), historyDecs, {"description": "Decisions transformed to reality"}),
+                "objs": (("idx", "nO"), historyObjs, {"description": "Objectives transformed to reality"}),
+                **({"cons": (("idx", "nC"), historyCons)} if historyCons is not None else {}),
+                "decs_": (("idx", "nI"), historyDecs_, {"description": "Decisions within algorithm"}),
+                "objs_": (("idx", "nO"), historyObjs_, {"description": "Objectives within algorithm"}),
+            },
             
-            decs_True = self.historyBestTrueDecs[key]
-            objs_True = self.historyBestTrueObjs[key]
+            coords={
+                    "idx" : ("idx", np.arange(historyDecs.shape[0]), {"description": "Global index across all iterations"}),
+                    "nI": ("nI", np.arange(nInput),  {"description": "Index of decision variables (input dimensions)"}), 
+                    "nO": ("nO", np.arange(nOutput), {"description": "Index of objective variables (output dimensions)"}), 
+                    "nC": ("nC", np.arange(nCons), {"description": "Index of constraint variables (constraint dimensions)"}),
+                    "iter": ("iter", iters, {"description": "Iteration index"}),
+                    "fe": ("iter", FEs, {"description": "Function evaluation count corresponding to each iteration"}),
+                    "start": ("iter", iterStart, {"description": "Starting index in 'idx' for this iteration's data slice"}), 
+                    "length": ("iter", counts, {"description": "Number of samples in this iteration's data slice"}),
+                },
             
-            item = {"FEs" : key , "Decisions" : decs, "Objectives" : objs}
+            attrs={"algorithm": self.algorithm.name, "problem": self.algorithm.problem.name},
+        )
+        
+        # Result
+        
+        historyBestDecs = np.vstack(self.historyBestDecs)
+        historyBestObjs = np.vstack(self.historyBestObjs)
+        historyBestCons = np.vstack(self.historyBestCons) if len(self.historyBestCons) > 0 else None
+        
+        counts = np.array([d.shape[0] for d in self.historyBestDecs])
+        iterStart = np.concatenate([[0], np.cumsum(counts)[:-1]])
+        
+        idx1 = self.bestDecs_True.shape[0]
+        idx2 = historyBestDecs.shape[0]
+        
+        if nOutput > 1:  
+            bestMetric = np.array(self.historyBestMetrics)
+               
+        result = xr.Dataset(
+            data_vars = {
+                
+                "bestDecs": (("idx1", "nI"), self.bestDecs_True, {"description": "Best decisions in reality"}),
+                "bestObjs": (("idx1", "nO"), self.bestObjs_True, {"description": "Best objectives in reality"}),
+                **({"bestCons": (("idx1", "nC"), self.bestCons)} if self.bestCons is not None else {}),
 
-            item_True = {"FEs" : key , "Decisions" : decs_True, "Objectives" : objs_True}
+                "bestDecs_Iter": (("idx2", "nI"), historyBestDecs),
+                "bestObjs_Iter": (("idx2", "nO"), historyBestObjs),
+                **({"bestCons_Iter": (("idx2", "nC"), historyBestCons)} if historyBestCons is not None else {}),
             
-            if self.historyBestCons[key] is not None:
-                item['Constrains'] = self.historyBestCons[key]
-                item_True['Constrains'] = self.historyBestCons[key]
+                **({"bestMetric": (("iter"), bestMetric)} if nOutput > 1 else {}),
+            },
             
-            historyPopulation[f"iter "+str(iter).zfill(digit)]=item
-            historyPopulation_True[f"iter "+str(iter).zfill(digit)]=item_True
+            coords = {
+                "nI": ("nI", np.arange(nInput), {"description": "Index of decision variables (input dimensions)"}),
+                "nO": ("nO", np.arange(nOutput), {"description": "Index of objective variables (output dimensions)"}),
+                "iter": ("iter", iters, {"description": "Iteration index"}),
+                "fe": ("iter", FEs, {"description": "Function evaluation count corresponding to each iteration"}),
+                "start": ("iter", iterStart, {"description": "Starting index in 'idx' for this iteration's data slice"}), 
+                "length": ("iter", counts, {"description": "Number of samples in this iteration's data slice"}),
+                **({"nC": ("nC", np.arange(nCons), {"description": "Index of constraint variables (constraint dimensions)"})} if nCons > 0 else {}),
+                "idx1": ("idx1", np.arange(idx1), {"description": "Global index across all iterations"}),          
+                "idx2": ("idx2", np.arange(idx2), {"description": "Iteration index"}),
+            },
+        )
         
-        historyBest = {}
-        historyBest_True = {}       
-        for key in self.historyBestDecs.keys():
-            
-            bestDecs = self.historyBestDecs[key]
-            bestObjs = self.historyBestObjs[key]
-            bestDecs_True = self.historyBestTrueDecs[key]
-            bestObjs_True = self.historyBestTrueObjs[key]
-            
-            iter = self.historyFEs[key]
-            
-            if alghType == 0:
-                item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs}
-                item_True = {"FEs" : key, "Best Decisions" : bestDecs_True, "Best Objectives" : bestObjs_True}
-            else:
-                metrics = self.historyBestMetrics[key]
-                item = {"FEs" : key, "Best Decisions" : bestDecs, "Best Objectives" : bestObjs, "HV": metrics}
-                item_True = {"FEs" : key, "Best Decisions" : bestDecs_True, "Best Objectives" : bestObjs_True, "HV": metrics}
-            
-            if self.historyBestCons[key] is not None:
-                item['Best Constrains'] = self.historyBestCons[key]
-                item_True['Best Constrains'] = self.historyBestCons[key]
-             
-            historyBest[f"iter "+str(iter).zfill(digit)]=item
-            historyBest_True[f"iter "+str(iter).zfill(digit)]=item_True
-            
-        #global best record
-        globalBest={}
-        globalBest["Best Decisions"] = self.bestDecs
-        globalBest["Best Objectives"] = self.bestTrueObjs
+        infos = xr.Dataset(
+            attrs = {
+                "algorithm": self.algorithm.name,
+                "problem": self.algorithm.problem.name,
+                "maxIter": self.algorithm.iters,
+                "maxFEs": self.algorithm.FEs,
+                "runtime": f"{self.runtime:.2f}",
+                "nInput": nInput,
+                "nOutput": nOutput,
+                **({"nCons": nCons} if nCons > 0 else {}),
+                **self.algorithm.setting.dicts,
+                "created": datetime.now().isoformat(timespec='seconds'),
+            }
+        )
         
-        globalBest["Best True Decisions"] = self.bestTrueDecs
-        globalBest["Best True Objectives"] = self.bestTrueObjs
+        history.attrs.update(infos.attrs)
+        result.attrs.update(infos.attrs)
         
-        if self.bestCons is not None:
-            globalBest["Best Constrains"] = self.bestCons
-            
-        globalBest["FEs"] = self.appearFEs
-        globalBest["Iter"] = self.appearIters
+        res = {"history": history, "result": result}
         
-        result = {
-            "History_Population_Algorithm" : historyPopulation,
-            "History_Best_Algorithm" : historyBest,
-            "History_Population_Reality" : historyPopulation_True,
-            "History_Best_Reality" : historyBest_True,
-            "Global_Best" : globalBest,
-            "Max_Iter" : self.algorithm.iters,
-            "Max_FEs" : self.algorithm.FEs }
-        
-        return result
+        return res
         
     def reset(self):
         
@@ -232,10 +252,12 @@ class Result():
         self.historyBestDecs.clear()
         self.historyBestObjs.clear()
         self.historyBestCons.clear()
-        self.historyBestTrueDecs.clear()
-        self.historyBestTrueObjs.clear()
+        self.historyBestDecs_True.clear()
+        self.historyBestObjs_True.clear()
         self.historyDecs.clear()
         self.historyObjs.clear()
         self.historyCons.clear()
-        self.historyFEs.clear()
+        self.historyDecs_True.clear()
+        self.historyObjs_True.clear()
+        self.iterToFEs.clear()
         self.historyBestMetrics.clear()

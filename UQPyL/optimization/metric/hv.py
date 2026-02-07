@@ -1,17 +1,8 @@
 import numpy as np
 
-def HV(pop, refPoint=None, normalize=True):
-    """计算Pareto前沿的超体积指标。
+
+def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000):
     
-    参数:
-        pop: Population对象, 包含目标函数值
-        refPoint: numpy数组, 参考点。如果为None, 将自动生成。
-                  参考点应在所有目标维度上比任何解要差。
-        
-    返回:
-        float: 计算得到的超体积值
-    """
-    popObjs = pop.getBest().objs
     _, m = popObjs.shape
     
     if popObjs.size == 0:
@@ -56,9 +47,8 @@ def HV(pop, refPoint=None, normalize=True):
          
          totalHyperVolume = np.prod(upperBounds - lowerBounds)
          
-         nSamples = int(1e6)
-         
-         samples = np.random.uniform(lowerBounds, upperBounds, (int(nSamples), m))
+         nSamples = int(nSamples)
+         samples = np.random.uniform(lowerBounds, upperBounds, (nSamples, m))
          
          dominated = np.any(np.all(popObjs <= samples[:, None], axis=2), axis=1)
          hyperVolume = np.sum(dominated) / nSamples * totalHyperVolume
@@ -125,7 +115,8 @@ def add(cell_, S):
     m = 0
     for k in range(n):
         if np.array_equal(S[k][1], cell_[1]):
-            S[k][0] += cell_[0]
+            # S stores tuples (value, list); tuples are immutable, so replace entry.
+            S[k] = (S[k][0] + cell_[0], S[k][1])
             m = 1
             break
     if m == 0:
