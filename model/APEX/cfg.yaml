@@ -1,0 +1,49 @@
+version: general
+
+basic:
+  projectPath: "E:/apex_bian/TxtInOut"
+  workPath: "E:/Apex_workPath"
+  exeName: "APEX1501_rel32.exe"
+  parallel: 1
+  hardBound: True
+
+parameters:
+  info: paraInfo.csv
+  param: para.txt
+
+series:
+  - id: s1
+    name: runoff
+    sim:
+      file: "SITE713.RCH"
+      rowRanges: 
+        - [26400, 102925, 714]
+      colSpan: [52, 62]
+    obs:
+      file: "obs.txt"
+      rowRanges:
+        - [1, 108]
+      colList: [1]
+
+objectives:
+  use : [o1]
+  items :
+    - id: o1
+      name: runoff_NSE
+      direction: max
+      metric: R2
+      reduce: weighted_mean
+      series:
+        - id: s1
+          weight: 1.0
+
+diagnostics:
+  use : [d1]
+  items :
+    - id: d1
+      name: runoff_RMSE
+      metric: MSE
+      reduce: weighted_mean
+      series:
+        - id: s1
+          weight: 1.0

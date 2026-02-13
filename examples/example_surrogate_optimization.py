@@ -21,13 +21,13 @@ problem = Sphere(10)
 #                    ASMO                     #
 # ------------------------------------------- #
 
-# from UQPyL.optimization.soea import ASMO, GA
+from UQPyL.optimization.soea import ASMO, GA
 
-# optimizer = GA(maxFEs = 5000)
+optimizer = GA(maxFEs = 5000)
 
-# asmo = ASMO(optimizer = optimizer)
+asmo = ASMO(optimizer = optimizer)
 
-# asmo.run(problem)
+asmo.run(problem)
 
 
 # ------------------------------------------- #
