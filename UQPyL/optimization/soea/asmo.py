@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from typing import Literal
+
 from .sce_ua import SCE_UA
 from ..base import AlgorithmABC, Verbose
 from ..population import Population
@@ -19,10 +21,10 @@ class ASMO(AlgorithmABC):
     
     Attributes:
         problem: Problem
-            The problem to solve, which includes attributes like n_input, ub, lb, and evaluate.
+            The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
         surrogate: Surrogate
             The surrogate model to use for optimization.
-        n_init: int, default=50
+        nInit: int, default=50
             Number of initial samples for surrogate modeling.
     
     Methods:
@@ -41,6 +43,7 @@ class ASMO(AlgorithmABC):
     def __init__(self, nInit: int = 50, 
                  surrogate: SurrogateABC = None,
                  optimizer: AlgorithmABC = None,
+                 euclidThres: float = 1e-5,
                  maxFEs: int = 1000,
                  maxIters: int = 1000,
                  maxTolerates: int = None,
@@ -52,6 +55,7 @@ class ASMO(AlgorithmABC):
         :param surrogate: Surrogate model to use. Defaults to Kriging if None.
         :param optimizer: Optimizer to use. Defaults to SCE_UA if None.
         :param maxFEs: Maximum number of function evaluations.
+        :param euclidThres: Threshold for euclidean distance. Defaults to 1e-6.
         :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
         :param verbose: Flag to enable verbose output.
         :param verboseFreq: Frequency of verbose output.
@@ -63,6 +67,7 @@ class ASMO(AlgorithmABC):
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
         
         self.setParaVal('nInit', nInit)
+        self.setParaVal('euclidThres', euclidThres)
         
         if surrogate is None:
             # Default surrogate model is Kriging with standard scaling
@@ -73,7 +78,7 @@ class ASMO(AlgorithmABC):
         
         if optimizer is None:
             # Default optimizer is SCE_UA
-            optimizer = SCE_UA(maxFEs=5000, verboseFlag=False, saveFlag=False, logFlag=False)
+            optimizer = SCE_UA(maxFEs = 5000, verboseFlag = False, saveFlag = False, logFlag = False)
         
         self.optimizer = optimizer
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
@@ -100,6 +105,7 @@ class ASMO(AlgorithmABC):
         
         # Initialization
         nInit = self.getParaVal('nInit')
+        euclidThres = self.getParaVal('euclidThres')
         
         # Define a subproblem using the surrogate model
         subProblem = Problem(objFunc = self.surrogate.predict, nInput = problem.nInput, 
@@ -132,7 +138,16 @@ class ASMO(AlgorithmABC):
             
             # Evaluate the offspring
             bestDecs = np.asarray(res["result"]["bestDecs"].data)
-            offSpring = Population(decs=bestDecs)
+            
+            euclidDist = np.linalg.norm(bestDecs - pop.decs, axis = 1)
+            minEuclidDist = np.min(euclidDist)
+            
+            if minEuclidDist < euclidThres:
+                decs = np.random.uniform(problem.lb, problem.ub, size = (1, problem.nInput))
+            else:
+                decs = bestDecs
+            
+            offSpring = Population(decs = decs)
             
             self.evaluate(offSpring)
             

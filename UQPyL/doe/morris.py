@@ -40,7 +40,7 @@ class MorrisSequence(Sampler):
         xInit = np.zeros((nt * (nx + 1), nx))
         
         for i in range(nt):
-            
+            # 
             xInit[i * (nx + 1):(i + 1) * (nx + 1), :] = self._generate_trajectory(nx)
         
         return xInit
