@@ -175,7 +175,7 @@ class RunReporter:
                                 
                                 row = {"batch_id": batch_id, "run_id": run_id}
                                 for k in range(1, sim.size + 1):
-                                    row[f"V_{k}"] = self._fmt(sim[k])
+                                    row[f"V_{k}"] = self._fmt(sim[k-1])
                                 
                                 fh['writer'].writerow(row); fh['file'].flush()
                 finally:

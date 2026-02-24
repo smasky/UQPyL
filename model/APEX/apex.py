@@ -245,7 +245,7 @@ class APEX(Problem):
                 else:
                     handler = writeInTask[rf]["Handler"]
                 
-                handler.register_param(name, i, mode, self.basicInfo.loc[name, "Type"], lineNum, start, width, precision, lb, ub)
+                handler.register_param(name, i, mode, TYPE_MAP[self.basicInfo.loc[name, "Type"]], lineNum, start, width, precision, lb, ub)
                 
                 writeInTask[rf]["indices"].append(i)
 
@@ -264,9 +264,19 @@ class APEX(Problem):
         batch_id = self.reporter.new_batch_id()
         records = []
         
-        for i in range(1, n + 1):
-            r = self._subprocess(X[i, :], i, batch_id)
-            records.append(r)
+        
+        if self.cfg.basic.parallel > 1:
+            with ThreadPoolExecutor(max_workers = self.cfg.basic.parallel) as executor:
+                futures = [executor.submit(self._subprocess, X[i, :], i, batch_id) for i in range(n)]
+                records = [future.result() for future in futures]
+        else:
+            for i in range(n):
+                r = self._subprocess(X[i, :], i, batch_id)
+                records.append(r)
+        
+        # for i in range(1, n + 1):
+        #     r = self._subprocess(X[i, :], i, batch_id)
+        #     records.append(r)
 
         # with ThreadPoolExecutor(max_workers = self.cfg.basic.parallel) as executor:
         #     futures = [executor.submit(self._subprocess, X[i, :], i, batch_id) for i in range(n)]
@@ -332,8 +342,7 @@ class APEX(Problem):
                 metric = obj['metric']
                 reduce = obj['reduce']
                 vals = {}
-                archive = {}
-                
+                archive = {}             
                 val = 0
                 for sid, weight in comb.items():
                     m = metric(np.array(cache[sid]['obs']), np.array(cache[sid]['sim']))
@@ -381,18 +390,3 @@ class APEX(Problem):
                 self.reporter.submit(record)
             
         return record
-    
-    
-    
-
-cfgPath = "D:/UQ/model/APEX/cfg.yaml"
-
-apex = APEX(cfgPath)
-
-from UQPyL.doe import LHS
-
-lhs = LHS()
-
-X = lhs.sample(apex, 10)
-apex.evaluate(X)
-apex.close()
