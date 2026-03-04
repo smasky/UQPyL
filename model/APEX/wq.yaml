@@ -1,0 +1,155 @@
+version: general
+
+basic:
+  projectPath: "E:/apex_bian/TxtInOut/TxtInOut"
+  workPath: "E:/Apex_workPath"
+  command: "APEX1501_rel32.exe"
+  parallel: 1
+
+parameters:
+  library: "paraLibrary.yaml"
+  params: "ds_param.yaml"
+  func: transform_param
+  physical: "transform_param.yaml"
+  hardBound: True
+
+functions:
+  - name: R2
+    kind: builtin
+    args: [sim, obs]
+
+  - name: transform_param
+    kind: external
+    file: "cost.py"
+    args: [X]
+
+  - name: calc_cost
+    kind: external
+    file: "cost.py"
+    args: [X]
+  
+  - name: transform_ser
+    kind: external
+    file: "cost.py"
+    args: [tn]
+  
+  - name: RMSE
+    kind: builtin
+    args: [sim, obs]
+
+series:
+  - id: yono
+    desc: YONO
+    size: 108
+    cache: True
+    sim:
+      file: "SITE713.RCH"
+      rowRanges: 
+        - [26400, 102925, 714]
+      colSpan: [160, 170]
+  
+  - id: no3o
+    desc: NO3O
+    size: 108
+    cache: True
+    sim:
+      file: "SITE713.RCH"
+      rowRanges: 
+          - [26400, 102925, 714]
+      colSpan: [208, 218]
+  
+  - id: nh4o
+    desc: NH4O
+    size: 108
+    cache: True
+    sim: 
+      file: "SITE713.RCH"
+      rowRanges: 
+          - [26400, 102925, 714]
+      colSpan: [232, 242]
+  
+  - id: no2o
+    desc: NO2O
+    size: 108
+    cache: True
+    sim: 
+      file: "SITE713.RCH"
+      rowRanges: 
+          - [26400, 102925, 714]
+      colSpan: [256, 266]
+  
+  - id: tn
+    desc: TN
+    size: 108
+    cache: True
+    sim:
+      expr: "yono_sim + no3o_sim + no2o_sim + nh4o_sim"
+    obs:
+      file: "TN_obs.txt"
+      rowRanges:
+        - [1, 108]
+      colNum: 1
+  
+  - id: tn_ser
+    desc: TN_SER
+    size: 108
+    cache: True
+    sim:
+      call:
+        func: transform_ser
+        args:
+          tn: tn_sim
+
+derived:
+  - id: tn_r2
+    desc: TN_R2
+    call:
+      func: R2
+      args:
+        sim : tn_sim
+        obs : tn_obs
+
+  - id: tn_rmse
+    desc: TN_RMSE
+    call:
+      func: RMSE
+      args:
+        sim : tn_sim
+        obs : tn_obs
+
+  - id: X_cost
+    desc: X_cost
+    call:
+      func: calc_cost
+      args:
+        X : X
+
+objectives:
+  use : [o1, o2]
+  items :
+    - id: o1
+      desc: TN_NSE
+      sense: max
+      ref: tn_r2
+    
+    - id: o2
+      desc: cost
+      sense: min
+      ref: X_cost
+
+diagnostics:
+  use : [d1]
+  items :
+    - id: d1
+      name: TN_RMSE
+      ref: tn_rmse
+
+reporter:
+  flush_interval: 3
+  scalars:
+    - o1
+    - o2
+  series:
+    - yono_sim
+    - tn_sim
+    - tn_ser

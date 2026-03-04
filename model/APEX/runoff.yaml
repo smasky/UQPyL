@@ -1,0 +1,57 @@
+version: general
+
+basic:
+  projectPath: "E:/apex_bian/TxtInOut/TxtInOut"
+  workPath: "E:/Apex_workPath"
+  command: "APEX1501_rel32.exe"
+  timeout: 120
+  parallel: 15
+
+parameters:
+  library: "paraLibrary.yaml"
+  params: "ds_param.yaml"
+  hardBound: True
+
+functions:
+  - name: R2
+    kind: builtin
+    args: [sim, obs]
+
+series:
+  - id: s1
+    desc: runoff
+    cache: true
+    sim:
+      file: "SITE713.RCH"
+      rowRanges: 
+        - [26400, 102925, 714]
+      colSpan: [76, 86]
+    obs:
+      file: "obs.txt"
+      rowRanges:
+        - [1, 108]
+      colNum: 1
+
+derived:
+  - id: s1_r2
+    desc: runoff_R2
+    call:
+      func: R2
+      args:
+        sim : s1_sim
+        obs : s1_obs
+
+objectives:
+  use : [o1]
+  items :
+    - id: o1
+      desc: runoff_R2
+      sense: max
+      ref: s1_r2
+
+reporter:
+  flush_interval: 10
+  scalars:
+    - o1
+  series:
+    - s1_sim

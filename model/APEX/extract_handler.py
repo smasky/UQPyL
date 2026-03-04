@@ -1,18 +1,19 @@
 from pathlib import Path
 from typing import List, Optional, Tuple
 import os
+import numpy as np
 
-def expand_row_ranges(row_ranges: List[List[int]]) -> List[int]:
-    out = []
-    for rr in row_ranges:
-        if len(rr) == 2:
-            a, b = rr
-            step = 1
-        else:
-            a, b, step = rr
-        out.extend(range(int(a), int(b) + 1, int(step)))
-    out.sort()
-    return out
+# def expand_row_ranges(row_ranges: List[List[int]]) -> List[int]:
+#     out = []
+#     for rr in row_ranges:
+#         if len(rr) == 2:
+#             a, b = rr
+#             step = 1
+#         else:
+#             a, b, step = rr
+#         out.extend(range(int(a), int(b) + 1, int(step)))
+#     out.sort()
+#     return out
 
 def parse_fixed_width(line: str, span_1based_inclusive: Tuple[int, int]) -> Optional[float]:
     a, b = span_1based_inclusive
@@ -28,7 +29,7 @@ def parse_col_list(line: str, cols_1based: List[int], delimiter: str = "whitespa
     parts = line.split() if delimiter == "whitespace" else line.split(delimiter)
     if not cols_1based:
         return None
-    idx = cols_1based[0] - 1
+    idx = cols_1based - 1
     if idx < 0 or idx >= len(parts):
         return None
     try:
@@ -41,11 +42,15 @@ def read_extract(
     extract,  # ExtractSpec
     encoding: str = "mbcs",
 ):
-    targets = expand_row_ranges(extract.rowRanges)
+    targets = extract.rows
     if not targets:
         return []
 
-    p = Path(os.path.join(dir, extract.file))
+    if dir is None:
+        p = Path(extract.file)
+    else:
+        p = Path(os.path.join(dir, extract.file))
+        
     vals: List[float] = []
 
     with p.open("r", encoding=encoding, errors="ignore") as f:
@@ -64,9 +69,9 @@ def read_extract(
             if col.kind == "span":
                 v = parse_fixed_width(line, col.span)  # type: ignore[arg-type]
             else:
-                v = parse_col_list(line, col.cols or [], delimiter=col.delimiter)
+                v = parse_col_list(line, col.col or [], delimiter=col.delimiter)
 
             if v is not None:
                 vals.append(v)
 
-    return vals
+    return np.asarray(vals)

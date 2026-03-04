@@ -4,7 +4,7 @@ RFTO    float    v       0_365
 FCW     int      v       2_50 
 FPSO    float    v       0.0001_10
 RFPO    float    v       0.5_0.6
-CN      float    a       -10_10
+CN      float    r       -0.5_0.5
 APM     float    v       0_1
 PARM23  float    v       0.0023_0.0032
 PARM34  float    v       0.5_0.6

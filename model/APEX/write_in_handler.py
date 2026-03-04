@@ -72,18 +72,19 @@ class WriteInHandler:
             return None
 
     def register_param(
-        self,
-        name: str,
-        index: int,
-        mode: int,
-        typ: int,
-        linePos: int,   # 1-based
-        staPos: int,    # 1-based Start
-        width: int,
-        precision: int,
-        lb: Optional[float] = None,
-        ub: Optional[float] = None,
+        self, spec, lib_info, hardBound: bool = True
     ) -> bool:
+        
+        name = spec.name
+        index = spec.index
+        mode = spec.mode
+        typ = lib_info.type
+        linePos = lib_info.file.line
+        staPos = lib_info.file.start
+        width = lib_info.file.width
+        precision = lib_info.file.precision
+        lb = lib_info.lb if hardBound else None
+        ub = lib_info.ub if hardBound else None
         
         line_idx = linePos - 1
         
@@ -170,7 +171,7 @@ class WriteInHandler:
         if clamp_events:
             head = clamp_events[:warn_detail_limit]
             msg_lines = [
-                f"Param clamp: idx={i}, name={name}, {raw} -> {clamped}, hardBounds=[{lb},{ub}]"
+                f"Param clamp: in file {output_filepath}, idx={i}, name={name}, {raw} -> {clamped}, hardBounds=[{lb},{ub}]"
                 for (i, name, raw, clamped, lb, ub) in head
             ]
             more = "" if len(clamp_events) <= warn_detail_limit else (
