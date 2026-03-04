@@ -11,7 +11,7 @@ class SubEntry:
 class Parameter:
     name: str
     index: int
-    entry: SubEntry               
+    entries: List[SubEntry]               
     mode: int                     # 0: orig*(1+x), 1: =x, 2: orig+x
     typ: int                      # 1: int, else: float
     precision: int
@@ -85,7 +85,7 @@ class WriteInHandler:
         precision = lib_info.file.precision
         lb = lib_info.lb if hardBound else None
         ub = lib_info.ub if hardBound else None
-        
+        maxNum = lib_info.file.maxNum
         line_idx = linePos - 1
         
         if typ == 1:
@@ -95,18 +95,23 @@ class WriteInHandler:
                 ub = int(ub)
 
         line_start = self.line_offsets[line_idx]
-
-        off = line_start + (staPos - 1)
-
-        field = bytes(self.base_content[off:off + width])
-        val = self._parse_float_field(field)
-
-        entry = SubEntry(offset=off, original_val=val)
+        # TODO
+        if line_idx + 1 < len(self.line_offsets):
+            line_end = self.line_offsets[line_idx + 1]
+        else:
+            line_end = len(self.base_content)
+        base_offset = line_start + (staPos - 1)
+        entries = self._scan_entries(
+            start_offset=base_offset, 
+            width=width, 
+            max_num=maxNum, 
+            line_end_offset=line_end
+        )
 
         self.params[index] = Parameter(
             name = name,
             index = index,
-            entry = entry,
+            entries = entries,
             mode = mode,
             typ = typ,
             precision = precision,
@@ -118,66 +123,85 @@ class WriteInHandler:
         return True
 
     def set_values_and_save(
-        self,
-        output_filepath: str,
-        indices: List[int],
-        vals: List[float],
-        warn_stacklevel: int = 2,
-        warn_detail_limit: int = 20,
-    ):
-        
-        self.file_content = bytearray(self.base_content)
-
-        mods: List[Modification] = []
-        clamp_events = []
-
-        for idx, input_val in zip(indices, vals):
+            self,
+            output_filepath: str,
+            indices: List[int],
+            vals: List[float],
+            warn_stacklevel: int = 2,
+            warn_detail_limit: int = 20,
+        ):
             
-            p = self.params.get(idx)
-            if not p:
-                continue
+            self.file_content = bytearray(self.base_content)
+            mods: List[Modification] = []
+            clamp_events = []
 
-            e = p.entry
+            for idx, input_val in zip(indices, vals):
+                p = self.params.get(idx)
+                if not p:
+                    continue
 
-            # 1) calculate raw
-            if p.mode == 0:
-                raw = e.original_val * (1.0 + float(input_val))
-            elif p.mode == 1:
-                raw = float(input_val)
-            elif p.mode == 2:
-                raw = e.original_val + float(input_val)
-            else:
-                raw = float(input_val)
+                for e in p.entries:
+                    
+                    if p.mode == 0:   # relative %
+                        raw = e.original_val * (1.0 + float(input_val))
+                    elif p.mode == 1: # replace
+                        raw = float(input_val)
+                    elif p.mode == 2: # absolute add
+                        raw = e.original_val + float(input_val)
+                    else:
+                        raw = float(input_val)
 
-            # 2) transform type
-            raw2 = int(raw) if p.typ == 1 else raw
+                    raw2 = int(raw) if p.typ == 1 else raw
 
-            # 3) clamp (warning)
-            clamped = raw2
-            if p.lb is not None and clamped < p.lb:
-                clamped = p.lb
-            if p.ub is not None and clamped > p.ub:
-                clamped = p.ub
+                    clamped = raw2
+                    if p.lb is not None and clamped < p.lb:
+                        clamped = p.lb
+                    if p.ub is not None and clamped > p.ub:
+                        clamped = p.ub
 
-            if clamped != raw2:
-                clamp_events.append((idx, p.name, raw2, clamped, p.lb, p.ub))
+                    if clamped != raw2:
+                        clamp_events.append((idx, p.name, raw2, clamped, p.lb, p.ub))
 
-            b = self._format_value(clamped, p.width, p.precision, p.typ)
-            mods.append(Modification(offset=e.offset, width=p.width, data=b))
+                    b = self._format_value(clamped, p.width, p.precision, p.typ)
+                    mods.append(Modification(offset=e.offset, width=p.width, data=b))
 
-        for m in mods:
-            self.file_content[m.offset:m.offset + m.width] = m.data
+            for m in mods:
+                self.file_content[m.offset : m.offset + m.width] = m.data
 
-        if clamp_events:
-            head = clamp_events[:warn_detail_limit]
-            msg_lines = [
-                f"Param clamp: in file {output_filepath}, idx={i}, name={name}, {raw} -> {clamped}, hardBounds=[{lb},{ub}]"
-                for (i, name, raw, clamped, lb, ub) in head
-            ]
-            more = "" if len(clamp_events) <= warn_detail_limit else (
-                f"\n... and {len(clamp_events) - warn_detail_limit} more clamps"
-            )
-            warnings.warn("\n".join(msg_lines) + more, stacklevel=warn_stacklevel)
+            if clamp_events:
+                head = clamp_events[:warn_detail_limit]
+                msg_lines = [
+                    f"Param clamp: {output_filepath}, idx={i}, raw={raw:.2f}->{clamped:.2f}"
+                    for (i, name, raw, clamped, lb, ub) in head
+                ]
+                more = "" if len(clamp_events) <= warn_detail_limit else f"\n... {len(clamp_events)-warn_detail_limit} more"
+                warnings.warn("\n".join(msg_lines) + more, stacklevel=warn_stacklevel)
 
-        with open(output_filepath, "wb") as out:
-            out.write(self.file_content)
+            with open(output_filepath, "wb") as out:
+                out.write(self.file_content)
+            
+    def _scan_entries(
+        self, start_offset: int, width: int, max_num: int, line_end_offset: int
+    ) -> List[SubEntry]:
+
+        entries = []
+        
+        for i in range(max_num):
+            curr_off = start_offset + (i * width)
+            curr_end = curr_off + width
+
+            if curr_end > line_end_offset:
+                break
+            
+            if curr_end > len(self.base_content):
+                break
+
+            field = bytes(self.base_content[curr_off : curr_end])
+            val = self._parse_float_field(field)
+
+            if val is None:
+                break 
+
+            entries.append(SubEntry(offset=curr_off, original_val=val))
+            
+        return entries

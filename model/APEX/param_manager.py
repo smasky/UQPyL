@@ -24,6 +24,7 @@ class ParamFileSpec:
     start: int
     width: int
     precision: int
+    maxNum: int
 
 @dataclass
 class ParamSpec:
@@ -39,7 +40,10 @@ class ParamSpec:
             name=d["name"],
             type=TYPE_MAP.get(d["type"], 0),
             bounds=d["bounds"],
-            file=ParamFileSpec(**d["file"])
+            file=ParamFileSpec(name=d["file"]["name"], line=d["file"]["line"], 
+                               start=d["file"]["start"], width=d["file"]["width"], 
+                               precision=d["file"]["precision"],
+                               maxNum=int(d["file"].get("maxNum", 1))),
         )
     
     @property
@@ -101,7 +105,7 @@ class PhysicalParamSpec:
         )
 
 # -------------------------------------------------------------
-# Parameter Manager (重构版)
+# Parameter Manager
 # -------------------------------------------------------------
 
 class ParamManager:

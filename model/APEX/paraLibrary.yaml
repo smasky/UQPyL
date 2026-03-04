@@ -308,3 +308,14 @@ parameter_library:
       start: 25
       width: 8
       precision: 2
+  
+  - name: SOL_K
+    type: float
+    bounds: [0.0001, 100]
+    file:
+      name: "*.SOL"
+      line: 22
+      start: 1
+      width: 8
+      precision: 2
+      maxNum: 10

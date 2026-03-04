@@ -5,7 +5,7 @@ basic:
   workPath: "E:/Apex_workPath"
   command: "APEX1501_rel32.exe"
   timeout: 120
-  parallel: 15
+  parallel: 1
 
 parameters:
   library: "paraLibrary.yaml"
