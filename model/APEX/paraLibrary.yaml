@@ -1,4 +1,15 @@
 parameter_library:
+  - name: CHN
+    type: float
+    bounds: [0.015, 0.15]
+    file:
+      name: "*.SUB"
+      line: 
+        - [4, 8568, 12]
+      start: 41
+      width: 10
+      precision: 2
+
   - name: GWSO
     type: float
     bounds: [5, 200]
@@ -319,3 +330,4 @@ parameter_library:
       width: 8
       precision: 2
       maxNum: 10
+  

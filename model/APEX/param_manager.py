@@ -3,7 +3,7 @@ import yaml
 import numpy as np
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Union
 from write_in_handler import WriteInHandler
 
 # -------------------------------------------------------------
@@ -16,11 +16,23 @@ MODE_MAP = {"r": 0, "v": 1, "a": 2} # r: relative, v: value (replace), a: add
 # Data Classes
 # -------------------------------------------------------------
 
+def _expand_row_ranges(row_ranges: List[List[int]]) -> List[int]:
+    out = []
+    for rr in row_ranges:
+        if len(rr) == 2:
+            a, b = rr
+            step = 1
+        else:
+            a, b, step = rr
+        out.extend(range(int(a), int(b) + 1, int(step)))
+    out.sort()
+    return out
+
 @dataclass
 class ParamFileSpec:
     """Location info within a file."""
     name: str
-    line: int
+    line: Union[int, List[int]] 
     start: int
     width: int
     precision: int
@@ -30,17 +42,24 @@ class ParamFileSpec:
 class ParamSpec:
     """Represents a static physical parameter definition in the Library."""
     name: str
-    type: str
+    type: int
     bounds: List[float]
     file: ParamFileSpec
     
     @staticmethod
     def from_dict(d: Dict[str, Any]) -> "ParamSpec":
+        
+        raw_line = d["file"]["line"]
+        if isinstance(raw_line, list) and len(raw_line) > 0 and isinstance(raw_line[0], list):
+            parsed_line = _expand_row_ranges(raw_line)
+        else:
+            parsed_line = raw_line
+        
         return ParamSpec(
             name=d["name"],
             type=TYPE_MAP.get(d["type"], 0),
             bounds=d["bounds"],
-            file=ParamFileSpec(name=d["file"]["name"], line=d["file"]["line"], 
+            file=ParamFileSpec(name=d["file"]["name"], line=parsed_line, 
                                start=d["file"]["start"], width=d["file"]["width"], 
                                precision=d["file"]["precision"],
                                maxNum=int(d["file"].get("maxNum", 1))),

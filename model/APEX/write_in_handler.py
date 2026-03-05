@@ -79,14 +79,12 @@ class WriteInHandler:
         index = spec.index
         mode = spec.mode
         typ = lib_info.type
-        linePos = lib_info.file.line
         staPos = lib_info.file.start
         width = lib_info.file.width
         precision = lib_info.file.precision
         lb = lib_info.lb if hardBound else None
         ub = lib_info.ub if hardBound else None
         maxNum = lib_info.file.maxNum
-        line_idx = linePos - 1
         
         if typ == 1:
             if lb is not None:
@@ -94,24 +92,39 @@ class WriteInHandler:
             if ub is not None:
                 ub = int(ub)
 
-        line_start = self.line_offsets[line_idx]
-        # TODO
-        if line_idx + 1 < len(self.line_offsets):
-            line_end = self.line_offsets[line_idx + 1]
-        else:
-            line_end = len(self.base_content)
-        base_offset = line_start + (staPos - 1)
-        entries = self._scan_entries(
-            start_offset=base_offset, 
-            width=width, 
-            max_num=maxNum, 
-            line_end_offset=line_end
-        )
+        linePos_data = lib_info.file.line
+        lines = linePos_data if isinstance(linePos_data, list) else [linePos_data]
+        
+        entries_list = []
+        
+        for linePos in lines:
+            line_idx = linePos - 1
+
+            if line_idx >= len(self.line_offsets):
+                continue
+
+            line_start = self.line_offsets[line_idx]
+            
+            if line_idx + 1 < len(self.line_offsets):
+                line_end = self.line_offsets[line_idx + 1]
+            else:
+                line_end = len(self.base_content)
+                
+            base_offset = line_start + (staPos - 1)
+            
+            row_entries = self._scan_entries(
+                start_offset=base_offset, 
+                width=width, 
+                max_num=maxNum, 
+                line_end_offset=line_end
+            )
+           
+            entries_list.extend(row_entries)
 
         self.params[index] = Parameter(
             name = name,
             index = index,
-            entries = entries,
+            entries = entries_list,
             mode = mode,
             typ = typ,
             precision = precision,

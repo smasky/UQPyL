@@ -1,4 +1,11 @@
 design_parameters:
+  - name: CHN
+    type: float
+    mode: v
+    bounds: [0.015, 0.15]
+    cache: True
+
+
   - name: SOL_K
     type: float
     mode: v

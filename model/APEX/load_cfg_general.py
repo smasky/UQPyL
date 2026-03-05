@@ -4,7 +4,7 @@ import ast
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union, Literal, get_args
+from typing import Any, Dict, List, Optional, Tuple, Union, Literal
 
 import yaml
 
