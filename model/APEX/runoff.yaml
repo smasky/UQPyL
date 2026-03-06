@@ -1,7 +1,7 @@
 version: general
 
 basic:
-  projectPath: "E:/apex_bian/TxtInOut/TxtInOut"
+  projectPath: "E:/apex_bian/hhapex"
   workPath: "E:/Apex_workPath"
   command: "APEX1501_rel32.exe"
   timeout: 120

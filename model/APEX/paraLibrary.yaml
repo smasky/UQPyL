@@ -331,3 +331,102 @@ parameter_library:
       precision: 2
       maxNum: 10
   
+  - name: PRAM7
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "PARM1501.DAT"
+      line: 31
+      start: 49
+      width: 8
+      precision: 2
+  
+  - name: PRAM8
+    type: float
+    bounds: [10, 20]
+    file:
+      name: "PARM1501.DAT"
+      line: 31
+      start: 57
+      width: 8
+      precision: 2
+  
+  - name: PRAM14
+    type: float
+    bounds: [0.1, 1]
+    file:
+      name: "PARM1501.DAT"
+      line: 32
+      start: 25
+      width: 8
+      precision: 2
+  
+  - name: PRAM35
+    type: float
+    bounds: [0.9, 1.1]
+    file:
+      name: "PARM1501.DAT"
+      line: 34
+      start: 33
+      width: 8
+      precision: 2
+  
+  - name: PRAM54
+    type: float
+    bounds: [0.3, 0.9]
+    file:
+      name: "PARM1501.DAT"
+      line: 36
+      start: 25
+      width: 8
+      precision: 2
+  
+  - name: PRAM55
+    type: float
+    bounds: [0.1, 0.3]
+    file:
+      name: "PARM1501.DAT"
+      line: 36
+      start: 33
+      width: 8
+      precision: 2
+  
+  - name: PRAM57
+    type: float
+    bounds: [0.05, 2.0]
+    file:
+      name: "PARM1501.DAT"
+      line: 36
+      start: 49
+      width: 8
+      precision: 2
+  
+  - name: PRAM58
+    type: float
+    bounds: [0.3, 0.9]
+    file:
+      name: "PARM1501.DAT"
+      line: 36
+      start: 57
+      width: 8
+      precision: 2
+  
+  - name: PRAM59
+    type: float
+    bounds: [1, 20]
+    file:
+      name: "PARM1501.DAT"
+      line: 36
+      start: 65
+      width: 8
+      precision: 2
+  
+  - name: PRAM72
+    type: float
+    bounds: [0.05, 0.5]
+    file:
+      name: "PARM1501.DAT"
+      line: 38
+      start: 9
+      width: 8
+      precision: 2

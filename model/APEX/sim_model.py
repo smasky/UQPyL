@@ -94,14 +94,13 @@ class SimModel(Problem):
         for cte in records:
             i = cte['i']
             if 'error' in cte:
-                objs[i, :] = np.inf   #TODO
+                objs[i, :] = -1 * np.inf #TODO
             else:
                 for j, obj_id in enumerate(self.cfg.objectives.use):
                     if np.isnan(cte[obj_id]):
-                        objs[i, j] = np.inf
+                        objs[i, j] = -1 * np.inf #TODO
                     else:
                         objs[i, j] = cte[obj_id]
-        
         return objs
         
     def _subprocess(self, X, i, batch_id):

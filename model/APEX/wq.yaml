@@ -1,43 +1,38 @@
 version: general
 
 basic:
-  projectPath: "E:/apex_bian/TxtInOut/TxtInOut"
+  projectPath: "E:/apex_bian/Txt_runoff"
   workPath: "E:/Apex_workPath"
   command: "APEX1501_rel32.exe"
-  parallel: 1
+  parallel: 7
+  timeout: 600
 
 parameters:
   library: "paraLibrary.yaml"
-  params: "ds_param.yaml"
-  func: transform_param
-  physical: "transform_param.yaml"
+  params: "ds_param_quality.yaml"
   hardBound: True
 
 functions:
   - name: R2
     kind: builtin
     args: [sim, obs]
-
-  - name: transform_param
-    kind: external
-    file: "cost.py"
-    args: [X]
-
-  - name: calc_cost
-    kind: external
-    file: "cost.py"
-    args: [X]
   
-  - name: transform_ser
+  - name: transform_tn
     kind: external
-    file: "cost.py"
-    args: [tn]
-  
-  - name: RMSE
-    kind: builtin
-    args: [sim, obs]
+    file: "temp.py"
+    args: [runoff, tn]
 
 series:
+  - id: runoff
+    desc: RUNOFF
+    size: 108
+    cache: True
+    sim:
+      file: "SITE713.RCH"
+      rowRanges: 
+        - [26400, 102925, 714]
+      colSpan: [76, 86]
+
   - id: yono
     desc: YONO
     size: 108
@@ -96,9 +91,10 @@ series:
     cache: True
     sim:
       call:
-        func: transform_ser
+        func: transform_tn
         args:
           tn: tn_sim
+          runoff: runoff_sim
 
 derived:
   - id: tn_r2
@@ -106,50 +102,21 @@ derived:
     call:
       func: R2
       args:
-        sim : tn_sim
+        sim : tn_ser_sim
         obs : tn_obs
-
-  - id: tn_rmse
-    desc: TN_RMSE
-    call:
-      func: RMSE
-      args:
-        sim : tn_sim
-        obs : tn_obs
-
-  - id: X_cost
-    desc: X_cost
-    call:
-      func: calc_cost
-      args:
-        X : X
 
 objectives:
-  use : [o1, o2]
+  use : [o1]
   items :
     - id: o1
       desc: TN_NSE
       sense: max
       ref: tn_r2
     
-    - id: o2
-      desc: cost
-      sense: min
-      ref: X_cost
-
-diagnostics:
-  use : [d1]
-  items :
-    - id: d1
-      name: TN_RMSE
-      ref: tn_rmse
-
 reporter:
-  flush_interval: 3
+  flush_interval: 10
   scalars:
     - o1
-    - o2
   series:
-    - yono_sim
     - tn_sim
     - tn_ser

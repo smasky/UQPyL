@@ -1,0 +1,60 @@
+design_parameters:
+  - name: PRAM7
+    type: float
+    mode: v
+    bounds: [0, 1]
+    cache: True
+  
+  - name: PRAM8
+    type: float
+    mode: v
+    bounds: [10, 20]
+    cache: True
+  
+  - name: PRAM14
+    type: float
+    mode: v
+    bounds: [0.1, 1]
+    cache: True
+  
+  - name: PRAM35
+    type: float
+    mode: v
+    bounds: [0.9, 1.1]
+    cache: True
+  
+  - name: PRAM54
+    type: float
+    mode: v
+    bounds: [0.3, 0.9]
+    cache: True
+
+  - name: PRAM55
+    type: float
+    mode: v
+    bounds: [0.1, 0.3]
+    cache: True
+  
+  - name: PRAM57
+    type: float
+    mode: v
+    bounds: [0.05, 2.0]
+    cache: True
+  
+  - name: PRAM58
+    type: float
+    mode: v
+    bounds: [0.3, 0.9]
+    cache: True
+
+  - name: PRAM59
+    type: float
+    mode: v
+    bounds: [1, 20]
+    cache: True
+
+  - name: PRAM72
+    type: float
+    mode: v
+    bounds: [0.05, 0.5]
+    cache: True

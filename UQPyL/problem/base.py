@@ -54,7 +54,7 @@ class ProblemABC(metaclass=abc.ABCMeta):
             self.idxF = np.where(self.varType == 0)[0]
             self.idxI = np.where(self.varType == 1)[0]
             self.idxD = np.where(self.varType == 2)[0]
-        
+            
         # Set variable sets for discrete variables
         if varSet is None:
             self.varSet = {}
