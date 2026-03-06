@@ -1,4 +1,39 @@
 parameter_library:
+  # 土壤参数
+  - name: SOL_K
+    type: float
+    bounds: [0.0001, 100]
+    file:
+      name: "*.SOL"
+      line: 22
+      start: 1
+      width: 8
+      precision: 2
+      maxNum: 10
+    
+  # - name: SOL_BD
+  #   type: float
+  #   bounds: [0.0001, 100]
+  #   file:
+  #     name: "*.SOL"
+  #     line: 22
+  #     start: 1
+  #     width: 8
+  #     precision: 2
+  #     maxNum: 10
+  
+  - name: SOL_FC
+    type: float
+    bounds: [0.1, 0.6]
+    file:
+      name: "*.SOL"
+      line: 7
+      start: 1
+      width: 8
+      precision: 2
+      maxNum: 10
+
+  # 流域参数
   - name: CHN
     type: float
     bounds: [0.015, 0.15]
@@ -70,6 +105,7 @@ parameter_library:
       width: 4
       precision: 0
 
+  # 其它参数
   - name: PARM1
     type: float
     bounds: [0.1, 2]
@@ -319,18 +355,7 @@ parameter_library:
       start: 25
       width: 8
       precision: 2
-  
-  - name: SOL_K
-    type: float
-    bounds: [0.0001, 100]
-    file:
-      name: "*.SOL"
-      line: 22
-      start: 1
-      width: 8
-      precision: 2
-      maxNum: 10
-  
+
   - name: PRAM7
     type: float
     bounds: [0, 1]

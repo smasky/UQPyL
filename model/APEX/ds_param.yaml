@@ -1,4 +1,22 @@
 design_parameters:
+  - name: SOL_K
+    type: float
+    mode: r
+    bounds: [-0.5, 1]
+    cache: True
+  
+  - name: SOL_FC
+    type: float
+    mode: v
+    bounds: [0.1, 0.6]
+    cache: True
+
+  - name: CHN
+    type: float
+    mode: v
+    bounds: [0.015, 0.15]
+    cache: True
+    
   - name: GWSO
     type: float
     mode: v
@@ -32,7 +50,7 @@ design_parameters:
   - name: CN
     type: float
     mode: r
-    bounds: [-0.5, 0.5]
+    bounds: [-0.5, 1]
     cache: True
 
   - name: APM
