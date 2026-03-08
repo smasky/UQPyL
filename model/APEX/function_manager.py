@@ -1,11 +1,11 @@
 import importlib.util
 import os
 import sys
-from typing import Dict, Any, Callable
+from typing import Dict, Callable
 import numpy as np
 
 # built-in metrics
-from UQPyL.util.metric import r_square, mse, nse, rank_score, sort_score
+from UQPyL.util.metric import r_square, mse
 
 BUILTIN_FUNCS = {
     "R2": lambda sim, obs: r_square(obs, sim),

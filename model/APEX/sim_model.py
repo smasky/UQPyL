@@ -1,4 +1,3 @@
-from UQPyL.problem import Problem
 import os
 import subprocess
 import shutil
@@ -7,11 +6,12 @@ import queue
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 
+from UQPyL.problem import Problem
+
 from param_manager import ParamManager
 from series_extractor import SeriesExtractor
 from evaluator import Evaluator
 from function_manager import FunctionManager
-
 from load_cfg_general import load_config
 from run_reporter import RunReporter
 
@@ -21,31 +21,34 @@ class SimModel(Problem):
         self.cfgPath = cfgPath
         self.cfg = load_config(cfgPath)
         
+        # Create run queue
+        self.create_run_queue()
+        
+        # Function manager
         self.functionManager = FunctionManager(self.cfg)
         
-        # parameter manager
-        self.paramManager = ParamManager(self.cfg, self.functionManager)
+        # Parameter manager
+        self.paramManager = ParamManager(self.cfg, self.functionManager, self.backupPath)
         
         # Series
         self.seriesExtractor = SeriesExtractor(self.cfg, self.functionManager)
         
-        # objectives & diagnostics
+        # Objectives & diagnostics
         self.evaluator = Evaluator(self.cfg, self.functionManager)
         
-        # Create run queue
-        self.create_run_queue()
-        
-        # 
+        # For UQPyL
         nInput, xLabels, varType, varSet, ub, lb = self.paramManager.get_param_info()
-        nOutput, optType = self.evaluator.get_evaluation_info()
+        nOutput, optType, nConstraints = self.evaluator.get_evaluation_info()
         
         self.reporter = RunReporter(self.backupPath, xLabels, self.cfg)
         self.reporter.start()
         
-        super().__init__(nInput = nInput, nOutput = nOutput, 
+        self._closed = False # for reporter
+        
+        super().__init__(nInput = nInput, nOutput = nOutput, nCons=nConstraints,
                          varType = varType, varSet = varSet,  
                          ub = ub, lb = lb, 
-                         xLabels = xLabels,  optType = optType, name = 'APEX')
+                         xLabels = xLabels,  optType = optType)
 
     def create_run_queue(self):
         
@@ -53,7 +56,8 @@ class SimModel(Problem):
         self.runPath = os.path.join(self.cfg.basic.workPath, "tempRun", nowTime)
         
         if os.path.exists(self.runPath):
-            os.makedirs(self.runPath + f"_{np.random.randint(100)}")
+            self.runPath = self.runPath + f"_{np.random.randint(100)}"
+        os.makedirs(self.runPath, exist_ok=True)
             
         self.runQueue = queue.Queue()
         
@@ -81,6 +85,8 @@ class SimModel(Problem):
         
         records = []
         
+        cons = np.zeros((n, self.evaluator.nConstraints)) if self.evaluator.nConstraints > 0 else None
+        
         if self.cfg.basic.parallel > 1:
             with ThreadPoolExecutor(max_workers=self.cfg.basic.parallel) as executor:
                 futures = [executor.submit(self._subprocess, X[i, :], i, batch_id) for i in range(n)]
@@ -98,11 +104,26 @@ class SimModel(Problem):
             else:
                 for j, obj_id in enumerate(self.cfg.objectives.use):
                     if np.isnan(cte[obj_id]):
-                        objs[i, j] = -1 * np.inf #TODO
+                        objs[i, j] = np.inf * self.opt[j]
                     else:
                         objs[i, j] = cte[obj_id]
-        return objs
+                
+                for j, con_id in enumerate(self.cfg.constraints.use):
+                    if np.isnan(cte[con_id]):
+                        cons[i, j] = -1*np.inf
+                    else:
+                        cons[i, j] = cte[con_id]
+                
+        return {"objs": objs, "cons": cons}
+    
+    def objFunc(self, X):
+        res = self.evaluate(X)
+        return res['objs']
         
+    def conFunc(self, X):
+        res = self.evaluate(X)
+        return res['cons']
+    
     def _subprocess(self, X, i, batch_id):
         workPath = self.runQueue.get()
         
@@ -146,7 +167,30 @@ class SimModel(Problem):
                 self.reporter.submit(context)
             
         return context
-            
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+        return False
+    
     def close(self):
-        if hasattr(self, "reporter"):
-            self.reporter.close()
+        if getattr(self, "_closed", False):
+            return
+        
+        self._closed = True
+        
+        if hasattr(self, "reporter") and self.reporter is not None:
+            try:
+                self.reporter.close()
+            except Exception as e:
+                print(f"[SimModel.close] reporter.close() failed: {e}")
+    
+    def __del__(self):
+        try:
+            self.close()
+        except Exception:
+            pass
+    
+                              

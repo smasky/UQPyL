@@ -17,7 +17,7 @@ class Problem(ProblemABC):
                  ub: Union[int, float, np.ndarray, list], lb: Union[int, float, np.ndarray, list], 
                  objFunc: Optional[callable] = None, conFunc: Optional[callable] = None, 
                  evaluate: Optional[callable] = None,
-                 conWgt: Optional[list] = None,
+                 conWgt: Optional[list] = None, nCons: int = 0,
                  varType: list = None, varSet: list = None, optType: Union[list, str] = 'min',
                  xLabels: list = None, yLabels: list = None, name: str = None):
         """
@@ -59,4 +59,4 @@ class Problem(ProblemABC):
         
         super().__init__(nInput=nInput, nOutput=nOutput, ub=ub, lb=lb,
                          conWgt=conWgt, varType=varType, varSet=varSet, 
-                         xLabels=xLabels, yLabels=yLabels, optType=optType)
+                         xLabels=xLabels, yLabels=yLabels, optType=optType, nCons=nCons)

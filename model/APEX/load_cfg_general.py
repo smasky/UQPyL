@@ -1,13 +1,9 @@
-from __future__ import annotations
-
 import ast
 import os
+import yaml
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union, Literal
-
-import yaml
-
 
 def _check_file_exists(file: str):
     if not os.path.exists(file):
@@ -386,7 +382,41 @@ class ObjectiveSpec:
             dep.append(self.ref)
         return env, dep
 
-@dataclass(frozen=True)
+@dataclass
+class ConstraintSpec:
+    id: str
+    desc: str
+    ref: str
+
+    @staticmethod
+    def from_dict(d: Dict[str, Any]) -> "ConstraintSpec":
+        oid = d.get("id")
+        if not oid:
+            raise ValueError("Constraint missing id")
+            
+        ref = d.get("ref")
+        if not ref:
+            raise ValueError(f"Constraint {oid} missing 'ref'")
+            
+        return ConstraintSpec(
+            id=str(oid), 
+            desc=str(d.get("desc", oid)), 
+            ref=str(ref)
+        )
+    
+    def get_env_dep_list(self):
+        env = []; dep = []
+        
+        # env
+        env.append(self.id)
+        
+        # dep
+        if self.ref not in env:
+            dep.append(self.ref)
+        return env, dep
+    
+    
+@dataclass
 class DiagnosticSpec:
     id: str
     name: str
@@ -431,6 +461,26 @@ class ObjectiveBlock:
                 raise ValueError(f"objectives.use references unknown objective id: {oid}")
 
         return ObjectiveBlock(use=use, items=items)
+@dataclass
+class ConstraintBlock:
+    use: List[str]
+    items: Dict[str, ConstraintSpec]
+    
+    @staticmethod
+    def from_dict(d: Dict[str, Any]) -> "ConstraintBlock":
+        items_raw = d.get("items", [])
+        items = {c.id: c for c in [ConstraintSpec.from_dict(x) for x in items_raw]}
+        
+        ids = list(items.keys())
+        if len(set(ids)) != len(ids):
+            raise ValueError("Duplicate constraint id in constraints.items")
+        
+        use = d.get("use", ids)
+        for cid in use:
+            if cid not in items:
+                raise ValueError(f"constraints.use references unknown constraint id: {cid}")
+                
+        return ConstraintBlock(use=use, items=items)
 
 @dataclass(frozen=True)
 class DiagnosticBlock:
@@ -489,6 +539,7 @@ class RunConfig:
     functions: Dict[str, FunctionSpec]
     derived: List[DerivedSpec]
     objectives: ObjectiveBlock
+    constraints: ConstraintBlock
     diagnostics: DiagnosticBlock
     reporter: ReporterSpec
     series_index: Dict[str, SeriesSpec]
@@ -537,6 +588,7 @@ class RunConfig:
 
         derived = [DerivedSpec.from_dict(d) for d in cfg.get("derived", [])]
         objectives = ObjectiveBlock.from_dict(cfg.get("objectives", {}))
+        constraints = ConstraintBlock.from_dict(cfg.get("constraints", {}))
         diagnostics = DiagnosticBlock.from_dict(cfg.get("diagnostics", {}))
  
         # Fail-Fast
@@ -560,6 +612,11 @@ class RunConfig:
             env += e
             dep += d
         
+        for c in constraints.items.values():
+            e, d = c.get_env_dep_list()
+            env += e
+            dep += d
+        
         for d in diagnostics.items.values():
             e, d = d.get_env_dep_list()
             env += e
@@ -580,6 +637,7 @@ class RunConfig:
             functions=functions,
             derived=derived,
             objectives=objectives,
+            constraints=constraints,
             diagnostics=diagnostics,
             reporter=reporter,
             series_index=series_index

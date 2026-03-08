@@ -4,7 +4,7 @@ basic:
   projectPath: "E:/apex_bian/Txt_runoff"
   workPath: "E:/Apex_workPath"
   command: "APEX1501_rel32.exe"
-  parallel: 4
+  parallel: 1
   timeout: 600
 
 parameters:
@@ -16,11 +16,6 @@ functions:
   - name: R2
     kind: builtin
     args: [sim, obs]
-  
-  # - name: transform_tn
-  #   kind: external
-  #   file: "temp.py"
-  #   args: [runoff, tn]
 
 series:
   - id: runoff
@@ -84,17 +79,6 @@ series:
       rowRanges:
         - [1, 108]
       colNum: 1
-  
-  # - id: tn_ser
-  #   desc: TN_SER
-  #   size: 108
-  #   cache: True
-  #   sim:
-  #     call:
-  #       func: transform_tn
-  #       args:
-  #         tn: tn_sim
-  #         runoff: runoff_sim
 
 derived:
   - id: tn_r2

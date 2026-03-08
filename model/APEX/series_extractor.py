@@ -94,7 +94,7 @@ class SeriesExtractor:
                         if is_obs:
                             obs_data = self.seriesDict[base_id]['obs']
                             if obs_data is None:
-                                raise ValueError(f"Expr dependency error: formula requested '{dep}' but '{base_id}' has no obs file")
+                                raise ValueError(f"Expr dependency error: formula requested '{arg_v}' but '{base_id}' has no obs file")
                             env[arg_v] = obs_data
                         else:
                             si = self.cfg.series_index[base_id].sim

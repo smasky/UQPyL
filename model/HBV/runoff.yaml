@@ -4,8 +4,8 @@ basic:
   projectPath: "E:/apex_bian/Txt_runoff"
   workPath: "E:/Apex_workPath"
   command: "APEX1501_rel32.exe"
-  timeout: 120
-  parallel: 1
+  timeout: 600
+  parallel: 10
 
 parameters:
   library: "paraLibrary.yaml"
@@ -48,6 +48,7 @@ objectives:
       desc: runoff_R2
       sense: max
       ref: s1_r2
+      on_error: -10.0
 
 constraints:
   use : [c1]
@@ -55,6 +56,7 @@ constraints:
     - id: c1
       desc: FCW
       ref: s1_r2
+      on_error: -10.0
 
 reporter:
   flush_interval: 10

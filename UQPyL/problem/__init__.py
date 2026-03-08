@@ -6,6 +6,7 @@ from .mop import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 from .mop import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
 from .base import ProblemABC
 from .problem import Problem
+from .model import SimModel
 
 singleFunc = ProblemABC.singleFunc
 
@@ -21,5 +22,6 @@ __all__=[
     sop,
     mop,
     "ProblemABC",
-    "Problem"
+    "Problem",
+    "SimModel"
 ]

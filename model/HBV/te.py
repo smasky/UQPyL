@@ -1,7 +1,7 @@
 from sim_model import SimModel
 import numpy as np
 
-cfgPath = "D:/UQ/model/APEX/wq.yaml"
+cfgPath = "D:/UQ/model/HBV/runoff.yaml"
 
 apex = SimModel(cfgPath)
 
@@ -21,7 +21,7 @@ lhs = LHS()
 
 X = lhs.sample(apex, 100)
 
-Y = apex.evaluate(X[0:1, :])
+Y = apex.evaluate(X[0:10, :])
 
 # X = np.array([57.16922, 257.69545, 30,8.25605,0.56604,0.49416,0.3356,0.00264,0.58426,2.37038,0.96653,4.52535,0.1508,2.78543,1.56767,2.39188,0.28602,2.43478,0.18024,0.01597,0.35966,0.66535,0.29489,0.40602,0.88983,1.29701,1.84515,1.16646,0.96171,23.95696,0.02732
 # ]).reshape(1, -1)

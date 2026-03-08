@@ -128,10 +128,12 @@ class PhysicalParamSpec:
 # -------------------------------------------------------------
 
 class ParamManager:
-    def __init__(self, cfg, functionManager):
+    def __init__(self, cfg, functionManager, backupPath):
         
         self.cfg = cfg
         self.func_manager = functionManager
+        
+        self.backupPath = backupPath
         
         self.writeInTask = {}         
         self.cached_indices = {}      # Cache for X
@@ -286,7 +288,7 @@ class ParamManager:
                      raise ValueError(f"Data source has {len(data_source)} items, but requested index {max(indices)}.")
 
             values_to_write = data_source[indices]
-            handler.set_values_and_save(target_file, indices, values_to_write)
+            handler.set_values_and_save(target_file, indices, values_to_write, backup_path=self.backupPath)
 
     # -------------------------------------------------------------
     # Helper Methods

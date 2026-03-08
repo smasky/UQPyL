@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional
-import warnings
+import os
+
+_WARNING_PROMPTED = False
 
 @dataclass
 class SubEntry:
@@ -140,7 +142,7 @@ class WriteInHandler:
             output_filepath: str,
             indices: List[int],
             vals: List[float],
-            warn_stacklevel: int = 2,
+            backup_path: Optional[str] = None,
             warn_detail_limit: int = 20,
         ):
             
@@ -188,7 +190,15 @@ class WriteInHandler:
                     for (i, name, raw, clamped, lb, ub) in head
                 ]
                 more = "" if len(clamp_events) <= warn_detail_limit else f"\n... {len(clamp_events)-warn_detail_limit} more"
-                warnings.warn("\n".join(msg_lines) + more, stacklevel=warn_stacklevel)
+                full_msg = "\n".join(msg_lines) + more
+                if backup_path:
+                    wpath = os.path.join(backup_path, "warning.txt")
+                    with open(wpath, "a", encoding="utf-8") as wf:
+                        wf.write(full_msg + "\n")
+                    global _WARNING_PROMPTED
+                    if not _WARNING_PROMPTED:
+                        print(f"Warnings saved to {wpath}, please check.")
+                        _WARNING_PROMPTED = True
 
             with open(output_filepath, "wb") as out:
                 out.write(self.file_content)
