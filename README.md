@@ -14,6 +14,9 @@
 
 ## Changelog
 
+
+- 2026.03.08: Added a **generic interface** for connecting hydrological models to UQPyL, enabling seamless integration of various external simulation engines into the UQPyL workflow.
+
 - 2025.12.14:  Added the **inference** module. And results are now saved in **NetCDF** format, replacing the previous HDF output.
 
 
