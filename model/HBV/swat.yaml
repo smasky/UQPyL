@@ -1,0 +1,70 @@
+version: general
+
+basic:
+  projectPath: "E:/zn_SWAT/TxtInOut"  # SWAT模型路径  TxtInOut
+  workPath: "E:/Apex_workPath"   # 临时工作路径
+  command: "swat.exe"  # SWAT运行
+  parallel: 1   # 并行数
+  timeout: 600
+
+parameters:
+  library: "swatcsj.yaml"   # 参数库文件
+  params: "ds_param_swat.yaml"  # 参数文件，这一次优化参数
+  hardBound: True  #
+
+functions:
+  - name: R2
+    kind: builtin
+    args: [sim, obs]
+
+series:
+  - id: flow_out
+    desc: FLOW_OUT
+    size: 156
+    cache: True
+    sim:
+      file: "output.rch"
+      rowRanges:
+        - [159, 2534, 198]
+        - [2733, 5108, 198]
+        - [5307, 7682, 198]
+        - [7881, 10256, 198]
+        - [10455, 12830, 198]
+        - [13029, 15404, 198]
+        - [15603, 17978, 198]
+        - [18177, 20552, 198]
+        - [20751, 23126, 198]
+        - [23325, 25700, 198]
+        - [25899, 28274, 198]
+        - [28473, 30848, 198]
+        - [31047, 33422, 198]
+      colSpan: [53, 63]
+    obs:
+      file: "swat_obs.txt"
+      rowRanges:
+        - [1, 156]
+      colNum: 1
+
+derived:
+  - id: flow_out_r2
+    desc: FLOW_OUT_R2
+    call:
+      func: R2
+      args:
+        sim : flow_out_sim
+        obs : flow_out_obs
+
+objectives:
+  use : [o1]
+  items :
+    - id: o1
+      desc: FLOW_OUT_R2
+      sense: max
+      ref: flow_out_r2
+
+reporter:
+  flush_interval: 1
+  scalars:
+    - o1
+  series:
+    - flow_out_sim

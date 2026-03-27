@@ -1,0 +1,162 @@
+design_parameters:
+  - name: CN2
+    type: float
+    mode: r
+    bounds: [-0.261015, -0.208145]
+    cache: True
+  
+  - name: ALPHA_BF
+    type: float
+    mode: v
+    bounds: [0.956948, 1.072222]
+    cache: True
+  
+  - name: GW_DELAY
+    type: float
+    mode: v
+    bounds: [491.658234, 502.344269]
+    cache: True
+  
+  - name: GWQMN
+    type: float
+    mode: v
+    bounds: [-1872.823608, -1246.289429]
+    cache: True
+  
+  - name: SOL_AWC
+    type: float
+    mode: r
+    bounds: [0.033212, 0.032148]
+    cache: True
+
+  - name: SOL_BD
+    type: float
+    mode: r
+    bounds: [-0.651986, -0.452790]
+    cache: True
+  
+  - name: SOL_K
+    type: float
+    mode: r
+    bounds: [-0.037952, 0.242118]
+    cache: True
+  
+  - name: GW_REVAP
+    type: float
+    mode: v
+    bounds: [-0.073189, -0.018773]
+    cache: True
+
+  - name: REVAPMN
+    type: float
+    mode: v
+    bounds: [0, 500]
+    cache: True
+
+  - name: ESCO
+    type: float
+    mode: v
+    bounds: [0.732817, 0.777481]
+    cache: True
+
+  - name: HRU_SLP
+    type: float
+    mode: r
+    bounds: [0.272822, 0.293084]
+    cache: True
+
+  - name: CH_N2
+    type: float
+    mode: v
+    bounds: [-0.01, 0.3]
+    cache: True
+
+  - name: EPCO
+    type: float
+    mode: v
+    bounds: [0.221575, 0.379363]
+    cache: True
+
+  - name: RCHRG_DP
+    type: float
+    mode: r
+    bounds: [0.216338, 0.279156]
+    cache: True
+
+  - name: SURLAG
+    type: float
+    mode: v
+    bounds: [0.877987, 3.017569]
+    cache: True
+
+  - name: SFTMP
+    type: float
+    mode: v
+    bounds: [1.656673, 2.445529]
+    cache: True
+
+  - name: SMTMP
+    type: float
+    mode: v
+    bounds: [-1.893333, -1.175773]
+    cache: True
+
+  - name: SMFMX
+    type: float
+    mode: v
+    bounds: [2.958308, 3.670119]
+    cache: True
+
+  - name: SMFMN
+    type: float
+    mode: v
+    bounds: [11.673148, 12.970845]
+    cache: True
+
+  - name: CANMX
+    type: float
+    mode: v
+    bounds: [40.822422, 51.798916]
+    cache: True
+
+  - name: SLSOIL
+    type: float
+    mode: v
+    bounds: [8.456397, 27.660004]
+    cache: True
+
+  - name: CH_K2
+    type: float
+    mode: v
+    bounds: [64.505463, 102.937195]
+    cache: True
+
+  - name: TLAPS
+    type: float
+    mode: v
+    bounds: [-10, 10]
+    cache: True
+
+  - name: TIMP
+    type: float
+    mode: v
+    bounds: [0.459336, 0.459332]
+    cache: True
+
+  - name: CH_K1
+    type: float
+    mode: v
+    bounds: [0, 300]
+    cache: True
+
+  - name: CH_N1
+    type: float
+    mode: v
+    bounds: [0.023980, 0.147106]
+    cache: True
+
+  - name: OV_N
+    type: float
+    mode: r
+    bounds: [0.359158, 1.078176]
+    cache: True

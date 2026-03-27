@@ -1,0 +1,331 @@
+parameter_library:
+  - name: CH_N2
+    type: float
+    bounds: [-0.01, 0.3]
+    file:
+      name: "*.rte"
+      line: 6
+      start: 10
+      width: 5
+      precision: 3
+
+  - name: OV_N
+    type: float
+    bounds: [0.01, 30]
+    file:
+      name: "*.hru"
+      line: 5
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: CN2
+    type: float
+    bounds: [35, 98]
+    file:
+      name: "*.mgt"
+      line: 11
+      start: 12
+      width: 5
+      precision: 2
+
+  - name: ALPHA_BF
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.gw"
+      line: 5
+      start: 11
+      width: 6
+      precision: 4
+
+  - name: REVAPMN
+    type: float
+    bounds: [0, 500]
+    file:
+      name: "*.gw"
+      line: 8
+      start: 9
+      width: 8
+      precision: 4
+
+  - name: GW_REVAP
+    type: float
+    bounds: [0.02, 0.2]
+    file:
+      name: "*.gw"
+      line: 7
+      start: 11
+      width: 6
+      precision: 4
+
+  - name: GWQMN
+    type: float
+    bounds: [0, 5000]
+    file:
+      name: "*.gw"
+      line: 6
+      start: 8
+      width: 9
+      precision: 4
+
+  - name: SOL_BD
+    type: float
+    bounds: [0.9, 2.5]
+    file:
+      name: "*.sol"
+      line: 9
+      start: 28
+      width: 12
+      precision: 2
+      maxNum: 2
+
+  - name: CH_K2
+    type: float
+    bounds: [-0.01, 500]
+    file:
+      name: "*.rte"
+      line: 7
+      start: 8
+      width: 7
+      precision: 3
+
+  - name: GW_DELAY
+    type: float
+    bounds: [0, 500]
+    file:
+      name: "*.gw"
+      line: 4
+      start: 8
+      width: 9
+      precision: 4
+
+  - name: ESCO
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.hru"
+      line: 10
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: EPCO
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.hru"
+      line: 11
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: CANMX
+    type: float
+    bounds: [0, 100]
+    file:
+      name: "*.hru"
+      line: 9
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: SMFMN
+    type: float
+    bounds: [0, 20]
+    file:
+      name: "*.bsn"
+      line: 7
+      start: 11
+      width: 6
+      precision: 3
+
+  - name: SOL_AWC
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.sol"
+      line: 10
+      start: 28
+      width: 12
+      precision: 2
+
+  - name: TIMP
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.bsn"
+      line: 8
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: SLSUBBSN
+    type: float
+    bounds: [10, 150]
+    file:
+      name: "*.hru"
+      line: 3
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: HRU_SLP
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.hru"
+      line: 4
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: SOL_K
+    type: float
+    bounds: [0, 2000]
+    file:
+      name: "*.sol"
+      line: 11
+      start: 28
+      width: 12
+      precision: 2
+
+  - name: SFTMP
+    type: float
+    bounds: [-20, 20]
+    file:
+      name: "*.bsn"
+      line: 4
+      start: 11
+      width: 6
+      precision: 3
+
+  - name: SURLAG
+    type: float
+    bounds: [0.05, 24]
+    file:
+      name: "*.bsn"
+      line: 20
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: SPCON
+    type: float
+    bounds: [0.0001, 0.01]
+    file:
+      name: "*.bsn"
+      line: 23
+      start: 11
+      width: 6
+      precision: 4
+
+  - name: SPEXP
+    type: float
+    bounds: [1, 1.5]
+    file:
+      name: "*.bsn"
+      line: 24
+      start: 12
+      width: 5
+      precision: 3
+
+  - name: USLE_P
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.mgt"
+      line: 12
+      start: 13
+      width: 4
+      precision: 2
+
+  - name: CH_COV1
+    type: float
+    bounds: [-0.05, 0.6]
+    file:
+      name: "*.rte"
+      line: 8
+      start: 10
+      width: 5
+      precision: 3
+
+  - name: CH_COV2
+    type: float
+    bounds: [-0.001, 1]
+    file:
+      name: "*.rte"
+      line: 9
+      start: 10
+      width: 5
+      precision: 3
+
+  - name: RCHRG_DP
+    type: float
+    bounds: [0, 1]
+    file:
+      name: "*.gw"
+      line: 9
+      start: 10
+      width: 7
+      precision: 4
+
+  - name: SMTMP
+    type: float
+    bounds: [-20, 20]
+    file:
+      name: "*.bsn"
+      line: 5
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: SMFMX
+    type: float
+    bounds: [0, 20]
+    file:
+      name: "*.bsn"
+      line: 6
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: SLSOIL
+    type: float
+    bounds: [0, 150]
+    file:
+      name: "*.hru"
+      line: 8
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: TLAPS
+    type: float
+    bounds: [-10, 10]
+    file:
+      name: "*.sub"
+      line: 22
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: CH_K1
+    type: float
+    bounds: [0, 300]
+    file:
+      name: "*.sub"
+      line: 28
+      start: 10
+      width: 7
+      precision: 3
+
+  - name: CH_N1
+    type: float
+    bounds: [0.01, 30]
+    file:
+      name: "*.sub"
+      line: 29
+      start: 10
+      width: 7
+      precision: 3

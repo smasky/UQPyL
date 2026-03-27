@@ -83,7 +83,6 @@ class SimModel(Problem):
             micro_str = f"{now.microsecond + counter:06d}"
             self.runPath = os.path.join(self.cfg.basic.workPath, "tempRun", base_time_str + "_" + micro_str)
             counter += 1
-
  
         os.makedirs(self.runPath, exist_ok=True)
 
