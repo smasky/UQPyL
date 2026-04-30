@@ -58,14 +58,3 @@ class KFold():
             train.append(index[signal].copy())
             
         return train, test
-
-
-            
-
-        
-        
-        
-        
-        
-        
-        

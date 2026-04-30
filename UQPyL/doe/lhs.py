@@ -1,9 +1,8 @@
-from typing import Literal, Optional
+from typing import Literal
 import numpy as np
 from scipy.spatial.distance import pdist
 
 from .base import Sampler
-from ..problem import ProblemABC as Problem
 
 def _lhs_classic(nt: int, nx: int, rng):
     """
@@ -141,12 +140,9 @@ LHS_METHOD = {'classic': _lhs_classic, 'center': _lhs_centered, 'maximin': _lhs_
 
 class LHS(Sampler):
     """
-    Latin-hypercube design class for generating samples.
-    
-    Methods:
-        sample: Generate a Latin-hypercube design
-    
-            
+    Latin hypercube sampler with several layout criteria.
+
+    The public ``sample()`` method is inherited from :class:`Sampler`.
     """
     def __init__(self, criterion: Criterion ='classic', iterations = 5):
         """
@@ -158,16 +154,15 @@ class LHS(Sampler):
 
         self.criterion = criterion
         self.iterations = iterations
-        #initial random state
         super().__init__()
         
     def _generate(self, nt: int, nx: int = None):
         """
-        Generate a Latin-hypercube design.
+        Generate unit-space Latin hypercube samples.
         
         :param nt: Number of sampled points.
         :param nx: Input dimensions of sampled points.
-        :return: A 2D array of LHS samples.
+        :return: A 2D array of shape ``(nt, nx)`` in the unit hypercube.
         """
         
         if self.criterion not in LHS_METHOD:
@@ -182,19 +177,3 @@ class LHS(Sampler):
         
         return xInit
     
-    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
-        """
-        Generate a Latin-hypercube design.
-        
-        :param nt: Number of sampled points.
-        :param nx: Input dimensions of sampled points.
-        :param problem: Problem instance to use bounds for sampling.
-        :param seed: Random seed for reproducibility.
-        :return: A 2D array of LHS samples.
-        """
-        
-        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-        
-        nx = problem.nInput
-        
-        return problem._transform_unit_X(self._generate(nt, nx))

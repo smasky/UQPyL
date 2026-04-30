@@ -3,22 +3,14 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
+from ..core.constraint import compareSolutions
 
 class SCE_UA(AlgorithmABC):
-    '''
-    Shuffled Complex Evolution (SCE-UA) method <Single>
-
-    Methods:
-        run:
-            Executes the SCE-UA optimization algorithm.
-    
-    References:
-        [1] Duan, Q., Sorooshian, S., & Gupta, V. K. (1992). Effective and efficient global optimization for conceptual rainfall-runoff models. Water Resources Research, 28(4), 1015-1031.
-        [2] Duan, Q., Gupta, V. K., & Sorooshian, S. (1994). Optimal use of the SCE-UA global optimization method for calibrating watershed models. Journal of Hydrology, 158(3-4), 265-284.
-        [3] Duan, Q., Sorooshian, S., & Gupta, V. K. (1994). A shuffled complex evolution approach for effective and efficient global minimization. Journal of optimization theory and applications, 76(3), 501-521.
-    '''
+    """
+    Single-objective shuffled complex evolution algorithm.
+    """
     
     name = "SCE-UA"
     alg_type = "EA"
@@ -28,30 +20,32 @@ class SCE_UA(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates: int = 1000, tolerate: float = 1e-6,
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
-        '''
-        Initialize the SCE-UA algorithm with user-defined parameters.
-        
-        :param ngs: Number of complexes (sub-populations).
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
+                 saveFreq: int = 100):
+        """
+        Initialize the algorithm.
+
+        :param ngs: Number of complexes.
         :param npg: Number of points in each complex.
         :param nps: Number of points in each simplex.
-        :param nspl: Number of evolution steps for each complex.
+        :param nspl: Number of evolution steps in each complex.
         :param alpha: Reflection coefficient.
         :param beta: Contraction coefficient.
-        
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
-        '''
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
+        """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
+                         saveFreq = saveFreq)
         
         # Set algorithm parameters
         self.setParaVal('ngs', ngs)
@@ -61,17 +55,14 @@ class SCE_UA(AlgorithmABC):
         self.setParaVal('alpha', alpha)
         self.setParaVal('beta', beta)
         
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
-        '''
-        Execute the SCE-UA algorithm on the specified problem.
+        """
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return: The result of the optimization process.
-        '''
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
+        """
         # setup algorithm
         self.setup(problem, seed)
         
@@ -93,6 +84,7 @@ class SCE_UA(AlgorithmABC):
         
         # Generate initial population
         pop = self.initPop(nInit)
+        self.update(pop)
         
         # Sort the population by increasing function values
         pop = pop[pop.argsort()]
@@ -122,9 +114,10 @@ class SCE_UA(AlgorithmABC):
             # Sort the population by increasing function values
             idx = pop.argsort()
             pop = pop[idx]
+            self.update(pop)
                    
         # Return the final result
-        return self.result
+        return self.finalize()
                      
     def _cce(self, sPop, alpha, beta):
         '''
@@ -155,21 +148,15 @@ class SCE_UA(AlgorithmABC):
         sNew = Population(sNewDecs)
         self.evaluate(sNew)
         
-        # Check constraints and objective values
-        C = np.any(sNew.cons[0] > sWorstCons) if sNew.cons is not None else False
-        
-        if sNew.objs[0] > sWorstObjs or C:
+        if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorstCons, self.problem.conWgt) >= 0:
             # Contract the worst point
             sNewDecs = sWorstDecs + (sNewDecs - sWorstDecs) * beta
             np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
             
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
-            
-            C = np.any(sNew.cons[0] > sWorstCons) if sNew.cons is not None else False
-            
             # If both reflection and contraction fail, generate a random point
-            if sNew.objs[0] > sWorstObjs or C:
+            if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorstCons, self.problem.conWgt) >= 0:
                 sNewDecs = self.problem.lb + np.random.random(D) * (self.problem.ub - self.problem.lb)
                 sNew = Population(sNewDecs)
                 self.evaluate(sNew)

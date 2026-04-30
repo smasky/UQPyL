@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 
-from ..base import ProblemABC
+from ..base import ProblemBase
 
 ##-----------Reference------------------##
 # E. Zitzler, K. Deb, and L. Thiele, Comparison of multiobjective
@@ -9,24 +9,24 @@ from ..base import ProblemABC
 # 2000, 8(2): 173-195.
 #--------------------------------------##
 
-class ZDT1(ProblemABC):
+class ZDT1(ProblemBase):
     
     name="ZDT1"
     
-    def __init__(self, nInput:int =30, nOutput: int=2, 
+    def __init__(self, nInput:int =30, nObj: int=2, 
                     ub: Union[int, float, np.ndarray, list] =1, 
                         lb: Union[int, float, np.ndarray, list] =0):
         
-        super().__init__(nInput, nOutput, ub, lb)
+        super().__init__(nInput, nObj, ub, lb)
         
-        if nOutput!=2:
+        if nObj!=2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
     
     def objFunc(self, X):
         
         X=self._check_X_2d(X)
 
-        Y = np.zeros((X.shape[0], self.nOutput))
+        Y = np.zeros((X.shape[0], self.nObj))
         Y[:,0] = X[:,0]
         g = 1 + 9 * np.mean(X[:, 1:], axis=1)
         h = 1 - np.sqrt(Y[:,0]/g)
@@ -36,7 +36,7 @@ class ZDT1(ProblemABC):
     
     def getOptimum(self, N=100):
         
-        R = np.zeros((N,self.nOutput))
+        R = np.zeros((N,self.nObj))
         R[:,0] = np.linspace(0,1,N)
         R[:,1] = 1-np.sqrt(R[:,0])
         
@@ -48,24 +48,24 @@ class ZDT1(ProblemABC):
         
         return (R[:,0], R[:,1])
 
-class ZDT2(ProblemABC):
+class ZDT2(ProblemBase):
     
     name="ZDT2"
     
-    def __init__(self, nInput:int =30, nOutput: int=2, 
+    def __init__(self, nInput:int =30, nObj: int=2, 
                     ub: Union[int,float,np.ndarray] =1, 
                         lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb)
+        super().__init__(nInput, nObj, ub, lb)
         
-        if nOutput!=2:
+        if nObj!=2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
     
     def objFunc(self, X):
         
         X = self._check_X_2d(X)
         
-        Y = np.zeros((X.shape[0], self.nOutput))
+        Y = np.zeros((X.shape[0], self.nObj))
         Y[:,0] = X[:,0]
         g = 1 + 9 * np.sum(X[:, 1:], axis=1)/(self.nInput-1)
         h = 1-(Y[:,0]/g)**2
@@ -75,7 +75,7 @@ class ZDT2(ProblemABC):
     
     def getOptimum(self, N=100):
         
-        R = np.zeros((N,self.nOutput))
+        R = np.zeros((N,self.nObj))
         R[:,0] = np.linspace(0,1,N)
         R[:,1] = 1-(R[:,0])**2
         
@@ -87,22 +87,22 @@ class ZDT2(ProblemABC):
         
         return (R[:,0], R[:,1])
     
-class ZDT3(ProblemABC):
+class ZDT3(ProblemBase):
     
     name="ZDT3"
     
-    def __init__(self, nInput:int =30, nOutput: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
+    def __init__(self, nInput:int =30, nObj: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb)
+        super().__init__(nInput, nObj, ub, lb)
         
-        if nOutput!=2:
+        if nObj!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
     
     def objFunc(self, X):
         
         X=self._check_X_2d(X)
         
-        Y = np.zeros((X.shape[0], self.nOutput))
+        Y = np.zeros((X.shape[0], self.nObj))
         Y[:,0] = X[:,0]
         g = 1 + 9 * np.sum(X[:, 1:], axis=1)/(self.nInput-1)
         h = 1 - np.sqrt(Y[:,0]/g)-(Y[:,0]/g) * np.sin(10*np.pi*Y[:,0])
@@ -112,9 +112,9 @@ class ZDT3(ProblemABC):
     
     def getOptimum(self, N=100):
         
-        from ..util.non_dominated_sort import NDSort
+        from ...optimization.core import NDSort
         
-        R = np.zeros((N, self.nOutput))
+        R = np.zeros((N, self.nObj))
         R[:,0] = np.linspace(0,1,N)
         R[:,1] = 1 - np.sqrt(R[:,0]) - R[:, 0] * np.sin(10 * np.pi * R[:, 0])
         
@@ -131,17 +131,17 @@ class ZDT3(ProblemABC):
         
         return (R[:,0], R[:,1])
 
-class ZDT4(ProblemABC):
+class ZDT4(ProblemBase):
     
     name="ZDT4"
     
-    def __init__(self, nInput:int =30, nOutput: int=2, 
+    def __init__(self, nInput:int =30, nObj: int=2, 
                     ub: Union[int,float,np.ndarray] =1, 
                         lb: Union[int,float,np.ndarray] =0):
        
-        super().__init__(nInput, nOutput, ub, lb)
+        super().__init__(nInput, nObj, ub, lb)
         
-        if nOutput!=2:
+        if nObj!=2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
     
     def objFunc(self, X):
@@ -164,30 +164,30 @@ class ZDT4(ProblemABC):
         
         return R
 
-    def GetPF(self):
+    def getPF(self):
         
         R = self.getOptimum(100)
         
         return (R[:,0], R[:,1])
 
-class ZDT6(ProblemABC):
+class ZDT6(ProblemBase):
     
     name="ZDT6"
     
-    def __init__(self, nInput:int =30, nOutput: int=2, 
+    def __init__(self, nInput:int =30, nObj: int=2, 
                     ub: Union[int,float,np.ndarray] =1, 
                     lb: Union[int,float,np.ndarray] =0):
         
-        super().__init__(nInput, nOutput, ub, lb)
+        super().__init__(nInput, nObj, ub, lb)
         
-        if nOutput!=2:
+        if nObj!=2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")
     
     def objFunc(self, X):
         
         X=self._check_X_2d(X)
         
-        Y=np.zeros((X.shape[0], self.nOutput))
+        Y=np.zeros((X.shape[0], self.nObj))
         Y[:,0]=1-np.exp(-4*X[:,0])*np.sin(6*np.pi*X[:,0])**6
         g=1+9*np.sum(X[:, 1:], axis=1)/(self.nInput-1)**0.25
         h=1-(Y[:,0]/g)**2
@@ -198,7 +198,7 @@ class ZDT6(ProblemABC):
     def getOptimum(self, N=100):
         
         min=0.280775
-        R=np.zeros((N,self.nOutput))
+        R=np.zeros((N,self.nObj))
         R[:,0]=np.linspace(min,1,N)
         R[:,1]=1-R[:,0]**2
         

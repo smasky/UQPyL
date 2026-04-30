@@ -3,29 +3,17 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
 
-from ..util.ga_operator import gaOperator
-from ..util.tournament import tourSelect
+from ..core.constraint import calcConstraintViolation
+from ..core.ga_operator import gaOperator
+from ..core.tournament import tourSelect
 
 class GA(AlgorithmABC):
-    '''
-    Genetic Algorithm <single> <real>/<mix>
-    -------------------------------
-    
-    Methods:
-        run(problem): 
-            Executes the genetic algorithm on a given problem.
-            - problem: Problem
-                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
-    
-    References:
-        [1] D. E. Goldberg, Genetic Algorithms in Search, Optimization, and Machine Learning, 1989.
-        [2] M. Mitchell, An Introduction to Genetic Algorithms, 1998.
-        [3] D. Simon, Evolutionary Optimization Algorithms, 2013.
-        [4] J. H. Holland, Adaptation in Natural and Artificial Systems, MIT Press, 1992.
-    '''
+    """
+    Single-objective genetic algorithm.
+    """
     
     name = "GA"
     alg_type = "EA"
@@ -35,31 +23,31 @@ class GA(AlgorithmABC):
                  maxFEs: int = 50000,
                  maxIters: int = 1000,
                  maxTolerates: Optional[int] = None, tolerate: float = 1e-6,
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True):
-        '''
-        Initialize the genetic algorithm with user-defined parameters.
-        
-        
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True,
+                 saveFreq: int = 100):
+        """
+        Initialize the algorithm.
+
         :param nPop: Population size.
         :param proC: Crossover probability.
         :param disC: Crossover distribution index.
         :param proM: Mutation probability.
         :param disM: Mutation distribution index.
-        
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verboseFlag: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
-        
-        '''
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
+        """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate,
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
+                         saveFreq = saveFreq)
         
         # Set user-defined parameters
         self.setParaVal('proC', proC)
@@ -69,23 +57,14 @@ class GA(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #--------------------Public Functions---------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
-        '''
-        Execute the genetic algorithm on the specified problem.
+        """
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-                        
-        :param seed: Random seed for reproducibility.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
-        '''
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
+        """
         # setup algorithm
         self.setup(problem, seed)
         
@@ -95,13 +74,16 @@ class GA(AlgorithmABC):
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
        
         # Iterative process
         while self.checkTermination(pop):
             
             # Select mating pool using tournament selection
-            objs = pop.objs; cons = pop.cons * -1 if pop.cons is not None else None
-            matingIdx = tourSelect(2, len(pop), objs, cons)
+            cv = calcConstraintViolation(pop.cons, pop.conWgt)
+            feasible = np.zeros((len(pop), 1), dtype=float) if cv is None else (cv > 0).astype(float).reshape(-1, 1)
+            violation = np.zeros((len(pop), 1), dtype=float) if cv is None else cv.reshape(-1, 1)
+            matingIdx = tourSelect(2, len(pop), feasible, violation, pop.objs)
             matingPool = pop[matingIdx]
             
             # Generate offspring using genetic operator
@@ -116,6 +98,7 @@ class GA(AlgorithmABC):
             
             # Select the best individuals to form the new population
             pop = pop.getBest(nPop)
+            self.update(pop)
                     
         # Return the final result
-        return self.result
+        return self.finalize()

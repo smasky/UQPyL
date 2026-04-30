@@ -2,11 +2,9 @@
 import numpy as np
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ..util import NDSort, crowdingDist, tourSelect, gaOperator
-
-import time
+from ..core import NDSort, crowdingDist, tourSelect, gaOperator
 
 class NSGAII(AlgorithmABC):
     '''
@@ -28,7 +26,8 @@ class NSGAII(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates = None, tolerate=1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
+                 saveFreq: int = 100):
         '''
         Initialize the NSGA-II algorithm with user-defined parameters.
         
@@ -48,7 +47,7 @@ class NSGAII(AlgorithmABC):
         '''
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
         self.setParaVal('proC', proC)
@@ -58,20 +57,15 @@ class NSGAII(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the NSGA-II algorithm on the specified problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
+        :param problem: Problem instance.
                         This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
+                        input dimension, objective dimension, bounds, and evaluation methods.
         
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :return OptResult: Final optimization result.
         '''
         # setup algorithm
         self.setup(problem, seed)
@@ -85,6 +79,9 @@ class NSGAII(AlgorithmABC):
         
         # Perform environmental selection
         _, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
+        pop.frontNo = frontNo
+        pop.crowdDis = CrowdDis
+        self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
@@ -105,9 +102,10 @@ class NSGAII(AlgorithmABC):
             # Perform environmental selection
             nextIdx, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
             pop = pop[nextIdx]; pop.frontNo = frontNo; pop.crowdDis = CrowdDis
+            self.update(pop)
 
         # Return the final result
-        return self.result
+        return self.finalize()
     
     #-------------------------Private Functions--------------------------#
     def environmentalSelection(self, popDecs, popObjs, popCons = None, conWgt = None, n = None):

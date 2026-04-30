@@ -2,24 +2,14 @@
 import numpy as np
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ..util import tourSelect, uniformPoint, NDSort, crowdingDist, gaOperator
+from ..core import tourSelect, uniformPoint, NDSort, crowdingDist, gaOperator
 
 class NSGAIII(AlgorithmABC):
-    '''
-    Non-dominated Sorting Genetic Algorithm III <Multi>
-    -----------------------------------------------------
-    
-    Methods:
-        run(problem): 
-            Executes the NSGA-III algorithm on a given problem.
-            - problem: Problem
-                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
-    
-    References:
-        [1] K. Deb and H. Jain, An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems with Box Constraints, 2014.
-    '''
+    """
+    Multi-objective NSGA-III algorithm.
+    """
     
     name = "NSGAIII"
     alg_type = "MOEA"
@@ -29,27 +19,28 @@ class NSGAIII(AlgorithmABC):
                  maxFEs=50000, maxIters=1000, 
                  maxTolerates=None, tolerate=1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, 
-                 logFlag: bool = True, saveFlag: bool = True):
-        '''
-        Initialize the NSGA-III algorithm with user-defined parameters.
-        
+                 logFlag: bool = True, saveFlag: bool = True, saveFreq: int = 100):
+        """
+        Initialize the algorithm.
+
         :param proC: Crossover probability.
         :param disC: Crossover distribution index.
         :param proM: Mutation probability.
         :param disM: Mutation distribution index.
         :param nPop: Population size.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
-        '''
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
+        """
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
         self.setParaVal('proC', proC)
@@ -59,21 +50,14 @@ class NSGAIII(AlgorithmABC):
         self.setParaVal('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
-        '''
-        Execute the NSGA-III algorithm on the specified problem.
+        """
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
-        '''
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
+        """
         # setup algorithm
         self.setup(problem, seed)
         
@@ -86,6 +70,7 @@ class NSGAIII(AlgorithmABC):
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
         
         # Perform non-dominated sorting
         frontNo, _ = NDSort(pop.objs, pop.cons)
@@ -118,9 +103,10 @@ class NSGAIII(AlgorithmABC):
             pop = pop[nextIdx]
             
             pop.frontNo = frontNo
+            self.update(pop)
             
         # Return the final result
-        return self.result
+        return self.finalize()
     
     def environmentSelection(self, popObjs, popCons, Z, Zmin):
         '''

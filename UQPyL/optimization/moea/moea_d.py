@@ -4,23 +4,14 @@ import numpy as np
 from typing import Literal, Optional
 from scipy.spatial import distance
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ..util import uniformPoint, gaOperatorHalf
+from ..core import uniformPoint, gaOperatorHalf, calcConstraintViolation
 
 class MOEAD(AlgorithmABC):
-    '''
-    Multi-objective Evolutionary Algorithm based on Decomposition <Multi>
-    ---------------------------------------------------------------------
-    This class implements the MOEAD algorithm, which is used for solving
-    multi-objective optimization problems by decomposing them into simpler
-    subproblems.
-
-    References:
-        Zhang, Q., & Li, H. (2007). MOEA/D: A Multiobjective Evolutionary Algorithm Based on Decomposition. 
-        IEEE Transactions on Evolutionary Computation, 11(6), 712-731.
-        DOI: 10.1109/TEVC.2007.892759
-    '''
+    """
+    Multi-objective evolutionary algorithm based on decomposition.
+    """
     
     name = "MOEA_D"
     alg_type = "MOEA"
@@ -30,46 +21,41 @@ class MOEAD(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates = None, tolerate = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
-        '''
-        Initialize the MOEAD algorithm with user-defined parameters.
-        
-        :param aggregation: The aggregation method to use.
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
+                 saveFreq: int = 100):
+        """
+        Initialize the algorithm.
+
+        :param aggregation: Aggregation method.
         :param nPop: Population size.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
-        '''
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
+        """
         
         # Initialize the base class with common parameters
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set specific parameters for MOEAD
         self.setParaVal('aggregation', aggregation)
         self.setParaVal('nPop', nPop)
         
     #-------------------Public Functions-----------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
-        '''
-        Execute the MOEAD algorithm on the specified problem.
+        """
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
-        '''
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
+        """
         # setup algorithm
         self.setup(problem, seed)
         
@@ -94,6 +80,7 @@ class MOEAD(AlgorithmABC):
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
         
         # Initialize the ideal point
         Z = np.min(pop.objs, axis=0).reshape(1, -1)
@@ -147,8 +134,26 @@ class MOEAD(AlgorithmABC):
                     g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) / W[P, :], axis=1)
                     g_new = np.max(np.tile(np.abs(offspringObjs - Z), (T, 1)) / W[P, :], axis=1)
                 
-                # Replace individuals in the population based on aggregation values
-                pop.replace(P[g_old >= g_new], offspring)
+                parentCons = None if pop.cons is None else pop.cons[P]
+                offspringCons = None if offspring.cons is None else np.repeat(offspring.cons, len(P), axis=0)
+                parentCV = calcConstraintViolation(parentCons, pop.conWgt)
+                offspringCV = calcConstraintViolation(offspringCons, pop.conWgt)
+
+                if parentCV is None:
+                    replaceMask = g_old >= g_new
+                else:
+                    parentFeasible = parentCV <= 0
+                    offspringFeasible = offspringCV <= 0
+                    replaceMask = np.zeros(len(P), dtype=bool)
+                    replaceMask[offspringFeasible & ~parentFeasible] = True
+                    bothInfeasible = ~offspringFeasible & ~parentFeasible
+                    replaceMask[bothInfeasible] = offspringCV[bothInfeasible] < parentCV[bothInfeasible]
+                    bothFeasible = offspringFeasible & parentFeasible
+                    replaceMask[bothFeasible] = g_old[bothFeasible] >= g_new[bothFeasible]
+
+                # Replace individuals in the population based on feasibility/CV first, then aggregation
+                pop.replace(P[replaceMask], offspring)
+            self.update(pop)
                     
         # Return the final result
-        return self.result     
+        return self.finalize()    

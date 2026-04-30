@@ -7,13 +7,10 @@ from ..problem import ProblemABC as Problem
 
 class FFD(Sampler):
     """
-    Full Factorial Design (FFD) for experimental design.
-    
-    This class generates a full factorial design, which is a systematic way to explore
-    all possible combinations of factors at different levels.
-    
-    Methods:
-        sample: Generate a full factorial design.
+    Full factorial design on the unit hypercube.
+
+    Unlike the other general DOE samplers, this sampler is driven by
+    per-dimension ``levels`` instead of a target sample count ``nt``.
     """
     
     def _generate(self, levels: Union[np.ndarray, int, list], nx: int):
@@ -45,13 +42,16 @@ class FFD(Sampler):
         
         :param problem: Problem instance to use bounds for sampling.
         :param levels: Levels for each input dimension. Can be an integer, list, or ndarray.
-        :param random_seed: Random seed for reproducibility.
+        :param seed: Optional random seed kept for API consistency. It does not affect the result.
         
         :return: A 2D array of full factorial design samples.
         """
-        
-        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-                
-        nx = problem.nInput
 
-        return problem._transform_unit_X(self._generate(levels, nx))
+        self._validate_problem(problem)
+        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
+
+        nx = problem.nInput
+        X = self._generate(levels, nx)
+        X = self._validate_generated_samples(X, X.shape[0], nx)
+
+        return problem.unit_to_space(X)

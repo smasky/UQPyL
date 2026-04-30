@@ -2,8 +2,10 @@ import os
 import re
 import time
 import math
+import json
 import xarray as xr
 import functools
+import numpy as np
 
 from prettytable import PrettyTable
             
@@ -87,7 +89,7 @@ class Verbose():
         
         width = Verbose.totalWidth
         
-        if problem.nOutput == 1:
+        if problem.nObj == 1:
             
             iters = res["iter"]
             dec = res["bestDecs"]
@@ -181,17 +183,20 @@ class Verbose():
                 title = "FEs: "+str(obj.FEs)+" | Iters: "+str(obj.iters)
                 spacing = int((totalWidth-len(title))/2)-1
                 Verbose.output("="*spacing+title+"="*spacing, problem)
-                if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(obj.result.bestDecs_True, obj.result.bestObjs_True, obj.result.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, obj.FEs, obj.iters, totalWidth, problem)
+                if obj.problem.nObj == 1:
+                    bestDecs = obj.state.bestDecs if getattr(obj, "state", None) is not None else obj.result.bestDecs
+                    bestObjs = obj.state.bestObjs if getattr(obj, "state", None) is not None else obj.result.bestObjs
+                    Verbose.verboseSingleSolutions(bestDecs, bestObjs, obj.result.bestFeasible, obj.problem.xLabels, obj.problem.objLabels, obj.FEs, obj.iters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(obj.result.bestDecs_True, obj.result.bestMetric, obj.result.bestFeasible, obj.FEs, obj.iters, totalWidth, problem)
+                    bestDecs = obj.state.bestDecs if getattr(obj, "state", None) is not None else obj.result.bestDecs
+                    Verbose.verboseMultiSolutions(bestDecs, obj.result.bestMetric, obj.result.bestFeasible, obj.FEs, obj.iters, totalWidth, problem)
         
         return wrapper
     
     @staticmethod
-    def saveData(obj, folderData, result_nc):
+    def saveData(obj, folderData, result_data):
         
-        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
+        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nObj}"
 
         allFiles = [f for f in os.listdir(folderData) if os.path.isfile(os.path.join(folderData, f))]
         
@@ -206,7 +211,7 @@ class Verbose():
                     maxNum = number
         maxNum += 1
         
-        filename += f"_{maxNum}.nc"
+        filename += f"_{maxNum}.npz"
         
         filepath = os.path.join(folderData, filename)
                 
@@ -218,21 +223,22 @@ class Verbose():
         if hasattr(obj.problem, 'GUI'):
             obj.problem.verboseEmit.send(text)
         
-        Verbose.saveToNetCDF(filepath, result_nc)
+        Verbose.saveToNPZ(filepath, result_data)
           
     @staticmethod
-    def saveToNetCDF(filepath, res):
-        
-        if isinstance(res, xr.Dataset):
-            res.to_netcdf(filepath, mode = "a")
-        else:
-            for key, ds in res.items():
-                ds.to_netcdf(filepath, group = key, mode = "a")
+    def saveToNPZ(filepath, res):
+        payload = {}
+        for key, value in res.items():
+            if isinstance(value, str):
+                payload[key] = np.array(value, dtype="<U4096")
+            else:
+                payload[key] = value
+        np.savez_compressed(filepath, **payload)
 
     @staticmethod
     def saveLog(obj, folderLog):
         
-        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nOutput}"
+        filename = f"{obj.name}_{obj.problem.name}_D{obj.problem.nInput}_M{obj.problem.nObj}"
 
         allFiles = [f for f in os.listdir(folderLog) if os.path.isfile(os.path.join(folderLog, f))]
         
@@ -317,7 +323,8 @@ class Verbose():
             
             totalTime = endTime - startTime
             
-            obj.result.runtime = totalTime
+            obj.state.runtime = totalTime
+            result = obj.buildResult() if hasattr(obj, "buildResult") else res
             
             if obj.verboseFlag:
                 
@@ -328,15 +335,15 @@ class Verbose():
                 Verbose.output(f"Used FEs:    {obj.FEs}  |  Iters:  {obj.iters}", problem)
                 Verbose.output(f"Best Objs and Best Decision with the FEs", problem)
                 
-                if obj.problem.nOutput == 1:
-                    Verbose.verboseSingleSolutions(res.bestDecs_True, res.bestObjs_True, res.bestFeasible, obj.problem.xLabels, obj.problem.yLabels, res.appearFEs, res.appearIters, totalWidth, problem)
+                if obj.problem.nObj == 1:
+                    Verbose.verboseSingleSolutions(result.bestDecs, result.bestObjs, result.bestFeasible, obj.problem.xLabels, obj.problem.objLabels, result.appearFEs, result.appearIters, totalWidth, problem)
                 else:
-                    Verbose.verboseMultiSolutions(res.bestDecs_True, res.bestMetric, res.bestFeasible, res.appearFEs, res.appearIters, totalWidth, problem)
+                    Verbose.verboseMultiSolutions(result.bestDecs, result.bestMetric, result.bestFeasible, result.appearFEs, result.appearIters, totalWidth, problem)
             
-            result_nc = obj.result.generateNetCDF()
+            result_payload = obj.saveResult() if hasattr(obj, "saveResult") else {}
             
             if obj.saveFlag:
-                Verbose.saveData(obj, folderData, result_nc)
+                Verbose.saveData(obj, folderData, result_payload)
                 
             if obj.logFlag:
                 Verbose.saveLog(obj, folderLog)
@@ -347,7 +354,7 @@ class Verbose():
                     iterEmit.unfinished()
                 else:
                     iterEmit.finished()
-            return result_nc
+            return result
         return wrapper 
     
     # decorator for analysis methods

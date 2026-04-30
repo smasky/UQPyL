@@ -1,12 +1,12 @@
 import numpy as np
 
 from UQPyL.optimization.population import Population
-from UQPyL.optimization.result import Result
-from UQPyL.problem import ProblemABC
+from UQPyL.optimization.runtime import OptHistory, OptResult, Result
+from UQPyL.problem import ProblemBase
 from UQPyL.problem.problem import Problem
 
 
-@ProblemABC.singleFunc
+@ProblemBase.singleFunc
 def _obj_single(x):
     x = np.asarray(x)
     return float(np.sum(x**2))
@@ -26,38 +26,83 @@ class _DummyAlg:
         self.iters = 0
         self.FEs = 0
 
-        class _S:
-            dicts = {"dummy": 1}
 
-        self.setting = _S()
-
-
-def test_result_update_ea_and_generate_netcdf_smoke():
-    problem = Problem(nInput=2, nOutput=1, ub=1.0, lb=-1.0, objFunc=_obj_single, optType="min")
+def test_result_update_single_builds_opt_result():
+    problem = Problem(nInput=2, nObj=1, ub=1.0, lb=-1.0, objFunc=_obj_single, optType="min")
     alg = _DummyAlg(problem)
-    res = Result(alg)
+    state = Result(alg)
 
     decs = np.array([[0.1, 0.2], [0.9, -0.9]])
-    pop = Population(decs)
-    pop.evaluate(problem)
+    objs = problem.objFunc(decs)
+    pop = Population(decs, objs=objs)
 
-    res.update(pop, problem, FEs=2, iter=0, algType="EA")
-    out = res.generateNetCDF()
-    assert "history" in out and "result" in out
-    assert "bestDecs" in out["result"].data_vars
+    state.update(pop, problem, FEs=2, iters=0, algType="EA")
+    alg.FEs = 2
+    alg.iters = 0
+    result = state.buildResult()
+
+    assert isinstance(state.history, OptHistory)
+    assert isinstance(result, OptResult)
+    assert result.bestObjs.shape == (1, 1)
+    assert result.bestDecs.shape == (1, 2)
+    assert len(result.history.bestObjHistory) == 1
 
 
-def test_result_update_moea_and_generate_netcdf_smoke():
-    problem = Problem(nInput=2, nOutput=2, ub=1.0, lb=0.0, objFunc=_obj_multi, optType="min")
+def test_result_update_multi_builds_opt_result():
+    problem = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=_obj_multi, optType="min")
     alg = _DummyAlg(problem)
-    res = Result(alg)
+    state = Result(alg)
 
     decs = np.array([[0.1, 0.2], [0.9, 0.1], [0.5, 0.5]])
-    pop = Population(decs)
-    pop.evaluate(problem)
+    objs = problem.objFunc(decs)
+    pop = Population(decs, objs=objs)
 
-    res.update(pop, problem, FEs=3, iter=0, algType="MOEA")
-    out = res.generateNetCDF()
-    assert "history" in out and "result" in out
-    assert "bestMetric" in out["result"].data_vars
+    state.update(pop, problem, FEs=3, iters=0, algType="MOEA")
+    alg.FEs = 3
+    alg.iters = 0
+    result = state.buildResult()
 
+    assert isinstance(result, OptResult)
+    assert result.bestObjs.shape[1] == 2
+    assert result.bestMetric is not None
+    assert len(result.history.bestMetricHistory) == 1
+    assert len(result.history.numBestHistory) == 1
+
+
+def test_result_multi_freezes_auto_generated_hv_reference_point():
+    problem = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=_obj_multi, optType="min")
+    alg = _DummyAlg(problem)
+    state = Result(alg)
+
+    pop1 = Population(
+        decs=np.array([[0.1, 0.2], [0.8, 0.3]]),
+        objs=np.array([[0.2, 0.9], [0.8, 0.3]]),
+    )
+    state.update(pop1, problem, FEs=2, iters=0, algType="MOEA")
+
+    ref1 = state.hvRefPoint.copy()
+    expected = np.array([0.96, 1.08])
+    assert np.allclose(ref1, expected)
+
+    pop2 = Population(
+        decs=np.array([[0.2, 0.2], [0.9, 0.1]]),
+        objs=np.array([[0.1, 1.5], [1.2, 0.2]]),
+    )
+    state.update(pop2, problem, FEs=4, iters=1, algType="MOEA")
+
+    assert np.allclose(state.hvRefPoint, ref1)
+
+
+def test_result_multi_prefers_explicit_hv_reference_point():
+    problem = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=_obj_multi, optType="min")
+    alg = _DummyAlg(problem)
+    alg.hvRefPoint = np.array([5.0, 6.0])
+    state = Result(alg)
+
+    pop = Population(
+        decs=np.array([[0.1, 0.2], [0.8, 0.3]]),
+        objs=np.array([[0.2, 0.9], [0.8, 0.3]]),
+    )
+    state.update(pop, problem, FEs=2, iters=0, algType="MOEA")
+
+    assert np.allclose(state.hvRefPoint, np.array([5.0, 6.0]))

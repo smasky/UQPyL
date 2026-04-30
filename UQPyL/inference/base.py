@@ -166,7 +166,7 @@ class InferenceABC(metaclass = abc.ABCMeta):
         
         res = self.problem.evaluate(decs)
         
-        return res['objs']*self.problem.opt, res['cons']
+        return res.objs * self.problem.opt, res.cons
 
     def genNetCDF(self, chains, problem):
         

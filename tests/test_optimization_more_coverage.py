@@ -1,9 +1,7 @@
 import numpy as np
 
 from UQPyL.optimization.base import AlgorithmABC
-from UQPyL.optimization.util.ga_operator import gaOperator
-from UQPyL.optimization.util.ga_operator import gaOperatorHalf
-from UQPyL.optimization.util.uniform_point import uniformPoint
+from UQPyL.optimization.core import gaOperator, gaOperatorHalf, uniformPoint
 from UQPyL.problem import ProblemABC
 from UQPyL.problem.problem import Problem
 
@@ -23,7 +21,7 @@ class _DummyAlg(AlgorithmABC):
 
 
 def test_algorithmabc_setup_seed_none_and_save_result_branches(monkeypatch):
-    problem = Problem(nInput=2, nOutput=1, ub=1.0, lb=-1.0, objFunc=_obj_single, optType="min")
+    problem = Problem(nInput=2, nObj=1, ub=1.0, lb=-1.0, objFunc=_obj_single, optType="min")
     alg = _DummyAlg(maxFEs=1, maxIters=1, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(problem, seed=None)  # seed None branch
 
@@ -40,7 +38,7 @@ def test_algorithmabc_setup_seed_none_and_save_result_branches(monkeypatch):
     assert called["ea"] == 1
 
     # multi-objective branch
-    problem2 = Problem(nInput=2, nOutput=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)))
+    problem2 = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)))
     alg.setup(problem2, seed=123)
     alg.saveResult()
     assert called["moea"] == 1

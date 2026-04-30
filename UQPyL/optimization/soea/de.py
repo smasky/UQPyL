@@ -4,19 +4,15 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ..util.tournament import tourSelect
+from ..core.constraint import betterMask, calcConstraintViolation
+from ..core.tournament import tourSelect
 
 
 class DE(AlgorithmABC):
     """
-    Differential Evolution (DE) Algorithm
-    -------------------------------------
-    
-    References:
-    [1] Storn R, Price K. Differential Evolution (1997). A Simple and Efficient Heuristic for global Optimization over Continuous Spaces[J].
-        Journal of Global Optimization, 11(4):341-359. DOI:10.1023/A:1008202821328.
+    Single-objective differential evolution.
     """
     
     name = "DE"
@@ -27,45 +23,40 @@ class DE(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates: int = 1000, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
+                 saveFreq: int = 100):
         """
-        Initialize the differential evolution with user-defined parameters.
+        Initialize the algorithm.
 
         :param cr: Crossover probability.
         :param f: Differential weight.
         :param nPop: Population size.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, 
-                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag)
+                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
         self.setParaVal('cr', cr)
         self.setParaVal('f', f)
         self.setParaVal('nPop', nPop)
         
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         """
-        Execute the differential evolution algorithm on the specified problem.
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
@@ -76,13 +67,16 @@ class DE(AlgorithmABC):
         
         # Population Generation
         pop = self.initPop(nPop)
+        self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
             
             # Select mating pool using tournament selection
-            # matingPool = self._tournamentSelection(pop, len(pop)*2, 2)
-            matingIdx = tourSelect(2, len(pop)*2, pop.objs, pop.cons * -1 if pop.cons is not None else None)
+            cv = calcConstraintViolation(pop.cons, pop.conWgt)
+            feasible = np.zeros((len(pop), 1), dtype=float) if cv is None else (cv > 0).astype(float).reshape(-1, 1)
+            violation = np.zeros((len(pop), 1), dtype=float) if cv is None else cv.reshape(-1, 1)
+            matingIdx = tourSelect(2, len(pop)*2, feasible, violation, pop.objs)
             matingPool = pop[matingIdx]
             
             # Generate offspring using differential evolution operations
@@ -93,11 +87,12 @@ class DE(AlgorithmABC):
             self.evaluate(offspring)
             
             # Replace inferior individuals in the population with better offspring
-            idx = offspring.objs.ravel() < pop.objs.ravel()
+            idx = betterMask(offspring.objs, offspring.cons, pop.objs, pop.cons, pop.conWgt)
             pop.replace(idx, offspring[idx])
+            self.update(pop)
                     
         # Return the final result
-        return self.result
+        return self.finalize()
             
     def _deOperator(self, popDecs1, popDecs2, popDecs3, cr, f):
         """
@@ -122,22 +117,3 @@ class DE(AlgorithmABC):
         np.clip(offspringDecs, self.problem.lb, self.problem.ub, out=offspringDecs)
         
         return offspringDecs
-        
-    def _tournamentSelection(self, pop, N, K: int=2):
-        """
-        K-tournament selection to choose individuals for mating.
-
-        :param pop: Current population.
-        :param N: Number of individuals to select.
-        :param K: Number of individuals in each tournament.
-
-        :return: Selected individuals for mating.
-        """
-        
-        rankIndex = pop.argsort()
-        rank = np.argsort(rankIndex, axis=0)
-        tourSelection = np.random.randint(0, high=len(pop), size=(N, K))
-        winner = np.min(rank[tourSelection].ravel().reshape(N, K), axis=1)
-        winnerIndex = rankIndex[winner]
-        
-        return pop[winnerIndex]

@@ -15,10 +15,10 @@ import sys
 _doe_mod = None
 try:
     _doe_mod = importlib.import_module(__name__ + ".doe")
-except ModuleNotFoundError:
+except Exception:
     try:
         _doe_mod = importlib.import_module(__name__ + ".DoE")
-    except ModuleNotFoundError:
+    except Exception:
         _doe_mod = None
 
 if _doe_mod is not None:
@@ -26,8 +26,28 @@ if _doe_mod is not None:
     sys.modules.setdefault(__name__ + ".doe", _doe_mod)
     sys.modules.setdefault(__name__ + ".DoE", _doe_mod)
 
-# Import subpackages after the shim so downstream imports won't crash.
-from . import problem, surrogate, optimization, analysis, util, inference  # noqa: E402,F401
+problem = importlib.import_module(__name__ + ".problem")
+util = importlib.import_module(__name__ + ".util")
+
+try:
+    surrogate = importlib.import_module(__name__ + ".surrogate")
+except Exception:
+    surrogate = None
+
+try:
+    optimization = importlib.import_module(__name__ + ".optimization")
+except Exception:
+    optimization = None
+
+try:
+    analysis = importlib.import_module(__name__ + ".analysis")
+except Exception:
+    analysis = None
+
+try:
+    inference = importlib.import_module(__name__ + ".inference")
+except Exception:
+    inference = None
 
 # Keep `doe` attribute if available
 doe = _doe_mod  # noqa: E402
