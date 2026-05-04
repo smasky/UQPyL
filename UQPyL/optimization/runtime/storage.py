@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sqlite3
 import uuid
 from datetime import datetime
@@ -15,6 +16,13 @@ def _to_json_array(value):
     return json.dumps(arr.tolist(), ensure_ascii=True)
 
 
+def _slugify_name(name):
+    text = str(name).strip()
+    text = re.sub(r"[^0-9A-Za-z]+", "_", text)
+    text = re.sub(r"_+", "_", text).strip("_")
+    return text or "problem"
+
+
 class SqliteStorage:
     """
     Persist optimization runs and snapshots into sqlite files.
@@ -25,14 +33,15 @@ class SqliteStorage:
         os.makedirs(self.resultDir, exist_ok=True)
 
     def _dbPath(self, algorithmName, problemName):
-        runId = self._makeRunId(algorithmName)
+        runId = self._makeRunId(algorithmName, problemName)
         filename = f"{runId}.sqlite3"
         return os.path.join(self.resultDir, filename), runId
 
-    def _makeRunId(self, algorithmName):
+    def _makeRunId(self, algorithmName, problemName):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M")
         suffix = uuid.uuid4().hex[:4]
-        return f"{algorithmName.lower()}_{timestamp}_{suffix}"
+        problemSlug = _slugify_name(problemName)
+        return f"{algorithmName.lower()}_{problemSlug}_{timestamp}_{suffix}"
 
     def createRun(self, obj):
         problem = obj.problem

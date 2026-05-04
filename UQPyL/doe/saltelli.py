@@ -1,79 +1,89 @@
 import numpy as np
+import warnings
 from typing import Optional
 from scipy.stats import qmc
 from .base import Sampler
-from ..problem import ProblemABC as Problem
 
-class SaltelliSequence(Sampler):
+class SaltelliDesign(Sampler):
     """
-    Saltelli Sequence for sensitivity analysis.
-    
-    This class generates samples using the Saltelli method, which is an extension of the Sobol sequence
-    for sensitivity analysis, allowing for the calculation of first and second order effects.
-    
-    Methods:
-        sample: Generate a Saltelli sequence sample.
+    Saltelli design for sensitivity analysis.
     """
     
     def __init__(self, scramble: bool = True, skipValue: int = 0, secondOrder: bool = False):
         """
-        Initialize the Saltelli Sequence sampler.
-        
-        :param scramble: Whether to scramble the Sobol sequence.
-        :param skipValue: Number of initial points to skip in the sequence.
-        :param calSecondOrder: Whether to calculate second order effects.
+        Initialize the Saltelli design sampler.
+
+        :param scramble: Whether to scramble the Sobol base sequence.
+        :param skipValue: Number of initial Sobol points to skip.
+        :param secondOrder: Whether to generate the second-order design.
         """
         super().__init__()
         
         self.scramble = scramble
         self.skipValue = skipValue
         self.secondOrder = secondOrder
-        
-    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
-        """
-        Generate a Saltelli sequence sample.
-        
-        :param problem: Problem instance to use bounds for sampling.
-        :param nt: Number of base samples.
-        :param random_seed: Random seed for reproducibility.
-        
-        :return: A 2D array of Saltelli sequence samples.
-        """
-        
-        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-        
-        nx = problem.nInput
 
-        # Map unit-hypercube samples to the problem bounds, consistent with other samplers.
-        return problem._transform_unit_X(self._generate(nt, nx))
+    def sampleWithMeta(self, problem, N: int, seed=None):
+        """
+        Generate Saltelli samples with metadata.
+
+        :param problem: Problem instance.
+        :param N: Base sample size.
+        :param seed: Random seed.
+        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
+        """
+        self._validate_sampling_setup(N)
+        return super().sampleWithMeta(problem, N, seed=seed)
+
+    def _validate_sampling_setup(self, N: int):
+        if not isinstance(self.skipValue, int):
+            raise TypeError("skipValue must be an integer.")
+
+        if self.skipValue < 0:
+            raise ValueError("skipValue must be greater than or equal to 0.")
+
+        if N < self.skipValue:
+            raise ValueError(
+                f"N must be greater than or equal to skipValue. "
+                f"Received N={N}, skipValue={self.skipValue}."
+            )
+
+        if N > 0 and (N & (N - 1)) != 0:
+            next_power = int(np.power(2, np.ceil(np.log2(N))))
+            warnings.warn(
+                f"Saltelli designs are usually built from a Sobol base size that is a power of 2. "
+                f"Received N={N}; consider using {next_power}.",
+                UserWarning,
+                stacklevel=2,
+            )
+
+        if self.skipValue > 0 and (self.skipValue & (self.skipValue - 1)) != 0:
+            warnings.warn(
+                "Saltelli designs usually use a power-of-2 skipValue for better Sobol balance. "
+                f"Received skipValue={self.skipValue}.",
+                UserWarning,
+                stacklevel=2,
+            )
     
-    def _generate(self, nt: int, nx: int):
+    def _generate(self, nSamples: int, nInput: int):
         """
-        Internal method to generate the Saltelli sequence.
-        
-        :param nt: Number of base samples.
-        :param nx: Input dimensions of sampled points.
-        :return: A 2D array of Saltelli sequence samples.
+        Generate unit-space Saltelli samples.
+
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space Saltelli samples.
         """
-        N = nt
-        nInput = nx
+        N = nSamples
         skipValue = self.skipValue
         calSecondOrder = self.secondOrder
         
-        M = None
-        if skipValue > 0 and isinstance(skipValue, int):
-            M = skipValue
-            if not ((M & (M - 1)) == 0 and (M != 0 and M - 1 != 0)):
-                raise ValueError("skip value must be a power of 2!")
-            if N < M:
-                raise ValueError("N must be greater than skip value you set!")
-            
-        elif skipValue < 0 or not isinstance(skipValue, int):
-            raise ValueError("skip value must be a positive integer!")
+        M = skipValue if skipValue > 0 else None
         
-        sobol_seed = self.rng.integers(1, 1000000)
+        sobol_seed = None
+        if self.scramble:
+            sobol_seed = self.rng.integers(1, 1000000)
         
-        sampler = qmc.Sobol(nInput * 2, scramble=self.scramble, seed = sobol_seed)
+        sampler = qmc.Sobol(nInput * 2, scramble=self.scramble, seed=sobol_seed)
         
         if M:
             sampler.fast_forward(M)
@@ -105,3 +115,26 @@ class SaltelliSequence(Sampler):
         xSample = saltelliSequence
         
         return xSample
+
+    def _expected_shape(self, nSamples: int, nInput: int):
+        """
+        Return the expected Saltelli sample shape.
+
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return tuple: Expected sample shape.
+        """
+        if self.secondOrder:
+            return ((2 * nInput + 2) * nSamples, nInput)
+        return ((nInput + 2) * nSamples, nInput)
+
+    def _build_meta(self, problem, nSamples: int, seed: Optional[int] = None):
+        return {
+            "designType": "saltelli",
+            "N": nSamples,
+            "secondOrder": self.secondOrder,
+            "skipValue": self.skipValue,
+            "scramble": self.scramble,
+            "blockSize": 2 * problem.nInput + 2 if self.secondOrder else problem.nInput + 2,
+            "seed": seed if self.scramble else None,
+        }

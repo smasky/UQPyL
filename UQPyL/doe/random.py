@@ -4,19 +4,29 @@ from .base import Sampler
 
 class Random(Sampler):
     """
-    Uniform random sampler in the unit hypercube.
-
-    The public ``sample()`` method is inherited from :class:`Sampler`.
+    Uniform random sampler.
     """
+
+    def sample(self, problem, nSamples: int, seed=None):
+        return super().sample(problem, nSamples, seed=seed)
+
+    def sampleWithMeta(self, problem, nSamples: int, seed=None):
+        return super().sampleWithMeta(problem, nSamples, seed=seed)
     
-    def _generate(self, nt: int, nx: int):
+    def _generate(self, nSamples: int, nInput: int):
         """
         Generate unit-space random samples.
-        
-        :param nt: Number of sampled points.
-        :param nx: Input dimensions of sampled points.
-        :return: A 2D array of shape ``(nt, nx)`` with values in ``[0, 1)``.
+
+        :param nSamples: Number of samples.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space random samples.
         """
-        H = self.rng.random((nt, nx))
+        H = self.rng.random((nSamples, nInput))
         
         return H
+
+    def _build_meta(self, problem, nSamples: int, seed=None):
+        return {
+            "designType": "random",
+            "seed": seed,
+        }

@@ -12,7 +12,7 @@ class ConstrainedQuadratic(ProblemABC):
     name = "ConstrainedQuadratic"
 
     def __init__(self, nInput=2):
-        super().__init__(nInput=nInput, nOutput=1, ub=1.0, lb=-1.0, nCons=1, optType="min")
+        super().__init__(nInput=nInput, nObj=1, ub=1.0, lb=-1.0, nCon=1, optType="min")
 
     def objFunc(self, X):
         X = self._check_X_2d(X)
@@ -24,10 +24,9 @@ class ConstrainedQuadratic(ProblemABC):
         return -np.ones((X.shape[0], 1))
 
 
-def test_inferenceabc_checktermination_verbose_branch(monkeypatch):
-    # Cover InferenceABC.checkTermination verbose branch (lines 116-118 in report)
+def test_inferenceabc_checktermination_branch():
     p = ConstrainedQuadratic(nInput=2)
-    inf = InferenceABC(maxIters=2, verboseFlag=True, verboseFreq=1, logFlag=False, saveFlag=False)
+    inf = InferenceABC(maxIters=2, verboseFlag=False, verboseFreq=1, logFlag=False, saveFlag=False)
     inf.setup(p, seed=123)
     inf.setParaVal("nChains", 1)
 
@@ -36,10 +35,6 @@ def test_inferenceabc_checktermination_verbose_branch(monkeypatch):
     objs0, cons0 = inf.evaluate(X0)
     chains = inf.initChains(1, X0, objs0, cons0)
 
-    # silence verbose output
-    from UQPyL.util import Verbose as VerboseMod
-
-    monkeypatch.setattr(VerboseMod, "verboseInference", lambda *args, **kwargs: None)
     assert inf.checkTermination(chains) is True
 
 
@@ -59,14 +54,14 @@ def test_mh_uniform_propdist_smoke_with_constraints():
     p = ConstrainedQuadratic(nInput=2)
     alg = MH(nChains=2, warmUp=1, maxIters=3, propDist="uniform", verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(p, gamma=0.05, seed=123)
-    assert "posterior" in res
+    assert res.cons.shape == (2, 3, 1)
 
 
 def test_mh_gibbs_uniform_propdist_smoke_with_constraints():
     p = ConstrainedQuadratic(nInput=2)
     alg = MH_Gibbs(nChains=2, warmUp=1, maxIters=3, propDist="uniform", verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(p, gamma=0.05, seed=123)
-    assert "posterior" in res
+    assert res.cons.shape == (2, 3, 1)
 
 
 def test_amh_invalid_propdist_raises():
@@ -89,7 +84,7 @@ def test_demc_warmup_branch_and_check_alpha_error_branch():
     p = ConstrainedQuadratic(nInput=2)
     alg = DEMC(nChains=3, warmUp=1, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(p, gamma=0.05, seed=123)
-    assert "posterior" in res
+    assert res.cons.shape == (3, 3, 1)
 
     # _check_alpha error branches
     alg.setup(p, seed=123)
@@ -119,6 +114,6 @@ def test_dream_zs_gamma_none_and_de_prop_path_smoke():
         saveFlag=False,
     )
     res = alg.run(p, gamma=None, seed=123)
-    assert "posterior" in res
+    assert res.cons.shape == (4, 2, 1)
 
 

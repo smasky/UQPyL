@@ -535,7 +535,7 @@ from UQPyL.problems import Sphere
 sphere = Sphere(nInput = 10)
 
 # Import Latin Hypercube Sampling (LHS) for generating design of experiments
-from UQPyL.DoE import LHS
+from UQPyL.doe import LHS
 
 # Generate 200 training samples in the input space using LHS
 lhs = LHS()

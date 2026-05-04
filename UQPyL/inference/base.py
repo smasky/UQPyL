@@ -1,383 +1,386 @@
 import abc
+import os
+import time
+
 import numpy as np
-import xarray as xr
-from datetime import datetime
 
 from .chain import Chain
-from ..problem import ProblemABC
+from .runtime import InfResult, Result, SqliteStorage, Verbose
 from ..doe import LHS
-from ..util import Verbose
+from ..problem import ProblemABC
 
-class InferenceABC(metaclass = abc.ABCMeta):
-    
-    def __init__(self, maxIters: int = 1000,
-                 verboseFlag: bool = True, verboseFreq: int = 10, 
-                 logFlag: bool = False, saveFlag: bool = False):
-        
+
+class InferenceABC(metaclass=abc.ABCMeta):
+    """
+    Abstract base class for inference methods.
+    Shared workflow and utilities for MCMC-style sampling methods.
+    """
+
+    def __init__(
+        self,
+        maxIters: int = 1000,
+        verboseFlag: bool = True,
+        verboseFreq: int = 10,
+        logFlag: bool = False,
+        saveFlag: bool = False,
+        saveFreq: int = 100,
+        logProbFunc=None,
+        maxInitAttempts: int = 1000,
+    ):
+        """
+        Initialize the inference base class with runtime flags and optional hooks.
+
+        Args:
+            maxIters: Number of formal sampling draws, including the initial draw.
+            verboseFlag: Whether to print compact runtime summaries.
+            verboseFreq: Iteration interval for terminal and log summaries.
+            logFlag: Whether to write a log file.
+            saveFlag: Whether to persist snapshots and final result to sqlite.
+            saveFreq: Iteration interval for sqlite snapshots.
+            logProbFunc: Optional custom log-probability function.
+            maxInitAttempts: Maximum LHS batches used to find feasible initial chains.
+        """
+        # Initialize settings and results
+        self.params = Params()
+        self.setting = self.params
+        self.result = Result(self)
+        self.state = self.result
+
+        # Set runtime flags and hooks
+        self.problem = None
+        self.maxIters = maxIters
         self.verboseFlag = verboseFlag
         self.verboseFreq = verboseFreq
         self.logFlag = logFlag
         self.saveFlag = saveFlag
-        
-        self.maxIters = maxIters
-        
-        self.setting = Setting()
-        
+        self.saveFreq = saveFreq
+        self.logProbFunc = logProbFunc
+        self.maxInitAttempts = maxInitAttempts
+        self.storage = None
+        self.storageCtx = None
+        self.runId = None
+        self.setParaVal("maxInitAttempts", maxInitAttempts)
+        if logProbFunc is not None:
+            self.setParaVal("logProbFunc", getattr(logProbFunc, "__name__", repr(logProbFunc)))
+
     def run(self):
+        """
+        Run the inference workflow.
+        """
         pass
-    
+
     def setup(self, problem: ProblemABC, seed: int = None):
-        
-        # check problem type
-        if problem.nOutput > 1:
-            raise ValueError("This MH can only handle single-objective problems")
-        
-        self.reset()
-        
+        """
+        Set the problem, reset runtime state, and initialize optional storage.
+
+        Args:
+            problem: Problem instance defining the inference space.
+            seed: Optional random seed.
+        """
         self.setProblem(problem)
-        
-        # set seed
+        self.reset()
+        self.validateProblem()
+        Verbose.setupContext(self, problem)
+
+        if self.saveFlag:
+            rootDir = getattr(problem, "workDir", os.getcwd())
+            self.storage = SqliteStorage(rootDir)
+
+        # Initialize random seed
         if seed is None:
-            seed = np.random.randint(1, 1000000)
-        self.setParaVal('seed', seed)
+            seed = np.random.randint(0, 1000000)
         np.random.seed(seed)
-    
+
+        self.setParaVal("seed", seed)
+        self.setParaVal("saveFreq", self.saveFreq)
+
+        if self.saveFlag:
+            self.storageCtx = self.storage.createRun(self)
+            self.runId = self.storageCtx["runId"]
+
+        Verbose.printSettings(self)
+
+    def validateProblem(self):
+        """
+        Validate problem-level assumptions shared by inference algorithms.
+        """
+        if self.problem.nOutput != 1:
+            raise ValueError("Inference currently supports scalar objectives only.")
+
+    def reset(self):
+        """
+        Reset counters and runtime state before one run.
+        """
+        self.FEs = 0
+        self.iters = 0
+        self.iter = 0
+        self.startTime = time.perf_counter()
+        self.state.reset()
+
     def initialSampling(self, problem: ProblemABC, nChains: int, seed: int = None):
-        
+        """
+        Generate initial samples for all chains.
+
+        For constrained problems, only feasible samples are kept.
+        """
         sampler = LHS()
-        sample_seed = np.random.randint(1, 1000000)
-        X0 = sampler.sample(self.problem, nChains, sample_seed)
-        Objs0, Cons0 = self.evaluate(X0)
-        
-        return X0, Objs0, Cons0
-    
+        if problem.nCons == 0:
+            sampleSeed = np.random.randint(0, 1000000) if seed is None else seed
+            X0 = sampler.sample(self.problem, nChains, sampleSeed)
+            objs0, cons0 = self.evaluate(X0)
+            return X0, objs0, cons0
+
+        xs = []
+        objs = []
+        cons = []
+        attempts = 0
+        maxAttempts = self.getParaVal("maxInitAttempts")
+        while len(xs) < nChains and attempts < maxAttempts:
+            sampleSeed = np.random.randint(0, 1000000)
+            XBatch = sampler.sample(self.problem, nChains, sampleSeed)
+            objsBatch, consBatch = self.evaluate(XBatch)
+            if consBatch is None:
+                raise ValueError("Constrained inference problem must return constraint values.")
+            feasible = (consBatch <= 0).all(axis=1)
+            for x, obj, con in zip(XBatch[feasible], objsBatch[feasible], consBatch[feasible]):
+                xs.append(x)
+                objs.append(obj)
+                cons.append(con)
+                if len(xs) == nChains:
+                    break
+            attempts += 1
+
+        if len(xs) < nChains:
+            raise ValueError(
+                f"Unable to initialize {nChains} feasible chains after {maxAttempts} LHS batches."
+            )
+
+        return np.asarray(xs), np.asarray(objs), np.asarray(cons)
+
+    def initChains(self, nChains: int, X: np.ndarray, objs: np.ndarray, cons: np.ndarray = None):
+        """
+        Initialize chain containers from current states.
+        """
+        nInput = self.problem.nInput
+        nOutput = self.problem.nOutput
+        nCons = self.problem.nCons
+        chains = [Chain(nInput, nOutput, nCons, self.maxIters) for _ in range(nChains)]
+        logProb = self.log_prob(objs, decs=X, cons=cons)
+
+        for i, chain in enumerate(chains):
+            chain.add(
+                X[i],
+                objs[i],
+                cons[i] if nCons > 0 else None,
+                logProb=logProb[i],
+                accepted=True,
+            )
+
+        return chains
+
+    def update(self, chains):
+        """
+        Update runtime state from chains and handle progress output.
+        """
+        self.state.runtime = time.perf_counter() - self.startTime
+        self.state.update(chains, self.problem, self.FEs, self.iters)
+        if self.verboseFlag or self.logFlag:
+            Verbose.printIteration(self)
+        if self.saveFlag and self.storageCtx is not None and self.iters % self.saveFreq == 0:
+            self.storage.saveSnapshot(self.storageCtx, self, self.buildResult(), isFinal=False)
+        return self.state
+
+    def checkTermination(self, chains=None):
+        """
+        Advance the sampling iteration counter.
+        """
+        if self.iters >= self.maxIters - 1:
+            return False
+        self.iters += 1
+        self.iter = self.iters
+        return True
+
+    def buildResult(self):
+        """
+        Build the final `InfResult`.
+        """
+        result = self.state.buildResult()
+        if not isinstance(result, InfResult):
+            raise TypeError("buildResult() must return InfResult.")
+        return result
+
+    def finalize(self):
+        """
+        Finalize the inference run and return the final result.
+        """
+        self.state.runtime = time.perf_counter() - self.startTime
+        result = self.buildResult()
+        Verbose.printConclusion(self, result)
+        if self.logFlag:
+            Verbose.saveLog(self)
+        if self.saveFlag and self.storageCtx is not None:
+            self.storage.saveSnapshot(self.storageCtx, self, result, isFinal=True)
+            self.storage.saveResultArtifact(self.storageCtx, result)
+            self.storage.close(self.storageCtx)
+            self.storageCtx = None
+        return result
+
+    def evaluate(self, decs: np.ndarray):
+        """
+        Evaluate the problem and return internally oriented objectives.
+
+        Args:
+            decs: Decision matrix.
+
+        Returns:
+            Oriented objectives and constraints.
+        """
+        decs = self.problem.apply_var_type(decs)
+        res = self.problem.evaluate(decs)
+        self.FEs += decs.shape[0]
+        return res.objs * self.problem.opt, res.cons
+
+    def accept(self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None):
+        """
+        Apply Metropolis acceptance with hard-constraint rejection.
+        """
+        if qRatio <= 0 or not np.isfinite(qRatio):
+            return False
+        logRatio = (
+            self.log_prob(objStar, decs=decStar, cons=consStar)
+            - self.log_prob(objCur, decs=decCur, cons=consCur)
+            + np.log(qRatio)
+        )
+        feasible = True
+        if self.problem.nCons > 0:
+            feasible = np.all(np.asarray(consStar) <= 0)
+        return bool(np.log(np.random.rand()) < float(np.ravel(logRatio)[0]) and feasible)
+
+    def setProblem(self, problem: ProblemABC):
+        """
+        Set the problem instance for the inference run.
+
+        Args:
+            problem: Problem instance defining the inference space.
+        """
+        self.problem = problem
+
+    def setParaVal(self, key, value):
+        """
+        Set an inference parameter.
+
+        Args:
+            key: Parameter name.
+            value: Parameter value.
+        """
+        self.params.set(key, value)
+
+    def getParaVal(self, *args):
+        """
+        Retrieve one or more inference parameters.
+
+        Args:
+            *args: Parameter names.
+
+        Returns:
+            The requested parameter value or values.
+        """
+        return self.params.get(*args)
+
+    def log_prob(self, y, decs=None, cons=None):
+        """
+        Convert objective values into log probability.
+
+        The default convention is `log_prob = -oriented_obj`. Users can provide
+        `logProbFunc` to override this behavior.
+        """
+        if self.logProbFunc is not None:
+            return np.asarray(self.logProbFunc(y, decs=decs, cons=cons))
+        arr = np.asarray(y)
+        if arr.ndim == 1:
+            return -arr
+        return -arr[..., 0]
+
     def _check_bound_(self, X, ub, lb):
-        
         span = ub - lb
         y = (X - lb) % (2 * span)
         y = np.where(y > span, 2 * span - y, y)
-        X_reflect = lb + y
-        
-        return X_reflect
-    
+        return lb + y
+
     def _check_gamma_(self, gamma):
-        
-        nChains = self.getParaVal('nChains')
+        nChains = self.getParaVal("nChains")
         nInput = self.problem.nInput
-        
-        if isinstance(gamma, float):
-            
-            gamma = np.full((nChains, nInput), gamma)
-            
-        elif isinstance(gamma, np.ndarray):
-            
+
+        if isinstance(gamma, (float, int)):
+            gamma = np.full((nChains, nInput), float(gamma))
+        elif isinstance(gamma, list):
+            gamma = np.asarray(gamma)
+
+        if isinstance(gamma, np.ndarray):
             gamma = np.atleast_2d(gamma)
-            
             n, _ = gamma.shape
-            
             if n == 1:
                 gamma = np.tile(gamma, (nChains, 1))
-            elif n == nChains:
-                gamma = gamma
-            else:
+            elif n != nChains:
                 raise ValueError("The shape of gamma must be (nChains, nInput) or (1, nInput)")
         else:
-            raise ValueError("gamma must be a float or a numpy array")
-        
-        return gamma.ravel()
-    
-    def setProblem(self, problem: ProblemABC):
-        
-        self.problem = problem
-    
-    def initChains(self, nChains: int, X: np.ndarray, Objs: np.ndarray, Cons: np.ndarray = None):
-        
-        nI = self.problem.nInput; nO = self.problem.nOutput; nC = self.problem.nCons
-        
-        iters = self.maxIters
-        
-        chains = []
-        
-        for _ in range(nChains):
-            
-            chains.append(Chain(nI, nO, nC, iters))
-        
-        for i in range(nChains):
-            chains[i].add(X[i], Objs[i], Cons[i] if nC > 0 else None)
-        
-        return chains
-    
-    def checkTermination(self, chains):
-        
-        self.iter += 1
-        
-        if self.verboseFlag and self.iter % self.verboseFreq == 0:
-            
-            verbRes = self.generateVerb(chains)
-            
-            Verbose.verboseInference(verbRes, self.problem)
-           
-        if self.iter >= self.maxIters:
-            return False
-        
-        return True 
-    
-    def generateVerb(self, chains):
-        
-        nO = self.problem.nOutput
-        nC = self.problem.nCons
+            raise ValueError("gamma must be a float, list, or numpy array")
 
-        decs = np.vstack([c.decs[:self.iter] for c in chains])
-        objs = np.vstack([c.objs[:self.iter] for c in chains])
-        objs_min = objs * self.problem.opt
-        
-        if nC > 0:
-            cons = np.vstack([c.cons[:self.iter] for c in chains])
-            feasibleMask = (cons <= 0).all(axis=1)
-        else:
-            feasibleMask = np.ones(decs.shape[0], dtype=bool)
-        
-        feasibleDecs = decs[feasibleMask]
-        feasibleObjs = objs_min[feasibleMask]
-        
-        if nO == 1:
-        
-            # mean = np.mean(feasibleDecs, axis = 0)
-            # std = np.std(feasibleDecs, axis = 0)
-            
-            bestDec = feasibleDecs[np.argmin(feasibleObjs)]
-            bestObj = np.min(feasibleObjs) * self.problem.opt
-            
-            verbRes = {"iter" : self.iter, "bestDecs" : bestDec, "bestObjs" : bestObj}
-        
-        # else: 
-            
-        #     numPareto = self.paretoSet["BestDecs"].shape[0]
-            
-        #     verbRes = {"iter" : self.iter, "numPareto" : numPareto}
-            
-        return verbRes
-            
-    def reset(self):
-        
-        self.iter = 0
-    
-    def evaluate(self, decs: np.ndarray):
-        
-        res = self.problem.evaluate(decs)
-        
-        return res.objs * self.problem.opt, res.cons
+        return gamma
 
-    def genNetCDF(self, chains, problem):
-        
-        res = {};
-        
-        nChains = len(chains); draw = chains[0].count
-        
-        nInput = problem.nInput; nOutput = problem.nOutput; nCons = problem.nCons
-        
-        decs = np.stack([c.decs for c in chains])
-        objs = np.stack([c.objs for c in chains])
-        objs_min = objs * problem.opt
-        
-        if nCons > 0:
-            cons = np.stack([c.cons for c in chains])
-            # cons: (chain, draw, consDim)
-            feasibleMask = (cons <= 0).all(axis=2)
-        else:
-            feasibleMask = np.ones((nChains, decs.shape[1]), dtype=bool)
-        
-        posterior_ds = xr.Dataset(
-            data_vars = {
-                "decs" : (("chain", "draw", "decsDim"), decs, {"long_name": "decision variables / parameters",  "description": "posterior samples after burn-in in each chain"}),
-                "objs" : (("chain", "draw", "objsDim"), objs, {"long_name": "objective values",  "description": "objective values for each sample"}),
-                **({"cons" : (("chain", "draw", "consDim"), cons, {"long_name": "constraint values",  "description": "constraint values for each sample"})} if nCons > 0 else {}),
-                "feasibleMask" : (("chain", "draw"), feasibleMask, {"long_name": "feasible mask",  "description": "feasible mask for each chain and each draw"}),
-                "proUB" : (("decsDim"), problem.ub.ravel(), {"long_name": "upper bound of decision variables / parameters",  "description": "upper bound of decision variables / parameters"}),
-                "proLB" : (("decsDim"), problem.lb.ravel(), {"long_name": "lower bound of decision variables / parameters",  "description": "lower bound of decision variables / parameters"}),
-            },
-            coords = {
-                "chain": np.arange(nChains),
-                "draw": np.arange(draw),
-                "decsDim": np.arange(nInput),
-                "objsDim": np.arange(nOutput),
-                **({"consDim": np.arange(nCons)} if nCons > 0 else {}),
-            },
-            attrs = {
-                "description": "Posterior samples",
-                "problem": f"{problem.name}_{problem.nInput}D_{problem.nOutput}O_{problem.nCons}C",
-                "method": self.name,
-                "created": datetime.now().isoformat(timespec = 'seconds'),
-                **self.setting.dicts,
-            }
-        )
-        
-        res["posterior"] = posterior_ds
-        
-        # statistics and optimization
-        
-        meanEvery = []
-        stdEvery = []
-        
-        bestDecs = []
-        bestObjs = []
-        
-        for i in range(nChains):
-            
-            decs_i = decs[i]
-            objs_i = objs_min[i]
-            feasible_i = feasibleMask[i]
-            
-            feasibleDecs_i = decs_i[feasible_i]
-            feasibleObjs_i = objs_i[feasible_i]
-            
-            meanEvery.append(np.mean(feasibleDecs_i, axis = 0))
-            stdEvery.append(np.std(feasibleDecs_i, axis = 0))
-            
-            if problem.nOutput == 1:
-                idx_min = np.argmin(feasibleObjs_i)
-                bestDecs.append(feasibleDecs_i[idx_min])
-                bestObjs.append(feasibleObjs_i[idx_min] * problem.opt)
-        
-        # global infos
-        
-        countFeasible = feasibleMask.sum(axis = 1)
-        weights = countFeasible[:, None] / countFeasible.sum()
-        meanAll = np.sum(meanEvery * weights, axis = 0)
-        stdAll = np.sum(stdEvery * weights, axis = 0)
-        
-        if problem.nOutput == 1:
-            
-            t = bestObjs * problem.opt
-            idx_min = np.argmin(t)
-            globalBestDec = bestDecs[idx_min]
-            globalBestObj = t[idx_min] * problem.opt
-            
-        # else:
-            
-        #     from ..optimization.util import NDSort
 
-        #     decs = decs.reshape(-1, decs.shape[2])
-        #     objs_min = objs_min.reshape(-1, objs_min.shape[2])
-        #     cons = cons.reshape(-1, cons.shape[2]) if nCons > 0 else None
-
-        #     if nCons > 0:
-        #         t = cons <= 0
-        #         feasible = t.all(axis = 1)
-        #     else:
-        #         feasible = np.ones((cons.shape[0]), dtype = bool)
-            
-        #     feasibleDecs = decs[feasible]
-        #     feasibleObjs = objs_min[feasible]
-            
-        #     frontNo, _ = NDSort(feasibleObjs)
-        #     paretoDecs = feasibleDecs[frontNo == 1]
-        #     paretoObjs = feasibleObjs[frontNo == 1] * problem.opt
-            
-        stats_ds = xr.Dataset(
-            data_vars = {
-                "meanEvery" : (("chain", "decsDim"), meanEvery, {"long_name": "mean of feasible decision variables for each chain",  "description": "mean of feasible decision variables for each chain"}),
-                "stdEvery" : (("chain", "decsDim"), stdEvery, {"long_name": "standard deviation of feasible decision variables for each chain",  "description": "standard deviation of feasible decision variables for each chain"}),
-                "meanAll" : (("decsDim"), meanAll, {"long_name": "mean of feasible decision variables for all chains",  "description": "mean of feasible decision variables for all chains"}),
-                "stdAll" : (("decsDim"), stdAll, {"long_name": "standard deviation of feasible decision variables for all chains",  "description": "standard deviation of feasible decision variables for all chains"}),
-            },
-            coords = {
-                "chain": np.arange(nChains),
-                "decsDim": np.arange(nInput),
-                "objsDim": np.arange(nOutput),
-                **({"consDim": np.arange(nCons)} if nCons > 0 else {}),
-            },
-            attrs = {
-                "description": "Statistics results",
-                "problem": f"{problem.name}_{problem.nInput}D_{problem.nOutput}O_{problem.nCons}C",
-                "method": self.name,
-                "created": datetime.now().isoformat(timespec='seconds'),
-                **self.setting.dicts,
-            }
-        )
-        
-        res["stats"] = stats_ds
-        
-        if problem.nOutput == 1:
-            
-            optimization_ds = xr.Dataset(
-                data_vars = {
-                    "localBestDecs" : (("chain", "decsDim"), bestDecs, {"long_name": "best decision variables / parameters for each chain",  "description": "best decision variables / parameters for each chain"}),
-                    "localBestObjs" : (("chain", "objsDim"), bestObjs, {"long_name": "best objective values for each chain",  "description": "best objective values for each chain"}),
-                    "globalBestDec" : (("decsDim"), globalBestDec, {"long_name": "global best decision variables / parameters",  "description": "global best decision variables / parameters"}),
-                    "globalBestObj" : (("objsDim"), globalBestObj, {"long_name": "global best objective values",  "description": "global best objective values"}),
-                },
-                
-                coords = {
-                    "chain": np.arange(nChains),
-                    "decsDim": np.arange(nInput),
-                    "objsDim": np.arange(nOutput),
-                },
-                attrs = {
-                    "description": "Optimization results",
-                    "problem": f"{problem.name}_{problem.nInput}D_{problem.nOutput}O_{problem.nCons}C",
-                    "method": self.name,
-                    **self.setting.dicts
-                }
-            )
-            
-        # else:
-        #     optimization_ds = xr.Dataset(
-        #         data_vars = {
-        #             "paretoDecs" : (("idx", "decsDim"), paretoDecs, {"long_name": "Pareto decision variables / parameters",  "description": "Pareto decision variables / parameters for each Pareto front"}),
-        #             "paretoObjs" : (("idx", "objsDim"), paretoObjs, {"long_name": "Pareto objective values",  "description": "Pareto objective values for each Pareto front"}),
-        #         },
-                
-        #         coords = {
-        #             "idx": np.arange(bestObjs.shape[0]),
-        #             "decsDim": np.arange(nInput),
-        #             "objsDim": np.arange(nOutput),
-        #         },
-        #         attrs = {
-        #             "description": "Optimization results",
-        #             "problem": f"{problem.name}_{problem.nInput}D_{problem.nOutput}O_{problem.nCons}C",
-        #             "problem_ub": problem.ub,
-        #             "problem_lb": problem.lb,
-        #             "method": self.name,
-        #             **self.setting.dicts
-        #         }
-        #     )
-        
-        res["optimization"] = optimization_ds
-            
-        return res
-
-    def setParaVal(self, key, value):
-        
-        self.setting.setPara(key, value)
-    
-    def getParaVal(self, *args):
-        
-        return self.setting.getVal(*args)
-    
-class Setting():
+class Params:
     """
-    Save the parameter setting of the inference
+    Helper container for inference parameters.
     """
-    
+
     def __init__(self):
-        self.keys = []
-        self.values = []
-        self.dicts = {}
-    
-    def setPara(self, key, value):
-        
-        self.dicts[key] = value
-        self.keys.append(key)
-        self.values.append(value)
-    
-    def getVal(self, *args):
-        
-        values = []
-        for arg in args:
-            values.append(self.dicts[arg])
-        
+        """
+        Initialize the parameter container.
+        """
+        self.data = {}
+
+    @property
+    def dicts(self):
+        return self.data
+
+    @property
+    def keys(self):
+        return list(self.data.keys())
+
+    @property
+    def values(self):
+        return list(self.data.values())
+
+    def items(self):
+        return self.data.items()
+
+    def asDict(self):
+        return dict(self.data)
+
+    def set(self, key, value):
+        """
+        Set a parameter value.
+        """
+        self.data[key] = value
+
+    def get(self, *args):
+        """
+        Get one or more parameter values.
+
+        Args:
+            *args: Parameter names.
+
+        Returns:
+            The requested parameter value or values.
+        """
+        values = [self.data[arg] for arg in args]
         if len(args) > 1:
             return tuple(values)
-        else:
-            return values[0]
+        return values[0]
+
+    def setPara(self, key, value):
+        self.set(key, value)
+
+    def getVal(self, *args):
+        return self.get(*args)

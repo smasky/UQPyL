@@ -2,8 +2,12 @@ import numpy as np
 import pytest
 
 from UQPyL.problem.sop.single_simple_problem import Sphere
-from UQPyL.surrogate.svr.support_vector_machine import SVR
 from UQPyL.util.scaler import StandardScaler
+
+SVR = pytest.importorskip(
+    "UQPyL.surrogate.svr.support_vector_machine",
+    reason="SVR extension module is not available in this environment.",
+).SVR
 
 
 def test_svr_invalid_params_raise():

@@ -1,16 +1,21 @@
-from .morris import Morris
-from .fast import FAST
-from .rbd_fast import RBDFAST
-from .sobol import Sobol
-from .delta import DeltaTest
-from .mars import MARS
-from .rsa import RSA
+from .methods.delta import DeltaTest
+from .methods.fast import FAST
+from .methods.morris import Morris
+from .methods.rbd_fast import RBDFAST
+from .methods.rsa import RSA
+from .methods.sobol import Sobol
 
-__all__=["Morris",
-         "FAST",
-         "RBDFAST",
-         "Sobol",
-         "DeltaTest",
-         "MARS",
-         "RSA"
-         ]
+try:
+    from .methods.mars import MARS
+except Exception:
+    MARS = None
+
+__all__ = [
+    "DeltaTest",
+    "FAST",
+    "MARS",
+    "Morris",
+    "RBDFAST",
+    "RSA",
+    "Sobol",
+]

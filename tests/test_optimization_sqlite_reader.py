@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from UQPyL.optimization.runtime import OptReader
+from UQPyL.optimization.runtime.storage import SqliteStorage
 from UQPyL.optimization.soea import GA
 from UQPyL.problem.sop.single_simple_problem import Sphere
 
@@ -73,3 +74,11 @@ def test_log_file_contains_full_summary_and_final():
     assert "[summary] GA" in text
     assert "best X" in text
     assert "Optimization finished" in text
+
+
+def test_optimization_storage_runid_includes_problem_slug():
+    storage = SqliteStorage("Result")
+    dbPath, runId = storage._dbPath("GA", "My Problem#1")
+
+    assert "ga_My_Problem_1_" in runId
+    assert dbPath.endswith(f"{runId}.sqlite3")

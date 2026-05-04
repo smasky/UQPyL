@@ -4,67 +4,67 @@ from scipy.spatial.distance import pdist
 
 from .base import Sampler
 
-def _lhs_classic(nt: int, nx: int, rng):
+def _lhs_classic(nSamples: int, nInput: int, rng):
     """
     Generate a classic Latin Hypercube Sampling (LHS) design.
     
-    :param nt: Number of samples.
-    :param nx: Number of dimensions.
+    :param nSamples: Number of samples.
+    :param nInput: Number of input variables.
     :param rng: Random state for reproducibility.
     :return: A 2D array of LHS samples.
     """
 
     # Generate the intervals
-    cut = np.linspace(0, 1, nt + 1)
+    cut = np.linspace(0, 1, nSamples + 1)
     
     # Fill points uniformly in each interval
-    u = rng.random((nt, nx))
-    a = cut[:nt]
-    b = cut[1:nt + 1]
+    u = rng.random((nSamples, nInput))
+    a = cut[:nSamples]
+    b = cut[1:nSamples + 1]
     rdpoints = np.zeros_like(u)
-    for j in range(nx):
+    for j in range(nInput):
         rdpoints[:, j] = u[:, j] * (b - a) + a
     
     # Make the random pairings
     H = np.zeros_like(rdpoints)
-    for j in range(nx):
-        order = rng.permutation(range(nt))
+    for j in range(nInput):
+        order = rng.permutation(range(nSamples))
         H[:, j] = rdpoints[order, j]
     
     return H
     
-def _lhs_centered(nt: int, nx: int, rng):
+def _lhs_centered(nSamples: int, nInput: int, rng):
     """
     Generate a centered Latin Hypercube Sampling (LHS) design.
     
-    :param nt: Number of samples.
-    :param nx: Number of dimensions.
+    :param nSamples: Number of samples.
+    :param nInput: Number of input variables.
     :param rng: Random state for reproducibility.
     :return: A 2D array of centered LHS samples.
     """
 
     # Generate the intervals
-    cut = np.linspace(0, 1, nt + 1)    
+    cut = np.linspace(0, 1, nSamples + 1)    
     
     # Fill points uniformly in each interval
-    u = rng.random((nt, nx))
-    a = cut[:nt]
-    b = cut[1:nt + 1]
+    u = rng.random((nSamples, nInput))
+    a = cut[:nSamples]
+    b = cut[1:nSamples + 1]
     _center = (a + b)/2
     
     # Make the random pairings
     H = np.zeros_like(u)
-    for j in range(nx):
+    for j in range(nInput):
         H[:, j] = rng.permutation(_center)
     
     return H
     
-def _lhs_maximin(nt: int, nx: int, iterations: int, rng):
+def _lhs_maximin(nSamples: int, nInput: int, iterations: int, rng):
     """
     Generate a maximin Latin Hypercube Sampling (LHS) design.
     
-    :param nt: Number of samples.
-    :param nx: Number of dimensions.
+    :param nSamples: Number of samples.
+    :param nInput: Number of input variables.
     :param iterations: Number of iterations to maximize the minimum distance.
     :param rng: Random state for reproducibility.
     :return: A 2D array of maximin LHS samples.
@@ -75,7 +75,7 @@ def _lhs_maximin(nt: int, nx: int, iterations: int, rng):
     # Maximize the minimum distance between points
     for i in range(iterations):
 
-        H_candidate = _lhs_classic(nt, nx, rng)
+        H_candidate = _lhs_classic(nSamples, nInput, rng)
 
         d = pdist(H_candidate,'euclidean')
         if maxdist<np.min(d):
@@ -84,12 +84,12 @@ def _lhs_maximin(nt: int, nx: int, iterations: int, rng):
     
     return H
 
-def _lhs_centered_maximin(nt: int, nx: int, iterations: int, rng):
+def _lhs_centered_maximin(nSamples: int, nInput: int, iterations: int, rng):
     """
     Generate a centered maximin Latin Hypercube Sampling (LHS) design.
     
-    :param nt: Number of samples.
-    :param nx: Number of dimensions.
+    :param nSamples: Number of samples.
+    :param nInput: Number of input variables.
     :param iterations: Number of iterations to maximize the minimum distance.
     :param rng: Random state for reproducibility.
     :return: A 2D array of centered maximin LHS samples.
@@ -100,7 +100,7 @@ def _lhs_centered_maximin(nt: int, nx: int, iterations: int, rng):
     # Maximize the minimum distance between points
     for i in range(iterations):
 
-        H_candidate = _lhs_centered(nt, nx, rng)
+        H_candidate = _lhs_centered(nSamples, nInput, rng)
         d = pdist(H_candidate,'euclidean')
         if maxdist<np.min(d):
             maxdist = np.min(d)
@@ -109,12 +109,12 @@ def _lhs_centered_maximin(nt: int, nx: int, iterations: int, rng):
     return H
 ################################################################################
 
-def _lhs_correlate(nt: int, nx: int, iterations: int, rng = None):
+def _lhs_correlate(nSamples: int, nInput: int, iterations: int, rng = None):
     """
     Generate a correlation-optimized Latin Hypercube Sampling (LHS) design.
     
-    :param nt: Number of samples.
-    :param nx: Number of dimensions.
+    :param nSamples: Number of samples.
+    :param nInput: Number of input variables.
     :param iterations: Number of iterations to minimize correlation.
     :param rng: Random state for reproducibility.
     :return: A 2D array of correlation-optimized LHS samples.
@@ -125,7 +125,7 @@ def _lhs_correlate(nt: int, nx: int, iterations: int, rng = None):
     # Minimize the components correlation coefficients
     for _ in range(iterations):
         # Generate a random LHS
-        H_candidate = _lhs_classic(nt, nx, rng)
+        H_candidate = _lhs_classic(nSamples, nInput, rng)
         R = np.corrcoef(H_candidate)
         if np.max(np.abs(R[R!=1]))<mincorr:
             mincorr = np.max(np.abs(R-np.eye(R.shape[0])))
@@ -140,29 +140,33 @@ LHS_METHOD = {'classic': _lhs_classic, 'center': _lhs_centered, 'maximin': _lhs_
 
 class LHS(Sampler):
     """
-    Latin hypercube sampler with several layout criteria.
-
-    The public ``sample()`` method is inherited from :class:`Sampler`.
+    Latin hypercube sampler.
     """
     def __init__(self, criterion: Criterion ='classic', iterations = 5):
         """
-        Initialize the LHS sampler with a specified criterion and number of iterations.
-        
-        :param criterion: The LHS criterion to use.
-        :param iterations: Number of iterations for optimization methods.
+        Initialize the LHS sampler.
+
+        :param criterion: LHS criterion.
+        :param iterations: Iterations for optimized criteria.
         """
 
         self.criterion = criterion
         self.iterations = iterations
         super().__init__()
+
+    def sample(self, problem, nSamples: int, seed=None):
+        return super().sample(problem, nSamples, seed=seed)
+
+    def sampleWithMeta(self, problem, nSamples: int, seed=None):
+        return super().sampleWithMeta(problem, nSamples, seed=seed)
         
-    def _generate(self, nt: int, nx: int = None):
+    def _generate(self, nSamples: int, nInput: int = None):
         """
-        Generate unit-space Latin hypercube samples.
-        
-        :param nt: Number of sampled points.
-        :param nx: Input dimensions of sampled points.
-        :return: A 2D array of shape ``(nt, nx)`` in the unit hypercube.
+        Generate unit-space LHS samples.
+
+        :param nSamples: Number of samples.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space LHS samples.
         """
         
         if self.criterion not in LHS_METHOD:
@@ -171,9 +175,17 @@ class LHS(Sampler):
         Sampling_method = LHS_METHOD[self.criterion]
         
         if self.criterion in ['maximin', 'center_maximin', 'correlation']:
-            xInit = Sampling_method(nt, nx, self.iterations, self.rng)
+            xInit = Sampling_method(nSamples, nInput, self.iterations, self.rng)
         else:
-            xInit = Sampling_method(nt, nx, self.rng)
+            xInit = Sampling_method(nSamples, nInput, self.rng)
         
         return xInit
+
+    def _build_meta(self, problem, nSamples: int, seed=None):
+        return {
+            "designType": "lhs",
+            "criterion": self.criterion,
+            "iterations": self.iterations,
+            "seed": seed,
+        }
     

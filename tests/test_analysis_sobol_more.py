@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 
+from UQPyL.doe import SaltelliDesign
 from UQPyL.analysis import Sobol
 from UQPyL.problem import ProblemABC
 from UQPyL.problem.problem import Problem
@@ -13,37 +14,47 @@ def _obj(x):
 
 
 def test_sobol_sample_skip_value_validation_branches():
-    problem = Problem(nInput=3, nOutput=1, ub=1.0, lb=0.0, objFunc=_obj)
-    sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
 
     with pytest.raises(ValueError):
-        sob.sample(problem, N=8, skipValue=-1)  # negative
+        SaltelliDesign(skipValue=-1).sampleWithMeta(problem, 8)  # negative
+    with pytest.warns(UserWarning):
+        SaltelliDesign(skipValue=3).sampleWithMeta(problem, 8)  # not power of 2 now warns
     with pytest.raises(ValueError):
-        sob.sample(problem, N=8, skipValue=3)  # not power of 2
-    with pytest.raises(ValueError):
-        sob.sample(problem, N=4, skipValue=8)  # N < skipValue
+        SaltelliDesign(skipValue=8).sampleWithMeta(problem, 4)  # N < skipValue
 
 
 def test_sobol_sample_skip_value_fast_forward_branch():
-    problem = Problem(nInput=3, nOutput=1, ub=1.0, lb=0.0, objFunc=_obj)
-    sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
 
-    X = sob.sample(problem, N=8, secondOrder=False, skipValue=4, scramble=False, seed=123)
+    X, _ = SaltelliDesign(secondOrder=False, skipValue=4, scramble=False).sampleWithMeta(problem, 8, seed=123)
     assert X.shape == ((problem.nInput + 2) * 8, problem.nInput)
 
 
 def test_sobol_analyze_divisibility_validation_branches():
-    problem = Problem(nInput=3, nOutput=1, ub=1.0, lb=0.0, objFunc=_obj)
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
     sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
 
     # secondOrder=True requires divisible by (2*nInput+2)=8
     X_bad = np.zeros((7, 3))
     with pytest.raises(ValueError):
-        sob.analyze(problem, X_bad, Y=np.zeros((7, 1)), secondOrder=True)
+        sob.analyze(problem, X_bad, Y=np.zeros((7, 1)), meta={"designType": "saltelli", "secondOrder": True})
 
     # secondOrder=False requires divisible by (nInput+2)=5
     X_bad2 = np.zeros((6, 3))
     with pytest.raises(ValueError):
-        sob.analyze(problem, X_bad2, Y=np.zeros((6, 1)), secondOrder=False)
+        sob.analyze(problem, X_bad2, Y=np.zeros((6, 1)), meta={"designType": "saltelli", "secondOrder": False})
+
+
+def test_sobol_constant_output_returns_finite_zero_indices():
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
+    sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    X, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=123)
+    Y = np.ones((X.shape[0], 1))
+
+    res = sob.analyze(problem, X, Y=Y, meta=meta)
+    for metric in res.metrics:
+        assert np.all(np.isfinite(metric.values))
+        assert np.allclose(metric.values, 0.0)
 
 

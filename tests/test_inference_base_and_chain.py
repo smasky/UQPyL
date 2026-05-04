@@ -4,6 +4,7 @@ import pytest
 from UQPyL.inference.base import InferenceABC
 from UQPyL.inference.chain import Chain
 from UQPyL.problem import ProblemABC
+from UQPyL.problem import Eval
 from UQPyL.problem.problem import Problem
 
 
@@ -11,7 +12,7 @@ from UQPyL.problem.problem import Problem
 def _eval(x):
     # simple objective + always-feasible constraint
     x = np.asarray(x)
-    return {"objs": float(np.sum(x**2)), "cons": np.array([-1.0])}
+    return Eval(objs=float(np.sum(x**2)), cons=np.array([-1.0]))
 
 
 class DummyInference(InferenceABC):
@@ -50,26 +51,26 @@ def test_inferenceabc_check_bound_reflection():
 
 def test_inferenceabc_run_placeholder_and_setup_seed_none_branch():
     # cover base.run (pass) and setup(seed=None) random seed branch
-    problem = Problem(nInput=2, nOutput=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = Problem(nInput=2, nObj=1, ub=1.0, lb=0.0, evaluate=_eval)
     inf = InferenceABC(maxIters=1, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     assert inf.run() is None
     inf.setup(problem, seed=None)
 
 
 def test_inferenceabc_check_gamma_branches():
-    problem = Problem(nInput=3, nOutput=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, evaluate=_eval)
     inf = DummyInference(maxIters=2, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     inf.setParaVal("nChains", 4)
     inf.setProblem(problem)
 
     g = inf._check_gamma_(0.1)
-    assert g.shape == (4 * 3,)
+    assert g.shape == (4, 3)
 
     g2 = inf._check_gamma_(np.array([0.1, 0.2, 0.3]))
-    assert g2.shape == (4 * 3,)
+    assert g2.shape == (4, 3)
 
     g3 = inf._check_gamma_(np.ones((4, 3)))
-    assert g3.shape == (4 * 3,)
+    assert g3.shape == (4, 3)
 
     with pytest.raises(ValueError):
         inf._check_gamma_(np.ones((2, 3)))  # wrong nChains
@@ -77,11 +78,9 @@ def test_inferenceabc_check_gamma_branches():
         inf._check_gamma_("bad")
 
 
-def test_inferenceabc_initchains_generateverb_and_gennetcdf_smoke():
+def test_inferenceabc_initchains_and_build_result_smoke():
     # include constraint path to cover fixed branches
-    problem = Problem(nInput=2, nOutput=1, ub=1.0, lb=0.0, evaluate=_eval)
-    # `Problem` wrapper doesn't expose nCons in constructor; set it explicitly for inference storage branches.
-    problem.nCons = 1
+    problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, evaluate=_eval)
     inf = DummyInference(maxIters=2, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     inf.setParaVal("nChains", 2)
     inf.setup(problem, seed=123)
@@ -93,13 +92,10 @@ def test_inferenceabc_initchains_generateverb_and_gennetcdf_smoke():
     for i, c in enumerate(chains):
         c.add(X0[i], objs0[i], cons0[i])
 
-    inf.iter = 1
-    verb = inf.generateVerb(chains)
-    assert "iter" in verb and "bestObjs" in verb and "bestDecs" in verb
-
-    res = inf.genNetCDF(chains, problem)
-    assert set(res.keys()) >= {"posterior", "stats", "optimization"}
-    assert "decs" in res["posterior"].data_vars
-    assert "cons" in res["posterior"].data_vars
+    inf.update(chains)
+    res = inf.buildResult()
+    assert res.decs.shape == (2, 2, 2)
+    assert res.cons.shape == (2, 2, 1)
+    assert res.bestDecs.shape == (1, 2)
 
 

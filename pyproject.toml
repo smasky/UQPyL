@@ -48,6 +48,7 @@ classifiers = [
 # NOTE: `examples/test_*.py` are runnable example scripts (top-level code),
 # and importing them during pytest collection can look like "pytest is stuck".
 testpaths = ["tests"]
+cache_dir = ".cache/pytest/cache"
 python_files = ["test_*.py"]
 norecursedirs = [
   "examples",
@@ -56,9 +57,10 @@ norecursedirs = [
   ".GUI",
   ".history",
   ".ipynb_checkpoints",
+  ".cache",
   ".pytest_cache",
 ]
-addopts = "-ra"
+addopts = "-ra --basetemp=.cache/pytest/tmp"
 filterwarnings = [
   # Massive noisy warning emitted indirectly during MARS training in tests.
   # It is safe to ignore in test output; fix requires deeper changes in the embedded MARS implementation.

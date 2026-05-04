@@ -1,29 +1,31 @@
 import abc
-from typing import Tuple, Optional
-import numpy as np
-import xarray as xr
-from datetime import datetime
+import time
+from typing import List, Optional, Tuple, Union
 
-from ..util import Scaler
+import numpy as np
+
 from ..problem import ProblemABC as Problem
+from ..util import Scaler
+from .runtime import AnaState, SqliteStorage, Verbose
+
+AnaIndex = Union[str, int, List[int]]
 
 class AnalysisABC(metaclass=abc.ABCMeta):
-    
     """
     Abstract base class for analysis methods.
-    This class provides some common interfaces for analysis methods.
+    Shared workflow and utilities for sensitivity analysis methods.
     """
 
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
                  verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
-        
         """
         Initialize the analysis base class with optional scalers and flags.
 
-        :param scalers: Tuple[Optional[Scaler], Optional[Scaler]] - Tuple containing scalers for input (X) and output (Y) data.
-        :param verboseFlag: bool - If True, enables verbose mode for logging.
-        :param logFlag: bool - If True, enables logging of results.
-        :param saveFlag: bool - If True, saves the results to a file.
+        Args:
+            scalers: Optional scalers for `X` and `Y`.
+            verboseFlag: Whether to print compact runtime summaries.
+            logFlag: Whether to write a log file.
+            saveFlag: Whether to persist results to sqlite.
         """
         
         # Initialize input scaler
@@ -49,93 +51,138 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         
         # Initialize settings and results
         self.setting = Setting()
-        self.result = Result(self)
+        self.result = AnaState(self)
+        self.state = self.result
+        self.storage = None
+        self.storageCtx = None
         
     def setParaValue(self, key, value):
-        
         """
-        Set a parameter for the sensitivity analysis.
+        Set an analysis parameter.
 
-        :param key: str - The name of the parameter.
-        :param value: Any - The value of the parameter.
+        Args:
+            key: Parameter name.
+            value: Parameter value.
         """
         
         self.setting.setParaValue(key, value)
     
     def getParaValue(self, *args):
-        
         """
-        Retrieve the value of one or more parameters.
+        Retrieve one or more analysis parameters.
 
-        :param args: str - The names of the parameters to retrieve.
-        :return: The value(s) of the specified parameter(s).
+        Args:
+            *args: Parameter names.
+
+        Returns:
+            The requested parameter value or values.
         """
         
         return self.setting.getParaValue(*args) 
         
     def setProblem(self, problem: Problem):
-        
         """
         Set the problem instance for the analysis.
 
-        :param problem: Problem - The problem instance defining the input and output space.
+        Args:
+            problem: Problem instance defining the input and output space.
         """
         
         self.problem = problem
-    
-    def check_Y(self, X, Y, target = 'objFunc', index = 'all'):
-        # Evaluate the problem if Y is not provided
+
+    def setup(self, problem):
+        self.setProblem(problem)
+        self.result.reset()
+        self.state = self.result
+        self.runId = None
+        Verbose.setupContext(self, problem)
+        if self.saveFlag:
+            rootDir = getattr(problem, "workDir", None) or Verbose.workDir
+            self.storage = SqliteStorage(rootDir)
+            self.storageCtx = self.storage.createRun(self)
+            self.runId = self.storageCtx["runId"]
+
+    def finalize(self):
+        result = self.state.buildResult()
+        if self.saveFlag and self.storageCtx is not None:
+            self.storage.saveResult(self.storageCtx, result)
+            self.storage.close(self.storageCtx)
+            self.storageCtx = None
+        Verbose.printConclusion(self, result)
+        if self.logFlag:
+            Verbose.saveLog(self)
+        return result
+
+    def analyze(self, problem, *args, **kwargs):
+        """
+        Run the analysis workflow and return the final `AnaResult`.
+
+        Expected public inputs follow the unified protocol:
+        `analyze(problem, X, Y=None, meta=None, target="objs", index="all")`.
+        Here `target` is the semantic label of `Y`, and when `Y` is not
+        provided it also selects which problem output block to evaluate.
+        """
+        meta = kwargs.get("meta")
+        if meta is not None:
+            self.checkMeta(meta)
+        self.setup(problem)
+        Verbose.printSettings(self)
+        start = time.perf_counter()
+        self._analyzeCore(problem, *args, **kwargs)
+        self.state.runtime = time.perf_counter() - start
+        return self.finalize()
+
+    def checkMeta(self, meta):
+        """
+        Validate sampling metadata produced by `sampleWithMeta()`.
+        """
+        return None
+
+    def check_Y(self, X, Y, target: str = 'objs', index: AnaIndex = 'all'):
+        """
+        Resolve and slice analysis outputs.
+
+        `target` labels the meaning of `Y`, typically `objs` or `cons`.
+        If `Y` is not provided, `target` also selects which problem output
+        block should be evaluated. If `index` is not `'all'`, only the
+        selected output columns are kept.
+        """
         if Y is None:
-            if target == 'objFunc':
-                Y = self.problem.objFunc(X)
-            elif target == 'conFunc':
-                Y = self.problem.conFunc(X)
-            else:
-                raise ValueError("Target must be 'objFunc' or 'conFunc'!")
+            Y = self.evaluate(X, target=target)
 
         if index != 'all':
-            if not isinstance(index, list):
-                raise ValueError("Index must be a list of integers!")
-            else:
-                try:
-                    Y = Y[:, index]
-                except:
-                    raise ValueError("Please check the index you set!")
+            indices = self._normalize_index(index)
+            try:
+                Y = Y[:, indices]
+            except Exception:
+                raise ValueError("Please check the index you set!")
         
         return Y
     
-    def recordResult(self, X, Y, res):
-        
-        self.result.res['history'] = (X, Y)
-        self.result.res['results'] = res
-        
-        self.result.res['verbose'] = {}
-        
-        for (name, val, row, col, _) in res:
-            
-            for i, t in enumerate(row):
-                self.record(t, name, col, val[i])
-        
-        
-    def record(self, target, indicator, labels, values):
+    def recordResult(self, X, Y, res, target: str = 'objs', meta=None):
+        self.result.record(X, Y, res, target=target, meta=meta)
+        for metric in self.result.metrics:
+            for i, target in enumerate(metric.rowLabels):
+                self.record(target, metric.name, metric.colLabels, metric.values[i])
 
+    def record(self, target, indicator, labels, values):
         """
         Record the analysis results.
-        
-        :param target: str - The target of the objective function or constraint function.
-        :param indicator: str - The indicator of the analysis.
-        :param labels: list - The labels for the input variables.
-        :param value: list - The sensitivity indices.
+
+        Args:
+            target: Output label such as `obj1` or `con1`.
+            indicator: Metric name.
+            labels: Input variable labels.
+            values: Metric values.
         """
                         
-        self.result.res['verbose'].setdefault(target, {})
-        self.result.res['verbose'][target].setdefault(indicator, {})
+        self.result.verbose.setdefault(target, {})
+        self.result.verbose[target].setdefault(indicator, {})
         
         for label, v in zip(labels, values):
-            
-            self.result.res['verbose'][target][indicator][label] = v
-        
-        self.result.res['verbose'][target][indicator]['array'] = np.array(values)
+            self.result.verbose[target][indicator][label] = v
+
+        self.result.verbose[target][indicator]['array'] = np.array(values)
         
 
     def __reverse_X_Y__(self, X, Y):
@@ -150,13 +197,15 @@ class AnalysisABC(metaclass=abc.ABCMeta):
     
     
     def __check_and_scale_xy__(self, X, Y):
-        
         """
         Check and scale the input and output data if scalers are provided.
 
-        :param X: np.ndarray - The input data.
-        :param Y: np.ndarray - The output data.
-        :return: Tuple[np.ndarray, np.ndarray] - The scaled input and output data.
+        Args:
+            X: Input matrix.
+            Y: Output matrix.
+
+        Returns:
+            The scaled `X` and `Y`.
         """
         
         if not isinstance(X, np.ndarray) and X is not None:
@@ -176,152 +225,90 @@ class AnalysisABC(metaclass=abc.ABCMeta):
                   
         return X, Y
     
-    def evaluate(self, X, target = 'objFunc'):
-        
+    def evaluate(self, X, target: str = 'objs'):
         """
         Evaluate the problem with the given input data.
 
-        :param X: np.ndarray - The input data.
-        :param target: str - The target to evaluate.
-        :return: np.ndarray - The output data.
+        Args:
+            X: Input matrix.
+            target: Semantic output label to evaluate, typically `objs` or `cons`.
+
+        Returns:
+            The requested output matrix.
         """
-        
-        if target == 'objFunc':
-            Y = self.problem.objFunc(X)
-        elif target == 'conFunc':
-            Y = self.problem.conFunc(X)
-        else:
-            raise ValueError("Target must be 'objFunc' or 'conFunc'!")
-        
+
+        if target not in ('objs', 'cons'):
+            raise ValueError("Target must be 'objs' or 'cons'!")
+
+        evalRes = self.problem.evaluate(X, target=target)
+        Y = evalRes.objs if target == 'objs' else evalRes.cons
+        if Y is None:
+            raise ValueError(f"Problem does not provide target '{target}'.")
         return Y
+
+    def _normalize_index(self, index: AnaIndex):
+        """
+        Normalize output column selection into a list of integers.
+        """
+        if isinstance(index, int):
+            return [index]
+        if isinstance(index, (list, tuple, np.ndarray)):
+            return list(index)
+        raise ValueError("Index must be 'all', an integer, or a list of integers!")
     
     @abc.abstractmethod
-    def analyze(self, X = None, Y = None):
-        
-        """
-        Abstract method for performing analysis.
-        Must be implemented by subclasses.
-        """
-        
+    def _analyzeCore(self, problem, *args, **kwargs):
         pass
-
-class Result():
-    
-    """
-    Class to store and manage the results of analysis.
-    """
-
-    def __init__(self, obj):
-        """
-        Initialize the Result class.
-
-        :param obj: The analysis object.
-        """
-        
-        self.res = { }
-        
-        self.obj = obj
-    
-    def generateNetCDF(self):
-        
-        X = self.res['history'][0]; Y = self.res['history'][1]
-        res = self.res['results']
-        
-        decsDim1 = X.shape[1]
-        n = X.shape[0]
-        nI = X.shape[1]
-        nO = Y.shape[1]
-        decsDim2 = int(X.shape[1] * (X.shape[1] - 1) / 2)
-        
-        ds = xr.Dataset(
-            
-            data_vars = {
-                "X" : (("idx", "nI"), X, {"description": "decision variables"}),
-                "Y" : (("idx", "nO"), Y, {"description": "objectives or constraints"}),
-            },
-            
-            coords = {
-                'decsDim1': ("decsDim1", np.arange(decsDim1), {"description": "First-order or total-order indices of decision variables"}),
-                'decsDim2': ("decsDim2", np.arange(decsDim2), {"description": "Second-order sensitivity indices of decision variables"}),
-                'nI': ("nI", np.arange(nI), {"description": "decision variables dimensions"}),
-                'nO': ("nO", np.arange(nO), {"description": "Number of outputs"}),
-                'idx' : ("idx", np.arange(n), {"description": "Number of samples"}),
-            },
-            attrs = {
-                "problem" : f"{self.obj.problem.name}_{self.obj.problem.nInput}D_{self.obj.problem.nOutput}O_{self.obj.problem.nCons}C",
-                "method" : self.obj.name,
-                "created": datetime.now().isoformat(timespec='seconds'),
-                **{
-                    k: (str(v) if isinstance(v, bool) else v)
-                    for k, v in self.obj.setting.dict.items()
-                }
-            }
-            
-        )
-        
-        for (name, val, row, col, col_dim) in res:
-            
-            ds[name] = xr.DataArray(
-                val,
-                dims=["nO", col_dim]
-            )
-
-            if "target" not in ds.coords:
-                ds = ds.assign_coords({"target": ("nO", row, {"description": "target labels"})})
-
-            if "firstIdx" not in ds.coords and col_dim == "decsDim1":
-                ds = ds.assign_coords({"firstIdx": ("decsDim1", col, {"description": "first order indices of decision variables"})})
-                ds = ds.assign_coords({"totalIdx": ("decsDim1", col, {"description": "total order indices of decision variables"})})
-            
-            if "secondIdx" not in ds.coords and col_dim == "decsDim2":
-                ds = ds.assign_coords({"secondIdx": ("decsDim2", col, {"description": "second order indices of decision variables"})})
-                        
-        return ds
 
 class Setting():
     """
-    Class to manage the parameter settings of the algorithm.
+    Helper container for analysis parameters.
     """
 
     def __init__(self):
         """
-        Initialize the Setting class.
+        Initialize the setting container.
         """
         self.dict = {}
     
     def keys(self):
         """
-        Get the keys of the parameter settings.
-
-        :return: list - The keys of the parameter settings.
+        Return all parameter names.
         """
         return self.dict.keys()
     
     def values(self):
         """
-        Get the values of the parameter settings.
-
-        :return: list - The values of the parameter settings.
+        Return all parameter values.
         """
         return self.dict.values()
+
+    def items(self):
+        return self.dict.items()
+
+    def asDict(self):
+        return dict(self.dict)
     
     def setParaValue(self, key, value):
-        
         """
         Set a parameter value.
 
-        :param key: str - The name of the parameter.
-        :param value: Any - The value of the parameter.
+        Args:
+            key: Parameter name.
+            value: Parameter value.
         """
         
         self.dict[key] = value
     
     def getParaValue(self, *args):
         """
-        Get the value of one or more parameters.
+        Get one or more parameter values.
 
-        :param args: str - The names of the parameters to retrieve.
-        :return: The value(s) of the specified parameter(s).
+        Args:
+            *args: Parameter names.
+
+        Returns:
+            The requested parameter value or values.
         """
         values = []
         for arg in args:

@@ -13,7 +13,7 @@ def _quad_obj(x):
 
 
 def _make_problem(n_input=2):
-    return Problem(nInput=n_input, nOutput=1, ub=1.0, lb=-1.0, objFunc=_quad_obj, optType="min")
+    return Problem(nInput=n_input, nObj=1, ub=1.0, lb=-1.0, objFunc=_quad_obj, optType="min")
 
 
 def test_mh_gibbs_invalid_propdist_raises():
@@ -25,19 +25,19 @@ def test_mh_gibbs_run_smoke():
     problem = _make_problem(2)
     alg = MH_Gibbs(nChains=2, warmUp=0, maxIters=3, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(problem, gamma=0.05, seed=123)
-    assert "posterior" in res and "stats" in res and "optimization" in res
-    assert "lg" in res["posterior"].data_vars
+    assert res.decs.shape == (2, 3, 2)
+    assert res.logProb.shape == (2, 3)
 
 
 def test_amh_multi_output_rejected_and_run_smoke():
-    p_bad = Problem(nInput=2, nOutput=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)))
+    p_bad = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)))
     with pytest.raises(ValueError):
         AMH(nChains=2, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False).run(p_bad, seed=1)
 
     problem = _make_problem(2)
     alg = AMH(nChains=2, warmUp=0, maxIterTimes=3, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(problem, gamma=0.05, seed=123)
-    assert "posterior" in res and "stats" in res and "optimization" in res
+    assert res.decs.shape == (2, 3, 2)
 
 
 def test_demc_run_smoke_gamma_none_and_float():
@@ -45,11 +45,11 @@ def test_demc_run_smoke_gamma_none_and_float():
     # DEMC proposal needs >=3 chains (choose j,k != i)
     alg = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(problem, gamma=None, seed=123)
-    assert "posterior" in res
+    assert res.decs.shape == (3, 3, 2)
 
     alg2 = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res2 = alg2.run(problem, gamma=0.05, seed=123)
-    assert "posterior" in res2
+    assert res2.decs.shape == (3, 3, 2)
 
 
 def test_dream_zs_adaption_and_snooker_edge_case():
@@ -94,11 +94,11 @@ def test_dream_zs_run_smoke_small_iters():
         saveFlag=False,
     )
     res = alg.run(problem, gamma=0.05, seed=123)
-    assert "posterior" in res and "stats" in res and "optimization" in res
+    assert res.decs.shape == (3, 2, 2)
 
 
 def test_amh_helpers_update_covs_and_check_alpha():
-    from UQPyL.inference.amh import AMH
+    from UQPyL.inference import AMH
     from UQPyL.inference.chain import Chain
 
     problem = _make_problem(3)
@@ -122,7 +122,7 @@ def test_amh_helpers_update_covs_and_check_alpha():
 
 
 def test_demc_helpers_check_alpha_and_f_prop():
-    from UQPyL.inference.demc import DEMC
+    from UQPyL.inference import DEMC
 
     problem = _make_problem(2)
     alg = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)

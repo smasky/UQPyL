@@ -20,3 +20,6 @@ prompts
 *.pyd
 __pycache__/
 *.py[co]
+.cache/
+.pytest_cache/
+.pytest_tmp/

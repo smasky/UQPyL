@@ -2,87 +2,94 @@ import numpy as np
 from typing import Optional
 
 from .base import Sampler
-from ..problem import ProblemABC as Problem
 
-class MorrisSequence(Sampler):
+class MorrisDesign(Sampler):
     """
-    The sample technique for Morris analysis.
-    
-    Methods:
-        sample: Generate a sample for the Morris method.
-    
-    Examples:
-        >>> mor_seq = Morris_Sequence(numLevels=4)
-        >>> mor_seq.sample(100, 4) or mor_seq(100, 4)
-    
-    Reference:
-        [1] Max D. Morris (1991) Factorial Sampling Plans for Preliminary Computational Experiments, Technometrics, 33:2, 161-174
+    Morris design for sensitivity analysis.
     """
     
     def __init__(self, numLevels: int = 4):
         """
-        Initialize the Morris Sequence sampler with a specified number of levels.
-        
-        :param numLevels: Number of levels for the Morris method.
+        Initialize the Morris design sampler.
+
+        :param numLevels: Number of Morris levels.
         """
         super().__init__()
         
         self.numLevels = numLevels
-        
-    def _generate(self, nt: int, nx: int):
+
+    def sampleWithMeta(self, problem, numTrajectory: int, seed=None):
         """
-        Generate a sample for the Morris method.
-        
-        :param nt: Number of trajectories.
-        :param nx: Input dimensions of sampled points.
-        :return: A 2D array of samples, normalized so factor values are uniformly spaced between zero and one.
+        Generate Morris samples with metadata.
+
+        :param problem: Problem instance.
+        :param numTrajectory: Number of trajectories.
+        :param seed: Random seed.
+        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
-        xInit = np.zeros((nt * (nx + 1), nx))
+        self._validate_num_levels()
+        return super().sampleWithMeta(problem, numTrajectory, seed=seed)
+
+    def _validate_num_levels(self):
+        if not isinstance(self.numLevels, int):
+            raise TypeError("numLevels must be an integer.")
+
+        if self.numLevels < 4:
+            raise ValueError(
+                f"numLevels must be greater than or equal to 4. Received numLevels={self.numLevels}."
+            )
+
+        if self.numLevels % 2 != 0:
+            raise ValueError(
+                f"numLevels must be an even integer. Received numLevels={self.numLevels}."
+            )
         
-        for i in range(nt):
-            # 
-            xInit[i * (nx + 1):(i + 1) * (nx + 1), :] = self._generate_trajectory(nx)
+    def _generate(self, nSamples: int, nInput: int):
+        """
+        Generate unit-space Morris samples.
+
+        :param nSamples: Number of trajectories.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space Morris samples.
+        """
+        xInit = np.zeros((nSamples * (nInput + 1), nInput))
+        
+        for i in range(nSamples):
+            xInit[i * (nInput + 1):(i + 1) * (nInput + 1), :] = self._generate_trajectory(nInput)
         
         return xInit
-    
-    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
+
+    def _expected_shape(self, nSamples: int, nInput: int):
         """
-        Generate a sample for the Morris method.
-        
-        :param problem: Problem instance to use bounds for sampling.
-        :param nt: Number of trajectories.
-        :param random_seed: Random seed for reproducibility.
-        
-        :return: A 2D array of samples.
+        Return the expected Morris sample shape.
+
+        :param nSamples: Number of trajectories.
+        :param nInput: Number of input variables.
+        :return tuple: Expected sample shape.
         """
+        return (nSamples * (nInput + 1), nInput)
         
-        self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-        
-        nx = problem.nInput
-        
-        return problem._transform_unit_X(self._generate(nt, nx))
-        
-    def _generate_trajectory(self, nx: int):
+    def _generate_trajectory(self, nInput: int):
         """
-        Generate a single trajectory for the Morris method.
-        
-        :param nx: Input dimensions of sampled points.
-        :return: A 2D array representing a single trajectory.
+        Generate a single Morris trajectory.
+
+        :param nInput: Number of input variables.
+        :return np.ndarray: One unit-space trajectory.
         """
         delta = self.numLevels / (2 * (self.numLevels - 1))
         
-        B = np.tril(np.ones([nx + 1, nx], dtype=int), -1)
+        B = np.tril(np.ones([nInput + 1, nInput], dtype=int), -1)
         
         # From paper[1] page 164
-        D_star = np.diag(self.rng.choice([-1, 1], nx))  # Step 1
-        J = np.ones((nx + 1, nx))
+        D_star = np.diag(self.rng.choice([-1, 1], nInput))  # Step 1
+        J = np.ones((nInput + 1, nInput))
         
         levels_grids = np.linspace(0, 1 - delta, int(self.numLevels / 2))
-        x_star = self.rng.choice(levels_grids, nx).reshape(1, -1)  # Step 2
+        x_star = self.rng.choice(levels_grids, nInput).reshape(1, -1)  # Step 2
         
-        P_star = np.zeros((nx, nx))
-        cols = self.rng.choice(nx, nx, replace=False)
-        P_star[np.arange(nx), cols] = 1  # Step 3
+        P_star = np.zeros((nInput, nInput))
+        cols = self.rng.choice(nInput, nInput, replace=False)
+        P_star[np.arange(nInput), cols] = 1  # Step 3
         
         element_a = J[0, :] * x_star
         element_b = P_star.T
@@ -92,6 +99,15 @@ class MorrisSequence(Sampler):
         B_star = element_a + (delta / 2.0) * (element_d + J)
     
         return B_star
+
+    def _build_meta(self, problem, nSamples: int, seed: Optional[int] = None):
+        return {
+            "designType": "morris",
+            "numTrajectory": nSamples,
+            "numLevels": self.numLevels,
+            "trajectorySize": problem.nInput + 1,
+            "seed": seed,
+        }
         
         
         

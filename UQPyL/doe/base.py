@@ -6,60 +6,100 @@ from ..problem import ProblemABC as Problem
 
 class Sampler(metaclass=abc.ABCMeta):
     """
-    Base class for general DOE samplers.
-
-    Subclasses generate samples in the unit hypercube, and the base class
-    handles random-state initialization, basic validation, and mapping to the
-    problem space.
+    Base class for DOE samplers.
     """
 
     def __init__(self):
         self.rng = None
 
-    def sample(self, problem: Problem, nt: int, seed: Optional[int] = None):
+    def sample(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
         """
-        Generate ``nt`` samples and map them from unit space to ``problem`` space.
+        Generate samples in the problem space.
 
-        :param problem: Problem-like object providing ``nInput`` and ``unit_to_space``.
-        :param nt: Number of sample points.
-        :param seed: Optional random seed for reproducible sampling.
-        :return: A 2D array of shape ``(nt, problem.nInput)`` in the problem space.
+        :param problem: Problem instance.
+        :param nSamples: Number of samples.
+        :param seed: Random seed.
+        :return np.ndarray: Samples in the problem space.
+        """
+        X, _ = self.sampleWithMeta(problem, nSamples, seed=seed)
+        return X
+
+    def sampleWithMeta(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
+        """
+        Generate samples with metadata.
+
+        :param problem: Problem instance.
+        :param nSamples: Number of samples.
+        :param seed: Random seed.
+        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
         self._validate_problem(problem)
-        self._validate_sample_count(nt)
+        self._validate_sample_count(nSamples)
 
         self.rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
-        nx = problem.nInput
-        X = self._generate(nt, nx)
-        X = self._validate_generated_samples(X, nt, nx)
+        nInput = problem.nInput
+        U = self._generate(nSamples, nInput)
+        expected_shape = self._expected_shape(nSamples, nInput)
+        U = self._validate_generated_samples(U, expected_shape)
+        X = problem.unit_to_space(U)
 
-        return problem.unit_to_space(X)
+        meta = self._build_meta(problem, nSamples, seed=seed)
+        return X, meta
 
     @abc.abstractmethod
-    def _generate(self, nt: int, nx: int):
+    def _generate(self, nSamples: int, nInput: int):
         """
-        Generate unit-hypercube samples with shape (nt, nx).
+        Generate unit-space samples.
+
+        :param nSamples: Number of samples.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space samples.
         """
+
+    def _build_meta(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
+        """
+        Build sample metadata.
+
+        :param problem: Problem instance.
+        :param nSamples: Number of samples.
+        :param seed: Random seed.
+        :return dict: Sampling metadata.
+        """
+        return {}
+
+    def _expected_shape(self, nSamples: int, nInput: int):
+        """
+        Return the expected unit-space shape.
+
+        :param nSamples: Number of samples.
+        :param nInput: Number of input variables.
+        :return tuple: Expected sample shape.
+        """
+        return (nSamples, nInput)
 
     def _validate_problem(self, problem: Problem):
         if not isinstance(problem, Problem):
             raise TypeError("problem must be an instance of ProblemABC.")
 
-    def _validate_sample_count(self, nt: int):
-        if not isinstance(nt, int):
-            raise TypeError("nt must be an integer.")
+    def _validate_sample_count(self, nSamples: int):
+        if not isinstance(nSamples, int):
+            raise TypeError("nSamples must be an integer.")
 
-        if nt <= 0:
-            raise ValueError("nt must be greater than 0.")
+        if nSamples <= 0:
+            raise ValueError("nSamples must be greater than 0.")
 
-    def _validate_generated_samples(self, X, nt: int, nx: int):
+    def _validate_generated_samples(self, X, expected_shape):
         """
-        Validate the generated unit-space samples before problem-space mapping.
+        Validate the generated unit-space samples.
+
+        :param X: Generated samples.
+        :param expected_shape: Expected array shape.
+        :return np.ndarray: Validated samples.
         """
         X = np.asarray(X)
 
-        if X.shape != (nt, nx):
-            raise ValueError(f"The generated sample shape must be ({nt}, {nx}).")
+        if X.shape != expected_shape:
+            raise ValueError(f"The generated sample shape must be {expected_shape}.")
 
         return X
 
