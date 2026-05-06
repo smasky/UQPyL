@@ -4,6 +4,7 @@ from typing import Union
 from .base_kernel import BaseKernel
 
 class Exp(BaseKernel):
+    name = "Exp"
     
     def __init__(self, heterogeneous: bool=True,
                  theta: Union[float, np.ndarray]=0.1, 

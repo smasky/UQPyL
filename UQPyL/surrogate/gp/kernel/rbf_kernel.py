@@ -8,6 +8,8 @@ class RBF(BaseKernel):
     """
         RBF kernel
     """
+    name = "RBF"
+
     def __init__(self, length_scale: Union[float, np.ndarray]=1.0,
                  length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
                  heterogeneous: bool=False):

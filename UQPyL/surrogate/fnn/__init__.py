@@ -1,1 +1,0 @@
-from .fully_connect_neural_network import FNN

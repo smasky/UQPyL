@@ -11,8 +11,8 @@ from scipy.linalg.cython_blas cimport ddot, dasum, daxpy, dnrm2, dcopy, dscal
 from scipy.linalg.cython_blas cimport sdot, sasum, saxpy, snrm2, scopy, sscal
 from scipy.linalg.cython_lapack cimport sposv, dposv
 from libc.math cimport fabs, log, exp, sqrt
-from numpy.math cimport INFINITY
 from cython cimport floating
+from libc.math cimport INFINITY
 
 
 cdef:

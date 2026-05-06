@@ -21,8 +21,10 @@ class Matern(BaseKernel):
        Attribute:
        
        theta: the set of unknown parameters 
- 
+
     """
+    name = "Matern"
+
     def __init__(self, length_scale: Union[float, np.ndarray] = 1.0,
                  length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
                  nu: Literal['0.5', '1.5', '2.5', 'np.inf'] = 1.5,

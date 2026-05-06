@@ -4,10 +4,19 @@ import abc
 
 from ...setting import Setting
 class BaseKernel(metaclass=abc.ABCMeta):
+    name = None
 
     def __init__(self):
         
         self.setting = Setting()
+        self.setting.defaultOwner = "kernel"
+
+    @property
+    def displayName(self):
+        return self.name or self.__class__.__name__
+
+    def getActiveParameters(self):
+        return self.setting.getParaList(owner="kernel", tunableOnly=False)
         
     def __check_array__(self, value):
             

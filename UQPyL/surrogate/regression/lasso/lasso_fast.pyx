@@ -6,11 +6,12 @@ cimport numpy as np
 cimport cython
 import warnings
 
+np.import_array()
+
 from scipy.linalg.cython_blas cimport ddot, dasum, daxpy, dnrm2, dcopy, dscal
 from scipy.linalg.cython_blas cimport sdot, sasum, saxpy, snrm2, scopy, sscal
 from scipy.linalg.cython_lapack cimport sposv, dposv
 
-from numpy.math cimport INFINITY
 from cython cimport floating
 from libc.math cimport fabs, sqrt, exp, INFINITY, log
 

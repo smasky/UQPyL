@@ -5,14 +5,11 @@ requires = [
     "wheel",
     "Cython",
     "pybind11",
-    "numpy<2",
+    "numpy>=1.26",
     
 ]
 
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-license-files = []
 
 [project]
 name = "UQPyL"
@@ -20,10 +17,12 @@ version = "2.1.5"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
+license = "MIT"
+license-files = ["LICENSE.md"]
 description = "A python package for parameter uncertainty quantification and optimization"
 readme = "README.md"
 dependencies = [
-  "numpy<2",
+  "numpy>=1.26",
   "scipy",
   "prettytable",
   "xarray",
@@ -39,7 +38,6 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 

@@ -1,52 +1,69 @@
-from setuptools import setup, Extension, find_packages
-from Cython.Build import cythonize
 from pathlib import Path
+import uuid
 
-import scipy
+from setuptools import Extension, find_packages, setup
+
 import numpy
 import pybind11
-# import Cython
-# print(Cython.__version__)
 
-numpy_inc = numpy.get_include()
-pybind11_inc = pybind11.get_include()
-# cython扩展模块
-cython_extensions = [
-    Extension("UQPyL.surrogate.mars.core._types", ["UQPyL/surrogate/mars/core/_types.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._util", ["UQPyL/surrogate/mars/core/_util.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._forward", ["UQPyL/surrogate/mars/core/_forward.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._record", ["UQPyL/surrogate/mars/core/_record.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._basis", ["UQPyL/surrogate/mars/core/_basis.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._pruning", ["UQPyL/surrogate/mars/core/_pruning.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._qr", ["UQPyL/surrogate/mars/core/_qr.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.mars.core._knot_search", ["UQPyL/surrogate/mars/core/_knot_search.pyx"], include_dirs=[numpy_inc]),
-    Extension("UQPyL.surrogate.regression.lasso.lasso", ["UQPyL/surrogate/regression/lasso/lasso_fast.pyx"], include_dirs=[numpy_inc])
-]
-#pybind11扩展模块
-pybind11_extensions = [
-    Extension("UQPyL.surrogate.svr.core.libsvm_interface", [str(Path("UQPyL/surrogate/svr/core/libsvm_interface.cpp")), str(Path("UQPyL/surrogate/svr/core/svm.cpp"))], include_dirs=[numpy_inc, pybind11_inc]),
+try:
+    from Cython.Build import cythonize
+except ImportError:
+    cythonize = None
+
+
+numpyInc = numpy.get_include()
+pybind11Inc = pybind11.get_include()
+cacheDir = Path(".cache")
+buildStamp = uuid.uuid4().hex
+eggInfoDir = cacheDir / "egg_info" / buildStamp
+cythonBuildDir = cacheDir / "cython_build" / buildStamp
+eggInfoDir.mkdir(parents=True, exist_ok=True)
+cythonBuildDir.mkdir(parents=True, exist_ok=True)
+
+cythonModules = [
+    ("UQPyL.surrogate.mars.core._types", "UQPyL/surrogate/mars/core/_types"),
+    ("UQPyL.surrogate.mars.core._util", "UQPyL/surrogate/mars/core/_util"),
+    ("UQPyL.surrogate.mars.core._forward", "UQPyL/surrogate/mars/core/_forward"),
+    ("UQPyL.surrogate.mars.core._record", "UQPyL/surrogate/mars/core/_record"),
+    ("UQPyL.surrogate.mars.core._basis", "UQPyL/surrogate/mars/core/_basis"),
+    ("UQPyL.surrogate.mars.core._pruning", "UQPyL/surrogate/mars/core/_pruning"),
+    ("UQPyL.surrogate.mars.core._qr", "UQPyL/surrogate/mars/core/_qr"),
+    ("UQPyL.surrogate.mars.core._knot_search", "UQPyL/surrogate/mars/core/_knot_search"),
+    ("UQPyL.surrogate.regression.lasso.lasso", "UQPyL/surrogate/regression/lasso/lasso_fast"),
 ]
 
-extensions=cythonize(cython_extensions, compiler_directives={'cdivision': True, 'boundscheck': False})+pybind11_extensions
+cythonExtensions = [
+    Extension(
+        moduleName,
+        [f"{sourceBase}.pyx"],
+        include_dirs=[numpyInc],
+    )
+    for moduleName, sourceBase in cythonModules
+]
+
+pybind11Extensions = [
+    Extension(
+        "UQPyL.surrogate.svr.core.libsvm_interface",
+        [
+            str(Path("UQPyL/surrogate/svr/core/libsvm_interface.cpp")),
+            str(Path("UQPyL/surrogate/svr/core/svm.cpp")),
+        ],
+        include_dirs=[numpyInc, pybind11Inc],
+    ),
+]
+
+if cythonize is None:
+    raise RuntimeError("Cython is required to build UQPyL from source.")
+else:
+    extensions = cythonize(
+        cythonExtensions,
+        build_dir=str(cythonBuildDir),
+        compiler_directives={"cdivision": True, "boundscheck": False},
+    ) + pybind11Extensions
 
 setup(
-    name="UQPyL",
-    author="wmtSky",
-    version="2.1.5",
-    author_email="wmtsmasky@gmail.com",
-    ext_modules=extensions,  
+    ext_modules=extensions,
     packages=find_packages(),
-    description="A Python package for parameter uncertainty quantification and optimization",
-    long_description=open("README.md", encoding="utf-8").read(),
-    long_description_content_type="text/markdown",
-    classifiers=[
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-    ],
+    options={"egg_info": {"egg_base": str(eggInfoDir)}},
 )

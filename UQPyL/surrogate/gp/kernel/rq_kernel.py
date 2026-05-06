@@ -14,6 +14,8 @@ class RationalQuadratic(BaseKernel):
     theta: the set of unknown parameters. np.vstack(length_scale, alpha)
 
     """
+    name = "RationalQuadratic"
+
     def __init__(self, length_scale: Union[float, np.ndarray]=1.0, 
                  length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
                  alpha: float=1.0, alpha_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True},

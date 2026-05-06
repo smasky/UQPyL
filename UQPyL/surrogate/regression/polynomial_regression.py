@@ -1,9 +1,9 @@
 import numpy as np
-from math import comb
 from typing import Literal, Tuple, Optional, Union
 
 from .linear_regression import LinearRegression
 from ...util.scaler import Scaler
+from ...util.poly import PolyFeature
 
 class PolynomialRegression(LinearRegression):
     
@@ -12,9 +12,12 @@ class PolynomialRegression(LinearRegression):
     """
     
     name = "PR"
+    defaultTuneParameters = ("degree",)
+    advancedTuneParameters = ("lossType", "C", "onlyInteraction")
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                degree: int = 2, onlyInteraction: bool = False, 
+                degree: int = 2, degree_attr: Union[dict, None] = {'ub': 3, 'lb': 1, 'type': 'int', 'log': False},
+                onlyInteraction: bool = False,
                 lossType: Literal['Origin', 'Ridge', 'Lasso'] = 'Origin',
                 fitIntercept: bool = True,
                 C: float=0.1, C_attr: Union[dict, None] = {'ub': 100, 'lb': 1e-5, 'type': 'float', 'log': True},
@@ -28,12 +31,31 @@ class PolynomialRegression(LinearRegression):
         self.degree = degree
         self.fitIntercept = fitIntercept
         self.onlyInteraction = onlyInteraction
+        self.polyFeatureBuilder = PolyFeature(
+            degree=degree,
+            includeBias=False,
+            onlyInteraction=onlyInteraction,
+        )
+
+        self.registerParameterApplier("degree", self.setDegree)
+        self.registerChoiceParameter("lossType", ["Origin", "Ridge", "Lasso"], owner="model")
+        self.registerChoiceParameter("onlyInteraction", [False, True], owner="model")
+        self.registerParameterApplier("lossType", self.setLossType)
+        self.registerParameterApplier("onlyInteraction", self.setOnlyInteraction)
+        self.setting.setPara("degree", degree, degree_attr)
+        self.setting.setPara("C", C, C_attr)
+        self.setting.setPara("maxIter", maxIter)
+        self.setting.setPara("maxEpoch", maxEpoch)
+        self.setting.setPara("tol", tolerance)
+        self.setting.setPara("p0", p0)
+        self.setLossType(lossType)
+        self.setOnlyInteraction(onlyInteraction)
         
 ###------------------------public functions-----------------------------###
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
+
         xTrain = self.polynomialFeatures(xTrain)
         
         if self.lossType == 'Origin':
@@ -44,76 +66,62 @@ class PolynomialRegression(LinearRegression):
             self.fitLasso(xTrain, yTrain)
         else:
             raise ValueError('Using wrong model type!')
+
+        return self
         
-    def predict(self, xPred: np.ndarray) -> np.ndarray:
+    def predict(self, xPred: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False) -> np.ndarray:
+        self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("coef", "intercept")
         
         xPred = self.__X_transform__(xPred)
         xPred = self.polynomialFeatures(xPred)
         
-        if self.fitIntercept:
-            yPred = xPred@self.coef+self.intercept
-        else:
-            yPred = xPred@self.coef
+        yPred = xPred @ self.fitState["coef"] + self.fitState["intercept"]
             
         yPred = yPred.reshape(-1,1)
         
         return self.__Y_inverse_transform__(yPred)
-    
-###------------------------private functions-----------------------------###
-    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain = self.polynomialFeatures(xTrain)
-        if self.lossType == 'Origin':
-            self.fitOrigin(xTrain, yTrain)
-        elif self.lossType == 'Ridge':
-            self.fitRidge(xTrain, yTrain)
-        elif self.lossType == 'Lasso':
-            self.fitLasso(xTrain, yTrain)
-        else:
-            raise ValueError('Using wrong model type!')
-        
+
+    def isParameterActive(self, name: str):
+        if name == "C":
+            return self.lossType in {"Ridge", "Lasso"}
+        if name in {"maxIter", "maxEpoch", "tol", "p0"}:
+            return self.lossType == "Lasso"
+        return super().isParameterActive(name)
+
+    def getDefaultTuneParameters(self, advanced: bool = False):
+        params = list(self.defaultTuneParameters)
+        if advanced:
+            params.extend(self.advancedTuneParameters)
+        return [name for name in params if self.isParameterActive(name) or name in {"lossType", "onlyInteraction"}]
+
     def polynomialFeatures(self, xTrain: np.ndarray):
-        
-        nSample, nFeature = xTrain.shape
-        n_output_features = 0
-        
-        if self.onlyInteraction:
-            for d in range(1, self.degree+1):
-                n_output_features+=comb(nFeature, d)
-        else: 
-            for d in range(1, self.degree+1):
-                n_output_features+=comb(d+(nFeature-1), nFeature-1)
-                
-        outTrainX=np.zeros((nSample, n_output_features))
-        current_col=0
-             
-        ######################degree1#####################
-        
-        outTrainX[:, current_col : current_col + nFeature] = xTrain
-        index = list(range(current_col, current_col + nFeature))
-        current_col += nFeature
-        index.append(current_col)
-        
-        ####################degree>2####################
-        
-        for _ in range(2, self.degree + 1):
-            new_index = []
-            end = index[-1]
-            for feature_idx in range(nFeature):
-                start = index[feature_idx]
-                new_index.append(current_col)
-                if self.onlyInteraction:
-                    start += index[feature_idx + 1] - index[feature_idx]
-                next_col = current_col + end - start
-                if next_col <= current_col:
-                    break
-                np.multiply(
-                    outTrainX[:, start:end],
-                    xTrain[:, feature_idx : feature_idx + 1],
-                    out=outTrainX[:, current_col:next_col]
-                )
-                current_col = next_col
-            new_index.append(current_col)
-            index = new_index
-            
-        return outTrainX
+        return self.polyFeatureBuilder.transform(xTrain)
+
+    def setDegree(self, degree: int):
+        self.degree = int(degree)
+        self.polyFeatureBuilder.degree = self.degree
+        if "degree" in self.setting.parVal:
+            self.setting.parVal["degree"][:] = self.degree
+        self.resetFitState()
+        return self
+
+    def setLossType(self, lossType: str):
+        if lossType not in {"Origin", "Ridge", "Lasso"}:
+            raise ValueError("lossType must be one of ['Origin', 'Ridge', 'Lasso'].")
+        self.lossType = lossType
+        if "lossType" in self.setting.parVal:
+            choiceInfo = self.setting.parSet["lossType"]
+            self.setting.parVal["lossType"][:] = self.setting._normalize_choice_array(lossType, choiceInfo)
+        self.resetFitState()
+        return self
+
+    def setOnlyInteraction(self, onlyInteraction: bool):
+        self.onlyInteraction = bool(onlyInteraction)
+        self.polyFeatureBuilder.onlyInteraction = self.onlyInteraction
+        if "onlyInteraction" in self.setting.parVal:
+            choiceInfo = self.setting.parSet["onlyInteraction"]
+            self.setting.parVal["onlyInteraction"][:] = self.setting._normalize_choice_array(self.onlyInteraction, choiceInfo)
+        self.resetFitState()
+        return self

@@ -4,6 +4,7 @@ from typing import Union, Optional
 from .base_kernel import BaseKernel
 
 class Guass(BaseKernel):
+    name = "Guass"
     
     def __init__(self, heterogeneous: bool=False, 
                  theta: Union[float, np.ndarray]=1, 

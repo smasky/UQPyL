@@ -17,6 +17,8 @@ class LinearRegression(SurrogateABC):
     '''
     
     name = "LR"
+    defaultTuneParameters = ()
+    advancedTuneParameters = ("lossType", "C")
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                     polyFeature: PolyFeature = None, 
@@ -29,69 +31,69 @@ class LinearRegression(SurrogateABC):
 
         super().__init__(scalers, polyFeature)
         
-        self.lossType = lossType
         self.fitIntercept = fitIntercept
-        
-        if lossType in ["Lasso", "Ridge"]:
-            self.setting.setPara("C", C, C_attr)
-            
-            if lossType == "Lasso":
-                self.setting.setPara("maxIter", maxIter)
-                self.setting.setPara("maxEpoch", maxEpoch)
-                self.setting.setPara("tol", tolerance)
-                self.setting.setPara("p0", p0)
+
+        self.registerChoiceParameter("lossType", ["Origin", "Ridge", "Lasso"], owner="model")
+        self.registerParameterApplier("lossType", self.setLossType)
+        self.setting.setPara("C", C, C_attr)
+        self.setting.setPara("maxIter", maxIter)
+        self.setting.setPara("maxEpoch", maxEpoch)
+        self.setting.setPara("tol", tolerance)
+        self.setting.setPara("p0", p0)
+        self.setLossType(lossType)
                 
 ###---------------------------------public function---------------------------------------###
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
 
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        
         if self.lossType == 'Origin':
-            
             self.fitOrigin(xTrain, yTrain)
-            
         elif self.lossType == 'Ridge':
-            
             self.fitRidge(xTrain, yTrain)
-            
         elif self.lossType == 'Lasso':
-            
             self.fitLasso(xTrain, yTrain)
-            
         else:
             raise ValueError('Using wrong model type!')
         
-    def predict(self, xPred: np.ndarray) -> np.ndarray:
+        return self
+
+    def isParameterActive(self, name: str):
+        if name == "C":
+            return self.lossType in {"Ridge", "Lasso"}
+        if name in {"maxIter", "maxEpoch", "tol", "p0"}:
+            return self.lossType == "Lasso"
+        return super().isParameterActive(name)
+
+    def getDefaultTuneParameters(self, advanced: bool = False):
+        params = list(self.defaultTuneParameters)
+        if advanced:
+            params.extend(self.advancedTuneParameters)
+        return [name for name in params if self.isParameterActive(name) or name == "lossType"]
+
+    def setLossType(self, lossType: str):
+        if lossType not in {"Origin", "Ridge", "Lasso"}:
+            raise ValueError("lossType must be one of ['Origin', 'Ridge', 'Lasso'].")
+        self.lossType = lossType
+        if "lossType" in self.setting.parVal:
+            choiceInfo = self.setting.parSet["lossType"]
+            self.setting.parVal["lossType"][:] = self.setting._normalize_choice_array(lossType, choiceInfo)
+        self.resetFitState()
+        return self
+        
+    def predict(self, xPred: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False) -> np.ndarray:
+        self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("coef", "intercept")
         
         xPred = self.__X_transform__(xPred)
         
-        if(self.fitIntercept):
-            yPred = xPred@self.coef+self.intercept
-        else:
-            yPred = xPred@self.coef
+        yPred = xPred @ self.fitState["coef"] + self.fitState["intercept"]
         yPred = yPred.reshape(-1,1)
         
         return self.__Y_inverse_transform__(yPred)
     
 ###--------------------------private functions----------------------------###
-    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        if self.lossType == 'Origin':
-            
-            self.fitOrigin(xTrain, yTrain)
-            
-        elif self.lossType == 'Ridge':
-            
-            self.fitRidge(xTrain, yTrain)
-            
-        elif self.lossType == 'Lasso':
-            
-            self.fitLasso(xTrain, yTrain)
-            
-        else:
-            raise ValueError('Using wrong model type!')
-        
     def fitOrigin(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
         if self.fitIntercept:
@@ -100,10 +102,18 @@ class LinearRegression(SurrogateABC):
         self.coef, _ , self.rank, self.singular = lstsq(xTrain, yTrain)
         
         if self.fitIntercept:
-            self.intercept = self.coef[-1]
-            self.coef = self.coef[:-1]
+            intercept = self.coef[-1]
+            coef = self.coef[:-1]
         else:
-            self.coef = self.coef
+            coef = self.coef
+            intercept = 0.0
+
+        self.coef = coef
+        self.intercept = intercept
+        self.fitState["coef"] = coef
+        self.fitState["intercept"] = intercept
+        self.fitState["rank"] = self.rank
+        self.fitState["singular"] = self.singular
         
     def fitRidge(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
@@ -114,20 +124,27 @@ class LinearRegression(SurrogateABC):
         if self.fitIntercept:
             xOffset = np.mean(xTrain, axis=0)
             yOffset = np.mean(yTrain, axis=0)
-            xTrain -= xOffset
-            yTrain -= yOffset
+            xCentered = xTrain - xOffset
+            yCentered = yTrain - yOffset
+        else:
+            xCentered = xTrain
+            yCentered = yTrain
             
-        xTrain.flat[::nFeatures+1] += C
-        A = np.dot(xTrain.T, xTrain)
-        b = np.dot(xTrain.T, yTrain)
+        A = np.dot(xCentered.T, xCentered)
+        A.flat[::nFeatures + 1] += C
+        b = np.dot(xCentered.T, yCentered)
         
         self.coef = solve(A, b)
         
         if self.fitIntercept:
             self.intercept = yOffset-np.dot(xOffset.reshape(1,-1), self.coef)
-            return self.coef, self.intercept
         else:
-            return self.coef
+            self.intercept = 0.0
+
+        self.fitState["coef"] = self.coef
+        self.fitState["intercept"] = self.intercept
+        self.fitState["rank"] = None
+        self.fitState["singular"] = None
     
     def fitLasso(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
@@ -197,6 +214,10 @@ class LinearRegression(SurrogateABC):
         
         if self.fitIntercept:
             self.intercept=yOffset-np.dot(xOffset.reshape(1,-1), self.coef)
-            return self.coef, self.intercept
         else:
-            return self.coef
+            self.intercept = 0.0
+
+        self.fitState["coef"] = self.coef
+        self.fitState["intercept"] = self.intercept
+        self.fitState["rank"] = None
+        self.fitState["singular"] = None

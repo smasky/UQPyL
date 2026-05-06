@@ -4,6 +4,7 @@ from typing import Union, Optional
 from .base_kernel import BaseKernel
 
 class Cubic(BaseKernel):
+    name = "Cubic"
     
     def __init__(self, heterogeneous: bool=True, 
                  theta: Union[float, np.ndarray]=0.1, 

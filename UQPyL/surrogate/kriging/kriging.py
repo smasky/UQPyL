@@ -2,6 +2,7 @@ import numpy as np
 from scipy.linalg import cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional, Union
+from copy import deepcopy
 
 
 from .kernel import BaseKernel, Guass
@@ -58,9 +59,9 @@ class KRG(SurrogateABC):
     
     correlation: the correlation function, only 'corrgauss'
     
-    optimizer: the method used to find the optimal theta for current data, containing:
-                * 'GA'
-                *'Boxmin'
+    optimizer: internal hyper optimizer for theta, supporting:
+                * 'Boxmin'
+                * EA algorithm objects
     
     nRes: the times of using evolutionary algorithms to optimize theta 
     
@@ -76,6 +77,9 @@ class KRG(SurrogateABC):
             
     """
     name = "KRG"
+    supportsUncertainty = True
+    internalOptimizerFamilies = ("MP", "EA")
+    internalMPOptimizer = "Boxmin"
     
     def __init__(self, 
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
@@ -89,28 +93,35 @@ class KRG(SurrogateABC):
 
         self.kernel = None
         
-        #set optimizer
+        # set internal hyper optimizer:
+        # - MP family: currently implemented by Boxmin
+        # - EA family: evolutionary algorithms with alg_type == "EA"
         if optimizer == "Boxmin":
             self.optimizer = Boxmin()
         
         elif isinstance(optimizer, AlgorithmABC):
             alg_type = getattr(optimizer, "alg_type", getattr(optimizer, "type", None))
-            if alg_type == "EA":
-                self.optimizer = optimizer
-            else:
-                print('The optimizer you input does not support! Here the GA would be used!')
-                self.optimizer = GA(maxFEs=10000, nPop=50)
-            
-            self.optimizer.verboseFlag = False
-            self.optimizer.saveFlag = False
-            self.optimizer.logFlag = False
+            optimizer.verboseFlag = False
+            optimizer.saveFlag = False
+            optimizer.logFlag = False
+
+            if alg_type not in self.internalOptimizerFamilies:
+                raise ValueError(
+                    "KRG internal optimizer only supports MP (currently Boxmin) or EA."
+                )
+
+            self.optimizer = optimizer
         
         else:
-            print('The optimizer you input does not support! Here the Boxmin would be used!')
-            self.optimizer = Boxmin()        
+            raise ValueError(
+                "KRG optimizer must be 'Boxmin' or an AlgorithmABC instance in MP/EA."
+            )
             
         #set the number of restart optimization
         self.nRes = nRestartTimes
+
+        self.registerParameterApplier("kernel", self.setKernel)
+        self._kernelChoiceRegistered = False
         
         if not isinstance(kernel, BaseKernel):
             raise ValueError("The kernel must be the instance of surrogates.kriging.kernel!")
@@ -125,9 +136,19 @@ class KRG(SurrogateABC):
             
         elif(regression == 'poly2'):
             self.regrFunc = regrpoly2
+
+    def _prepare_training_components(self, xTrain: np.ndarray):
+        self.kernel.initialize(xTrain.shape[1])
+
+    def _invalidate_fit_after_structure_change(self):
+        self.resetFitState()
+        return self
         
 ###-------------------------------public function-----------------------------###
-    def predict(self, xPred: np.ndarray, only_value=True) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
+    def predict(self, xPred: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
+        returnStd, returnVar = self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("beta", "gamma", "C", "Ft", "G", "sigma2")
         
         xPred = self.__X_transform__(xPred)
         
@@ -146,49 +167,84 @@ class KRG(SurrogateABC):
         F = self.regrFunc(xPred)
         
         r = np.reshape( self.kernel(dx), (nSample, nPred) , order='F' )
-        sy = F @ self.fitPar['beta'] + (self.fitPar['gamma'] @ r).T
+        sy = F @ self.fitState['beta'] + (self.fitState['gamma'] @ r).T
         
         predictY = self.__Y_inverse_transform__(sy)
 
-        rt = lstsq(self.fitPar['C'], r)[0]
-        u = lstsq(self.fitPar['G'],
-                             self.fitPar['Ft'].T @ rt - F.T)[0]
+        rt = lstsq(self.fitState['C'], r)[0]
+        u = lstsq(self.fitState['G'],
+                             self.fitState['Ft'].T @ rt - F.T)[0]
         
-        mse = self.fitPar['sigma2'] * (1 + np.sum(u**2, axis=0) - np.sum(rt ** 2, axis=0)).T
-        
-        if only_value:
-            return predictY
-        else:
-            return predictY, mse.reshape(-1, 1)
+        var = self.fitState['sigma2'] * (1 + np.sum(u**2, axis=0) - np.sum(rt ** 2, axis=0)).T
+
+        return self._format_uncertainty_output(
+            predictY,
+            var.reshape(-1, 1),
+            returnStd=returnStd,
+            returnVar=returnVar,
+        )
     
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        
-        self.kernel.initialize(xTrain.shape[1])
-        
-        self._fit_likelihood(xTrain, yTrain)
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
+        F, D = self._initialize(xTrain)
+        self._objFunc(yTrain, F, D, record=True)
+        return self
+
+    def fitHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self._optimizeHyper(xTrain, yTrain)
+        return self
         
 ###-------------------private functions----------------------###
     def setKernel(self, kernel):
-        
+        oldKernelNames = []
         if self.kernel is not None:
-            self.setting.removeSetting(self.kernel.setting) 
+            oldKernelNames = [
+                name for name in self.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
+                if name != "kernel"
+            ]
+
+        kernelChoiceValue = self.setting.parVal.get("kernel", None)
+        kernelChoiceAttr = self.setting.parSet.get("kernel", None)
+        kernelChoiceOwner = self.setting.parOwner.get("kernel", None)
+
+        if oldKernelNames:
+            self.setting.removeParas(oldKernelNames)
+
+        if not hasattr(kernel, "_templateSetting"):
+            kernel._templateSetting = deepcopy(kernel.setting)
+        kernel.setting = deepcopy(kernel._templateSetting)
         
         self.kernel = kernel
         self.setting.mergeSetting(self.kernel.setting)
         self.kernel.setting = self.setting
+
+        if kernelChoiceValue is not None and kernelChoiceAttr is not None:
+            self.setting.parVal["kernel"] = self.setting._normalize_choice_array(kernel, kernelChoiceAttr)
+            self.setting.parSet["kernel"] = kernelChoiceAttr
+            self.setting.parType["kernel"] = 2
+            self.setting.parOwner["kernel"] = kernelChoiceOwner
+            self.setting.parLB["kernel"] = np.asarray([0.0])
+            self.setting.parUB["kernel"] = np.asarray([float(len(kernelChoiceAttr[0]))])
+            self.setting.parLog["kernel"] = False
+
+        if self.xTrain is not None:
+            self.kernel.initialize(self.xTrain.shape[1])
+        self._invalidate_fit_after_structure_change()
+
+    def setKernelChoices(self, kernels):
+        self.registerChoiceParameter("kernel", kernels, owner="kernel")
+        self._kernelChoiceRegistered = True
+        return self
     
-    def _fitPure(self, xTrain, yTrain):
-        
-        self.xTrain = xTrain; self.yTrain = yTrain
-        
-        F, D= self._initialize(xTrain)
-        
-        self._objFunc(yTrain, F, D, record=True)
-        
-    def _fit_likelihood(self, xTrain, yTrain):
-                
+    def _optimizeHyper(self, xTrain, yTrain):
+        """
+            Internal hyper-parameter optimization.
+
+            Current supported optimizer families:
+                - MP: currently implemented by Boxmin
+                - EA: evolutionary algorithms with alg_type == "EA"
+        """
         F, D = self._initialize(xTrain)  #fitPar
         
         nameList = self.getParaList()
@@ -218,30 +274,35 @@ class KRG(SurrogateABC):
                                
         elif alg_type == "EA":
             ###Using Evolutionary Algorithm
-            def objFunc(thetas):
-                objs = np.zeros((thetas.shape[0], 1))
-                thetas = np.exp(thetas)
-                for i, theta in enumerate(thetas):
-                    self.setting.setVals(paraInfos, theta)
+            def objFunc(varValues):
+                objs = np.zeros((varValues.shape[0], 1))
+                for i, value in enumerate(varValues):
+                    self.setting.setVals(paraInfos, value)
                     objs[i, 0] = self._objFunc(yTrain, F, D, record=False)
                     
                 return objs
             
-            problem = Problem(nInput, 1, np.log(ub), np.log(lb), objFunc = objFunc)
+            problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
             res = self.optimizer.run(problem)
             
-            bestDec = np.exp(res.bestDec); bestObj=res.bestObj
+            bestDec = np.asarray(res.bestDecs).ravel()
+            bestObj = float(np.asarray(res.bestObjs).reshape(-1)[0])
             
             for _ in range(self.nRes):
                 
-                res = self.optimizer(problem)
-                obj = res.bestObj
+                res = self.optimizer.run(problem)
+                obj = float(np.asarray(res.bestObjs).reshape(-1)[0])
                 if obj < bestObj:
-                    bestDec = res.bestDec
+                    bestDec = np.asarray(res.bestDecs).ravel()
                     bestObj = obj
+        else:
+            raise ValueError(
+                "KRG internal optimizer only supports MP (currently Boxmin) or EA."
+            )
         
-        self.xTrain = xTrain; self.yTrain = yTrain
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
         self.setting.setVals(paraInfos, bestDec)
         self._objFunc(yTrain, F, D, record=True)
         
@@ -254,8 +315,6 @@ class KRG(SurrogateABC):
             D[:, k] = pdist(xTrain[:, [k]], metric='euclidean')
         
         F = self.regrFunc(xTrain)
-        
-        self.fitPar = {}
         
         return F, D
     
@@ -289,13 +348,14 @@ class KRG(SurrogateABC):
         
         if record:
             if isinstance(self.yScaler,  StandardScaler):
-                self.fitPar['sigma2'] = np.square(self.yScaler.sita)@sigma2
+                self.fitState['sigma2'] = np.square(self.yScaler.sita)@sigma2
             else:
-                self.fitPar['sigma2'] = sigma2
-            self.fitPar['beta'] = beta
-            self.fitPar['gamma'] = (lstsq(C.T, rho)[0]).T
-            self.fitPar['C'] = C
-            self.fitPar['Ft'] = Ft
-            self.fitPar['G'] = G.T
-        
+                self.fitState['sigma2'] = sigma2
+            self.fitState['beta'] = beta
+            self.fitState['gamma'] = (lstsq(C.T, rho)[0]).T
+            self.fitState['C'] = C
+            self.fitState['Ft'] = Ft
+            self.fitState['G'] = G.T
+            self.fitState['objective'] = obj
+
         return obj

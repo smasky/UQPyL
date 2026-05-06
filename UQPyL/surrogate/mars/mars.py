@@ -180,6 +180,8 @@ class MARS(SurrogateABC):
         'feature_importance_type',
         'verbose'
     ])
+    defaultTuneParameters = ("max_terms", "max_degree", "penalty")
+    advancedTuneParameters = ("endspan", "minspan", "thresh")
 
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                  polyFeature: PolyFeature = None, 
@@ -342,10 +344,10 @@ class MARS(SurrogateABC):
         self.setting.setPara("allow_missing", allow_missing)
         
 #-------------------------Public Function---------------------------#
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain, yTrain=self.__check_and_scale__(xTrain, yTrain)
-        
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
+
         #indicate label for each dimension
         self.xlabels_ = self._scrape_labels(xTrain)
         xTrain, yTrain, sample_weight, output_weight, missing = self._scrub(
@@ -363,9 +365,21 @@ class MARS(SurrogateABC):
             self.basis_ = self.basis_.smooth(xTrain)
         self.linear_fit(xTrain, yTrain, sample_weight, output_weight, missing,
                         skip_scrub=True)
+        self.fitState["basis"] = self.basis_
+        self.fitState["coef"] = self.coef_
+        self.fitState["mse"] = self.mse_
+        self.fitState["gcv"] = self.gcv_
+        self.fitState["rsq"] = self.rsq_
+        self.fitState["grsq"] = self.grsq_
         return self
+
+    def fitHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        return self.fitModel(xTrain, yTrain)
     
-    def predict(self, xPredict: np.ndarray):
+    def predict(self, xPredict: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False):
+        self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("basis", "coef")
         
         xPredict = self.__X_transform__(xPredict)
         
@@ -374,6 +388,12 @@ class MARS(SurrogateABC):
         y = np.dot(B, self.coef_.T)
         
         return self.__Y_inverse_transform__(y)
+
+    def getDefaultTuneParameters(self, advanced: bool = False):
+        params = list(self.defaultTuneParameters)
+        if advanced:
+            params.extend(self.advancedTuneParameters)
+        return params
 
 #------------------------------Private Function-------------------------#
     def __eq__(self, other):
@@ -404,9 +424,9 @@ class MARS(SurrogateABC):
         result = {}
         for name in self.forward_pass_arg_names:
             if name in setting.parVal.keys():
-                result[name] = setting.parVal[name]
+                result[name] = self._normalize_cython_arg(setting.parVal[name])
             elif name in setting.parCon.keys():
-                result[name] = setting.parCon[name]
+                result[name] = self._normalize_cython_arg(setting.parCon[name])
         return result
 
     def _pull_pruning_args(self, setting):
@@ -416,10 +436,17 @@ class MARS(SurrogateABC):
         result = {}
         for name in self.pruning_pass_arg_names:
             if name in setting.parVal.keys():
-                result[name] = setting.parVal[name]
+                result[name] = self._normalize_cython_arg(setting.parVal[name])
             elif name in setting.parCon.keys():
-                result[name] = setting.parCon[name]
+                result[name] = self._normalize_cython_arg(setting.parCon[name])
         return result
+
+    def _normalize_cython_arg(self, value):
+        if isinstance(value, np.ndarray) and value.size == 1:
+            return value.item()
+        if isinstance(value, np.generic):
+            return value.item()
+        return value
 
     def _scrape_labels(self, X):
         '''
