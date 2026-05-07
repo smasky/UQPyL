@@ -6,6 +6,8 @@ from typing import Any
 
 import numpy as np
 
+from ...core.runtime import export_runtime_meta
+
 
 @dataclass
 class InfHistory:
@@ -54,23 +56,25 @@ class InfResult:
     extra: dict[str, Any] = field(default_factory=dict)
 
     def summary(self) -> dict[str, Any]:
-        return {
-            "method": self.method,
-            "runId": self.runId,
-            "problemName": self.problemName,
-            "nInput": self.nInput,
-            "nOutput": self.nOutput,
-            "nCon": self.nCon,
-            "nChains": int(self.decs.shape[0]),
-            "draws": int(self.decs.shape[1]),
-            "FEs": self.FEs,
-            "iters": self.iters,
-            "acceptanceRateMean": float(np.mean(self.acceptanceRate)) if self.acceptanceRate.size else 0.0,
-            "feasibleRate": float(np.mean(self.feasibleMask)) if self.feasibleMask.size else 0.0,
-            "bestFeasible": self.bestFeasible,
-            "runtime": self.runtime,
-            "createdAt": self.createdAt,
-        }
+        return export_runtime_meta(
+            run_id=self.runId,
+            method=self.method,
+            problem_name=self.problemName,
+            n_input=self.nInput,
+            n_output=self.nOutput,
+            n_con=self.nCon,
+            runtime=self.runtime,
+            created_at=self.createdAt,
+            extra={
+                "n_chains": int(self.decs.shape[0]),
+                "draws": int(self.decs.shape[1]),
+                "fes": self.FEs,
+                "iters": self.iters,
+                "acceptance_rate_mean": float(np.mean(self.acceptanceRate)) if self.acceptanceRate.size else 0.0,
+                "feasible_rate": float(np.mean(self.feasibleMask)) if self.feasibleMask.size else 0.0,
+                "best_feasible": self.bestFeasible,
+            },
+        )
 
     def toDict(self) -> dict[str, Any]:
         return {
@@ -140,8 +144,10 @@ class InfState:
 
     def buildResult(self):
         problem = self.inference.problem
+        session = getattr(self.inference, "session", None)
+        runId = None if session is None else getattr(session, "run_id", None)
         return InfResult(
-            runId=getattr(self.inference, "runId", None),
+            runId=runId if runId is not None else getattr(self.inference, "runId", None),
             method=self.inference.name,
             problemName=problem.name,
             nInput=problem.nInput,

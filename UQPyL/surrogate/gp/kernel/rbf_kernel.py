@@ -16,13 +16,13 @@ class RBF(BaseKernel):
         
         super().__init__()
         
-        self.setting.setPara("l", length_scale, length_attr)
+        self.setting.set("l", length_scale, length_attr)
         
         self.heterogeneous = heterogeneous
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale=self.setting.getVals("l")
+        length_scale=self.setting.get("l")
 
         if xTrain2 is None:
             dists=pdist(xTrain1/length_scale, metric="sqeuclidean")

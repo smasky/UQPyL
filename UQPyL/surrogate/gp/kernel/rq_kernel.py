@@ -22,14 +22,14 @@ class RationalQuadratic(BaseKernel):
                  heterogeneous: bool=False):
         
         super().__init__()
-        self.setting.setPara("l", length_scale, length_attr)
-        self.setting.setPara("alpha", alpha, alpha_attr)
+        self.setting.set("l", length_scale, length_attr)
+        self.setting.set("alpha", alpha, alpha_attr)
         self.heterogeneous=heterogeneous
        
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale=self.setting.getVals("l")
-        alpha=self.setting.getVals("alpha")
+        length_scale=self.setting.get("l")
+        alpha=self.setting.get("alpha")
         
         if xTrain2 is None:
             dists=squareform(pdist(xTrain1/length_scale, metric="sqeuclidean"))

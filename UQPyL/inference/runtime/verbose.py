@@ -8,6 +8,7 @@ from typing import Any
 
 import numpy as np
 
+from ...core.runtime import ensure_result_dir
 
 @dataclass
 class VerboseConfig:
@@ -166,6 +167,15 @@ class Verbose:
     workDir = os.getcwd()
 
     @staticmethod
+    def _resolveRunId(obj):
+        session = getattr(obj, "session", None)
+        if session is not None:
+            run_id = getattr(session, "run_id", None)
+            if run_id is not None:
+                return run_id
+        return getattr(obj, "runId", None)
+
+    @staticmethod
     def setupContext(obj, problem):
         problem.verboseFlag = obj.verboseFlag
         problem.logLines = [] if obj.logFlag else None
@@ -232,13 +242,12 @@ class Verbose:
             return
         problem = obj.problem
         workDir = problem.workDir if hasattr(problem, "workDir") else Verbose.workDir
-        folder = os.path.join(workDir, "Result")
-        os.makedirs(folder, exist_ok=True)
-        runId = getattr(obj, "runId", None)
-        if runId is None:
+        folder = ensure_result_dir(workDir)
+        run_id = Verbose._resolveRunId(obj)
+        if run_id is None:
             timestamp = time.strftime("%Y%m%d_%H%M")
-            runId = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
-        filepath = os.path.join(folder, f"{runId}.log")
+            run_id = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+        filepath = os.path.join(folder, f"{run_id}.log")
         with open(filepath, "w") as f:
             f.writelines(problem.logLines)
 

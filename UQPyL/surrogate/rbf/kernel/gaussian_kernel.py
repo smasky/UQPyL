@@ -10,10 +10,10 @@ class Gaussian(BaseKernel):
         
         super().__init__()
         
-        self.setting.setPara("epsilon", epsilon, epsilon_attr)
+        self.setting.set("epsilon", epsilon, epsilon_attr)
         
     def evaluate(self, dist):
         
-        epsilon=self.setting.getVals("epsilon")
+        epsilon=self.setting.get("epsilon")
         
         return np.exp(-1*epsilon*np.power(dist,2))

@@ -7,14 +7,16 @@ from copy import deepcopy
 
 from .kernel import BaseKernel, Guass
 from ..util.boxmin import Boxmin
+from ..util.lbfgsb import LBFGSB
 from ..base import SurrogateABC
 from ...optimization.base import AlgorithmABC
 from ...optimization.soea import GA
-from ...util.metric import r_square
-from ...util.split import RandSelect
-from ...util.scaler import Scaler, StandardScaler
-from ...util.poly import PolyFeature
+from ..metric import r_square
+from ..split import RandSelect
+from ..scaler import Scaler, StandardScaler
+from ..poly import PolyFeature
 from ...problem import Problem
+from ...core import spawn_seed
 
 ####---------------------regression functions--------------------###
 def regrpoly0(S):
@@ -43,38 +45,24 @@ def regrpoly2(S):
 
 class KRG(SurrogateABC):
     """
-    A Kriging implementation based on python env. includes the new training method(prediction error), 
-    from the DACE toolbox(MATLAB).
-    
-    parameters:
-    
-    theta0: initial theta
-    lb: the low bound of the theta
-    ub: the up bound of the theta
-    
-    regression: type of regression functions, containing:
-                *'poly0'
-                *'poly1'
-                *'poly2'
-    
-    correlation: the correlation function, only 'corrgauss'
-    
-    optimizer: internal hyper optimizer for theta, supporting:
-                * 'Boxmin'
-                * EA algorithm objects
-    
-    nRes: the times of using evolutionary algorithms to optimize theta 
-    
-    fitMode: the objective function used to evaluate the performance of the theta, containing:
-                *'likelihood' origin way
-                *'predictError' new way
-    
-    normalized: the sign to normalize input data(x, y) or not
-    
-    Scale_type: the normalized method, containing:
-            *'StandardScaler'
-            *'MaxminScaler'
-            
+    Kriging surrogate model.
+
+    This implementation follows the classic DACE-style workflow:
+    - optional input/output scaling
+    - configurable regression trend (`poly0`, `poly1`, `poly2`)
+    - configurable correlation kernel
+    - internal hyper-parameter optimization through MP or EA optimizers
+
+    Examples:
+        >>> model = KRG()
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
+    References:
+        [1] H. B. Nielsen, S. N. Lophaven, and J. Sondergaard, DACE - A MATLAB Kriging Toolbox,
+            Technical Report IMM-TR-2002-12, Technical University of Denmark, 2002.
+        [2] T. J. Santner, B. J. Williams, and W. I. Notz, The Design and Analysis of Computer Experiments,
+            Springer, 2003.
     """
     name = "KRG"
     supportsUncertainty = True
@@ -87,7 +75,7 @@ class KRG(SurrogateABC):
                         kernel: BaseKernel= Guass(),
                             regression: Literal['poly0','poly1','poly2']='poly0',
                                 optimizer: AlgorithmABC = "Boxmin",
-                                nRestartTimes: int=1):
+                                nRestartTimes: int=5):
         
         super().__init__(scalers, polyFeature)
 
@@ -98,6 +86,11 @@ class KRG(SurrogateABC):
         # - EA family: evolutionary algorithms with alg_type == "EA"
         if optimizer == "Boxmin":
             self.optimizer = Boxmin()
+        elif optimizer == "LBFGSB":
+            self.optimizer = LBFGSB()
+        
+        elif getattr(optimizer, "type", None) == "MP":
+            self.optimizer = optimizer
         
         elif isinstance(optimizer, AlgorithmABC):
             alg_type = getattr(optimizer, "alg_type", getattr(optimizer, "type", None))
@@ -114,7 +107,7 @@ class KRG(SurrogateABC):
         
         else:
             raise ValueError(
-                "KRG optimizer must be 'Boxmin' or an AlgorithmABC instance in MP/EA."
+                "KRG optimizer must be 'Boxmin', 'LBFGSB', an MP optimizer, or an AlgorithmABC instance in MP/EA."
             )
             
         #set the number of restart optimization
@@ -263,10 +256,12 @@ class KRG(SurrogateABC):
             ###Using Mathematical Programming Method
             problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
-            bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput))
+            seed = spawn_seed(self.rng)
+            bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput), seed=seed)
               
             for _ in range(self.nRes):
-                dec, obj = self.optimizer.run(problem)
+                seed = spawn_seed(self.rng)
+                dec, obj = self.optimizer.run(problem, seed=seed)
                 
                 if obj < bestObj:
                     bestDec = dec
@@ -284,14 +279,14 @@ class KRG(SurrogateABC):
             
             problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
-            res = self.optimizer.run(problem)
+            res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
             
             bestDec = np.asarray(res.bestDecs).ravel()
             bestObj = float(np.asarray(res.bestObjs).reshape(-1)[0])
             
             for _ in range(self.nRes):
                 
-                res = self.optimizer.run(problem)
+                res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
                 obj = float(np.asarray(res.bestObjs).reshape(-1)[0])
                 if obj < bestObj:
                     bestDec = np.asarray(res.bestDecs).ravel()

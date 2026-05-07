@@ -9,7 +9,7 @@ from ..base import ProblemBase
 ###############################################################
 
 class Sphere(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -33,7 +33,7 @@ class Sphere(ProblemBase):
         super().__init__(nInput , 1, ub, lb)
     
     def objFunc(self, X: np.ndarray) -> np.ndarray:
-        '''
+        r'''
             Parameters:
                 X: np.ndarray
                     the input data
@@ -46,7 +46,7 @@ class Sphere(ProblemBase):
         return F
 
 class Schwefel_2_22(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -77,7 +77,7 @@ class Schwefel_2_22(ProblemBase):
         return F
 
 class Schwefel_1_22(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -113,7 +113,7 @@ class Schwefel_1_22(ProblemBase):
         return F
     
 class Schwefel_2_21(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -146,7 +146,7 @@ class Schwefel_2_21(ProblemBase):
         return F
     
 class Rosenbrock(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -180,7 +180,7 @@ class Rosenbrock(ProblemBase):
         return F
 
 class Step(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -211,7 +211,7 @@ class Step(ProblemBase):
         return F
     
 class Quartic(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -243,7 +243,7 @@ class Quartic(ProblemBase):
         return F
 
 class Schwefel_2_26(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -276,7 +276,7 @@ class Schwefel_2_26(ProblemBase):
         return F
     
 class Rastrigin(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -308,7 +308,7 @@ class Rastrigin(ProblemBase):
         return F
 
 class Ackley(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -341,7 +341,7 @@ class Ackley(ProblemBase):
         return F
     
 class Griewank(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -378,7 +378,7 @@ class Griewank(ProblemBase):
 #########################
 
 class Trid(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -409,7 +409,7 @@ class Trid(ProblemBase):
         return F
 
 class Bent_Cigar(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -441,7 +441,7 @@ class Bent_Cigar(ProblemBase):
         return F
     
 class Discus(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -473,7 +473,7 @@ class Discus(ProblemBase):
         return F
     
 class Weierstrass(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Multimodal
         

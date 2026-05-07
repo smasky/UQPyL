@@ -11,6 +11,16 @@ from ..core import uniformPoint, gaOperatorHalf, calcConstraintViolation
 class MOEAD(AlgorithmABC):
     """
     Multi-objective evolutionary algorithm based on decomposition.
+
+    Examples:
+        >>> moead = MOEAD(nPop=100, maxFEs=5000)
+        >>> res = moead.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] Q. Zhang and H. Li, MOEA/D: A multiobjective evolutionary algorithm based
+            on decomposition, IEEE Transactions on Evolutionary Computation,
+            vol. 11, no. 6, pp. 712-731, 2007.
     """
     
     name = "MOEA_D"
@@ -44,8 +54,8 @@ class MOEAD(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set specific parameters for MOEAD
-        self.setParaVal('aggregation', aggregation)
-        self.setParaVal('nPop', nPop)
+        self.set('aggregation', aggregation)
+        self.set('nPop', nPop)
         
     #-------------------Public Functions-----------------------#
     def run(self, problem, seed: Optional[int] = None):
@@ -60,9 +70,9 @@ class MOEAD(AlgorithmABC):
         self.setup(problem, seed)
         
         # Retrieve parameter values
-        aggregation = self.getParaVal('aggregation')
+        aggregation = self.get('aggregation')
         
-        nPop = self.getParaVal('nPop')
+        nPop = self.get('nPop')
         
         # Determine the number of neighbors
         T = math.ceil(nPop / 10)
@@ -91,11 +101,11 @@ class MOEAD(AlgorithmABC):
             for i in range(nPop):
                 
                 # Select parents from the neighborhood
-                P = B[i, np.random.permutation(B.shape[1])].ravel()
+                P = B[i, self.rng.permutation(B.shape[1])].ravel()
 
                 # Generate offspring using genetic operations
                 subPop = pop[P[0:2]]
-                offspringDecs = gaOperatorHalf(subPop.decs, problem.ub, problem.lb, 1, 20, 1, 20)
+                offspringDecs = gaOperatorHalf(subPop.decs, problem.ub, problem.lb, 1, 20, 1, 20, rng=self.rng)
                 offspring = Population(offspringDecs)
                 # Evaluate the offspring
                 self.evaluate(offspring)

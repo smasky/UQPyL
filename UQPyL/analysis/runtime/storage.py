@@ -1,15 +1,11 @@
 from __future__ import annotations
 
 import json
-import os
-import pickle
-import re
-import sqlite3
-import uuid
-from datetime import datetime
 
 import numpy as np
 
+from ...core.runtime import array_to_json
+from ...core.runtime_storage import BaseSqliteStorage
 from .result import AnaResult
 
 
@@ -17,42 +13,13 @@ def _json_dumps(value):
     return json.dumps(value, ensure_ascii=True)
 
 
-def _array_to_json(value):
-    if value is None:
-        return None
-    return _json_dumps(np.asarray(value).tolist())
-
-
-def _slugify_name(name):
-    text = str(name).strip()
-    text = re.sub(r"[^0-9A-Za-z]+", "_", text)
-    text = re.sub(r"_+", "_", text).strip("_")
-    return text or "problem"
-
-
-class SqliteStorage:
-    def __init__(self, rootDir):
-        self.rootDir = rootDir
-        self.resultDir = os.path.join(rootDir, "Result")
-        os.makedirs(self.resultDir, exist_ok=True)
-
+class SqliteStorage(BaseSqliteStorage):
     def _makeRunId(self, methodName, problemName):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-        suffix = uuid.uuid4().hex[:4]
-        problemSlug = _slugify_name(problemName)
-        return f"{methodName.lower()}_{problemSlug}_{timestamp}_{suffix}"
+        _, runId = self._db_path(methodName, problemName)
+        return runId
 
-    def _dbPath(self, methodName, problemName):
-        runId = self._makeRunId(methodName, problemName)
-        return os.path.join(self.resultDir, f"{runId}.sqlite3"), runId
-
-    def createRun(self, obj):
-        dbPath, runId = self._dbPath(obj.name, obj.problem.name)
-        conn = sqlite3.connect(dbPath)
-        self._createSchema(conn)
-        now = datetime.now().isoformat(timespec="seconds")
+    def _insert_run(self, conn, runId, obj, now):
         problem = obj.problem
-
         conn.execute(
             """
             INSERT INTO run (
@@ -72,32 +39,15 @@ class SqliteStorage:
                 0.0,
                 now,
                 None,
-                sqlite3.Binary(pickle.dumps(problem, protocol=pickle.HIGHEST_PROTOCOL)),
+                self._problem_blob(problem),
             ),
         )
 
-        for name, value in obj.setting.items():
-            conn.execute(
-                "INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)",
-                (runId, name, repr(value)),
-            )
-
-        conn.commit()
-        return {"conn": conn, "dbPath": dbPath, "runId": runId}
-
-    def saveResult(self, storageCtx, result: AnaResult):
-        conn = storageCtx["conn"]
-        runId = storageCtx["runId"]
-        finishedAt = datetime.now().isoformat(timespec="seconds")
-
-        conn.execute(
-            """
-            UPDATE run
-            SET target=?, status=?, runtime=?, finishedAt=?
-            WHERE runId=?
-            """,
-            (result.target, "finished", result.runtime, finishedAt, runId),
-        )
+    def saveResult(self, session, result: AnaResult):
+        conn = session.conn
+        runId = session.run_id
+        self.finalize_run(session, status="finished", runtime=result.runtime)
+        conn.execute("UPDATE run SET target=? WHERE runId=?", (result.target, runId))
 
         for metric in result.metrics:
             conn.execute(
@@ -110,7 +60,7 @@ class SqliteStorage:
                     metric.name,
                     _json_dumps(metric.rowLabels),
                     _json_dumps(metric.colLabels),
-                    _array_to_json(metric.values),
+                    array_to_json(metric.values),
                     metric.colDim,
                 ),
             )
@@ -128,16 +78,13 @@ class SqliteStorage:
                 (
                     runId,
                     name,
-                    sqlite3.Binary(pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL)),
+                    self._problem_blob(payload),
                 ),
             )
 
         conn.commit()
 
-    def close(self, storageCtx):
-        storageCtx["conn"].close()
-
-    def _createSchema(self, conn):
+    def _create_schema(self, conn):
         conn.executescript(
             """
             CREATE TABLE IF NOT EXISTS run (

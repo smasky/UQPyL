@@ -1,55 +1,22 @@
 import json
-import os
-import re
 import sqlite3
-import uuid
-from datetime import datetime
 
 import numpy as np
-import pickle
+
+from ...core.runtime import array_to_json
+from ...core.runtime_storage import BaseSqliteStorage
 
 
-def _to_json_array(value):
-    if value is None:
-        return None
-    arr = np.asarray(value)
-    return json.dumps(arr.tolist(), ensure_ascii=True)
-
-
-def _slugify_name(name):
-    text = str(name).strip()
-    text = re.sub(r"[^0-9A-Za-z]+", "_", text)
-    text = re.sub(r"_+", "_", text).strip("_")
-    return text or "problem"
-
-
-class SqliteStorage:
+class SqliteStorage(BaseSqliteStorage):
     """
     Persist optimization runs and snapshots into sqlite files.
     """
-    def __init__(self, rootDir):
-        self.rootDir = rootDir
-        self.resultDir = os.path.join(rootDir, "Result")
-        os.makedirs(self.resultDir, exist_ok=True)
-
-    def _dbPath(self, algorithmName, problemName):
-        runId = self._makeRunId(algorithmName, problemName)
-        filename = f"{runId}.sqlite3"
-        return os.path.join(self.resultDir, filename), runId
-
     def _makeRunId(self, algorithmName, problemName):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-        suffix = uuid.uuid4().hex[:4]
-        problemSlug = _slugify_name(problemName)
-        return f"{algorithmName.lower()}_{problemSlug}_{timestamp}_{suffix}"
+        _, runId = self._db_path(algorithmName, problemName)
+        return runId
 
-    def createRun(self, obj):
+    def _insert_run(self, conn, runId, obj, now):
         problem = obj.problem
-        dbPath, runId = self._dbPath(obj.name, problem.name)
-        conn = sqlite3.connect(dbPath)
-        self._createSchema(conn)
-        now = datetime.now().isoformat(timespec="seconds")
-
         conn.execute(
             """
             INSERT INTO run (
@@ -63,7 +30,7 @@ class SqliteStorage:
                 runId,
                 obj.name,
                 problem.name,
-                obj.getParaVal("seed"),
+                obj.get("seed"),
                 problem.nInput,
                 problem.nObj,
                 problem.nCon,
@@ -77,22 +44,13 @@ class SqliteStorage:
                 0.0,
                 now,
                 None,
-                sqlite3.Binary(pickle.dumps(problem, protocol=pickle.HIGHEST_PROTOCOL)),
+                self._problem_blob(problem),
             ),
         )
 
-        for name, value in obj.params.items():
-            conn.execute(
-                "INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)",
-                (runId, name, repr(value)),
-            )
-
-        conn.commit()
-        return {"conn": conn, "dbPath": dbPath, "runId": runId}
-
-    def saveSnapshot(self, storageCtx, obj, result, isFinal=False):
-        conn = storageCtx["conn"]
-        runId = storageCtx["runId"]
+    def saveSnapshot(self, session, obj, result, isFinal=False):
+        conn = session.conn
+        runId = session.run_id
         problem = obj.problem
 
         bestObj = None
@@ -108,12 +66,12 @@ class SqliteStorage:
         if result.bestCons is not None:
             constraintViolation = float(np.sum(np.maximum(0.0, result.bestCons)))
 
-        populationPayload = _to_json_array({
+        populationPayload = array_to_json({
             "decs": None if obj.state.currentPop is None else obj.state.currentPop.decs.tolist(),
             "objs": None if obj.state.currentPop is None or obj.state.currentPop.objs is None else obj.state.currentPop.objs.tolist(),
             "cons": None if obj.state.currentPop is None or obj.state.currentPop.cons is None else obj.state.currentPop.cons.tolist(),
         })
-        bestPayload = _to_json_array({
+        bestPayload = array_to_json({
             "decs": None if result.bestDecs is None else result.bestDecs.tolist(),
             "objs": None if result.bestObjs is None else result.bestObjs.tolist(),
             "cons": None if result.bestCons is None else result.bestCons.tolist(),
@@ -150,20 +108,15 @@ class SqliteStorage:
             self._insertBestMembers(conn, snapshotId, role, result)
 
         if isFinal:
-            finishedAt = datetime.now().isoformat(timespec="seconds")
-            conn.execute(
-                """
-                UPDATE run
-                SET status=?, finalFEs=?, finalIters=?, runtime=?, finishedAt=?
-                WHERE runId=?
-                """,
-                ("finished", result.FEs, result.iters, result.runtime, finishedAt, runId),
+            self.finalize_run(
+                session,
+                status="finished",
+                runtime=result.runtime,
+                final_fes=result.FEs,
+                final_iters=result.iters,
             )
 
         conn.commit()
-
-    def close(self, storageCtx):
-        storageCtx["conn"].close()
 
     def _insertMembers(self, conn, snapshotId, role, pop):
         frontNo = pop.frontNo if pop.frontNo is not None else np.full((len(pop),), np.nan)
@@ -180,9 +133,9 @@ class SqliteStorage:
                     snapshotId,
                     idx,
                     role,
-                    _to_json_array(pop.decs[idx]),
-                    _to_json_array(None if pop.objs is None else pop.objs[idx]),
-                    _to_json_array(None if pop.cons is None else pop.cons[idx]),
+                    array_to_json(pop.decs[idx]),
+                    array_to_json(None if pop.objs is None else pop.objs[idx]),
+                    array_to_json(None if pop.cons is None else pop.cons[idx]),
                     None if np.isnan(frontNo[idx]) else float(frontNo[idx]),
                     None if np.isnan(crowdDis[idx]) else float(crowdDis[idx]),
                 ),
@@ -202,15 +155,15 @@ class SqliteStorage:
                     snapshotId,
                     idx,
                     role,
-                    _to_json_array(result.bestDecs[idx]),
-                    _to_json_array(result.bestObjs[idx]),
-                    _to_json_array(None if bestCons is None else bestCons[idx]),
+                    array_to_json(result.bestDecs[idx]),
+                    array_to_json(result.bestObjs[idx]),
+                    array_to_json(None if bestCons is None else bestCons[idx]),
                     None,
                     None,
                 ),
             )
 
-    def _createSchema(self, conn):
+    def _create_schema(self, conn):
         conn.executescript(
             """
             CREATE TABLE IF NOT EXISTS run (

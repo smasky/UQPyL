@@ -10,12 +10,16 @@ class NSGAII(AlgorithmABC):
     '''
     Non-dominated Sorting Genetic Algorithm II <Multi>
     ------------------------------------------------
-        
-    Methods:
-        run: Run the NSGA-II algorithm.
-        
+
+    Examples:
+        >>> nsgaii = NSGAII(nPop=50, maxFEs=5000)
+        >>> res = nsgaii.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
     References:
-        [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
+        [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, A fast and elitist
+            multiobjective genetic algorithm: NSGA-II, IEEE Transactions on
+            Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
     '''
     
     name = "NSGAII"
@@ -50,11 +54,11 @@ class NSGAII(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('proC', proC)
-        self.setParaVal('disC', disC)
-        self.setParaVal('proM', proM)
-        self.setParaVal('disM', disM)
-        self.setParaVal('nPop', nPop)
+        self.set('proC', proC)
+        self.set('disC', disC)
+        self.set('proM', proM)
+        self.set('disM', disM)
+        self.set('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
     def run(self, problem, seed: Optional[int] = None):
@@ -71,8 +75,8 @@ class NSGAII(AlgorithmABC):
         self.setup(problem, seed)
         
         # Parameter Setting
-        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaVal('nPop')
+        proC, disC, proM, disM = self.get('proC', 'disC', 'proM', 'disM')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
@@ -86,11 +90,11 @@ class NSGAII(AlgorithmABC):
         # Iterative process
         while self.checkTermination(pop):
             # Select mating pool using tournament selection
-            matingIdx = tourSelect(2, len(pop), frontNo, -CrowdDis)
+            matingIdx = tourSelect(2, len(pop), frontNo, -CrowdDis, rng=self.rng)
             matingPool = pop[matingIdx]
           
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
          
             # Evaluate the offspring

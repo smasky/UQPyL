@@ -13,6 +13,12 @@ class MH(InferenceABC):
         >>> mh = MH(nChains=4, warmUp=500, maxIters=2000)
         >>> res = mh.run(problem, gamma=0.1, seed=1234)
         >>> print(res.bestObjs)
+
+    References:
+        [1] N. Metropolis et al., Equation of state calculations by fast computing machines,
+            The Journal of Chemical Physics, vol. 21, no. 6, pp. 1087-1092, 1953.
+        [2] W. K. Hastings, Monte Carlo sampling methods using Markov chains and their applications,
+            Biometrika, vol. 57, no. 1, pp. 97-109, 1970.
     """
     
     name = "MH"
@@ -46,21 +52,21 @@ class MH(InferenceABC):
             saveFreq, logProbFunc, maxInitAttempts,
         )
                 
-        self.setParaVal('nChains', nChains)
-        self.setParaVal('warmUp', warmUp)
+        self.set('nChains', nChains)
+        self.set('warmUp', warmUp)
         
         if propDist not in ['gauss', 'uniform']:
             raise ValueError("propDist only supports 'gauss' or 'uniform'")
         
-        self.setParaVal('propDist', propDist)
+        self.set('propDist', propDist)
         
     def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray, list] = 0.1, seed: int = None):
         
         self.setup(problem, seed)
         
-        nChains = self.getParaVal('nChains')
-        warmUp = self.getParaVal('warmUp')
-        propDist = self.getParaVal('propDist')
+        nChains = self.get('nChains')
+        warmUp = self.get('warmUp')
+        propDist = self.get('propDist')
         
         X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains, seed)
         
@@ -136,10 +142,10 @@ class MH(InferenceABC):
         for i in range(X_cur.shape[0]):
             
             if propDist == 'gauss':
-                X_star[i] = np.random.multivariate_normal(X_cur[i].ravel(), propCovs[i])
+                X_star[i] = self.rng.multivariate_normal(X_cur[i].ravel(), propCovs[i])
                 
             elif propDist == 'uniform':
-                X_star[i] = np.random.uniform(X_cur[i] - propCovs[i].diagonal(), X_cur[i] + propCovs[i].diagonal())
+                X_star[i] = self.rng.uniform(X_cur[i] - propCovs[i].diagonal(), X_cur[i] + propCovs[i].diagonal())
             
             else:
                 raise ValueError("propDist must be 'gauss' or 'uniform'")

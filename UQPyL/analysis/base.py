@@ -1,11 +1,12 @@
 import abc
 import time
-from typing import List, Optional, Tuple, Union
+from typing import List, Union
 
 import numpy as np
 
+from ..core.params import Params
+from ..core.runtime_session import RunSession
 from ..problem import ProblemABC as Problem
-from ..util import Scaler
 from .runtime import AnaState, SqliteStorage, Verbose
 
 AnaIndex = Union[str, int, List[int]]
@@ -16,33 +17,15 @@ class AnalysisABC(metaclass=abc.ABCMeta):
     Shared workflow and utilities for sensitivity analysis methods.
     """
 
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]], 
-                 verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
+    def __init__(self, verboseFlag: bool = False, logFlag: bool = False, saveFlag: bool = False):
         """
-        Initialize the analysis base class with optional scalers and flags.
+        Initialize the analysis base class.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-        
-        # Initialize input scaler
-        if scalers[0] is None:
-            self.xScale = None
-        else:
-            if not isinstance(scalers[0], Scaler):
-                raise TypeError("scaler must be an instance of Scaler or None!")
-            self.xScale = scalers[0]
-        
-        # Initialize output scaler
-        if scalers[1] is None:
-            self.yScale = None
-        else:
-            if not isinstance(scalers[1], Scaler):
-                raise TypeError("scaler must be an instance of Scaler or None!")
-            self.yScale = scalers[1]
 
         # Set flags for verbosity, logging, and saving
         self.verboseFlag = verboseFlag
@@ -50,13 +33,15 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         self.saveFlag = saveFlag
         
         # Initialize settings and results
-        self.setting = Setting()
+        self.setting = Params()
+        self.params = self.setting
         self.result = AnaState(self)
         self.state = self.result
         self.storage = None
-        self.storageCtx = None
+        self.session: RunSession | None = None
+        self.runId = None
         
-    def setParaValue(self, key, value):
+    def set(self, key, value):
         """
         Set an analysis parameter.
 
@@ -65,9 +50,9 @@ class AnalysisABC(metaclass=abc.ABCMeta):
             value: Parameter value.
         """
         
-        self.setting.setParaValue(key, value)
+        self.setting.set(key, value)
     
-    def getParaValue(self, *args):
+    def get(self, *args):
         """
         Retrieve one or more analysis parameters.
 
@@ -78,7 +63,7 @@ class AnalysisABC(metaclass=abc.ABCMeta):
             The requested parameter value or values.
         """
         
-        return self.setting.getParaValue(*args) 
+        return self.setting.get(*args) 
         
     def setProblem(self, problem: Problem):
         """
@@ -95,19 +80,20 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         self.result.reset()
         self.state = self.result
         self.runId = None
+        self.session = None
         Verbose.setupContext(self, problem)
         if self.saveFlag:
             rootDir = getattr(problem, "workDir", None) or Verbose.workDir
             self.storage = SqliteStorage(rootDir)
-            self.storageCtx = self.storage.createRun(self)
-            self.runId = self.storageCtx["runId"]
+            self.session = self.storage.create_run(self)
+            self.runId = self.session.run_id
 
     def finalize(self):
         result = self.state.buildResult()
-        if self.saveFlag and self.storageCtx is not None:
-            self.storage.saveResult(self.storageCtx, result)
-            self.storage.close(self.storageCtx)
-            self.storageCtx = None
+        if self.saveFlag and self.session is not None:
+            self.storage.saveResult(self.session, result)
+            self.storage.close(self.session)
+            self.session = None
         Verbose.printConclusion(self, result)
         if self.logFlag:
             Verbose.saveLog(self)
@@ -185,43 +171,26 @@ class AnalysisABC(metaclass=abc.ABCMeta):
         self.result.verbose[target][indicator]['array'] = np.array(values)
         
 
-    def __reverse_X_Y__(self, X, Y):
-        
-        if self.xScale:
-            X = self.xScale.inverse_transform(X)
-        
-        if self.yScale:
-            Y = self.yScale.inverse_transform(Y)
-            
-        return X, Y
-    
-    
-    def __check_and_scale_xy__(self, X, Y):
+    def __check_X_Y__(self, X, Y):
         """
-        Check and scale the input and output data if scalers are provided.
+        Check input and output arrays.
 
         Args:
             X: Input matrix.
             Y: Output matrix.
 
         Returns:
-            The scaled `X` and `Y`.
+            The validated `X` and `Y`.
         """
         
         if not isinstance(X, np.ndarray) and X is not None:
             raise TypeError("X must be an instance of np.ndarray or None!")
-         
-        if self.xScale:
-            X = self.xScale.fit_transform(X)
         
         if not isinstance(Y, np.ndarray) and Y is not None:
             raise TypeError("Y must be an instance of np.ndarray or None!")
 
         if Y.ndim == 1:
             Y = Y.reshape(-1, 1)
-        
-        if self.yScale:
-            Y = self.yScale.fit_transform(Y)
                   
         return X, Y
     
@@ -260,61 +229,3 @@ class AnalysisABC(metaclass=abc.ABCMeta):
     def _analyzeCore(self, problem, *args, **kwargs):
         pass
 
-class Setting():
-    """
-    Helper container for analysis parameters.
-    """
-
-    def __init__(self):
-        """
-        Initialize the setting container.
-        """
-        self.dict = {}
-    
-    def keys(self):
-        """
-        Return all parameter names.
-        """
-        return self.dict.keys()
-    
-    def values(self):
-        """
-        Return all parameter values.
-        """
-        return self.dict.values()
-
-    def items(self):
-        return self.dict.items()
-
-    def asDict(self):
-        return dict(self.dict)
-    
-    def setParaValue(self, key, value):
-        """
-        Set a parameter value.
-
-        Args:
-            key: Parameter name.
-            value: Parameter value.
-        """
-        
-        self.dict[key] = value
-    
-    def getParaValue(self, *args):
-        """
-        Get one or more parameter values.
-
-        Args:
-            *args: Parameter names.
-
-        Returns:
-            The requested parameter value or values.
-        """
-        values = []
-        for arg in args:
-            values.append(self.dict[arg])
-        
-        if len(args) > 1:
-            return tuple(values)
-        else:
-            return values[0]

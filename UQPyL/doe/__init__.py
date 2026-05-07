@@ -1,11 +1,5 @@
 from .base import Sampler
-from .lhs import LHS
-from .full_fact import FFD
-from .random import Random
-from .sobol import Sobol
-from .saltelli import SaltelliDesign
-from .fast import FASTDesign
-from .morris import MorrisDesign
+from .methods import FASTDesign, FFD, LHS, MorrisDesign, Random, SaltelliDesign, Sobol
 
 __all__ = [
     "Sampler",

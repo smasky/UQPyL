@@ -38,7 +38,7 @@ def test_polynomial_regression_default_degree_configuration_is_conservative():
 
     assert model.degree == 2
 
-    assert model.setting.getVals("degree") == 2
+    assert model.setting.get("degree") == 2
     assert model.setting.parLB["degree"].item() == 1
     assert model.setting.parUB["degree"].item() == 3
     assert model.setting.parType["degree"] == 1
@@ -77,8 +77,8 @@ def test_polynomial_regression_apply_parameter_values_updates_model_context():
     assert model.degree == 3
     assert model.lossType == "Ridge"
     assert model.onlyInteraction is True
-    assert model.setting.getVals("degree") == 3
-    assert model.setting.getVals("lossType") == "Ridge"
-    assert model.setting.getVals("onlyInteraction") is True
+    assert model.setting.get("degree") == 3
+    assert model.setting.get("lossType") == "Ridge"
+    assert model.setting.get("onlyInteraction") is True
     assert model.isParameterActive("C")
 

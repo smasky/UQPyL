@@ -10,6 +10,16 @@ from ..population import Population
 class RVEA(AlgorithmABC):
     """
     Multi-objective reference vector guided evolutionary algorithm.
+
+    Examples:
+        >>> rvea = RVEA(nPop=100, maxFEs=5000)
+        >>> res = rvea.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff, A reference vector guided
+            evolutionary algorithm for many-objective optimization, IEEE Transactions
+            on Evolutionary Computation, vol. 20, no. 5, pp. 773-791, 2016.
     """
     name="RVEA"
     alg_type="MOEA"
@@ -41,9 +51,9 @@ class RVEA(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('alpha', alpha)
-        self.setParaVal('fr', fr)
-        self.setParaVal('nPop', nPop)
+        self.set('alpha', alpha)
+        self.set('fr', fr)
+        self.set('nPop', nPop)
     
     def run(self, problem, seed: Optional[int] = None):
         """
@@ -57,8 +67,8 @@ class RVEA(AlgorithmABC):
         self.setup(problem, seed)
         
         # Parameters setting
-        alpha, fr = self.getParaVal('alpha', 'fr')
-        nPop = self.getParaVal('nPop')
+        alpha, fr = self.get('alpha', 'fr')
+        nPop = self.get('nPop')
     
         # Generate initial reference vectors
         V0, nPop = uniformPoint(nPop, problem.nOutput)
@@ -72,10 +82,10 @@ class RVEA(AlgorithmABC):
         while self.checkTermination(pop):
             
             # Select mating pool randomly
-            matingPoolIdx = np.random.randint(0, len(pop), nPop)
+            matingPoolIdx = self.rng.integers(0, len(pop), nPop)
             matingPool = pop[matingPoolIdx]
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring

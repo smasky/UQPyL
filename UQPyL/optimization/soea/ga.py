@@ -13,6 +13,17 @@ from ..core.tournament import tourSelect
 class GA(AlgorithmABC):
     """
     Single-objective genetic algorithm.
+
+    Examples:
+        >>> ga = GA(nPop=50, maxFEs=5000)
+        >>> res = ga.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] J. H. Holland, Adaptation in Natural and Artificial Systems,
+            University of Michigan Press, 1975.
+        [2] K. Deb and R. Agrawal, Simulated binary crossover for continuous search space,
+            Complex Systems, vol. 9, no. 2, pp. 115-148, 1995.
     """
     
     name = "GA"
@@ -50,11 +61,11 @@ class GA(AlgorithmABC):
                          saveFreq = saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('proC', proC)
-        self.setParaVal('disC', disC)
-        self.setParaVal('proM', proM)
-        self.setParaVal('disM', disM)
-        self.setParaVal('nPop', nPop)
+        self.set('proC', proC)
+        self.set('disC', disC)
+        self.set('proM', proM)
+        self.set('disM', disM)
+        self.set('nPop', nPop)
         
     #--------------------Public Functions---------------------#
     def run(self, problem, seed: Optional[int] = None):
@@ -69,8 +80,8 @@ class GA(AlgorithmABC):
         self.setup(problem, seed)
         
         # Retrieve parameter values
-        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaVal('nPop')
+        proC, disC, proM, disM = self.get('proC', 'disC', 'proM', 'disM')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
@@ -83,11 +94,11 @@ class GA(AlgorithmABC):
             cv = calcConstraintViolation(pop.cons, pop.conWgt)
             feasible = np.zeros((len(pop), 1), dtype=float) if cv is None else (cv > 0).astype(float).reshape(-1, 1)
             violation = np.zeros((len(pop), 1), dtype=float) if cv is None else cv.reshape(-1, 1)
-            matingIdx = tourSelect(2, len(pop), feasible, violation, pop.objs)
+            matingIdx = tourSelect(2, len(pop), feasible, violation, pop.objs, rng=self.rng)
             matingPool = pop[matingIdx]
             
             # Generate offspring using genetic operator
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring

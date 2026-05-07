@@ -15,7 +15,7 @@ class BaseKernel():
         
         self.heterogeneous = heterogeneous
         
-        self.setting.setPara("theta", theta, theta_attr)
+        self.setting.set("theta", theta, theta_attr)
 
     @property
     def displayName(self):

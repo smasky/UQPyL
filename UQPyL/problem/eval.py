@@ -8,6 +8,7 @@ import numpy as np
 class Eval:
     objs: Optional[np.ndarray] = None
     cons: Optional[np.ndarray] = None
+    sim: Optional[np.ndarray] = None
 
     @property
     def hasObjs(self) -> bool:
@@ -16,3 +17,7 @@ class Eval:
     @property
     def hasCons(self) -> bool:
         return self.cons is not None
+
+    @property
+    def hasSim(self) -> bool:
+        return self.sim is not None

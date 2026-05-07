@@ -7,6 +7,7 @@ from .mop import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
 from .base import ProblemBase
 from .decorators import singleEval, singleFunc
 from .problem import Problem
+from .model_problem import ModelProblem
 from .eval import Eval
 from .space import SpaceBase, Space
 ProblemABC = ProblemBase
@@ -25,6 +26,7 @@ __all__=[
     "ProblemBase",
     "ProblemABC",
     "Problem",
+    "ModelProblem",
     "Eval",
     "singleFunc",
     "singleEval",

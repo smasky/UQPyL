@@ -7,6 +7,7 @@ from ..moea.nsga_ii import NSGAII
 from ..base import AlgorithmABC
 from ..core import NDSort
 from ..population import Population
+from ...core import spawn_seed
 
 from ...problem import Problem
 from ...surrogate import MultiSurrogate
@@ -15,6 +16,16 @@ from ...surrogate.rbf.radial_basis_function import RBF
 class MOASMO(AlgorithmABC):
     """
     Multi-objective adaptive surrogate modelling-based optimization algorithm.
+
+    Examples:
+        >>> moasmo = MOASMO(nInit=50, maxFEs=100)
+        >>> res = moasmo.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] W. Gong, J. Duan, L. Li, and W. Wang, Multiobjective adaptive surrogate
+            modeling-based optimization for parameter estimation of hydrologic models,
+            Water Resources Research, vol. 51, no. 8, pp. 6691-6711, 2015.
     """
     
     name = "MOASMO"
@@ -53,9 +64,9 @@ class MOASMO(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('pct', pct)
-        self.setParaVal('nInit', nInit)
-        self.setParaVal('advance_infilling', advance_infilling)
+        self.set('pct', pct)
+        self.set('nInit', nInit)
+        self.set('advance_infilling', advance_infilling)
         
         # Initialize surrogate models
         self.surrogates = surrogates
@@ -89,9 +100,9 @@ class MOASMO(AlgorithmABC):
             self.surrogates = MultiSurrogate(n_surrogates = nObj, models_list=[RBF() for _ in range(nObj)])
 
         # Retrieve parameter values
-        pct = self.getParaVal('pct')
-        nInit = self.getParaVal('nInit')
-        advance_infilling = self.getParaVal('advance_infilling')
+        pct = self.get('pct')
+        nInit = self.get('nInit')
+        advance_infilling = self.get('advance_infilling')
         
         nInfilling = int(pct*nInit)
         
@@ -125,7 +136,7 @@ class MOASMO(AlgorithmABC):
             self.surrogates.fit(pop.decs, pop.objs)
             
             # Run optimization on the surrogate model
-            res = self.optimizer.run(subProblem)
+            res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
             bestDecs = np.asarray(res.bestDecs)
             bestObjs = np.asarray(res.bestObjs)
             offSpring = Population(decs=bestDecs, objs=bestObjs)

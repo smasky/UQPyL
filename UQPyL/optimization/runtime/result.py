@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from ...core.runtime import export_runtime_meta
+
 from ..metric import HV
 
 
@@ -30,6 +32,18 @@ class OptHistory:
         self.bestMetricHistory.clear()
         self.improvedHistory.clear()
 
+    def toDict(self) -> dict:
+        return {
+            "populations": list(self.populations),
+            "bests": list(self.bests),
+            "metrics": list(self.metrics),
+            "iter_to_fes": [list(item) for item in self.iterToFEs],
+            "best_obj_history": list(self.bestObjHistory),
+            "num_best_history": list(self.numBestHistory),
+            "best_metric_history": list(self.bestMetricHistory),
+            "improved_history": list(self.improvedHistory),
+        }
+
 
 @dataclass
 class OptResult:
@@ -48,6 +62,36 @@ class OptResult:
     runtime: float
     history: OptHistory
     extra: dict = field(default_factory=dict)
+
+    def summary(self) -> dict:
+        return export_runtime_meta(
+            run_id=None,
+            method=None,
+            problem_name=None,
+            n_input=None,
+            n_output=None,
+            n_con=None,
+            runtime=float(self.runtime),
+            created_at=None,
+            extra={
+                "best_feasible": bool(self.bestFeasible),
+                "appear_fes": self.appearFEs,
+                "appear_iters": self.appearIters,
+                "fes": int(self.FEs),
+                "iters": int(self.iters),
+            },
+        )
+
+    def toDict(self) -> dict:
+        return {
+            **self.summary(),
+            "best_decs": None if self.bestDecs is None else self.bestDecs.copy(),
+            "best_objs": None if self.bestObjs is None else self.bestObjs.copy(),
+            "best_cons": None if self.bestCons is None else self.bestCons.copy(),
+            "best_metric": self.bestMetric,
+            "history": self.history.toDict(),
+            "extra": dict(self.extra),
+        }
 
 
 class OptState:

@@ -7,6 +7,7 @@ from typing import Any
 
 import numpy as np
 
+from ...core.runtime import ensure_result_dir
 
 @dataclass
 class VerboseConfig:
@@ -216,6 +217,19 @@ class Verbose:
     workDir = os.getcwd()
 
     @staticmethod
+    def _resolveRunId(obj):
+        session = getattr(obj, "session", None)
+        if session is not None:
+            run_id = getattr(session, "run_id", None)
+            if run_id is not None:
+                return run_id
+        runId = getattr(obj, "runId", None)
+        if runId is not None:
+            return runId
+        timestamp = time.strftime("%Y%m%d_%H%M")
+        return f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+
+    @staticmethod
     def makeReporter(nObj: int, config: VerboseConfig | None = None, stream=None):
         cfg = config or VerboseConfig()
         renderer = SingleObjectiveRenderer(cfg) if nObj == 1 else MultiObjectiveRenderer(cfg)
@@ -290,22 +304,14 @@ class Verbose:
 
     @staticmethod
     def checkDir(workDir):
-        folder = os.path.join(workDir, "Result")
-        if not os.path.exists(folder):
-            os.mkdir(folder)
-        return folder
+        return ensure_result_dir(workDir)
 
     @staticmethod
     def saveData(obj, resultData):
         problem = obj.problem
         workDir = problem.workDir if hasattr(problem, "GUI") else Verbose.workDir
         folder = Verbose.checkDir(workDir)
-
-        storageCtx = getattr(obj, "storageCtx", None) or {}
-        runId = storageCtx.get("runId", None) or getattr(obj, "runId", None)
-        if runId is None:
-            timestamp = time.strftime("%Y%m%d_%H%M")
-            runId = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+        runId = Verbose._resolveRunId(obj)
         filepath = os.path.join(folder, f"{runId}.npz")
         Verbose.saveToNPZ(filepath, resultData)
 
@@ -316,11 +322,7 @@ class Verbose:
         problem = obj.problem
         workDir = problem.workDir if hasattr(problem, "GUI") else Verbose.workDir
         folder = Verbose.checkDir(workDir)
-        storageCtx = getattr(obj, "storageCtx", None) or {}
-        runId = storageCtx.get("runId", None) or getattr(obj, "runId", None)
-        if runId is None:
-            timestamp = time.strftime("%Y%m%d_%H%M")
-            runId = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+        runId = Verbose._resolveRunId(obj)
         filepath = os.path.join(folder, f"{runId}.log")
         with open(filepath, "w") as f:
             f.writelines(problem.logLines)

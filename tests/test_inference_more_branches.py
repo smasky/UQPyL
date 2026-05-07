@@ -24,11 +24,18 @@ class ConstrainedQuadratic(ProblemABC):
         return -np.ones((X.shape[0], 1))
 
 
+class DummyInference(InferenceABC):
+    def run(self, problem=None, *args, **kwargs):
+        return None
+
+
 def test_inferenceabc_checktermination_branch():
     p = ConstrainedQuadratic(nInput=2)
-    inf = InferenceABC(maxIters=2, verboseFlag=False, verboseFreq=1, logFlag=False, saveFlag=False)
+    with pytest.raises(TypeError):
+        InferenceABC(maxIters=2, verboseFlag=False, verboseFreq=1, logFlag=False, saveFlag=False)
+    inf = DummyInference(maxIters=2, verboseFlag=False, verboseFreq=1, logFlag=False, saveFlag=False)
     inf.setup(p, seed=123)
-    inf.setParaVal("nChains", 1)
+    inf.set("nChains", 1)
 
     # dummy chain list
     X0 = np.array([[0.0, 0.0]])
@@ -39,10 +46,10 @@ def test_inferenceabc_checktermination_branch():
 
 
 def test_inference_setting_getval_tuple_branch():
-    inf = InferenceABC(maxIters=1, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
-    inf.setParaVal("a", 1)
-    inf.setParaVal("b", 2)
-    assert inf.getParaVal("a", "b") == (1, 2)
+    inf = DummyInference(maxIters=1, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
+    inf.set("a", 1)
+    inf.set("b", 2)
+    assert inf.get("a", "b") == (1, 2)
 
 
 def test_mh_invalid_propdist_raises():
@@ -88,7 +95,7 @@ def test_demc_warmup_branch_and_check_alpha_error_branch():
 
     # _check_alpha error branches
     alg.setup(p, seed=123)
-    alg.setParaVal("nChains", 3)
+    alg.set("nChains", 3)
     with pytest.raises(ValueError):
         alg._check_alpha(np.ones((2, 2)))
     with pytest.raises(ValueError):

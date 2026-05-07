@@ -237,9 +237,9 @@ def test_inference_sqlite_reader_roundtrip():
     assert len(db_files) == 1
 
     with InfReader(db_files[0]) as reader:
-        loaded = reader.loadResult()
-        snapshots = reader.listSnapshots()
-        members = reader.loadLastSnapshotMembers()
+        loaded = reader.load_result()
+        snapshots = reader.list_snapshots()
+        members = reader.load_last_snapshot_members()
 
     assert loaded.decs.shape == res.decs.shape
     assert np.allclose(loaded.logProb, res.logProb)

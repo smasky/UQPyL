@@ -18,7 +18,7 @@ class Guass(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        theta=self.setting.getVals("theta")
+        theta=self.setting.get("theta")
             
         td = D * -theta
         r = np.exp(np.sum(D * td, axis=1))

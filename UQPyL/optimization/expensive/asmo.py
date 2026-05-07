@@ -7,15 +7,25 @@ from typing import Literal
 from ..soea.sce_ua import SCE_UA
 from ..base import AlgorithmABC
 from ..population import Population
+from ...core import spawn_seed
 
 from ...problem import Problem
 from ...surrogate import SurrogateABC
 from ...surrogate.kriging import KRG
-from ...util.scaler import StandardScaler
 
 class ASMO(AlgorithmABC):
     """
     Single-objective adaptive surrogate modelling-based optimization algorithm.
+
+    Examples:
+        >>> asmo = ASMO(nInit=20, maxFEs=100)
+        >>> res = asmo.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] H. Wang, W. Duan, S. Wang, Y. Han, and X. Li, Adaptive surrogate model
+            based optimization with application to aerodynamic design,
+            Environmental Modelling and Software, vol. 60, pp. 33-46, 2014.
     """
     
     name = "ASMO"
@@ -51,13 +61,11 @@ class ASMO(AlgorithmABC):
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
                          saveFreq = saveFreq)
         
-        self.setParaVal('nInit', nInit)
-        self.setParaVal('euclidThres', euclidThres)
+        self.set('nInit', nInit)
+        self.set('euclidThres', euclidThres)
         
         if surrogate is None:
-            # Default surrogate model is Kriging with standard scaling
-            scalers = (StandardScaler(0, 1), StandardScaler(0, 1))
-            surrogate = KRG(scalers = scalers)
+            surrogate = KRG()
             
         self.surrogate = surrogate
         
@@ -83,8 +91,8 @@ class ASMO(AlgorithmABC):
         self.setup(problem, seed)
         
         # Initialization
-        nInit = self.getParaVal('nInit')
-        euclidThres = self.getParaVal('euclidThres')
+        nInit = self.get('nInit')
+        euclidThres = self.get('euclidThres')
         
         # Define a subproblem using the surrogate model
         subProblem = Problem(objFunc = self.surrogate.predict, nInput = problem.nInput, 
@@ -114,7 +122,7 @@ class ASMO(AlgorithmABC):
             self.surrogate.fit(pop.decs, pop.objs)
             
             # Run optimizer on the surrogate model
-            res = self.optimizer.run(subProblem)
+            res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
             
             # Evaluate the offspring
             bestDecs = np.asarray(res.bestDecs)
@@ -123,7 +131,7 @@ class ASMO(AlgorithmABC):
             minEuclidDist = np.min(euclidDist)
             
             if minEuclidDist < euclidThres:
-                decs = np.random.uniform(problem.lb, problem.ub, size = (1, problem.nInput))
+                decs = self.rng.uniform(problem.lb, problem.ub, size=(1, problem.nInput))
             else:
                 decs = bestDecs
             

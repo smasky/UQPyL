@@ -9,7 +9,7 @@ from ..base import ProblemBase
 ###############################################################
 
 class RosenbrockWithCon(ProblemBase):
-    '''
+    r'''
     Types:
         Single Optimization Unimodal
         

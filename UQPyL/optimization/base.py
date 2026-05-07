@@ -5,6 +5,8 @@ import numpy as np
 from .population import Population
 from .runtime import OptResult, Result, SqliteStorage, Verbose
 from ..doe import LHS
+from ..core.params import Params
+from ..core.runtime_session import RunSession
 
 class AlgorithmABC(metaclass = abc.ABCMeta):
     """
@@ -32,10 +34,11 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.saveFreq = saveFreq
         self.hvRefPoint = None if hvRefPoint is None else np.asarray(hvRefPoint, dtype=float).copy()
         self.storage = None
-        self.storageCtx = None
+        self.session: RunSession | None = None
+        self.runId = None
 
         if self.hvRefPoint is not None:
-            self.setParaVal('hvRefPoint', self.hvRefPoint.copy())
+            self.set('hvRefPoint', self.hvRefPoint.copy())
     
     def reset(self):
         
@@ -53,25 +56,24 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
             rootDir = getattr(problem, "workDir", os.getcwd())
             self.storage = SqliteStorage(rootDir)
         self.runId = None
+        self.session = None
         
-        if seed is not None:
-            np.random.seed(seed)
-        else:
-            seed = np.random.randint(0, 1000000)
-            np.random.seed(seed)
+        if seed is None:
+            seed = int(np.random.default_rng().integers(0, 1000000))
+        self.rng = np.random.default_rng(seed)
         
-        self.setParaVal('seed', seed)
-        self.setParaVal('saveFreq', self.saveFreq)
+        self.set('seed', seed)
+        self.set('saveFreq', self.saveFreq)
         if self.saveFlag:
-            self.storageCtx = self.storage.createRun(self)
-            self.runId = self.storageCtx["runId"]
+            self.session = self.storage.create_run(self)
+            self.runId = self.session.run_id
         Verbose.printSettings(self)
     
     def initPop(self, nInit):
         
         lhs = LHS('classic')
         
-        seed = np.random.randint(0, 1000000)
+        seed = int(self.rng.integers(0, 1000000))
         xInit = lhs.sample(self.problem, nInit, seed)
 
         pop = Population(xInit)
@@ -83,7 +85,7 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.problem = problem
         self.optType = getattr(problem, "optType", None)
         if hasattr(problem, "optType"):
-            self.setParaVal('optType', problem.optType)
+            self.set('optType', problem.optType)
     
     def evaluate(self, pop):
         decs = self.problem.apply_var_type(pop.decs)
@@ -102,8 +104,8 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.updateState(pop)
         if self.verboseFlag > 0 or self.logFlag > 0 or self.saveFlag > 0:
             Verbose.printIteration(self)
-        if self.saveFlag and self.storageCtx is not None and self.iters % self.saveFreq == 0:
-            self.storage.saveSnapshot(self.storageCtx, self, self.buildResult(), isFinal=False)
+        if self.saveFlag and self.session is not None and self.iters % self.saveFreq == 0:
+            self.storage.saveSnapshot(self.session, self, self.buildResult(), isFinal=False)
         return self.state
     
     def checkTermination(self, pop):
@@ -153,56 +155,19 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         if self.logFlag:
             Verbose.saveLog(self)
         if self.saveFlag:
-            if self.storageCtx is not None:
-                self.storage.saveSnapshot(self.storageCtx, self, result, isFinal=True)
-                self.storage.close(self.storageCtx)
-                self.storageCtx = None
+            if self.session is not None:
+                self.storage.saveSnapshot(self.session, self, result, isFinal=True)
+                self.storage.close(self.session)
+                self.session = None
         return result
+
+    @abc.abstractmethod
+    def run(self, problem, seed=None):
+        raise NotImplementedError
                     
-    def setParaVal(self, key, value):
-        self.params.set(key, value)
-    
-    def getParaVal(self, *args):
-        return self.params.get(*args)
-    
-class Params:
-    """
-    Lightweight parameter container with a single dict as source of truth.
-    """
-
-    def __init__(self):
-        self.data = {}
-
-    @property
-    def dicts(self):
-        return self.data
-
-    @property
-    def keys(self):
-        return list(self.data.keys())
-
-    @property
-    def values(self):
-        return list(self.data.values())
-
-    def items(self):
-        return self.data.items()
-
-    def asDict(self):
-        return dict(self.data)
-
     def set(self, key, value):
-        self.data[key] = value
+        self.params.set(key, value)
 
     def get(self, *args):
-        values = [self.data[arg] for arg in args]
-        if len(args) > 1:
-            return tuple(values)
-        return values[0]
-
-    # Compatibility wrappers retained during migration.
-    def setPara(self, key, value):
-        self.set(key, value)
-
-    def getVal(self, *args):
-        return self.get(*args)
+        return self.params.get(*args)
+    

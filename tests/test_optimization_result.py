@@ -106,3 +106,38 @@ def test_result_multi_prefers_explicit_hv_reference_point():
     state.update(pop, problem, FEs=2, iters=0, algType="MOEA")
 
     assert np.allclose(state.hvRefPoint, np.array([5.0, 6.0]))
+
+
+def test_opt_result_exports_snake_case_summary_and_dict():
+    history = OptHistory(
+        iterToFEs=[[0, 2]],
+        bestObjHistory=[0.05],
+        numBestHistory=[],
+        bestMetricHistory=[],
+    )
+    result = OptResult(
+        bestDecs=np.array([[0.1, 0.2]]),
+        bestObjs=np.array([[0.05]]),
+        bestCons=None,
+        bestMetric=None,
+        bestFeasible=True,
+        appearFEs=2,
+        appearIters=0,
+        FEs=2,
+        iters=0,
+        runtime=0.1,
+        history=history,
+    )
+
+    assert result.bestFeasible is True
+    assert result.appearFEs == 2
+
+    summary = result.summary()
+    assert summary["best_feasible"] is True
+    assert summary["appear_fes"] == 2
+    assert summary["appear_iters"] == 0
+
+    payload = result.toDict()
+    assert payload["best_feasible"] is True
+    assert payload["appear_fes"] == 2
+    assert payload["history"]["iter_to_fes"] == [[0, 2]]

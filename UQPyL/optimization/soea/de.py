@@ -13,6 +13,16 @@ from ..core.tournament import tourSelect
 class DE(AlgorithmABC):
     """
     Single-objective differential evolution.
+
+    Examples:
+        >>> de = DE(nPop=50, maxFEs=5000)
+        >>> res = de.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] R. Storn and K. Price, Differential evolution - a simple and efficient heuristic
+            for global optimization over continuous spaces, Journal of Global Optimization,
+            vol. 11, no. 4, pp. 341-359, 1997.
     """
     
     name = "DE"
@@ -46,9 +56,9 @@ class DE(AlgorithmABC):
                             tolerate, verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('cr', cr)
-        self.setParaVal('f', f)
-        self.setParaVal('nPop', nPop)
+        self.set('cr', cr)
+        self.set('f', f)
+        self.set('nPop', nPop)
         
     def run(self, problem, seed: Optional[int] = None):
         """
@@ -62,8 +72,8 @@ class DE(AlgorithmABC):
         self.setup(problem, seed)
         
         # Parameter Setting
-        cr, f = self.getParaVal('cr', 'f')
-        nPop = self.getParaVal('nPop')
+        cr, f = self.get('cr', 'f')
+        nPop = self.get('nPop')
         
         # Population Generation
         pop = self.initPop(nPop)
@@ -76,7 +86,7 @@ class DE(AlgorithmABC):
             cv = calcConstraintViolation(pop.cons, pop.conWgt)
             feasible = np.zeros((len(pop), 1), dtype=float) if cv is None else (cv > 0).astype(float).reshape(-1, 1)
             violation = np.zeros((len(pop), 1), dtype=float) if cv is None else cv.reshape(-1, 1)
-            matingIdx = tourSelect(2, len(pop)*2, feasible, violation, pop.objs)
+            matingIdx = tourSelect(2, len(pop)*2, feasible, violation, pop.objs, rng=self.rng)
             matingPool = pop[matingIdx]
             
             # Generate offspring using differential evolution operations
@@ -110,7 +120,7 @@ class DE(AlgorithmABC):
         N, D = len(popDecs1), len(popDecs1[0])
         
         # Differential Evolution operation
-        sita = np.random.random((N, D)) < cr
+        sita = self.rng.random((N, D)) < cr
         offspringDecs = np.copy(popDecs1)
         offspringDecs[sita] = popDecs1[sita] + (popDecs2[sita] - popDecs3[sita]) * f
         

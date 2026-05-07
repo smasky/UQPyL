@@ -1,11 +1,10 @@
 # Sobol sensitivity analysis
 import numpy as np
 import itertools
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
 from ...problem import ProblemABC as Problem
-from ...util import Scaler
 
 class Sobol(AnalysisABC):
     """
@@ -31,20 +30,16 @@ class Sobol(AnalysisABC):
     
     name = "Sobol"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
+    def __init__(self, verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the Sobol' method for sensitivity analysis.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-        
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
+        super().__init__(verboseFlag, logFlag, saveFlag)
 
     def checkMeta(self, meta):
         if meta.get("designType") != "saltelli":
@@ -52,7 +47,7 @@ class Sobol(AnalysisABC):
                 "Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'."
             )
 
-        self.setParaValue("secondOrder", meta["secondOrder"])
+        self.set("secondOrder", meta["secondOrder"])
    
                 
     def _analyzeCore(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
@@ -88,8 +83,7 @@ class Sobol(AnalysisABC):
         
         nInput = problem.nInput
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         
         # Determine the number of samples based on whether second-order indices are calculated
         if secondOrder:
@@ -162,8 +156,6 @@ class Sobol(AnalysisABC):
         if secondOrder:
             res.append(('S2', S2, row_label, col_label_2, 'decsDim2'))
          
-        X, Y = self.__reverse_X_Y__(X, Y)
-        
         self.recordResult(X, Y, res, target=target, meta=meta)
         
         return None

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from ...core.runtime import ensure_result_dir
 
 @dataclass
 class VerboseConfig:
@@ -30,6 +31,15 @@ class Verbose:
     workDir = os.getcwd()
 
     @staticmethod
+    def _resolveRunId(obj):
+        session = getattr(obj, "session", None)
+        if session is not None:
+            run_id = getattr(session, "run_id", None)
+            if run_id is not None:
+                return run_id
+        return getattr(obj, "runId", None)
+
+    @staticmethod
     def setupContext(obj, problem):
         problem.verboseFlag = obj.verboseFlag
         problem.logLines = [] if obj.logFlag else None
@@ -48,9 +58,9 @@ class Verbose:
             f"nInput: {obj.problem.nInput}",
             f"nOutput: {obj.problem.nOutput}",
         ]
-        runId = getattr(obj, "runId", None)
-        if runId is not None:
-            lines.append(f"runId: {runId}")
+        run_id = Verbose._resolveRunId(obj)
+        if run_id is not None:
+            lines.append(f"runId: {run_id}")
         if obj.reporter.config.showParams and obj.setting.asDict():
             lines.append(f"params: {obj.setting.asDict()}")
 
@@ -94,19 +104,17 @@ class Verbose:
         problem = obj.problem
         workDir = problem.workDir if hasattr(problem, "workDir") else Verbose.workDir
         folder = Verbose.checkDir(workDir)
-        runId = getattr(obj, "runId", None)
-        if runId is None:
+        run_id = Verbose._resolveRunId(obj)
+        if run_id is None:
             timestamp = time.strftime("%Y%m%d_%H%M")
-            runId = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
-        filepath = os.path.join(folder, f"{runId}.log")
+            run_id = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+        filepath = os.path.join(folder, f"{run_id}.log")
         with open(filepath, "w", encoding="utf-8") as f:
             f.writelines(problem.logLines)
 
     @staticmethod
     def checkDir(workDir):
-        folder = os.path.join(workDir, "Result")
-        os.makedirs(folder, exist_ok=True)
-        return folder
+        return ensure_result_dir(workDir)
 
     @staticmethod
     def _emit(obj, text):

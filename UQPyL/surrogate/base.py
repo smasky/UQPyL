@@ -3,10 +3,24 @@ import numpy as np
 from typing import Literal, Tuple
 
 from .setting import Setting
+from .scaler import Scaler
 
 Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'], Literal['StandardScaler','MinMaxScaler']]
 
 class SurrogateABC(metaclass = abc.ABCMeta):
+    """
+    Base class for surrogate models.
+
+    This class defines the shared training and prediction workflow used by
+    surrogate models in UQPyL, including:
+    - input/output scaling
+    - optional polynomial feature expansion
+    - fitted-state management
+    - optional uncertainty-output flag normalization
+
+    Subclasses are expected to implement `fitModel`, and may override
+    `fitHyper` when model-internal hyper-parameter optimization is needed.
+    """
     supportsUncertainty = False
 
     def __init__(self, scalers = (None, None), polyFeature = None):
@@ -14,6 +28,7 @@ class SurrogateABC(metaclass = abc.ABCMeta):
         #create user-define setting
         self.setting = Setting()
         self.setting.defaultOwner = "model"
+        self.rng = np.random.default_rng()
         
         self.xScaler = scalers[0] if scalers[0] else None
         self.yScaler = scalers[1] if scalers[1] else None
@@ -123,7 +138,7 @@ class SurrogateABC(metaclass = abc.ABCMeta):
             "set": list(choices),
             "log": False,
         }
-        self.setting.setPara(name, defaultChoice, attr=attr, owner=owner)
+        self.setting.set(name, defaultChoice, attr=attr, owner=owner)
         return self
 
     def isParameterActive(self, name: str):
@@ -195,7 +210,7 @@ class SurrogateABC(metaclass = abc.ABCMeta):
                     continue
                 raise KeyError(f"Parameter '{name}' is not active for {self.__class__.__name__}.")
 
-            values.append(self.setting.getVals(name))
+            values.append(self.setting.get(name))
 
         if len(args) > 1:
             return tuple(values)
@@ -293,6 +308,7 @@ class MultiSurrogate():
     
     def __init__(self, n_surrogates, models_list=[]):
         self.n_surrogates=n_surrogates
+        self.rng = np.random.default_rng()
         
         for model in models_list:
             if not isinstance(model, SurrogateABC):

@@ -10,6 +10,15 @@ from ..core.constraint import betterMask
 class ABC(AlgorithmABC):
     """
     Single-objective artificial bee colony algorithm.
+
+    Examples:
+        >>> abc = ABC(nPop=50, maxFEs=5000)
+        >>> res = abc.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] D. Karaboga, An idea based on honey bee swarm for numerical optimization,
+            Technical Report-TR06, Erciyes University, 2005.
     """
     
     name = "ABC"
@@ -43,9 +52,9 @@ class ABC(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('employedRate', employedRate)
-        self.setParaVal('limit', limit)
-        self.setParaVal('nPop', nPop)
+        self.set('employedRate', employedRate)
+        self.set('limit', limit)
+        self.set('nPop', nPop)
     
     def run(self, problem, seed: Optional[int] = None):
         """
@@ -59,8 +68,8 @@ class ABC(AlgorithmABC):
         self.setup(problem, seed)
         
         # Parameter Setting
-        employedRate, limit = self.getParaVal('employedRate', 'limit')
-        nPop = self.getParaVal('nPop')
+        employedRate, limit = self.get('employedRate', 'limit')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
@@ -126,7 +135,7 @@ class ABC(AlgorithmABC):
             onlookerBees = pop[onlookerIdx]
             n, d = onlookerBees.size()
             
-            onlookerBees.decs = np.random.random((n, d)) * (self.problem.ub - self.problem.lb) + self.problem.lb
+            onlookerBees.decs = self.rng.random((n, d)) * (self.problem.ub - self.problem.lb) + self.problem.lb
             
             self.evaluate(onlookerBees)
             
@@ -169,15 +178,15 @@ class ABC(AlgorithmABC):
         p = 2 * (nEmployed + 1.0 - np.linspace(1, nEmployed, nEmployed)) / ((nEmployed + 1) * nEmployed)
         p[idx] = p / np.sum(p)
         
-        globalIdx = np.random.choice(len(employedBees), len(unemployedBees), p=p)
+        globalIdx = self.rng.choice(len(employedBees), len(unemployedBees), p=p)
 
         idx = np.arange(len(pop))
         while True:
-            randIdx = np.random.permutation(idx)
+            randIdx = self.rng.permutation(idx)
             if np.all(randIdx[beeType == 0] != idx[beeType == 1][globalIdx]):
                 break
         
-        rnd = np.random.random((len(unemployedBees), d)) * 2 - 1
+        rnd = self.rng.random((len(unemployedBees), d)) * 2 - 1
         
         popDecs = pop.decs
         employedDecs = employedBees.decs
@@ -221,11 +230,11 @@ class ABC(AlgorithmABC):
         nEmployBees = np.sum(beeType == 1)
         idx = np.arange(len(pop))
         while True:
-            randIdx = np.random.permutation(idx)
+            randIdx = self.rng.permutation(idx)
             if np.all(randIdx[employedBeesType] != idx[employedBeesType]):
                 break
             
-        rnd = np.random.random((nEmployBees, D)) * 2 - 1
+        rnd = self.rng.random((nEmployBees, D)) * 2 - 1
         
         popDecs = pop.decs
         newDecs = popDecs[employedBeesType] + (popDecs[randIdx[employedBeesType]] - popDecs[employedBeesType]) * rnd

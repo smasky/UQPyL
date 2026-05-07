@@ -6,23 +6,24 @@ from copy import deepcopy
 
 from .kernel import BaseKernel, Cubic
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class RBF(SurrogateABC):
     """
-    Radial Basis Function (RBF) network for surrogate modeling.
-    
-    This class implements an RBF network, which is a type of artificial neural network
-    used for function approximation. It uses radial basis functions as activation functions.
-    
-    Attributes:
-        name (str): Name of the surrogate model.
-    
-    Methods:
-        setKernel: Set the kernel function for the RBF network.
-        fit: Fit the RBF model to training data.
-        predict: Predict outputs for given input data.
+    Radial basis function surrogate model.
+
+    The model interpolates or smooths training data by combining radial basis
+    responses with an optional polynomial tail, depending on the selected kernel.
+
+    Examples:
+        >>> model = RBF()
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
+    References:
+        [1] M. D. Buhmann, Radial Basis Functions: Theory and Implementations,
+            Cambridge University Press, 2003.
     """
     
     name = "RBF"
@@ -41,7 +42,7 @@ class RBF(SurrogateABC):
         """
         super().__init__(scalers, polyFeature)
         
-        self.setting.setPara("C_smooth", C_smooth, C_smooth_attr)
+        self.setting.set("C_smooth", C_smooth, C_smooth_attr)
 
         self.registerParameterApplier("kernel", self.setKernel)
         self._kernelChoiceRegistered = False
@@ -130,7 +131,7 @@ class RBF(SurrogateABC):
 
         nSample, nFeature = xTrain.shape
         
-        C_smooth = self.setting.getVals("C_smooth")
+        C_smooth = self.setting.get("C_smooth")
         
         A_Matrix = self.kernel.get_A_Matrix(xTrain) + C_smooth
         

@@ -12,7 +12,7 @@ class Sampler(metaclass=abc.ABCMeta):
     def __init__(self):
         self.rng = None
 
-    def sample(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
+    def sample(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None):
         """
         Generate samples in the problem space.
 
@@ -21,10 +21,11 @@ class Sampler(metaclass=abc.ABCMeta):
         :param seed: Random seed.
         :return np.ndarray: Samples in the problem space.
         """
+        nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
         X, _ = self.sampleWithMeta(problem, nSamples, seed=seed)
         return X
 
-    def sampleWithMeta(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
+    def sampleWithMeta(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None):
         """
         Generate samples with metadata.
 
@@ -33,6 +34,7 @@ class Sampler(metaclass=abc.ABCMeta):
         :param seed: Random seed.
         :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
+        nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
         self._validate_problem(problem)
         self._validate_sample_count(nSamples)
 
@@ -45,6 +47,17 @@ class Sampler(metaclass=abc.ABCMeta):
 
         meta = self._build_meta(problem, nSamples, seed=seed)
         return X, meta
+
+    def _resolve_sample_count(self, nSamples: Optional[int] = None, nt: Optional[int] = None):
+        if nSamples is None:
+            nSamples = nt
+        elif nt is not None and nt != nSamples:
+            raise ValueError("nSamples and nt must match when both are provided.")
+
+        if nSamples is None:
+            raise TypeError("nSamples (or legacy alias nt) must be provided.")
+
+        return nSamples
 
     @abc.abstractmethod
     def _generate(self, nSamples: int, nInput: int):

@@ -41,4 +41,4 @@ def test_rbf_kernel_choice_apply_parameter_values_switches_kernel():
     model.applyParameterValues(["kernel"], [1.2])
 
     assert model.kernel.displayName == "Gaussian"
-    assert model.setting.getVals("kernel").displayName == "Gaussian"
+    assert model.setting.get("kernel").displayName == "Gaussian"

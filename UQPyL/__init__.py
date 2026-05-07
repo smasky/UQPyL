@@ -1,31 +1,22 @@
 """UQPyL package entry."""
 
 import importlib
+from types import ModuleType
 
 doe = importlib.import_module(__name__ + ".doe")
 
 problem = importlib.import_module(__name__ + ".problem")
-util = importlib.import_module(__name__ + ".util")
+viz = importlib.import_module(__name__ + ".viz")
 
-try:
-    surrogate = importlib.import_module(__name__ + ".surrogate")
-except Exception:
-    surrogate = None
+def _import_submodule(name: str) -> ModuleType:
+    return importlib.import_module(f"{__name__}.{name}")
 
-try:
-    optimization = importlib.import_module(__name__ + ".optimization")
-except Exception:
-    optimization = None
 
-try:
-    analysis = importlib.import_module(__name__ + ".analysis")
-except Exception:
-    analysis = None
-
-try:
-    inference = importlib.import_module(__name__ + ".inference")
-except Exception:
-    inference = None
+surrogate = _import_submodule("surrogate")
+optimization = _import_submodule("optimization")
+analysis = _import_submodule("analysis")
+inference = _import_submodule("inference")
+calibration = _import_submodule("calibration")
 
 __version__ = "2.1.5"
 __author__ = "wmtSky"
@@ -37,5 +28,6 @@ __all__=[
     "analysis",
     "doe",
     "inference",
-    "util"
+    "calibration",
+    "viz"
 ]

@@ -1,11 +1,10 @@
 # Delta test
 import numpy as np
 from scipy.spatial import KDTree
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
 from ...problem import ProblemABC, Problem
-from ...util import Scaler
 
 class DeltaTest(AnalysisABC):
     """
@@ -27,23 +26,19 @@ class DeltaTest(AnalysisABC):
     
     name = "DeltaTest"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 nNeighbors: int = 2,
+    def __init__(self, nNeighbors: int = 2,
                  verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the Delta Test method.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             nNeighbors: Number of nearest neighbors used by the delta estimate.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-        
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
-        self.setParaValue("nNeighbors", nNeighbors)
+        super().__init__(verboseFlag, logFlag, saveFlag)
+        self.set("nNeighbors", nNeighbors)
 
     def _analyzeCore(self, problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
                      target: str = 'objs', index: AnaIndex = 'all') -> None:
@@ -65,11 +60,10 @@ class DeltaTest(AnalysisABC):
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         nInput = problem.nInput
         numY = Y.shape[1]
-        nNeighbors = self.getParaValue("nNeighbors")
+        nNeighbors = self.get("nNeighbors")
         
         outputLabel = "obj" if target == "objs" else "con"
         
@@ -93,8 +87,6 @@ class DeltaTest(AnalysisABC):
                 S1_norm[i] = S1[i] / total
 
         res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('S1_norm', S1_norm, row_label, col_label_1, 'decsDim1')]
-        
-        X, Y = self.__reverse_X_Y__(X, Y)
         
         self.recordResult(X, Y, res, target=target, meta=meta)
 
@@ -123,14 +115,13 @@ class DeltaTest(AnalysisABC):
         self.setProblem(problem)
         
         # Retrieve the number of nearest neighbors for analysis
-        nNeighbors = self.getParaValue('nNeighbors')
+        nNeighbors = self.get('nNeighbors')
         
         # Evaluate outputs if Y is not provided
         if Y is None:
             Y = self.evaluate(X, target="objs")
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         
         @ProblemABC.singleFunc
         def objective(x_):
@@ -191,14 +182,13 @@ class DeltaTest(AnalysisABC):
         nInput = problem.nInput
         
         # Retrieve the number of nearest neighbors for analysis
-        nNeighbors = self.getParaValue('nNeighbors')
+        nNeighbors = self.get('nNeighbors')
         
         # Evaluate outputs if Y is not provided
         if Y is None:
             Y = self.evaluate(X, target="objs")
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         
         # Generate all possible combinations of input variables
         combinations = list(product([0, 1], repeat=nInput))

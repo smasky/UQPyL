@@ -7,14 +7,24 @@ from typing import Optional
 from ..soea.ga import GA
 from ..base import AlgorithmABC
 from ..population import Population
+from ...core import spawn_seed
 
 from ...problem import Problem
 from ...surrogate.kriging import KRG
-from ...util.scaler import StandardScaler
 
 class EGO(AlgorithmABC):
     """
     Single-objective efficient global optimization algorithm.
+
+    Examples:
+        >>> ego = EGO(nInit=20, maxFEs=100)
+        >>> res = ego.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] D. R. Jones, M. Schonlau, and W. J. Welch, Efficient global optimization
+            of expensive black-box functions, Journal of Global Optimization,
+            vol. 13, no. 4, pp. 455-492, 1998.
     """
     
     name = "EGO"
@@ -44,11 +54,9 @@ class EGO(AlgorithmABC):
                             verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
                             logFlag = logFlag, saveFlag = saveFlag, saveFreq = saveFreq)
         
-        self.setParaVal('nInit', nInit)
+        self.set('nInit', nInit)
 
-        # Initialize the scaler and surrogate model
-        scalers = (StandardScaler(0, 1), StandardScaler(0, 1))
-        self.surrogate = KRG(scalers = scalers)
+        self.surrogate = KRG()
         
         # Initialize the optimizer (Genetic Algorithm)
         optimizer = GA(maxFEs = 10000, verboseFlag = False, saveFlag = False, logFlag = False)
@@ -68,7 +76,7 @@ class EGO(AlgorithmABC):
         self.setup(problem, seed)
         
         # Initialization
-        nInit = self.getParaVal('nInit')
+        nInit = self.get('nInit')
         
         # Define a sub-problem for the optimizer
         subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
@@ -95,7 +103,7 @@ class EGO(AlgorithmABC):
             # Build surrogate model
             self.surrogate.fit(pop.decs, pop.objs)
             
-            res = self.optimizer.run(subProblem)
+            res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
             bestDecs = np.asarray(res.bestDecs)
 
             # Create offspring population

@@ -1,51 +1,24 @@
 import json
-import os
 import pickle
-import re
-import sqlite3
-import uuid
-from datetime import datetime
 
 import numpy as np
 
-
-def _to_json_array(value):
-    if value is None:
-        return None
-    return json.dumps(np.asarray(value).tolist(), ensure_ascii=True)
+from ...core.runtime import array_to_json
+from ...core.runtime_storage import BaseSqliteStorage
 
 
-def _slugify_name(name):
-    text = str(name).strip()
-    text = re.sub(r"[^0-9A-Za-z]+", "_", text)
-    text = re.sub(r"_+", "_", text).strip("_")
-    return text or "problem"
-
-
-class SqliteStorage:
-    def __init__(self, rootDir):
-        self.rootDir = rootDir
-        self.resultDir = os.path.join(rootDir, "Result")
-        os.makedirs(self.resultDir, exist_ok=True)
-
+class SqliteStorage(BaseSqliteStorage):
     def _makeRunId(self, methodName, problemName):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-        suffix = uuid.uuid4().hex[:4]
-        problemSlug = _slugify_name(problemName)
-        return f"{methodName.lower()}_{problemSlug}_{timestamp}_{suffix}"
+        _, runId = self._db_path(methodName, problemName)
+        return runId
 
-    def _dbPath(self, methodName, problemName):
-        runId = self._makeRunId(methodName, problemName)
-        return os.path.join(self.resultDir, f"{runId}.sqlite3"), runId
+    def create_run(self, obj):
+        session = super().create_run(obj)
+        session.conn.execute("PRAGMA journal_mode=MEMORY")
+        return session
 
-    def createRun(self, obj):
+    def _insert_run(self, conn, runId, obj, now):
         problem = obj.problem
-        dbPath, runId = self._dbPath(obj.name, problem.name)
-        conn = sqlite3.connect(dbPath)
-        conn.execute("PRAGMA journal_mode=MEMORY")
-        self._createSchema(conn)
-        now = datetime.now().isoformat(timespec="seconds")
-
         conn.execute(
             """
             INSERT INTO run (
@@ -58,13 +31,13 @@ class SqliteStorage:
                 runId,
                 obj.name,
                 problem.name,
-                obj.getParaVal("seed"),
+                obj.get("seed"),
                 problem.nInput,
                 problem.nOutput,
                 problem.nCons,
-                obj.getParaVal("nChains") if "nChains" in obj.params.data else None,
+                obj.get("nChains") if "nChains" in obj.params.data else None,
                 obj.maxIters,
-                obj.getParaVal("warmUp") if "warmUp" in obj.params.data else None,
+                obj.get("warmUp") if "warmUp" in obj.params.data else None,
                 obj.verboseFreq,
                 obj.saveFreq,
                 "running",
@@ -73,22 +46,13 @@ class SqliteStorage:
                 0.0,
                 now,
                 None,
-                sqlite3.Binary(pickle.dumps(problem, protocol=pickle.HIGHEST_PROTOCOL)),
+                self._problem_blob(problem),
             ),
         )
 
-        for name, value in obj.params.items():
-            conn.execute(
-                "INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)",
-                (runId, name, repr(value)),
-            )
-
-        conn.commit()
-        return {"conn": conn, "dbPath": dbPath, "runId": runId}
-
-    def saveSnapshot(self, storageCtx, obj, result, isFinal=False):
-        conn = storageCtx["conn"]
-        runId = storageCtx["runId"]
+    def saveSnapshot(self, session, obj, result, isFinal=False):
+        conn = session.conn
+        runId = session.run_id
         state = obj.state
 
         cur = conn.execute(
@@ -114,33 +78,28 @@ class SqliteStorage:
         self._insertSnapshotMembers(conn, snapshotId, state)
 
         if isFinal:
-            finishedAt = datetime.now().isoformat(timespec="seconds")
-            conn.execute(
-                """
-                UPDATE run
-                SET status=?, finalFEs=?, finalIters=?, runtime=?, finishedAt=?
-                WHERE runId=?
-                """,
-                ("finished", result.FEs, result.iters, result.runtime, finishedAt, runId),
+            self.finalize_run(
+                session,
+                status="finished",
+                runtime=result.runtime,
+                final_fes=result.FEs,
+                final_iters=result.iters,
             )
 
         conn.commit()
 
-    def saveResultArtifact(self, storageCtx, result):
-        conn = storageCtx["conn"]
-        runId = storageCtx["runId"]
+    def saveResultArtifact(self, session, result):
+        conn = session.conn
+        runId = session.run_id
         conn.execute(
             "INSERT INTO artifact (runId, name, payload) VALUES (?, ?, ?)",
             (
                 runId,
                 "result",
-                sqlite3.Binary(pickle.dumps(result, protocol=pickle.HIGHEST_PROTOCOL)),
+                self._problem_blob(result),
             ),
         )
         conn.commit()
-
-    def close(self, storageCtx):
-        storageCtx["conn"].close()
 
     def _insertSnapshotMembers(self, conn, snapshotId, state):
         if state.decs is None or state.decs.shape[1] == 0:
@@ -157,16 +116,16 @@ class SqliteStorage:
                 (
                     snapshotId,
                     chain,
-                    _to_json_array(state.decs[chain, last]),
-                    _to_json_array(state.objs[chain, last]),
-                    _to_json_array(None if state.cons is None else state.cons[chain, last]),
+                    array_to_json(state.decs[chain, last]),
+                    array_to_json(state.objs[chain, last]),
+                    array_to_json(None if state.cons is None else state.cons[chain, last]),
                     None if state.logProb is None else float(state.logProb[chain, last]),
                     int(state.accepted[chain, last]),
                     int(state.feasibleMask[chain, last]),
                 ),
             )
 
-    def _createSchema(self, conn):
+    def _create_schema(self, conn):
         conn.executescript(
             """
             CREATE TABLE IF NOT EXISTS run (

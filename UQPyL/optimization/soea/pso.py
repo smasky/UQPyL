@@ -11,6 +11,16 @@ from ..core.constraint import betterMask
 class PSO(AlgorithmABC):
     """
     Single-objective particle swarm optimization.
+
+    Examples:
+        >>> pso = PSO(nPop=50, maxFEs=5000)
+        >>> res = pso.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] J. Kennedy and R. Eberhart, Particle swarm optimization,
+            Proceedings of ICNN'95 - International Conference on Neural Networks,
+            vol. 4, pp. 1942-1948, 1995.
     """
     
     name = "PSO"
@@ -47,10 +57,10 @@ class PSO(AlgorithmABC):
                          saveFreq = saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('w', w)
-        self.setParaVal('c1', c1)
-        self.setParaVal('c2', c2)
-        self.setParaVal('nPop', nPop)
+        self.set('w', w)
+        self.set('c1', c1)
+        self.set('c2', c2)
+        self.set('nPop', nPop)
                 
     def run(self, problem, seed: Optional[int] = None):
         """
@@ -66,8 +76,8 @@ class PSO(AlgorithmABC):
         
         # Initialization
         # Retrieve parameter values
-        w, c1, c2 = self.getParaVal('w', 'c1', 'c2')
-        nPop = self.getParaVal('nPop')
+        w, c1, c2 = self.get('w', 'c1', 'c2')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
@@ -121,8 +131,8 @@ class PSO(AlgorithmABC):
         particleVel = vel
         
         # Random coefficients for stochastic behavior
-        r1 = np.random.random((N, D))
-        r2 = np.random.random((N, D))
+        r1 = self.rng.random((N, D))
+        r2 = self.rng.random((N, D))
         
         # Update velocity
         offVel = w * particleVel + (pBestDecs - popDecs) * c1 * r1 + (gBestDecs - popDecs) * c2 * r2
@@ -149,12 +159,16 @@ class PSO(AlgorithmABC):
         n_to_reinit = n_to_reinit if n_to_reinit < D else D
         
         # Randomly select particles and dimensions to mutate
-        rows_to_mutate = np.random.choice(N, size=n_to_reinit, replace=False)
-        cols_to_mutate = np.random.choice(D, size=n_to_reinit, replace=False)
+        rows_to_mutate = self.rng.choice(N, size=n_to_reinit, replace=False)
+        cols_to_mutate = self.rng.choice(D, size=n_to_reinit, replace=False)
 
         offspringDecs = popDecs.copy()
         
         # Reinitialize selected particles
-        offspringDecs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.problem.lb[0, cols_to_mutate], self.problem.ub[0, cols_to_mutate], size=n_to_reinit)
+        offspringDecs[rows_to_mutate, cols_to_mutate] = self.rng.uniform(
+            self.problem.lb[0, cols_to_mutate],
+            self.problem.ub[0, cols_to_mutate],
+            size=n_to_reinit,
+        )
         
         return offspringDecs

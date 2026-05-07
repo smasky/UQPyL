@@ -7,6 +7,8 @@ import numpy as np
 from .chain import Chain
 from .runtime import InfResult, Result, SqliteStorage, Verbose
 from ..doe import LHS
+from ..core.params import Params
+from ..core.runtime_session import RunSession
 from ..problem import ProblemABC
 
 
@@ -57,17 +59,18 @@ class InferenceABC(metaclass=abc.ABCMeta):
         self.logProbFunc = logProbFunc
         self.maxInitAttempts = maxInitAttempts
         self.storage = None
-        self.storageCtx = None
         self.runId = None
-        self.setParaVal("maxInitAttempts", maxInitAttempts)
+        self.session: RunSession | None = None
+        self.set("maxInitAttempts", maxInitAttempts)
         if logProbFunc is not None:
-            self.setParaVal("logProbFunc", getattr(logProbFunc, "__name__", repr(logProbFunc)))
+            self.set("logProbFunc", getattr(logProbFunc, "__name__", repr(logProbFunc)))
 
-    def run(self):
+    @abc.abstractmethod
+    def run(self, problem=None, *args, **kwargs):
         """
         Run the inference workflow.
         """
-        pass
+        raise NotImplementedError
 
     def setup(self, problem: ProblemABC, seed: int = None):
         """
@@ -88,15 +91,15 @@ class InferenceABC(metaclass=abc.ABCMeta):
 
         # Initialize random seed
         if seed is None:
-            seed = np.random.randint(0, 1000000)
-        np.random.seed(seed)
+            seed = int(np.random.default_rng().integers(0, 1000000))
+        self.rng = np.random.default_rng(seed)
 
-        self.setParaVal("seed", seed)
-        self.setParaVal("saveFreq", self.saveFreq)
+        self.set("seed", seed)
+        self.set("saveFreq", self.saveFreq)
 
         if self.saveFlag:
-            self.storageCtx = self.storage.createRun(self)
-            self.runId = self.storageCtx["runId"]
+            self.session = self.storage.create_run(self)
+            self.runId = self.session.run_id
 
         Verbose.printSettings(self)
 
@@ -125,7 +128,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         """
         sampler = LHS()
         if problem.nCons == 0:
-            sampleSeed = np.random.randint(0, 1000000) if seed is None else seed
+            sampleSeed = int(self.rng.integers(0, 1000000)) if seed is None else seed
             X0 = sampler.sample(self.problem, nChains, sampleSeed)
             objs0, cons0 = self.evaluate(X0)
             return X0, objs0, cons0
@@ -134,9 +137,9 @@ class InferenceABC(metaclass=abc.ABCMeta):
         objs = []
         cons = []
         attempts = 0
-        maxAttempts = self.getParaVal("maxInitAttempts")
+        maxAttempts = self.get("maxInitAttempts")
         while len(xs) < nChains and attempts < maxAttempts:
-            sampleSeed = np.random.randint(0, 1000000)
+            sampleSeed = int(self.rng.integers(0, 1000000))
             XBatch = sampler.sample(self.problem, nChains, sampleSeed)
             objsBatch, consBatch = self.evaluate(XBatch)
             if consBatch is None:
@@ -186,8 +189,8 @@ class InferenceABC(metaclass=abc.ABCMeta):
         self.state.update(chains, self.problem, self.FEs, self.iters)
         if self.verboseFlag or self.logFlag:
             Verbose.printIteration(self)
-        if self.saveFlag and self.storageCtx is not None and self.iters % self.saveFreq == 0:
-            self.storage.saveSnapshot(self.storageCtx, self, self.buildResult(), isFinal=False)
+        if self.saveFlag and self.session is not None and self.iters % self.saveFreq == 0:
+            self.storage.saveSnapshot(self.session, self, self.buildResult(), isFinal=False)
         return self.state
 
     def checkTermination(self, chains=None):
@@ -218,11 +221,11 @@ class InferenceABC(metaclass=abc.ABCMeta):
         Verbose.printConclusion(self, result)
         if self.logFlag:
             Verbose.saveLog(self)
-        if self.saveFlag and self.storageCtx is not None:
-            self.storage.saveSnapshot(self.storageCtx, self, result, isFinal=True)
-            self.storage.saveResultArtifact(self.storageCtx, result)
-            self.storage.close(self.storageCtx)
-            self.storageCtx = None
+        if self.saveFlag and self.session is not None:
+            self.storage.saveSnapshot(self.session, self, result, isFinal=True)
+            self.storage.saveResultArtifact(self.session, result)
+            self.storage.close(self.session)
+            self.session = None
         return result
 
     def evaluate(self, decs: np.ndarray):
@@ -254,7 +257,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         feasible = True
         if self.problem.nCons > 0:
             feasible = np.all(np.asarray(consStar) <= 0)
-        return bool(np.log(np.random.rand()) < float(np.ravel(logRatio)[0]) and feasible)
+        return bool(np.log(self.rng.random()) < float(np.ravel(logRatio)[0]) and feasible)
 
     def setProblem(self, problem: ProblemABC):
         """
@@ -265,7 +268,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         """
         self.problem = problem
 
-    def setParaVal(self, key, value):
+    def set(self, key, value):
         """
         Set an inference parameter.
 
@@ -275,7 +278,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         """
         self.params.set(key, value)
 
-    def getParaVal(self, *args):
+    def get(self, *args):
         """
         Retrieve one or more inference parameters.
 
@@ -308,7 +311,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         return lb + y
 
     def _check_gamma_(self, gamma):
-        nChains = self.getParaVal("nChains")
+        nChains = self.get("nChains")
         nInput = self.problem.nInput
 
         if isinstance(gamma, (float, int)):
@@ -329,58 +332,3 @@ class InferenceABC(metaclass=abc.ABCMeta):
         return gamma
 
 
-class Params:
-    """
-    Helper container for inference parameters.
-    """
-
-    def __init__(self):
-        """
-        Initialize the parameter container.
-        """
-        self.data = {}
-
-    @property
-    def dicts(self):
-        return self.data
-
-    @property
-    def keys(self):
-        return list(self.data.keys())
-
-    @property
-    def values(self):
-        return list(self.data.values())
-
-    def items(self):
-        return self.data.items()
-
-    def asDict(self):
-        return dict(self.data)
-
-    def set(self, key, value):
-        """
-        Set a parameter value.
-        """
-        self.data[key] = value
-
-    def get(self, *args):
-        """
-        Get one or more parameter values.
-
-        Args:
-            *args: Parameter names.
-
-        Returns:
-            The requested parameter value or values.
-        """
-        values = [self.data[arg] for arg in args]
-        if len(args) > 1:
-            return tuple(values)
-        return values[0]
-
-    def setPara(self, key, value):
-        self.set(key, value)
-
-    def getVal(self, *args):
-        return self.get(*args)

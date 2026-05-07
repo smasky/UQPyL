@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from UQPyL.problem.sop.single_simple_problem import Sphere
-from UQPyL.util.scaler import StandardScaler
+from UQPyL.surrogate.scaler import StandardScaler
 
 SVR = pytest.importorskip(
     "UQPyL.surrogate.svr.support_vector_machine",

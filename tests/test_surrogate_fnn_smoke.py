@@ -1,7 +1,7 @@
 import numpy as np
 
 from UQPyL.surrogate.fnn.fully_connect_neural_network import FNN
-from UQPyL.util.scaler import StandardScaler
+from UQPyL.surrogate.scaler import StandardScaler
 
 
 def test_fnn_fit_predict_smoke_tiny_epoch():

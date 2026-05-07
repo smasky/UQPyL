@@ -5,13 +5,31 @@ from copy import deepcopy
 
 from .kernel import BaseKernel, RBF
 from ..util.boxmin import Boxmin
+from ..util.lbfgsb import LBFGSB
 from ...problem import Problem
+from ...core import spawn_seed
 from ..base import SurrogateABC
 from ...optimization import AlgorithmABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class GPR(SurrogateABC):
+    """
+    Gaussian process regression surrogate model.
+
+    This model supports predictive uncertainty output through `returnStd`
+    or `returnVar`, and allows kernel hyper-parameters to be optimized by
+    internal MP or EA optimizers.
+
+    Examples:
+        >>> model = GPR()
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred, yStd = model.predict(xPred, returnStd=True)
+
+    References:
+        [1] C. E. Rasmussen and C. K. I. Williams, Gaussian Processes for Machine Learning,
+            MIT Press, 2006.
+    """
     
     name = "GPR"
     supportsUncertainty = True
@@ -21,7 +39,7 @@ class GPR(SurrogateABC):
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                     polyFeature: PolyFeature = None,
                         kernel: BaseKernel = RBF(),
-                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: int = 0,
+                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: int = 5,
                                     C: float = 1e-9,
                                     C_attr: dict = {'ub': 1e-6, 'lb':1e-12, 
                                                         'type': 'float', 
@@ -31,10 +49,14 @@ class GPR(SurrogateABC):
         
         self.kernel = None
         
-        self.setting.setPara("C", C, C_attr)
+        self.setting.set("C", C, C_attr)
         
         if optimizer == "Boxmin":
             optimizer = Boxmin()
+        elif optimizer == "LBFGSB":
+            optimizer = LBFGSB()
+        elif getattr(optimizer, "type", None) == "MP":
+            pass
         elif isinstance(optimizer, AlgorithmABC):
             alg_type = getattr(optimizer, "alg_type", getattr(optimizer, "type", None))
             optimizer.verboseFlag = False
@@ -46,7 +68,7 @@ class GPR(SurrogateABC):
                 )
         else:
             raise ValueError(
-                "GPR optimizer must be 'Boxmin' or an AlgorithmABC instance in MP/EA."
+                "GPR optimizer must be 'Boxmin', 'LBFGSB', an MP optimizer, or an AlgorithmABC instance in MP/EA."
             )
             
         self.optimizer = optimizer
@@ -129,7 +151,7 @@ class GPR(SurrogateABC):
             problem = Problem(nInput = nInput, nObj = 1, ub = ub, lb = lb, 
                                 objFunc = objFunc)
             
-            bestDecs, bestObj = self.optimizer.run(problem)
+            bestDecs, bestObj = self.optimizer.run(problem, seed=spawn_seed(self.rng))
         
         elif alg_type == "EA":
             
@@ -147,13 +169,13 @@ class GPR(SurrogateABC):
             
             problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
-            res = self.optimizer.run(problem)
+            res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
             bestDecs = np.asarray(res.bestDecs).ravel()
             bestObj = float(np.asarray(res.bestObjs).reshape(-1)[0])
             
             for _ in range(self.nRes):
                 
-                res = self.optimizer.run(problem)
+                res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
                 dec = np.asarray(res.bestDecs).ravel()
                 obj = float(np.asarray(res.bestObjs).reshape(-1)[0])
                 
@@ -176,7 +198,7 @@ class GPR(SurrogateABC):
         
         K = self.kernel(xTrain)
         
-        C = self.setting.getVals("C")
+        C = self.setting.get("C")
         
         K[np.diag_indices_from(K)] += C
         

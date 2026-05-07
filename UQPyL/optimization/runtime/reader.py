@@ -2,48 +2,24 @@ import json
 import pickle
 import sqlite3
 from importlib import import_module
-from pathlib import Path
 
 import numpy as np
 
+from ...core.runtime import export_reader_summary, from_json_array
+from ...core.runtime_reader import BaseReader
 from ..population import Population
 
 
-def _from_json_array(text):
-    if text is None:
-        return None
-    return np.asarray(json.loads(text))
-
-
-class OptReader:
+class OptReader(BaseReader):
     """
     Read optimization results from sqlite files.
     """
-    @staticmethod
-    def listRuns(resultDir):
-        resultPath = Path(resultDir)
-        if resultPath.is_file():
-            resultPath = resultPath.parent
-        if resultPath.name.lower() != "result" and (resultPath / "Result").exists():
-            resultPath = resultPath / "Result"
-        rows = []
-        for dbPath in sorted(resultPath.glob("*.sqlite3")):
-            conn = sqlite3.connect(dbPath)
-            conn.row_factory = sqlite3.Row
-            run = conn.execute(
-                """
-                SELECT runId, algorithm, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt
-                FROM run
-                LIMIT 1
-                """
-            ).fetchone()
-            conn.close()
-            if run is None:
-                continue
-            item = dict(run)
-            item["dbPath"] = str(dbPath)
-            rows.append(item)
-        return rows
+    @classmethod
+    def list_runs(cls, result_dir):
+        return super().list_runs(
+            result_dir,
+            run_columns="runId, algorithm, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
+        )
 
     def __init__(self, dbPath):
         self.dbPath = str(dbPath)
@@ -53,31 +29,52 @@ class OptReader:
     def close(self):
         self.conn.close()
 
-    def getRun(self):
+    def get_run(self):
         row = self.conn.execute("SELECT * FROM run LIMIT 1").fetchone()
         return dict(row) if row is not None else None
 
-    def getRunParams(self):
+    def get_run_params(self):
         rows = self.conn.execute("SELECT name, value FROM runParam ORDER BY name").fetchall()
         return {row["name"]: row["value"] for row in rows}
 
-    def loadAlgorithm(self):
-        run = self.getRun()
+    def get_run_summary(self):
+        run = self.get_run()
+        if run is None:
+            raise ValueError("No run record found in sqlite database.")
+        return export_reader_summary(
+            run_id=run["runId"],
+            method=run["algorithm"],
+            problem_name=run["problem"],
+            n_input=run["nInput"],
+            n_output=run["nObj"],
+            n_con=run["nCon"],
+            runtime=0.0 if run["runtime"] is None else float(run["runtime"]),
+            created_at=run["createdAt"],
+            finished_at=run["finishedAt"],
+            extra={
+                "status": run["status"],
+                "final_fes": run["finalFEs"],
+                "final_iters": run["finalIters"],
+            },
+        )
+
+    def load_algorithm(self):
+        run = self.get_run()
         if run is None:
             raise ValueError("No run record found in sqlite database.")
 
         cls = self._resolveAlgorithmClass(run["algorithm"])
-        params = self.getRunParams()
+        params = self.get_run_params()
         kwargs = self._parseAlgorithmParams(params)
         return cls(**kwargs)
 
-    def loadProblem(self):
+    def load_problem(self):
         row = self.conn.execute("SELECT problemPayload FROM run LIMIT 1").fetchone()
         if row is None or row["problemPayload"] is None:
             raise ValueError("No problem payload found in sqlite database.")
         return pickle.loads(row["problemPayload"])
 
-    def listSnapshots(self):
+    def list_snapshots(self):
         rows = self.conn.execute(
             """
             SELECT snapshotId, iter, fe, elapsed, bestObj, paretoSize, hypervolume, constraintViolation
@@ -87,10 +84,10 @@ class OptReader:
         ).fetchall()
         return [dict(row) for row in rows]
 
-    def loadPopulation(self, snapshotId):
+    def load_population(self, snapshotId):
         return self._loadByRole(snapshotId, "population")
 
-    def loadBest(self, snapshotId):
+    def load_best(self, snapshotId):
         rows = self.conn.execute(
             "SELECT DISTINCT role FROM snapshotMember WHERE snapshotId = ? AND role IN ('best', 'pareto')",
             (snapshotId,),
@@ -102,13 +99,13 @@ class OptReader:
             return self._loadByRole(snapshotId, "pareto")
         raise ValueError(f"No best/pareto records found for snapshotId={snapshotId}")
 
-    def loadLastPopulation(self):
+    def load_last_population(self):
         snapshotId = self._getLastSnapshotId()
-        return self.loadPopulation(snapshotId)
+        return self.load_population(snapshotId)
 
-    def loadLastBest(self):
+    def load_last_best(self):
         snapshotId = self._getLastSnapshotId()
-        return self.loadBest(snapshotId)
+        return self.load_best(snapshotId)
 
     def _getLastSnapshotId(self):
         row = self.conn.execute("SELECT snapshotId FROM snapshot ORDER BY snapshotId DESC LIMIT 1").fetchone()
@@ -138,9 +135,9 @@ class OptReader:
         crowdDis = []
 
         for row in rows:
-            decs.append(_from_json_array(row["decs"]))
-            obj = _from_json_array(row["objs"])
-            con = _from_json_array(row["cons"])
+            decs.append(from_json_array(row["decs"]))
+            obj = from_json_array(row["objs"])
+            con = from_json_array(row["cons"])
             if obj is None:
                 hasObjs = False
             else:

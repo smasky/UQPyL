@@ -97,6 +97,46 @@ def test_dream_zs_run_smoke_small_iters():
     assert res.decs.shape == (3, 2, 2)
 
 
+def test_mh_run_does_not_mutate_global_random_state():
+    from UQPyL.inference import MH
+
+    problem = _make_problem(2)
+    np.random.seed(13579)
+    expected_next = np.random.RandomState(13579).rand()
+
+    alg = MH(nChains=2, warmUp=0, maxIters=3, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
+    alg.run(problem, gamma=0.05, seed=123)
+
+    got_next = np.random.rand()
+    assert np.isclose(got_next, expected_next)
+
+
+def test_dream_zs_run_does_not_mutate_global_random_state():
+    problem = _make_problem(2)
+    np.random.seed(24680)
+    expected_next = np.random.RandomState(24680).rand()
+
+    alg = DREAM_ZS(
+        nChains=3,
+        warmUp=0,
+        maxIters=2,
+        ps=1.0,
+        k=1,
+        jitter=0.0,
+        adpInterval=1,
+        archSize=1,
+        acTarget=0.25,
+        nCR=3,
+        verboseFlag=False,
+        logFlag=False,
+        saveFlag=False,
+    )
+    alg.run(problem, gamma=0.05, seed=123)
+
+    got_next = np.random.rand()
+    assert np.isclose(got_next, expected_next)
+
+
 def test_amh_helpers_update_covs_and_check_alpha():
     from UQPyL.inference import AMH
     from UQPyL.inference.chain import Chain
@@ -104,7 +144,7 @@ def test_amh_helpers_update_covs_and_check_alpha():
     problem = _make_problem(3)
     alg = AMH(nChains=2, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(problem, seed=123)
-    alg.setParaVal("nChains", 2)
+    alg.set("nChains", 2)
 
     # _check_alpha branches
     assert alg._check_alpha(0.1).shape == (2, 3)
@@ -127,7 +167,7 @@ def test_demc_helpers_check_alpha_and_f_prop():
     problem = _make_problem(2)
     alg = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(problem, seed=123)
-    alg.setParaVal("nChains", 3)
+    alg.set("nChains", 3)
 
     # _check_alpha branches
     assert alg._check_alpha(0.1).shape == (3, 2)

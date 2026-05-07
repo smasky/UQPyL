@@ -10,6 +10,7 @@ import uuid
 from UQPyL.doe import FASTDesign, LHS, MorrisDesign, SaltelliDesign
 from UQPyL.analysis import FAST, RBDFAST, RSA, Sobol, MARS
 from UQPyL.analysis.runtime import AnaReader
+from UQPyL.core.runtime import build_db_path
 from UQPyL.problem import ProblemABC
 from UQPyL.problem.problem import Problem
 
@@ -229,11 +230,11 @@ def test_ana_result_convenience_api():
 
     summary = res.summary()
     assert summary["method"] == "FAST"
-    assert "S1" in summary["metricNames"]
+    assert "S1" in summary["metric_names"]
 
     payload = res.toDict()
     assert payload["method"] == "FAST"
-    assert payload["runId"] is None
+    assert payload["run_id"] is None
     assert payload["meta"]["designType"] == "fast"
     assert isinstance(payload["metrics"], list)
     assert payload["metrics"][0]["name"] in res.metricNames
@@ -332,17 +333,17 @@ def test_ana_reader_context_and_metric_lookup(monkeypatch):
     monkeypatch.setattr("UQPyL.analysis.runtime.reader.sqlite3.connect", _connect)
 
     with AnaReader("dummy.sqlite3") as reader:
-        metric = reader.getMetric("S1")
-        res = reader.loadResult()
-        summary = reader.getRunSummary()
+        metric = reader.get_metric("S1")
+        res = reader.load_result()
+        summary = reader.get_run_summary()
 
     assert metric.name == "S1"
     assert res.runId == "demo_001"
     assert res.problemName == "DemoProblem"
-    assert summary["runId"] == "demo_001"
-    assert summary["problemName"] == "DemoProblem"
-    assert "S1" in summary["metricNames"]
-    assert "settings" in summary["artifactNames"]
+    assert summary["run_id"] == "demo_001"
+    assert summary["problem_name"] == "DemoProblem"
+    assert "S1" in summary["metric_names"]
+    assert "settings" in summary["artifact_names"]
     assert np.allclose(metric.values, res.getMetric("S1").values)
     assert res.settings["M"] == 4
     assert res.target == "objs"
@@ -356,10 +357,14 @@ def test_analysis_storage_runid_includes_problem_slug():
     fast.setProblem(problem)
     storage = __import__("UQPyL.analysis.runtime.storage", fromlist=["SqliteStorage"]).SqliteStorage(".cache")
 
-    dbPath, runId = storage._dbPath(fast.name, problem.name)
+    dbPath, runId = storage._db_path(fast.name, problem.name)
 
     assert "fast_My_Problem_1_" in runId
     assert dbPath.endswith(f"{runId}.sqlite3")
+
+    commonDbPath, commonRunId = build_db_path(".cache/Result", fast.name, problem.name)
+    assert "fast_My_Problem_1_" in commonRunId
+    assert commonDbPath.endswith(f"{commonRunId}.sqlite3")
 
 
 def test_analysis_list_runs_includes_filename():
@@ -417,9 +422,9 @@ def test_analysis_list_runs_includes_filename():
     reader_mod.sqlite3.connect = fake_connect
     Path.glob = fake_glob
     try:
-        runs = AnaReader.listRuns(".cache")
+        runs = AnaReader.list_runs(".cache")
         assert len(runs) >= 1
-        matched = next(item for item in runs if item["runId"] == "fast_Demo_20260503_1817_abcd")
+        matched = next(item for item in runs if item["run_id"] == "fast_Demo_20260503_1817_abcd")
         assert matched["fileName"] == dbPath.name
         assert matched["dbPath"].endswith(dbPath.name)
     finally:

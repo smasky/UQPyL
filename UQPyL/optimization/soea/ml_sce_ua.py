@@ -11,6 +11,15 @@ from ..core.constraint import compareSolutions
 class ML_SCE_UA(AlgorithmABC):
     """
     Single-objective M&L shuffled complex evolution algorithm.
+
+    Examples:
+        >>> ml_sce = ML_SCE_UA(maxFEs=5000)
+        >>> res = ml_sce.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] N. Muttil and S.-Y. Liong, Assessment of the improved shuffled complex evolution algorithm,
+            Proceedings of the iEMSs Third Biennial Meeting, 2006.
     """
     
     name = "ML-SCE-UA"
@@ -50,13 +59,13 @@ class ML_SCE_UA(AlgorithmABC):
                          saveFreq = saveFreq)
         
         # Set algorithm parameters
-        self.setParaVal('ngs', ngs)
-        self.setParaVal('npg', npg)
-        self.setParaVal('nps', nps)
-        self.setParaVal('nspl', nspl)
-        self.setParaVal('alpha', alpha)
-        self.setParaVal('beta', beta)
-        self.setParaVal('sita', sita)
+        self.set('ngs', ngs)
+        self.set('npg', npg)
+        self.set('nps', nps)
+        self.set('nspl', nspl)
+        self.set('alpha', alpha)
+        self.set('beta', beta)
+        self.set('sita', sita)
         
     def run(self, problem, seed: Optional[int] = None):
         """
@@ -70,8 +79,8 @@ class ML_SCE_UA(AlgorithmABC):
         self.setup(problem, seed)
         
         # Retrieve parameter values
-        ngs, npg, nps, nspl = self.getParaVal('ngs', 'npg', 'nps', 'nspl')
-        alpha, beta, sita = self.getParaVal('alpha', 'beta', 'sita')
+        ngs, npg, nps, nspl = self.get('ngs', 'npg', 'nps', 'nspl')
+        alpha, beta, sita = self.get('alpha', 'beta', 'sita')
     
         # Adjust number of complexes if necessary
         if ngs == 0:
@@ -104,7 +113,7 @@ class ML_SCE_UA(AlgorithmABC):
                 for _ in range(nspl):
                     # Select simplex by sampling the complex according to a linear probability distribution
                     p = 2 * (npg + 1 - np.linspace(1, npg, npg)) / ((npg + 1) * npg)
-                    innerIdx = np.random.choice(npg, nps, p=p, replace=False)
+                    innerIdx = self.rng.choice(npg, nps, p=p, replace=False)
                     innerIdx = np.sort(innerIdx)
                     sPop = igsPop[innerIdx]
                     bPop = igsPop[0]
@@ -166,7 +175,7 @@ class ML_SCE_UA(AlgorithmABC):
         
         # Random point if both reflection and contraction fail
         if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorst.cons, self.problem.conWgt) >= 0:
-            sNewDecs = self.problem.lb + np.random.random(D) * (self.problem.ub - self.problem.lb)
+            sNewDecs = self.problem.lb + self.rng.random(D) * (self.problem.ub - self.problem.lb)
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
         

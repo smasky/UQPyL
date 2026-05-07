@@ -9,6 +9,17 @@ from ..core import tourSelect, uniformPoint, NDSort, crowdingDist, gaOperator
 class NSGAIII(AlgorithmABC):
     """
     Multi-objective NSGA-III algorithm.
+
+    Examples:
+        >>> nsgaiii = NSGAIII(nPop=92, maxFEs=5000)
+        >>> res = nsgaiii.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] K. Deb and H. Jain, An evolutionary many-objective optimization algorithm
+            using reference-point-based nondominated sorting approach, part I:
+            solving problems with box constraints, IEEE Transactions on Evolutionary
+            Computation, vol. 18, no. 4, pp. 577-601, 2014.
     """
     
     name = "NSGAIII"
@@ -43,11 +54,11 @@ class NSGAIII(AlgorithmABC):
                          verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('proC', proC)
-        self.setParaVal('disC', disC)
-        self.setParaVal('proM', proM)
-        self.setParaVal('disM', disM)
-        self.setParaVal('nPop', nPop)
+        self.set('proC', proC)
+        self.set('disC', disC)
+        self.set('proM', proM)
+        self.set('disM', disM)
+        self.set('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
     def run(self, problem, seed: Optional[int] = None):
@@ -62,8 +73,8 @@ class NSGAIII(AlgorithmABC):
         self.setup(problem, seed)
         
         # Parameter Setting
-        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaVal('nPop')
+        proC, disC, proM, disM = self.get('proC', 'disC', 'proM', 'disM')
+        nPop = self.get('nPop')
 
         # Generate uniform reference points
         Z, nPop = uniformPoint(nPop, problem.nOutput)
@@ -82,11 +93,11 @@ class NSGAIII(AlgorithmABC):
             crowdDis = crowdingDist(pop.objs, frontNo) 
 
             # Select mating pool using tournament selection
-            matingIdx = tourSelect(2, len(pop), frontNo, -crowdDis)
+            matingIdx = tourSelect(2, len(pop), frontNo, -crowdDis, rng=self.rng)
             matingPool = pop[matingIdx]
            
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring
@@ -204,7 +215,7 @@ class NSGAIII(AlgorithmABC):
             if Temp.size == 0:
                 break
             Jmin = Temp[np.where(rho[Temp] == np.min(rho[Temp]))[0]]
-            j = Jmin[np.random.randint(len(Jmin))]
+            j = Jmin[int(self.rng.integers(len(Jmin)))]
 
             # Find unselected solutions associated with this reference point
             I = np.where((~Choose) & (pi[N1:] == j))[0]
@@ -213,7 +224,7 @@ class NSGAIII(AlgorithmABC):
                 if rho[j] == 0:
                     s = np.argmin(d[N1 + I])
                 else:
-                    s = np.random.choice(I.size)
+                    s = int(self.rng.choice(I.size))
                 Choose[I[s]] = True
                 rho[j] += 1
             else:

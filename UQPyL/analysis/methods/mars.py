@@ -1,8 +1,7 @@
 import numpy as np
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
-from ...util import MinMaxScaler, Scaler
 from ...problem import ProblemABC as Problem
 
 from ...surrogate.mars import MARS as MARSModel
@@ -29,20 +28,16 @@ class MARS(AnalysisABC):
     
     name = "MARS"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
+    def __init__(self, verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the MARS method.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-        
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
+        super().__init__(verboseFlag, logFlag, saveFlag)
     
     def _analyzeCore(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
                      target: str = 'objs', index: AnaIndex = 'all') -> None:
@@ -64,8 +59,7 @@ class MARS(AnalysisABC):
         Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         nInput = problem.nInput
         
         outputLabel = "obj" if target == "objs" else "con"
@@ -80,14 +74,14 @@ class MARS(AnalysisABC):
             Y_i = Y[:, i:i+1]
         
             # Main process: Fit the MARS model and calculate sensitivity indices
-            mars = MARSModel(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
+            mars = MARSModel()
             mars.fit(X, Y_i)
             base_gcv = mars.gcv_
 
             # Calculate first-order sensitivity indices for each input variable
             for j in range(nInput):
                 X_sub = np.delete(X, [j], axis=1)
-                mars = MARSModel(scalers=(MinMaxScaler(0, 1), MinMaxScaler(0, 1)))
+                mars = MARSModel()
                 mars.fit(X_sub, Y_i)
                 S1[i, j] = np.abs(base_gcv - mars.gcv_)
             
@@ -98,8 +92,6 @@ class MARS(AnalysisABC):
                 S1_norm[i] = S1[i] / total
         
         res = [('S1', S1, row_label, col_label_1, 'decsDim1'), ('S1_norm', S1_norm, row_label, col_label_1, 'decsDim1')]
-        
-        X, Y = self.__reverse_X_Y__(X, Y)
         
         self.recordResult(X, Y, res, target=target, meta=meta)
         

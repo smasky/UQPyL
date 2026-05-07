@@ -36,6 +36,12 @@
 pip install -U UQPyL
 ```
 
+If you need plotting utilities:
+
+```python
+pip install -U "UQPyL[viz]"
+```
+
 ```python
 conda install UQPyL --upgrade
 ```
@@ -46,6 +52,12 @@ Alternatively:
 git clone https://github.com/smasky/UQPyL.git 
 cd UQPyL
 pip install .
+```
+
+For local installs with plotting support:
+
+```python
+pip install ".[viz]"
 ```
 
 ## 🚀 Getting Started

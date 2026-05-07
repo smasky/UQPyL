@@ -13,6 +13,16 @@ class DREAM_ZS(InferenceABC):
         >>> dream = DREAM_ZS(nChains=8, warmUp=500, maxIters=2000)
         >>> res = dream.run(problem, seed=1234)
         >>> print(res.acceptanceRate)
+
+    References:
+        [1] J. A. Vrugt, C. J. F. ter Braak, C. G. H. Diks, D. Higdon, B. A. Robinson,
+            and J. M. Hyman, Accelerating Markov chain Monte Carlo simulation by
+            differential evolution with self-adaptive randomized subspace sampling,
+            International Journal of Nonlinear Sciences and Numerical Simulation,
+            vol. 10, no. 3, pp. 273-290, 2009.
+        [2] J. A. Vrugt, C. J. F. ter Braak, M. P. Clark, J. M. Hyman, and B. A. Robinson,
+            Treatment of input uncertainty in hydrologic modeling: Doing hydrology backward
+            with Markov chain Monte Carlo simulation, Water Resources Research, vol. 44, no. 12, 2008.
     """
     
     name = "DREAM-ZS"
@@ -54,29 +64,29 @@ class DREAM_ZS(InferenceABC):
             saveFreq, logProbFunc, maxInitAttempts,
         )
         
-        self.setParaVal('nChains', nChains)
-        self.setParaVal('warmUp', warmUp)
-        self.setParaVal('ps', ps)
-        self.setParaVal('k', k)
-        self.setParaVal('nCR', nCR)
-        self.setParaVal('jitter', jitter)
-        self.setParaVal('archSize', archSize)
-        self.setParaVal('adpInterval', adpInterval)
-        self.setParaVal('acTarget', acTarget)
+        self.set('nChains', nChains)
+        self.set('warmUp', warmUp)
+        self.set('ps', ps)
+        self.set('k', k)
+        self.set('nCR', nCR)
+        self.set('jitter', jitter)
+        self.set('archSize', archSize)
+        self.set('adpInterval', adpInterval)
+        self.set('acTarget', acTarget)
     
     def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
         
         self.setup(problem, seed)
         
-        nChains = self.getParaVal('nChains')
-        warmUp = self.getParaVal('warmUp')
-        ps = self.getParaVal('ps')
-        jitter = self.getParaVal('jitter')
-        k = self.getParaVal('k')
-        archSize = self.getParaVal('archSize')
-        adpInterval = self.getParaVal('adpInterval')
-        nCR = self.getParaVal('nCR')
-        acTarget = self.getParaVal('acTarget')
+        nChains = self.get('nChains')
+        warmUp = self.get('warmUp')
+        ps = self.get('ps')
+        jitter = self.get('jitter')
+        k = self.get('k')
+        archSize = self.get('archSize')
+        adpInterval = self.get('adpInterval')
+        nCR = self.get('nCR')
+        acTarget = self.get('acTarget')
         
         crSet = np.linspace(0.1, 0.9, nCR)
         pCR = np.ones(nCR) / nCR
@@ -207,7 +217,7 @@ class DREAM_ZS(InferenceABC):
 
     def validateProblem(self):
         super().validateProblem()
-        if self.getParaVal('nChains') < 3:
+        if self.get('nChains') < 3:
             raise ValueError("DREAM_ZS requires nChains >= 3.")
 
     def f_prop_ratio(self, X_cur, archive, ps, k, jitter, gamma, gamma_scale, crSet, pCR, cr_tries, ub, lb):
@@ -220,14 +230,14 @@ class DREAM_ZS(InferenceABC):
         
         crIdxs = np.full(nChains, -1)
         
-        gamma = gamma * gamma_scale * (1.0 + jitter * np.random.normal(0, 1))
+        gamma = gamma * gamma_scale * (1.0 + jitter * self.rng.normal(0, 1))
         
         for i in range(nChains):
             
-            if np.random.rand() < ps:
+            if self.rng.random() < ps:
                 X_star[i], q_ratio = self.snooker_update(i, X_cur, archive, gamma[i])
             else:
-                cr_idx = np.random.choice(crSet.shape[0], p = pCR)
+                cr_idx = self.rng.choice(crSet.shape[0], p=pCR)
                 cr = crSet[cr_idx]
                 crIdxs[i] = cr_idx
                 cr_tries[cr_idx] += 1
@@ -241,22 +251,22 @@ class DREAM_ZS(InferenceABC):
         
         x_i = X_cur[i]
         
-        z = archive[np.random.randint(0, len(archive))]
+        z = archive[int(self.rng.integers(0, len(archive)))]
                 
         idx = [k for k in range(X_cur.shape[0]) if k != i]
         
-        r, s = np.random.choice(idx, size = 2, replace = False)
+        r, s = self.rng.choice(idx, size=2, replace=False)
         
         v = X_cur[r] - X_cur[s]
         v_norm2 = np.dot(v, v)
         
         if v_norm2 == 0:
-            v = np.random.normal(X_cur.shape[1]) * 1e-6
+            v = self.rng.normal(size=X_cur.shape[1]) * 1e-6
             v_norm2 = np.dot(v, v)
         
         proj = np.dot(v, z - x_i) / v_norm2
         
-        x_prop = x_i + gamma * proj * v + 1e-6 * np.random.rand()
+        x_prop = x_i + gamma * proj * v + 1e-6 * self.rng.random()
         
         q_ratio = (np.dot(x_prop - X_cur[r], x_prop - X_cur[s]) / np.dot(x_i - X_cur[r], x_i - X_cur[s]))
         q_ratio = abs(q_ratio) ** (X_cur.shape[1] / 2)
@@ -277,7 +287,7 @@ class DREAM_ZS(InferenceABC):
         pool_idx = np.concatenate([pool_idx_X, pool_idx_A])
         
         need = 2 * k
-        choose = np.random.choice(pool_idx, size = need, replace = False)
+        choose = self.rng.choice(pool_idx, size=need, replace=False)
         
         delta = np.zeros(d)
         for i in range(k):
@@ -285,9 +295,9 @@ class DREAM_ZS(InferenceABC):
             b_idx = choose[2 * i + 1]
             delta += pool[a_idx] - pool[b_idx]
 
-        mask = np.random.rand(d) < cr
+        mask = self.rng.random(d) < cr
         if not mask.any():
-            mask[np.random.randint(0, d)] = True
+            mask[int(self.rng.integers(0, d))] = True
         
         x_prop = x_i.copy()
         x_prop[mask] = x_prop[mask] + gamma[mask] * delta[mask] + 1e-6

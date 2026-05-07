@@ -5,8 +5,8 @@ from UQPyL.surrogate.auto_tuner import AutoTuner
 from UQPyL.surrogate.rbf.radial_basis_function import RBF
 from UQPyL.surrogate.rbf.kernel import Cubic, Gaussian
 from UQPyL.surrogate.regression.linear_regression import LinearRegression
-from UQPyL.util.scaler import StandardScaler
-from UQPyL.util.poly import PolyFeature
+from UQPyL.surrogate.scaler import StandardScaler
+from UQPyL.surrogate.poly import PolyFeature
 
 
 def test_autotuner_grid_tune_smoke():
@@ -146,4 +146,36 @@ def test_autotuner_grid_tune_uses_raw_test_data_for_predict():
 
     assert isinstance(best_vals, (float, int, np.ndarray))
     assert np.isfinite(best_obj)
+
+
+def test_autotuner_opt_tune_spawns_seed_for_inner_optimizer():
+    class _DummyOptimizer:
+        def __init__(self):
+            self.seeds = []
+
+        def run(self, problem=None, seed=None, **kwargs):
+            self.seeds.append(seed)
+
+            class _Res:
+                bestDecs = np.zeros((1, problem.nInput))
+                bestObjs = np.zeros((1, 1))
+
+            return _Res()
+
+    x = np.linspace(0, 1, 10).reshape(-1, 1)
+    y = (x**2) + 0.1
+
+    model = RBF(scalers=(StandardScaler(0, 1), StandardScaler(0, 1)))
+    optimizer = _DummyOptimizer()
+    tuner = AutoTuner(model=model, optimizer=optimizer)
+    tuner.optTune(
+        xData=x,
+        yData=y,
+        paraList=["C_smooth"],
+        ratio=20,
+        tuneMode="separate",
+    )
+
+    assert optimizer.seeds
+    assert optimizer.seeds[0] is not None
 

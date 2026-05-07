@@ -2,13 +2,21 @@ import numpy as np
 from typing import Literal, Tuple, Optional, Union
 
 from .linear_regression import LinearRegression
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class PolynomialRegression(LinearRegression):
     
     """
-    PolynomialRegression
+    Polynomial regression surrogate model.
+
+    This model augments the input space with polynomial features, then fits
+    an underlying linear, ridge, or lasso regression model.
+
+    Examples:
+        >>> model = PolynomialRegression(degree=2, lossType='Origin')
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
     """
     
     name = "PR"
@@ -42,12 +50,12 @@ class PolynomialRegression(LinearRegression):
         self.registerChoiceParameter("onlyInteraction", [False, True], owner="model")
         self.registerParameterApplier("lossType", self.setLossType)
         self.registerParameterApplier("onlyInteraction", self.setOnlyInteraction)
-        self.setting.setPara("degree", degree, degree_attr)
-        self.setting.setPara("C", C, C_attr)
-        self.setting.setPara("maxIter", maxIter)
-        self.setting.setPara("maxEpoch", maxEpoch)
-        self.setting.setPara("tol", tolerance)
-        self.setting.setPara("p0", p0)
+        self.setting.set("degree", degree, degree_attr)
+        self.setting.set("C", C, C_attr)
+        self.setting.set("maxIter", maxIter)
+        self.setting.set("maxEpoch", maxEpoch)
+        self.setting.set("tol", tolerance)
+        self.setting.set("p0", p0)
         self.setLossType(lossType)
         self.setOnlyInteraction(onlyInteraction)
         

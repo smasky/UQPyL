@@ -1,12 +1,11 @@
 [build-system]
 requires = [
     "setuptools",
-    "scipy",
     "wheel",
     "Cython",
     "pybind11",
     "numpy>=1.26",
-    
+    "scipy",
 ]
 
 build-backend = "setuptools.build_meta"
@@ -17,19 +16,13 @@ version = "2.1.5"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
-license = "MIT"
-license-files = ["LICENSE.md"]
+license = {text = "MIT"}
 description = "A python package for parameter uncertainty quantification and optimization"
 readme = "README.md"
+requires-python = ">=3.8"
 dependencies = [
-  "numpy>=1.26",
-  "scipy",
-  "prettytable",
-  "xarray",
-  # netCDF4 wheels for py38 on Windows can be missing for newer releases,
-  # causing pip to fall back to a source build that requires HDF5 headers.
-  "netcdf4<1.7; python_version<'3.9'",
-  "netcdf4; python_version>='3.9'",
+    "numpy>=1.26",
+    "scipy",
 ]
 classifiers = [
     "Programming Language :: Python :: 3.8",
@@ -40,6 +33,14 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
 ]
+
+[project.optional-dependencies]
+viz = ["matplotlib"]
+
+[project.urls]
+Homepage = "https://uqpyl.readthedocs.io"
+Repository = "https://github.com/smasky/UQPyL"
+Documentation = "https://uqpyl.readthedocs.io"
 
 [tool.pytest.ini_options]
 # Only collect tests from the real test suite.
@@ -52,7 +53,6 @@ norecursedirs = [
   "examples",
   "build",
   "Result",
-  ".GUI",
   ".history",
   ".ipynb_checkpoints",
   ".cache",
@@ -63,6 +63,8 @@ filterwarnings = [
   # Massive noisy warning emitted indirectly during MARS training in tests.
   # It is safe to ignore in test output; fix requires deeper changes in the embedded MARS implementation.
   "ignore:The truth value of an empty array is ambiguous.*:DeprecationWarning",
+  # pytest helper deprecation; test behavior remains valid.
+  "ignore:Passing None has been deprecated.*:pytest.PytestRemovedIn8Warning",
   # Harmless but noisy in some environments.
   "ignore:The NumPy module was reloaded.*:UserWarning",
   # Environment-level binary mismatch warning (wheel/conda mix); does not affect unit test logic here.

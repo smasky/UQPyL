@@ -14,6 +14,11 @@ class DEMC(InferenceABC):
         >>> demc = DEMC(nChains=6, warmUp=500, maxIterTimes=2000)
         >>> res = demc.run(problem, seed=1234)
         >>> print(res.bestObjs)
+
+    References:
+        [1] C. J. F. ter Braak, A Markov Chain Monte Carlo version of the genetic algorithm
+            Differential Evolution: easy Bayesian computing for real parameter spaces,
+            Statistics and Computing, vol. 16, no. 3, pp. 239-249, 2006.
     """
     
     name = "DEMC"
@@ -45,14 +50,14 @@ class DEMC(InferenceABC):
             saveFreq, logProbFunc, maxInitAttempts,
         )
                 
-        self.setParaVal('nChains', nChains)
-        self.setParaVal('warmUp', warmUp)
+        self.set('nChains', nChains)
+        self.set('warmUp', warmUp)
     
     def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
         
         self.setup(problem, seed)
         
-        nChains = self.getParaVal('nChains'); warmUp = self.getParaVal('warmUp')
+        nChains = self.get('nChains'); warmUp = self.get('warmUp')
         
         X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains)
         
@@ -119,7 +124,7 @@ class DEMC(InferenceABC):
     
     def _check_alpha(self, alpha):
         
-        nChains = self.getParaVal('nChains')
+        nChains = self.get('nChains')
         nInput = self.problem.nInput
         
         if isinstance(alpha, float):
@@ -141,7 +146,7 @@ class DEMC(InferenceABC):
 
     def validateProblem(self):
         super().validateProblem()
-        if self.getParaVal('nChains') < 3:
+        if self.get('nChains') < 3:
             raise ValueError("DEMC requires nChains >= 3.")
     
     
@@ -167,7 +172,7 @@ class DEMC(InferenceABC):
         for i in range(nChains):
             
             idx = [j for j in range(nChains) if j != i]
-            j, k = np.random.choice(idx, 2, replace=False)
+            j, k = self.rng.choice(idx, 2, replace=False)
             
             X_star[i] = X_cur[i] + gamma[i] * (X_cur[j] - X_cur[k]) + 1e-6 * gamma[i]
         

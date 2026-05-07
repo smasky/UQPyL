@@ -13,6 +13,10 @@ class AMH(InferenceABC):
         >>> amh = AMH(nChains=4, warmUp=500, maxIterTimes=2000)
         >>> res = amh.run(problem, gamma=0.1, seed=1234)
         >>> print(res.acceptanceRate)
+
+    References:
+        [1] H. Haario, E. Saksman, and J. Tamminen, An adaptive Metropolis algorithm,
+            Bernoulli, vol. 7, no. 2, pp. 223-242, 2001.
     """
     
     name = "AMH"
@@ -44,9 +48,9 @@ class AMH(InferenceABC):
             saveFreq, logProbFunc, maxInitAttempts,
         )
                 
-        self.setParaVal('nChains', nChains)
-        self.setParaVal('warmUp', warmUp)
-        self.setParaVal('propDist', propDist)
+        self.set('nChains', nChains)
+        self.set('warmUp', warmUp)
+        self.set('propDist', propDist)
         
         if propDist not in ['gauss', 'uniform']:
             raise ValueError("propDist must be 'gauss' or 'uniform'")
@@ -54,10 +58,10 @@ class AMH(InferenceABC):
     def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = 0.1, seed: int = None):
         self.setup(problem, seed)
         
-        nChains = self.getParaVal('nChains')
-        warmUp = self.getParaVal('warmUp')
-        propDist = self.getParaVal('propDist')
-        self.setParaVal('gamma', gamma)
+        nChains = self.get('nChains')
+        warmUp = self.get('warmUp')
+        propDist = self.get('propDist')
+        self.set('gamma', gamma)
         
         gamma = self._check_gamma_(gamma)
         sd = 2.38**2 / problem.nInput
@@ -125,23 +129,32 @@ class AMH(InferenceABC):
                     accepted=accepted,
                 )
                 
-            propCovs = self.updateCovs(chains, sd)
+            propCovs = self.updateCovs(chains, sd, propCovs)
             self.update(chains)
 
         return self.finalize()
     
-    def updateCovs(self, chains, sd):
+    def updateCovs(self, chains, sd, currentCovs=None):
         
         propCovs = []
         
-        for chain in chains:
-            propCovs.append((np.cov(chain.decs[:chain.count].T) * sd + 1e-6 * np.eye(chain.decs.shape[1]) * sd ))
+        for i, chain in enumerate(chains):
+            if chain.count < 3:
+                if currentCovs is not None:
+                    propCovs.append(currentCovs[i].copy())
+                else:
+                    propCovs.append(np.eye(chain.decs.shape[1]) * sd)
+                continue
+
+            cov = np.cov(chain.decs[:chain.count].T) * sd
+            floor = 1e-3 * np.eye(chain.decs.shape[1])
+            propCovs.append(cov + floor)
         
         return propCovs
     
     def _check_alpha(self, gamma):
         
-        nChains = self.getParaVal('nChains')
+        nChains = self.get('nChains')
         nInput = self.problem.nInput
         
         if isinstance(gamma, float):
@@ -177,9 +190,9 @@ class AMH(InferenceABC):
         
         for i in range(X_cur.shape[0]):
             if propDist == 'gauss':
-                X_star[i] = np.random.multivariate_normal(X_cur[i].ravel(), propCovs[i])
+                X_star[i] = self.rng.multivariate_normal(X_cur[i].ravel(), propCovs[i])
             elif propDist == 'uniform':
-                X_star[i] = np.random.uniform(X_cur[i] - propCovs[i].diagonal(), X_cur[i] + propCovs[i].diagonal())
+                X_star[i] = self.rng.uniform(X_cur[i] - propCovs[i].diagonal(), X_cur[i] + propCovs[i].diagonal())
             else:
                 raise ValueError("propDist must be 'gauss' or 'uniform'")
         

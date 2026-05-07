@@ -3,7 +3,10 @@ import math
 import numpy as np
 
 
-def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20):
+def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+
     popDec = decs
     NN = decs.shape[0]
 
@@ -12,13 +15,13 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20):
 
     N, D = parent1.shape
     beta = np.zeros(shape=(N, D))
-    mu = np.random.rand(N, D)
+    mu = rng.random((N, D))
 
     beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (disC + 1))
     beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (disC + 1))
-    beta = beta * (-1) ** np.random.randint(0, 2, size=(N, D))
-    beta[np.random.rand(N, D) < 0.5] = 1
-    beta[np.repeat(np.random.rand(N, 1) > proC, D, axis=1)] = 1
+    beta = beta * (-1) ** rng.integers(0, 2, size=(N, D))
+    beta[rng.random((N, D)) < 0.5] = 1
+    beta[np.repeat(rng.random((N, 1)) > proC, D, axis=1)] = 1
 
     off1 = (parent1 + parent2) / 2 + (parent1 - parent2) * beta / 2
     off2 = (parent1 + parent2) / 2 - (parent1 - parent2) * beta / 2
@@ -26,8 +29,8 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20):
 
     lower = np.repeat(lb, 2 * N, axis=0)
     upper = np.repeat(ub, 2 * N, axis=0)
-    sita = np.random.rand(2 * N, D) < proM / D
-    mu = np.random.rand(2 * N, D)
+    sita = rng.random((2 * N, D)) < proM / D
+    mu = rng.random((2 * N, D))
 
     np.clip(offspring, lower, upper, out=offspring)
 
@@ -52,7 +55,10 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20):
     return offspring
 
 
-def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM):
+def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+
     NN = popDecs.shape[0]
 
     parent1 = popDecs[:math.floor(NN / 2)]
@@ -60,21 +66,21 @@ def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM):
     N, D = parent1.shape
 
     beta = np.zeros(shape=(N, D))
-    mu = np.random.rand(N, D)
+    mu = rng.random((N, D))
 
     beta[mu <= 0.5] = np.power(2 * mu[mu <= 0.5], 1 / (disC + 1))
     beta[mu > 0.5] = np.power(2 - 2 * mu[mu > 0.5], -1 / (disC + 1))
-    beta = beta * (-1) ** np.random.randint(0, 2, size=(N, D))
-    beta[np.random.rand(N, D) < 0.5] = 1
-    beta[np.repeat(np.random.rand(N, 1) > proC, D, axis=1)] = 1
+    beta = beta * (-1) ** rng.integers(0, 2, size=(N, D))
+    beta[rng.random((N, D)) < 0.5] = 1
+    beta[np.repeat(rng.random((N, 1)) > proC, D, axis=1)] = 1
 
     offspring = (parent1 + parent2) / 2 + (parent1 - parent2) * beta / 2
     N, D = offspring.shape
 
     lower = np.repeat(lb, N, axis=0)
     upper = np.repeat(ub, N, axis=0)
-    sita = np.random.rand(N, D) < proM / D
-    mu = np.random.rand(N, D)
+    sita = rng.random((N, D)) < proM / D
+    mu = rng.random((N, D))
 
     np.clip(offspring, lower, upper, out=offspring)
 

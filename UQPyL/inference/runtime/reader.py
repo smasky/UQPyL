@@ -1,49 +1,20 @@
 import json
 import pickle
 import sqlite3
-from pathlib import Path
 
 import numpy as np
 
-
-def _from_json_array(text):
-    if text is None:
-        return None
-    return np.asarray(json.loads(text))
+from ...core.runtime import export_reader_summary, from_json_array
+from ...core.runtime_reader import BaseReader
 
 
-class InfReader:
-    @staticmethod
-    def listRuns(resultDir):
-        resultPath = Path(resultDir)
-        if resultPath.is_file():
-            resultPath = resultPath.parent
-        if resultPath.name.lower() != "result" and (resultPath / "Result").exists():
-            resultPath = resultPath / "Result"
-
-        rows = []
-        for dbPath in sorted(resultPath.glob("*.sqlite3")):
-            conn = sqlite3.connect(dbPath)
-            conn.row_factory = sqlite3.Row
-            try:
-                run = conn.execute(
-                    """
-                    SELECT runId, method, problem, status, finalFEs, finalIters,
-                           runtime, createdAt, finishedAt
-                    FROM run
-                    LIMIT 1
-                    """
-                ).fetchone()
-            except sqlite3.OperationalError:
-                run = None
-            conn.close()
-            if run is None:
-                continue
-            item = dict(run)
-            item["dbPath"] = str(dbPath)
-            item["fileName"] = dbPath.name
-            rows.append(item)
-        return rows
+class InfReader(BaseReader):
+    @classmethod
+    def list_runs(cls, result_dir):
+        return super().list_runs(
+            result_dir,
+            run_columns="runId, method, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
+        )
 
     def __init__(self, dbPath):
         self.dbPath = str(dbPath)
@@ -59,21 +30,42 @@ class InfReader:
     def close(self):
         self.conn.close()
 
-    def getRun(self):
+    def get_run(self):
         row = self.conn.execute("SELECT * FROM run LIMIT 1").fetchone()
         return dict(row) if row is not None else None
 
-    def getRunParams(self):
+    def get_run_params(self):
         rows = self.conn.execute("SELECT name, value FROM runParam ORDER BY name").fetchall()
         return {row["name"]: row["value"] for row in rows}
 
-    def loadProblem(self):
+    def get_run_summary(self):
+        run = self.get_run()
+        if run is None:
+            raise ValueError("No run record found in sqlite database.")
+        return export_reader_summary(
+            run_id=run["runId"],
+            method=run["method"],
+            problem_name=run["problem"],
+            n_input=run["nInput"],
+            n_output=run["nOutput"],
+            n_con=run["nCon"],
+            runtime=0.0 if run["runtime"] is None else float(run["runtime"]),
+            created_at=run["createdAt"],
+            finished_at=run["finishedAt"],
+            extra={
+                "status": run["status"],
+                "final_fes": run["finalFEs"],
+                "final_iters": run["finalIters"],
+            },
+        )
+
+    def load_problem(self):
         row = self.conn.execute("SELECT problemPayload FROM run LIMIT 1").fetchone()
         if row is None or row["problemPayload"] is None:
             raise ValueError("No problem payload found in sqlite database.")
         return pickle.loads(row["problemPayload"])
 
-    def listSnapshots(self):
+    def list_snapshots(self):
         rows = self.conn.execute(
             """
             SELECT snapshotId, iter, fe, elapsed, meanLogProb, bestObj,
@@ -84,7 +76,7 @@ class InfReader:
         ).fetchall()
         return [dict(row) for row in rows]
 
-    def loadSnapshotMembers(self, snapshotId):
+    def load_snapshot_members(self, snapshotId):
         rows = self.conn.execute(
             """
             SELECT chain, decs, objs, cons, logProb, accepted, feasible
@@ -97,9 +89,9 @@ class InfReader:
         return [
             {
                 "chain": row["chain"],
-                "decs": _from_json_array(row["decs"]),
-                "objs": _from_json_array(row["objs"]),
-                "cons": _from_json_array(row["cons"]),
+                "decs": from_json_array(row["decs"]),
+                "objs": from_json_array(row["objs"]),
+                "cons": from_json_array(row["cons"]),
                 "logProb": row["logProb"],
                 "accepted": bool(row["accepted"]),
                 "feasible": bool(row["feasible"]),
@@ -107,13 +99,13 @@ class InfReader:
             for row in rows
         ]
 
-    def loadLastSnapshotMembers(self):
+    def load_last_snapshot_members(self):
         row = self.conn.execute("SELECT snapshotId FROM snapshot ORDER BY snapshotId DESC LIMIT 1").fetchone()
         if row is None:
             raise ValueError("No snapshot found in sqlite database.")
-        return self.loadSnapshotMembers(row["snapshotId"])
+        return self.load_snapshot_members(row["snapshotId"])
 
-    def loadResult(self):
+    def load_result(self):
         row = self.conn.execute(
             "SELECT payload FROM artifact WHERE name = ? ORDER BY artifactId DESC LIMIT 1",
             ("result",),

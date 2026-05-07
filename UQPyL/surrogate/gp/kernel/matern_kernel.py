@@ -35,20 +35,20 @@ class Matern(BaseKernel):
         
         self.heterogeneous = heterogeneous
         
-        self.setting.setPara("l", length_scale, length_attr)
+        self.setting.set("l", length_scale, length_attr)
 
         if optimize_nu:
             nu_attr = {'ub': 1, 'lb': 0, 'type': 'discrete', 'log': False, 'set': [0.5, 1.5, 2.5, np.inf]}
         else:
             nu_attr = None
             
-        self.setting.setPara("nu", nu, nu_attr)
+        self.setting.set("nu", nu, nu_attr)
         
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
         
-        length_scale = self.setting.getVals("l")
+        length_scale = self.setting.get("l")
         
-        nu = self.setting.getVals("nu")
+        nu = self.setting.get("nu")
         
         if xTrain2 is None:
             dists = pdist(xTrain1/length_scale, metric="euclidean")

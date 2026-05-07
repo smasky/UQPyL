@@ -3,17 +3,29 @@ from scipy.linalg import lstsq, solve
 from typing import Tuple, Literal, Optional, Union
 
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class LinearRegression(SurrogateABC):
     '''
-    LinearRegression
-    
-    Support three version:
-    'Origin'-------'Least Square Method'----Ordinary Loss Function
-    'Ridge'--------'Ridge'----Using L2 regularization
-    'Lasso'--------'Lasso'----Using L1 regularization
+    Linear regression surrogate model.
+
+    Supported loss types:
+    - `Origin`: ordinary least squares
+    - `Ridge`: L2-regularized regression
+    - `Lasso`: L1-regularized regression
+
+    Examples:
+        >>> model = LinearRegression(lossType='Ridge')
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
+    References:
+        [1] A. E. Hoerl and R. W. Kennard, Ridge regression: Biased estimation for
+            nonorthogonal problems, Technometrics, vol. 12, no. 1, pp. 55-67, 1970.
+        [2] R. Tibshirani, Regression shrinkage and selection via the lasso,
+            Journal of the Royal Statistical Society: Series B, vol. 58, no. 1,
+            pp. 267-288, 1996.
     '''
     
     name = "LR"
@@ -35,11 +47,11 @@ class LinearRegression(SurrogateABC):
 
         self.registerChoiceParameter("lossType", ["Origin", "Ridge", "Lasso"], owner="model")
         self.registerParameterApplier("lossType", self.setLossType)
-        self.setting.setPara("C", C, C_attr)
-        self.setting.setPara("maxIter", maxIter)
-        self.setting.setPara("maxEpoch", maxEpoch)
-        self.setting.setPara("tol", tolerance)
-        self.setting.setPara("p0", p0)
+        self.setting.set("C", C, C_attr)
+        self.setting.set("maxIter", maxIter)
+        self.setting.set("maxEpoch", maxEpoch)
+        self.setting.set("tol", tolerance)
+        self.setting.set("p0", p0)
         self.setLossType(lossType)
                 
 ###---------------------------------public function---------------------------------------###
@@ -117,7 +129,7 @@ class LinearRegression(SurrogateABC):
         
     def fitRidge(self, xTrain: np.ndarray, yTrain: np.ndarray):
         
-        C = self.setting.getVals("C")
+        C = self.setting.get("C")
         
         _, nFeatures = xTrain.shape
         
@@ -152,7 +164,7 @@ class LinearRegression(SurrogateABC):
         
         l1_ratio = 1.0
         
-        C = self.setting.getVals("C")
+        C = self.setting.get("C")
         
         xTrain = np.asarray(xTrain, order='F')
         yTrain = np.asarray(yTrain, order='F')
@@ -196,10 +208,10 @@ class LinearRegression(SurrogateABC):
         theta /= max(dnorm / (C * l1_ratio), nSamples)
         
         #
-        maxIters = self.setting.getVals("maxIter")
-        maxEpochs = self.setting.getVals("maxEpoch")
-        tl = self.setting.getVals("tol")
-        p0 = self.setting.getVals("p0")
+        maxIters = self.setting.get("maxIter")
+        maxEpochs = self.setting.get("maxEpoch")
+        tl = self.setting.get("tol")
+        p0 = self.setting.get("p0")
 
         #
         sol = celer(False, 0, xDense, xData, xIndices, 

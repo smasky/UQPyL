@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000):
+def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=None):
     popObjs = np.atleast_2d(np.asarray(popObjs, dtype=float))
     _, m = popObjs.shape
 
@@ -55,7 +55,9 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000):
             return 0.0
 
         nSamples = int(nSamples)
-        samples = np.random.uniform(lowerBounds, upperBounds, (nSamples, m))
+        if rng is None:
+            rng = np.random.default_rng()
+        samples = rng.uniform(lowerBounds, upperBounds, (nSamples, m))
         dominated = np.any(np.all(popObjs <= samples[:, None], axis=2), axis=1)
         hyperVolume = np.sum(dominated) / nSamples * totalHyperVolume
 

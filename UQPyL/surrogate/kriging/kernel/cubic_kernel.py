@@ -19,7 +19,7 @@ class Cubic(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        theta=self.setting.getVals("theta")
+        theta=self.setting.get("theta")
             
         td=np.sum(D*theta, axis=1)
         ones=np.ones(td.shape)

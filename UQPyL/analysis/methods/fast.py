@@ -1,11 +1,10 @@
 # Fourier amplitude sensitivity test
 import math
 import numpy as np
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
 from ...problem import ProblemABC as Problem
-from ...util import Scaler
 
 class FAST(AnalysisABC):
     """
@@ -29,20 +28,16 @@ class FAST(AnalysisABC):
     
     name = "FAST"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
+    def __init__(self, verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the FAST method.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-            
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
+        super().__init__(verboseFlag, logFlag, saveFlag)
 
     def checkMeta(self, meta):
         if meta.get("designType") != "fast":
@@ -50,7 +45,7 @@ class FAST(AnalysisABC):
                 "FAST.analyze() requires FAST metadata with meta['designType'] == 'fast'."
             )
 
-        self.setParaValue("M", meta["M"])
+        self.set("M", meta["M"])
 
     @staticmethod
     def _computeOrders(outputs: np.ndarray, n: int, M: int, omega: int):
@@ -99,8 +94,7 @@ class FAST(AnalysisABC):
         Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         
         nInput = problem.nInput
         n = int(X.shape[0] / nInput)
@@ -146,8 +140,6 @@ class FAST(AnalysisABC):
             ('ST', ST, row_label, col_label_1, 'decsDim1'),
             ('ST_norm', ST_norm, row_label, col_label_1, 'decsDim1'),
         ]
-        
-        X, Y = self.__reverse_X_Y__(X, Y)
         
         self.recordResult(X, Y, res, target=target, meta=meta)
         

@@ -3,7 +3,7 @@ import pytest
 
 from UQPyL.problem.sop.single_simple_problem import Sphere
 from UQPyL.surrogate.regression.linear_regression import LinearRegression
-from UQPyL.util.scaler import StandardScaler
+from UQPyL.surrogate.scaler import StandardScaler
 
 
 def test_linear_regression_ridge_fit_predict_on_sphere():
@@ -55,8 +55,8 @@ def test_linear_regression_apply_parameter_values_updates_model_context():
     model.applyParameterValues(["lossType", "C"], [1.2, np.log(1e-2)])
 
     assert model.lossType == "Ridge"
-    assert model.setting.getVals("lossType") == "Ridge"
-    assert np.isclose(model.setting.getVals("C"), 1e-2)
+    assert model.setting.get("lossType") == "Ridge"
+    assert np.isclose(model.setting.get("C"), 1e-2)
     assert model.isParameterActive("C")
 
 

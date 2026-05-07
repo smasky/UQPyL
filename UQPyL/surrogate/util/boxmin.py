@@ -16,7 +16,9 @@ class Boxmin():
         pass
         
     ###################################Interface Function#################################
-    def run(self, problem, xInit=None):
+    def run(self, problem, xInit=None, seed=None):
+        if seed is not None:
+            np.random.seed(seed)
         
         self.ub=problem.ub.ravel()
         self.lb=problem.lb.ravel()

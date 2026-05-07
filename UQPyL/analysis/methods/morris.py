@@ -1,8 +1,7 @@
 import numpy as np
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
-from ...util import Scaler
 from ...problem import ProblemABC as Problem
 
 class Morris(AnalysisABC):
@@ -25,20 +24,16 @@ class Morris(AnalysisABC):
     
     name = "Morris"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
+    def __init__(self, verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the Morris method for sensitivity analysis.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
-        
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
+        super().__init__(verboseFlag, logFlag, saveFlag)
 
     def checkMeta(self, meta):
         if meta.get("designType") != "morris":
@@ -46,7 +41,7 @@ class Morris(AnalysisABC):
                 "Morris.analyze() requires Morris metadata with meta['designType'] == 'morris'."
             )
 
-        self.setParaValue("numLevels", meta["numLevels"])
+        self.set("numLevels", meta["numLevels"])
         
     def _analyzeCore(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
                       target: str = 'objs', index: AnaIndex = 'all') -> None:
@@ -83,8 +78,7 @@ class Morris(AnalysisABC):
 
         numTrajectory = int(X.shape[0] / trajectorySize)
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
 
         outputLabel = "obj" if target == "objs" else "con"
         
@@ -143,8 +137,6 @@ class Morris(AnalysisABC):
                ('mu_star', mu_star, row_label, col_label_1, 'decsDim1'), 
                ('sigma', sigma, row_label, col_label_1, 'decsDim1'), 
                ('S1_norm', S1_norm, row_label, col_label_1, 'decsDim1')]
-        
-        X, Y = self.__reverse_X_Y__(X, Y)
         
         self.recordResult(X, Y, res, target=target, meta=meta)
         

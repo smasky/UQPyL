@@ -10,6 +10,16 @@ from ..core.constraint import betterMask
 class CSA(AlgorithmABC):
     """
     Single-objective cooperative search algorithm.
+
+    Examples:
+        >>> csa = CSA(nPop=25, maxFEs=5000)
+        >>> res = csa.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
+    References:
+        [1] Z. Feng, W. Niu, S. Wang, J. Zhou, and Y. Cheng, Cooperation search algorithm:
+            a novel metaheuristic evolutionary intelligence algorithm for numerical optimization
+            and engineering optimization problems, Applied Soft Computing, vol. 98, 2021.
     """
     
     name = "CSA"
@@ -46,10 +56,10 @@ class CSA(AlgorithmABC):
                          saveFreq = saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('alpha', alpha)
-        self.setParaVal('beta', beta)
-        self.setParaVal('M', M)
-        self.setParaVal('nPop', nPop)
+        self.set('alpha', alpha)
+        self.set('beta', beta)
+        self.set('M', M)
+        self.set('nPop', nPop)
            
     #------------------Public Function------------------#
     def run(self, problem, seed: Optional[int] = None):
@@ -64,8 +74,8 @@ class CSA(AlgorithmABC):
         self.setup(problem, seed)
         
         # Retrieve parameter values
-        alpha, beta, M = self.getParaVal('alpha', 'beta', 'M')
-        nPop = self.getParaVal('nPop')
+        alpha, beta, M = self.get('alpha', 'beta', 'M')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
@@ -131,15 +141,15 @@ class CSA(AlgorithmABC):
         
         gailv = np.abs(popDecs - c) / (self.problem.ub - self.problem.lb)
         # Calculate r
-        t1 = np.random.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
-        t2 = np.random.random((N, D)) * np.abs(fai_1 - self.problem.lb) + np.where(fai_1 > lb_n, lb_n, fai_1)
-        seed = np.random.random((N, D))
+        t1 = self.rng.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
+        t2 = self.rng.random((N, D)) * np.abs(fai_1 - self.problem.lb) + np.where(fai_1 > lb_n, lb_n, fai_1)
+        seed = self.rng.random((N, D))
         r = np.where(gailv < seed, t1, t2)
         
         # Calculate p
-        t3 = np.random.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
-        t4 = np.random.random((N, D)) * np.abs(self.problem.ub - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
-        seed = np.random.random((N, D))
+        t3 = self.rng.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
+        t4 = self.rng.random((N, D)) * np.abs(self.problem.ub - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
+        seed = self.rng.random((N, D))
         p = np.where(gailv < seed, t3, t4)
         
         vPopDecs = np.where(popDecs >= c_n, r, p)
@@ -164,12 +174,12 @@ class CSA(AlgorithmABC):
         
         M, _ = gBestDecs.shape
         
-        idx = np.random.randint(0, M, (N, D))
-        A = np.log(1.0 / np.random.random((N, D))) * (gBestDecs[idx, np.arange(D)] - popDecs)
+        idx = self.rng.integers(0, M, (N, D))
+        A = np.log(1.0 / self.rng.random((N, D))) * (gBestDecs[idx, np.arange(D)] - popDecs)
         
-        B = alpha * np.random.random((N, D)) * (np.mean(gBestDecs, axis=0) - popDecs)
+        B = alpha * self.rng.random((N, D)) * (np.mean(gBestDecs, axis=0) - popDecs)
         
-        C = beta * np.random.random((N, D)) * (np.mean(pBestDecs, axis=0) - popDecs)
+        C = beta * self.rng.random((N, D)) * (np.mean(pBestDecs, axis=0) - popDecs)
         
         uPopDecs = popDecs + A + B + C
         
@@ -187,7 +197,7 @@ class CSA(AlgorithmABC):
         :return: Calculated value.
         """
         if num1 < num2:
-            o = num1 + np.random.random(1) * abs(num1 - num2)
+            o = num1 + self.rng.random(1) * abs(num1 - num2)
         else:
-            o = num2 + np.random.random(1) * abs(num1 - num2)
+            o = num2 + self.rng.random(1) * abs(num1 - num2)
         return o

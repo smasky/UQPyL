@@ -1,10 +1,9 @@
 import numpy as np
 from scipy.signal import periodogram
-from typing import Optional, Tuple
+from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
 from ...problem import ProblemABC as Problem
-from ...util import Scaler
 
 class RBDFAST(AnalysisABC):
     """
@@ -29,14 +28,12 @@ class RBDFAST(AnalysisABC):
     
     name = "RBDFAST"
     
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
-                 M: int = 4, 
+    def __init__(self, M: int = 4, 
                  verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the RBD-FAST method for global sensitivity analysis.
 
         Args:
-            scalers: Optional scalers for `X` and `Y`.
             M: Number of harmonics used in the periodogram estimate.
             verboseFlag: Whether to print compact runtime summaries.
             logFlag: Whether to write a log file.
@@ -47,11 +44,10 @@ class RBDFAST(AnalysisABC):
         self.secondOrder = False
         self.totalOrder = False
         
-        # Initialize the base class with provided scalers and flags
-        super().__init__(scalers, verboseFlag, logFlag, saveFlag)
+        super().__init__(verboseFlag, logFlag, saveFlag)
         
         # Set the parameter for the number of harmonics
-        self.setParaValue("M", M)
+        self.set("M", M)
     
     def _analyzeCore(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
                      target: str = 'objs', index: AnaIndex = 'all') -> None:
@@ -67,7 +63,7 @@ class RBDFAST(AnalysisABC):
             index: Output column selection.
         """
         # Retrieve the parameter for the number of harmonics
-        M = self.getParaValue('M')
+        M = self.get('M')
         
         # Set the problem instance for analysis
         self.setProblem(problem)
@@ -77,8 +73,7 @@ class RBDFAST(AnalysisABC):
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
         
-        # Scale the input and output data if scalers are provided
-        X, Y = self.__check_and_scale_xy__(X, Y)
+        X, Y = self.__check_X_Y__(X, Y)
         
         numY = Y.shape[1]
         outputLabel = "obj" if target == "objs" else "con"
@@ -119,8 +114,6 @@ class RBDFAST(AnalysisABC):
                 S1[i, j] = S1_sub
         
         res = [('S1', S1, row_label, col_label_1, 'decsDim1')]
-        
-        X, Y = self.__reverse_X_Y__(X, Y)
         
         self.recordResult(X, Y, res, target=target, meta=meta)
         

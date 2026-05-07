@@ -7,33 +7,28 @@ from .core._pruning import PruningPasser
 from .core._util import ascii_table, apply_weights_2d, gcv
 from .core._types import BOOL
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class MARS(SurrogateABC):
 
     """
-    Multivariate Adaptive Regression Splines(MARS)
-    --------------------------------------
-    This class is a implementation of MARS from py-earth python library.
-    The Multivariate Adaptive Regression Splines(MARS) is a flexible regression method 
-    that automatically searches for interactions and non-linear relationships.
-    
-    The multivariate adaptive regression splines algorithm has two stages.
-    First, the forward pass searches for terms in the truncated power spline
-    basis that locally minimize the squared error loss of the training set.
-    Next, a pruning pass selects a subset of those terms that produces
-    a locally minimal generalized cross-validation (GCV) score.  The GCV score
-    is not actually based on cross-validation, but rather is meant to
-    approximate a true cross-validation score by penalizing model complexity.
-    The final result is a set of terms that is nonlinear in the original
-    feature space, may include interactions, and is likely to generalize well.
-    
-    Attributes:
-        gcv_ : float
-            The generalized cross-validation score of the model.
-    
-    
+    Multivariate Adaptive Regression Splines (MARS) surrogate model.
+
+    This implementation is adapted from the py-earth style workflow. MARS is a
+    flexible nonparametric regression method that automatically discovers
+    nonlinear effects and low-order interactions through forward basis
+    construction followed by pruning.
+
+    The training workflow has two stages:
+    - forward pass: grow basis functions greedily
+    - pruning pass: remove redundant terms using generalized cross-validation
+
+    Examples:
+        >>> model = MARS(max_terms=100, max_degree=2)
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
     References:
         [1] Friedman, Jerome. Multivariate Adaptive Regression Splines.
             Annals of Statistics. Volume 19, Number 1 (1991), 1-67.
@@ -42,126 +37,6 @@ class MARS(SurrogateABC):
             Using Adaptive Splines, Jerome H.Friedman, Technical Report
             No.108, June 1991.
         [4] http://www.milbo.org/doc/earth-notes.pdf
-        
-    endspan_alpha : float, optional, probability between 0 and 1 (default=0.05)
-        A parameter controlling the calculation of the endspan
-        parameter (below).  The endspan parameter is calculated as
-        round(3 - log2(endspan_alpha/n)), where n is the number of features.
-        The endspan_alpha parameter represents the probability of a run of
-        positive or negative error values on either end of the data vector
-        of any feature in the data set.  See equation 45, Friedman, 1991.
-
-    endspan : int, optional (default=-1)
-        The number of extreme data values of each feature not eligible
-        as knot locations. If endspan is set to -1 (default) then the
-        endspan parameter is calculated based on endspan_alpah (above).
-        If endspan is set to a positive integer then endspan_alpha is ignored.
-
-    minspan_alpha : float, optional, probability between 0 and 1 (default=0.05)
-        A parameter controlling the calculation of the minspan
-        parameter (below).  The minspan parameter is calculated as
-
-            (int) -log2(-(1.0/(n*count))*log(1.0-minspan_alpha)) / 2.5
-
-        where n is the number of features and count is the number of points at
-        which the parent term is non-zero.  The minspan_alpha parameter
-        represents the probability of a run of positive or negative error
-        values between adjacent knots separated by minspan intervening
-        data points. See equation 43, Friedman, 1991.
-
-    minspan : int, optional (default=-1)
-        The minimal number of data points between knots.  If minspan is set
-        to -1 (default) then the minspan parameter is calculated based on
-        minspan_alpha (above).  If minspan is set to a positive integer then
-        minspan_alpha is ignored.
-
-    thresh : float, optional (default=0.001)
-        Parameter used when evaluating stopping conditions for the forward
-        pass. If either RSQ > 1 - thresh or if RSQ increases by less than
-        thresh for a forward pass iteration then the forward pass is
-        terminated.
-
-    zero_tol : float, optional (default=1e-12)
-        Used when determining whether a floating point number is zero during
-        the  forward pass.  This is important in determining linear dependence
-        and in the fast update procedure.  There should normally be no reason
-        to change  zero_tol from its default. However, if nans are showing up
-        during the forward pass or the forward pass seems to be terminating
-        unexpectedly, consider adjusting zero_tol.
-
-    min_search_points : int, optional (default=100)
-        Used to calculate check_every (below).  The minimum samples necessary
-        for check_every to be greater than 1.  The check_every parameter
-        is calculated as
-
-             (int) m / min_search_points
-
-        if m > min_search_points, where m is the number of samples in the
-        training set.  If m <= min_search_points then check_every is set to 1.
-
-    check_every : int, optional (default=-1)
-        If check_every > 0, only one of every check_every sorted data points
-        is considered as a candidate knot.  If check_every is set to -1 then
-        the check_every parameter is calculated based on
-        min_search_points (above).
-
-    allow_linear : bool, optional (default=True)
-        If True, the forward pass will check the GCV of each new pair of terms
-        and, if it's not an improvement on a single term with no knot (called a
-        linear term, although it may actually be a product of a linear term
-        with some other parent term), then only that single, knotless term will
-        be used. If False, that behavior is disabled and all terms will have
-        knots except those with variables specified by the linvars argument
-        (see the fit method).
-
-    use_fast : bool, optional (default=False)
-        if True, use the approximation procedure defined in [2] to speed up the
-        forward pass. The procedure uses two hyper-parameters : fast_K
-        and fast_h. Check below for more details.
-
-    fast_K : int, optional (default=5)
-        Only used if use_fast is True. As defined in [2], section 3.0, it
-        defines the maximum number of basis functions to look at when
-        we search for a parent, that is we look at only the fast_K top
-        terms ranked by the mean squared error of the model the last time
-        the term was chosen as a parent. The smaller fast_K is, the more
-        gains in speed we get but the more approximate is the result.
-        If fast_K is the maximum number of terms and fast_h is 1,
-        the behavior is the same as in the normal case
-        (when use_fast is False).
-
-    fast_h : int, optional (default=1)
-        Only used if use_fast is True. As defined in [2], section 4.0, it
-        determines the number of iterations before repassing through all
-        the variables when searching for the variable to use for a
-        given parent term. Before reaching fast_h number of iterations
-        only the last chosen variable for the parent term is used. The
-        bigger fast_h is, the more speed gains we get, but the result
-        is more approximate.
-
-    smooth : bool, optional (default=False)
-        If True, the model will be smoothed such that it has continuous first
-        derivatives.
-        For details, see section 3.7, Friedman, 1991.
-
-    enable_pruning : bool, optional(default=True)
-        If False, the pruning pass will be skipped.
-
-    feature_importance_type: string or list of strings, optional (default=None)
-        Specify which kind of feature importance criteria to compute.
-        Currently three criteria are supported : 'gcv', 'rss' and 'nb_subsets'.
-        By default (when it is None), no feature importance is computed.
-        Feature importance is a measure of the effect of the features
-        on the outputs. For each feature, the values go from
-        0 to 1 and sum up to 1. A high value means the feature have in average
-        (over the population) a large effect on the outputs.
-        See [4], section 12.3 for more information about the criteria.
-
-    verbose : int, optional(default=0)
-        If verbose >= 1, print out progress information during fitting.  If
-        verbose >= 2, also print out information on numerical difficulties
-        if encountered during fitting. If verbose >= 3, print even more
-        information that is probably only useful to the developers of py-earth.
     """
 
     forward_pass_arg_names = [
@@ -206,114 +81,37 @@ class MARS(SurrogateABC):
                  smooth: bool = False,
                  enable_pruning: bool = True,
                  feature_importance_type: str = 'gcv'):
-        '''
+        """
         Initialize the MARS surrogate model.
-        
-        :param max_terms: int, optional 
-            default = min(2 * n + m // 10, 400)), where n is the number of features and m is the number of rows
-            The maximum number of terms generated by the forward pass. 
-        :param max_degree: int, optional (default=1)
-            The maximum degree of terms generated by the forward pass.
-        :param penalty: float, optional (default=3.0)
-            A smoothing parameter used to calculate GCV and GRSQ.
-            Used during the pruning pass and to determine whether to add a hinge
-            or linear basis function during the forward pass.
-        :param endspan_alpha: float, optional (default=0.05)
-            A parameter controlling the calculation of the endspan
-            parameter (below).  The endspan parameter is calculated as
-            round(3 - log2(endspan_alpha/n)), where n is the number of features.
-            The endspan_alpha parameter represents the probability of a run of
-            positive or negative error values on either end of the data vector
-            of any feature in the data set.  See equation 45, Friedman, 1991.
-        :param endspan: int, optional (default=-1)
-            The number of extreme data values of each feature not eligible
-            as knot locations. If endspan is set to -1 (default) then the
-            endspan parameter is calculated based on endspan_alpah (above).
-            If endspan is set to a positive integer then endspan_alpha is ignored.
-        :param minspan_alpha: float, optional (default=0.05)
-            A parameter controlling the calculation of the minspan
-            parameter (below).  The minspan parameter is calculated as
-            (int) -log2(-(1.0/(n*count))*log(1.0-minspan_alpha)) / 2.5
-            where n is the number of features and count is the number of points at
-            which the parent term is non-zero.  The minspan_alpha parameter
-            represents the probability of a run of positive or negative error
-            values between adjacent knots separated by minspan intervening
-            data points. See equation 43, Friedman, 1991.
-        :param minspan: int, optional (default=-1)
-            The minimal number of data points between knots.  If minspan is set
-            to -1 (default) then the minspan parameter is calculated based on
-            minspan_alpha (above).  If minspan is set to a positive integer then
-            minspan_alpha is ignored.
-        :param thresh: float, optional (default=0.001)
-            Parameter used when evaluating stopping conditions for the forward
-            pass. If either RSQ > 1 - thresh or if RSQ increases by less than
-            thresh for a forward pass iteration then the forward pass is
-            terminated.
-        :param zero_tol: float, optional (default=1e-12)
-            Used when determining whether a floating point number is zero during
-            the  forward pass.  This is important in determining linear dependence
-            and in the fast update procedure.  There should normally be no reason
-            to change  zero_tol from its default. However, if nans are showing up
-            during the forward pass or the forward pass seems to be terminating
-            unexpectedly, consider adjusting zero_tol.
-        :param min_search_points: int, optional (default=100)
-            Used to calculate check_every (below).  The minimum samples necessary
-            for check_every to be greater than 1.  The check_every parameter
-            is calculated as
-             (int) m / min_search_points
-            if m > min_search_points, where m is the number of samples in the
-            training set.  If m <= min_search_points then check_every is set to 1.
-        :param check_every: int, optional (default=-1)
-            If check_every > 0, only one of every check_every sorted data points
-            is considered as a candidate knot.  If check_every is set to -1 then
-            the check_every parameter is calculated based on
-            min_search_points (above).
-        :param allow_linear: bool, optional (default=True)
-            If True, the forward pass will check the GCV of each new pair of terms
-            and, if it's not an improvement on a single term with no knot (called a
-            linear term, although it may actually be a product of a linear term
-            with some other parent term), then only that single, knotless term will
-            be used. If False, that behavior is disabled and all terms will have
-            knots except those with variables specified by the linvars argument
-            (see the fit method).
-        :param use_fast: bool, optional (default=False)
-            if True, use the approximation procedure defined in [2] to speed up the
-            forward pass. The procedure uses two hyper-parameters : fast_K
-            and fast_h. Check below for more details.
-        :param fast_K: int, optional (default=5)
-            Only used if use_fast is True. As defined in [2], section 3.0, it
-            defines the maximum number of basis functions to look at when
-            we search for a parent, that is we look at only the fast_K top
-            terms ranked by the mean squared error of the model the last time
-            the term was chosen as a parent. The smaller fast_K is, the more
-            gains in speed we get but the more approximate is the result.
-            If fast_K is the maximum number of terms and fast_h is 1,
-            the behavior is the same as in the normal case
-            (when use_fast is False).
-        :param fast_h: int, optional (default=1)
-            Only used if use_fast is True. As defined in [2], section 4.0, it
-            determines the number of iterations before repassing through all
-            the variables when searching for the variable to use for a
-            given parent term. Before reaching fast_h number of iterations
-            only the last chosen variable for the parent term is used. The
-            bigger fast_h is, the more speed gains we get, but the result
-            is more approximate.
-        :param smooth: bool, optional (default=False)
-            If True, the model will be smoothed such that it has continuous first
-            derivatives.
-            For details, see section 3.7, Friedman, 1991.
-        :param enable_pruning: bool, optional(default=True)
-            If False, the pruning pass will be skipped.
-        :param feature_importance_type: string or list of strings, optional (default=None)
-            Specify which kind of feature importance criteria to compute.
-            Currently three criteria are supported : 'gcv', 'rss' and 'nb_subsets'.
-            By default (when it is None), no feature importance is computed.
-            Feature importance is a measure of the effect of the features
-            on the outputs. For each feature, the values go from
-            0 to 1 and sum up to 1. A high value means the feature have in average
-            (over the population) a large effect on the outputs.
-            See [4], section 12.3 for more information about the criteria.            
-        '''
+
+        Args:
+            scalers: Optional input/output scalers.
+            polyFeature: Optional preprocessing transform applied before fitting.
+            max_terms: Maximum number of basis terms generated in the forward pass.
+            max_terms_attr: Tuning metadata for `max_terms`.
+            max_degree: Maximum interaction degree of generated basis terms.
+            max_degree_attr: Tuning metadata for `max_degree`.
+            penalty: Complexity penalty used in GCV-based pruning.
+            penalty_attr: Tuning metadata for `penalty`.
+            endspan_alpha: Probabilistic control for automatic `endspan`.
+            endspan: Number of edge samples excluded from knot selection. Use `-1`
+                to infer it from `endspan_alpha`.
+            minspan_alpha: Probabilistic control for automatic `minspan`.
+            minspan: Minimum spacing between knots. Use `-1` to infer it from
+                `minspan_alpha`.
+            thresh: Forward-pass stopping threshold.
+            zero_tol: Numerical zero tolerance used in the forward pass.
+            min_search_points: Sample-count threshold used when deriving
+                `check_every`.
+            check_every: Candidate-knot subsampling interval. Use `-1` to infer it.
+            allow_linear: Whether the forward pass may keep knotless linear terms.
+            use_fast: Whether to use the approximate fast-MARS search strategy.
+            fast_K: Parent-term shortlist size used by fast-MARS.
+            fast_h: Revisit interval for full variable search in fast-MARS.
+            smooth: Whether to smooth the final basis for continuous first derivatives.
+            enable_pruning: Whether to run the pruning pass after forward fitting.
+            feature_importance_type: Feature-importance criterion name.
+        """
         
         super().__init__(scalers, polyFeature)
         
@@ -321,30 +119,40 @@ class MARS(SurrogateABC):
         allow_missing = False
         verbose = 0
         
-        self.setting.setPara("max_terms", max_terms, max_terms_attr)
-        self.setting.setPara("max_degree", max_degree, max_degree_attr)
-        self.setting.setPara("penalty", penalty, penalty_attr)
+        self.setting.set("max_terms", max_terms, max_terms_attr)
+        self.setting.set("max_degree", max_degree, max_degree_attr)
+        self.setting.set("penalty", penalty, penalty_attr)
         
-        self.setting.setPara("endspan_alpha", endspan_alpha)
-        self.setting.setPara("endspan", endspan)
-        self.setting.setPara("minspan_alpha", minspan_alpha)
-        self.setting.setPara("minspan", minspan)
-        self.setting.setPara("thresh", thresh)
-        self.setting.setPara("zero_tol", zero_tol)
-        self.setting.setPara("min_search_points", min_search_points)
-        self.setting.setPara("check_every", check_every)
-        self.setting.setPara("allow_linear", allow_linear)
-        self.setting.setPara("use_fast", use_fast)
-        self.setting.setPara("fast_K", fast_K)
-        self.setting.setPara("fast_h", fast_h)
-        self.setting.setPara("smooth", smooth)
-        self.setting.setPara("enable_pruning", enable_pruning)
-        self.setting.setPara("feature_importance_type", feature_importance_type)
-        self.setting.setPara("verbose", verbose)
-        self.setting.setPara("allow_missing", allow_missing)
+        self.setting.set("endspan_alpha", endspan_alpha)
+        self.setting.set("endspan", endspan)
+        self.setting.set("minspan_alpha", minspan_alpha)
+        self.setting.set("minspan", minspan)
+        self.setting.set("thresh", thresh)
+        self.setting.set("zero_tol", zero_tol)
+        self.setting.set("min_search_points", min_search_points)
+        self.setting.set("check_every", check_every)
+        self.setting.set("allow_linear", allow_linear)
+        self.setting.set("use_fast", use_fast)
+        self.setting.set("fast_K", fast_K)
+        self.setting.set("fast_h", fast_h)
+        self.setting.set("smooth", smooth)
+        self.setting.set("enable_pruning", enable_pruning)
+        self.setting.set("feature_importance_type", feature_importance_type)
+        self.setting.set("verbose", verbose)
+        self.setting.set("allow_missing", allow_missing)
         
 #-------------------------Public Function---------------------------#
     def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        """
+        Fit the MARS model on prepared training data.
+
+        The workflow is:
+        1. scrub and validate inputs
+        2. run forward pass
+        3. optionally prune
+        4. optionally smooth the basis
+        5. solve the final linear system
+        """
         self.resetFitState()
         self.storeTrainingData(xTrain, yTrain)
 
@@ -357,11 +165,11 @@ class MARS(SurrogateABC):
                           sample_weight, output_weight, missing,
                           self.xlabels_, [], skip_scrub=True)
         #pruning
-        if self.setting.getVals("enable_pruning") is True:
+        if self.setting.get("enable_pruning") is True:
             self.pruning_pass(xTrain, yTrain,
                               sample_weight, output_weight, missing,
                               skip_scrub=True)
-        if self.setting.getVals("smooth"):
+        if self.setting.get("smooth"):
             self.basis_ = self.basis_.smooth(xTrain)
         self.linear_fit(xTrain, yTrain, sample_weight, output_weight, missing,
                         skip_scrub=True)
@@ -374,10 +182,27 @@ class MARS(SurrogateABC):
         return self
 
     def fitHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        """
+        Fit MARS under the current parameter setting.
+
+        MARS does not use a separate internal hyper-optimization stage here, so
+        `fitHyper` delegates directly to `fitModel`.
+        """
         return self.fitModel(xTrain, yTrain)
     
     def predict(self, xPredict: np.ndarray, returnStd: bool = False,
                 returnVar: bool = False):
+        """
+        Predict outputs for new samples.
+
+        Args:
+            xPredict: Input samples to evaluate.
+            returnStd: Unsupported for MARS; kept for base-class consistency.
+            returnVar: Unsupported for MARS; kept for base-class consistency.
+
+        Returns:
+            Predicted outputs in the original target scale.
+        """
         self._normalize_predict_flags(returnStd, returnVar)
         self.requireFitted("basis", "coef")
         
@@ -390,6 +215,12 @@ class MARS(SurrogateABC):
         return self.__Y_inverse_transform__(y)
 
     def getDefaultTuneParameters(self, advanced: bool = False):
+        """
+        Return the default tunable parameter names.
+
+        Args:
+            advanced: Whether to include secondary tuning parameters.
+        """
         params = list(self.defaultTuneParameters)
         if advanced:
             params.extend(self.advancedTuneParameters)
@@ -500,7 +331,7 @@ class MARS(SurrogateABC):
         
         # Zero-out any missing spots in X
         if np.any(missing):
-            if not self.setting.getVals("allow_missing"):
+            if not self.setting.get("allow_missing"):
                 raise ValueError('Missing data requires allow_missing=True.')
             if missing_is_nan or np.any(np.isnan(X)):
                 X = X.copy()
@@ -580,6 +411,11 @@ class MARS(SurrogateABC):
                      sample_weight=None, output_weight=None,
                      missing=None,
                      xlabels=None, linvars=[], skip_scrub=False):
+        """
+        Run the forward basis-construction stage.
+
+        This stage greedily grows candidate basis functions before pruning.
+        """
         
         # Label and format data
         if xlabels is None:
@@ -602,6 +438,12 @@ class MARS(SurrogateABC):
 
     def pruning_pass(self, X, y=None, sample_weight=None, output_weight=None,
                      missing=None, skip_scrub=False):
+        """
+        Run the pruning stage on an existing forward-pass basis.
+
+        The pruning pass removes redundant terms using the configured
+        complexity penalty and feature-importance criteria.
+        """
 
         # Format data
         if not skip_scrub:
@@ -627,25 +469,25 @@ class MARS(SurrogateABC):
         self.pruning_pass_record_ = pruning_passer.trace()
 
     def forward_trace(self):
-        '''Return information about the forward pass.'''
+        """Return the stored forward-pass trace, or `None` if unavailable."""
         try:
             return self.forward_pass_record_
         except AttributeError:
             return None
 
     def pruning_trace(self):
-        '''Return information about the pruning pass.'''
+        """Return the stored pruning-pass trace, or `None` if unavailable."""
         try:
             return self.pruning_pass_record_
         except AttributeError:
             return None
 
     def trace(self):
-        '''Return information about the forward and pruning passes.'''
+        """Return a combined trace object for forward and pruning stages."""
         return EarthTrace(self.forward_trace(), self.pruning_trace())
 
     def summary(self):
-        '''Return a string describing the model.'''
+        """Return a human-readable summary of the fitted model."""
         result = ''
         if self.forward_trace() is None:
             result += 'Untrained Earth Model'
@@ -676,6 +518,12 @@ class MARS(SurrogateABC):
         return result
 
     def summary_feature_importances(self, sort_by=None):
+        """
+        Return a formatted feature-importance table.
+
+        Args:
+            sort_by: Optional criterion name used to sort features.
+        """
        
         result = ''
         if self._feature_importances_dict:
@@ -704,6 +552,12 @@ class MARS(SurrogateABC):
 
     def linear_fit(self, X, y=None, sample_weight=None, output_weight=None,
                    missing=None, skip_scrub=False):
+        """
+        Solve the final weighted linear system in basis space.
+
+        This step computes final coefficients and summary statistics such as
+        MSE, GCV, RSQ, and GRSQ.
+        """
     
         # Format data
         if not skip_scrub:
@@ -766,6 +620,14 @@ class MARS(SurrogateABC):
             self.grsq_ = 1.0
 
     def predict_deriv(self, X, variables=None, missing=None):
+        """
+        Predict partial derivatives with respect to selected variables.
+
+        Args:
+            X: Input samples.
+            variables: Variable indices or names. If omitted, all variables are used.
+            missing: Optional missing-value mask.
+        """
 
         # check_is_fitted(self, "basis_")
 
@@ -792,6 +654,9 @@ class MARS(SurrogateABC):
 
     def score(self, X, y=None, sample_weight=None, output_weight=None,
               missing=None, skip_scrub=False):
+        """
+        Compute the weighted coefficient of determination on given samples.
+        """
         
         # check_is_fitted(self, "basis_")
         if not skip_scrub:
@@ -813,6 +678,9 @@ class MARS(SurrogateABC):
         return 1 - (mse / mse0)
 
     def score_samples(self, X, y=None, missing=None):
+        """
+        Return per-sample score values based on relative squared error.
+        """
     
         X, y, sample_weight, output_weight, missing = self._scrub(
             X, y, None, None, missing)
@@ -821,6 +689,9 @@ class MARS(SurrogateABC):
         return residual
 
     def transform(self, X, missing=None):
+        """
+        Transform input samples into the fitted basis-function space.
+        """
 
         # check_is_fitted(self, "basis_")
         X, missing = self._scrub_x(X, missing)
@@ -829,7 +700,7 @@ class MARS(SurrogateABC):
         return B
 
     def get_penalty(self):
-        '''Get the penalty parameter being used.  Default is 3.'''
+        """Return the active pruning penalty. Defaults to `3.0`."""
         if 'penalty' in self.__dict__ and self.penalty is not None:
             return self.penalty
         else:

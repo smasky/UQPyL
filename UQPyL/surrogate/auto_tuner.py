@@ -2,13 +2,23 @@ import numpy as np
 
 from .base import SurrogateABC
 from ..optimization.base import AlgorithmABC
-from ..util.split import RandSelect
-from ..util.metric import r_square
+from .split import RandSelect
+from .metric import r_square
 from ..problem.problem import Problem
+from ..core import spawn_seed
 
 class AutoTuner():
     '''
-    AutoTuner class
+    Hyper-parameter tuner for surrogate models.
+
+    The tuner evaluates candidate parameter settings by fitting the target
+    surrogate on a train split and scoring predictions on a validation split.
+    It supports both optimizer-driven tuning (`optTune`) and explicit grid
+    search (`gridTune`).
+
+    Examples:
+        >>> tuner = AutoTuner(model, optimizer)
+        >>> bestParams, bestScore = tuner.optTune(xData, yData)
     '''
     def __init__(self, model: SurrogateABC, optimizer: AlgorithmABC = None):
         '''
@@ -19,6 +29,7 @@ class AutoTuner():
         self.optimizer = optimizer
 
         self.model = model
+        self.rng = np.random.default_rng()
 
     def _initialize_model_components(self, xData: np.ndarray):
         kernel = getattr(self.model, "kernel", None)
@@ -109,7 +120,7 @@ class AutoTuner():
         problem = Problem(nInput = nInput, nObj = 1, ub = ub, lb = lb, 
                             objFunc = objFunc, optType = 'max')
         
-        res = self.optimizer.run(problem=problem)
+        res = self.optimizer.run(problem=problem, seed=spawn_seed(self.rng))
         bestTrueDecs = np.asarray(res.bestDecs).ravel()
         bestTrueObj = np.asarray(res.bestObjs).ravel()
         

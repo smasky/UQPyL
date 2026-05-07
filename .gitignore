@@ -27,3 +27,4 @@ __pycache__/
 .pytest_cache/
 .pytest_tmp/
 .codex/pytest_cache/
+.worktrees/

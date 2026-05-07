@@ -6,6 +6,8 @@ from typing import Any
 
 import numpy as np
 
+from ...core.runtime import export_runtime_meta
+
 
 @dataclass
 class AnaMetric:
@@ -19,9 +21,9 @@ class AnaMetric:
         return {
             "name": self.name,
             "values": self.values.copy(),
-            "rowLabels": list(self.rowLabels),
-            "colLabels": list(self.colLabels),
-            "colDim": self.colDim,
+            "row_labels": list(self.rowLabels),
+            "col_labels": list(self.colLabels),
+            "col_dim": self.colDim,
         }
 
 
@@ -61,27 +63,29 @@ class AnaResult:
         return self.getMetric(name)
 
     def summary(self) -> dict[str, Any]:
-        return {
-            "method": self.method,
-            "runId": self.runId,
-            "problemName": self.problemName,
-            "target": self.target,
-            "nInput": self.nInput,
-            "nOutput": self.nOutput,
-            "nCon": self.nCon,
-            "metricNames": self.metricNames,
-            "runtime": self.runtime,
-            "createdAt": self.createdAt,
-        }
+        return export_runtime_meta(
+            run_id=self.runId,
+            method=self.method,
+            problem_name=self.problemName,
+            n_input=self.nInput,
+            n_output=self.nOutput,
+            n_con=self.nCon,
+            runtime=self.runtime,
+            created_at=self.createdAt,
+            extra={
+                "target": self.target,
+                "metric_names": self.metricNames,
+            },
+        )
 
     def toDict(self) -> dict[str, Any]:
         return {
             "method": self.method,
-            "runId": self.runId,
-            "problemName": self.problemName,
-            "nInput": self.nInput,
-            "nOutput": self.nOutput,
-            "nCon": self.nCon,
+            "run_id": self.runId,
+            "problem_name": self.problemName,
+            "n_input": self.nInput,
+            "n_output": self.nOutput,
+            "n_con": self.nCon,
             "target": self.target,
             "settings": dict(self.settings),
             "meta": dict(self.meta),
@@ -89,7 +93,7 @@ class AnaResult:
             "X": None if self.X is None else self.X.copy(),
             "Y": None if self.Y is None else self.Y.copy(),
             "runtime": self.runtime,
-            "createdAt": self.createdAt,
+            "created_at": self.createdAt,
             "extra": dict(self.extra),
         }
 
@@ -128,8 +132,10 @@ class AnaState:
 
     def buildResult(self) -> AnaResult:
         problem = self.analysis.problem
+        session = getattr(self.analysis, "session", None)
+        runId = None if session is None else getattr(session, "run_id", None)
         return AnaResult(
-            runId=getattr(self.analysis, "runId", None),
+            runId=runId if runId is not None else getattr(self.analysis, "runId", None),
             method=self.analysis.name,
             problemName=problem.name,
             nInput=problem.nInput,

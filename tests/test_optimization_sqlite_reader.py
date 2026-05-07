@@ -3,6 +3,7 @@ from pathlib import Path
 from UQPyL.optimization.runtime import OptReader
 from UQPyL.optimization.runtime.storage import SqliteStorage
 from UQPyL.optimization.soea import GA
+from UQPyL.core.runtime import build_db_path, make_run_id
 from UQPyL.problem.sop.single_simple_problem import Sphere
 
 
@@ -28,20 +29,23 @@ def test_sqlite_save_and_reader_roundtrip():
     new_files = sorted(after - before)
     assert len(new_files) == 1
 
-    runs = OptReader.listRuns(result_dir)
+    runs = OptReader.list_runs(result_dir)
     assert len(runs) >= 1
 
     reader = OptReader(str(new_files[0]))
-    run = reader.getRun()
-    params = reader.getRunParams()
-    snapshots = reader.listSnapshots()
-    pop = reader.loadLastPopulation()
-    best = reader.loadLastBest()
-    alg2 = reader.loadAlgorithm()
-    prob2 = reader.loadProblem()
+    run = reader.get_run()
+    summary = reader.get_run_summary()
+    params = reader.get_run_params()
+    snapshots = reader.list_snapshots()
+    pop = reader.load_last_population()
+    best = reader.load_last_best()
+    alg2 = reader.load_algorithm()
+    prob2 = reader.load_problem()
     reader.close()
 
     assert run["algorithm"] == "GA"
+    assert summary["method"] == "GA"
+    assert summary["problem_name"] == "Sphere"
     assert "seed" in params
     assert len(snapshots) >= 1
     assert pop.decs.shape[1] == 3
@@ -78,7 +82,16 @@ def test_log_file_contains_full_summary_and_final():
 
 def test_optimization_storage_runid_includes_problem_slug():
     storage = SqliteStorage("Result")
-    dbPath, runId = storage._dbPath("GA", "My Problem#1")
+    dbPath, runId = storage._db_path("GA", "My Problem#1")
 
     assert "ga_My_Problem_1_" in runId
     assert dbPath.endswith(f"{runId}.sqlite3")
+
+
+def test_runtime_common_helpers_match_storage_naming():
+    runId = make_run_id("GA", "My Problem#1")
+    assert runId.startswith("ga_My_Problem_1_")
+
+    dbPath, explicitRunId = build_db_path("Result", "GA", "My Problem#1")
+    assert explicitRunId.startswith("ga_My_Problem_1_")
+    assert dbPath.endswith(f"{explicitRunId}.sqlite3")

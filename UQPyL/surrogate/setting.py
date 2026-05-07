@@ -1,8 +1,12 @@
 import numpy as np
 
-class Setting():
+from ..core.parameter_store import ParameterStore
+
+
+class Setting(ParameterStore):
     
     def __init__(self):
+        super().__init__()
         self.defaultOwner = None
         
         self.parVal = {}
@@ -15,9 +19,16 @@ class Setting():
         self.parSet = {}
         self.parLog = {}
         self.parOwner = {}
+
+    def _materialize_mapping(self):
+        names = list(dict.fromkeys(list(self.parVal.keys()) + list(self.parCon.keys())))
+        return {name: self.get(name) for name in names}
+
+    def _mapping(self):
+        return self._materialize_mapping()
     
     #---------------Public Functions---------------#
-    def setPara(self, name, value, attr = None, owner = None):
+    def set(self, name, value, attr = None, owner = None):
         '''
         Set the parameter value and its attribute
         :param name: str, the name of the parameter
@@ -49,7 +60,7 @@ class Setting():
             
         else:
             self.parCon[name] = value
-            
+
     def getParaInfos(self, nameList):
         '''
         Get the parameter information
@@ -207,7 +218,7 @@ class Setting():
             else:
                 self.parVal[name][:] = value
                 
-    def getVals(self, *args):
+    def get(self, *args):
         '''
         Get the parameter value
         :param args: list, the name of the parameter

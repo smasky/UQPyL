@@ -3,30 +3,24 @@ from typing import Literal, Optional, Tuple, Union
 
 from .core import svm_fit, svm_predict, Parameter 
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class SVR(SurrogateABC):
     '''
-    Support Vector Regression(SVR)
-    -----------------------------
-    This class is a interface of libsvm library from Lin Chih-Jen Professor in National Taiwan University.
-    For regression problems, the epsilon-SVR or nu-SVR is used here.
-    
+    Support vector regression surrogate model.
+
+    This class wraps the LIBSVM regression back-end and supports both
+    epsilon-SVR and nu-SVR variants.
+
+    Examples:
+        >>> model = SVR(kernel='rbf')
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
     References:
-        [1] C. C. Chang and C. J. Lin, "LIBSVM: A library for support vector machines", 2015.
-    
-    Methods:
-        predict(xPred): 
-            Predicts the output of the surrogate model for a given input.
-            - xPred: np.ndarray
-                The input to predict the output for.
-        fit(xTrain, yTrain):
-            Fits the surrogate model to the training data.
-            - xTrain: np.ndarray
-                The input training data.
-            - yTrain: np.ndarray
-                The output training data.
+        [1] C.-C. Chang and C.-J. Lin, LIBSVM: A library for support vector machines,
+            ACM Transactions on Intelligent Systems and Technology, vol. 2, no. 3, 2011.
     '''
     
     name = "SVR"
@@ -103,14 +97,14 @@ class SVR(SurrogateABC):
         self.registerParameterApplier("symbol", self.setSymbol)
         self.registerParameterApplier("kernel", self.setKernel)
         
-        self.setting.setPara("C", C, C_attr)
-        self.setting.setPara("epsilon", epsilon, epsilon_attr)
-        self.setting.setPara("gamma", gamma, gamma_attr)
-        self.setting.setPara("coe0", coe0, coe0_attr)
-        self.setting.setPara("degree", degree)
-        self.setting.setPara("maxIter", maxIter)
-        self.setting.setPara("eps", eps)
-        self.setting.setPara("nu", nu, nu_attr)
+        self.setting.set("C", C, C_attr)
+        self.setting.set("epsilon", epsilon, epsilon_attr)
+        self.setting.set("gamma", gamma, gamma_attr)
+        self.setting.set("coe0", coe0, coe0_attr)
+        self.setting.set("degree", degree)
+        self.setting.set("maxIter", maxIter)
+        self.setting.set("eps", eps)
+        self.setting.set("nu", nu, nu_attr)
         self.setSymbol(symbol)
         self.setKernel(kernel)
         
@@ -188,14 +182,14 @@ class SVR(SurrogateABC):
         return self
 
     def _build_parameter(self):
-        nu = self.setting.getVals("nu")
-        C = self.setting.getVals("C")
-        gamma = self.setting.getVals("gamma") if self.isParameterActive("gamma") else 0.0
-        epsilon = self.setting.getVals("epsilon") if self.isParameterActive("epsilon") else 0.0
-        coe0 = self.setting.getVals("coe0") if self.isParameterActive("coe0") else 0.0
-        degree = self.setting.getVals("degree") if self.isParameterActive("degree") else 2
-        maxIter = self.setting.getVals("maxIter")
-        eps = self.setting.getVals("eps")
+        nu = self.setting.get("nu")
+        C = self.setting.get("C")
+        gamma = self.setting.get("gamma") if self.isParameterActive("gamma") else 0.0
+        epsilon = self.setting.get("epsilon") if self.isParameterActive("epsilon") else 0.0
+        coe0 = self.setting.get("coe0") if self.isParameterActive("coe0") else 0.0
+        degree = self.setting.get("degree") if self.isParameterActive("degree") else 2
+        maxIter = self.setting.get("maxIter")
+        eps = self.setting.get("eps")
         return Parameter(
             int(self.symbol), int(self.kernel), int(degree), int(maxIter),
             float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps)

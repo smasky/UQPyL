@@ -14,6 +14,13 @@ class MH_Gibbs(InferenceABC):
         >>> mh_gibbs = MH_Gibbs(nChains=4, warmUp=500, maxIters=2000)
         >>> res = mh_gibbs.run(problem, gamma=0.1, seed=1234)
         >>> print(res.bestDecs)
+
+    References:
+        [1] S. Geman and D. Geman, Stochastic relaxation, Gibbs distributions, and the
+            Bayesian restoration of images, IEEE Transactions on Pattern Analysis and
+            Machine Intelligence, vol. PAMI-6, no. 6, pp. 721-741, 1984.
+        [2] W. K. Hastings, Monte Carlo sampling methods using Markov chains and their applications,
+            Biometrika, vol. 57, no. 1, pp. 97-109, 1970.
     """
     
     name = "MH-Gibbs"
@@ -46,9 +53,9 @@ class MH_Gibbs(InferenceABC):
             saveFreq, logProbFunc, maxInitAttempts,
         )
                 
-        self.setParaVal('nChains', nChains)
-        self.setParaVal('warmUp', warmUp)
-        self.setParaVal('propDist', propDist)
+        self.set('nChains', nChains)
+        self.set('warmUp', warmUp)
+        self.set('propDist', propDist)
         
         if propDist not in ['gauss', 'uniform']:
             raise ValueError("propDist must be 'gauss' or 'uniform'")
@@ -57,8 +64,8 @@ class MH_Gibbs(InferenceABC):
         
         self.setup(problem, seed)
         
-        nChains = self.getParaVal('nChains'); warmUp = self.getParaVal('warmUp')
-        propDist = self.getParaVal('propDist')
+        nChains = self.get('nChains'); warmUp = self.get('warmUp')
+        propDist = self.get('propDist')
         
         X_init, Objs_init, Cons_init = self.initialSampling(problem, nChains, seed)
         
@@ -140,10 +147,10 @@ class MH_Gibbs(InferenceABC):
         for i in range(X_cur.shape[0]):
             
             if propDist == 'gauss':
-                X_star[i, dim] = np.random.normal(X_cur[i][dim], propCovs[i].diagonal()[dim])
+                X_star[i, dim] = self.rng.normal(X_cur[i][dim], propCovs[i].diagonal()[dim])
                 
             elif propDist == 'uniform':
-                X_star[i, dim] = np.random.uniform(X_cur[i][dim] - propCovs[i].diagonal()[dim], X_cur[i][dim] + propCovs[i].diagonal()[dim])
+                X_star[i, dim] = self.rng.uniform(X_cur[i][dim] - propCovs[i].diagonal()[dim], X_cur[i][dim] + propCovs[i].diagonal()[dim])
             
             else:
                 raise ValueError("propDist must be 'gauss' or 'uniform'")
@@ -156,7 +163,7 @@ class MH_Gibbs(InferenceABC):
     
     def _check_gamma_(self, gamma):
         
-        nChains = self.getParaVal('nChains')
+        nChains = self.get('nChains')
         nInput = self.problem.nInput
         
         if isinstance(gamma, float):

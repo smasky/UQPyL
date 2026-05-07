@@ -42,6 +42,23 @@ class _DummyMultiSurrogate:
         return np.hstack([base + 0.1 * i for i in range(self.n_out)])
 
 
+class _SeedRecordingOptimizer:
+    def __init__(self):
+        self.seeds = []
+        self.verboseFlag = False
+        self.logFlag = False
+        self.saveFlag = False
+
+    def run(self, problem, seed=None, **kwargs):
+        self.seeds.append(seed)
+
+        class _Res:
+            bestDecs = np.zeros((1, problem.nInput))
+            bestObjs = np.zeros((1, getattr(problem, "nObj", 1)))
+
+        return _Res()
+
+
 def test_abc_runs_on_sphere_small_budget():
     problem = Sphere(nInput=3, ub=1.0, lb=-1.0)
     alg = ABC(nPop=10, maxFEs=40, maxIters=5, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
@@ -112,4 +129,23 @@ def test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget():
     )
     result = alg.run(problem, seed=123)
     _assert_opt_result(result)
+
+
+def test_expensive_algorithms_spawn_deterministic_distinct_child_seeds():
+    problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
+
+    ego_opt = _SeedRecordingOptimizer()
+    ego = EGO(nInit=4, maxFEs=6, maxIters=2, verboseFlag=False, logFlag=False, saveFlag=False)
+    ego.surrogate = _DummySurrogate()
+    ego.optimizer = ego_opt
+    ego.run(problem, seed=123)
+    assert len(ego_opt.seeds) >= 1
+    assert len(set(ego_opt.seeds)) == len(ego_opt.seeds)
+
+    ego_opt_2 = _SeedRecordingOptimizer()
+    ego2 = EGO(nInit=4, maxFEs=6, maxIters=2, verboseFlag=False, logFlag=False, saveFlag=False)
+    ego2.surrogate = _DummySurrogate()
+    ego2.optimizer = ego_opt_2
+    ego2.run(problem, seed=123)
+    assert ego_opt.seeds == ego_opt_2.seeds
 
