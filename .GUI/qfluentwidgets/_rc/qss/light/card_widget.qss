@@ -1,8 +1,0 @@
-HeaderCardWidget #headerLabel {
-    color: black;
-}
-
-HeaderCardWidget > #headerView,
-HeaderCardWidget > #view {
-    background-color: transparent;
-}

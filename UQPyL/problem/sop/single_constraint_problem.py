@@ -1,15 +1,15 @@
 import numpy as np
 from typing import Union
 
-from ..base import ProblemABC
+from ..base import ProblemBase
 
 ###################Basic Test Function##################
 #Reference: 
 #CEC2010 Constrained Test Suit
 ###############################################################
 
-class RosenbrockWithCon(ProblemABC):
-    '''
+class RosenbrockWithCon(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         

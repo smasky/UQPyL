@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from UQPyL.util.metric import r_square, nse, mse, rank_score, sort_score
+from UQPyL.surrogate.metric import r_square, nse, mse, rank_score, sort_score
 
 
 def test_metric_r2_nse_mse_basic():

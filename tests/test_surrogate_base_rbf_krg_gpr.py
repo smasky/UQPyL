@@ -5,17 +5,17 @@ from UQPyL.surrogate.base import SurrogateABC
 from UQPyL.surrogate.rbf.radial_basis_function import RBF
 from UQPyL.surrogate.kriging.kriging import KRG
 from UQPyL.surrogate.gp.gaussian_process import GPR
-from UQPyL.util.poly import PolyFeature
-from UQPyL.util.scaler import MinMaxScaler, StandardScaler
+from UQPyL.surrogate.poly import PolyFeature
+from UQPyL.surrogate.scaler import MinMaxScaler, StandardScaler
 
 
 class DummySurrogate(SurrogateABC):
     name = "DummySurrogate"
 
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         self.xTrain = xTrain
         self.yTrain = yTrain
+        self.fitState["dummy"] = True
         return self
 
     def predict(self, xPred: np.ndarray):
@@ -53,6 +53,7 @@ def test_rbf_fit_predict_and_setkernel_removes_old_kernel_setting():
     from UQPyL.surrogate.rbf.kernel.linear_kernel import Linear
 
     rbf.setKernel(Linear())
+    rbf.fit(X, Y)
     pred2 = rbf.predict(np.array([[0.2]]))
     assert pred2.shape == (1, 1)
 
@@ -66,7 +67,7 @@ def test_krg_fit_predict_smoke_with_monkeypatched_boxmin(monkeypatch):
     # Make KRG fit deterministic/fast by patching Boxmin.run to avoid explore loops.
     from UQPyL.surrogate.util.boxmin import Boxmin
 
-    def _fast_run(self, problem, xInit=None):
+    def _fast_run(self, problem, xInit=None, seed=None):
         if xInit is None:
             xInit = np.random.uniform(problem.lb.ravel(), problem.ub.ravel(), problem.nInput)
         return xInit, float(problem.objFunc(xInit))
@@ -78,9 +79,9 @@ def test_krg_fit_predict_smoke_with_monkeypatched_boxmin(monkeypatch):
     krg = KRG(scalers=(StandardScaler(0, 1), StandardScaler(0, 1)), regression="poly1", optimizer="Boxmin")
     krg.fit(X, Y)
 
-    y_pred, mse = krg.predict(np.array([[0.3], [0.7]]), only_value=False)
+    y_pred, y_var = krg.predict(np.array([[0.3], [0.7]]), returnVar=True)
     assert y_pred.shape == (2, 1)
-    assert mse.shape == (2, 1)
+    assert y_var.shape == (2, 1)
 
 
 def test_gpr_fit_predict_smoke_with_output_std(monkeypatch):
@@ -91,7 +92,7 @@ def test_gpr_fit_predict_smoke_with_output_std(monkeypatch):
     y_mean = gpr.predict(np.array([[0.3], [0.7]]))
     assert y_mean.shape == (2, 1)
 
-    y_mean2, y_std = gpr.predict(np.array([[0.3], [0.7]]), Output_std=True)
+    y_mean2, y_std = gpr.predict(np.array([[0.3], [0.7]]), returnStd=True)
     assert y_mean2.shape == (2, 1)
-    assert y_std.shape == (2,)
+    assert y_std.shape == (2, 1)
 

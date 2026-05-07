@@ -61,6 +61,8 @@ cdef class PruningPasser:
         cdef FLOAT_t best_iteration_gcv
         cdef FLOAT_t best_iteration_mse
         cdef FLOAT_t mse, mse0, total_weight
+        cdef FLOAT_t mse_value
+        cdef FLOAT_t sample_weight_sum
 
         cdef cnp.ndarray[FLOAT_t, ndim = 2] B = (
             <cnp.ndarray[FLOAT_t, ndim = 2] > self.B)
@@ -85,24 +87,24 @@ cdef class PruningPasser:
             if sample_weight.shape[1] == 1:
                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,0])
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
-                total_weight += np.sum(sample_weight[:,0])
-                mse0 += np.sum(sample_weight[:,0] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,0])) ** 2)
+                total_weight += float(np.sum(sample_weight[:,0]))
+                mse0 += float(np.sum(sample_weight[:,0] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,0])) ** 2))
             else:
                 weighted_y = y[:,p] * np.sqrt(sample_weight[:,p])
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
-                total_weight += np.sum(sample_weight[:,p])
-                mse0 += np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2)
+                total_weight += float(np.sum(sample_weight[:,p]))
+                mse0 += float(np.sum(sample_weight[:,p] * (y[:,p] - np.average(y[:,p], weights=sample_weight[:,p])) ** 2))
             if sample_weight.shape[1] == 1:
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, 0])
             else:
                 self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
             beta, mse_ = np.linalg.lstsq(B[:, 0:(basis_size)], weighted_y, rcond=None)[0:2]
-            if mse_:
-                pass
+            if mse_.size == 0:
+                mse_value = float(np.sum(
+                    (np.dot(B[:, 0:basis_size], beta) - weighted_y) ** 2))
             else:
-                mse_ = np.sum(
-                    (np.dot(B[:, 0:basis_size], beta) - weighted_y) ** 2)
-            mse += mse_
+                mse_value = float(mse_[0])
+            mse += mse_value
         
         # Create the record object
         self.record = PruningPassRecord(
@@ -143,14 +145,14 @@ cdef class PruningPasser:
                         self.basis.weighted_transform(X, missing, B, sample_weight[:, p])
                     beta, mse_ = np.linalg.lstsq(
                         B[:, 0:pruned_basis_size], weighted_y , rcond=None)[0:2]
-                    if mse_:
-                        pass
-#                         mse_ /= np.sum(self.sample_weight)
+                    if mse_.size == 0:
+                        mse_value = float(np.sum((np.dot(B[:, 0:pruned_basis_size], beta) -
+                                    weighted_y) ** 2)) #/ np.sum(sample_weight)
                     else:
-                        mse_ = np.sum((np.dot(B[:, 0:pruned_basis_size], beta) -
-                                    weighted_y) ** 2) #/ np.sum(sample_weight)
-                    mse += mse_# * output_weight[p]
-                gcv_ = gcv(mse / np.sum(sample_weight), pruned_basis_size, self.m, self.penalty)
+                        mse_value = float(mse_[0])
+                    mse += mse_value# * output_weight[p]
+                sample_weight_sum = float(np.sum(sample_weight))
+                gcv_ = gcv(mse / sample_weight_sum, pruned_basis_size, self.m, self.penalty)
 
                 if gcv_ <= best_iteration_gcv or first:
                     best_iteration_gcv = gcv_

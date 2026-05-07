@@ -3,26 +3,23 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
-from ..util import uniformPoint, gaOperator
+from ..base import AlgorithmABC
+from ..core import uniformPoint, gaOperator
 from ..population import Population
 
 class RVEA(AlgorithmABC):
     """
-    Reference vector guided evolutionary algorithm (RVEA) <Multi>
-    -------------------------------------------------------------
-    This class implements the RVEA, a multi-objective evolutionary algorithm
-    that uses reference vectors to guide the search process.
+    Multi-objective reference vector guided evolutionary algorithm.
 
-    Methods:
-        run(problem): 
-            Executes the RVEA on a given multi-objective problem.
-            - problem: Problem
-                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
+    Examples:
+        >>> rvea = RVEA(nPop=100, maxFEs=5000)
+        >>> res = rvea.run(problem, seed=1234)
+        >>> print(res.bestObjs)
 
     References:
-        [1] R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff, "A Reference Vector Guided Evolutionary Algorithm for Many-Objective Optimization," IEEE Transactions on Evolutionary Computation, vol. 20, no. 5, pp. 773-791, 2016.
-    -------------------------------------------------------------
+        [1] R. Cheng, Y. Jin, M. Olhofer, and B. Sendhoff, A reference vector guided
+            evolutionary algorithm for many-objective optimization, IEEE Transactions
+            on Evolutionary Computation, vol. 20, no. 5, pp. 773-791, 2016.
     """
     name="RVEA"
     alg_type="MOEA"
@@ -32,51 +29,46 @@ class RVEA(AlgorithmABC):
                 maxFEs: int = 50000, 
                 maxIters: int = 1000, 
                 maxTolerates=None, tolerate=1e-6, 
-                verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
+                verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
+                saveFreq: int = 100):
         """
-        Initialize the RVEA with user-defined parameters.
-        
-        :param alpha: Controls the convergence speed of the algorithm.
-        :param fr: Frequency of reference vector adaptation.
+        Initialize the algorithm.
+
+        :param alpha: Angle penalty parameter.
+        :param fr: Reference vector adaptation frequency.
         :param nPop: Population size.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
         """
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('alpha', alpha)
-        self.setParaVal('fr', fr)
-        self.setParaVal('nPop', nPop)
+        self.set('alpha', alpha)
+        self.set('fr', fr)
+        self.set('nPop', nPop)
     
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         """
-        Execute the RVEA on the specified multi-objective problem.
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
         
         # Parameters setting
-        alpha, fr = self.getParaVal('alpha', 'fr')
-        nPop = self.getParaVal('nPop')
+        alpha, fr = self.get('alpha', 'fr')
+        nPop = self.get('nPop')
     
         # Generate initial reference vectors
         V0, nPop = uniformPoint(nPop, problem.nOutput)
@@ -84,15 +76,16 @@ class RVEA(AlgorithmABC):
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
             
             # Select mating pool randomly
-            matingPoolIdx = np.random.randint(0, len(pop), nPop)
+            matingPoolIdx = self.rng.integers(0, len(pop), nPop)
             matingPool = pop[matingPoolIdx]
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring
@@ -109,9 +102,10 @@ class RVEA(AlgorithmABC):
             if condition:
                 # Update reference vectors
                 V = self.updateReferenceVector(pop.objs, V0)
+            self.update(pop)
                         
         # Return the final result
-        return self.result
+        return self.finalize()
     
     def updateReferenceVector(self, popObjs, V):
         """

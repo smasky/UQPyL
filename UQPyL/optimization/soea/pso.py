@@ -4,27 +4,24 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-
-from ...doe import LHS
-from ...problem import ProblemABC as Problem
-from ...util import Verbose
+from ..core.constraint import betterMask
 
 class PSO(AlgorithmABC):
-    '''
-    Particle Swarm Optimization
-    ------------------------------------------------
-        
-    Methods:
-        run: Run the Particle Swarm Optimization.
-    
+    """
+    Single-objective particle swarm optimization.
+
+    Examples:
+        >>> pso = PSO(nPop=50, maxFEs=5000)
+        >>> res = pso.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
     References:
-        [1] J. Kennedy and R. Eberhart, Particle swarm optimization, in Proceedings of ICNN'95 - International Conference on Neural Networks, 1995.
-        [2] J. Kennedy and R. Eberhart, Swarm Intelligence, Academic Press, 2001.
-        [3] M. Clerc and J. Kennedy, The particle swarm - explosion, stability, and convergence in a multidimensional complex space, IEEE Transactions on Evolutionary Computation, 2002.
-        [4] Y. Shi and R. C. Eberhart, A modified particle swarm optimizer, in Proceedings of the IEEE Congress on Evolutionary Computation, 1998.
-    '''
+        [1] J. Kennedy and R. Eberhart, Particle swarm optimization,
+            Proceedings of ICNN'95 - International Conference on Neural Networks,
+            vol. 4, pp. 1942-1948, 1995.
+    """
     
     name = "PSO"
     alg_type = "EA"
@@ -34,61 +31,61 @@ class PSO(AlgorithmABC):
                  maxIters: int = 1000,
                  maxFEs: int = 50000,
                  maxTolerates: int = 1000, tolerate: float = 1e-6,
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
-        '''
-        Initialize the particle swarm optimization algorithm with user-defined parameters.
-        
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
+                 saveFreq: int = 100):
+        """
+        Initialize the algorithm.
+
         :param w: Inertia weight.
-        :param c1: Cognitive parameter.
-        :param c2: Social parameter.
+        :param c1: Cognitive coefficient.
+        :param c2: Social coefficient.
         :param nPop: Population size.
-        
-        :param maxIterTimes: Maximum number of iterations.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
-        '''
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
+        """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag)
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag,
+                         saveFreq = saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('w', w)
-        self.setParaVal('c1', c1)
-        self.setParaVal('c2', c2)
-        self.setParaVal('nPop', nPop)
+        self.set('w', w)
+        self.set('c1', c1)
+        self.set('c2', c2)
+        self.set('nPop', nPop)
                 
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
-        '''
-        Execute the particle swarm optimization on the specified problem.
+        """
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (n_input), upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return: The result of the optimization process.
-        '''
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
+        """
         
         # setup algorithm
         self.setup(problem, seed)
         
         # Initialization
         # Retrieve parameter values
-        w, c1, c2 = self.getParaVal('w', 'c1', 'c2')
-        nPop = self.getParaVal('nPop')
+        w, c1, c2 = self.get('w', 'c1', 'c2')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
                 
         # Initialize personal best and global best
         pBest = pop  # Personal best
-        gBest = pop[pop.argsort()[0]]  # Global best
+        gBest = pop.getBest(k=1)  # Global best
         vel = pop.decs  # Velocity
         
         # Iterative process
@@ -104,14 +101,15 @@ class PSO(AlgorithmABC):
             self.evaluate(pop)
             
             # Update personal best
-            replace = np.where(pop.objs < pBest.objs)[0]
+            replace = np.where(betterMask(pop.objs, pop.cons, pBest.objs, pBest.cons, pop.conWgt))[0]
             pBest.replace(replace, pop[replace])
             
             # Update global best
-            gBest = pBest[pBest.argsort()[0]]
+            gBest = pBest.getBest(k=1)
+            self.update(pop)
             
         # Return the final result
-        return self.result
+        return self.finalize()
     
     def _psoOperator(self, popDecs, vel, pBestDecs, gBestDecs, w, c1, c2):
         '''
@@ -133,8 +131,8 @@ class PSO(AlgorithmABC):
         particleVel = vel
         
         # Random coefficients for stochastic behavior
-        r1 = np.random.random((N, D))
-        r2 = np.random.random((N, D))
+        r1 = self.rng.random((N, D))
+        r2 = self.rng.random((N, D))
         
         # Update velocity
         offVel = w * particleVel + (pBestDecs - popDecs) * c1 * r1 + (gBestDecs - popDecs) * c2 * r2
@@ -161,12 +159,16 @@ class PSO(AlgorithmABC):
         n_to_reinit = n_to_reinit if n_to_reinit < D else D
         
         # Randomly select particles and dimensions to mutate
-        rows_to_mutate = np.random.choice(N, size=n_to_reinit, replace=False)
-        cols_to_mutate = np.random.choice(D, size=n_to_reinit, replace=False)
+        rows_to_mutate = self.rng.choice(N, size=n_to_reinit, replace=False)
+        cols_to_mutate = self.rng.choice(D, size=n_to_reinit, replace=False)
 
         offspringDecs = popDecs.copy()
         
         # Reinitialize selected particles
-        offspringDecs[rows_to_mutate, cols_to_mutate] = np.random.uniform(self.problem.lb[0, cols_to_mutate], self.problem.ub[0, cols_to_mutate], size=n_to_reinit)
+        offspringDecs[rows_to_mutate, cols_to_mutate] = self.rng.uniform(
+            self.problem.lb[0, cols_to_mutate],
+            self.problem.ub[0, cols_to_mutate],
+            size=n_to_reinit,
+        )
         
         return offspringDecs

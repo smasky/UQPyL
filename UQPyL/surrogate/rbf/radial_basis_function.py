@@ -2,26 +2,28 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional, Literal
+from copy import deepcopy
 
 from .kernel import BaseKernel, Cubic
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class RBF(SurrogateABC):
     """
-    Radial Basis Function (RBF) network for surrogate modeling.
-    
-    This class implements an RBF network, which is a type of artificial neural network
-    used for function approximation. It uses radial basis functions as activation functions.
-    
-    Attributes:
-        name (str): Name of the surrogate model.
-    
-    Methods:
-        setKernel: Set the kernel function for the RBF network.
-        fit: Fit the RBF model to training data.
-        predict: Predict outputs for given input data.
+    Radial basis function surrogate model.
+
+    The model interpolates or smooths training data by combining radial basis
+    responses with an optional polynomial tail, depending on the selected kernel.
+
+    Examples:
+        >>> model = RBF()
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
+    References:
+        [1] M. D. Buhmann, Radial Basis Functions: Theory and Implementations,
+            Cambridge University Press, 2003.
     """
     
     name = "RBF"
@@ -40,21 +42,62 @@ class RBF(SurrogateABC):
         """
         super().__init__(scalers, polyFeature)
         
-        self.setting.setPara("C_smooth", C_smooth, C_smooth_attr)
+        self.setting.set("C_smooth", C_smooth, C_smooth_attr)
+
+        self.registerParameterApplier("kernel", self.setKernel)
+        self._kernelChoiceRegistered = False
         
-        self.kernel = kernel
-        
-        self.setting.mergeSetting(kernel.setting)
+        self.kernel = None
+        self.setKernel(kernel)
+
+    def _prepare_training_components(self, xTrain: np.ndarray):
+        if hasattr(self.kernel, "initialize"):
+            self.kernel.initialize(xTrain.shape[1])
         
     def setKernel(self, kernel: BaseKernel):
         """
         Set the kernel function for the RBF network.
         """
+        oldKernelNames = []
         if self.kernel is not None:
-            self.setting.removeSetting(self.kernel.setting) 
+            oldKernelNames = [
+                name for name in self.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
+                if name != "kernel"
+            ]
+
+        kernelChoiceValue = self.setting.parVal.get("kernel", None)
+        kernelChoiceAttr = self.setting.parSet.get("kernel", None)
+        kernelChoiceOwner = self.setting.parOwner.get("kernel", None)
+
+        if oldKernelNames:
+            self.setting.removeParas(oldKernelNames)
+
+        if not hasattr(kernel, "_templateSetting"):
+            kernel._templateSetting = deepcopy(kernel.setting)
+        kernel.setting = deepcopy(kernel._templateSetting)
         
         self.kernel = kernel
         self.setting.mergeSetting(self.kernel.setting)
+        self.kernel.setting = self.setting
+
+        if kernelChoiceValue is not None and kernelChoiceAttr is not None:
+            self.setting.parVal["kernel"] = self.setting._normalize_choice_array(kernel, kernelChoiceAttr)
+            self.setting.parSet["kernel"] = kernelChoiceAttr
+            self.setting.parType["kernel"] = 2
+            self.setting.parOwner["kernel"] = kernelChoiceOwner
+            self.setting.parLB["kernel"] = np.asarray([0.0])
+            self.setting.parUB["kernel"] = np.asarray([float(len(kernelChoiceAttr[0]))])
+            self.setting.parLog["kernel"] = False
+
+        if self.xTrain is not None and hasattr(self.kernel, "initialize"):
+            self.kernel.initialize(self.xTrain.shape[1])
+        self.resetFitState()
+        return self
+
+    def setKernelChoices(self, kernels):
+        self.registerChoiceParameter("kernel", kernels, owner="kernel")
+        self._kernelChoiceRegistered = True
+        return self
 
     def _get_tail_matrix(self, kernel: BaseKernel, train_X: np.ndarray):
         """
@@ -76,16 +119,19 @@ class RBF(SurrogateABC):
             
             return None
     
-    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         """
         Fit the RBF model to the training data.
         
         :param xTrain: Training input data.
         :param yTrain: Training output data.
         """
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
+
         nSample, nFeature = xTrain.shape
         
-        C_smooth = self.setting.getVals("C_smooth")
+        C_smooth = self.setting.get("C_smooth")
         
         A_Matrix = self.kernel.get_A_Matrix(xTrain) + C_smooth
         
@@ -105,40 +151,33 @@ class RBF(SurrogateABC):
         else:
             coe_h = 0
         
-        self.coe_h = coe_h
-        self.coe_lambda = solve[:nSample, :]
-        self.xTrain = xTrain
-            
-    def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        """
-        Fit the RBF model to the training data.
-        
-        :param xTrain: Training input data.
-        :param yTrain: Training output data.
-        """
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        self._fitPure(xTrain, yTrain)
+        self.fitState["coe_h"] = coe_h
+        self.fitState["coe_lambda"] = solve[:nSample, :]
+        return self
           
-    def predict(self, xPred: np.ndarray):
+    def predict(self, xPred: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False):
         """
         Predict outputs for given input data using the RBF model.
         
         :param xPred: Input data for prediction.
         :return: Predicted output data.
         """
+        self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("coe_h", "coe_lambda")
+
+        xPred = self.__X_transform__(xPred)
         _, nFeature = xPred.shape
         
-        xPred = self.__X_transform__(xPred)
-        
         dist = cdist(xPred, self.xTrain)
-        temp1 = np.dot(self.kernel.evaluate(dist), self.coe_lambda)
+        temp1 = np.dot(self.kernel.evaluate(dist), self.fitState["coe_lambda"])
         temp2 = np.zeros((temp1.shape[0], 1))
         
         degree = self.kernel.get_degree(nFeature)
         if degree:
             if degree > 1:
-                temp2 = temp2 + np.dot(xPred, self.coe_h[:-1, :])
+                temp2 = temp2 + np.dot(xPred, self.fitState["coe_h"][:-1, :])
             if degree > 0:
-                temp2 = temp2 + np.repeat(self.coe_h[-1:, :], temp1.shape[0], axis=0)
+                temp2 = temp2 + np.repeat(self.fitState["coe_h"][-1:, :], temp1.shape[0], axis=0)
         
         return self.__Y_inverse_transform__(temp1 + temp2)

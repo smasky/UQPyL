@@ -14,11 +14,11 @@ class DotProduct(BaseKernel):
         
         super().__init__()
         
-        self.setting.setPara('sigma', sigma, sigma_attr)
+        self.setting.set('sigma', sigma, sigma_attr)
     
     def __call__(self, trainX, trainY: Optional[np.ndarray]=None):
         
-        sigma = self.setting.getVals('sigma')
+        sigma = self.setting.get('sigma')
         
         if trainY is None:
             K=np.inner(trainX, trainX) + sigma**2

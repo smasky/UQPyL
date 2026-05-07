@@ -20,7 +20,7 @@ class _GuiProblem(ProblemABC):
     name = "GuiProblem"
 
     def __init__(self):
-        super().__init__(nInput=1, nOutput=1, ub=1.0, lb=0.0, nCons=0, optType="min")
+        super().__init__(nInput=1, nObj=1, ub=1.0, lb=0.0, nCon=0, optType="min")
         self.GUI = True
         self.totalWidth = 110
         self.iterEmit = _Emit()
@@ -34,6 +34,9 @@ class _GuiProblem(ProblemABC):
 class _Alg(AlgorithmABC):
     name = "Alg"
     alg_type = "EA"
+
+    def run(self, problem, seed=None):
+        raise NotImplementedError
 
 
 def test_checktermination_gui_stop_branch_and_tolerate_branch():

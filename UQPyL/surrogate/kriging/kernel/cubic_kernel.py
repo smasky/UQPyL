@@ -4,6 +4,7 @@ from typing import Union, Optional
 from .base_kernel import BaseKernel
 
 class Cubic(BaseKernel):
+    name = "Cubic"
     
     def __init__(self, heterogeneous: bool=True, 
                  theta: Union[float, np.ndarray]=0.1, 
@@ -18,7 +19,7 @@ class Cubic(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        theta=self.setting.getVals("theta")
+        theta=self.setting.get("theta")
             
         td=np.sum(D*theta, axis=1)
         ones=np.ones(td.shape)

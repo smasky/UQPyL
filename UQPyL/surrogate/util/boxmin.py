@@ -1,14 +1,24 @@
 import numpy as np
 class Boxmin():
-    
+    """
+    Internal MP optimizer used by surrogate models.
+
+    Notes:
+        - This is the current concrete implementation of the "MP" family
+          used by GPR/KRG internal hyper-parameter optimization.
+        - It is a single-point bounded local search routine.
+    """
     type = "MP"
+    name = "Boxmin"
     
     def __init__(self) -> None:
         
         pass
         
     ###################################Interface Function#################################
-    def run(self, problem, xInit=None):
+    def run(self, problem, xInit=None, seed=None):
+        if seed is not None:
+            np.random.seed(seed)
         
         self.ub=problem.ub.ravel()
         self.lb=problem.lb.ravel()
@@ -66,7 +76,7 @@ class Boxmin():
         
         for k in np.arange(0,pos.size):
             pos_c=pos.copy()
-            DD=self.D[k]
+            DD = float(np.asarray(self.D[k]).reshape(-1)[0])
             
             if pos[k]==self.ub[k]:
                 atbd=True
@@ -100,7 +110,7 @@ class Boxmin():
         self.initalPos=xInit
         
         p = xInit.size
-        D = 2 ** (np.arange(1, p + 1).reshape(-1, 1) / (p + 2))
+        D = 2 ** (np.arange(1, p + 1, dtype=float) / (p + 2))
         
         self.nv=1
         self.D=D

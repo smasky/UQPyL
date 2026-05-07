@@ -53,6 +53,12 @@
 pip install -U UQPyL
 ```
 
+If you need plotting utilities:
+
+```bash
+pip install -U "UQPyL[viz]"
+```
+
 ```bash
 conda install UQPyL --upgrade
 ```
@@ -63,6 +69,12 @@ Alternatively:
 git clone https://github.com/smasky/UQPyL.git 
 cd UQPyL
 pip install .
+```
+
+For local installs with plotting support:
+
+```bash
+pip install ".[viz]"
 ```
 
 ## 🔗 Useful Links
@@ -535,7 +547,7 @@ from UQPyL.problems import Sphere
 sphere = Sphere(nInput = 10)
 
 # Import Latin Hypercube Sampling (LHS) for generating design of experiments
-from UQPyL.DoE import LHS
+from UQPyL.doe import LHS
 
 # Generate 200 training samples in the input space using LHS
 lhs = LHS()

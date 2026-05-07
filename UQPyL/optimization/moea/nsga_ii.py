@@ -2,22 +2,24 @@
 import numpy as np
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ..util import NDSort, crowdingDist, tourSelect, gaOperator
-
-import time
+from ..core import NDSort, crowdingDist, tourSelect, gaOperator
 
 class NSGAII(AlgorithmABC):
     '''
     Non-dominated Sorting Genetic Algorithm II <Multi>
     ------------------------------------------------
-        
-    Methods:
-        run: Run the NSGA-II algorithm.
-        
+
+    Examples:
+        >>> nsgaii = NSGAII(nPop=50, maxFEs=5000)
+        >>> res = nsgaii.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
     References:
-        [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, "A fast and elitist multiobjective genetic algorithm: NSGA-II," IEEE Transactions on Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
+        [1] K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan, A fast and elitist
+            multiobjective genetic algorithm: NSGA-II, IEEE Transactions on
+            Evolutionary Computation, vol. 6, no. 2, pp. 182-197, 2002.
     '''
     
     name = "NSGAII"
@@ -28,7 +30,8 @@ class NSGAII(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates = None, tolerate=1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
+                 saveFreq: int = 100):
         '''
         Initialize the NSGA-II algorithm with user-defined parameters.
         
@@ -48,52 +51,50 @@ class NSGAII(AlgorithmABC):
         '''
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('proC', proC)
-        self.setParaVal('disC', disC)
-        self.setParaVal('proM', proM)
-        self.setParaVal('disM', disM)
-        self.setParaVal('nPop', nPop)
+        self.set('proC', proC)
+        self.set('disC', disC)
+        self.set('proM', proM)
+        self.set('disM', disM)
+        self.set('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         '''
         Execute the NSGA-II algorithm on the specified problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
+        :param problem: Problem instance.
                         This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
+                        input dimension, objective dimension, bounds, and evaluation methods.
         
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :return OptResult: Final optimization result.
         '''
         # setup algorithm
         self.setup(problem, seed)
         
         # Parameter Setting
-        proC, disC, proM, disM = self.getParaVal('proC', 'disC', 'proM', 'disM')
-        nPop = self.getParaVal('nPop')
+        proC, disC, proM, disM = self.get('proC', 'disC', 'proM', 'disM')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
         
         # Perform environmental selection
         _, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
+        pop.frontNo = frontNo
+        pop.crowdDis = CrowdDis
+        self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
             # Select mating pool using tournament selection
-            matingIdx = tourSelect(2, len(pop), frontNo, -CrowdDis)
+            matingIdx = tourSelect(2, len(pop), frontNo, -CrowdDis, rng=self.rng)
             matingPool = pop[matingIdx]
           
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM)
+            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
          
             # Evaluate the offspring
@@ -105,9 +106,10 @@ class NSGAII(AlgorithmABC):
             # Perform environmental selection
             nextIdx, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
             pop = pop[nextIdx]; pop.frontNo = frontNo; pop.crowdDis = CrowdDis
+            self.update(pop)
 
         # Return the final result
-        return self.result
+        return self.finalize()
     
     #-------------------------Private Functions--------------------------#
     def environmentalSelection(self, popDecs, popObjs, popCons = None, conWgt = None, n = None):

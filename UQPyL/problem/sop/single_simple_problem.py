@@ -1,15 +1,15 @@
 import numpy as np
 from typing import Union
 
-from ..base import ProblemABC
+from ..base import ProblemBase
 
 ###################Basic Test Function##################
 #Reference: 
 #Xin Yao; Yong Liu; Guangming Lin (1999).Evolutionary programming made faster. , 3(2), 0–102.doi:10.1109/4235.771163
 ###############################################################
 
-class Sphere(ProblemABC):
-    '''
+class Sphere(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -33,7 +33,7 @@ class Sphere(ProblemABC):
         super().__init__(nInput , 1, ub, lb)
     
     def objFunc(self, X: np.ndarray) -> np.ndarray:
-        '''
+        r'''
             Parameters:
                 X: np.ndarray
                     the input data
@@ -45,8 +45,8 @@ class Sphere(ProblemABC):
         
         return F
 
-class Schwefel_2_22(ProblemABC):
-    '''
+class Schwefel_2_22(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -76,8 +76,8 @@ class Schwefel_2_22(ProblemABC):
         
         return F
 
-class Schwefel_1_22(ProblemABC):
-    '''
+class Schwefel_1_22(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -112,8 +112,8 @@ class Schwefel_1_22(ProblemABC):
             
         return F
     
-class Schwefel_2_21(ProblemABC):
-    '''
+class Schwefel_2_21(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -145,8 +145,8 @@ class Schwefel_2_21(ProblemABC):
         
         return F
     
-class Rosenbrock(ProblemABC):
-    '''
+class Rosenbrock(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -179,8 +179,8 @@ class Rosenbrock(ProblemABC):
         
         return F
 
-class Step(ProblemABC):
-    '''
+class Step(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -210,8 +210,8 @@ class Step(ProblemABC):
         
         return F
     
-class Quartic(ProblemABC):
-    '''
+class Quartic(ProblemBase):
+    r'''
     Types:
         Single Optimization Unimodal
         
@@ -242,8 +242,8 @@ class Quartic(ProblemABC):
         F = np.sum(Temp, axis=1)[:, np.newaxis] + np.random.random((Temp.shape[0], 1))          
         return F
 
-class Schwefel_2_26(ProblemABC):
-    '''
+class Schwefel_2_26(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -275,8 +275,8 @@ class Schwefel_2_26(ProblemABC):
             
         return F
     
-class Rastrigin(ProblemABC):
-    '''
+class Rastrigin(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -307,8 +307,8 @@ class Rastrigin(ProblemABC):
         
         return F
 
-class Ackley(ProblemABC):
-    '''
+class Ackley(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -340,8 +340,8 @@ class Ackley(ProblemABC):
         
         return F
     
-class Griewank(ProblemABC):
-    '''
+class Griewank(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -377,8 +377,8 @@ class Griewank(ProblemABC):
 ####
 #########################
 
-class Trid(ProblemABC):
-    '''
+class Trid(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -408,8 +408,8 @@ class Trid(ProblemABC):
         
         return F
 
-class Bent_Cigar(ProblemABC):
-    '''
+class Bent_Cigar(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -440,8 +440,8 @@ class Bent_Cigar(ProblemABC):
         
         return F
     
-class Discus(ProblemABC):
-    '''
+class Discus(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         
@@ -472,8 +472,8 @@ class Discus(ProblemABC):
         
         return F
     
-class Weierstrass(ProblemABC):
-    '''
+class Weierstrass(ProblemBase):
+    r'''
     Types:
         Single Optimization Multimodal
         

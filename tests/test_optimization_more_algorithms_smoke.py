@@ -1,16 +1,18 @@
 import numpy as np
 
-from UQPyL.optimization.moea import MOEAD, NSGAIII, RVEA, MOASMO
-from UQPyL.optimization.soea import ABC, CSA, EGO, ASMO
+from UQPyL.optimization.expensive import ASMO, EGO, MOASMO
+from UQPyL.optimization.moea import MOEAD, NSGAIII, RVEA
+from UQPyL.optimization.runtime import OptResult
+from UQPyL.optimization.soea import ABC, CSA
 from UQPyL.problem.mop.ZDT import ZDT1
 from UQPyL.problem.sop.single_simple_problem import Sphere
 
 
-def _assert_netcdf_dict(res_nc):
-    assert isinstance(res_nc, dict)
-    assert "history" in res_nc and "result" in res_nc
-    assert "bestDecs" in res_nc["result"].data_vars
-    assert "bestObjs" in res_nc["result"].data_vars
+def _assert_opt_result(result):
+    assert isinstance(result, OptResult)
+    assert result.bestDecs is not None
+    assert result.bestObjs is not None
+    assert result.history is not None
 
 
 class _DummySurrogate:
@@ -40,18 +42,35 @@ class _DummyMultiSurrogate:
         return np.hstack([base + 0.1 * i for i in range(self.n_out)])
 
 
+class _SeedRecordingOptimizer:
+    def __init__(self):
+        self.seeds = []
+        self.verboseFlag = False
+        self.logFlag = False
+        self.saveFlag = False
+
+    def run(self, problem, seed=None, **kwargs):
+        self.seeds.append(seed)
+
+        class _Res:
+            bestDecs = np.zeros((1, problem.nInput))
+            bestObjs = np.zeros((1, getattr(problem, "nObj", 1)))
+
+        return _Res()
+
+
 def test_abc_runs_on_sphere_small_budget():
     problem = Sphere(nInput=3, ub=1.0, lb=-1.0)
     alg = ABC(nPop=10, maxFEs=40, maxIters=5, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_csa_runs_on_sphere_small_budget():
     problem = Sphere(nInput=3, ub=1.0, lb=-1.0)
     alg = CSA(nPop=10, maxFEs=40, maxIters=5, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_ego_runs_on_sphere_with_dummy_surrogate_and_small_inner_ga():
@@ -62,37 +81,37 @@ def test_ego_runs_on_sphere_with_dummy_surrogate_and_small_inner_ga():
     # shrink inner GA budget
     from UQPyL.optimization.soea import GA as _GA
     alg.optimizer = _GA(nPop=6, maxFEs=18, maxIters=3, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_asmo_one_step_runs_on_sphere_with_dummy_surrogate():
     problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
     alg = ASMO(nInit=6, maxFEs=20, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.surrogate = _DummySurrogate()
-    res_nc = alg.run(problem, seed=123, oneStep=True)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123, oneStep=True)
+    _assert_opt_result(result)
 
 
 def test_moead_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = MOEAD(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_nsgaiii_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = NSGAIII(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_rvea_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = RVEA(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
 
 
 def test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget():
@@ -108,6 +127,25 @@ def test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget():
         logFlag=False,
         saveFlag=False,
     )
-    res_nc = alg.run(problem, seed=123)
-    _assert_netcdf_dict(res_nc)
+    result = alg.run(problem, seed=123)
+    _assert_opt_result(result)
+
+
+def test_expensive_algorithms_spawn_deterministic_distinct_child_seeds():
+    problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
+
+    ego_opt = _SeedRecordingOptimizer()
+    ego = EGO(nInit=4, maxFEs=6, maxIters=2, verboseFlag=False, logFlag=False, saveFlag=False)
+    ego.surrogate = _DummySurrogate()
+    ego.optimizer = ego_opt
+    ego.run(problem, seed=123)
+    assert len(ego_opt.seeds) >= 1
+    assert len(set(ego_opt.seeds)) == len(ego_opt.seeds)
+
+    ego_opt_2 = _SeedRecordingOptimizer()
+    ego2 = EGO(nInit=4, maxFEs=6, maxIters=2, verboseFlag=False, logFlag=False, saveFlag=False)
+    ego2.surrogate = _DummySurrogate()
+    ego2.optimizer = ego_opt_2
+    ego2.run(problem, seed=123)
+    assert ego_opt.seeds == ego_opt_2.seeds
 

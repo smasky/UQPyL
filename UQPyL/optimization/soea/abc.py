@@ -3,25 +3,22 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
-from ...util import Verbose
+from ..core.constraint import betterMask
 
 class ABC(AlgorithmABC):
     """
-    Artificial Bee Colony Algorithm (ABC) <Single>
-    ----------------------------------------------
-    This class implements a single-objective artificial bee colony algorithm for optimization.
-    
-    Methods:
-        run(problem): 
-            Executes the ABC algorithm on a given problem.
-            - problem: Problem
-                The problem to solve, which includes attributes like nInput, ub, lb, and evaluate.
-    
+    Single-objective artificial bee colony algorithm.
+
+    Examples:
+        >>> abc = ABC(nPop=50, maxFEs=5000)
+        >>> res = abc.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
     References:
-        [1] D. Karaboga, An Idea Based on Honey Bee Swarm for Numerical Optimization, 2005.
-        [2] D. Karaboga and B. Basturk, A Powerful and Efficient Algorithm for Numerical Function Optimization: ABC Algorithm, 2007.
+        [1] D. Karaboga, An idea based on honey bee swarm for numerical optimization,
+            Technical Report-TR06, Erciyes University, 2005.
     """
     
     name = "ABC"
@@ -32,56 +29,51 @@ class ABC(AlgorithmABC):
                  maxFEs: int = 50000, 
                  maxIters: int = 1000, 
                  maxTolerates = 1000, tolerate = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
+                 saveFreq: int = 100):
         """
-        Initialize the ABC algorithm with user-defined parameters.
-        
-        :param employedRate: The rate of employed bees in the population.
-        :param limit: The limit for abandoning a food source.
+        Initialize the algorithm.
+
+        :param employedRate: Fraction of employed bees.
+        :param limit: Abandonment limit.
         :param nPop: Population size.
-        
         :param maxFEs: Maximum number of function evaluations.
-        :param maxIterTimes: Maximum number of iterations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('employedRate', employedRate)
-        self.setParaVal('limit', limit)
-        self.setParaVal('nPop', nPop)
+        self.set('employedRate', employedRate)
+        self.set('limit', limit)
+        self.set('nPop', nPop)
     
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         """
-        Execute the ABC algorithm on the specified problem.
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
         
         # Parameter Setting
-        employedRate, limit = self.getParaVal('employedRate', 'limit')
-        nPop = self.getParaVal('nPop')
+        employedRate, limit = self.get('employedRate', 'limit')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
             
         beeType = np.zeros(nPop, dtype=np.int32)
         limitCount = np.zeros(nPop)
@@ -102,9 +94,10 @@ class ABC(AlgorithmABC):
             
             # Check limit times for abandonment
             beeType = self.checkLimitTimes(beeType, limitCount, limit)
+            self.update(pop)
             
         # Return the final result
-        return self.result
+        return self.finalize()
             
     def checkLimitTimes(self, beeType: np.ndarray, limitCount: np.ndarray, limit: int):
         """
@@ -142,7 +135,7 @@ class ABC(AlgorithmABC):
             onlookerBees = pop[onlookerIdx]
             n, d = onlookerBees.size()
             
-            onlookerBees.decs = np.random.random((n, d)) * (self.problem.ub - self.problem.lb) + self.problem.lb
+            onlookerBees.decs = self.rng.random((n, d)) * (self.problem.ub - self.problem.lb) + self.problem.lb
             
             self.evaluate(onlookerBees)
             
@@ -185,15 +178,15 @@ class ABC(AlgorithmABC):
         p = 2 * (nEmployed + 1.0 - np.linspace(1, nEmployed, nEmployed)) / ((nEmployed + 1) * nEmployed)
         p[idx] = p / np.sum(p)
         
-        globalIdx = np.random.choice(len(employedBees), len(unemployedBees), p=p)
+        globalIdx = self.rng.choice(len(employedBees), len(unemployedBees), p=p)
 
         idx = np.arange(len(pop))
         while True:
-            randIdx = np.random.permutation(idx)
+            randIdx = self.rng.permutation(idx)
             if np.all(randIdx[beeType == 0] != idx[beeType == 1][globalIdx]):
                 break
         
-        rnd = np.random.random((len(unemployedBees), d)) * 2 - 1
+        rnd = self.rng.random((len(unemployedBees), d)) * 2 - 1
         
         popDecs = pop.decs
         employedDecs = employedBees.decs
@@ -206,13 +199,17 @@ class ABC(AlgorithmABC):
         
         pop.replace(beeType == 0, newBees)
         
-        replaceIdx = np.where(newBees.objs < employedBees[globalIdx].objs)[0]
+        replaceIdx = np.where(
+            betterMask(newBees.objs, newBees.cons, employedBees[globalIdx].objs, employedBees[globalIdx].cons, pop.conWgt)
+        )[0]
         limitCount[unemployedType[replaceIdx]] = 0
         beeType[unemployedType[replaceIdx]] = 1
         limitCount[employedType[globalIdx][replaceIdx]] = 0
         beeType[employedType[globalIdx][replaceIdx]] = 0
         
-        updateIdx = np.where(newBees.objs > employedBees[globalIdx].objs)[0]
+        updateIdx = np.where(
+            ~betterMask(newBees.objs, newBees.cons, employedBees[globalIdx].objs, employedBees[globalIdx].cons, pop.conWgt)
+        )[0]
         limitCount[employedType[globalIdx][updateIdx]] += 1
         
         return pop, beeType, limitCount
@@ -233,11 +230,11 @@ class ABC(AlgorithmABC):
         nEmployBees = np.sum(beeType == 1)
         idx = np.arange(len(pop))
         while True:
-            randIdx = np.random.permutation(idx)
+            randIdx = self.rng.permutation(idx)
             if np.all(randIdx[employedBeesType] != idx[employedBeesType]):
                 break
             
-        rnd = np.random.random((nEmployBees, D)) * 2 - 1
+        rnd = self.rng.random((nEmployBees, D)) * 2 - 1
         
         popDecs = pop.decs
         newDecs = popDecs[employedBeesType] + (popDecs[randIdx[employedBeesType]] - popDecs[employedBeesType]) * rnd
@@ -247,10 +244,11 @@ class ABC(AlgorithmABC):
         
         self.evaluate(newBees)
         
-        countIdx = np.where(newBees.objs >= pop[employedBeesType].objs)[0]
+        better = betterMask(newBees.objs, newBees.cons, pop[employedBeesType].objs, pop[employedBeesType].cons, pop.conWgt)
+        countIdx = np.where(~better)[0]
         limitCount[employedBeesType[countIdx]] += 1
         
-        updateIdx = np.where(newBees.objs < pop[employedBeesType].objs)[0]
+        updateIdx = np.where(better)[0]
         pop.replace(employedBeesType[updateIdx], newBees[updateIdx])
         
         return pop, limitCount

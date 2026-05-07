@@ -3,17 +3,23 @@ import numpy as np
 
 from typing import Optional
 
-from ..base import AlgorithmABC, Verbose
+from ..base import AlgorithmABC
 from ..population import Population
+from ..core.constraint import betterMask
 
 class CSA(AlgorithmABC):
     """
-    Cooperative Search Algorithm (CSA) <Single>
-    -------------------------------------------------
-    This class implements a single-objective cooperative search algorithm for optimization.
-    
+    Single-objective cooperative search algorithm.
+
+    Examples:
+        >>> csa = CSA(nPop=25, maxFEs=5000)
+        >>> res = csa.run(problem, seed=1234)
+        >>> print(res.bestObjs)
+
     References:
-        [1] Z. Feng, W. Niu, and S. Liu (2021), Cooperation search algorithm: A novel metaheuristic evolutionary intelligence algorithm for numerical optimization and engineering optimization problems, Appl. Soft. Comput., vol. 98, p. 106734, Jan.  doi: 10.1016/j.asoc.2020.106734.
+        [1] Z. Feng, W. Niu, S. Wang, J. Zhou, and Y. Cheng, Cooperation search algorithm:
+            a novel metaheuristic evolutionary intelligence algorithm for numerical optimization
+            and engineering optimization problems, Applied Soft Computing, vol. 98, 2021.
     """
     
     name = "CSA"
@@ -24,61 +30,56 @@ class CSA(AlgorithmABC):
                  maxIters: int=  1000,
                  maxFEs: int = 50000,
                  maxTolerates: int = 1000, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True,
+                 saveFreq: int = 100):
         """
-        
-        Initialize the CSA algorithm with user-defined parameters.
-        
-        :param alpha: Control parameter for team communication.
-        :param beta: Control parameter for reflective learning.
+        Initialize the algorithm.
+
+        :param alpha: Team communication coefficient.
+        :param beta: Reflective learning coefficient.
         :param M: Number of global best solutions to maintain.
         :param nPop: Population size.
-        
-        :param maxIterTimes: Maximum number of iterations.
         :param maxFEs: Maximum number of function evaluations.
-        :param maxTolerateTimes: Maximum number of tolerated iterations without improvement.
-        :param tolerate: Tolerance for improvement.
-        :param verbose: Flag to enable verbose output.
-        :param verboseFreq: Frequency of verbose output.
-        :param logFlag: Flag to enable logging.
-        :param saveFlag: Flag to enable saving results.
+        :param maxIters: Maximum number of iterations.
+        :param maxTolerates: Maximum tolerated non-improving iterations.
+        :param tolerate: Improvement tolerance.
+        :param verboseFlag: Whether to print terminal output.
+        :param verboseFreq: Summary output frequency.
+        :param logFlag: Whether to save full text logs.
+        :param saveFlag: Whether to save sqlite results.
+        :param saveFreq: Snapshot save frequency.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag)
+                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
+                         saveFreq = saveFreq)
         
         # Set user-defined parameters
-        self.setParaVal('alpha', alpha)
-        self.setParaVal('beta', beta)
-        self.setParaVal('M', M)
-        self.setParaVal('nPop', nPop)
+        self.set('alpha', alpha)
+        self.set('beta', beta)
+        self.set('M', M)
+        self.set('nPop', nPop)
            
     #------------------Public Function------------------#
-    @Verbose.run
     def run(self, problem, seed: Optional[int] = None):
         """
-        Execute the CSA algorithm on the specified problem.
+        Run the algorithm on the given problem.
 
-        :param problem: An instance of a class derived from ProblemABC.
-                        This object defines the optimization problem, including
-                        the number of inputs (nInput), number of outputs (nOutput),
-                        upper bounds (ub), lower bounds (lb), and evaluation methods.
-        
-        :return Result: An instance of the Result class, which contains the
-                        optimization results, including the best decision variables,
-                        objective values, and constraint violations encountered during
-                        the optimization process.
+        :param problem: Problem instance.
+        :param seed: Random seed.
+        :return OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
         
         # Retrieve parameter values
-        alpha, beta, M = self.getParaVal('alpha', 'beta', 'M')
-        nPop = self.getParaVal('nPop')
+        alpha, beta, M = self.get('alpha', 'beta', 'M')
+        nPop = self.get('nPop')
         
         # Generate initial population
         pop = self.initPop(nPop)
+        self.update(pop)
         
         # Initial personal best and global best
         pBest = pop.copy()  # Personal Best
@@ -96,16 +97,29 @@ class CSA(AlgorithmABC):
             self.evaluate(uPop)
             self.evaluate(vPop)
             
-            pop = Population(decs=np.where(uPop.objs < vPop.objs, uPop.decs, vPop.decs), objs=np.minimum(uPop.objs, vPop.objs))
+            chooseU = betterMask(uPop.objs, uPop.cons, vPop.objs, vPop.cons, pop.conWgt).reshape(-1, 1)
+            pop = Population(
+                decs=np.where(chooseU, uPop.decs, vPop.decs),
+                objs=np.where(chooseU, uPop.objs, vPop.objs),
+                cons=None if uPop.cons is None and vPop.cons is None else np.where(chooseU, uPop.cons, vPop.cons),
+                conWgt=pop.conWgt,
+            )
 
             # Update personal best and global best
             tmp = pop[pop.argsort()[:M]]
-            pBest = Population(decs=np.where(pop.objs < pBest.objs, pop.decs, pBest.decs), objs=np.minimum(pop.objs, pBest.objs))
+            choosePop = betterMask(pop.objs, pop.cons, pBest.objs, pBest.cons, pop.conWgt).reshape(-1, 1)
+            pBest = Population(
+                decs=np.where(choosePop, pop.decs, pBest.decs),
+                objs=np.where(choosePop, pop.objs, pBest.objs),
+                cons=None if pop.cons is None and pBest.cons is None else np.where(choosePop, pop.cons, pBest.cons),
+                conWgt=pop.conWgt,
+            )
            
             gBest.add(tmp)
             gBest = gBest[gBest.argsort()[:M]]
+            self.update(pop)
             
-        return self.result
+        return self.finalize()
     
     def _reflectiveLearningOperator(self, popDecs):
         """
@@ -127,15 +141,15 @@ class CSA(AlgorithmABC):
         
         gailv = np.abs(popDecs - c) / (self.problem.ub - self.problem.lb)
         # Calculate r
-        t1 = np.random.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
-        t2 = np.random.random((N, D)) * np.abs(fai_1 - self.problem.lb) + np.where(fai_1 > lb_n, lb_n, fai_1)
-        seed = np.random.random((N, D))
+        t1 = self.rng.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
+        t2 = self.rng.random((N, D)) * np.abs(fai_1 - self.problem.lb) + np.where(fai_1 > lb_n, lb_n, fai_1)
+        seed = self.rng.random((N, D))
         r = np.where(gailv < seed, t1, t2)
         
         # Calculate p
-        t3 = np.random.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
-        t4 = np.random.random((N, D)) * np.abs(self.problem.ub - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
-        seed = np.random.random((N, D))
+        t3 = self.rng.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
+        t4 = self.rng.random((N, D)) * np.abs(self.problem.ub - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
+        seed = self.rng.random((N, D))
         p = np.where(gailv < seed, t3, t4)
         
         vPopDecs = np.where(popDecs >= c_n, r, p)
@@ -160,12 +174,12 @@ class CSA(AlgorithmABC):
         
         M, _ = gBestDecs.shape
         
-        idx = np.random.randint(0, M, (N, D))
-        A = np.log(1.0 / np.random.random((N, D))) * (gBestDecs[idx, np.arange(D)] - popDecs)
+        idx = self.rng.integers(0, M, (N, D))
+        A = np.log(1.0 / self.rng.random((N, D))) * (gBestDecs[idx, np.arange(D)] - popDecs)
         
-        B = alpha * np.random.random((N, D)) * (np.mean(gBestDecs, axis=0) - popDecs)
+        B = alpha * self.rng.random((N, D)) * (np.mean(gBestDecs, axis=0) - popDecs)
         
-        C = beta * np.random.random((N, D)) * (np.mean(pBestDecs, axis=0) - popDecs)
+        C = beta * self.rng.random((N, D)) * (np.mean(pBestDecs, axis=0) - popDecs)
         
         uPopDecs = popDecs + A + B + C
         
@@ -183,7 +197,7 @@ class CSA(AlgorithmABC):
         :return: Calculated value.
         """
         if num1 < num2:
-            o = num1 + np.random.random(1) * abs(num1 - num2)
+            o = num1 + self.rng.random(1) * abs(num1 - num2)
         else:
-            o = num2 + np.random.random(1) * abs(num1 - num2)
+            o = num2 + self.rng.random(1) * abs(num1 - num2)
         return o

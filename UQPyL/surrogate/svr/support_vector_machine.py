@@ -3,33 +3,39 @@ from typing import Literal, Optional, Tuple, Union
 
 from .core import svm_fit, svm_predict, Parameter 
 from ..base import SurrogateABC
-from ...util.scaler import Scaler
-from ...util.poly import PolyFeature
+from ..scaler import Scaler
+from ..poly import PolyFeature
 
 class SVR(SurrogateABC):
     '''
-    Support Vector Regression(SVR)
-    -----------------------------
-    This class is a interface of libsvm library from Lin Chih-Jen Professor in National Taiwan University.
-    For regression problems, the epsilon-SVR or nu-SVR is used here.
-    
+    Support vector regression surrogate model.
+
+    This class wraps the LIBSVM regression back-end and supports both
+    epsilon-SVR and nu-SVR variants.
+
+    Examples:
+        >>> model = SVR(kernel='rbf')
+        >>> model.fit(xTrain, yTrain)
+        >>> yPred = model.predict(xPred)
+
     References:
-        [1] C. C. Chang and C. J. Lin, "LIBSVM: A library for support vector machines", 2015.
-    
-    Methods:
-        predict(xPred): 
-            Predicts the output of the surrogate model for a given input.
-            - xPred: np.ndarray
-                The input to predict the output for.
-        fit(xTrain, yTrain):
-            Fits the surrogate model to the training data.
-            - xTrain: np.ndarray
-                The input training data.
-            - yTrain: np.ndarray
-                The output training data.
+        [1] C.-C. Chang and C.-J. Lin, LIBSVM: A library for support vector machines,
+            ACM Transactions on Intelligent Systems and Technology, vol. 2, no. 3, 2011.
     '''
     
     name = "SVR"
+    _KERNEL_CODES = {
+        'linear': 0,
+        'polynomial': 1,
+        'rbf': 2,
+        'sigmoid': 3,
+    }
+    _SYMBOL_CODES = {
+        'epsilon-SVR': 3,
+        'nu-SVR': 4,
+    }
+    defaultTuneParameters = ("C", "gamma", "epsilon")
+    advancedTuneParameters = ("kernel", "symbol", "nu", "coe0", "degree")
     
     def __init__(self, 
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
@@ -73,30 +79,41 @@ class SVR(SurrogateABC):
         super().__init__(scalers, polyFeature)
         
         
-        if symbol in ['epsilon-SVR', 'nu-SVR']:
-            self.symbol = 3 if symbol == 'epsilon-SVR' else 4
-        else:
+        if symbol not in self._SYMBOL_CODES:
             raise ValueError(f"symbol must be in ['epsilon-SVR', 'nu-SVR'], but got {symbol}")
+        self.symbolName = symbol
+        self.symbol = self._SYMBOL_CODES[symbol]
         
-        if kernel.lower() in ['linear','polynomial', 'rbf', 'sigmoid']:    
-            self.kernel = 0 if kernel.lower() == 'linear' else 1 if kernel.lower() == 'polynomial' else 2 if kernel.lower() == 'rbf' else 3
+        kernel = kernel.lower()
+        if kernel in self._KERNEL_CODES:
+            self.kernelName = kernel
+            self.kernel = self._KERNEL_CODES[kernel]
         else:
             raise ValueError(f"kernel must be in ['linear', 'rbf', 'sigmoid', 'polynomial'], but got {kernel}")
         
         self.innerModel = None
+        self.registerChoiceParameter("symbol", list(self._SYMBOL_CODES.keys()), owner="model")
+        self.registerChoiceParameter("kernel", list(self._KERNEL_CODES.keys()), owner="model")
+        self.registerParameterApplier("symbol", self.setSymbol)
+        self.registerParameterApplier("kernel", self.setKernel)
         
-        self.setting.setPara("C", C, C_attr)
-        self.setting.setPara("epsilon", epsilon, epsilon_attr)
-        self.setting.setPara("gamma", gamma, gamma_attr)
-        self.setting.setPara("coe0", coe0, coe0_attr)
-        self.setting.setPara("degree", degree)
-        self.setting.setPara("maxIter", maxIter)
-        self.setting.setPara("eps", eps)
-        self.setting.setPara("nu", nu, nu_attr)
+        self.setting.set("C", C, C_attr)
+        self.setting.set("epsilon", epsilon, epsilon_attr)
+        self.setting.set("gamma", gamma, gamma_attr)
+        self.setting.set("coe0", coe0, coe0_attr)
+        self.setting.set("degree", degree)
+        self.setting.set("maxIter", maxIter)
+        self.setting.set("eps", eps)
+        self.setting.set("nu", nu, nu_attr)
+        self.setSymbol(symbol)
+        self.setKernel(kernel)
         
 ###-----------------------public functions--------------------------###
 
-    def predict(self, xPred: np.ndarray):
+    def predict(self, xPred: np.ndarray, returnStd: bool = False,
+                returnVar: bool = False):
+        self._normalize_predict_flags(returnStd, returnVar)
+        self.requireFitted("innerModel")
         
         xPred = np.ascontiguousarray(xPred).copy()
         xPred = self.__X_transform__(xPred)
@@ -109,38 +126,71 @@ class SVR(SurrogateABC):
             predict_Y[i, 0] = svm_predict(self.innerModel, x)
             
         return self.__Y_inverse_transform__(predict_Y)
-        
-    def fit(self, xTrain: np.ndarray,  yTrain: np.ndarray):
-        
+
+    def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.storeTrainingData(xTrain, yTrain)
+
         xTrain = np.ascontiguousarray(xTrain).copy()
         yTrain = np.ascontiguousarray(yTrain).copy()
-        xTrain, yTrain = self.__check_and_scale__(xTrain, yTrain)
-        
-        nu = self.setting.getVals("nu")
-        C = self.setting.getVals("C")
-        gamma = self.setting.getVals("gamma")
-        epsilon = self.setting.getVals("epsilon")
-        coe0 = self.setting.getVals("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
-        degree = self.setting.getVals("degree") if self.kernel in ['polynomial'] else 2
-        maxIter = self.setting.getVals("maxIter")
-        eps = self.setting.getVals("eps")
-        ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps))     
+        par = self._build_parameter()
         self.innerModel = svm_fit(xTrain, yTrain.ravel(), par)
-    
-    def _fitPure(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        
-        xTrain = np.ascontiguousarray(xTrain).copy()
-        yTrain = np.ascontiguousarray(yTrain).copy()
-        
-        nu = self.setting.getVals("nu")
-        C = self.setting.getVals("C")
-        gamma = self.setting.getVals("gamma")
-        epsilon = self.setting.getVals("epsilon")
-        coe0 = self.setting.getVals("coe0") if self.kernel in ['sigmoid', 'polynomial'] else 0.0
-        degree = self.setting.getVals("degree") if self.kernel in ['polynomial'] else 2
-        maxIter = self.setting.getVals("maxIter")
-        eps = self.setting.getVals("eps")
-        ## Parameter: svm_type kernel_type degree maxIter gamma coef0 C nu p eps
-        par = Parameter(int(self.symbol), int(self.kernel), int(degree), int(maxIter), float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps))     
-        self.innerModel = svm_fit(xTrain, yTrain.ravel(), par)
+        self.fitState["innerModel"] = self.innerModel
+        self.fitState["symbol"] = self.symbolName
+        self.fitState["kernel"] = self.kernelName
+        return self
+
+    def fitHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        return self.fitModel(xTrain, yTrain)
+
+    def isParameterActive(self, name: str):
+        if name == "epsilon":
+            return self.symbolName == "epsilon-SVR"
+        if name == "nu":
+            return self.symbolName == "nu-SVR"
+        if name == "gamma":
+            return self.kernelName in {"rbf", "sigmoid", "polynomial"}
+        if name == "coe0":
+            return self.kernelName in {"sigmoid", "polynomial"}
+        if name == "degree":
+            return self.kernelName == "polynomial"
+        if name in {"maxIter", "eps"}:
+            return False
+        return super().isParameterActive(name)
+
+    def getDefaultTuneParameters(self, advanced: bool = False):
+        params = list(self.defaultTuneParameters)
+        if advanced:
+            params.extend(self.advancedTuneParameters)
+        return [name for name in params if self.isParameterActive(name) or name in {"kernel", "symbol"}]
+
+    def setSymbol(self, symbol: str):
+        if symbol not in self._SYMBOL_CODES:
+            raise ValueError(f"symbol must be in ['epsilon-SVR', 'nu-SVR'], but got {symbol}")
+        self.symbolName = symbol
+        self.symbol = self._SYMBOL_CODES[symbol]
+        self.resetFitState()
+        return self
+
+    def setKernel(self, kernel: str):
+        kernel = kernel.lower()
+        if kernel not in self._KERNEL_CODES:
+            raise ValueError(f"kernel must be in ['linear', 'rbf', 'sigmoid', 'polynomial'], but got {kernel}")
+        self.kernelName = kernel
+        self.kernel = self._KERNEL_CODES[kernel]
+        self.resetFitState()
+        return self
+
+    def _build_parameter(self):
+        nu = self.setting.get("nu")
+        C = self.setting.get("C")
+        gamma = self.setting.get("gamma") if self.isParameterActive("gamma") else 0.0
+        epsilon = self.setting.get("epsilon") if self.isParameterActive("epsilon") else 0.0
+        coe0 = self.setting.get("coe0") if self.isParameterActive("coe0") else 0.0
+        degree = self.setting.get("degree") if self.isParameterActive("degree") else 2
+        maxIter = self.setting.get("maxIter")
+        eps = self.setting.get("eps")
+        return Parameter(
+            int(self.symbol), int(self.kernel), int(degree), int(maxIter),
+            float(gamma), float(coe0), float(C), float(nu), float(epsilon), float(eps)
+        )

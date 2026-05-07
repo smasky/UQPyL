@@ -5,6 +5,9 @@ GUI
 result.json
 dist
 UQPyL.egg-info
+.coverage
+coverage.xml
+svr_native_debug.log
 
 Result
 
@@ -20,3 +23,8 @@ prompts
 *.pyd
 __pycache__/
 *.py[co]
+.cache/
+.pytest_cache/
+.pytest_tmp/
+.codex/pytest_cache/
+.worktrees/

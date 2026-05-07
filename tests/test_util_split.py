@@ -1,6 +1,6 @@
 import numpy as np
 
-from UQPyL.util.split import RandSelect, KFold
+from UQPyL.surrogate.split import RandSelect, KFold
 
 
 def test_randselect_split_small_dataset_no_div0():

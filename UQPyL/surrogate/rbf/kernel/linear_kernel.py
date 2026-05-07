@@ -9,11 +9,11 @@ class Linear(BaseKernel):
                  epsilon_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True}):
         
         super().__init__()
-        self.setting.setPara("epsilon", epsilon, epsilon_attr)
+        self.setting.set("epsilon", epsilon, epsilon_attr)
     
     def evaluate(self, dist):
         
-        epsilon=self.setting.getVals("epsilon")
+        epsilon=self.setting.get("epsilon")
         
         return dist*epsilon
     

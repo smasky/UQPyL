@@ -1,0 +1,18 @@
+include README.md
+include LICENSE.md
+
+recursive-include UQPyL *.pyx
+recursive-include UQPyL *.pxd
+recursive-include UQPyL *.h
+recursive-include UQPyL *.cpp
+
+global-exclude *.pyd
+global-exclude *.so
+global-exclude *.dll
+global-exclude __pycache__
+global-exclude *.py[cod]
+
+prune build
+prune dist
+prune .cache
+prune .codex/pytest_cache

@@ -1,20 +1,25 @@
 import abc
+import os
 import numpy as np
 
 from .population import Population
-from .result import Result
+from .runtime import OptResult, Result, SqliteStorage, Verbose
 from ..doe import LHS
-from ..util import Verbose
+from ..core.params import Params
+from ..core.runtime_session import RunSession
 
 class AlgorithmABC(metaclass = abc.ABCMeta):
     """
-    Baseclass for algorithms
+    Base class for optimization algorithms.
     """
     def __init__(self, maxFEs: int = None, maxIters: int = None, maxTolerates: int = None, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = False):
+                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = False,
+                 saveFreq: int = 100, hvRefPoint = None):
         
-        self.setting = Setting()
+        self.params = Params()
+        self.setting = self.params
         self.result = Result(self)
+        self.state = self.result
         
         self.problem = None
         self.maxFEs = maxFEs
@@ -26,39 +31,52 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.verboseFreq = verboseFreq
         self.logFlag = logFlag
         self.saveFlag = saveFlag
+        self.saveFreq = saveFreq
+        self.hvRefPoint = None if hvRefPoint is None else np.asarray(hvRefPoint, dtype=float).copy()
+        self.storage = None
+        self.session: RunSession | None = None
+        self.runId = None
+
+        if self.hvRefPoint is not None:
+            self.set('hvRefPoint', self.hvRefPoint.copy())
     
     def reset(self):
         
         self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
         
-        self.result.reset()
+        self.state.reset()
     
     def setup(self, problem, seed):
         
         self.setProblem(problem)
         
         self.reset()
+        Verbose.setupContext(self, problem)
+        if self.saveFlag:
+            rootDir = getattr(problem, "workDir", os.getcwd())
+            self.storage = SqliteStorage(rootDir)
+        self.runId = None
+        self.session = None
         
-        if seed is not None:
-            np.random.seed(seed)
-        else:
-            seed = np.random.randint(0, 1000000)
-            np.random.seed(seed)
+        if seed is None:
+            seed = int(np.random.default_rng().integers(0, 1000000))
+        self.rng = np.random.default_rng(seed)
         
-        self.setParaVal('seed', seed)
+        self.set('seed', seed)
+        self.set('saveFreq', self.saveFreq)
+        if self.saveFlag:
+            self.session = self.storage.create_run(self)
+            self.runId = self.session.run_id
+        Verbose.printSettings(self)
     
     def initPop(self, nInit):
         
         lhs = LHS('classic')
         
-        # TODO
-        seed = np.random.randint(0, 1000000)
+        seed = int(self.rng.integers(0, 1000000))
         xInit = lhs.sample(self.problem, nInit, seed)
-        
-        xInit = self.problem._transform_unit_X(xInit, IFlag = False, DFlag = False)
-        
+
         pop = Population(xInit)
-        
         self.evaluate(pop)
         
         return pop
@@ -67,17 +85,33 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
         self.problem = problem
         self.optType = getattr(problem, "optType", None)
         if hasattr(problem, "optType"):
-            self.setParaVal('optType', problem.optType)
+            self.set('optType', problem.optType)
     
     def evaluate(self, pop):
-        
-        pop.evaluate(self.problem)
-        
+        decs = self.problem.apply_var_type(pop.decs)
+        res = self.problem.evaluate(decs)
+        objs = res.objs * self.problem.opt
+        pop.assignEval(objs, res.cons)
         self.FEs += pop.nPop
+        return pop
+
+    def updateState(self, pop):
+        algType = 'EA' if self.problem.nObj == 1 else 'MOEA'
+        self.state.update(pop, self.problem, self.FEs, self.iters, algType)
+        return self.state
+
+    def update(self, pop):
+        self.updateState(pop)
+        if self.verboseFlag > 0 or self.logFlag > 0 or self.saveFlag > 0:
+            Verbose.printIteration(self)
+        if self.saveFlag and self.session is not None and self.iters % self.saveFreq == 0:
+            self.storage.saveSnapshot(self.session, self, self.buildResult(), isFinal=False)
+        return self.state
     
     def checkTermination(self, pop):
         
         signalFlag = False
+        previousBest = None if self.state.bestObjs is None else np.copy(self.state.bestObjs)
         
         if self.FEs < self.maxFEs:
             if self.maxIter is None or self.iters <= self.maxIter:
@@ -90,13 +124,10 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
                         self.problem.iterEmit.send()
                         if self.problem.isStop == True:
                             return False
-                
-        if self.verboseFlag > 0 or self.logFlag > 0 or self.saveFlag > 0 or not signalFlag or self.alg_type == 'EA':
-            self.record(pop)
-            
+
         # Check termination for single-objective optimization
-        if self.problem.nOutput == 1 and self.tolerate is not None and self.result.bestObjs is not None:
-            old_best = float(np.ravel(self.result.bestObjs)[0])
+        if self.problem.nObj == 1 and self.tolerate is not None and previousBest is not None:
+            old_best = float(np.ravel(previousBest)[0])
             new_best = float(np.ravel(pop.getBest(k=1).objs)[0])
             if abs(old_best - new_best) > self.tolerate:
                 self.tolerateTimes = 0
@@ -110,51 +141,33 @@ class AlgorithmABC(metaclass = abc.ABCMeta):
     # NOTE: setProblem is defined above; keep a single implementation.
     
     def saveResult(self):
-        
-        if self.problem.nOutput > 1:
-            self.result.save(alg_type = 1)
-        else:
-            self.result.save()
-    
-    @Verbose.record
-    def record(self, pop):
+        return self.state.toNpzPayload()
 
-        if self.problem.nOutput == 1:
-            self.result.update(pop, self.problem, self.FEs, self.iters, 'EA')
-        else:
-            self.result.update(pop, self.problem, self.FEs, self.iters, 'MOEA')
+    def buildResult(self):
+        result = self.state.buildResult()
+        if not isinstance(result, OptResult):
+            raise TypeError("buildResult() must return OptResult.")
+        return result
+
+    def finalize(self):
+        result = self.buildResult()
+        Verbose.printConclusion(self, result)
+        if self.logFlag:
+            Verbose.saveLog(self)
+        if self.saveFlag:
+            if self.session is not None:
+                self.storage.saveSnapshot(self.session, self, result, isFinal=True)
+                self.storage.close(self.session)
+                self.session = None
+        return result
+
+    @abc.abstractmethod
+    def run(self, problem, seed=None):
+        raise NotImplementedError
                     
-    def setParaVal(self, key, value):
-        
-        self.setting.setPara(key, value)
+    def set(self, key, value):
+        self.params.set(key, value)
+
+    def get(self, *args):
+        return self.params.get(*args)
     
-    def getParaVal(self, *args):
-        
-        return self.setting.getVal(*args)
-    
-class Setting():
-    """
-    Save the parameter setting of the algorithm
-    """
-    
-    def __init__(self):
-        self.keys = []
-        self.values = []
-        self.dicts = {}
-    
-    def setPara(self, key, value):
-        
-        self.dicts[key] = value
-        self.keys.append(key)
-        self.values.append(value)
-    
-    def getVal(self, *args):
-        
-        values = []
-        for arg in args:
-            values.append(self.dicts[arg])
-        
-        if len(args) > 1:
-            return tuple(values)
-        else:
-            return values[0]

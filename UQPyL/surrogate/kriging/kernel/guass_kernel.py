@@ -4,6 +4,7 @@ from typing import Union, Optional
 from .base_kernel import BaseKernel
 
 class Guass(BaseKernel):
+    name = "Guass"
     
     def __init__(self, heterogeneous: bool=False, 
                  theta: Union[float, np.ndarray]=1, 
@@ -17,7 +18,7 @@ class Guass(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        theta=self.setting.getVals("theta")
+        theta=self.setting.get("theta")
             
         td = D * -theta
         r = np.exp(np.sum(D * td, axis=1))

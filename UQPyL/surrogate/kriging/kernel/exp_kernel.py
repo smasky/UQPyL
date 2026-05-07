@@ -4,6 +4,7 @@ from typing import Union
 from .base_kernel import BaseKernel
 
 class Exp(BaseKernel):
+    name = "Exp"
     
     def __init__(self, heterogeneous: bool=True,
                  theta: Union[float, np.ndarray]=0.1, 
@@ -17,7 +18,7 @@ class Exp(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
-        theta=self.setting.getVals("theta")
+        theta=self.setting.get("theta")
         
         td= -theta
         r= np.exp(np.sum(D*td, axis=1))

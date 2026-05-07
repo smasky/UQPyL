@@ -14,11 +14,11 @@ class Constant(BaseKernel):
         
         super().__init__()
         
-        self.setting.setPara('constant', c, c_attr)
+        self.setting.set('constant', c, c_attr)
         
     def __call__(self, trainX: np.ndarray, trainY: Optional[np.ndarray]=None):
         
-        c = self.setting.getVals('constant')
+        c = self.setting.get('constant')
         
         if trainY is None:
             K=np.ones((trainX.shape[0], trainY.shape[0]))*c

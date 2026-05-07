@@ -1,7 +1,6 @@
 import numpy as np
 
-from UQPyL.problem.util.non_dominated_sort import NDSort
-from UQPyL.problem.util.uniformPoint import uniformPoint
+from UQPyL.optimization.core import NDSort, uniformPoint
 
 
 def test_ndsort_basic_two_objectives():
@@ -50,5 +49,4 @@ def test_uniform_point_nbi_triggers_secondary_layer_branch():
     W, n = uniformPoint(9, 3, method="NBI")
     assert W.shape == (n, 3)
     assert np.allclose(W.sum(axis=1), 1.0, atol=1e-6)
-
 

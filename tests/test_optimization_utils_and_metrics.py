@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from UQPyL.optimization.metric import GD, IGD, HV
-from UQPyL.optimization.util import NDSort, crowdingDist, tourSelect, uniformPoint
+from UQPyL.optimization.core import NDSort, crowdingDist, tourSelect, uniformPoint
 
 
 def test_ndsort_basic_and_with_constraints_does_not_crash():
@@ -83,6 +83,66 @@ def test_metrics_gd_igd_hv_smoke_and_hv_high_dim_branch():
     pop4 = np.array([[0.2, 0.2, 0.2, 0.2], [0.4, 0.1, 0.3, 0.2]])
     hv = HV(pop4, refPoint=np.array([1.0, 1.0, 1.0, 1.0]), normalize=False, nSamples=2000)
     assert hv >= 0
+
+
+def test_gd_and_igd_match_known_asymmetric_values():
+    optimum = np.array([[0.0, 0.0], [1.0, 0.0]])
+    pop = np.array([[0.0, 0.0]])
+
+    # GD: from each population point to the nearest optimum point.
+    assert GD(pop, optimum) == pytest.approx(0.0)
+
+    # IGD: from each optimum point to the nearest population point.
+    assert IGD(pop, optimum) == pytest.approx(0.5)
+
+
+def test_gd_and_igd_are_zero_on_exact_match():
+    optimum = np.array([[0.0, 0.0], [1.0, 1.0]])
+    pop = optimum.copy()
+
+    assert GD(pop, optimum) == pytest.approx(0.0)
+    assert IGD(pop, optimum) == pytest.approx(0.0)
+
+
+def test_gd_and_igd_raise_on_empty_input():
+    with pytest.raises(ValueError):
+        GD(np.empty((0, 2)), np.array([[0.0, 0.0]]))
+
+    with pytest.raises(ValueError):
+        IGD(np.array([[0.0, 0.0]]), np.empty((0, 2)))
+
+
+def test_hv_returns_zero_for_points_outside_reference_box():
+    pop = np.array([[2.0, 0.0]])
+    hv = HV(pop, refPoint=np.array([1.0, 1.0]), normalize=False)
+    assert hv == pytest.approx(0.0)
+
+
+def test_hv_matches_known_2d_union_area():
+    pop = np.array([[0.2, 0.8], [0.8, 0.2]])
+    hv = HV(pop, refPoint=np.array([1.0, 1.0]), normalize=False)
+    assert hv == pytest.approx(0.28)
+
+
+def test_hv_matches_known_3d_single_point_volume():
+    pop = np.array([[0.5, 0.5, 0.5]])
+    hv = HV(pop, refPoint=np.array([1.0, 1.0, 1.0]), normalize=False)
+    assert hv == pytest.approx(0.125)
+
+
+def test_hv_matches_known_3d_union_volume():
+    pop = np.array([
+        [0.2, 0.7, 0.9],
+        [0.6, 0.3, 0.5],
+    ])
+    hv = HV(pop, refPoint=np.array([1.0, 1.0, 1.0]), normalize=False)
+    assert hv == pytest.approx(0.152)
+
+
+def test_hv_normalize_preserves_value_inside_unit_box():
+    pop = np.array([[0.2, 0.8], [0.8, 0.2]])
+    ref = np.array([1.0, 1.0])
+    assert HV(pop, refPoint=ref, normalize=True) == pytest.approx(0.28)
 
 
 def test_hv_helpers_head_tail_insert_add_slice_branches():

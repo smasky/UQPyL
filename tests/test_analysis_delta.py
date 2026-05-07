@@ -12,19 +12,20 @@ def _sum_obj(x):
 
 
 def test_delta_test_sample_and_analyze_smoke():
-    problem = Problem(nInput=3, nOutput=1, ub=1.0, lb=0.0, objFunc=_sum_obj, optType="min")
+    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_sum_obj, optType="min")
 
-    method = DeltaTest(verboseFlag=False, logFlag=False, saveFlag=False)
+    method = DeltaTest(nNeighbors=1, verboseFlag=False, logFlag=False, saveFlag=False)
 
-    X = method.sample(problem, N=30, sampler=LHS("classic"), seed=123)
+    X = LHS("classic").sample(problem, 30, seed=123)
     assert X.shape == (30, 3)
     assert np.all(X >= problem.lb - 1e-12)
     assert np.all(X <= problem.ub + 1e-12)
 
-    ds = method.analyze(problem, X, Y=None, target="objFunc", index="all", nNeighbors=1)
-    # Should be an xarray.Dataset with expected variables.
-    assert "S1" in ds.data_vars
-    assert "S1_scale" in ds.data_vars
-    assert ds["S1"].shape == (1, problem.nInput)
+    res = method.analyze(problem, X, Y=None, target="objs", index="all")
+    metricNames = {metric.name for metric in res.metrics}
+    assert "S1" in metricNames
+    assert "S1_norm" in metricNames
+    s1Metric = next(metric for metric in res.metrics if metric.name == "S1")
+    assert s1Metric.values.shape == (1, problem.nInput)
 
 
