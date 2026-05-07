@@ -1,5 +1,6 @@
 # Delta test
 import numpy as np
+import sys
 from scipy.spatial import KDTree
 from typing import Optional
 
@@ -109,8 +110,6 @@ class DeltaTest(AnalysisABC):
         Returns:
             The optimization result returned by the configured GA.
         """
-        from ...optimization.soea import GA
-        
         # Set the problem instance for analysis
         self.setProblem(problem)
         
@@ -152,9 +151,14 @@ class DeltaTest(AnalysisABC):
         
         problem = Problem(nInput=nInput, nObj=nObj, ub=ub, lb=lb, 
                           varType=varType, objFunc=objective, optType='min')
-        
+
+        publicModule = sys.modules.get("UQPyL.analysis.delta")
+        gaClass = getattr(publicModule, "GA", None) if publicModule is not None else None
+        if gaClass is None:
+            from ...optimization.soea import GA as gaClass
+
         # Initialize the GA
-        ga = GA(maxFEs=FEs, verboseFlag=verboseFlag, saveFlag=saveFlag)
+        ga = gaClass(maxFEs=FEs, verboseFlag=verboseFlag, saveFlag=saveFlag)
         
         # Run the GA
         res = ga.run(problem)

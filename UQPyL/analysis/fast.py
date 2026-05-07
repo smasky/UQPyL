@@ -1,0 +1,2 @@
+from .methods.fast import *
+
