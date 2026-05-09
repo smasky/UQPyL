@@ -119,21 +119,13 @@ def objFunc(X):
 
 
 problem = Problem(
-    nInput=2,
-    nObj=1,
-    ub=1.0,
-    lb=-1.0,
-    objFunc=objFunc,
-    optType="min",
+    nInput=2, nObj=1,
+    ub=1.0, lb=-1.0,
+    objFunc=objFunc, optType="min",
     name="Sphere2D",
 )
 
-algorithm = SCE_UA(
-    maxFEs=200,
-    verboseFlag=False,
-    logFlag=False,
-    saveFlag=False,
-)
+algorithm = SCE_UA(maxFEs=200, verboseFlag=False, logFlag=False, saveFlag=False)
 
 result = algorithm.run(problem, seed=123)
 
@@ -158,12 +150,9 @@ def simFunc(X):
 
 
 problem = ModelProblem(
-    nInput=1,
-    nObj=1,
-    lb=0.0,
-    ub=2.0,
-    simFunc=simFunc,
-    obs=obs,
+    nInput=1, nObj=1,
+    lb=0.0, ub=2.0,
+    simFunc=simFunc, obs=obs,
     name="LinearScaleModel",
 )
 
@@ -225,12 +214,9 @@ def objFunc(X):
 
 
 problem = Problem(
-    nInput=3,
-    nObj=1,
-    lb=-np.pi,
-    ub=np.pi,
-    objFunc=objFunc,
-    name="Ishigami",
+    nInput=3, nObj=1,
+    lb=-np.pi, ub=np.pi,
+    objFunc=objFunc, name="Ishigami",
 )
 
 X, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 512)
