@@ -4,7 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) [![CI](https://github.com/smasky/UQPyL/actions/workflows/ci.yml/badge.svg)](https://github.com/smasky/UQPyL/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/smasky/UQPyL/branch/dev/graph/badge.svg)](https://codecov.io/gh/smasky/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
-[English](README.md) | [中文](README_CN.md)
+[English](README.md) | [中文](README_CN.md) | [Documentation](https://uqpyl.readthedocs.io)
 
 UQPyL is a Python library for uncertainty quantification, optimization, inference, calibration, and surrogate modeling.
 It defines problems once and reuses them across UQ workflows.
@@ -24,11 +24,6 @@ These workflows are common across model-based domains, especially in hydrology, 
 | Calibrate simulation models | Compare simulated series with observations. | Calibration methods based on `ModelProblem`. |
 | Reduce expensive evaluations | Build a cheaper approximation of a slow model run. | Surrogate models and surrogate-assisted workflows. |
 
-## Documentation
-
-- Documentation: <https://uqpyl.readthedocs.io>
-- Source code: <https://github.com/smasky/UQPyL>
-
 ## Core idea: define once, reuse everywhere
 
 UQPyL does not own your model logic. Instead, you wrap your model or decision problem as a shared `problem` definition with:
@@ -36,20 +31,20 @@ UQPyL does not own your model logic. Instead, you wrap your model or decision pr
 | Part | Meaning |
 |---|---|
 | Input space | Variables, bounds, labels, and variable types. |
-| Evaluation rule | How a batch of inputs becomes objectives, constraints, or simulations. |
+| Evaluation rule | How a batch of inputs becomes objectives, constraints, or extract required simulation data. |
 | Optimization direction | Whether each objective is minimized or maximized. |
 | Runtime identity | A name and metadata used by saved runs and summaries. |
 
-Once defined, the same object can be reused by DOE, analysis, optimization, inference, surrogate workflows, and calibration. Some workflows also need explicit model-aware information such as simulations, observations, or masks.
+Once defined, the same object can be reused by DOE, analysis, optimization, inference, surrogate workflows, and calibration. Some workflows also need explicit model-aware information such as simulations and observations.
 
 ## Problem abstraction
 
 The `problem` module is the conceptual entry point of UQPyL.
 
-| Abstraction | Role |
+| Abstraction Python Class | Role |
 |---|---|
 | `Problem` | For methods that only need final objective or constraint values. |
-| `ModelProblem` | For methods that need explicit model-process semantics such as `sim`, `obs`, or masks. |
+| `ModelProblem` | For methods that need explicit model-process semantics such as `sim` or `obs`. |
 
 Both abstractions share the same foundation:
 
@@ -58,9 +53,9 @@ Both abstractions share the same foundation:
 | `Space` | Defines variables, bounds, labels, and variable types. |
 | `Eval` | Standard return object for evaluated results. |
 
-The module also includes benchmark problems such as `Sphere`, `Ackley`, `ZDT`, and `DTLZ`.
+The module also includes benchmark problems such as `Sphere`, `Ackley` and so on for single-objective optimization; `ZDT`, and `DTLZ` for multi-objective optimization.
 
-Use `Problem` when methods only need final objectives or constraints from candidate inputs. `Problem` can still be used for model-based problems when those final values are enough. Use `ModelProblem` only when methods need explicit simulations, observations, masks, or simulated-versus-observed comparison. In the current design, this mainly applies to calibration workflows.
+Use `Problem` when methods only need final objectives or constraints from candidate inputs. `Problem` can still be used for model-based problems when those final values are enough. Use `ModelProblem` only when methods need explicit simulations, observations or simulated-versus-observed comparison. In the current design, this mainly applies to calibration module (`IES`, `ES`, `GLUE`, `SUFI2`).
 
 <p align="center">
   <img src="./docs_v2/assets/Problem.webp" alt="Problem and ModelProblem comparison" width="1000"/>
@@ -76,7 +71,7 @@ UQPyL is organized around one shared `problem` abstraction and a set of function
   <img src="./docs_v2/assets/architecture.png" alt="UQPyL architecture overview" width="1000"/>
 </p>
 
-The figure summarizes the main idea: represent a modeling task as a shared `problem` definition, then reuse that definition across DOE, analysis, optimization, inference, calibration, and surrogate workflows, with unified outputs and optional runtime storage.
+The figure summarizes the main idea: represent a modeling task as a shared `problem` definition, then reuse that definition across DOE, analysis, optimization, inference, calibration, and surrogate workflows, with unified outputs and optional runtime storage. You can freely organize your workflows.
 
 | Type | Module | Purpose |
 |---|---|---|
@@ -92,19 +87,18 @@ Visualization, runtime storage, logs, and readers are exposed through the functi
 
 ## Typical workflows
 
-Common workflow patterns all lead to structured outputs and optional runtime storage. Workflows that only consume final objectives or constraints can use `Problem`, while workflows that need explicit `sim`, `obs`, or related comparison semantics use `ModelProblem`.
+Common workflows patterns all lead to structured outputs and optional runtime storage. 
 
 ```text
 Problem -> DOE -> Analysis -> outputs
-Problem -> Optimization -> outputs
-Problem -> Inference -> outputs
+Problem -> DOE -> Analysis -> Inference -> outputs
 ModelProblem -> Calibration -> outputs
 Problem -> DOE -> Surrogate -> Optimization
 ```
 
 ## Quick start examples
 
-### Direct evaluation with `Problem`
+### Optimization with `Problem`
 
 ```python
 import numpy as np
@@ -125,7 +119,7 @@ problem = Problem(
     name="Sphere2D",
 )
 
-algorithm = SCE_UA(maxFEs=200, verboseFlag=False, logFlag=False, saveFlag=False)
+algorithm = SCE_UA(maxFEs=200)
 
 result = algorithm.run(problem, seed=123)
 
@@ -146,7 +140,13 @@ obs = np.array([[1.0], [2.0], [3.0]])
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    return X[:, :1][:, None, :] * obs[None, :, :]
+    # Here we assume each parameter sample returns one simulated series
+    # with 3 time steps, so the output shape is (n_samples, 3, 1).
+    sim = np.zeros((X.shape[0], 3, 1))
+    sim[:, 0, 0] = X[:, 0] * 1.0
+    sim[:, 1, 0] = X[:, 0] * 2.0
+    sim[:, 2, 0] = X[:, 0] * 3.0
+    return sim
 
 
 problem = ModelProblem(
@@ -157,7 +157,7 @@ problem = ModelProblem(
 )
 
 X = np.linspace(0.5, 1.5, 32).reshape(-1, 1)
-result = GLUE(metric="rmse", verboseFlag=False).run(problem, X, threshold=0.2)
+result = GLUE(metric="rmse").run(problem, X, threshold=0.2)
 ```
 
 Methods return structured result objects such as `OptResult`, `AnaResult`, `InfResult`, or `CalResult`.
@@ -183,7 +183,7 @@ Methods return structured result objects such as `OptResult`, `AnaResult`, `InfR
 
 For many single-objective hydrological and engineering calibration problems, `SCE_UA` is a good starting point.
 
-## Runtime output
+## Runtime output and saving
 
 Most runnable methods expose three common runtime controls.
 
@@ -193,7 +193,40 @@ Most runnable methods expose three common runtime controls.
 | `logFlag` | Write more complete runtime logs when supported. |
 | `saveFlag` | Save structured runtime results, usually sqlite. |
 
+```python
+algorithm = SCE_UA(maxFEs=200, verboseFlag=True, logFlag=True, saveFlag=True)
+result = algorithm.run(problem, seed=123)
+```
+
+Example terminal output:
+
+```text
+Algorithm: SCE-UA
+Problem: Sphere2D
+nInput: 2
+nObj: 1
+maxFEs: 200
+maxIters: 1000
+SCE-UA | iter=10 eval=84 best=4.3210e-03 cv=0 time=0.0s
+SCE-UA | iter=20 eval=154 best=2.1500e-04 cv=0 time=0.0s
+Optimization finished
+  algorithm        : SCE-UA
+  status           : finished
+  iterations       : 27
+  evaluations      : 203
+  best value       : 1.0000e-04
+  best X           : [1.0000e-02, -0.0000e+00]
+  constraint viol. : 0
+  elapsed          : 0.0s
+```
+
 With `saveFlag=True`, a run can produce saved artifacts for later reading by module-specific readers.
+
+| Save option | Rule |
+|---|---|
+| `saveFlag=True` | Enable structured result saving for the current run. |
+| `saveFreq` | For optimization methods, save intermediate snapshots every `saveFreq` iterations and always save the final result at the end. |
+| Reader access | Saved sqlite results can be loaded later with module-specific readers such as `OptReader`, `AnaReader`, or `CalReader`. |
 
 ## More examples
 
@@ -248,7 +281,9 @@ pip install .
 
 ## Citation
 
-Citation information for UQPyL 2.x will be updated. For UQPyL 1.0, see:
+Citation information for **UQPyL 2** will be updated.
+
+For UQPyL 1.0, see:
 
 - <https://www.sciencedirect.com/science/article/pii/S1364815215300955>
 

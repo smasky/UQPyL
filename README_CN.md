@@ -4,7 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/UQPyL.svg?icon=si%3Apython&icon_color=%2331aadd)](https://badge.fury.io/py/UQPyL) [![CI](https://github.com/smasky/UQPyL/actions/workflows/ci.yml/badge.svg)](https://github.com/smasky/UQPyL/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/smasky/UQPyL/branch/dev/graph/badge.svg)](https://codecov.io/gh/smasky/UQPyL) ![PyPI - Downloads](https://img.shields.io/pypi/dm/UQPyL) ![PyPI - License](https://img.shields.io/pypi/l/UQPyL) ![GitHub last commit](https://img.shields.io/github/last-commit/smasky/UQPyL) ![Static Badge](https://img.shields.io/badge/Author-wmtSky-orange) ![Static Badge](https://img.shields.io/badge/Contact-wmtsmasky%40gmail.com-blue)
 
-[English](README.md) | [中文](README_CN.md)
+[English](README.md) | [中文](README_CN.md) | [Documentation](https://uqpyl.readthedocs.io)
 
 UQPyL 是一个面向不确定性量化、优化、推断、率定和代理建模的 Python 库。
 它强调问题定义一次，然后在不同 UQ 工作流中复用。
@@ -24,11 +24,6 @@ UQPyL 面向计算建模中的不确定性问题：不确定参数如何影响�
 | 率定模拟模型 | 将模拟序列与观测进行比较。 | 基于 `ModelProblem` 的率定方法。 |
 | 降低高代价评估成本 | 为慢速模型建立更便宜的近似。 | 代理模型与代理辅助工作流。 |
 
-## 文档
-
-- Documentation: <https://uqpyl.readthedocs.io>
-- Source code: <https://github.com/smasky/UQPyL>
-
 ## 核心思想：定义一次，到处复用
 
 UQPyL 不直接持有你的模型逻辑，而是把模型或决策问题包装成统一的 `problem` 定义，其中包括：
@@ -36,41 +31,41 @@ UQPyL 不直接持有你的模型逻辑，而是把模型或决策问题包装�
 | 部分 | 含义 |
 |---|---|
 | 输入空间 | 变量、边界、标签和变量类型。 |
-| 评估规则 | 一批输入如何转换成目标、约束或模拟结果。 |
+| 评估规则 | 一批输入如何转换成目标、约束或提取想要的模拟数据。 |
 | 优化方向 | 每个目标是最小化还是最大化。 |
 | 运行信息 | 保存运行和结果摘要所用的问题名称与元数据。 |
 
-一旦定义完成，同一个对象就可以被 DOE、分析、优化、推断、代理工作流和率定方法共同复用。有些工作流还需要更明确的模型语义，例如模拟结果、观测或掩码。
+一旦定义完成，同一个对象就可以被 DOE、分析、优化、推断、代理工作流和率定方法共同复用。有些工作流还需要更明确的模型语义，例如模拟结果或观测。
 
 ## Problem 抽象
 
 `problem` 模块是理解 UQPyL 的概念入口。
 
-| 抽象 | 作用 |
+| 抽象Python类 | 作用 |
 |---|---|
 | `Problem` | 适用于只需要最终目标值或约束值的方法。 |
-| `ModelProblem` | 适用于需要显式模型过程语义的方法，例如 `sim`、`obs` 或掩码。 |
+| `ModelProblem` | 适用于需要显式模型模拟结果的方法，例如 `sim`或`obs` 。 |
 
 这两个抽象共享同一套基础：
 
 | 基础构件 | 作用 |
 |---|---|
-| `Space` | 定义变量、边界、标签和变量类型。 |
-| `Eval` | 标准评估返回对象。 |
+| `Space` | 定义变量、及其边界、标签和变量类型。 |
+| `Eval` | 评估的返回对象。 |
 
-该模块还内置了一些基准问题，如 `Sphere`、`Ackley`、`ZDT` 和 `DTLZ`。
+该模块还内置了一些基准问题，如单目标的 `Sphere`、`Ackley`等；多目标的`ZDT` 和 `DTLZ`套件。
 
-当方法只需要从候选输入获得最终目标或约束时，使用 `Problem`。对于模型类问题，只要最终值已经足够，仍然可以使用 `Problem`。只有在方法明确需要模拟结果、观测或模拟与观测对比语义时，才使用 `ModelProblem`。在当前设计里，这主要对应Calibration模型。
+当方法只需要从候选输入获得最终目标或约束时，使用 `Problem`。因此，对于以数值模型为基础的问题，只要最终值已经足够，仍然可以使用 `Problem`。只有在方法明确需要模拟结果、观测或模拟与观测对比语义时，才使用 `ModelProblem`。在当前设计里，这主要对应Calibration模块(`IES`, `ES`, `GLUE`, `SUFI2`)。
 
 <p align="center">
   <img src="./docs_v2/assets/Problem.webp" alt="Problem 与 ModelProblem 对比" width="1000"/>
 </p>
 
-对于水文模型来说，难点通常不在算法本身，而在模型连接这一层。针对这一层，我们推荐使用 [hydroPilot](https://github.com/smasky/hydroPilot)。
+对于水文模型来说，难点通常不在算法本身，而在模型连接这一层。因此，我们强烈推荐使用 [hydroPilot](https://github.com/smasky/hydroPilot)来构建问题。
 
 ## 架构概览
 
-UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一组功能模块。
+UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一套功能模块。
 
 <p align="center">
   <img src="./docs_v2/assets/architecture.png" alt="UQPyL 架构概览" width="1000"/>
@@ -92,7 +87,7 @@ UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一组功能模
 
 ## 典型工作流
 
-常见工作流最终都会产出结构化结果，并可选配运行期存储。只消费最终目标或约束的工作流可以使用 `Problem`；需要显式 `sim`、`obs` 或相关比较语义的工作流使用 `ModelProblem`。
+常见工作流最终都会产出结构化结果，并可选配运行期存储。
 
 ```text
 Problem -> DOE -> Analysis -> outputs
@@ -104,7 +99,7 @@ Problem -> DOE -> Surrogate -> Optimization
 
 ## 快速开始示例
 
-### 使用 `Problem` 直接评估
+### 使用 `Problem` 做优化
 
 ```python
 import numpy as np
@@ -146,7 +141,13 @@ obs = np.array([[1.0], [2.0], [3.0]])
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    return X[:, :1][:, None, :] * obs[None, :, :]
+    # 这里假设每组参数都会返回 1 条模拟序列，
+    # 一共有 3 个时刻，因此返回尺寸是 (n_samples, 3, 1)。
+    sim = np.zeros((X.shape[0], 3, 1))
+    sim[:, 0, 0] = X[:, 0] * 1.0
+    sim[:, 1, 0] = X[:, 0] * 2.0
+    sim[:, 2, 0] = X[:, 0] * 3.0
+    return sim
 
 
 problem = ModelProblem(
@@ -183,7 +184,7 @@ result = GLUE(metric="rmse", verboseFlag=False).run(problem, X, threshold=0.2)
 
 对于很多单目标水文和工程率定问题，`SCE_UA` 是一个很好的起点。
 
-## Runtime Output
+## 运行输出与保存
 
 大多数可运行方法都共享三个常见运行期控制选项。
 
@@ -193,7 +194,40 @@ result = GLUE(metric="rmse", verboseFlag=False).run(problem, X, threshold=0.2)
 | `logFlag` | 在支持时写出更完整的运行日志。 |
 | `saveFlag` | 保存结构化结果，通常是 sqlite。 |
 
+```python
+algorithm = SCE_UA(maxFEs=200, verboseFlag=True, logFlag=True, saveFlag=True)
+result = algorithm.run(problem, seed=123)
+```
+
+终端输出示例如下：
+
+```text
+Algorithm: SCE-UA
+Problem: Sphere2D
+nInput: 2
+nObj: 1
+maxFEs: 200
+maxIters: 1000
+SCE-UA | iter=10 eval=84 best=4.3210e-03 cv=0 time=0.0s
+SCE-UA | iter=20 eval=154 best=2.1500e-04 cv=0 time=0.0s
+Optimization finished
+  algorithm        : SCE-UA
+  status           : finished
+  iterations       : 27
+  evaluations      : 203
+  best value       : 1.0000e-04
+  best X           : [1.0000e-02, -0.0000e+00]
+  constraint viol. : 0
+  elapsed          : 0.0s
+```
+
 启用 `saveFlag=True`` 后，运行可以产出供对应 reader 后续读取的持久化结果。
+
+| 保存选项 | 规则 |
+|---|---|
+| `saveFlag=True` | 为当前运行启用结构化结果保存。 |
+| `saveFreq` | 对优化方法，会每隔 `saveFreq` 次迭代保存一次中间快照，并在结束时始终保存最终结果。 |
+| Reader 读取 | 保存下来的 sqlite 结果后续可以通过 `OptReader`、`AnaReader`、`CalReader` 等模块 reader 读取。 |
 
 ## 更多示例
 
