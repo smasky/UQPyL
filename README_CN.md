@@ -11,67 +11,82 @@ UQPyL 是一个面向不确定性量化、优化、推断、率定和代理建�
 
 ## UQPyL 解决什么问题
 
-UQPyL 面向计算建模中的不确定性问题：不确定参数如何影响输出、哪些输入最重要、如何利用观测对模型进行率定，以及如何搜索稳健或较优的决策。
+UQPyL 为常见的不确定性量化工作流提供统一的问题接口。
 
-这类工作流在各类基于模型的领域都很常见，尤其是在水文、水资源和水工程中。
+先定义模型或决策问题，然后将同一个问题对象用于：
 
-| 任务 | 示例 | UQPyL 提供什么 |
-|---|---|---|
-| 探索参数空间 | 生成候选水文参数组合。 | 可复现的试验设计与采样方法。 |
-| 理解输入影响 | 识别哪些参数主导流量、负荷或其他模型输出。 | 敏感性分析与不确定性分析方法。 |
-| 搜索较优参数 | 率定模型参数或优化工程决策。 | 单目标、多目标和昂贵模型优化算法。 |
-| 估计合理参数分布 | 在不确定性下采样参数分布。 | MCMC 风格推断方法。 |
-| 率定模拟模型 | 将模拟序列与观测进行比较。 | 基于 `ModelProblem` 的率定方法。 |
-| 降低高代价评估成本 | 为慢速模型建立更便宜的近似。 | 代理模型与代理辅助工作流。 |
+- 试验设计
+- 敏感性与不确定性分析
+- 优化
+- Bayesian 风格推断
+- 模型率定
+- 代理建模
 
-## 核心思想：定义一次，到处复用
-
-UQPyL 不直接持有你的模型逻辑，而是把模型或决策问题包装成统一的 `problem` 定义，其中包括：
-
-| 部分 | 含义 |
-|---|---|
-| 输入空间 | 变量、边界、标签和变量类型。 |
-| 评估规则 | 一批输入如何转换成目标、约束或提取想要的模拟数据。 |
-| 优化方向 | 每个目标是最小化还是最大化。 |
-| 运行信息 | 保存运行和结果摘要所用的问题名称与元数据。 |
-
-一旦定义完成，同一个对象就可以被 DOE、分析、优化、推断、代理工作流和率定方法共同复用。有些工作流还需要更明确的模型语义，例如模拟结果或观测。
-
-## Problem 抽象
-
-`problem` 模块是理解 UQPyL 的概念入口。
-
-| 抽象Python类 | 作用 |
-|---|---|
-| `Problem` | 适用于只需要最终目标值或约束值的方法。 |
-| `ModelProblem` | 适用于需要显式模型模拟结果的方法，例如 `sim`或`obs` 。 |
-
-这两个抽象共享同一套基础：
-
-| 基础构件 | 作用 |
-|---|---|
-| `Space` | 定义变量、及其边界、标签和变量类型。 |
-| `Eval` | 评估的返回对象。 |
-
-该模块还内置了一些基准问题，如单目标的 `Sphere`、`Ackley`等；多目标的`ZDT` 和 `DTLZ`套件。
-
-当方法只需要从候选输入获得最终目标或约束时，使用 `Problem`。因此，对于以数值模型为基础的问题，只要最终值已经足够，仍然可以使用 `Problem`。只有在方法明确需要模拟结果、观测或模拟与观测对比语义时，才使用 `ModelProblem`。在当前设计里，这主要对应Calibration模块(`IES`, `ES`, `GLUE`, `SUFI2`)。
-
-<p align="center">
-  <img src="./docs_v2/assets/Problem.webp" alt="Problem 与 ModelProblem 对比" width="1000"/>
-</p>
-
-对于水文模型来说，难点通常不在算法本身，而在模型连接这一层。因此，我们强烈推荐使用 [hydroPilot](https://github.com/smasky/hydroPilot)来构建问题。
-
-## 架构概览
-
-UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一套功能模块。
+问题定义完成后，UQPyL 的各个模块可以围绕同一个对象互通使用。
 
 <p align="center">
   <img src="./docs_v2/assets/architecture.png" alt="UQPyL 架构概览" width="1000"/>
 </p>
 
-这张图概括了 UQPyL 的主线：把建模任务表示成统一的 `problem` 定义，然后在 DOE、分析、优化、推断、率定和代理建模工作流之间复用，并配套统一输出和可选的运行期存储。
+## Problem 抽象
+
+`Problem` 是 UQPyL 的主要入口。它把模型、基准函数或决策任务组织成一个可复用对象，供其他模块使用。
+
+构建一个 `Problem` 时，需要定义：
+
+| 部分 | 作用 |
+|---|---|
+| 输入空间 | 变量个数、边界、标签和变量类型。 |
+| 评估规则 | 输入样本如何转换成目标值和可选约束。 |
+| 附加信息 | 优化方向、问题名称，以及服务于算法、输出、日志和保存结果的元数据。 |
+
+例如：
+
+```python
+import numpy as np
+
+from UQPyL.problem import Problem
+
+
+def objFunc(X):
+    X = np.atleast_2d(X)
+    return np.sum(X**2, axis=1, keepdims=True)
+
+
+problem = Problem(
+    # 输入空间
+    nInput=2, lb=-1.0, ub=1.0,
+
+    # 评估规则
+    nObj=1, objFunc=objFunc,
+
+    # 附加信息
+    optType="min", name="Sphere2D",
+)
+```
+
+对于只需要目标值或约束值的工作流，这已经足够，包括 DOE、分析、优化、推断和代理建模。
+
+对于很多水文模拟问题，工作流需要的不只是最终目标值。率定和不确定性分析可能需要在方法执行过程中保留模拟序列、观测序列和有效观测位置。
+
+`ModelProblem` 就是在这种情况下对 `Problem` 的扩展。它增加：
+
+| 额外部分 | 作用 |
+|---|---|
+| `simFunc` | 运行模型并返回模拟序列或模拟场。 |
+| `obs` / `mask` | 保存观测数据，并标记用于模拟-观测对比的有效位置。 |
+
+默认使用 `Problem`。当方法需要模拟过程语义时，例如需要比较 `sim` 和 `obs` 的率定方法，再使用 `ModelProblem`。具体用法请参考 [文档](https://uqpyl.readthedocs.io)。
+
+<p align="center">
+  <img src="./docs_v2/assets/Problem.webp" alt="Problem 与 ModelProblem 对比" width="1000"/>
+</p>
+
+对于水文应用来说，难点通常不在 UQ 算法本身，而在连接外部模型、准备输入、运行模拟和收集输出。[hydroPilot](https://github.com/smasky/hydroPilot) 面向这一层模型运行管理。需要让 hydroPilot 管理水文模型运行、让 UQPyL 负责采样、分析、率定、优化、推断或代理建模时，可以把两者配合使用。
+
+## 架构概览
+
+UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一套功能模块。
 
 | 类型 | 模块 | 作用 |
 |---|---|---|
@@ -82,20 +97,7 @@ UQPyL 围绕统一的 `problem` 抽象组织，并在其上构建一套功能模
 | Function | `inference` | 执行 MCMC 风格参数推断。 |
 | Function | `calibration` | 基于观测率定模拟模型。 |
 | Function | `surrogate` | 为高代价评估训练与评估代理模型。 |
-
-可视化、运行期存储、日志和 读取都通过这些功能模块接入。
-
-## 典型工作流
-
-常见工作流最终都会产出结构化结果，并可选配运行期存储。
-
-```text
-Problem -> DOE -> Analysis -> outputs
-Problem -> Optimization -> outputs
-Problem -> Inference -> outputs
-ModelProblem -> Calibration -> outputs
-Problem -> DOE -> Surrogate -> Optimization
-```
+| Support | `runtime`、`viz` | 保存结构化运行结果、日志、中间状态，并提供可视化工具。 |
 
 ## 快速开始示例
 
@@ -165,13 +167,7 @@ result = GLUE(metric="rmse", verboseFlag=False).run(problem, X, threshold=0.2)
 
 ## 模块速览
 
-| 目标 | 建议入口 |
-|---|---|
-| 对参数空间采样 | `doe` |
-| 识别关键输入 | `analysis` |
-| 搜索较优参数 | `optimization` with `SCE_UA` |
-| 用观测率定模型参数 | `calibration` with `ModelProblem` |
-| 为高代价模型建立快速近似 | `surrogate` |
+下表只列出代表性方法，不是完整 API。完整的模块用法和 API 细节请参考 [文档](https://uqpyl.readthedocs.io)。
 
 | 模块 | 代表性方法 |
 |---|---|
@@ -181,8 +177,6 @@ result = GLUE(metric="rmse", verboseFlag=False).run(problem, X, threshold=0.2)
 | `inference` | `MH`、`AMH`、`MH_Gibbs`、`DEMC`、`DREAM_ZS` |
 | `calibration` | `GLUE`、`SUFI2`、`ES`、`IES` |
 | `surrogate` | `RBF`、`GPR`、`KRG`、`LinearRegression`、`PolynomialRegression`、`AutoTuner` |
-
-对于很多单目标水文和工程率定问题，`SCE_UA` 是一个很好的起点。
 
 ## 运行输出与保存
 
@@ -221,7 +215,7 @@ Optimization finished
   elapsed          : 0.0s
 ```
 
-启用 `saveFlag=True`` 后，运行可以产出供对应 reader 后续读取的持久化结果。
+启用 `saveFlag=True` 后，运行可以产出供对应 reader 后续读取的持久化结果。
 
 | 保存选项 | 规则 |
 |---|---|
@@ -282,9 +276,36 @@ pip install .
 
 ## 引用
 
-UQPyL 2.x 的引用信息后续会更新。UQPyL 1.0 可参考：
+引用 UQPyL 2.0 时，请使用以下预印版：
 
-- <https://www.sciencedirect.com/science/article/pii/S1364815215300955>
+Wu, M., Sun, R., Xu, P., Yang, X., Hu, P., & Duan, Q. UQPyL 2.0: An Open-Source Python Package for Uncertainty Quantification and Optimization. Available at SSRN: https://ssrn.com/abstract=5393295 or http://dx.doi.org/10.2139/ssrn.5393295
+
+```bibtex
+@misc{wu2025uqpyl2,
+  title = {UQPyL 2.0: An Open-Source Python Package for Uncertainty Quantification and Optimization},
+  author = {Wu, Mengtian and Sun, Ruochen and Xu, Pengcheng and Yang, Xu and Hu, Pengjie and Duan, Qingyun},
+  year = {2025},
+  note = {SSRN preprint},
+  doi = {10.2139/ssrn.5393295},
+  url = {https://ssrn.com/abstract=5393295}
+}
+```
+
+引用 UQPyL 1.0 时，请使用：
+
+Wang, C., Duan, Q., Tong, C. H., Di, Z., & Gong, W. (2016). A GUI platform for uncertainty quantification of complex dynamical models. *Environmental Modelling & Software*, 76, 1-12. https://doi.org/10.1016/j.envsoft.2015.11.004
+
+```bibtex
+@article{wang2016uqpyl,
+  title = {A GUI platform for uncertainty quantification of complex dynamical models},
+  author = {Wang, Chen and Duan, Qingyun and Tong, Charles H. and Di, Zhenhua and Gong, Wei},
+  journal = {Environmental Modelling & Software},
+  volume = {76},
+  pages = {1--12},
+  year = {2016},
+  doi = {10.1016/j.envsoft.2015.11.004}
+}
+```
 
 ## 贡献
 

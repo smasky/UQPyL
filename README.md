@@ -11,67 +11,82 @@ It defines problems once and reuses them across UQ workflows.
 
 ## What UQPyL solves
 
-UQPyL targets uncertainty problems in computational modeling: how uncertain parameters affect outputs, which inputs matter most, how to calibrate models against observations, and how to search for robust or optimal decisions.
+UQPyL provides a shared problem interface for common uncertainty quantification workflows.
 
-These workflows are common across model-based domains, especially in hydrology, water resources, and water engineering.
+Define the model or decision problem once, then reuse it for:
 
-| Task | Examples | What UQPyL provides |
-|---|---|---|
-| Explore parameter spaces | Generate candidate hydrological parameter sets. | Design of experiment methods for reproducible sampling. |
-| Understand input influence | Identify which parameters dominate flow, load, or other model outputs. | Sensitivity and uncertainty analysis methods. |
-| Search for good parameters | Calibrate parameters or optimize engineering decisions. | Single-objective, multi-objective, and expensive-model optimization algorithms. |
-| Estimate plausible parameters | Sample parameter distributions under uncertainty. | MCMC-style inference methods. |
-| Calibrate simulation models | Compare simulated series with observations. | Calibration methods based on `ModelProblem`. |
-| Reduce expensive evaluations | Build a cheaper approximation of a slow model run. | Surrogate models and surrogate-assisted workflows. |
+- design of experiments
+- sensitivity and uncertainty analysis
+- optimization
+- Bayesian-style inference
+- model calibration
+- surrogate modeling
 
-## Core idea: define once, reuse everywhere
-
-UQPyL does not own your model logic. Instead, you wrap your model or decision problem as a shared `problem` definition with:
-
-| Part | Meaning |
-|---|---|
-| Input space | Variables, bounds, labels, and variable types. |
-| Evaluation rule | How a batch of inputs becomes objectives, constraints, or extract required simulation data. |
-| Optimization direction | Whether each objective is minimized or maximized. |
-| Runtime identity | A name and metadata used by saved runs and summaries. |
-
-Once defined, the same object can be reused by DOE, analysis, optimization, inference, surrogate workflows, and calibration. Some workflows also need explicit model-aware information such as simulations and observations.
-
-## Problem abstraction
-
-The `problem` module is the conceptual entry point of UQPyL.
-
-| Abstraction Python Class | Role |
-|---|---|
-| `Problem` | For methods that only need final objective or constraint values. |
-| `ModelProblem` | For methods that need explicit model-process semantics such as `sim` or `obs`. |
-
-Both abstractions share the same foundation:
-
-| Building block | Role |
-|---|---|
-| `Space` | Defines variables, bounds, labels, and variable types. |
-| `Eval` | Standard return object for evaluated results. |
-
-The module also includes benchmark problems such as `Sphere`, `Ackley` and so on for single-objective optimization; `ZDT`, and `DTLZ` for multi-objective optimization.
-
-Use `Problem` when methods only need final objectives or constraints from candidate inputs. `Problem` can still be used for model-based problems when those final values are enough. Use `ModelProblem` only when methods need explicit simulations, observations or simulated-versus-observed comparison. In the current design, this mainly applies to calibration module (`IES`, `ES`, `GLUE`, `SUFI2`).
-
-<p align="center">
-  <img src="./docs_v2/assets/Problem.webp" alt="Problem and ModelProblem comparison" width="1000"/>
-</p>
-
-For hydrological models, the hard part is often model connection rather than the algorithm itself. For that layer, we recommend [hydroPilot](https://github.com/smasky/hydroPilot).
-
-## Architecture overview
-
-UQPyL is organized around one shared `problem` abstraction and a set of functional modules built around it.
+After a problem is defined, all UQPyL modules can work with the same object and remain connected across workflows.
 
 <p align="center">
   <img src="./docs_v2/assets/architecture.png" alt="UQPyL architecture overview" width="1000"/>
 </p>
 
-The figure summarizes the main idea: represent a modeling task as a shared `problem` definition, then reuse that definition across DOE, analysis, optimization, inference, calibration, and surrogate workflows, with unified outputs and optional runtime storage. You can freely organize your workflows.
+## Problem abstraction
+
+`Problem` is the main entry point of UQPyL. It turns a model, benchmark function, or decision task into a reusable object that other modules can use.
+
+To build a `Problem`, define:
+
+| Part | Role |
+|---|---|
+| Input space | Number of variables, bounds, labels, and variable types. |
+| Evaluation rule | How input samples become objectives and optional constraints. |
+| Additional information | Optimization direction, problem name, and metadata for algorithms, outputs, logs, and saved results. |
+
+For example:
+
+```python
+import numpy as np
+
+from UQPyL.problem import Problem
+
+
+def objFunc(X):
+    X = np.atleast_2d(X)
+    return np.sum(X**2, axis=1, keepdims=True)
+
+
+problem = Problem(
+    # Input space
+    nInput=2, lb=-1.0, ub=1.0,
+
+    # Evaluation rule
+    nObj=1, objFunc=objFunc,
+
+    # Additional information
+    optType="min", name="Sphere2D",
+)
+```
+
+This is enough for workflows that only need evaluated objectives or constraints, including DOE, analysis, optimization, inference, and surrogate modeling.
+
+For many hydrological simulation problems, the workflow needs more than final objective values. Calibration and uncertainty analysis may need the simulated and observed time series, and the valid observation mask to remain available throughout the method.
+
+`ModelProblem` extends `Problem` for this case. It adds:
+
+| Extra part | Role |
+|---|---|
+| `simFunc` | Runs the model and returns simulated series or fields. |
+| `obs` / `mask` | Stores observed data and marks valid entries for simulation-observation comparison. |
+
+Use `Problem` by default. Use `ModelProblem` when a method needs simulation-process semantics, such as calibration methods that compare `sim` with `obs`. See the [documentation](https://uqpyl.readthedocs.io) for detailed usage.
+
+<p align="center">
+  <img src="./docs_v2/assets/Problem.webp" alt="Problem and ModelProblem comparison" width="1000"/>
+</p>
+
+For hydrological applications, the hard part is often not the UQ algorithm itself, but connecting an external model, preparing inputs, running simulations, and collecting outputs. [hydroPilot](https://github.com/smasky/hydroPilot) is designed for that model-operation layer. It can be used with UQPyL when you want hydroPilot to manage hydrological model runs and UQPyL to handle sampling, analysis, calibration, optimization, inference, or surrogate modeling.
+
+## Architecture overview
+
+UQPyL is organized around one shared `problem` abstraction and a set of functional modules built around it.
 
 | Type | Module | Purpose |
 |---|---|---|
@@ -82,21 +97,9 @@ The figure summarizes the main idea: represent a modeling task as a shared `prob
 | Function | `inference` | Run MCMC-style parameter inference. |
 | Function | `calibration` | Calibrate simulation models against observations. |
 | Function | `surrogate` | Train and evaluate surrogate models for expensive evaluations. |
+| Support | `runtime`, `viz` | Save structured run results, logs, intermediate states, and provide visualization utilities. |
 
-Visualization, runtime storage, logs, and readers are exposed through the functional modules rather than treated as primary entry points.
-
-## Typical workflows
-
-Common workflows patterns all lead to structured outputs and optional runtime storage. 
-
-```text
-Problem -> DOE -> Analysis -> outputs
-Problem -> DOE -> Analysis -> Inference -> outputs
-ModelProblem -> Calibration -> outputs
-Problem -> DOE -> Surrogate -> Optimization
-```
-
-## Quick start examples
+## Quick start
 
 ### Optimization with `Problem`
 
@@ -160,17 +163,9 @@ X = np.linspace(0.5, 1.5, 32).reshape(-1, 1)
 result = GLUE(metric="rmse").run(problem, X, threshold=0.2)
 ```
 
-Methods return structured result objects such as `OptResult`, `AnaResult`, `InfResult`, or `CalResult`.
-
 ## Modules at a glance
 
-| Goal | Start with |
-|---|---|
-| Sample a parameter space | `doe` |
-| Identify influential inputs | `analysis` |
-| Search for good parameters | `optimization` with `SCE_UA` |
-| Fit model parameters to observations | `calibration` with `ModelProblem` |
-| Build a fast approximation of an expensive model | `surrogate` |
+The table lists representative methods, not the full API. See the [documentation](https://uqpyl.readthedocs.io) for complete module-specific usage and API details.
 
 | Module | Representative methods |
 |---|---|
@@ -180,8 +175,6 @@ Methods return structured result objects such as `OptResult`, `AnaResult`, `InfR
 | `inference` | `MH`, `AMH`, `MH_Gibbs`, `DEMC`, `DREAM_ZS` |
 | `calibration` | `GLUE`, `SUFI2`, `ES`, `IES` |
 | `surrogate` | `RBF`, `GPR`, `KRG`, `LinearRegression`, `PolynomialRegression`, `AutoTuner` |
-
-For many single-objective hydrological and engineering calibration problems, `SCE_UA` is a good starting point.
 
 ## Runtime output and saving
 
@@ -239,12 +232,10 @@ from UQPyL.analysis import Sobol
 from UQPyL.doe import SaltelliDesign
 from UQPyL.problem import Problem
 
-
 def objFunc(X):
     X = np.atleast_2d(X)
     y = np.sin(X[:, 0]) + 7 * np.sin(X[:, 1])**2 + 0.1 * X[:, 2]**4 * np.sin(X[:, 0])
     return y[:, None]
-
 
 problem = Problem(
     nInput=3, nObj=1,
@@ -281,11 +272,36 @@ pip install .
 
 ## Citation
 
-Citation information for **UQPyL 2** will be updated.
+For UQPyL 2.0, please cite the preprint:
 
-For UQPyL 1.0, see:
+Wu, M., Sun, R., Xu, P., Yang, X., Hu, P., & Duan, Q. UQPyL 2.0: An Open-Source Python Package for Uncertainty Quantification and Optimization. Available at SSRN: https://ssrn.com/abstract=5393295 or http://dx.doi.org/10.2139/ssrn.5393295
 
-- <https://www.sciencedirect.com/science/article/pii/S1364815215300955>
+```bibtex
+@misc{wu2025uqpyl2,
+  title = {UQPyL 2.0: An Open-Source Python Package for Uncertainty Quantification and Optimization},
+  author = {Wu, Mengtian and Sun, Ruochen and Xu, Pengcheng and Yang, Xu and Hu, Pengjie and Duan, Qingyun},
+  year = {2025},
+  note = {SSRN preprint},
+  doi = {10.2139/ssrn.5393295},
+  url = {https://ssrn.com/abstract=5393295}
+}
+```
+
+For UQPyL 1.0, please cite:
+
+Wang, C., Duan, Q., Tong, C. H., Di, Z., & Gong, W. (2016). A GUI platform for uncertainty quantification of complex dynamical models. *Environmental Modelling & Software*, 76, 1-12. https://doi.org/10.1016/j.envsoft.2015.11.004
+
+```bibtex
+@article{wang2016uqpyl,
+  title = {A GUI platform for uncertainty quantification of complex dynamical models},
+  author = {Wang, Chen and Duan, Qingyun and Tong, Charles H. and Di, Zhenhua and Gong, Wei},
+  journal = {Environmental Modelling & Software},
+  volume = {76},
+  pages = {1--12},
+  year = {2016},
+  doi = {10.1016/j.envsoft.2015.11.004}
+}
+```
 
 ## Contributing
 
