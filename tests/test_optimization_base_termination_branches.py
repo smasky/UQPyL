@@ -2,7 +2,7 @@ import numpy as np
 
 from UQPyL.optimization.base import AlgorithmABC
 from UQPyL.optimization.population import Population
-from UQPyL.problem import ProblemABC
+from UQPyL.problem import ModelProblem, ProblemABC
 
 
 class _Emit:
@@ -59,4 +59,25 @@ def test_checktermination_gui_stop_branch_and_tolerate_branch():
     alg.tolerateTimes = 0
     assert alg.checkTermination(pop) is True
     assert alg.tolerateTimes >= 0
+
+
+def test_algorithm_evaluate_accepts_model_problem():
+    def simf(X):
+        X = np.atleast_2d(X)
+        return np.sum(X, axis=1)
+
+    def objf(X, context):
+        return context.sim.reshape(-1, 1)
+
+    problem = ModelProblem(nInput=2, nObj=1, ub=1.0, lb=0.0, simFunc=simf, objFunc=objf)
+    alg = _Alg(maxFEs=10, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg.setProblem(problem)
+    alg.FEs = 0
+    pop = Population(np.array([[0.1, 0.2], [0.3, 0.4]]))
+
+    alg.evaluate(pop)
+
+    assert np.allclose(pop.objs, [[0.3], [0.7]])
+    assert pop.cons is None
+    assert alg.FEs == 2
 

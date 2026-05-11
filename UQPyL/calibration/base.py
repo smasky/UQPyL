@@ -6,8 +6,9 @@ import numpy as np
 
 from . import util as metric_util
 from ..core.params import Params
+from ..core.runtime_session import RunSession
 from ..problem import ModelProblem
-from .runtime import CalState, format_summary, save_log
+from .runtime import CalState, SqliteStorage, format_summary, save_log
 
 
 class CalibrationABC(metaclass=abc.ABCMeta):
@@ -49,6 +50,9 @@ class CalibrationABC(metaclass=abc.ABCMeta):
         self.setting = self.params
         self.result = CalState(self)
         self.state = self.result
+        self.storage = None
+        self.session: RunSession | None = None
+        self.runId = None
         self.metric, self.metricHigherIsBetter = self._resolve_metric(metric)
         self.metricName = metric if isinstance(metric, str) else getattr(metric, "__name__", "custom_metric")
         self.set("verboseFlag", verboseFlag)
@@ -73,9 +77,19 @@ class CalibrationABC(metaclass=abc.ABCMeta):
         self.result.reset()
         self.state = self.result
         self.workDir = getattr(problem, "workDir", os.getcwd())
+        self.runId = None
+        self.session = None
+        if self.saveFlag:
+            self.storage = SqliteStorage(self.workDir)
+            self.session = self.storage.create_run(self)
+            self.runId = self.session.run_id
 
     def finalize(self):
         result = self.state.buildResult()
+        if self.saveFlag and self.session is not None:
+            self.storage.saveResult(self.session, result)
+            self.storage.close(self.session)
+            self.session = None
         summaryText = format_summary(result)
         if self.verboseFlag:
             print(summaryText)

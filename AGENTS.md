@@ -2,6 +2,8 @@
 
 This file provides guidance to codex when working in this repository.
 
+website项目地址: E:\docs_sphinx_test
+
 ## 沟通约定
 
 - 与用户讨论架构、方案、文档时，默认使用中文。

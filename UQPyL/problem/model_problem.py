@@ -1,39 +1,57 @@
+from dataclasses import dataclass
+
 import numpy as np
 from typing import Optional, Union
 
-from .base import ProblemBase
 from .eval import Eval
+from .problem import Problem
 from .space import SpaceBase
 
 
-class ModelProblem(ProblemBase):
-    """
-    Static model problem for calibration-style workflows.
+@dataclass(frozen=True)
+class ModelEvalContext:
+    sim: np.ndarray
+    obs: Optional[np.ndarray] = None
+    mask: Optional[np.ndarray] = None
 
-    A `ModelProblem` maps batched parameter samples to simulation outputs
-    aligned with observation space. Observations are stored as a 2D matrix
-    with shape `(n_time, n_series)`, and `simFunc` must return a simulation
-    tensor with shape `(n_samples, n_time, n_series)`.
+
+class ModelProblem(Problem):
+    """
+    Static model problem with a simulation function.
+
+    A `ModelProblem` is a regular `Problem` plus `simFunc`. `simFunc`
+    maps batched parameter samples to simulation outputs whose first
+    dimension must match the number of input samples.
     """
 
     def __init__(
         self,
         nInput: int = None,
+        nObj: int = 1,
         ub: Union[int, float, np.ndarray, list] = None,
         lb: Union[int, float, np.ndarray, list] = None,
         simFunc: Optional[callable] = None,
+        objFunc: Optional[callable] = None,
+        conFunc: Optional[callable] = None,
+        evaluate: Optional[callable] = None,
         obs: Optional[np.ndarray] = None,
         mask: Optional[np.ndarray] = None,
+        conWgt: Optional[list] = None,
+        nCon: int = 0,
         varType: list = None,
         varSet: list = None,
+        optType: Union[list, str] = 'min',
         xLabels: list = None,
         name: str = None,
         space: Optional[SpaceBase] = None,
+        objLabels: list = None,
+        conLabels: list = None,
         simLabels: list = None,
     ):
         self._sim_fn = None
 
-        self._validate_callable_config(simFunc, obs)
+        self._validate_model_config(simFunc)
+        self._validate_model_callable_config(objFunc, conFunc, evaluate)
 
         if simFunc is not None:
             self._sim_fn = simFunc
@@ -45,44 +63,94 @@ class ModelProblem(ProblemBase):
 
         super().__init__(
             nInput=nInput,
-            nObj=1,
+            nObj=nObj,
             ub=ub,
             lb=lb,
-            nCon=0,
-            optType='min',
+            objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], nObj)),
+            nCon=nCon,
+            conWgt=conWgt,
+            optType=optType,
             varType=varType,
             varSet=varSet,
             xLabels=xLabels,
             space=space,
+            objLabels=objLabels,
+            conLabels=conLabels,
+            name=self.name,
         )
 
-        self.nObj = 0
-        self.optType = None
-        self.opt = None
-        self.objLabels = None
-        self.yLabels = None
-        self.conLabels = None
-        self.obs = self._validate_obs(obs)
-        self.mask = self._validate_mask(mask, self.obs.shape)
-        self.simLabels = self._validate_sim_labels(simLabels, self.obs.shape[1])
-        self.obsShape = self.obs.shape
-        del self.nOutput
-        self.nObs = int(np.prod(self.obsShape))
+        self._obj_fn = objFunc
+        self._con_fn = conFunc
+        self._eval_fn = evaluate
+
+        self.obs = None if obs is None else self._validate_obs(obs)
+        self.mask = self._validate_mask(mask, self.obs.shape) if self.obs is not None else self._validate_mask_without_obs(mask)
+        self.obsShape = None if self.obs is None else self.obs.shape
+        self.nObs = None if self.obsShape is None else int(np.prod(self.obsShape))
+        self.simLabels = self._validate_sim_labels(simLabels)
 
     @staticmethod
-    def _validate_callable_config(simFunc, obs):
+    def _validate_model_config(simFunc):
         if simFunc is None:
             raise ValueError("`ModelProblem` requires `simFunc`.")
-        if obs is None:
-            raise ValueError("`ModelProblem` requires `obs`.")
+
+    @staticmethod
+    def _validate_model_callable_config(objFunc, conFunc, evaluate):
+        if evaluate is not None and (objFunc is not None or conFunc is not None):
+            raise ValueError("`evaluate` cannot be used together with `objFunc` or `conFunc`.")
+        if conFunc is not None and objFunc is None:
+            raise ValueError("`conFunc` cannot be used without `objFunc`.")
 
     def evaluate(self, X, target=None):
-        if target not in (None, "sim"):
-            raise ValueError("The target must be None or 'sim'.")
+        if target not in (None, "objs", "cons", "sim"):
+            raise ValueError("The target must be None, 'objs', 'cons' or 'sim'.")
 
         X = self.validate(X)
+        context = self.buildContext(X)
+        if target == "sim":
+            return Eval(sim=context.sim)
+
+        eval_fn = getattr(self, "_eval_fn", None)
+        if eval_fn is not None:
+            eval = eval_fn(X, context)
+            if not isinstance(eval, Eval):
+                raise TypeError("evaluate must return Eval.")
+            objs = eval.objs
+            cons = eval.cons
+        else:
+            objs = self.objFunc(X, context) if target in (None, "objs") else None
+            cons = self.conFunc(X, context) if target in (None, "cons") else None
+
+        if target == "objs":
+            cons = None
+        elif target == "cons":
+            objs = None
+
+        return Eval(objs=objs, cons=cons, sim=context.sim)
+
+    def buildContext(self, X):
         sim = self.simFunc(X)
-        return Eval(sim=sim)
+        return ModelEvalContext(sim=sim, obs=self.obs, mask=self.mask)
+
+    def objFunc(self, X, context=None):
+        obj_fn = getattr(self, "_obj_fn", None)
+        if obj_fn is None:
+            raise ValueError("`objFunc` is not defined.")
+
+        if context is None:
+            X = self.validate(X)
+            context = self.buildContext(X)
+        return obj_fn(X, context)
+
+    def conFunc(self, X, context=None):
+        con_fn = getattr(self, "_con_fn", None)
+        if con_fn is None:
+            return None
+
+        if context is None:
+            X = self.validate(X)
+            context = self.buildContext(X)
+        return con_fn(X, context)
 
     def simFunc(self, X):
         sim_fn = getattr(self, "_sim_fn", None)
@@ -97,16 +165,8 @@ class ModelProblem(ProblemBase):
         if not isinstance(sim, np.ndarray):
             raise TypeError("Simulation output must be an instance of np.ndarray.")
 
-        if sim.ndim != 3:
-            raise ValueError(
-                "Simulation output must be a 3D array with shape (n_samples, n_time, n_series)."
-            )
-
         if sim.shape[0] != n_samples:
             raise ValueError("Simulation output first dimension must equal n_samples.")
-
-        if sim.shape[1:] != self.obsShape:
-            raise ValueError("Simulation output shape after n_samples must match obs.shape exactly.")
 
         if not np.issubdtype(sim.dtype, np.number):
             raise TypeError("Simulation output must be numeric.")
@@ -121,9 +181,13 @@ class ModelProblem(ProblemBase):
         return sim.reshape(sim.shape[0], -1)
 
     def flattenObs(self) -> np.ndarray:
+        if self.obs is None:
+            raise ValueError("Observation `obs` is not defined.")
         return self.obs.reshape(-1)
 
     def flattenMask(self) -> np.ndarray:
+        if self.nObs is None:
+            raise ValueError("Observation `obs` is not defined.")
         if self.mask is None:
             return np.zeros(self.nObs, dtype=bool)
         return self.mask.reshape(-1)
@@ -148,9 +212,14 @@ class ModelProblem(ProblemBase):
             mask = mask.astype(bool)
         return mask
 
-    def _validate_sim_labels(self, simLabels, n_series):
+    def _validate_mask_without_obs(self, mask):
+        if mask is not None:
+            raise ValueError("Mask requires observation `obs`.")
+        return None
+
+    def _validate_sim_labels(self, simLabels):
         if simLabels is None:
-            return [f"sim_{i}" for i in range(1, n_series + 1)]
-        if len(simLabels) != n_series:
-            raise ValueError("The length of simLabels must equal obs.shape[1].")
+            if self.obs is not None:
+                return [f"sim_{i}" for i in range(1, self.obs.shape[1] + 1)]
+            return None
         return list(simLabels)

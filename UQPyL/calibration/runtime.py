@@ -8,6 +8,7 @@ from typing import Any
 import numpy as np
 
 from ..core.runtime import export_runtime_meta
+from ..core.runtime_storage import BaseSqliteStorage
 
 
 @dataclass
@@ -20,6 +21,7 @@ class CalHistory:
 
 @dataclass
 class CalResult:
+    runId: str | None
     method: str
     problemName: str
     nInput: int
@@ -54,7 +56,7 @@ class CalResult:
             bestScoreValue = float(bestScore)
 
         return export_runtime_meta(
-            run_id=None,
+            run_id=self.runId,
             method=self.method,
             problem_name=self.problemName,
             n_input=self.nInput,
@@ -98,6 +100,7 @@ class CalState:
     def buildResult(self):
         problem = self.calibration.problem
         return CalResult(
+            runId=getattr(self.calibration, "runId", None),
             method=self.calibration.name,
             problemName=problem.name,
             nInput=problem.nInput,
@@ -178,3 +181,104 @@ def _fmt_vector(value):
         return "-"
     arr = np.asarray(value).reshape(-1)
     return "[" + ", ".join(_fmt(float(v)) for v in arr) + "]"
+
+
+class SqliteStorage(BaseSqliteStorage):
+    def _makeRunId(self, methodName, problemName):
+        _, runId = self._db_path(methodName, problemName)
+        return runId
+
+    def _insert_run(self, conn, runId, obj, now):
+        problem = obj.problem
+        conn.execute(
+            """
+            INSERT INTO run (
+                runId, method, problem, nInput, nTime, nSeries, nObs,
+                status, runtime, createdAt, finishedAt, problemPayload
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                runId,
+                obj.name,
+                problem.name,
+                problem.nInput,
+                problem.obs.shape[0],
+                problem.obs.shape[1],
+                problem.obs.size,
+                "running",
+                0.0,
+                now,
+                None,
+                self._problem_blob(problem),
+            ),
+        )
+
+    def saveResult(self, session, result: CalResult):
+        conn = session.conn
+        runId = session.run_id
+        self.finalize_run(session, status="finished", runtime=result.runtime)
+
+        artifacts = {
+            "result": result,
+            "obs": result.obs,
+            "mask": result.mask,
+            "simLabels": result.simLabels,
+            "bestDecs": result.bestDecs,
+            "bestSim": result.bestSim,
+            "posteriorDecs": result.posteriorDecs,
+            "posteriorSims": result.posteriorSims,
+            "behavioralDecs": result.behavioralDecs,
+            "behavioralSims": result.behavioralSims,
+            "eliteDecs": result.eliteDecs,
+            "eliteSims": result.eliteSims,
+            "diagnostics": result.diagnostics,
+            "history": result.history,
+            "settings": result.settings,
+            "extra": result.extra,
+        }
+        for name, payload in artifacts.items():
+            conn.execute(
+                "INSERT INTO artifact (runId, name, payload) VALUES (?, ?, ?)",
+                (
+                    runId,
+                    name,
+                    None if payload is None else self._problem_blob(payload),
+                ),
+            )
+
+        conn.commit()
+
+    def _create_schema(self, conn):
+        conn.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS run (
+                runId TEXT PRIMARY KEY,
+                method TEXT NOT NULL,
+                problem TEXT NOT NULL,
+                nInput INTEGER NOT NULL,
+                nTime INTEGER NOT NULL,
+                nSeries INTEGER NOT NULL,
+                nObs INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                runtime REAL,
+                createdAt TEXT NOT NULL,
+                finishedAt TEXT,
+                problemPayload BLOB
+            );
+
+            CREATE TABLE IF NOT EXISTS runParam (
+                runId TEXT NOT NULL,
+                name TEXT NOT NULL,
+                value TEXT,
+                FOREIGN KEY(runId) REFERENCES run(runId)
+            );
+
+            CREATE TABLE IF NOT EXISTS artifact (
+                artifactId INTEGER PRIMARY KEY AUTOINCREMENT,
+                runId TEXT NOT NULL,
+                name TEXT NOT NULL,
+                payload BLOB,
+                FOREIGN KEY(runId) REFERENCES run(runId)
+            );
+            """
+        )
