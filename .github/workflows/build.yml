@@ -1,152 +1,109 @@
-name: CI build for PyPI
+name: Build and publish to PyPI
 
 on:
   push:
-    # branches:
-    #   - master
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
-  build:
+  build_wheels:
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.11]
-        buildplat:
-          - platform: windows-2019
-            manylinux_type: ""
-            os_name: win
-            arch: AMD64
-          - platform: ubuntu-latest
-            manylinux_type: manylinux
-            arch: x86_64
-          # - platform: ubuntu-20.04
-          #   manylinux_type: musllinux
-          #   arch: x86_64
-          
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: [["cp38", "3.8"], ["cp39", "3.9"], ["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"], ["cp313", "3.13"]]
 
-        python: [["cp38", "3.8"],["cp39", "3.9"],["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"]]
-
-    runs-on: ${{ matrix.buildplat.platform }}
-
-    # if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v4
 
-    - name: List files in repository
-      shell: bash
-      run: |
-        ls -R .
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '3.12'
 
-    - name: Install common dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install Cython numpy pybind11 scipy
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
 
-    - name: Install C++ compiler (Windows)
-      if: matrix.buildplat.os_name == 'win'
-      uses: msys2/setup-msys2@v2
-      with:
-        install: mingw64/mingw-w64-x86_64-gcc
-
-    # - name: Install system dependencies
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install -y --no-install-recommends \
-    #       libblas-dev \
-    #       liblapack-dev
-
-    # 直接在env下设置环境变量
-    - name: Set CIBW variables
-      run: |
-        echo "CIBW_BUILD=${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}"
-        echo "CIBW_ARCHS=${{ matrix.buildplat.arch }}"
+    - name: Build wheels (Linux)
+      if: matrix.os == 'ubuntu-latest'
       env:
-        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}
-        CIBW_ARCHS: ${{ matrix.buildplat.arch }}
-
-    - name: Build wheels with cibuildwheel
-      shell: bash
-      env:
-        CIBW_BUILD: ${{ format('{0}-{1}*', matrix.python[0], (matrix.buildplat.manylinux_type || matrix.buildplat.os_name)) }}
-        CIBW_ARCHS: ${{ matrix.buildplat.arch }}
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
+        CIBW_BUILD: ${{ matrix.python[0] }}-manylinux*
+        CIBW_ARCHS: x86_64
         CIBW_ENVIRONMENT_LINUX: 'CFLAGS="-Wno-error=incompatible-pointer-types"'
-      run: |
-        pip install cibuildwheel
-        if [ "${{ matrix.buildplat.platform }}" = "windows-2019" ]; then
-          cibuildwheel --output-dir wheelhouse --platform windows --archs ${{ matrix.buildplat.arch }}
-        else
-          cibuildwheel --output-dir wheelhouse --platform linux --archs ${{ matrix.buildplat.arch }}
-        fi
+        CIBW_BEFORE_BUILD: pip install numpy>=1.26 scipy cython pybind11
+      run: cibuildwheel --output-dir wheelhouse --platform linux
 
-    - name: Save Wheel Package as Artifact
+    - name: Build wheels (Windows)
+      if: matrix.os == 'windows-latest'
+      env:
+        CIBW_BUILD: ${{ matrix.python[0] }}-win*
+        CIBW_ARCHS: AMD64
+      run: cibuildwheel --output-dir wheelhouse --platform windows
+
+    - name: Build wheels (macOS)
+      if: matrix.os == 'macos-latest'
+      env:
+        CIBW_BUILD: ${{ matrix.python[0] }}-macosx*
+        CIBW_ARCHS: x86_64 arm64
+      run: cibuildwheel --output-dir wheelhouse --platform macos
+
+    - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
-        name: wheelhouse-${{ matrix.python[1] }}-${{ matrix.buildplat.platform }}
+        name: wheels-${{ matrix.python[1] }}-${{ matrix.os }}
         path: wheelhouse/*.whl
 
-  package_source:
+  build_sdist:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Python (for creating source distribution)
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
-      - name: Install common dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install Cython numpy pybind11 scipy
+      - name: Install build deps
+        run: pip install cython numpy scipy pybind11 build
 
-      - name: Create source distribution
-        run: python setup.py sdist 
+      - name: Build sdist
+        run: python -m build --sdist
 
-      - name: Move source distribution to specific directory
-        run: |
-          mkdir dist_sources
-          mv dist/*.tar.gz dist_sources/
-
-      - name: Upload source distribution as artifact
+      - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
           name: source-distribution
-          path: dist_sources/*
+          path: dist/*.tar.gz
 
-  deploy_to_testpypi:
-    needs: [build, package_source]
+  publish:
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    env:
-      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    environment:
+      name: pypi
+      url: https://pypi.org/p/uqpyl
+    permissions:
+      id-token: write
 
     steps:
-      - name: Download Wheel Package Artifact
-        uses: actions/download-artifact@v4
-        with:
-          pattern: wheelhouse-*
-          path: ./wheelhouse
-          merge-multiple: true
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: wheels-*
+        path: wheelhouse
+        merge-multiple: true
 
-      - name: Download Source Distribution Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: source-distribution
-          path: ./source_distribution
+    - name: Download sdist
+      uses: actions/download-artifact@v4
+      with:
+        name: source-distribution
+        path: dist
 
-      - name: Publish to TestPyPI
-        run: |
-          pip install twine
-          python -m pip install -U packaging
-          twine upload --repository-url  https://upload.pypi.org/legacy/  wheelhouse/*.whl source_distribution/*.tar.gz
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: wheelhouse/

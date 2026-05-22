@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "UQPyL"
-version = "2.1.5"
+version = "2.1.6"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
@@ -25,6 +25,10 @@ dependencies = [
     "scipy",
 ]
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -42,10 +46,16 @@ Homepage = "https://uqpyl.readthedocs.io"
 Repository = "https://github.com/smasky/UQPyL"
 Documentation = "https://uqpyl.readthedocs.io"
 
+[tool.cibuildwheel]
+build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
+skip = ["pp*", "*-musllinux*"]
+before-build = [
+    "pip install numpy>=1.26 scipy cython pybind11",
+]
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
+build-verbosity = 1
+
 [tool.pytest.ini_options]
-# Only collect tests from the real test suite.
-# NOTE: `examples/test_*.py` are runnable example scripts (top-level code),
-# and importing them during pytest collection can look like "pytest is stuck".
 testpaths = ["tests"]
 cache_dir = ".cache/pytest/cache"
 python_files = ["test_*.py"]
@@ -60,13 +70,8 @@ norecursedirs = [
 ]
 addopts = "-ra --basetemp=.cache/pytest/tmp"
 filterwarnings = [
-  # Massive noisy warning emitted indirectly during MARS training in tests.
-  # It is safe to ignore in test output; fix requires deeper changes in the embedded MARS implementation.
   "ignore:The truth value of an empty array is ambiguous.*:DeprecationWarning",
-  # pytest helper deprecation; test behavior remains valid.
   "ignore:Passing None has been deprecated.*:pytest.PytestRemovedIn8Warning",
-  # Harmless but noisy in some environments.
   "ignore:The NumPy module was reloaded.*:UserWarning",
-  # Environment-level binary mismatch warning (wheel/conda mix); does not affect unit test logic here.
   "ignore:numpy\\.ndarray size changed.*:RuntimeWarning",
 ]

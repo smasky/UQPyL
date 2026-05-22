@@ -57,7 +57,8 @@ class BaseSqliteStorage:
             )
 
     def _problem_blob(self, problem):
-        return sqlite3.Binary(pickle_to_blob(problem))
+        blob = pickle_to_blob(problem)
+        return sqlite3.Binary(blob) if blob is not None else None
 
     def _create_schema(self, conn):
         raise NotImplementedError

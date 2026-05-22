@@ -18,7 +18,7 @@ analysis = _import_submodule("analysis")
 inference = _import_submodule("inference")
 calibration = _import_submodule("calibration")
 
-__version__ = "2.1.5"
+__version__ = "2.1.6"
 __author__ = "wmtSky"
 
 __all__=[

@@ -47,7 +47,12 @@ def from_json_array(text):
 
 
 def pickle_to_blob(value):
-    return value if value is None else pickle.dumps(value, protocol=pickle.HIGHEST_PROTOCOL)
+    if value is None:
+        return None
+    try:
+        return pickle.dumps(value, protocol=pickle.HIGHEST_PROTOCOL)
+    except (TypeError, pickle.PicklingError, AttributeError):
+        return None
 
 
 def spawn_seed(rng):

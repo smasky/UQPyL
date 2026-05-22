@@ -142,45 +142,46 @@ class MOASMO(AlgorithmABC):
             offSpring = Population(decs=bestDecs, objs=bestObjs)
             
             if advance_infilling==False:
-                
+
                 if offSpring.nPop > nInfilling:
                     bestOff = offSpring.getBest(nInfilling)
                 else:
                     bestOff = offSpring
-                    
+
             else:
-                
+
                 if offSpring.nPop > nInfilling:
                     Known_FrontNo, _ = NDSort(pop.objs, pop.cons)
                     Unknown_FrontNo, _ = NDSort(offSpring.objs, offSpring.cons)
-                    
+
                     Known_best_Y = pop.objs[np.where(Known_FrontNo==1)]
                     Unknown_best_Y = offSpring.objs[np.where(Unknown_FrontNo==1)]
                     Unknown_best_X = offSpring.decs[np.where(Unknown_FrontNo==1)]
-                    
+
                     added_points_Y = []
                     added_points_X = []
-                    
+
                     for _ in range(nInfilling):
-                        
+
                         if len(added_points_Y)==0:
                             distances = cdist(Unknown_best_Y, Known_best_Y)
                         else:
                             distances = cdist(Unknown_best_Y, np.append(Known_best_Y, added_points_Y, axis=0))
 
                         max_distance_index = np.argmax(np.min(distances, axis=1))
-                        
+
                         added_point = Unknown_best_Y[max_distance_index]
                         added_points_Y.append(added_point)
                         added_points_X.append(Unknown_best_X[max_distance_index])
                         Known_best_Y = np.append(Known_best_Y, [added_point], axis=0)
-                        
+
                         Unknown_best_Y = np.delete(Unknown_best_Y, max_distance_index, axis=0)
                         Unknown_best_X = np.delete(Unknown_best_X, max_distance_index, axis=0)
-                    
+
                     BestX = np.copy(np.array(added_points_X))
-                    # BestY = np.copy(np.array(added_points_Y))
                     bestOff = Population(decs = BestX)
+                else:
+                    bestOff = offSpring
             
             # Evaluate the selected offspring
             self.evaluate(bestOff)
