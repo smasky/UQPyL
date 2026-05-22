@@ -4,7 +4,7 @@ requires = [
     "wheel",
     "Cython",
     "pybind11",
-    "numpy>=1.26",
+    "numpy>=1.21",
     "scipy",
 ]
 
@@ -21,7 +21,8 @@ description = "A python package for parameter uncertainty quantification and opt
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "numpy>=1.26",
+    "numpy>=1.26; python_version>='3.9'",
+    "numpy>=1.21,<1.25; python_version<'3.9'",
     "scipy",
 ]
 classifiers = [
@@ -50,9 +51,8 @@ Documentation = "https://uqpyl.readthedocs.io"
 build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
 skip = ["pp*", "*-musllinux*"]
 before-build = [
-    "pip install numpy>=1.26 scipy cython pybind11",
+    "pip install numpy scipy cython pybind11",
 ]
-repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 build-verbosity = 1
 
 [tool.pytest.ini_options]
