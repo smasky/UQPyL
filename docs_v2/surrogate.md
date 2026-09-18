@@ -1,5 +1,7 @@
 # Surrogate Modeling
 
+For GPR/KRG, `nRestartTimes` counts additional searches: `0` means one search. The default `None` resolves to 4 restarts (5 searches total) for local optimizers (Boxmin/LBFGSB/MP), and retains 1 restart for EA. Local optimization starts from the current configured parameters (including fitted values on a repeated fit), then samples uniformly within optimization-coordinate bounds, hence in log space for log parameters. Set `model.rng = np.random.default_rng(42)` for reproducibility with identical data, initial parameters and RNG state. Selection uses finite objectives recomputed at returned points; all-invalid candidates raise an error. More restarts do not guarantee lower prediction error.
+
 The `surrogate` module trains cheap predictive models from evaluated input-output data.
 
 Use a surrogate when the original model is expensive and you already have a table of inputs and outputs. A surrogate can help with quick prediction, validation, response-surface plotting, screening, or surrogate-assisted optimization.

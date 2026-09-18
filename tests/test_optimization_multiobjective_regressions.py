@@ -147,14 +147,15 @@ def test_equal_violation_is_same_front_and_uses_diversity():
 
 
 @pytest.mark.parametrize('aggregation', ['PBI', 'TCH', 'TCH_N', 'TCH_M'])
-def test_moead_small_population_produces_real_offspring_and_respects_budget(aggregation):
+def test_moead_small_population_finishes_iteration_at_budget_boundary(aggregation):
     problem = Problem(nInput=1, nObj=2, nCon=1, lb=0, ub=1,
                       objFunc=lambda X: np.zeros((len(X), 2)),
                       conFunc=lambda X: -np.ones((len(X), 1)))
     algorithm = MOEAD(aggregation=aggregation, nPop=8, maxFEs=19, maxIters=10, **QUIET)
     with np.errstate(divide='raise', invalid='raise'):
         result = algorithm.run(problem, seed=2)
-    assert result.FEs == 19
+    assert result.FEs == 24
+    assert result.iters == 2
     assert result.bestFeasible and result.bestMetric > 0
 
 

@@ -172,7 +172,7 @@ class MOASMO(SurrogateOptimization):
             
             # Compare canonical inputs, including duplicates within the batch.
             decs = self._novelCandidates(bestOff.decs, pop,
-                                         count=min(nInfilling, self.maxFEs-self.FEs))
+                                         count=nInfilling)
             if not len(decs):
                 break
             bestOff = Population(decs)

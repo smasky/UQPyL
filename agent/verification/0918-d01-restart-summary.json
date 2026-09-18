@@ -1,0 +1,592 @@
+{
+  "all": {
+    "configured_first": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 116,
+        "fits": 240,
+        "median_normalized_rmse": 0.03254551194606146,
+        "median_evaluations": 14.5,
+        "median_seconds": 0.004167825999502384
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 143,
+        "fits": 240,
+        "median_normalized_rmse": 0.02314651340355399,
+        "median_evaluations": 26.0,
+        "median_seconds": 0.008211677500185033
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 159,
+        "fits": 240,
+        "median_normalized_rmse": 0.0244480149391425,
+        "median_evaluations": 39.0,
+        "median_seconds": 0.012416824000865745
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 194,
+        "fits": 240,
+        "median_normalized_rmse": 0.0244480149391425,
+        "median_evaluations": 66.0,
+        "median_seconds": 0.020852122502219572
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 240,
+        "fits": 240,
+        "median_normalized_rmse": 0.023471632475505877,
+        "median_evaluations": 119.0,
+        "median_seconds": 0.03740997750082897
+      }
+    ],
+    "all_random": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 132,
+        "fits": 240,
+        "median_normalized_rmse": 0.03284506299716779,
+        "median_evaluations": 14.0,
+        "median_seconds": 0.0038639995000266936
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 148,
+        "fits": 240,
+        "median_normalized_rmse": 0.028123124683488994,
+        "median_evaluations": 27.0,
+        "median_seconds": 0.008154876500157116
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 168,
+        "fits": 240,
+        "median_normalized_rmse": 0.028123124683488994,
+        "median_evaluations": 41.0,
+        "median_seconds": 0.012451779500224802
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 193,
+        "fits": 240,
+        "median_normalized_rmse": 0.0244480149391425,
+        "median_evaluations": 67.0,
+        "median_seconds": 0.020864541998889763
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 240,
+        "fits": 240,
+        "median_normalized_rmse": 0.022547711440198667,
+        "median_evaluations": 121.0,
+        "median_seconds": 0.037282750998201664
+      }
+    ],
+    "configured_vs_random": [
+      {
+        "total_runs": 1,
+        "configured_wins": 52,
+        "random_wins": 51,
+        "ties": 137
+      },
+      {
+        "total_runs": 2,
+        "configured_wins": 25,
+        "random_wins": 37,
+        "ties": 178
+      },
+      {
+        "total_runs": 3,
+        "configured_wins": 20,
+        "random_wins": 24,
+        "ties": 196
+      },
+      {
+        "total_runs": 5,
+        "configured_wins": 8,
+        "random_wins": 9,
+        "ties": 223
+      },
+      {
+        "total_runs": 9,
+        "configured_wins": 5,
+        "random_wins": 8,
+        "ties": 227
+      }
+    ]
+  },
+  "default_GPR": {
+    "configured_first": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 12.0,
+        "median_seconds": 0.0017732154992700089
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 25.0,
+        "median_seconds": 0.0035648900002343
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 39.0,
+        "median_seconds": 0.0053448119997483445
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 65.0,
+        "median_seconds": 0.008926085500206682
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 119.0,
+        "median_seconds": 0.01606572400123696
+      }
+    ],
+    "all_random": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0017864904993984965
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 27.0,
+        "median_seconds": 0.0036280595004427596
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 40.0,
+        "median_seconds": 0.005363507998481509
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 66.0,
+        "median_seconds": 0.008925321500100836
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.1689302794763461,
+        "median_evaluations": 120.5,
+        "median_seconds": 0.01609035000001313
+      }
+    ],
+    "configured_vs_random": [
+      {
+        "total_runs": 1,
+        "configured_wins": 0,
+        "random_wins": 0,
+        "ties": 60
+      },
+      {
+        "total_runs": 2,
+        "configured_wins": 0,
+        "random_wins": 0,
+        "ties": 60
+      },
+      {
+        "total_runs": 3,
+        "configured_wins": 0,
+        "random_wins": 0,
+        "ties": 60
+      },
+      {
+        "total_runs": 5,
+        "configured_wins": 0,
+        "random_wins": 0,
+        "ties": 60
+      },
+      {
+        "total_runs": 9,
+        "configured_wins": 0,
+        "random_wins": 0,
+        "ties": 60
+      }
+    ]
+  },
+  "default_KRG": {
+    "configured_first": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 14,
+        "fits": 60,
+        "median_normalized_rmse": 0.12625498969533128,
+        "median_evaluations": 12.0,
+        "median_seconds": 0.0062079175004328135
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 23,
+        "fits": 60,
+        "median_normalized_rmse": 0.07727752846333122,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.011013547501534049
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 32,
+        "fits": 60,
+        "median_normalized_rmse": 0.07727752846333122,
+        "median_evaluations": 34.0,
+        "median_seconds": 0.016963397501058353
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 45,
+        "fits": 60,
+        "median_normalized_rmse": 0.07726977290924061,
+        "median_evaluations": 56.0,
+        "median_seconds": 0.027019090000976576
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.07726497781486696,
+        "median_evaluations": 101.0,
+        "median_seconds": 0.049830049002594023
+      }
+    ],
+    "all_random": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 21,
+        "fits": 60,
+        "median_normalized_rmse": 0.07731504754495883,
+        "median_evaluations": 11.0,
+        "median_seconds": 0.005492858999787131
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 29,
+        "fits": 60,
+        "median_normalized_rmse": 0.0772584713578982,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.010837356498996087
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 35,
+        "fits": 60,
+        "median_normalized_rmse": 0.07726475694507613,
+        "median_evaluations": 34.0,
+        "median_seconds": 0.01630031750028138
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 48,
+        "fits": 60,
+        "median_normalized_rmse": 0.0772584713578982,
+        "median_evaluations": 56.0,
+        "median_seconds": 0.026882609998210683
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.07726337171667769,
+        "median_evaluations": 102.0,
+        "median_seconds": 0.04945804400176712
+      }
+    ],
+    "configured_vs_random": [
+      {
+        "total_runs": 1,
+        "configured_wins": 11,
+        "random_wins": 11,
+        "ties": 38
+      },
+      {
+        "total_runs": 2,
+        "configured_wins": 5,
+        "random_wins": 14,
+        "ties": 41
+      },
+      {
+        "total_runs": 3,
+        "configured_wins": 3,
+        "random_wins": 7,
+        "ties": 50
+      },
+      {
+        "total_runs": 5,
+        "configured_wins": 3,
+        "random_wins": 1,
+        "ties": 56
+      },
+      {
+        "total_runs": 9,
+        "configured_wins": 1,
+        "random_wins": 0,
+        "ties": 59
+      }
+    ]
+  },
+  "scaled_ard_GPR": {
+    "configured_first": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 21,
+        "fits": 60,
+        "median_normalized_rmse": 0.002310838537693853,
+        "median_evaluations": 32.0,
+        "median_seconds": 0.0039048014996296843
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 24,
+        "fits": 60,
+        "median_normalized_rmse": 0.002178251501575382,
+        "median_evaluations": 62.5,
+        "median_seconds": 0.0075817180004378315
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 29,
+        "fits": 60,
+        "median_normalized_rmse": 0.002178251501575382,
+        "median_evaluations": 96.5,
+        "median_seconds": 0.011606368000684597
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 44,
+        "fits": 60,
+        "median_normalized_rmse": 0.00220500770501522,
+        "median_evaluations": 161.5,
+        "median_seconds": 0.01955499150153628
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.0020683932440123598,
+        "median_evaluations": 296.0,
+        "median_seconds": 0.035766383999543905
+      }
+    ],
+    "all_random": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 19,
+        "fits": 60,
+        "median_normalized_rmse": 0.002669282097253871,
+        "median_evaluations": 32.5,
+        "median_seconds": 0.0037909079992459738
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 25,
+        "fits": 60,
+        "median_normalized_rmse": 0.0025706362831238957,
+        "median_evaluations": 65.5,
+        "median_seconds": 0.007903200998953253
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 34,
+        "fits": 60,
+        "median_normalized_rmse": 0.0025196682956402368,
+        "median_evaluations": 99.0,
+        "median_seconds": 0.011949355000069772
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 42,
+        "fits": 60,
+        "median_normalized_rmse": 0.0025196682956402368,
+        "median_evaluations": 165.0,
+        "median_seconds": 0.019896932500159892
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.002071147503067588,
+        "median_evaluations": 302.5,
+        "median_seconds": 0.03635131699957128
+      }
+    ],
+    "configured_vs_random": [
+      {
+        "total_runs": 1,
+        "configured_wins": 22,
+        "random_wins": 20,
+        "ties": 18
+      },
+      {
+        "total_runs": 2,
+        "configured_wins": 11,
+        "random_wins": 16,
+        "ties": 33
+      },
+      {
+        "total_runs": 3,
+        "configured_wins": 9,
+        "random_wins": 12,
+        "ties": 39
+      },
+      {
+        "total_runs": 5,
+        "configured_wins": 2,
+        "random_wins": 5,
+        "ties": 53
+      },
+      {
+        "total_runs": 9,
+        "configured_wins": 2,
+        "random_wins": 5,
+        "ties": 53
+      }
+    ]
+  },
+  "scaled_ard_KRG": {
+    "configured_first": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 21,
+        "fits": 60,
+        "median_normalized_rmse": 0.0018341226191828342,
+        "median_evaluations": 25.0,
+        "median_seconds": 0.012062798000442854
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 36,
+        "fits": 60,
+        "median_normalized_rmse": 0.0019268295196500198,
+        "median_evaluations": 53.0,
+        "median_seconds": 0.026463973998943402
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 38,
+        "fits": 60,
+        "median_normalized_rmse": 0.0019268295196500198,
+        "median_evaluations": 77.0,
+        "median_seconds": 0.039246611999260494
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 45,
+        "fits": 60,
+        "median_normalized_rmse": 0.0018190035509275352,
+        "median_evaluations": 133.0,
+        "median_seconds": 0.0654510369986383
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.0017941207737238972,
+        "median_evaluations": 243.5,
+        "median_seconds": 0.1193487919981635
+      }
+    ],
+    "all_random": [
+      {
+        "total_runs": 1,
+        "near_nine_run_objective": 32,
+        "fits": 60,
+        "median_normalized_rmse": 0.0012660026223539663,
+        "median_evaluations": 24.5,
+        "median_seconds": 0.012107276000278944
+      },
+      {
+        "total_runs": 2,
+        "near_nine_run_objective": 34,
+        "fits": 60,
+        "median_normalized_rmse": 0.0012660026223539663,
+        "median_evaluations": 48.0,
+        "median_seconds": 0.02439103399956366
+      },
+      {
+        "total_runs": 3,
+        "near_nine_run_objective": 39,
+        "fits": 60,
+        "median_normalized_rmse": 0.001573288802974799,
+        "median_evaluations": 73.5,
+        "median_seconds": 0.03731116649851174
+      },
+      {
+        "total_runs": 5,
+        "near_nine_run_objective": 43,
+        "fits": 60,
+        "median_normalized_rmse": 0.0017708084772397599,
+        "median_evaluations": 131.0,
+        "median_seconds": 0.06488768049985083
+      },
+      {
+        "total_runs": 9,
+        "near_nine_run_objective": 60,
+        "fits": 60,
+        "median_normalized_rmse": 0.0017791827535056353,
+        "median_evaluations": 242.5,
+        "median_seconds": 0.11900955900000554
+      }
+    ],
+    "configured_vs_random": [
+      {
+        "total_runs": 1,
+        "configured_wins": 19,
+        "random_wins": 20,
+        "ties": 21
+      },
+      {
+        "total_runs": 2,
+        "configured_wins": 9,
+        "random_wins": 7,
+        "ties": 44
+      },
+      {
+        "total_runs": 3,
+        "configured_wins": 8,
+        "random_wins": 5,
+        "ties": 47
+      },
+      {
+        "total_runs": 5,
+        "configured_wins": 3,
+        "random_wins": 3,
+        "ties": 54
+      },
+      {
+        "total_runs": 9,
+        "configured_wins": 2,
+        "random_wins": 3,
+        "ties": 55
+      }
+    ]
+  }
+}

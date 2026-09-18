@@ -1,5 +1,7 @@
 # Surrogate API
 
+For GPR/KRG, `nRestartTimes` counts additional searches: `0` means one search. The default `None` resolves to 4 restarts (5 searches total) for local optimizers (Boxmin/LBFGSB/MP), and retains 1 restart for EA. Local optimization starts from the current configured parameters (including fitted values on a repeated fit), then samples uniformly within optimization-coordinate bounds, hence in log space for log parameters. Set `model.rng = np.random.default_rng(42)` for reproducibility with identical data, initial parameters and RNG state. Selection uses finite objectives recomputed at returned points; all-invalid candidates raise an error. More restarts do not guarantee lower prediction error.
+
 ## `UQPyL.surrogate`
 
 The `surrogate` module trains predictive models for expensive simulations, objectives, or intermediate response surfaces.
@@ -183,7 +185,7 @@ GPR(
     polyFeature=None,
     kernel=RBFKernel(),
     optimizer="Boxmin",
-    nRestartTimes=5,
+    nRestartTimes=4,
     C=1e-9,
     C_attr={...},
 )
@@ -228,7 +230,7 @@ KRG(
     kernel=Guass(),
     regression="poly0",
     optimizer="Boxmin",
-    nRestartTimes=5,
+    nRestartTimes=4,
 )
 ```
 

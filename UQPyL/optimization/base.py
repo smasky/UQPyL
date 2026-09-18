@@ -189,7 +189,10 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
         return self.state
     
     def checkTermination(self, pop):
-        """Check whether another iteration may start, without advancing counters."""
+        """Check iteration boundaries; initialization and started iterations finish fully.
+
+        maxFEs is a stopping threshold, not a per-evaluation hard cap.
+        """
         if self.maxFEs is not None and self.FEs >= self.maxFEs:
             return False
         if self.maxIter is not None and self.iters >= self.maxIter:

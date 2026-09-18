@@ -62,7 +62,7 @@ Shared constructor controls:
 
 | Parameter | Meaning |
 |---|---|
-| `maxFEs` | Evaluation budget; batch-based methods may finish a batch beyond it. |
+| `maxFEs` | Evaluation stopping threshold checked between iterations; initialization and started iterations finish fully. |
 | `maxIters` | Maximum completed iterations, excluding initialization. Zero performs initialization only. |
 | `maxTolerates` | Consecutive stagnant iterations before single-objective stopping; None disables this stop. |
 | `tolerate` | Absolute objective improvement threshold; None disables stagnation stopping. |
@@ -84,7 +84,7 @@ is enabled. Multi-objective methods do not use this single-objective stopping cr
 Termination checks do not advance counters. Results, history, printed progress, and SQLite
 snapshots use completed iteration numbers. Custom algorithms call `update(pop)` after
 initialization and `update(pop, completed=True)` after each completed iteration. Initialization
-evaluations still count toward `maxFEs`; existing per-algorithm batch rules are unchanged.
+evaluations still count toward `maxFEs`. Initialization is completed even if it exceeds the threshold; no further iteration starts once the threshold is reached. There is no per-evaluation budget check or remaining-budget truncation (including MOEAD and MOASMO). Actual `FEs` may exceed `maxFEs`; `maxIters` limits completed iterations independently.
 
 Example:
 

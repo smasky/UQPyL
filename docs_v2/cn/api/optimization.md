@@ -47,7 +47,7 @@ result = algorithm.run(problem, initialPop=None, seed=123)
 | 参数 | 含义 |
 |---|---|
 | `nPop` | 种群规模。 |
-| `maxFEs` | 函数评估预算；按批执行的算法可能完成超出预算的末批。 |
+| `maxFEs` | 迭代边界检查的评价停止阈值；初始化和已开始的轮次完整执行。 |
 | `maxIters` | 已完成迭代数的上限，不含初始化；0 表示只初始化。 |
 | `maxTolerates` | 单目标连续停滞的迭代数上限；None 关闭此停止条件。 |
 | `tolerate` | 目标改善的绝对阈值；None 关闭停滞停止条件。 |
@@ -63,7 +63,7 @@ result = algorithm.run(problem, initialPop=None, seed=123)
 
 终止检查本身不增加计数。返回结果、历史、打印和 SQLite 快照统一使用已完成的迭代数。
 自定义算法在初始化后调用 `update(pop)`，每完成一代调用 `update(pop, completed=True)`。
-初始化评价仍计入 `maxFEs`，各算法现有的整批执行规则保持不变。
+初始化评价仍计入 `maxFEs`，即使超过阈值也完整执行；达到阈值后不再开始下一轮。包括 MOEAD、MOASMO 在内，不逐次评价检查预算，也不按剩余预算截断末轮。实际 `FEs` 可以超过 `maxFEs`；`maxIters` 独立限制完成的迭代轮数。
 
 ## 算法选择
 

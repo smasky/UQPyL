@@ -165,13 +165,15 @@ def test_real_surrogate_training_prediction_and_nested_search_use_canonical_unit
         algorithm = ASMO(nInit=8, maxFEs=9, maxIters=1, surrogate=recorder,
                          optimizer=GA(nPop=6, maxFEs=12, maxIters=1, **QUIET), **QUIET)
     else:
-        algorithm = MOASMO(nInit=8, maxFEs=10, maxIters=1, pct=.25, surrogates=recorder,
+        algorithm = MOASMO(nInit=8, maxFEs=9, maxIters=1, pct=.25, surrogates=recorder,
                            optimizer=NSGAII(nPop=8, maxFEs=16, maxIters=1, **QUIET), **QUIET)
     result = algorithm.run(problem, seed=10)
     assert recorder.training and recorder.predictions
     for X, Y in recorder.training:
         np.testing.assert_allclose(Y, problem.evaluate(problem.unit_to_space(X)).objs)
     assert result.FEs > 8
+    if kind == 'MOASMO':
+        assert result.FEs == 10
     np.testing.assert_allclose(result.bestObjs, problem.evaluate(result.bestDecs).objs)
     rows = result.history.populations[-1]['decs']
     assert len(np.unique(rows, axis=0)) == len(rows)

@@ -101,9 +101,6 @@ class MOEAD(AlgorithmABC):
         while self.checkTermination(pop):
             
             for i in range(nPop):
-                if self.FEs >= self.maxFEs:
-                    break
-                
                 # Select parents from the neighborhood
                 P = B[i, self.rng.permutation(B.shape[1])].ravel()
 

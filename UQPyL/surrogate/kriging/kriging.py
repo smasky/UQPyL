@@ -1,4 +1,5 @@
 from .._kernel import installKernel
+from .._restart import resolveRestarts, runLocalRestarts
 import numpy as np
 from scipy.linalg import cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
@@ -53,6 +54,11 @@ class KRG(SurrogateABC):
     - configurable correlation kernel
     - internal hyper-parameter optimization through MP or EA optimizers
 
+    nRestartTimes counts additional searches (0 means one search).
+    None defaults to 4 for MP and 1 for EA. MP starts from the current
+    configured parameters, then samples random starts in optimization coordinates.
+    Set model.rng to a seeded NumPy Generator for reproducibility.
+
     Examples:
         >>> model = KRG()
         >>> model.fit(xTrain, yTrain)
@@ -75,7 +81,7 @@ class KRG(SurrogateABC):
                         kernel: Optional[BaseKernel] = None,
                             regression: Literal['poly0','poly1','poly2']='poly0',
                                 optimizer: AlgorithmABC = "Boxmin",
-                                nRestartTimes: int = 1):
+                                nRestartTimes: Optional[int] = None):
         
         super().__init__(scalers, polyFeature)
 
@@ -111,7 +117,7 @@ class KRG(SurrogateABC):
             )
             
         #set the number of restart optimization
-        self.nRes = nRestartTimes
+        self.nRes = resolveRestarts(self.optimizer, nRestartTimes)
 
         self.registerParameterApplier("kernel", self.setKernel)
         
@@ -228,17 +234,8 @@ class KRG(SurrogateABC):
             ###Using Mathematical Programming Method
             problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
             
-            seed = spawn_seed(self.rng)
-            bestDec , bestObj = self.optimizer.run(problem, xInit=np.repeat(np.array([1.0]), nInput), seed=seed)
-              
-            for _ in range(self.nRes):
-                seed = spawn_seed(self.rng)
-                dec, obj = self.optimizer.run(problem, seed=seed)
-                
-                if obj < bestObj:
-                    bestDec = dec
-                    bestObj = obj
-                               
+            bestDec, bestObj = runLocalRestarts(self, problem, paraInfos)
+
         elif alg_type == "EA":
             ###Using Evolutionary Algorithm
             def objFunc(varValues):

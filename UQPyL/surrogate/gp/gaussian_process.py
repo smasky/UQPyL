@@ -1,4 +1,5 @@
 from .._kernel import installKernel
+from .._restart import resolveRestarts, runLocalRestarts
 import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Any, Tuple, Optional
@@ -24,6 +25,11 @@ class GPR(SurrogateABC):
     Internal optimization minimizes the negative log marginal likelihood,
     also recorded in ``fitState["objective"]`` (lower is better).
 
+    nRestartTimes counts additional searches (0 means one search).
+    None defaults to 4 for MP and 1 for EA. MP starts from the current
+    configured parameters, then samples random starts in optimization coordinates.
+    Set model.rng to a seeded NumPy Generator for reproducibility.
+
     Examples:
         >>> model = GPR()
         >>> model.fit(xTrain, yTrain)
@@ -42,7 +48,7 @@ class GPR(SurrogateABC):
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                     polyFeature: PolyFeature = None,
                         kernel: Optional[BaseKernel] = None,
-                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: int = 1,
+                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: Optional[int] = None,
                                     C: float = 1e-9,
                                     C_attr: dict = {'ub': 1e-6, 'lb':1e-12, 
                                                         'type': 'float', 
@@ -80,7 +86,7 @@ class GPR(SurrogateABC):
         
         self.setKernel(RBF() if kernel is None else kernel)
         
-        self.nRes = nRestartTimes
+        self.nRes = resolveRestarts(self.optimizer, nRestartTimes)
 
     def _prepare_training_components(self, xTrain: np.ndarray):
         self.kernel.initialize(xTrain.shape[1])
@@ -156,7 +162,7 @@ class GPR(SurrogateABC):
             problem = Problem(nInput = nInput, nObj = 1, ub = ub, lb = lb, 
                                 objFunc = objFunc)
             
-            bestDecs, bestObj = self.optimizer.run(problem, seed=spawn_seed(self.rng))
+            bestDecs, bestObj = runLocalRestarts(self, problem, paraInfos)
         
         elif alg_type == "EA":
             
