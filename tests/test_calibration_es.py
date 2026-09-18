@@ -20,7 +20,7 @@ def test_es_updates_ensemble_towards_observation_in_single_pass():
         lb=0.0,
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 
@@ -65,7 +65,7 @@ def test_es_supports_custom_metric_callable():
         lb=0.0,
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 

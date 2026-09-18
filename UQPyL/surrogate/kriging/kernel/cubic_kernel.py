@@ -19,11 +19,12 @@ class Cubic(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
+        nInput = self._checkFeatureMatrix(D, "D")
+        self.validateParameters(nInput)
         theta=self.setting.get("theta")
             
-        td=np.sum(D*theta, axis=1)
-        ones=np.ones(td.shape)
-        td=np.minimum(ones, td)
-        r=1-3*td**2+2*td**3
+        td = np.minimum(1.0, np.abs(D) * theta)
+        # DACE correlation is the product of the per-coordinate factors.
+        r = np.prod((1.0 - td)**2 * (1.0 + 2.0 * td), axis=1)
         
         return r

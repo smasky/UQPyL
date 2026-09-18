@@ -20,7 +20,7 @@ def test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics():
         lb=[0.0, 0.0],
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 
@@ -64,7 +64,7 @@ def test_sufi2_supports_named_metric_configuration():
         lb=[0.0, 0.0],
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 
@@ -97,7 +97,7 @@ def test_sufi2_iterative_mode_samples_and_updates_bounds_history():
         lb=[0.0, 0.0],
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 

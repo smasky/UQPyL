@@ -7,6 +7,8 @@ from datetime import datetime
 
 import numpy as np
 
+from .config import config
+
 
 def slugify_name(name):
     text = str(name).strip()
@@ -16,21 +18,21 @@ def slugify_name(name):
 
 
 def make_run_id(method_name, problem_name):
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
-    suffix = uuid.uuid4().hex[:4]
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    suffix = uuid.uuid4().hex
     problem_slug = slugify_name(problem_name)
     return f"{str(method_name).lower()}_{problem_slug}_{timestamp}_{suffix}"
 
 
 def ensure_result_dir(root_dir):
-    result_dir = os.path.join(root_dir, "Result")
+    result_dir = os.path.join(config.resolveWorkDir(root_dir), config.resultDirName)
     os.makedirs(result_dir, exist_ok=True)
     return result_dir
 
 
-def build_db_path(root_dir, method_name, problem_name):
+def build_db_path(root_dir, method_name, problem_name, run_id=None):
     result_dir = ensure_result_dir(root_dir)
-    run_id = make_run_id(method_name, problem_name)
+    run_id = run_id or make_run_id(method_name, problem_name)
     return os.path.join(result_dir, f"{run_id}.sqlite3"), run_id
 
 

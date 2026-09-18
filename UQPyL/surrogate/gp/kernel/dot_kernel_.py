@@ -14,10 +14,11 @@ class DotProduct(BaseKernel):
         
         super().__init__()
         
-        self.setting.set('sigma', sigma, sigma_attr)
+        self._setKernelParameter('sigma', sigma, sigma_attr)
     
     def __call__(self, trainX, trainY: Optional[np.ndarray]=None):
         
+        self._validateInputs(trainX, trainY)
         sigma = self.setting.get('sigma')
         
         if trainY is None:
@@ -26,3 +27,7 @@ class DotProduct(BaseKernel):
             K=np.inner(trainX, trainY) + sigma**2
         
         return K
+
+    def diag(self, X):
+        self._validateInputs(X)
+        return np.einsum('ij,ij->i', X, X) + self.setting.get('sigma') ** 2

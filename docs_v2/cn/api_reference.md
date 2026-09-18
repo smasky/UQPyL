@@ -48,7 +48,7 @@
 res = problem.evaluate(X)
 objs = res.objs
 cons = res.cons
-sim = res.sim
+sims = res.sims
 ```
 
 ## 保存结果 Reader
@@ -107,6 +107,14 @@ with Reader("Result/example.sqlite3") as reader:
 | `objs` | 目标矩阵，通常 shape 为 `(n_samples, n_obj)`。 |
 | `cons` | 约束矩阵，值 `<= 0` 表示可行。 |
 | `decs` | 决策/输入矩阵，或推断结果中的链样本。 |
-| `sims` / `sim` | `ModelProblem` 的仿真输出，通常 shape 为 `(n_samples, n_time, n_series)`。 |
+| `sims` | `ModelProblem` 的仿真输出，通常 shape 为 `(n_samples, n_time, n_series)`。 |
 | `bestDecs` | 最优决策行，或多目标方法中的 Pareto 决策矩阵。 |
 | `bestObjs` | `bestDecs` 对应的目标值。 |
+
+## 运行失败与保存结果
+
+优化、分析、推断和校准的公开 `run` / `analyze` 入口会管理本次运行的数据库会话。初始化、计算或结果保存发生异常时，原始异常继续抛出；未提交的写入会回滚，已提交的数据保留。开启 `saveFlag` 且运行记录已创建时，数据库可写则将状态更新为 `failed` 并记录结束时间，随后关闭连接。正常返回的运行保持 `finished` 状态。
+
+通过对应 Reader 的 `list_runs()` 或 `get_run_summary()["status"]` 查看运行状态；失败记录可能只有元数据或部分已提交快照，不保证存在完整结果对象。失败运行不会自动重试或返回部分成功结果。正常清理后，同一个方法实例可以重新运行，新运行使用新的会话。
+
+如果数据库自身无法回滚或更新状态，异常会附带收尾错误说明，仍继续尝试关闭连接；不能保证这时数据库中的状态已改为 `failed`。若关闭本身也失败，保留 `method.session` 供排查和清理，禁止新运行覆盖该会话。这些保障适用于 Python 能够处理的异常（包括 `KeyboardInterrupt`），不涵盖强制终止进程或断电。直接手动组合 `setup` / `finalize` 时，会话生命周期仍由调用方负责。

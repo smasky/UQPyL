@@ -40,6 +40,7 @@ def test_analysisabc_check_y_target_and_index_validation():
 
 def test_analysisabc_check_xy_type_validation_and_reshape():
     a = DummyAnalysis(verboseFlag=False, logFlag=False, saveFlag=False)
+    a.setProblem(Problem(nInput=2, nObj=1, ub=1., lb=0., objFunc=_zero_obj))
 
     with pytest.raises(TypeError):
         a.__check_X_Y__("not-array", np.zeros((3, 1)))
@@ -65,8 +66,7 @@ def test_analysisabc_setting_helpers():
     a = DummyAnalysis(verboseFlag=False, logFlag=False, saveFlag=False)
     a.set("a", 1)
     a.set("b", 2)
-    assert set(a.setting.keys()) >= {"a", "b"}
-    assert isinstance(a.setting.values(), type({}.values()))
+    assert set(a.params.keys()) >= {"a", "b"}
+    assert isinstance(a.params.values(), type({}.values()))
     assert a.get("a", "b") == (1, 2)
-
 

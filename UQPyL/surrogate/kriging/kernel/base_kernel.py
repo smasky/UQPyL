@@ -2,8 +2,11 @@ import numpy as np
 from typing import Union
 
 from ...setting import Setting
-class BaseKernel():
+from ..._kernel import KernelTemplate
+
+class BaseKernel(KernelTemplate):
     name = None
+    _parameterRules = {"theta": (False, True, False)}
     
     def __init__(self, heterogeneous: bool,
                  theta: Union[float, np.ndarray], 
@@ -15,7 +18,7 @@ class BaseKernel():
         
         self.heterogeneous = heterogeneous
         
-        self.setting.set("theta", theta, theta_attr)
+        self._setKernelParameter("theta", theta, theta_attr)
 
     @property
     def displayName(self):
@@ -25,5 +28,6 @@ class BaseKernel():
         return self.setting.getParaList(owner="kernel", tunableOnly=False)
         
     def initialize(self, nInput):
+        self.validateParameters(nInput, checkBounds=True)
         size = nInput if self.heterogeneous else None
-        self.setting.expandParam("theta", size=size)
+        self._expandKernelParam("theta", size=size)

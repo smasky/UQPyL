@@ -1,5 +1,7 @@
 import numpy as np
 
+from ._ensemble import validateCovariance, validateRegularization, ensembleGain
+
 from .es import ES
 
 
@@ -45,7 +47,7 @@ class IES(ES):
             metric=metric,
         )
         self.set("maxIters", maxIters)
-        self.set("lam", lam)
+        self.set("lam", validateRegularization(lam))
 
     def _runCore(self, problem, X, r: np.ndarray | None = None):
         """
@@ -63,9 +65,12 @@ class IES(ES):
 
         priorMean = np.mean(X_cur, axis=0)
         priorScores = None
+        sim_post_flat = self.evaluate(X_cur, validOnly=False)
 
         for iterIdx in range(maxIters):
-            X_next, scores, meta = self._update_once(X_cur, r=r, lam=lam)
+            X_next, scores, meta = self._update_once(X_cur, r=r, lam=lam, fullSim=sim_post_flat)
+            sim_post_flat = meta["posteriorSims"]
+            self.state.diagnostics.setdefault("covarianceSolves", []).append(meta["covarianceSolve"])
             if priorScores is None:
                 priorScores = meta["priorScores"]
 
@@ -77,11 +82,9 @@ class IES(ES):
             )
             X_cur = X_next
 
-        sim_post = self.problem.simFunc(X_cur)
-        sim_post_flat = self.problem.flattenSim(sim_post)
         postMean = np.mean(X_cur, axis=0)
         scores = self.score(sim_post_flat)
-        bestIdx = int(np.argmin(scores))
+        bestIdx = int(np.argmin(self.normalizedScore(sim_post_flat)))
 
         self.recordPosterior(X_cur.copy(), sim_post_flat.copy())
         self.recordBest(X_cur[bestIdx:bestIdx + 1], sim_post_flat[bestIdx:bestIdx + 1])
@@ -91,7 +94,7 @@ class IES(ES):
         self.state.diagnostics["scores"] = scores
         self.state.extra["bestIdx"] = bestIdx
 
-    def _update_once(self, X, r: np.ndarray | None = None, lam: float = 0.0):
+    def _update_once(self, X, r: np.ndarray | None = None, lam: float = 0.0, fullSim=None):
         """
         Apply one iterative smoother update.
 
@@ -104,17 +107,14 @@ class IES(ES):
             tuple: `(X_post, scores, meta)` for the updated ensemble.
         """
         X = np.atleast_2d(X).astype(float, copy=False)
-        Y = self.evaluate(X, validOnly=True)
+        if fullSim is None:
+            fullSim = self.evaluate(X, validOnly=False)
+        Y = fullSim[:, self.getValidMask()]
         obs = self.getValidObs().astype(float, copy=False)
-        priorScores = self.score(self.evaluate(X, validOnly=False))
+        priorScores = self.score(fullSim)
 
-        if r is None:
-            r = np.zeros((obs.size, obs.size), dtype=float)
-        else:
-            r = np.asarray(r, dtype=float)
-
-        if r.shape != (obs.size, obs.size):
-            raise ValueError("Observation error covariance R must have shape (n_valid_obs, n_valid_obs).")
+        r = validateCovariance(r, obs.size)
+        lam = validateRegularization(lam)
 
         x_mean = np.mean(X, axis=0, keepdims=True)
         y_mean = np.mean(Y, axis=0, keepdims=True)
@@ -128,7 +128,7 @@ class IES(ES):
         scale = 1.0 / (n_ens - 1)
         c_xy = dX.T @ dY * scale
         c_yy = dY.T @ dY * scale
-        gain = c_xy @ np.linalg.inv(c_yy + r + lam * np.eye(obs.size, dtype=float))
+        gain, solveInfo = ensembleGain(c_xy, c_yy, r, lam)
 
         innovation = obs.reshape(1, -1) - Y
         X_post = X + innovation @ gain.T
@@ -137,4 +137,5 @@ class IES(ES):
         sim_post_flat = self.problem.flattenSim(sim_post)
         scores = self.score(sim_post_flat)
 
-        return X_post, scores, {"priorScores": priorScores}
+        return X_post, scores, {"priorScores": priorScores, "covarianceSolve": solveInfo,
+                               "posteriorSims": sim_post_flat}

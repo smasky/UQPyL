@@ -208,7 +208,7 @@ def test_analysis_log_writes_full_metric_table():
         text = logFiles[0].read_text(encoding="utf-8")
         assert "[S1]" in text
         assert "columns:" in text
-        assert "obj1:" in text
+        assert f"{problem.objLabels[0]}:" in text
         assert "target: objs" in text
         assert "meta:" in text
     finally:
@@ -223,7 +223,7 @@ def test_ana_result_convenience_api():
     res = fast.analyze(problem, X, Y=None, meta=meta, target="objs", index="all")
 
     assert res.problemName == problem.name
-    assert res.runId is None
+    assert res.runId == fast.runId and res.runId is not None
     assert "S1" in res.metricNames
     assert res.metricMap["S1"] is res.getMetric("S1")
     assert res["S1"] is res.getMetric("S1")
@@ -234,7 +234,7 @@ def test_ana_result_convenience_api():
 
     payload = res.toDict()
     assert payload["method"] == "FAST"
-    assert payload["run_id"] is None
+    assert payload["run_id"] == res.runId
     assert payload["meta"]["designType"] == "fast"
     assert isinstance(payload["metrics"], list)
     assert payload["metrics"][0]["name"] in res.metricNames
@@ -243,6 +243,8 @@ def test_ana_result_convenience_api():
 def test_ana_reader_context_and_metric_lookup(monkeypatch):
     conn = sqlite3.connect(":memory:")
     conn.row_factory = sqlite3.Row
+    conn.execute("CREATE TABLE runtimeMeta (name TEXT PRIMARY KEY, value TEXT)")
+    conn.execute("INSERT INTO runtimeMeta VALUES ('domain', 'analysis')")
     conn.executescript(
         """
         CREATE TABLE run (
@@ -327,7 +329,7 @@ def test_ana_reader_context_and_metric_lookup(monkeypatch):
     )
     conn.commit()
 
-    def _connect(_):
+    def _connect(_, **kwargs):
         return conn
 
     monkeypatch.setattr("UQPyL.analysis.runtime.reader.sqlite3.connect", _connect)
@@ -371,6 +373,8 @@ def test_analysis_list_runs_includes_filename():
     dbPath = Path(r"D:\UQPyL\.cache\analysis_list_runs\fast_Demo_20260503_1817_abcd.sqlite3")
     conn = sqlite3.connect(":memory:")
     conn.row_factory = sqlite3.Row
+    conn.execute("CREATE TABLE runtimeMeta (name TEXT PRIMARY KEY, value TEXT)")
+    conn.execute("INSERT INTO runtimeMeta VALUES ('domain', 'analysis')")
     conn.execute(
         """
         CREATE TABLE run (
@@ -408,7 +412,7 @@ def test_analysis_list_runs_includes_filename():
     origGlob = Path.glob
 
     def fake_connect(path, *args, **kwargs):
-        if str(path) == str(dbPath):
+        if str(path) == str(dbPath) or str(path) == dbPath.resolve().as_uri() + "?mode=rw":
             return conn
         return origConnect(path, *args, **kwargs)
 
@@ -431,7 +435,6 @@ def test_analysis_list_runs_includes_filename():
         reader_mod.sqlite3.connect = origConnect
         Path.glob = origGlob
         conn.close()
-
 
 
 

@@ -330,3 +330,64 @@ print(realProblem.evaluate(result.bestDecs).objs)
 | 生成训练样本 | [Design of Experiment](doe.md) |
 | 优化拟合后的代理模型 | [Optimization](optimization.md) |
 | 查看端到端示例 | [Examples](examples.md) |
+
+
+## 核对象作为构建模板
+
+GPR、KRG 和 RBF 代理模型会复制传入的核对象，构造函数和 `setKernel()` 使用相同规则。外部核用于描述配置，训练只修改模型内部的独立核实例。
+
+```python
+from UQPyL.surrogate.gp import GPR
+from UQPyL.surrogate.gp.kernel import RBF as RBFKernel
+
+kernel = RBFKernel(length_scale=2.0)
+modelA = GPR(kernel=kernel)
+modelB = GPR(kernel=kernel)
+
+assert modelA.kernel is not kernel
+assert modelB.kernel is not modelA.kernel
+```
+
+复制保留核的当前参数值、范围、类型和其他核配置，不携带模型专属参数。修改外部模板只影响后续创建或显式重新设置的模型；训练后的实际核参数通过 `model.kernel` 查看。
+
+`kernel.clone()` 可显式获得独立配置副本。`setKernelChoices()` 在登记时复制候选模板，每次切换再创建独立运行核，因此训练不会改写候选配置。候选选择字段记录模板选择，运行核仍以 `model.kernel` 为准。
+
+自定义核如果增加训练缓存或外部资源，应覆写 `clone()`，返回配置独立且不携带训练状态的新实例。
+
+### Matern 的 nu 参数
+
+`Matern(nu=0.7)` 可固定任意正的 nu；`nu=np.inf` 对应 Gaussian 极限。设置 `optimize_nu=True` 时，nu 只在 `0.5、1.5、2.5、np.inf` 中选择，构造时也应指定其中一个候选。
+
+常用候选使用简化公式。其他 nu 使用通用 Bessel 公式；大 nu 或中间计算溢出时使用等价的稳定积分计算，因此可能比常用候选慢。零距离的相关值为 1。
+
+### 核参数校验
+
+内置 GP、Kriging 和 RBF 核在构造时检查参数，在初始化时检查参数和调优边界；每次整批核计算前重新检查当前参数，因此直接修改 Setting 或调优器更新出的非法值会在使用前报 `ValueError`。异常不会自动回滚 Setting 的修改。
+
+`length_scale`、`alpha`、`epsilon` 必须为有限正数；`theta`、常数核幅度和 `sigma` 必须为有限非负数；`nu` 为正数或 `np.inf`。`length_scale`、`theta` 可为标量或与输入特征数一致的一维向量，其余为标量。连续调优边界必须合法、有序、有限，对数调优的边界还必须严格为正；初值无需落在调优区间内。GP 交叉核的两个输入必须具有相同特征数。
+
+参数检查通常为 O(d)，其中 d 是特征数；形状检查不扫描整个距离矩阵，不在每个样本对上重复执行。
+
+### Scaler 与预测不确定性的量纲
+
+`scalers=(xScaler, yScaler)` 仍为可选配置，不强制改变各模型默认值。优化内部已经提供 0–1 输入时，通常不需要再次启用输入 Scaler；独立代理模型仍可对真实输入和输出作预处理。
+
+内置 `StandardScaler` 和 `MinMaxScaler` 提供 `inverse_transform_std()` 与 `inverse_transform_var()`。对于逆变换 `y = b + a*z`，均值按该式还原，标准差乘 `abs(a)`，方差乘 `a**2`，不加偏移。GPR/KRG 在模型内部保留训练尺度的方差，预测输出时统一还原一次；多输出均值、标准差、方差形状均为 `(n_predictions, n_outputs)`。
+
+`StandardScaler(muX, sitaX)` 允许自定义目标均值和正标准差；常规多样本数据保留 `ddof=1`。单样本及常数列用源尺度 1 回退；`MinMaxScaler(min_, max_)` 的常数列也用源跨度 1 回退。这样训练值映射到目标中心/下界，变换仍可逆，不会把常数观测误当成预测方差必须为零。
+
+Scaler 接收二维 `(n_samples, n_features)`；一维输入沿用单行语义，单特征多样本请用 `reshape(-1, 1)`。拒绝空训练集、非有限值、维度不匹配、非法目标尺度和未拟合调用。自定义 yScaler 若用于不确定性预测，需要实现 `inverse_transform_var()`；仅均值预测仍只需普通逆变换。非线性变换不能套用上述仿射公式。
+
+
+### AutoTuner 的预处理时机
+
+`optTune()` 和 `gridTune()` 先划分原始训练/验证数据，仅在训练子集上拟合 Scaler 和准备训练特征。验证集通过模型的 `predict()` 复用这些变换，评分使用原始输出尺度。选定参数后，在全量原始数据上重新拟合 Scaler 和最终模型；`joint`、`separate` 两种模式均遵循此规则。返回的验证分数仍来自划分阶段，不是全量重训后的训练分数。
+
+
+### 可复现的数据划分与调参
+
+`RandSelect(...).split(X, seed=42)`、`KFold(...).split(X, seed=42)` 以及 AutoTuner 的 `gridTune(..., seed=42)` / `optTune(..., seed=42)` 支持关键字 `seed`；也可传 `rng=np.random.default_rng(42)`，两者不能同时指定。拆分器不再使用全局 NumPy 随机状态。未提供 seed/rng 时，AutoTuner 消费自身 `rng`，多次调用会推进该随机流。
+
+AutoTuner 为拆分、模型拟合和优化器派生独立子种子；候选拟合及最终拟合使用相同模型子种子的初始随机状态。固定数据、配置和实现时可复现；用户自定义组件需使用模型提供的 rng 才能受这一控制。`tuner.lastSplit` 保存最近调用的 `train_indices/test_indices` 以及 `seed/split_seed/model_seed/optimizer_seed`，返回的参数和分数二元组不变。该信息保留在内存，按需由调用者导出。
+
+KFold 将余数均匀分配到各折，每个样本在 full 模式中恰好参与一次验证，折大小最多差 1；single 模式在相同 seed 下返回 full 的第一折。折数须为 2 到样本数之间的整数。RandSelect 的 pTest 表示验证集百分比，须在 0 和 100 之间；普通数据取 floor(n*pTest/100)，并至少各保留一个训练/验证样本。单样本仍返回空验证集，它不能产生有效的验证评分。

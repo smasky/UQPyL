@@ -527,3 +527,14 @@ MH Sphere
 | Define scalar objectives, bounds, and constraints | [Problem](problem.md) |
 | Compare optimization and inference workflows | [Optimization](optimization.md) |
 | Build calibration workflows around parameter fitting | [Calibration](calibration.md) |
+
+
+### Integer/discrete inference coordinates
+
+Proposal states remain continuous within the original bounded axes. Continuous variables retain physical units; each legal integer or discrete choice occupies an equal-width latent interval. Initialization draws unit samples and maps them to latent coordinates, avoiding repeated decoding of DOE real values. States are not rounded or snapped to bin centers, preserving the continuous proposal/acceptance calculation.
+
+Problem evaluation, custom `logProbFunc` decision arguments, public results, printed decisions, and SQLite snapshots/artifacts use decoded real values. Internal `initialSampling`, `evaluate`, and `initChains` interfaces use latent decisions; do not pass exported discrete values directly back to those internal methods.
+
+Equal-width intervals assign equal base mass to legal choices under a constant target. Nonuniform priors belong in the objective or custom log probability. Existing objective-direction and hard-constraint conventions remain unchanged. Tests verify coordinate consistency in all five methods and an MH known discrete marginal, not general convergence of every sampler.
+
+Bounds must be finite and ordered. Multiple discrete choices require a positive-width latent interval; fixed continuous dimensions remain fixed during reflection. Proposal adaptation and DREAM proposal archives continue to use latent coordinates.

@@ -1,5 +1,7 @@
 import numpy as np
 
+from ._ensemble import validateCovariance, ensembleGain
+
 from ..base import CalibrationABC
 
 
@@ -55,17 +57,12 @@ class ES(CalibrationABC):
                 `(n_valid_obs, n_valid_obs)`. If omitted, zeros are used.
         """
         X = np.atleast_2d(X).astype(float, copy=False)
-        Y = self.evaluate(X, validOnly=True)
+        fullSim = self.evaluate(X, validOnly=False)
+        Y = fullSim[:, self.getValidMask()]
         obs = self.getValidObs().astype(float, copy=False)
-        priorScores = self.score(self.evaluate(X, validOnly=False))
+        priorScores = self.score(fullSim)
 
-        if r is None:
-            r = np.zeros((obs.size, obs.size), dtype=float)
-        else:
-            r = np.asarray(r, dtype=float)
-
-        if r.shape != (obs.size, obs.size):
-            raise ValueError("Observation error covariance R must have shape (n_valid_obs, n_valid_obs).")
+        r = validateCovariance(r, obs.size)
 
         x_mean = np.mean(X, axis=0, keepdims=True)
         y_mean = np.mean(Y, axis=0, keepdims=True)
@@ -79,7 +76,8 @@ class ES(CalibrationABC):
         scale = 1.0 / (n_ens - 1)
         c_xy = dX.T @ dY * scale
         c_yy = dY.T @ dY * scale
-        gain = c_xy @ np.linalg.inv(c_yy + r)
+        gain, solveInfo = ensembleGain(c_xy, c_yy, r)
+        self.state.diagnostics["covarianceSolve"] = solveInfo
 
         innovation = obs.reshape(1, -1) - Y
         X_post = X + innovation @ gain.T
@@ -88,12 +86,12 @@ class ES(CalibrationABC):
 
         post_mean = np.mean(X_post, axis=0)
         scores = self.score(Y_post_flat)
-        best_idx = int(np.argmin(scores))
+        bestIdx = int(np.argmin(self.normalizedScore(Y_post_flat)))
 
         self.recordPosterior(X_post.copy(), Y_post_flat.copy())
-        self.recordBest(X_post[best_idx:best_idx + 1], Y_post_flat[best_idx:best_idx + 1])
+        self.recordBest(X_post[bestIdx:bestIdx + 1], Y_post_flat[bestIdx:bestIdx + 1])
         self.state.diagnostics["priorMean"] = np.mean(X, axis=0)
         self.state.diagnostics["posteriorMean"] = post_mean
         self.state.diagnostics["priorScores"] = priorScores
         self.state.diagnostics["scores"] = scores
-        self.state.extra["bestIdx"] = best_idx
+        self.state.extra["bestIdx"] = bestIdx

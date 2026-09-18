@@ -1,46 +1,75 @@
 site_name: UQPyL
-theme:
-  name: material
-  palette:
-    scheme: light
-  code:
-    highlight_theme: monokai
-  features:
-    - navigation.indexes
-
-nav:
-  - Introduction: 'index.md'
-  - Quick Start: 'quick_start.md'
-  - Tutorial:
-      - Overview: 'overview.md'
-      - Problem: 'problems.md'
-      - Design of Experiment: 'doe.md'
-      - Sensitivity Analysis: 'sensibility.md'
-      - Optimization: 'optimization.md'
-      - Surrogate Models: 'surrogate_model.md'
-     
-  - Example Collections: 'examples.md'
-  - API Reference: 'api_reference.md'
-  - ChangLog: 'chang_log.md'
-
-extra_css:
-  - css/nav_.css
-  - css/head_.css
-  - css/content_.css
-  - css/table_.css
-  
-markdown_extensions:
-  - pymdownx.emoji
-  - pymdownx.superfences
-  - pymdownx.arithmatex
-
-extra_javascript:
-  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML
-
 site_url: https://UQPyL.readthedocs.io/
 repo_url: https://github.com/smasky/UQPyL
-
+docs_dir: docs_v2
+site_dir: site
 use_directory_urls: false
-
-extra:
-  static_path: docs
+validation:
+  nav:
+    omitted_files: warn
+  links:
+    anchors: warn
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  palette:
+    scheme: default
+  features:
+  - navigation.tabs
+  - navigation.indexes
+  - content.code.copy
+nav:
+- English:
+  - Introduction: index.md
+  - Quick Start: quick_start.md
+  - Guides:
+    - Problem: problem.md
+    - Design of Experiment: doe.md
+    - Sensitivity Analysis: analysis.md
+    - Optimization: optimization.md
+    - Inference: inference.md
+    - Calibration: calibration.md
+    - Surrogate Modeling: surrogate.md
+  - Examples: examples.md
+  - API Reference:
+    - api_reference.md
+    - Problem: api/problem.md
+    - Design of Experiment: api/doe.md
+    - Sensitivity Analysis: api/analysis.md
+    - Optimization: api/optimization.md
+    - Inference: api/inference.md
+    - Calibration: api/calibration.md
+    - Surrogate Modeling: api/surrogate.md
+  - Changelog: changelog.md
+- 中文:
+  - 介绍: cn/index.md
+  - 快速开始: cn/quick_start.md
+  - 使用指南:
+    - 问题定义: cn/problem.md
+    - 试验设计: cn/doe.md
+    - 敏感性分析: cn/analysis.md
+    - 优化: cn/optimization.md
+    - 推断: cn/inference.md
+    - 校准: cn/calibration.md
+    - 代理模型: cn/surrogate.md
+  - 示例: cn/examples.md
+  - API 参考:
+    - cn/api_reference.md
+    - 问题定义: cn/api/problem.md
+    - 试验设计: cn/api/doe.md
+    - 敏感性分析: cn/api/analysis.md
+    - 优化: cn/api/optimization.md
+    - 推断: cn/api/inference.md
+    - 校准: cn/api/calibration.md
+    - 代理模型: cn/api/surrogate.md
+  - 更新日志: cn/changelog.md
+markdown_extensions:
+- admonition
+- pymdownx.details
+- pymdownx.highlight
+- pymdownx.superfences
+- pymdownx.emoji
+- pymdownx.arithmatex
+extra_javascript:
+- https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML

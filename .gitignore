@@ -28,3 +28,12 @@ __pycache__/
 .pytest_tmp/
 .codex/pytest_cache/
 .worktrees/
+
+# Machine-local files and compiled outputs are rebuilt on each computer.
+.DS_Store
+.venv*/
+venv/
+*.so
+*.dylib
+.mindfs/
+site/

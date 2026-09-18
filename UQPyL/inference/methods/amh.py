@@ -177,12 +177,7 @@ class AMH(InferenceABC):
     
     def check_bound(self, X, ub, lb):
         
-        span = ub - lb
-        y = (X - lb) % (2 * span)
-        y = np.where(y > span, 2 * span - y, y)
-        X_reflect = lb + y
-        
-        return X_reflect
+        return self._check_bound_(X, ub, lb)
     
     def f_prop(self, X_cur, propDist, propCovs, ub, lb):
         

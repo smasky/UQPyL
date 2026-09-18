@@ -2,6 +2,22 @@
 
 The `optimization` module searches for good decision variables for a `Problem`.
 
+## Optimization coordinate convention
+
+Built-in optimizers store and search populations in `[0,1]^d`, using separate `searchLb/searchUb` bounds. The original `problem.lb/ub` are preserved. Public `initialPop` decisions are real values and are encoded once; pre-evaluated objectives must use their original objective directions.
+
+```text
+DOE(output="unit") → unit population → search/repair
+                                     → problem.unit_to_space(U) → real evaluation
+```
+
+Evaluation leaves the unit population unchanged. `OptResult`, exported history, logs, SQLite and NPZ contain real decisions and objectives in their original directions. Internal algorithm scores remain oriented toward minimization. Runtime history/best-decision snapshots are decoded and must not be passed directly to internal search operators.
+
+EGO, ASMO and MOASMO use `problem.canonicalize_unit(U)` consistently for training, prediction and candidate deduplication. Continuous coordinates are preserved; integer/discrete coordinates use bin midpoints. Duplicate physical training solutions retain their first observation. Inner surrogate problems are continuous unit-cube problems with minimization-oriented objectives. Default surrogates add no input scaling; explicitly configured model scalers still apply consistently during training and prediction.
+
+ASMO's `euclidThres` is a distance in unit coordinates. Surrogate optimizers may stop before exhausting the budget when no novel solution is found; small finite domains enumerate remaining representatives. This optimization convention does not prescribe the internal coordinates of inference algorithms.
+
+
 UQPyL optimization algorithms are easiest to understand in three groups:
 
 | Group | Use when | Import path | Algorithms |
@@ -239,12 +255,13 @@ Example output:
 
 ## Use Initial Data in Expensive Optimization
 
-If you already have evaluated samples, pass them as `xInit` and `yInit`.
+If you already have evaluated samples, wrap them in `Population` and pass them as `initialPop`.
 
 ```python
 import numpy as np
 
 from UQPyL.optimization.expensive import ASMO
+from UQPyL.optimization import Population
 from UQPyL.optimization.soea import GA
 from UQPyL.problem import Problem
 
@@ -259,9 +276,10 @@ def objFunc(X):
 problem = Problem(nInput=2, nObj=1, lb=-1.0, ub=1.0, objFunc=objFunc, optType="min", name="Sphere2D")
 xInit = np.array([[0.8, 0.8], [0.2, 0.1], [-0.5, 0.3]])
 yInit = objFunc(xInit)
+initialPop = Population(xInit, objs=yInit)
 
 algorithm = ASMO(nInit=6, optimizer=GA(nPop=6, maxFEs=18, maxIters=3, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False), maxFEs=8, maxIters=1, verboseFlag=False, logFlag=False, saveFlag=False)
-result = algorithm.run(problem, xInit=xInit, yInit=yInit, seed=123)
+result = algorithm.run(problem, initialPop=initialPop, seed=123)
 
 print(yInit)
 print(result.FEs)
@@ -278,7 +296,9 @@ Example output:
 [[0.0207]]
 ```
 
-If `xInit` has fewer rows than `nInit`, the algorithm adds extra initial samples internally. If `yInit` is omitted, UQPyL evaluates `xInit` with the real problem.
+If `initialPop` has fewer rows than `nInit`, the algorithm adds extra initial samples internally. If `initialPop` is a decision matrix or an unevaluated `Population`, UQPyL evaluates it with the real problem.
+
+The same `run(problem, initialPop=...)` pattern also works for standard evolutionary algorithms such as `GA`, `PSO`, `DE`, `NSGAII`, and `NSGAIII`. The algorithm uses the provided members first and only samples the missing part of the initial population when needed.
 
 ## Multi-Objective Expensive Optimization
 
@@ -577,7 +597,7 @@ Saved runs include a serialized problem payload. If you define `objFunc` interac
 | Forgetting `optType` | Objective direction can be wrong. | Set `"min"`, `"max"`, or a list for multiple objectives. |
 | Writing `conFunc` with reversed sign | Feasible and infeasible points are confused. | Return values `<= 0` for feasible constraints. |
 | Using expensive optimization for cheap functions | Surrogate overhead may dominate. | Use ordinary `GA`, `DE`, or `NSGAII` for cheap objectives. |
-| Passing `xInit` without matching `yInit` rows | Existing evaluations cannot be reused correctly. | Make `xInit.shape[0] == yInit.shape[0]`, or omit `yInit` and let UQPyL evaluate. |
+| Passing an oversized `initialPop` | The algorithm cannot infer whether to truncate or select the best rows. | Pass at most the algorithm's initial population size. |
 
 ## Next Steps
 
@@ -588,3 +608,37 @@ Saved runs include a serialized problem payload. If you define `objFunc` interac
 | Generate initial samples | [Design of Experiment](doe.md) |
 | Train surrogate models | [Surrogate Modeling](surrogate.md) |
 | See complete workflows | [Examples](examples.md) |
+
+### Constraint rules for the single-objective incumbent
+
+The historical incumbent uses the same feasibility-first comparison as search operators: a feasible solution beats an infeasible one; two infeasible solutions are compared by constraint violation, retaining the incumbent on a tie; two feasible solutions are compared by objective value. Violation uses the population's constraint weights. Appearance iteration, evaluation count and improvement history follow this comparison.
+
+### Constraint weights
+
+`Problem(conWgt=[10, 1], nCon=2, ...)` assigns one finite nonnegative weight per constraint. The length must match `nCon`. `None` leaves violations unweighted; a zero weight ignores that constraint, including in feasibility checks.
+
+```python
+CV = np.sum(np.maximum(0, cons * conWgt), axis=1)
+```
+
+Optimizers copy the current Problem weights when accepting an initial population and after true evaluations, replacing any initial Population weights. Slicing, selection, merging and replacement preserve the configuration. Keep weights fixed during a run.
+
+Stored `cons` remain raw constraint values. Printed/logged/stored violation summaries are weighted. Result extra, history snapshots, SQLite and NPZ retain `constraint_weights`; `OptReader` restores weights when loading a Population so subsequent selection uses the same rule.
+
+### Constrained multi-objective results
+
+For multi-objective runs, `bestDecs/bestObjs/bestCons` represent the historical feasible nondominated archive over all evaluated batches, including pre-evaluated initial members. Updates happen before survivor selection. Exact duplicate objective vectors retain their first representative. The archive is uncapped and adds sorting/storage cost.
+
+With no feasible solution, best arrays are empty, `bestFeasible=False`, and `bestMetric=None`. Separate `candidateDecs/candidateObjs/candidateCons` hold up to 10 representatives at the historical minimum weighted violation (`minViolation`). Finding the first feasible solution counts as improvement and clears these candidates. `appearFEs/appearIters` identify the most recent archive change, or violation reduction before feasibility.
+
+Multi-objective constructors accept `hvRefPoint` in original objective units and directions. Automatic references use a positive margin beyond the worst scores in the first feasible result snapshot and remain fixed. Runtime HV uses unnormalized objective units; archive acceptance depends on dominance, not HV. Four or more objectives still use a Monte Carlo estimate. `result.extra['hv_reference_point']` exports the actual reference in original directions.
+
+`Population.getParetoFront()` returns only its current feasible front (possibly empty); `getInfeasibleCandidates(k=10)` provides separate diagnostics. `getBest()` remains a search selection API and may return low-violation candidates before feasibility.
+
+SQLite stores candidates separately from the Pareto archive. `OptReader.load_last_best()` returns an empty Population before feasibility; use `load_last_candidates()` for diagnostics. New NPZ keys are `candidate_decs`, `candidate_objs`, `candidate_cons`, `min_violation`, and, when available, `hv_reference_point`. Exported decisions and objectives retain real units and original directions.
+
+MOASMO shares this result protocol but still searches objective surrogates without a constraint surrogate. Constraint-aware candidate generation remains a separate design item.
+
+### History Frequency
+
+The default `historyFreq=10` retains initial, every-ten-iteration and final full snapshots, while convergence statistics remain available for every update. Set it to `1` for every-update snapshots or `None` for only the final snapshot; SQLite uses its independent `saveFreq`. Locate sparse snapshots through `history.snapshotIterToFEs`. See [Optimization API](api/optimization.md) for details.

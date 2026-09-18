@@ -31,12 +31,12 @@ from UQPyL.doe import LHS, Random, FFD, Sobol
 
 | Method | Returns | Meaning |
 |---|---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | `np.ndarray` | Generate samples in the problem space. |
-| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None)` | `(np.ndarray, dict)` | Generate samples and metadata. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | `np.ndarray` | Generate samples in the problem space. |
+| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None, *, output="real")` | `(np.ndarray, dict)` | Generate samples and metadata. |
 
 | Parameter | Meaning |
 |---|---|
-| `problem` | A `ProblemBase` instance, such as `Problem`, `ModelProblem`, or a benchmark problem. |
+| `problem` | A `ProblemBase` instance, such as `Problem`, `ModelProblem`, or a built-in benchmark direct problem. |
 | `nSamples` | Number of samples or base sample size, depending on the sampler. |
 | `seed` | Optional random seed. |
 | `nt` | Legacy alias for `nSamples`. If both are provided, they must match. |
@@ -73,8 +73,8 @@ Random()
 
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate random samples in the problem space. |
-| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None)` | Generate random samples with metadata. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate random samples in the problem space. |
+| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate random samples with metadata. |
 
 Metadata:
 
@@ -96,10 +96,17 @@ LHS(criterion="classic", iterations=5)
 | `criterion` | LHS criterion. One of `"classic"`, `"center"`, `"maximin"`, `"center_maximin"`, or `"correlation"`. |
 | `iterations` | Number of candidate designs tested by optimized criteria. |
 
+`criterion="correlation"` selects the candidate with the smallest maximum absolute
+Pearson correlation between distinct input columns in unit space. Perfect correlations
+of +1 or -1 are included. `iterations` must be a positive integer. With one input
+variable or one sample, it returns the first classic LHS design because there is no
+correlation criterion to optimize. It emits no candidate-search messages. Discrete
+decoding may change correlations in the returned real values.
+
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate LHS samples in the problem space. |
-| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None)` | Generate LHS samples with metadata. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate LHS samples in the problem space. |
+| `sampleWithMeta(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate LHS samples with metadata. |
 
 Metadata:
 
@@ -183,7 +190,7 @@ Sobol(scramble=True, skipValue=0)
 
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate Sobol samples in the problem space. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate Sobol samples in the problem space. |
 | `sampleWithMeta(problem, nSamples, seed=None)` | Generate Sobol samples with metadata. |
 
 Metadata:
@@ -213,7 +220,7 @@ SaltelliDesign(scramble=True, skipValue=0, secondOrder=False)
 
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate the design in the problem space. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate the design in the problem space. |
 | `sampleWithMeta(problem, N, seed=None)` | Generate the design with metadata. |
 
 For a problem with `D` inputs and base sample size `N`, output shape is:
@@ -251,7 +258,7 @@ FASTDesign(M=4)
 
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate the FAST design in the problem space. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate the FAST design in the problem space. |
 | `sampleWithMeta(problem, N, seed=None)` | Generate the FAST design with metadata. |
 
 For a problem with `D` inputs and base sample size `N`, output shape is:
@@ -290,7 +297,7 @@ MorrisDesign(numLevels=4)
 
 | Method | Meaning |
 |---|---|
-| `sample(problem, nSamples=None, seed=None, nt=None)` | Generate Morris trajectories in the problem space. |
+| `sample(problem, nSamples=None, seed=None, nt=None, *, output="real")` | Generate Morris trajectories in the problem space. |
 | `sampleWithMeta(problem, numTrajectory, seed=None)` | Generate Morris trajectories with metadata. |
 
 For a problem with `D` inputs and `numTrajectory` trajectories, output shape is:
@@ -324,3 +331,14 @@ print(X.shape)
 print(meta["trajectorySize"])
 ```
 
+
+## Select the output space
+
+All built-in samplers accept keyword-only `output="real"` (default) or `output="unit"` in `sample()` and `sampleWithMeta()`. Real samples can be evaluated directly. Unit output returns the generated `[0,1]` samples before decoding. With matching configuration, size and seed, both modes share the same unit design. Metadata records the selected `output`.
+
+```python
+U = LHS().sample(problem, 20, seed=123, output="unit")
+X = LHS().sample(problem, 20, seed=123)  # equals problem.unit_to_space(U)
+```
+
+Integer/discrete values are decoded using equal-width bins. Discrete real values come from `varSet` and need not lie within that column's legacy encoding bounds. Standalone DOE and analysis calls still default to real samples.

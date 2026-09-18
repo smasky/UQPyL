@@ -8,14 +8,13 @@ from ...core.runtime_storage import BaseSqliteStorage
 
 
 class SqliteStorage(BaseSqliteStorage):
+    domain = 'inference'
     def _makeRunId(self, methodName, problemName):
         _, runId = self._db_path(methodName, problemName)
         return runId
 
-    def create_run(self, obj):
-        session = super().create_run(obj)
-        session.conn.execute("PRAGMA journal_mode=MEMORY")
-        return session
+    def _configure_connection(self, conn):
+        conn.execute("PRAGMA journal_mode=MEMORY")
 
     def _insert_run(self, conn, runId, obj, now):
         problem = obj.problem

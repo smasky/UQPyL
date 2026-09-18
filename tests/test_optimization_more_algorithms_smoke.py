@@ -19,10 +19,10 @@ class _DummySurrogate:
     def fit(self, X, Y):
         return self
 
-    def predict(self, X, only_value=True):
+    def predict(self, X, returnVar=False):
         X = np.atleast_2d(X)
         y = np.sum(X**2, axis=1, keepdims=True)
-        if only_value:
+        if not returnVar:
             return y
         mse = np.ones_like(y) * 0.1
         return y, mse

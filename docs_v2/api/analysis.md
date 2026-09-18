@@ -55,6 +55,13 @@ result = method.analyze(
 | `target` | Output block to analyze. Usually `"objs"` or `"cons"`. |
 | `index` | Output column selection. Use `"all"`, an integer, or a list of integers. |
 
+Sobol, FAST, and RBDFAST internally center and scale finite outputs before computing
+variance or spectral power. Changing output units, including a negative scale, preserves
+the indices within floating-point accuracy. Scaling is independent for each output column
+(each FAST trajectory block); original `Y` values remain in the result. Exactly constant
+outputs retain the package convention of zero indices, and nonfinite outputs raise
+`ValueError`. Variation already lost when input values were rounded cannot be recovered.
+
 Constructor runtime flags are shared by all analysis methods:
 
 | Parameter | Meaning |
@@ -88,7 +95,7 @@ print(result.getMetric("S1").values)
 
 | Field | Type | Meaning |
 |---|---|---|
-| `runId` | `str` or `None` | Saved run id when `saveFlag=True`. |
+| `runId` | `str` or `None` | Unique run id, including runs without SQLite persistence. |
 | `method` | `str` | Analysis method name. |
 | `problemName` | `str` | Problem name. |
 | `nInput` | `int` | Number of input variables. |
@@ -363,3 +370,8 @@ with AnaReader("Result/rbdfast_Sphere_20260509_1200_0000.sqlite3") as reader:
 | `load_result()` | `AnaResult` | Reconstruct the full analysis result. |
 | `close()` | `None` | Close the sqlite connection. |
 
+
+All built-in analysis methods normalize a one-dimensional external Y to a column before selecting outputs, validate row correspondence with X, and preserve the selected problem output labels. Use the public `UQPyL.analysis` imports or `UQPyL.analysis.methods`; the redundant outer forwarding modules have been removed. Runtime state is `method.state` and runtime parameters are `method.params`.
+
+
+Runtime persistence uses a domain marker; readers reject another module's database and unmarked legacy databases. Every run has a UUID-based identifier shared by its database and log, even when SQLite saving is disabled. All readers support `with` and idempotent `close()`. Internal runtime objects use `state` and `params`; returned result objects retain their documented fields.

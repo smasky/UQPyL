@@ -2,6 +2,18 @@
 
 `doe` 模块用于从 `Problem` 或 `ModelProblem` 的输入空间生成样本点。
 
+## 选择样本输出空间
+
+所有内置采样器的 `sample()`、`sampleWithMeta()` 支持关键字参数 `output="real"`（默认）或 `output="unit"`。前者输出真实值，可直接评估；后者直接返回生成的 `[0,1]` 样本，用于优化种群等内部流程。相同采样器配置、样本数及 seed 下，两种输出来自相同的单位样本；元数据的 `output` 字段记录返回空间。
+
+```python
+U = LHS().sample(problem, 20, seed=123, output="unit")
+X = LHS().sample(problem, 20, seed=123)  # 等于 problem.unit_to_space(U)
+```
+
+整数与离散变量使用等宽区间解码；离散真实值取自 `varSet`，不一定处于该列 `lb/ub` 的范围。独立 DOE/分析调用继续默认返回真实值。
+
+
 当你需要为敏感性分析、代理模型训练、参数校准、绘图或优化算法初始化准备模型评估点时，就会用到 DOE。
 
 ## 采样到底在做什么
@@ -9,7 +21,7 @@
 采样器通常先在单位空间生成点，再根据问题中定义的边界把这些点映射到真实变量范围。
 
 ```text
-unit samples in [0, 1] -> problem.unit_to_space(...) -> samples in [lb, ub]
+unit samples in [0, 1] -> problem.unit_to_space(...) -> real samples (discrete values from varSet)
 ```
 
 也就是说，DOE 返回给你的 `X` 已经是可以直接送入模型的真实输入值，不需要再手动乘以范围或加上下界。

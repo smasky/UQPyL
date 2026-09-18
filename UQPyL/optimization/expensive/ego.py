@@ -6,13 +6,14 @@ from typing import Optional
 
 from ..soea.ga import GA
 from ..base import AlgorithmABC
+from ._base import SurrogateOptimization
 from ..population import Population
 from ...core import spawn_seed
 
 from ...problem import Problem
 from ...surrogate.kriging import KRG
 
-class EGO(AlgorithmABC):
+class EGO(SurrogateOptimization):
     """
     Single-objective efficient global optimization algorithm.
 
@@ -35,7 +36,7 @@ class EGO(AlgorithmABC):
                  maxIters: int = 1000,
                  maxTolerates: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = False,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         
         """
         Initialize the algorithm.
@@ -48,11 +49,12 @@ class EGO(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """      
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, maxTolerates = maxTolerates, 
                             verboseFlag = verboseFlag, verboseFreq = verboseFreq, 
-                            logFlag = logFlag, saveFlag = saveFlag, saveFreq = saveFreq)
+                            logFlag = logFlag, saveFlag = saveFlag, saveFreq = saveFreq, historyFreq=historyFreq)
         
         self.set('nInit', nInit)
 
@@ -62,14 +64,13 @@ class EGO(AlgorithmABC):
         optimizer = GA(maxFEs = 10000, verboseFlag = False, saveFlag = False, logFlag = False)
         self.optimizer = optimizer
         
-    def run(self, problem, xInit = None, yInit = None, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
-        :param xInit: Optional initial decision variables.
-        :param yInit: Optional initial objective values.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -79,32 +80,22 @@ class EGO(AlgorithmABC):
         nInit = self.get('nInit')
         
         # Define a sub-problem for the optimizer
-        subProblem = Problem(problem.nInput, 1, problem.ub, problem.lb, objFunc = self.EI, 
-                             varType = problem.varType, varSet = problem.varSet, optType = "min")
+        subProblem = Problem(problem.nInput, 1, 1.0, 0.0, objFunc=self.EI, optType="min")
         
         # Generate initial population
-        if xInit is not None:
-            if yInit is not None:
-                pop = Population(xInit, yInit)
-            else:
-                pop = Population(xInit)
-                self.evaluate(pop)
-            
-            if nInit > len(pop):
-                pop.merge(self.initPop(nInit - len(pop)))
-            
-        else:
-            pop = self.initPop(nInit)
+        pop = self.initPop(nInit, initialPop=initialPop)
         self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
             
             # Build surrogate model
-            self.surrogate.fit(pop.decs, pop.objs)
+            self._fitSurrogate(self.surrogate, pop)
             
             res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
-            bestDecs = np.asarray(res.bestDecs)
+            bestDecs = self._novelCandidates(np.asarray(res.bestDecs), pop)
+            if not len(bestDecs):
+                break
 
             # Create offspring population
             offSpring = Population(decs=bestDecs)
@@ -114,7 +105,7 @@ class EGO(AlgorithmABC):
             
             # Add offspring to the current population
             pop.add(offSpring)
-            self.update(pop)
+            self.update(pop, completed=True)
             
         # Return the final result
         return self.finalize()
@@ -130,24 +121,11 @@ class EGO(AlgorithmABC):
                     The expected improvement values for the given decision variables.
         """
         
-        # Predict objective values and mean squared errors using the surrogate model
-        objs, mses = self.surrogate.predict(X, only_value=False)
-        
-        tmp, mse= self.surrogate.predict(self.result.bestDecs, only_value=False)
-        
-        ss = np.sqrt(mse)
-        
-        
-        
-        # Calculate the standard deviation
-        s = np.sqrt(mses)
-        
-        # Retrieve the best objective value found so far
-        bestObjs = self.result.bestObjs
-        
-        # Calculate the expected improvement
-        ei = -(bestObjs - objs) * norm.cdf((bestObjs - objs) / s) - s * norm.pdf((bestObjs - objs) / s)
-        
-        e = -(bestObjs - tmp) * norm.cdf((bestObjs - tmp) / ss) - ss * norm.pdf((bestObjs - tmp) / ss)
-        
-        return ei
+        unitX = self.problem.canonicalize_unit(X)
+        objs, variances = self.surrogate.predict(unitX, returnVar=True)
+        std = np.sqrt(np.maximum(variances, 0.0))
+        improvement = self.state.bestObjs - objs
+        z = np.divide(improvement, std, out=np.zeros_like(improvement), where=std > 0)
+        ei = improvement * norm.cdf(z) + std * norm.pdf(z)
+        ei = np.where(std > 0, ei, np.maximum(improvement, 0.0))
+        return -ei

@@ -12,7 +12,7 @@ Problem / ModelProblem -> Method -> Result
 
 ## 0. 安装 UQPyL
 
-UQPyL 支持 Python 3.8 及以上版本。推荐先在你的项目环境里安装：
+UQPyL 支持 Python 3.10 及以上版本。推荐先在你的项目环境里安装：
 
 ```bash
 python -m pip install UQPyL
@@ -58,7 +58,19 @@ UQPyL is ready
 | Notebook 里导入失败，但命令行可以导入 | Notebook kernel 和命令行不是同一个 Python。切换 kernel，或在 kernel 对应环境里安装。 |
 | 源码安装时报 C/C++ 编译错误 | 优先安装发布包；若必须源码安装，先补齐编译器、`Cython`、`pybind11` 和构建依赖。 |
 
-## 1. 定义一个 Problem
+## 1. 先选问题类型
+
+UQPyL 现在有两个并列的问题入口：
+
+| 类型 | 主链 | 适合场景 |
+|---|---|---|
+| `Problem` | `X -> objs/cons` | 目标和约束能直接由输入计算出来 |
+| `ModelProblem` | `X -> sim -> objs/cons` | 先跑仿真，再由仿真结果构造目标或约束 |
+
+如果你做的是普通优化、分析或推断，通常从 `Problem` 开始。\
+如果你做的是校准、时序仿真或多序列仿真，通常从 `ModelProblem` 开始。
+
+## 2. 定义一个 `Problem`
 
 `Problem` 用来定义输入边界、目标函数和优化方向。其他模块都会复用这个对象。
 
@@ -99,7 +111,66 @@ None
 
 `evaluate()` 返回的是 `Eval` 对象。目标值用 `res.objs` 读，约束值用 `res.cons` 读。这里没有约束，所以 `res.cons` 是 `None`。
 
-## 2. 生成样本
+## 3. 定义一个 `ModelProblem`
+
+`ModelProblem` 把仿真输出 `sim` 放在中间层。推荐写法是先定义 `simFunc(X)`，再从 `context.sim`、`context.obs`、`context.mask` 派生目标或约束。
+
+```python
+import numpy as np
+
+from UQPyL.problem import ModelProblem
+
+np.set_printoptions(precision=4, suppress=True)
+
+obs = np.array([[1.0], [2.0]])
+
+
+def simFunc(X):
+    X = np.atleast_2d(X)
+    sim = np.zeros((X.shape[0], 2, 1))
+    sim[:, 0, 0] = X[:, 0]
+    sim[:, 1, 0] = X[:, 1]
+    return sim
+
+
+def objFunc(X, context):
+    err = context.sim - context.obs
+    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+
+
+problem = ModelProblem(
+    nInput=2,
+    nObj=1,
+    lb=0.0,
+    ub=3.0,
+    simFunc=simFunc,
+    objFunc=objFunc,
+    obs=obs,
+    seriesLabels=["Q"],
+    name="ToyModel",
+)
+
+res = problem.evaluate([[1.0, 2.2]])
+
+print(res.objs)
+print(res.sim)
+```
+
+Example output:
+
+```text
+[[0.02]]
+[[[1. ]
+  [2.2]]]
+```
+
+这里最重要的不是 `objFunc(X)`，而是整条评估链：
+
+```text
+X -> simFunc(X) -> context.sim -> objFunc/conFunc -> Eval
+```
+
+## 4. 生成样本
 
 DOE 采样器会直接从 `problem` 读取边界信息。
 
@@ -144,7 +215,7 @@ Example output:
 
 这里的行是严格对齐的：`Y[i]` 就是 `X[i, :]` 对应的输出。
 
-## 3. 运行分析
+## 5. 运行分析
 
 分析模块用来解释输入如何影响输出。这个例子里，`x1` 的影响应该更大，因为它前面的系数更大。
 
@@ -185,7 +256,7 @@ Example output:
 
 第一列对应 `x1`，明显比第二列大很多。
 
-## 4. 运行优化
+## 6. 运行优化
 
 优化模块用来搜索一个好的输入向量。这个问题在 `[0, 0]` 附近最小。
 
@@ -223,7 +294,29 @@ Example output:
 
 `bestDecs` 是找到的最好输入行，`bestObjs` 是该行对应的目标值。
 
-## 5. 运行推断
+你也可以在 `run()` 时直接传入初始种群：
+
+```python
+initialPop = np.array([
+    [0.8, 0.8],
+    [0.2, 0.1],
+    [-0.5, 0.3],
+])
+
+result = GA(
+    nPop=8,
+    maxFEs=40,
+    maxIters=5,
+    tolerate=None,
+    verboseFlag=False,
+    logFlag=False,
+    saveFlag=False,
+).run(problem, initialPop=initialPop, seed=123)
+```
+
+`initialPop` 可以是决策矩阵，也可以是 `Population` 对象。如果成员数少于 `nPop`，UQPyL 会自动补齐剩余成员。
+
+## 7. 运行推断
 
 推断模块用于对标量目标或对数概率进行链式采样。
 
@@ -338,7 +431,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)

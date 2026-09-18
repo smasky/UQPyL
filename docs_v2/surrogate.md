@@ -444,3 +444,63 @@ The surrogate objective is cheap, but it is still an approximation. Always evalu
 | Generate training samples | [Design of Experiment](doe.md) |
 | Optimize a fitted surrogate | [Optimization](optimization.md) |
 | See end-to-end examples | [Examples](examples.md) |
+
+
+## Kernel objects are construction templates
+
+GPR, KRG, and RBF surrogate models copy the kernel passed to their constructor or `setKernel()`. Each model trains its own kernel; creating or fitting another model does not mutate the supplied template.
+
+```python
+from UQPyL.surrogate.gp import GPR
+from UQPyL.surrogate.gp.kernel import RBF as RBFKernel
+
+kernel = RBFKernel(length_scale=2.0)
+modelA = GPR(kernel=kernel)
+modelB = GPR(kernel=kernel)
+assert modelA.kernel is not kernel
+assert modelB.kernel is not modelA.kernel
+```
+
+Copies preserve current kernel values, bounds, parameter types, and other kernel configuration, excluding model-specific parameters. Later template changes only affect subsequent construction or explicit kernel replacement. Inspect trained parameters through `model.kernel`.
+
+Use `kernel.clone()` for an explicit independent copy. `setKernelChoices()` snapshots the candidate templates at registration and creates a private kernel on each switch. The choice parameter identifies a template; `model.kernel` is the active runtime instance.
+
+Custom kernels with training caches or external resources should override `clone()` to return an independent, untrained kernel.
+
+### Matern smoothness parameter
+
+`Matern(nu=0.7)` accepts a fixed positive nu; `nu=np.inf` gives the Gaussian limit. With `optimize_nu=True`, nu is selected from `0.5, 1.5, 2.5, np.inf`, and the initial nu must be one of those candidates.
+
+The common candidates use closed forms. Other values use the general Bessel formula, with a stable equivalent integral for large nu or intermediate overflow. This integral path can be slower than the common candidates. Correlation at zero distance is 1.
+
+### Kernel parameter validation
+
+Built-in GP, Kriging and RBF kernels validate parameters at construction and validate parameters and optimization bounds at initialization. Current parameters are checked again before each batch kernel calculation, so invalid Setting edits or optimizer updates raise `ValueError` before use. Failed validation does not roll back Setting edits.
+
+`length_scale`, `alpha` and `epsilon` must be finite and positive. `theta`, the constant amplitude and `sigma` must be finite and nonnegative. `nu` must be positive or `np.inf`. Length scales and theta accept scalars or one-dimensional vectors matching the feature count; other parameters are scalar. Continuous optimization bounds must be valid, ordered and finite; logarithmic bounds must be strictly positive. Initial values need not lie within optimization bounds. GP cross-kernel inputs must have matching feature counts.
+
+Parameter validation is typically O(d) in the feature count. Shape checks do not scan the entire distance matrix or run separately for every sample pair.
+
+### Scaler and uncertainty units
+
+`scalers=(xScaler, yScaler)` remains optional; model defaults are unchanged. Optimization already supplies unit inputs, so additional input scaling is normally unnecessary there. Standalone surrogates can still preprocess real inputs and outputs.
+
+Built-in scalers expose `inverse_transform_std()` and `inverse_transform_var()`. For the inverse affine map `y = b + a*z`, means use that map, standard deviations multiply by `abs(a)`, and variances multiply by `a**2` without any offset. GPR/KRG retain training-unit variance internally and restore it once at prediction. Multi-output mean/std/variance arrays all have shape `(n_predictions, n_outputs)`.
+
+StandardScaler retains sample standard deviation (`ddof=1`) for ordinary data and supports a custom target mean and positive target standard deviation. Constant columns and single observations use a unit source scale; MinMaxScaler likewise uses unit source span for constant columns. These fallbacks retain invertibility without asserting zero predictive uncertainty.
+
+Scalers expect `(n_samples, n_features)` matrices; one-dimensional input remains a single row. Use `reshape(-1, 1)` for multiple single-feature observations. Invalid target scales, nonfinite data, empty training sets, feature mismatches, and unfitted transforms raise explicit errors. Custom output scalers must implement `inverse_transform_var()` for uncertainty predictions; mean-only prediction still only requires ordinary inverse transformation. Nonlinear transforms need their own uncertainty semantics.
+
+
+### AutoTuner preprocessing order
+
+Both `optTune()` and `gridTune()` split raw data before fitting preprocessing. Scalers and prepared training features use only the training subset. Validation goes through `predict()` with raw inputs, reusing the fitted transforms, and scores use original output units. After parameter selection, preprocessing and the final model are refitted on all raw data in both `joint` and `separate` modes. The returned score remains the held-out tuning score, not a training score from the final refit.
+
+
+### Reproducible splitting and tuning
+
+`RandSelect.split`, `KFold.split`, `AutoTuner.gridTune`, and `AutoTuner.optTune` accept keyword-only `seed` or `rng` (a NumPy Generator), never both. Splitters no longer consume global NumPy randomness. Without either argument, AutoTuner advances its own rng.
+
+AutoTuner derives separate seeds for splitting, model fitting, and the optimizer. Each candidate fit and final fit starts from the same model seed. Reproducibility assumes fixed data/configuration/implementation and custom components that consume the supplied model rng. `tuner.lastSplit` stores `train_indices`, `test_indices`, and `seed/split_seed/model_seed/optimizer_seed` for the latest call. The return tuple is unchanged; metadata is held in memory for optional caller export.
+
+KFold distributes remainder samples across folds: full mode validates every sample exactly once, with fold sizes differing by at most one. With the same seed, single mode returns the first full-mode fold. Fold counts must be integers between 2 and the sample count. RandSelect pTest is a validation percentage strictly between 0 and 100; it uses floor(n*pTest/100), retaining at least one training and validation member for n>=2. Singleton inputs retain the empty-validation behavior and cannot provide a meaningful validation score.

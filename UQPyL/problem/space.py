@@ -13,7 +13,7 @@ class SpaceBase:
 
     def validate(self, X):
         X = np.atleast_2d(X)
-        if X.shape[1] != self.nInput:
+        if X.ndim != 2 or X.shape[1] != self.nInput:
             raise ValueError("The input dimension is inconsistent with nInput.")
         return X
 
@@ -41,9 +41,12 @@ class Space(SpaceBase):
             self.idxI = np.array([])
             self.idxD = np.array([])
         else:
-            if len(varType) != nInput:
-                raise ValueError("The length of varType is not equal to nInput.")
-            self.varType = np.array(varType, dtype=np.int32)
+            types = np.asarray(varType)
+            if types.shape != (nInput,):
+                raise ValueError("varType must be a vector of length nInput.")
+            if types.dtype.kind not in "iuf" or not np.all(np.isin(types, [0, 1, 2])):
+                raise ValueError("varType must contain only integer values 0, 1, or 2.")
+            self.varType = types.astype(np.int32, copy=True)
             self.idxF = np.where(self.varType == 0)[0]
             self.idxI = np.where(self.varType == 1)[0]
             self.idxD = np.where(self.varType == 2)[0]
@@ -99,25 +102,82 @@ class Space(SpaceBase):
             X = self.map_discrete_vars(X)
         return X
 
+    def _validate_unit(self, X):
+        U = np.asarray(self.validate(X), dtype=float).copy()
+        if not np.all(np.isfinite(U)) or np.any(U < -1e-12) or np.any(U > 1+1e-12):
+            raise ValueError("Unit coordinates must be finite and within [0, 1].")
+        if (not np.all(np.isfinite(self.lb)) or not np.all(np.isfinite(self.ub))
+                or np.any(self.ub < self.lb)):
+            raise ValueError("Unit conversion requires finite, ordered bounds.")
+        return np.clip(U, 0.0, 1.0)
+
+    def _discrete_values(self, index):
+        values = np.asarray(self.varSet.get(index, []), dtype=float)
+        if (values.ndim != 1 or values.size == 0 or not np.all(np.isfinite(values))
+                or np.unique(values).size != values.size):
+            raise ValueError(f"varSet[{index}] must contain distinct finite numeric values.")
+        return values
+
+    def _integer_range(self, index):
+        lower, upper = np.ceil(self.lb[0, index]), np.floor(self.ub[0, index])
+        if lower > upper:
+            raise ValueError(f"Variable {index} has no integer within its bounds.")
+        return lower, upper - lower + 1
+
     def unit_to_space(self, X, IFlag=True, DFlag=True):
-        X = self.validate(X)
-        X_scaled = X * (self.ub - self.lb) + self.lb
-        if self.idxI.size != 0 or self.idxD.size != 0:
-            X_scaled = self.apply_var_type(X_scaled, IFlag=IFlag, DFlag=DFlag)
-        return X_scaled
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+        decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+        if IFlag:
+            for index in self.idxI:
+                lower, count = self._integer_range(index)
+                decoded[:, index] = lower + np.minimum(np.floor(U[:, index]*count), count-1)
+        if DFlag:
+            for index in self.idxD:
+                values = self._discrete_values(index)
+                positions = np.minimum(np.floor(U[:, index]*len(values)).astype(int), len(values)-1)
+                decoded[:, index] = values[positions]
+        return decoded
 
-    # Compatibility wrappers retained during migration.
-    def _transform_discrete_var(self, X):
-        return self.map_discrete_vars(X)
+    def space_to_unit(self, X):
+        """Encode real values; integers and discrete choices use bin midpoints."""
+        real = np.asarray(self.validate(X), dtype=float)
+        if not np.all(np.isfinite(real)):
+            raise ValueError("Real coordinates must be finite.")
+        self._validate_unit(np.zeros_like(real))
+        encoded = np.full(real.shape, 0.5)
+        for index in self.idxF:
+            lower, upper = self.lb[0, index], self.ub[0, index]
+            if np.any(real[:, index] < lower) or np.any(real[:, index] > upper):
+                raise ValueError(f"Variable {index} is outside its real bounds.")
+            if upper > lower:
+                encoded[:, index] = (real[:, index]-lower)/(upper-lower)
+        for index in self.idxI:
+            lower, count = self._integer_range(index)
+            values = real[:, index]
+            if (np.any(values != np.floor(values)) or np.any(values < lower)
+                    or np.any(values > lower+count-1)):
+                raise ValueError(f"Variable {index} must be a legal integer.")
+            encoded[:, index] = (values-lower+0.5)/count
+        for index in self.idxD:
+            choices = self._discrete_values(index)
+            matches = real[:, index, None] == choices[None, :]
+            if not np.all(np.any(matches, axis=1)):
+                raise ValueError(f"Variable {index} must belong to varSet[{index}].")
+            encoded[:, index] = (np.argmax(matches, axis=1)+0.5)/len(choices)
+        return encoded
 
-    def _transform_int_var(self, X):
-        return self.cast_int_vars(X)
-
-    def _transform_to_I_D(self, X, IFlag=True, DFlag=True):
-        return self.apply_var_type(X, IFlag=IFlag, DFlag=DFlag)
-
-    def _transform_unit_X(self, X, IFlag=True, DFlag=True):
-        return self.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+    def canonicalize_unit(self, X):
+        """Give each integer/discrete real value a unique model input."""
+        U = self._validate_unit(X)
+        mixed = np.concatenate((self.idxI, self.idxD)).astype(int)
+        if mixed.size:
+            encoded = self.space_to_unit(self.unit_to_space(U))
+            U[:, mixed] = encoded[:, mixed]
+        fixed = np.asarray(self.idxF, dtype=int)
+        fixed = fixed[self.ub[0, fixed] == self.lb[0, fixed]]
+        U[:, fixed] = 0.5
+        return U
 
     def _set_ub_lb(self, ub, lb):
         if isinstance(ub, (int, float)):

@@ -11,6 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
+from UQPyL.problem.evaluator import Evaluator  # noqa: E402
 from UQPyL.problem.problem import Problem  # noqa: E402
 from UQPyL.problem.eval import Eval  # noqa: E402
 from UQPyL.problem.space import Space  # noqa: E402
@@ -19,6 +20,26 @@ from UQPyL.problem.space import Space  # noqa: E402
 def _zero_obj(X):
     X = np.atleast_2d(X)
     return np.zeros((X.shape[0], 1))
+
+
+class _EvalOnlyProblem(Problem):
+    def evaluate(self, X, target=None):
+        if target not in (None, "objs", "cons"):
+            raise ValueError("The target must be None, 'objs' or 'cons'.")
+
+        X = self.validate(X)
+        res = Eval(
+            objs=(np.sum(X, axis=1) + 100)[:, None],
+            cons=(np.sum(X, axis=1) + 200)[:, None],
+            target=target,
+        )
+        return res
+
+    def objFunc(self, X):
+        return self.evaluate(X, target="objs").objs
+
+    def conFunc(self, X):
+        return self.evaluate(X, target="cons").cons
 
 
 def test_problem_name_default_and_custom():
@@ -90,14 +111,7 @@ def test_problem_var_type_and_var_set_validation():
 
 
 def test_problem_evaluate_only_behavior():
-    def evalf(X):
-        X = np.atleast_2d(X)
-        return Eval(
-            objs=(np.sum(X, axis=1) + 100)[:, None],
-            cons=(np.sum(X, axis=1) + 200)[:, None],
-        )
-
-    p = Problem(nInput=2, nObj=1, ub=1, lb=0, evaluate=evalf)
+    p = _EvalOnlyProblem(nInput=2, nObj=1, nCon=1, ub=1, lb=0, objFunc=_zero_obj)
     X = np.array([[0.1, 0.2], [0.3, 0.4]])
 
     out = p.evaluate(X)
@@ -136,6 +150,27 @@ def test_problem_evaluate_invalid_target_raises():
         p.evaluate(np.array([[0.1, 0.2]]), target="bad")
 
 
+def test_problem_custom_evaluate_must_return_eval():
+    class _BadProblem(Problem):
+        def evaluate(self, X, target=None):
+            return np.zeros((1, 1))
+
+    p = _BadProblem(nInput=2, nObj=1, ub=1, lb=0, objFunc=_zero_obj)
+    with pytest.raises(TypeError, match="return Eval"):
+        p.evaluate(np.array([[0.1, 0.2]]))
+
+
+def test_problem_custom_evaluate_shape_is_validated():
+    class _BadShapeProblem(Problem):
+        def evaluate(self, X, target=None):
+            X = self.validate(X)
+            return Eval(objs=np.zeros((X.shape[0], 2)))
+
+    p = _BadShapeProblem(nInput=2, nObj=1, ub=1, lb=0, objFunc=_zero_obj)
+    with pytest.raises(ValueError, match="second dimension"):
+        p.evaluate(np.array([[0.1, 0.2]]))
+
+
 def test_problem_supports_custom_space_and_transparent_fields():
     space = Space(
         nInput=2,
@@ -154,6 +189,65 @@ def test_problem_supports_custom_space_and_transparent_fields():
     assert np.allclose(p.lb, [[0.0, -1.0]])
 
 
+def test_problem_supports_component_style_evaluator():
+    evaluator = Evaluator(
+        objFunc=lambda X: np.sum(np.atleast_2d(X), axis=1, keepdims=True),
+        conFunc=lambda X: (np.atleast_2d(X)[:, 0] - 1.0).reshape(-1, 1),
+    )
+    p = Problem(
+        nInput=2,
+        nObj=1,
+        nCon=1,
+        ub=1.0,
+        lb=0.0,
+        evaluator=evaluator,
+    )
+
+    res = p.evaluate(np.array([[0.2, 0.3]]))
+    assert np.allclose(res.objs, [[0.5]])
+    assert np.allclose(res.cons, [[-0.8]])
+
+
+def test_problem_supports_custom_evaluator_subclass():
+    class SumEvaluator(Evaluator):
+        def evaluate(self, X, target=None):
+            X = np.atleast_2d(X)
+            objs = np.sum(X, axis=1, keepdims=True)
+            cons = (X[:, 0] - 1.0).reshape(-1, 1)
+            return Eval(objs=objs, cons=cons, target=target)
+
+    p = Problem(
+        nInput=2,
+        nObj=1,
+        nCon=1,
+        ub=1.0,
+        lb=0.0,
+        evaluator=SumEvaluator(),
+    )
+
+    res = p.evaluate(np.array([[0.2, 0.3]]))
+    assert np.allclose(res.objs, [[0.5]])
+    assert np.allclose(res.cons, [[-0.8]])
+
+
+def test_problem_rejects_callable_evaluator():
+    def evaluateFunc(X, target=None):
+        X = np.atleast_2d(X)
+        objs = np.sum(X, axis=1, keepdims=True)
+        cons = (X[:, 0] - 1.0).reshape(-1, 1)
+        return Eval(objs=objs, cons=cons)
+
+    with pytest.raises(TypeError, match="EvaluatorBase instance"):
+        Problem(
+            nInput=2,
+            nObj=1,
+            nCon=1,
+            ub=1.0,
+            lb=0.0,
+            evaluator=evaluateFunc,
+        )
+
+
 def test_problem_new_nobj_ncon_and_label_fields():
     p = Problem(
         nInput=2,
@@ -169,28 +263,6 @@ def test_problem_new_nobj_ncon_and_label_fields():
     assert p.nCon == 1
     assert p.objLabels == ["f1", "f2"]
     assert p.conLabels == ["g1"]
-
-
-def test_problem_rejects_evaluate_mixed_with_obj_or_con():
-    with pytest.raises(ValueError, match="evaluate"):
-        Problem(
-            nInput=2,
-            nObj=1,
-            ub=1.0,
-            lb=0.0,
-            objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)),
-            evaluate=lambda X: Eval(np.zeros((np.atleast_2d(X).shape[0], 1))),
-        )
-
-    with pytest.raises(ValueError, match="evaluate"):
-        Problem(
-            nInput=2,
-            nObj=1,
-            ub=1.0,
-            lb=0.0,
-            conFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)),
-            evaluate=lambda X: Eval(np.zeros((np.atleast_2d(X).shape[0], 1))),
-        )
 
 
 def test_problem_rejects_confunc_without_objfunc():
@@ -214,3 +286,14 @@ def test_problem_rejects_missing_callable_configuration():
         )
 
 
+def test_problem_objfunc_missing_raises():
+    class _ObjMissingProblem(Problem):
+        def __init__(self):
+            super().__init__(nInput=2, nObj=1, ub=1.0, lb=0.0)
+
+        def _validate_callable_config(self, objFunc, conFunc, evaluator):
+            return None
+
+    p = _ObjMissingProblem()
+    with pytest.raises(ValueError, match="objFunc"):
+        p.objFunc(np.array([[0.1, 0.2]]))

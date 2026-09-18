@@ -6,6 +6,7 @@ from ..core.runtime_reader import BaseReader
 
 
 class CalReader(BaseReader):
+    domain = 'calibration'
     @classmethod
     def list_runs(cls, result_dir):
         return super().list_runs(
@@ -13,37 +14,22 @@ class CalReader(BaseReader):
             run_columns="runId, method, problem, status, runtime, createdAt, finishedAt",
         )
 
-    def __init__(self, dbPath):
-        self.dbPath = str(dbPath)
-        self.conn = sqlite3.connect(self.dbPath)
-        self.conn.row_factory = sqlite3.Row
 
-    def __enter__(self):
-        return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
 
-    def close(self):
-        self.conn.close()
 
-    def get_run(self):
-        row = self.conn.execute("SELECT * FROM run LIMIT 1").fetchone()
-        return dict(row) if row is not None else None
 
-    def get_run_params(self):
-        rows = self.conn.execute("SELECT name, value FROM runParam ORDER BY name").fetchall()
-        return {row["name"]: row["value"] for row in rows}
 
     def get_run_summary(self):
         run = self.get_run()
         if run is None:
             raise ValueError("No run record found in sqlite database.")
 
-        artifacts = self.get_artifacts()
-        result = artifacts.get("result")
-        metric = None if result is None else result.settings.get("metric")
-        bestScore = None if result is None else result.summary().get("best_score")
+        row = self.conn.execute("SELECT payload FROM artifact WHERE name='summary' ORDER BY artifactId DESC LIMIT 1").fetchone()
+        summary = {} if row is None or row[0] is None else pickle.loads(row[0])
+        metric = summary.get('metric')
+        bestScore = summary.get('best_score')
+        artifactNames = [row[0] for row in self.conn.execute('SELECT name FROM artifact ORDER BY name')]
 
         return export_reader_summary(
             run_id=run["runId"],
@@ -62,7 +48,7 @@ class CalReader(BaseReader):
                 "n_obs": run["nObs"],
                 "metric": metric,
                 "best_score": bestScore,
-                "artifact_names": sorted(artifacts.keys()),
+                "artifact_names": artifactNames,
             },
         )
 

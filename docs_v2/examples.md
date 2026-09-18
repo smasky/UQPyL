@@ -6,6 +6,17 @@ Each example describes a concrete toy problem, the part you usually replace in r
 
 The examples use small budgets so they run quickly. For real work, usually increase sample counts, optimization budgets, chain lengths, or calibration candidate sizes after the workflow is correct.
 
+## Choose the Problem Type First
+
+These examples fall into two parallel modeling paths:
+
+| Type | Main flow | Typical workflows |
+|---|---|---|
+| `Problem` | `X -> objs/cons` | Sampling, analysis, optimization, inference, surrogate modeling |
+| `ModelProblem` | `X -> sim -> objs/cons` or `X -> sim -> calibration score` | Model calibration and other simulation-backed workflows |
+
+If your model produces simulations first and only then compares against observations or builds objectives, start from the `ModelProblem` examples.
+
 ## Workflow Map
 
 | Workflow | Example problem | Replace in real use |
@@ -297,6 +308,12 @@ Example output:
 
 ## Model Calibration
 
+This example follows the `ModelProblem` path, not the ordinary `Problem` path:
+
+```text
+X -> simFunc(X) -> sim -> GLUE score -> behavioral / best samples
+```
+
 This example calibrates two parameters against two observed time steps:
 
 ```text
@@ -305,7 +322,7 @@ sim(t1) = x1
 sim(t2) = x2
 ```
 
-The candidate `[1.0, 2.0]` is a perfect match. Replace `simFunc`, `obs`, and candidate matrix `X` with your simulation model and parameter sets.
+The candidate `[1.0, 2.0]` is a perfect match. Replace `simFunc`, `obs`, and candidate matrix `X` with your simulation model and parameter sets. If you later switch to `SUFI2`, `ES`, or `IES`, you will usually keep the same `ModelProblem` and only change the calibration method.
 
 Replace in real use:
 
@@ -333,7 +350,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)

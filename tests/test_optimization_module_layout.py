@@ -1,4 +1,5 @@
 from pathlib import Path
+import UQPyL
 
 import numpy as np
 import pytest
@@ -9,6 +10,7 @@ from UQPyL.optimization.base import AlgorithmABC
 from UQPyL.analysis.base import AnalysisABC
 from UQPyL.inference.base import InferenceABC
 from UQPyL.core.params import Params
+from UQPyL.problem.space import Space
 from UQPyL.core.runtime_session import RunSession
 from UQPyL.surrogate.setting import Setting
 
@@ -42,7 +44,7 @@ def test_algorithm_base_accepts_hv_reference_point():
 
 
 def test_core_modules_no_longer_forward_to_optimization_util():
-    core_dir = Path(__file__).resolve().parents[1] / "UQPyL" / "optimization" / "core"
+    core_dir = Path(UQPyL.__file__).resolve().parent / "optimization" / "core"
     for path in core_dir.glob("*.py"):
         if path.name == "__init__.py":
             continue
@@ -75,7 +77,7 @@ def test_shared_params_class_is_used_by_runtime_bases():
     assert isinstance(_DummyInference(verboseFlag=False, logFlag=False, saveFlag=False).params, Params)
 
     analysis = _DummyAnalysis(verboseFlag=False, logFlag=False, saveFlag=False)
-    assert isinstance(analysis.setting, Params)
+    assert isinstance(analysis.params, Params)
 
 
 def test_runtime_bases_use_session_without_duplicate_storage_context(monkeypatch):
@@ -87,9 +89,11 @@ def test_runtime_bases_use_session_without_duplicate_storage_context(monkeypatch
         nCon = 0
         nCons = 0
         opt = 1
+        space = Space(nInput=2, lb=0, ub=1)
+        unit_to_space = staticmethod(space.unit_to_space)
 
         @staticmethod
-        def apply_var_type(decs):
+        def canonicalize_unit(decs):
             return decs
 
     class _Storage:

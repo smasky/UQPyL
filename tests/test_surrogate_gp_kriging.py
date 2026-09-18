@@ -147,12 +147,12 @@ def test_krg_ea_branch_respects_setting_log_transform():
     assert np.all(theta > 0.0)
 
 
-def test_gpr_krg_default_mp_restart_times_are_five():
+def test_gpr_krg_default_mp_restart_times_are_one():
     gpr = GPR()
     krg = KRG()
 
-    assert gpr.nRes == 5
-    assert krg.nRes == 5
+    assert gpr.nRes == 1
+    assert krg.nRes == 1
 
 
 def test_gpr_krg_ea_restart_times_still_follow_explicit_argument():

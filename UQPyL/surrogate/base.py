@@ -147,53 +147,47 @@ class SurrogateABC(metaclass = abc.ABCMeta):
 
         return name in self.setting.parVal
 
-    def applyParameterValues(self, paraList, values, ignoreInactive: bool = True):
+    def applyParameterValues(self, paraList, values, ignoreInactive: bool = True, *, paraInfos=None):
         '''
-            Apply a candidate parameter set under the current model context.
-            Kernel-like structural parameters are applied first, then active tunable parameters.
+            Apply a flat candidate in encoded parameter coordinates.
+            paraInfos fixes its slices across structural changes; by default,
+            use the current Setting layout. Apply structure before numeric values.
         '''
-        handledNames = []
-        handledValues = []
-        otherNames = []
-        otherValues = []
+        if len(paraList) != len(set(paraList)):
+            raise ValueError("Parameter names must be unique.")
+        if not paraList:
+            return self
+        if paraInfos is None:
+            paraInfos, _, _ = self.setting.getParaInfos(paraList)
+        values = np.asarray(values, dtype=object).ravel()
+        indices = np.concatenate([paraInfos[name] for name in paraList])
+        if indices.size != values.size or not np.array_equal(np.sort(indices), np.arange(values.size)):
+            raise ValueError("Candidate size must match the parameter slice dimensions.")
 
-        for idx, name in enumerate(paraList):
-            value = values[idx]
-
-            if self.setting.isChoicePara(name):
-                value = self.setting.decodeValue(name, value)
-
+        structuralValues = {}
+        for name in paraList:
             if name in self._parameterAppliers:
-                handledNames.append(name)
-                handledValues.append(value)
-                continue
-
-            if name not in self.setting.parVal:
-                if ignoreInactive:
-                    continue
-                raise KeyError(f"Parameter '{name}' is not active for {self.__class__.__name__}.")
-
-            otherNames.append(name)
-            otherValues.append(value)
-
-        for name, value in zip(handledNames, handledValues):
+                value = values[paraInfos[name]]
+                if self.setting.isChoicePara(name):
+                    value = self.setting.decodeValue(name, value)
+                elif value.size == 1:
+                    value = value.item()
+                structuralValues[name] = value
+        for name, value in structuralValues.items():
             self._parameterAppliers[name](value)
 
-        activeNames = []
-        activeValues = []
-        for name, value in zip(otherNames, otherValues):
+        activeInfos = {}
+        for name in paraList:
+            if name in structuralValues:
+                continue
             if name not in self.setting.parVal:
                 if ignoreInactive:
                     continue
                 raise KeyError(f"Parameter '{name}' is not active for {self.__class__.__name__}.")
-
-            activeNames.append(name)
-            activeValues.append(value)
-
-        if activeNames:
-            paraInfos, _, _ = self.setting.getParaInfos(activeNames)
-            self.setting.setVals(paraInfos, np.asarray(activeValues))
-
+            if len(paraInfos[name]) != self.setting.parVal[name].size:
+                raise ValueError(f"Candidate width for '{name}' does not match the active parameter dimension.")
+            activeInfos[name] = paraInfos[name]
+        self.setting.setVals(activeInfos, values)
         return self
 
     def getParameterValues(self, *args, ignoreInactive: bool = False):
@@ -290,8 +284,20 @@ class SurrogateABC(metaclass = abc.ABCMeta):
         if var.ndim == 1:
             var = var.reshape(-1, 1)
 
+        # Models supply variance in prepared training-output units. GPR may
+        # share one covariance across outputs; expand before per-output inversion.
+        try:
+            var = np.broadcast_to(var, mean.shape).copy()
+        except ValueError as exc:
+            raise ValueError("Prediction variance must match the mean output shape.") from exc
+        var = np.maximum(var, 0.0)
+        if self.yScaler is not None:
+            inverseVar = getattr(self.yScaler, "inverse_transform_var", None)
+            if not callable(inverseVar):
+                raise NotImplementedError("yScaler must implement inverse_transform_var for uncertainty output.")
+            var = inverseVar(var)
         if returnStd:
-            return mean, np.sqrt(np.maximum(var, 0.0))
+            return mean, np.sqrt(var)
 
         return mean, var
          
@@ -306,7 +312,9 @@ class SurrogateABC(metaclass = abc.ABCMeta):
     
 class MultiSurrogate():
     
-    def __init__(self, n_surrogates, models_list=[]):
+    def __init__(self, n_surrogates, models_list=None):
+        # Own the container while retaining the supplied model instances.
+        models_list = [] if models_list is None else list(models_list)
         self.n_surrogates=n_surrogates
         self.rng = np.random.default_rng()
         

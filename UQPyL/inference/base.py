@@ -7,12 +7,14 @@ import numpy as np
 from .chain import Chain
 from .runtime import InfResult, Result, SqliteStorage, Verbose
 from ..doe import LHS
+from ..core import config
 from ..core.params import Params
 from ..core.runtime_session import RunSession
+from ..core.runtime_lifecycle import RunLifecycle
 from ..problem import ProblemABC
 
 
-class InferenceABC(metaclass=abc.ABCMeta):
+class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
     """
     Abstract base class for inference methods.
     Shared workflow and utilities for MCMC-style sampling methods.
@@ -44,9 +46,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         """
         # Initialize settings and results
         self.params = Params()
-        self.setting = self.params
-        self.result = Result(self)
-        self.state = self.result
+        self.state = Result(self)
 
         # Set runtime flags and hooks
         self.problem = None
@@ -81,12 +81,13 @@ class InferenceABC(metaclass=abc.ABCMeta):
             seed: Optional random seed.
         """
         self.setProblem(problem)
+        self._startRun()
         self.reset()
         self.validateProblem()
         Verbose.setupContext(self, problem)
 
         if self.saveFlag:
-            rootDir = getattr(problem, "workDir", os.getcwd())
+            rootDir = config.resolveWorkDir(getattr(problem, "workDir", None))
             self.storage = SqliteStorage(rootDir)
 
         # Initialize random seed
@@ -109,6 +110,10 @@ class InferenceABC(metaclass=abc.ABCMeta):
         """
         if self.problem.nOutput != 1:
             raise ValueError("Inference currently supports scalar objectives only.")
+        self.problem.unit_to_space(np.full((1, self.problem.nInput), .5))
+        for idx in self.problem.space.idxD:
+            if self.problem.ub[0, idx] == self.problem.lb[0, idx] and len(self.problem.space.varSet[idx]) > 1:
+                raise ValueError("Discrete inference with multiple choices requires a positive latent interval.")
 
     def reset(self):
         """
@@ -122,14 +127,16 @@ class InferenceABC(metaclass=abc.ABCMeta):
 
     def initialSampling(self, problem: ProblemABC, nChains: int, seed: int = None):
         """
-        Generate initial samples for all chains.
+        Generate internal latent samples for all chains.
 
-        For constrained problems, only feasible samples are kept.
+        Evaluate decoded real values, retaining only feasible initial states
+        for constrained problems. Do not use returned latent decisions as
+        standalone model inputs; public results contain decoded decisions.
         """
         sampler = LHS()
         if problem.nCons == 0:
             sampleSeed = int(self.rng.integers(0, 1000000)) if seed is None else seed
-            X0 = sampler.sample(self.problem, nChains, sampleSeed)
+            X0 = self._sampleLatent(sampler, nChains, sampleSeed)
             objs0, cons0 = self.evaluate(X0)
             return X0, objs0, cons0
 
@@ -140,7 +147,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         maxAttempts = self.get("maxInitAttempts")
         while len(xs) < nChains and attempts < maxAttempts:
             sampleSeed = int(self.rng.integers(0, 1000000))
-            XBatch = sampler.sample(self.problem, nChains, sampleSeed)
+            XBatch = self._sampleLatent(sampler, nChains, sampleSeed)
             objsBatch, consBatch = self.evaluate(XBatch)
             if consBatch is None:
                 raise ValueError("Constrained inference problem must return constraint values.")
@@ -159,6 +166,27 @@ class InferenceABC(metaclass=abc.ABCMeta):
             )
 
         return np.asarray(xs), np.asarray(objs), np.asarray(cons)
+
+    def _sampleLatent(self, sampler, nSamples, seed):
+        unit = sampler.sample(self.problem, nSamples, seed, output="unit")
+        return self.problem.lb + unit * (self.problem.ub-self.problem.lb)
+
+    def _decodeDecs(self, decs):
+        """Decode latent bounded coordinates without modifying the Markov state.
+
+        Continuous axes retain physical units. Integer/discrete choices occupy
+        equal-width intervals so a flat target assigns equal mass to each choice.
+        """
+        original = np.asarray(decs)
+        values = np.asarray(self.problem.validate(decs), dtype=float).copy()
+        if getattr(self.problem.space, "encoding", "real") == "mix":
+            span = self.problem.ub-self.problem.lb
+            unit = np.divide(values-self.problem.lb, span, out=np.full_like(values, .5), where=span > 0)
+            decoded = self.problem.unit_to_space(unit)
+            # Avoid even a round-trip change to continuous coordinates.
+            decoded[:, self.problem.space.idxF] = values[:, self.problem.space.idxF]
+            values = decoded
+        return values[0] if original.ndim == 1 else values
 
     def initChains(self, nChains: int, X: np.ndarray, objs: np.ndarray, cons: np.ndarray = None):
         """
@@ -224,8 +252,7 @@ class InferenceABC(metaclass=abc.ABCMeta):
         if self.saveFlag and self.session is not None:
             self.storage.saveSnapshot(self.session, self, result, isFinal=True)
             self.storage.saveResultArtifact(self.session, result)
-            self.storage.close(self.session)
-            self.session = None
+            self._closeStandaloneSession()
         return result
 
     def evaluate(self, decs: np.ndarray):
@@ -233,14 +260,14 @@ class InferenceABC(metaclass=abc.ABCMeta):
         Evaluate the problem and return internally oriented objectives.
 
         Args:
-            decs: Decision matrix.
+            decs: Internal latent decision matrix in the problem's bounded axes.
 
         Returns:
             Oriented objectives and constraints.
         """
-        decs = self.problem.apply_var_type(decs)
-        res = self.problem.evaluate(decs)
-        self.FEs += decs.shape[0]
+        realDecs = np.atleast_2d(self._decodeDecs(decs))
+        res = self.problem.evaluate(realDecs)
+        self.FEs += realDecs.shape[0]
         return res.objs * self.problem.opt, res.cons
 
     def accept(self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None):
@@ -298,7 +325,8 @@ class InferenceABC(metaclass=abc.ABCMeta):
         `logProbFunc` to override this behavior.
         """
         if self.logProbFunc is not None:
-            return np.asarray(self.logProbFunc(y, decs=decs, cons=cons))
+            realDecs = None if decs is None else self._decodeDecs(decs)
+            return np.asarray(self.logProbFunc(y, decs=realDecs, cons=cons))
         arr = np.asarray(y)
         if arr.ndim == 1:
             return -arr
@@ -306,9 +334,10 @@ class InferenceABC(metaclass=abc.ABCMeta):
 
     def _check_bound_(self, X, ub, lb):
         span = ub - lb
-        y = (X - lb) % (2 * span)
-        y = np.where(y > span, 2 * span - y, y)
-        return lb + y
+        safeSpan = np.where(span > 0, span, 1.0)
+        y = (X - lb) % (2 * safeSpan)
+        y = np.where(y > safeSpan, 2 * safeSpan - y, y)
+        return np.where(span > 0, lb + y, lb)
 
     def _check_gamma_(self, gamma):
         nChains = self.get("nChains")
@@ -330,5 +359,4 @@ class InferenceABC(metaclass=abc.ABCMeta):
             raise ValueError("gamma must be a float, list, or numpy array")
 
         return gamma
-
 

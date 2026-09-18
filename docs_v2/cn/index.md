@@ -41,8 +41,8 @@ Problem / ModelProblem -> Method -> Result
 
 | 概念 | 在哪里看 |
 |---|---|
-| `Problem` | 静态目标与约束问题。见 [Problem](problem.md)。 |
-| `ModelProblem` | 带观测、掩码和仿真上下文的仿真模型。见 [Problem](problem.md)。 |
+| `Problem` | 直接型问题，遵循 `X -> objs/cons`。见 [Problem](problem.md)。 |
+| `ModelProblem` | 仿真型问题，遵循 `X -> sim -> objs/cons`。见 [Problem](problem.md)。 |
 | `Eval` | `problem.evaluate()` 的标准输出对象。见 [Problem API](api/problem.md)。 |
 | 结果对象 | 如 `AnaResult`、`OptResult`、`InfResult`、`CalResult` 等模块结果对象。见 [API Reference](api_reference.md)。 |
 | 保存结果 | 如 `AnaReader`、`OptReader`、`InfReader`、`CalReader` 等 sqlite reader。见各模块 API 页面。 |

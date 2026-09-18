@@ -16,6 +16,26 @@ def _zero_obj(X):
     return np.zeros((X.shape[0], 1))
 
 
+class _EvalOnlyProblem(Problem):
+    def evaluate(self, X, target=None):
+        if target not in (None, "objs", "cons"):
+            raise ValueError("The target must be None, 'objs' or 'cons'.")
+
+        X = self.validate(X)
+        res = Eval(
+            objs=np.ones((X.shape[0], 1)),
+            cons=np.zeros((X.shape[0], 1)),
+            target=target,
+        )
+        return res
+
+    def objFunc(self, X):
+        return self.evaluate(X, target="objs").objs
+
+    def conFunc(self, X):
+        return self.evaluate(X, target="cons").cons
+
+
 def test_problemabc_opt_type_list_branch():
     p = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)), optType=["min", "max"])
     assert p.optType == "min max"
@@ -75,13 +95,17 @@ def test_problemabc_transform_to_I_D_respects_flags():
     assert np.allclose(Xt2, X)
 
 
-def test_problemabc_single_eval_decorator_stacks_results():
-    @ProblemBase.singleEval
-    def f(x):
-        return Eval(objs=np.array([float(np.sum(x))]), cons=np.array([float(x[0] - 0.5)]))
+def test_problemabc_custom_evaluate_can_return_batched_eval():
+    class _CustomProblem(Problem):
+        def evaluate(self, X, target=None):
+            X = self.validate(X)
+            objs = np.sum(X, axis=1, keepdims=True)
+            cons = (X[:, 0] - 0.5).reshape(-1, 1)
+            return Eval(objs=objs, cons=cons, target=target)
 
+    p = _CustomProblem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, objFunc=_zero_obj)
     X = np.array([[0.0, 1.0], [0.5, 0.5]])
-    res = f(X)
+    res = p.evaluate(X)
     assert isinstance(res, Eval)
     assert res.objs.shape == (2, 1)
     assert res.cons.shape == (2, 1)
@@ -89,25 +113,23 @@ def test_problemabc_single_eval_decorator_stacks_results():
 
 def test_problemabc_custom_labels_conwgt_and_evaluate_only_branches():
     # hits xLabels/objLabels else-branches and conWgt list conversion
-    p = Problem(
+    p = _EvalOnlyProblem(
         nInput=2,
         nObj=1,
+        nCon=1,
         ub=np.array([1.0, 2.0]),
         lb=np.array([0.0, -1.0]),
         xLabels=["a", "b"],
         objLabels=["out"],
         conWgt=[1.0],
-        evaluate=lambda X: Eval(
-            objs=np.ones((np.atleast_2d(X).shape[0], 1)),
-            cons=np.zeros((np.atleast_2d(X).shape[0], 1)),
-        ),
+        objFunc=_zero_obj,
     )
     assert p.xLabels == ["a", "b"]
     assert p.objLabels == ["out"]
     assert p.conWgt.shape == (1, 1)
 
     X = np.array([[0.1, 0.2], [0.3, 0.4]])
-    # objFunc/conFunc should fall back to _eval_fn if _obj_fn/_con_fn are not provided
+    # objFunc/conFunc can be implemented via evaluate() in a subclass
     assert p.objFunc(X).shape == (2, 1)
     assert p.conFunc(X).shape == (2, 1)
     assert p.getOptimum() is None

@@ -30,7 +30,7 @@ class ABC(AlgorithmABC):
                  maxIters: int = 1000, 
                  maxTolerates = 1000, tolerate = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -45,23 +45,25 @@ class ABC(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('employedRate', employedRate)
         self.set('limit', limit)
         self.set('nPop', nPop)
     
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -72,7 +74,7 @@ class ABC(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
             
         beeType = np.zeros(nPop, dtype=np.int32)
@@ -94,7 +96,7 @@ class ABC(AlgorithmABC):
             
             # Check limit times for abandonment
             beeType = self.checkLimitTimes(beeType, limitCount, limit)
-            self.update(pop)
+            self.update(pop, completed=True)
             
         # Return the final result
         return self.finalize()
@@ -135,7 +137,7 @@ class ABC(AlgorithmABC):
             onlookerBees = pop[onlookerIdx]
             n, d = onlookerBees.size()
             
-            onlookerBees.decs = self.rng.random((n, d)) * (self.problem.ub - self.problem.lb) + self.problem.lb
+            onlookerBees.decs = self.rng.random((n, d)) * (self.searchUb - self.searchLb) + self.searchLb
             
             self.evaluate(onlookerBees)
             
@@ -193,7 +195,7 @@ class ABC(AlgorithmABC):
         newDecs = employedDecs[globalIdx] + (employedDecs[globalIdx] - popDecs[randIdx[beeType == 0]]) * rnd
         
         newBees = Population(decs=newDecs)
-        newBees.clip(self.problem.lb, self.problem.ub)
+        newBees.clip(self.searchLb, self.searchUb)
         
         self.evaluate(newBees)
         
@@ -240,7 +242,7 @@ class ABC(AlgorithmABC):
         newDecs = popDecs[employedBeesType] + (popDecs[randIdx[employedBeesType]] - popDecs[employedBeesType]) * rnd
         
         newBees = Population(decs=newDecs)
-        newBees.clip(self.problem.lb, self.problem.ub)
+        newBees.clip(self.searchLb, self.searchUb)
         
         self.evaluate(newBees)
         

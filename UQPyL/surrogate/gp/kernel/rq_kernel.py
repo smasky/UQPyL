@@ -7,7 +7,7 @@ from .base_kernel import BaseKernel
 
 class RationalQuadratic(BaseKernel):
     """
-    Constant Kernel
+    Rational Quadratic Kernel
     
     Attribute:
     
@@ -22,11 +22,16 @@ class RationalQuadratic(BaseKernel):
                  heterogeneous: bool=False):
         
         super().__init__()
-        self.setting.set("l", length_scale, length_attr)
-        self.setting.set("alpha", alpha, alpha_attr)
+        self._setKernelParameter("l", length_scale, length_attr)
+        self._setKernelParameter("alpha", alpha, alpha_attr)
         self.heterogeneous=heterogeneous
        
+    def diag(self, X):
+        self._validateInputs(X)
+        return np.ones(len(X))
+
     def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
+        self._validateInputs(xTrain1, xTrain2)
         
         length_scale=self.setting.get("l")
         alpha=self.setting.get("alpha")

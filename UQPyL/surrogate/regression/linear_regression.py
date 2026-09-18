@@ -166,8 +166,9 @@ class LinearRegression(SurrogateABC):
         
         C = self.setting.get("C")
         
-        xTrain = np.asarray(xTrain, order='F')
-        yTrain = np.asarray(yTrain, order='F')
+        # Center independent, writable buffers; prepared data is reused by tuning.
+        xTrain = np.array(xTrain, order='F', copy=True)
+        yTrain = np.array(yTrain, order='F', copy=True)
         nSamples, nFeatures = xTrain.shape
         
         xDense = xTrain

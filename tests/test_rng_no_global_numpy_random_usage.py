@@ -1,9 +1,10 @@
 from pathlib import Path
+import UQPyL
 
 
-def test_optimization_and_inference_do_not_use_global_numpy_random_calls():
-    root = Path(__file__).resolve().parents[1] / "UQPyL"
-    targets = [root / "optimization", root / "inference"]
+def test_optimization_inference_and_surrogate_optimizers_do_not_use_global_numpy_random_calls():
+    root = Path(UQPyL.__file__).resolve().parent
+    targets = [root / "optimization", root / "inference", root / "surrogate" / "util"]
     allowed = {
         "np.random.default_rng(",
     }

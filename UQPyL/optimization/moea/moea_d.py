@@ -32,7 +32,7 @@ class MOEAD(AlgorithmABC):
                  maxIters: int = 1000, 
                  maxTolerates = None, tolerate = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, hvRefPoint=None, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -46,24 +46,26 @@ class MOEAD(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         # Initialize the base class with common parameters
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, hvRefPoint=hvRefPoint, historyFreq=historyFreq)
         
         # Set specific parameters for MOEAD
         self.set('aggregation', aggregation)
         self.set('nPop', nPop)
         
     #-------------------Public Functions-----------------------#
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -74,14 +76,14 @@ class MOEAD(AlgorithmABC):
         
         nPop = self.get('nPop')
         
-        # Determine the number of neighbors
-        T = math.ceil(nPop / 10)
-        
         # Generate uniform weight vectors
         W, N = uniformPoint(nPop, problem.nOutput)
         
         # Adjust population size
         nPop = N
+        if nPop < 2:
+            raise ValueError("MOEAD requires at least two reference directions.")
+        T = min(nPop, max(2, math.ceil(nPop / 10)))
         
         # Calculate the distance matrix and sort neighbors
         B = distance.cdist(W, W, metric='euclidean')
@@ -89,7 +91,7 @@ class MOEAD(AlgorithmABC):
         B = B[:, 0:T]
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
         
         # Initialize the ideal point
@@ -99,13 +101,15 @@ class MOEAD(AlgorithmABC):
         while self.checkTermination(pop):
             
             for i in range(nPop):
+                if self.FEs >= self.maxFEs:
+                    break
                 
                 # Select parents from the neighborhood
                 P = B[i, self.rng.permutation(B.shape[1])].ravel()
 
                 # Generate offspring using genetic operations
                 subPop = pop[P[0:2]]
-                offspringDecs = gaOperatorHalf(subPop.decs, problem.ub, problem.lb, 1, 20, 1, 20, rng=self.rng)
+                offspringDecs = gaOperatorHalf(subPop.decs, self.searchUb, self.searchLb, 1, 20, 1, 20, rng=self.rng)
                 offspring = Population(offspringDecs)
                 # Evaluate the offspring
                 self.evaluate(offspring)
@@ -120,14 +124,16 @@ class MOEAD(AlgorithmABC):
                 # Calculate aggregation values based on the selected method
                 if aggregation == 'PBI':
                     # Penalty-based Boundary Intersection
-                    normW = np.sqrt(np.sum(W[P, :]**2, axis=1))
-                    normP = np.sqrt(np.sum((popObjs - np.tile(Z, (T, 1)))**2, axis=1))
-                    normO = np.sqrt(np.sum((offspringObjs - Z)**2, axis=1))
-                    CosineP = np.sum((pop.objs[P] - np.tile(Z, (T, 1))) * W[P, :], axis=1) / normW / normP
-                    CosineO = np.sum(np.tile(offspringObjs - Z, (T, 1)) * W[P, :], axis=1) / normW / normO
-                    g_old = normP * CosineP + 5 * normP * np.sqrt(1 - CosineP**2)
-                    g_new = normO * CosineO + 5 * normO * np.sqrt(1 - CosineO**2)
-                    
+                    unitW = W[P] / np.linalg.norm(W[P], axis=1, keepdims=True)
+                    deltaP = popObjs - Z
+                    deltaO = offspringObjs - Z
+                    projectionP = np.sum(deltaP * unitW, axis=1)
+                    projectionO = np.sum(deltaO * unitW, axis=1)
+                    residualP = deltaP - projectionP[:, None] * unitW
+                    residualO = deltaO - projectionO[:, None] * unitW
+                    g_old = projectionP + 5 * np.linalg.norm(residualP, axis=1)
+                    g_new = projectionO + 5 * np.linalg.norm(residualO, axis=1)
+
                 elif aggregation == 'TCH':
                     # Tchebycheff approach
                     g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) * W[P, :], axis=1)
@@ -136,8 +142,10 @@ class MOEAD(AlgorithmABC):
                 elif aggregation == 'TCH_N':
                     # Normalized Tchebycheff approach
                     Zmax = np.max(pop.objs, axis=0)
-                    g_old = np.max(np.abs(popObjs - np.tile(Z, (T, 1))) / np.tile(Zmax - Z, (T, 1)) * W[P, :], axis=1)
-                    g_new = np.max(np.tile(np.abs(offspringObjs - Z) / (Zmax - Z), (T, 1)) * W[P, :], axis=1)
+                    span = Zmax - Z
+                    span = np.where(span > 0, span, 1.0)
+                    g_old = np.max(np.abs(popObjs - Z) / span * W[P], axis=1)
+                    g_new = np.max(np.abs(offspringObjs - Z) / span * W[P], axis=1)
                     
                 elif aggregation == 'TCH_M':
                     # Modified Tchebycheff approach
@@ -163,7 +171,7 @@ class MOEAD(AlgorithmABC):
 
                 # Replace individuals in the population based on feasibility/CV first, then aggregation
                 pop.replace(P[replaceMask], offspring)
-            self.update(pop)
+            self.update(pop, completed=True)
                     
         # Return the final result
         return self.finalize()    

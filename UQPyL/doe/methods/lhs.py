@@ -120,19 +120,26 @@ def _lhs_correlate(nSamples: int, nInput: int, iterations: int, rng = None):
     :return: A 2D array of correlation-optimized LHS samples.
     """
     
-    mincorr = np.inf
-    
-    # Minimize the components correlation coefficients
-    for _ in range(iterations):
-        # Generate a random LHS
-        H_candidate = _lhs_classic(nSamples, nInput, rng)
-        R = np.corrcoef(H_candidate)
-        if np.max(np.abs(R[R!=1]))<mincorr:
-            mincorr = np.max(np.abs(R-np.eye(R.shape[0])))
-            print('new candidate solution found with max,abs corrcoef = {}'.format(mincorr))
-            H = H_candidate.copy()
+    if (isinstance(iterations, (bool, np.bool_))
+            or not isinstance(iterations, (int, np.integer)) or iterations <= 0):
+        raise ValueError("iterations must be a positive integer for correlation LHS.")
+    if nInput == 1 or nSamples == 1:
+        return _lhs_classic(nSamples, nInput, rng)
 
-    return H
+    bestScore = np.inf
+    bestSample = None
+    offDiagonal = np.triu_indices(nInput, k=1)
+
+    # Minimize the largest absolute correlation between distinct input columns.
+    for _ in range(iterations):
+        candidate = _lhs_classic(nSamples, nInput, rng)
+        correlation = np.corrcoef(candidate, rowvar=False)
+        score = np.max(np.abs(correlation[offDiagonal]))
+        if score < bestScore:
+            bestScore = score
+            bestSample = candidate
+
+    return bestSample
 
 Criterion = Literal['classic','center','maximin','center_maximin','correlation']
 LHS_METHOD = {'classic': _lhs_classic, 'center': _lhs_centered, 'maximin': _lhs_maximin,
@@ -172,11 +179,11 @@ class LHS(Sampler):
         self.iterations = iterations
         super().__init__()
 
-    def sample(self, problem, nSamples: int = None, seed=None, nt: int = None):
-        return super().sample(problem, nSamples, seed=seed, nt=nt)
+    def sample(self, problem, nSamples: int = None, seed=None, nt: int = None, *, output="real"):
+        return super().sample(problem, nSamples, seed=seed, nt=nt, output=output)
 
-    def sampleWithMeta(self, problem, nSamples: int = None, seed=None, nt: int = None):
-        return super().sampleWithMeta(problem, nSamples, seed=seed, nt=nt)
+    def sampleWithMeta(self, problem, nSamples: int = None, seed=None, nt: int = None, *, output="real"):
+        return super().sampleWithMeta(problem, nSamples, seed=seed, nt=nt, output=output)
         
     def _generate(self, nSamples: int, nInput: int = None):
         """

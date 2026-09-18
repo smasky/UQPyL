@@ -2,6 +2,18 @@
 
 The `doe` module generates input samples from a `Problem` or `ModelProblem` input space.
 
+## Select the output space
+
+All built-in samplers accept keyword-only `output="real"` (default) or `output="unit"` in `sample()` and `sampleWithMeta()`. Real samples can be evaluated directly. Unit output returns the generated `[0,1]` samples before decoding. With matching configuration, size and seed, both modes share the same unit design. Metadata records the selected `output`.
+
+```python
+U = LHS().sample(problem, 20, seed=123, output="unit")
+X = LHS().sample(problem, 20, seed=123)  # equals problem.unit_to_space(U)
+```
+
+Integer/discrete values are decoded using equal-width bins. Discrete real values come from `varSet` and need not lie within that column's legacy encoding bounds. Standalone DOE and analysis calls still default to real samples.
+
+
 Use DOE when you need model evaluation points for sensitivity analysis, surrogate training, calibration candidates, plotting, or optimizer initialization.
 
 ## What Sampling Does
@@ -9,7 +21,7 @@ Use DOE when you need model evaluation points for sensitivity analysis, surrogat
 A sampler first creates points in unit space, then maps them to the bounds defined by the problem.
 
 ```text
-unit samples in [0, 1] -> problem.unit_to_space(...) -> samples in [lb, ub]
+unit samples in [0, 1] -> problem.unit_to_space(...) -> real samples (discrete values from varSet)
 ```
 
 For example, if `x1 in [0, 10]` and `x2 in [-1, 1]`, the returned sample matrix already uses those real problem bounds.

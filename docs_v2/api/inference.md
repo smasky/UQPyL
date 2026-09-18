@@ -84,7 +84,7 @@ print(result.acceptanceRate)
 
 | Field | Type | Meaning |
 |---|---|---|
-| `runId` | `str` or `None` | Saved run id when `saveFlag=True`. |
+| `runId` | `str` or `None` | Unique run id, including runs without SQLite persistence. |
 | `method` | `str` | Inference method name. |
 | `problemName` | `str` | Problem name. |
 | `nInput` | `int` | Number of input variables. |
@@ -266,6 +266,10 @@ DREAM_ZS(
 | `nCR` | Number of crossover rate candidates. |
 | `gamma` | Optional scale passed to `run()`. If omitted, the method uses `2.38 / sqrt(2 * nInput)`. |
 
+The proposal archive stores independent copies of initial states and accepted
+states from warm-up and formal sampling, in internal continuous coordinates.
+Updating a current chain cannot overwrite an earlier archive point.
+
 ## `Chain`
 
 `Chain` is the fixed-length storage container used internally for one inference chain.
@@ -314,3 +318,6 @@ with InfReader("Result/mh_Sphere_20260509_1200_0000.sqlite3") as reader:
 | `load_last_snapshot_members()` | `list[dict]` | Load chain members from the latest snapshot. |
 | `load_result()` | `InfResult` | Load the saved final result artifact. |
 | `close()` | `None` | Close the sqlite connection. |
+
+
+Runtime persistence uses a domain marker; readers reject another module's database and unmarked legacy databases. Every run has a UUID-based identifier shared by its database and log, even when SQLite saving is disabled. All readers support `with` and idempotent `close()`. Internal runtime objects use `state` and `params`; returned result objects retain their documented fields.

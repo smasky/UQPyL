@@ -53,6 +53,10 @@ result = method.run(modelProblem, X=None, seed=123)
 
 ## `CalResult`
 
+每次返回的结果都是独立快照，复用或重置算法不会改变旧结果。结果出口对 `history`、
+`diagnostics`、`extra` 和 `settings` 做深复制，包括其中嵌套的列表、字典及数组。
+修改这些结果字段也不会影响算法的运行状态或配置。复制过程不增加模型评价次数。
+
 | 字段 | 含义 |
 |---|---|
 | `method` | 校准方法名。 |
@@ -91,3 +95,9 @@ GLUE 的阈值判断会依据指标方向执行。
 | 用户指南 | [Calibration](../calibration.md) |
 | 仿真问题 | [Problem API](problem.md) |
 | 候选参数采样 | [DOE API](doe.md) |
+
+
+ES 分别评价初始与更新后集合各一批；IES 在迭代间传递完整模拟，只需初始一批加每轮一批；SUFI2 从已评价样本中提取 elite 模拟。mask 在同一批完整模拟上选择有效观测。SQLite 保存一份 result 和一个小 summary，不再重复保存各个大数组；完整字段通过 `load_result()` 访问，`get_run_summary()` 只读取小摘要。
+
+
+持久化结果带有模块标识；reader 会拒绝其他模块及没有标识的旧数据库。每次运行都有基于 UUID 的独立 ID，数据库和日志共用，即使关闭 SQLite 保存也有 ID。所有 reader 支持 `with` 和重复 `close()`。内部运行对象统一用 `state`、`params`，返回结果的正式字段不变。

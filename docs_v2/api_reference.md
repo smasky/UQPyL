@@ -50,7 +50,7 @@ Most public APIs follow one of these patterns.
 res = problem.evaluate(X)
 objs = res.objs
 cons = res.cons
-sim = res.sim
+sims = res.sims
 ```
 
 ## Saved Result Readers
@@ -109,10 +109,18 @@ For quick examples, set `verboseFlag=False`, `logFlag=False`, and `saveFlag=Fals
 | `objs` | Objective matrix, usually shape `(n_samples, n_obj)`. |
 | `cons` | Constraint matrix. Values `<= 0` are feasible. |
 | `decs` | Decision/input matrix or sampled decision chains, depending on result object. |
-| `sims` / `sim` | Simulation output from `ModelProblem`; shape is usually `(n_samples, n_time, n_series)`. |
+| `sims` | Simulation output from `ModelProblem`; shape is usually `(n_samples, n_time, n_series)`. |
 | `bestDecs` | Best decision row or Pareto decision matrix, depending on method type. |
 | `bestObjs` | Objective value(s) associated with `bestDecs`. |
 
 ## Scope Status
 
 All current core API modules are listed on this page. Module-specific parameters, fields, and reader methods live in the split API pages above.
+
+## Failed Runs and Saved Data
+
+The public optimization, analysis, inference and calibration `run` / `analyze` entries manage each run's database session. Initialization, computation and result-saving exceptions propagate unchanged. Uncommitted writes are rolled back; previously committed data remain available. With saving enabled and a run record already created, a writable database records `failed` and a finish time before the connection closes. Successful runs retain the `finished` status.
+
+Use the corresponding Reader's `list_runs()` or `get_run_summary()["status"]` to inspect status. A failed run may contain only metadata or committed snapshots, without a complete result object. There is no automatic retry or partial-success return. After successful cleanup, the same method instance can start a new run with a fresh session.
+
+If rollback or status updates fail, cleanup details accompany the original exception and connection closure is still attempted; the persisted status cannot then be guaranteed to read `failed`. If closure itself fails, `method.session` is retained for inspection and cleanup, and a new run cannot overwrite it. These guarantees cover Python-handled exceptions, including `KeyboardInterrupt`, but not forced process termination or power loss. Callers manually combining `setup` / `finalize` own that session's lifetime.

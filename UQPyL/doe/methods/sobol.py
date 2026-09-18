@@ -40,7 +40,7 @@ class Sobol(Sampler):
         
         self.skipValue = skipValue
 
-    def sampleWithMeta(self, problem, nSamples: int, seed=None):
+    def sampleWithMeta(self, problem, nSamples: int, seed=None, *, output="real"):
         """
         Generate Sobol samples with metadata.
 
@@ -50,7 +50,7 @@ class Sobol(Sampler):
         :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
         self._validate_sampling_setup(nSamples)
-        return super().sampleWithMeta(problem, nSamples, seed=seed)
+        return super().sampleWithMeta(problem, nSamples, seed=seed, output=output)
 
     def _validate_sampling_setup(self, nSamples: int):
         if not isinstance(self.skipValue, int):

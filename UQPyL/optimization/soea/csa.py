@@ -31,7 +31,7 @@ class CSA(AlgorithmABC):
                  maxFEs: int = 50000,
                  maxTolerates: int = 1000, tolerate: float = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -47,13 +47,14 @@ class CSA(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq)
+                         saveFreq = saveFreq, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('alpha', alpha)
@@ -62,12 +63,13 @@ class CSA(AlgorithmABC):
         self.set('nPop', nPop)
            
     #------------------Public Function------------------#
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -78,7 +80,7 @@ class CSA(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
         
         # Initial personal best and global best
@@ -117,7 +119,7 @@ class CSA(AlgorithmABC):
            
             gBest.add(tmp)
             gBest = gBest[gBest.argsort()[:M]]
-            self.update(pop)
+            self.update(pop, completed=True)
             
         return self.finalize()
     
@@ -132,28 +134,28 @@ class CSA(AlgorithmABC):
         
         N, D = popDecs.shape
         
-        c = (self.problem.ub + self.problem.lb) / 2
+        c = (self.searchUb + self.searchLb) / 2
         
         c_n = np.repeat(c, N, axis=0)
-        lb_n = np.repeat(self.problem.lb, N, axis=0)
-        ub_n = np.repeat(self.problem.ub, N, axis=0)
-        fai_1 = self.problem.ub + self.problem.lb - popDecs
+        lb_n = np.repeat(self.searchLb, N, axis=0)
+        ub_n = np.repeat(self.searchUb, N, axis=0)
+        fai_1 = self.searchUb + self.searchLb - popDecs
         
-        gailv = np.abs(popDecs - c) / (self.problem.ub - self.problem.lb)
+        gailv = np.abs(popDecs - c) / (self.searchUb - self.searchLb)
         # Calculate r
         t1 = self.rng.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
-        t2 = self.rng.random((N, D)) * np.abs(fai_1 - self.problem.lb) + np.where(fai_1 > lb_n, lb_n, fai_1)
+        t2 = self.rng.random((N, D)) * np.abs(fai_1 - self.searchLb) + np.where(fai_1 > lb_n, lb_n, fai_1)
         seed = self.rng.random((N, D))
         r = np.where(gailv < seed, t1, t2)
         
         # Calculate p
         t3 = self.rng.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
-        t4 = self.rng.random((N, D)) * np.abs(self.problem.ub - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
+        t4 = self.rng.random((N, D)) * np.abs(self.searchUb - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
         seed = self.rng.random((N, D))
         p = np.where(gailv < seed, t3, t4)
         
         vPopDecs = np.where(popDecs >= c_n, r, p)
-        np.clip(vPopDecs, self.problem.lb, self.problem.ub, out=vPopDecs)
+        np.clip(vPopDecs, self.searchLb, self.searchUb, out=vPopDecs)
               
         return vPopDecs
     
@@ -183,7 +185,7 @@ class CSA(AlgorithmABC):
         
         uPopDecs = popDecs + A + B + C
         
-        np.clip(uPopDecs, self.problem.lb, self.problem.ub, out=uPopDecs)
+        np.clip(uPopDecs, self.searchLb, self.searchUb, out=uPopDecs)
         
         return uPopDecs
 

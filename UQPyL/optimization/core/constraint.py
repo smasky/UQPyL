@@ -1,6 +1,20 @@
 import numpy as np
 
 
+def validateConstraintWeights(conWgt, nCon=None):
+    if conWgt is None:
+        return None
+    weights = np.asarray(conWgt, dtype=float)
+    if weights.ndim not in (1, 2) or (weights.ndim == 2 and weights.shape[0] != 1):
+        raise ValueError("conWgt must be a vector with one weight per constraint.")
+    weights = weights.reshape(1, -1)
+    if nCon is not None and weights.size != nCon:
+        raise ValueError("conWgt length must match the number of constraints.")
+    if not np.all(np.isfinite(weights)) or np.any(weights < 0):
+        raise ValueError("conWgt must contain finite nonnegative weights.")
+    return weights.copy()
+
+
 def calcConstraintViolation(cons, conWgt=None):
     """
     Calculate aggregated constraint violation for each solution.
@@ -9,7 +23,7 @@ def calcConstraintViolation(cons, conWgt=None):
         return None
     cons = np.atleast_2d(np.asarray(cons, dtype=float))
     if conWgt is not None:
-        cons = cons * np.atleast_2d(np.asarray(conWgt, dtype=float))
+        cons = cons * validateConstraintWeights(conWgt, cons.shape[1])
     violation = np.maximum(0.0, cons)
     return np.sum(violation, axis=1)
 

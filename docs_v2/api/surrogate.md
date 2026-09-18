@@ -104,7 +104,7 @@ Common methods:
 | `storeTrainingData(xTrain, yTrain)` | model | Store prepared training data. |
 | `requireFitted(*stateKeys)` | model | Raise if the model is not fitted. |
 | `getParaList()` | `list` | Return active tunable parameter names. |
-| `applyParameterValues(paraList, values, ignoreInactive=True)` | model | Apply tuned parameter values. |
+| `applyParameterValues(paraList, values, ignoreInactive=True, *, paraInfos=None)` | model | Apply a flat candidate in encoded parameter coordinates; optional slices come from `Setting.getParaInfos`. |
 | `getParameterValues(*args, ignoreInactive=False)` | value or tuple | Return current parameter values. |
 
 ## `MultiSurrogate`
@@ -142,7 +142,7 @@ RBF(
 | Parameter | Meaning |
 |---|---|
 | `kernel` | RBF kernel object. |
-| `C_smooth` | Smoothing parameter. |
+| `C_smooth` | Finite, nonnegative scalar smoothing strength; zero disables smoothing. |
 | `C_smooth_attr` | Tuning metadata for `C_smooth`. |
 
 Additional methods:
@@ -161,6 +161,17 @@ Available RBF kernels:
 | `Multiquadric` |
 | `ThinPlateSpline` |
 | `Gaussian` |
+
+Smoothing modifies only the diagonal of the training kernel block, preserving
+the polynomial tail and its constraints. With the existing kernel definitions,
+`Cubic`, `ThinPlateSpline`, and `Gaussian` use `+C_smooth`; `Linear` and
+`Multiquadric` use `-C_smooth` because their positive-valued kernels are
+conditionally negative definite. This follows the smoothing equations in
+[SciPy's RBFInterpolator documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html),
+after accounting for its opposite signs for Linear and Multiquadric.
+For well-posed training data, smoothing preserves affine trends for Cubic and
+ThinPlateSpline, and constants for Linear and Multiquadric. Gaussian has no
+polynomial tail. The smoothing strength applies in the prepared training space.
 
 ### `GPR`
 
@@ -193,7 +204,18 @@ Additional methods:
 | `setKernel(kernel)` | Replace the active kernel. |
 | `setKernelChoices(kernels)` | Register tunable kernel choices. |
 
-`GPR` supports uncertainty output.
+`GPR` supports uncertainty output. Internal MP and EA optimizers minimize the
+negative log marginal likelihood. `fitState["objective"]` records this same
+quantity on the prepared training data; lower values are better, and the value
+can be negative.
+
+`GPR` and `KRG` default to `Boxmin`. It maps finite parameter bounds to a
+positive internal interval `[1, 2]` for multiplicative search, then evaluates
+and returns parameters in the supplied coordinates (including log coordinates
+when configured). Evaluation points stay within those bounds; fixed parameters
+remain fixed and out-of-bounds initial points are clipped. This internal mapping
+does not change the model's input scaling. `Boxmin` and `LBFGSB` use local random
+generators, so their initialization does not change NumPy's global random state.
 
 ### `KRG`
 
@@ -254,6 +276,10 @@ LinearRegression(
 | `maxEpoch` | Maximum Lasso epochs. |
 | `tolerance` | Convergence tolerance. |
 | `p0` | Lasso working-set parameter. |
+
+Lasso centers private working arrays, leaving supplied and stored training data
+unchanged during fitting. This also applies to `PolynomialRegression` with
+`lossType="Lasso"`, allowing prepared data to be reused across tuning candidates.
 
 ### `PolynomialRegression`
 
@@ -432,7 +458,28 @@ AutoTuner(model, optimizer=None)
 
 | Method | Returns | Meaning |
 |---|---|---|
-| `optTune(xData, yData, paraList=None, owner=None, obj="mse", split=None, tuneMode="fit")` | model | Tune parameters with an optimizer. |
-| `gridTune(xData, yData, paraGrid=None, obj="mse", split=None, tuneMode="fit")` | model | Tune parameters by grid search. |
+| `optTune(xData, yData, paraList=None, ratio=10, owner=None, tuneMode="separate", *, seed=None, rng=None)` | `(bestParams, bestScore)` | Maximize validation R² with an optimizer. |
+| `gridTune(xData, yData, paraGrid=None, ratio=10, owner=None, tuneMode="separate", *, seed=None, rng=None)` | `(bestParams, bestScore)` | Maximize validation R² over a parameter grid. |
 
-`paraList` defaults to active model parameters. `paraGrid` maps parameter names to candidate values.
+`paraList` defaults to registered tunable parameters, optionally filtered by owner.
+`optTune` fixes the parameter slices and bounds at the start of a search; each
+vector occupies its full number of coordinates. For kernel choices, shared
+parameters must have matching dimensions, bounds, types and log settings.
+Incompatible spaces raise an error; configure compatible choices or tune them separately.
+
+`paraGrid` maps names to candidate values in the same encoded coordinates:
+use natural logs for log parameters and bin coordinates for numeric choices.
+A vector is one candidate, for example
+`paraGrid={"l": [np.log([0.2, 3.0]), np.log([2.0, 0.2])]}` for a two-dimensional
+length scale. The grid iterates over combinations without flattening these vectors.
+With `paraGrid=None`, it evaluates the current parameter values once.
+
+Structural parameters are applied before numeric parameters. Parameters absent
+from the selected kernel are skipped, and their returned best values are `None`.
+Use `tuneMode="joint"` to fit exactly the candidate parameters; `"separate"`
+also runs the model's internal tuning. Returned numeric parameters are decoded
+values. The selected model is refitted on all supplied data; the reported score
+is its validation score from the search split.
+
+
+GPR/KRG mean-only prediction skips uncertainty solves. GPR obtains self-kernel diagonals directly for built-in kernels, without allocating a prediction-by-prediction matrix; custom GP kernels can override `diag(X)` or use the bounded-block fallback. GPR/KRG/RBF share template installation and parameter merging while retaining their own mathematical kernel families. Unimplemented surrogate ensemble placeholders have been removed.

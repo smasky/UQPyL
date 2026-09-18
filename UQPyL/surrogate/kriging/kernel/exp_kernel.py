@@ -18,9 +18,11 @@ class Exp(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
+        nInput = self._checkFeatureMatrix(D, "D")
+        self.validateParameters(nInput)
         theta=self.setting.get("theta")
         
         td= -theta
-        r= np.exp(np.sum(D*td, axis=1))
+        r= np.exp(np.sum(np.abs(D)*td, axis=1))
         
         return r    

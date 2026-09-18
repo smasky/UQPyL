@@ -18,6 +18,8 @@ class Guass(BaseKernel):
                 D: np.ndarray
                     The distance matrix
         '''
+        nInput = self._checkFeatureMatrix(D, "D")
+        self.validateParameters(nInput)
         theta=self.setting.get("theta")
             
         td = D * -theta

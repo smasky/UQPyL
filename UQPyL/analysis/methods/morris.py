@@ -65,7 +65,6 @@ class Morris(AnalysisABC):
         numLevels = meta["numLevels"]
         
         # Set the problem instance for analysis
-        self.setProblem(problem)
         
         Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
@@ -78,16 +77,14 @@ class Morris(AnalysisABC):
 
         numTrajectory = int(X.shape[0] / trajectorySize)
         
-        X, Y = self.__check_X_Y__(X, Y)
 
-        outputLabel = "obj" if target == "objs" else "con"
         
         mu = np.zeros((numY, nInput))
         mu_star = np.zeros((numY, nInput))
         sigma = np.zeros((numY, nInput))
         S1_norm = np.zeros((numY, nInput))
         
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         for i in range(numY):

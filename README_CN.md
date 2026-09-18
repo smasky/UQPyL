@@ -254,7 +254,7 @@ result = Sobol(verboseFlag=False).analyze(problem, X, Y, meta=meta, target="objs
 
 ## 安装
 
-UQPyL 需要 Python 3.8 或更高版本。
+UQPyL 需要 Python 3.10 或更高版本。
 
 ```bash
 pip install -U UQPyL

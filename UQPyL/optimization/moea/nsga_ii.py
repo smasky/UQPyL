@@ -31,7 +31,7 @@ class NSGAII(AlgorithmABC):
                  maxIters: int = 1000, 
                  maxTolerates = None, tolerate=1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, hvRefPoint=None, historyFreq: int = 10):
         '''
         Initialize the NSGA-II algorithm with user-defined parameters.
         
@@ -51,7 +51,7 @@ class NSGAII(AlgorithmABC):
         '''
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, hvRefPoint=hvRefPoint, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('proC', proC)
@@ -61,7 +61,7 @@ class NSGAII(AlgorithmABC):
         self.set('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         '''
         Execute the NSGA-II algorithm on the specified problem.
 
@@ -69,6 +69,7 @@ class NSGAII(AlgorithmABC):
                         This object defines the optimization problem, including
                         input dimension, objective dimension, bounds, and evaluation methods.
         
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         '''
         # setup algorithm
@@ -79,7 +80,7 @@ class NSGAII(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         
         # Perform environmental selection
         _, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
@@ -94,7 +95,7 @@ class NSGAII(AlgorithmABC):
             matingPool = pop[matingIdx]
           
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
+            offspringDecs = gaOperator(matingPool.decs, self.searchUb, self.searchLb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
          
             # Evaluate the offspring
@@ -106,7 +107,7 @@ class NSGAII(AlgorithmABC):
             # Perform environmental selection
             nextIdx, frontNo, CrowdDis = self.environmentalSelection(pop.decs, pop.objs, pop.cons, pop.conWgt, nPop)
             pop = pop[nextIdx]; pop.frontNo = frontNo; pop.crowdDis = CrowdDis
-            self.update(pop)
+            self.update(pop, completed=True)
 
         # Return the final result
         return self.finalize()
@@ -123,7 +124,7 @@ class NSGAII(AlgorithmABC):
         '''
        
         # Non-dominated sorting
-        frontNo, maxFNo = NDSort(popObjs, popCons, n)
+        frontNo, maxFNo = NDSort(popObjs, popCons, n, conWgt=conWgt)
      
         # Determine the next population
         nextIdx = frontNo < maxFNo

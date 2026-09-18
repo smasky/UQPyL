@@ -140,7 +140,7 @@ class SUFI2(CalibrationABC):
 
         X_elite = X[eliteIdx]
         sim_elite_full = sim_full[eliteIdx]
-        sim_elite_valid = self.problem.flattenSim(self.problem.simFunc(X_elite))[:, self.getValidMask()]
+        sim_elite_valid = sim_elite_full[:, self.getValidMask()]
         scores_elite = scores[eliteIdx]
 
         bestIdx = int(order[0])

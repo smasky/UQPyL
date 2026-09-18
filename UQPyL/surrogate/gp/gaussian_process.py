@@ -1,7 +1,7 @@
+from .._kernel import installKernel
 import numpy as np
 from scipy.linalg import cholesky, cho_solve, solve_triangular
 from typing import Any, Tuple, Optional
-from copy import deepcopy
 
 from .kernel import BaseKernel, RBF
 from ..util.boxmin import Boxmin
@@ -21,6 +21,9 @@ class GPR(SurrogateABC):
     or `returnVar`, and allows kernel hyper-parameters to be optimized by
     internal MP or EA optimizers.
 
+    Internal optimization minimizes the negative log marginal likelihood,
+    also recorded in ``fitState["objective"]`` (lower is better).
+
     Examples:
         >>> model = GPR()
         >>> model.fit(xTrain, yTrain)
@@ -38,8 +41,8 @@ class GPR(SurrogateABC):
     
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
                     polyFeature: PolyFeature = None,
-                        kernel: BaseKernel = RBF(),
-                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: int = 5,
+                        kernel: Optional[BaseKernel] = None,
+                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: int = 1,
                                     C: float = 1e-9,
                                     C_attr: dict = {'ub': 1e-6, 'lb':1e-12, 
                                                         'type': 'float', 
@@ -74,9 +77,8 @@ class GPR(SurrogateABC):
         self.optimizer = optimizer
 
         self.registerParameterApplier("kernel", self.setKernel)
-        self._kernelChoiceRegistered = False
         
-        self.setKernel(kernel)
+        self.setKernel(RBF() if kernel is None else kernel)
         
         self.nRes = nRestartTimes
 
@@ -107,13 +109,14 @@ class GPR(SurrogateABC):
         
         K_trans = self.kernel(xPred, self.xTrain)
         y_mean = K_trans @ self.fitState["alpha"]
+        if not (returnStd or returnVar):
+            return self.__Y_inverse_transform__(y_mean)
                
         V = solve_triangular(
             self.fitState["L"], K_trans.T, lower=True
         )
         
-        K = self.kernel(xPred)
-        y_var = np.diag(K).copy()
+        y_var = self.kernel.diag(xPred)
         y_var -= np.einsum("ij, ji->i", V.T, V)
         y_var[y_var<0] = 0.0
 
@@ -134,6 +137,8 @@ class GPR(SurrogateABC):
                 - EA: evolutionary algorithms with alg_type == "EA"
         """
         nameList = self.getParaList()
+        if not nameList:
+            return self.fitModel(xTrain, yTrain)
         
         paraInfos, ub, lb = self.setting.getParaInfos(nameList)
         
@@ -192,9 +197,7 @@ class GPR(SurrogateABC):
         self._objfunc(xTrain, yTrain, record=True)
         
     def _objfunc(self, xTrain, yTrain, record=False):
-        """
-            log_marginal_likelihood
-        """
+        """Return negative log marginal likelihood for minimization."""
         
         K = self.kernel(xTrain)
         
@@ -212,52 +215,18 @@ class GPR(SurrogateABC):
         log_likelihood_dims =  -0.5* np.einsum("ik,ik->k", yTrain, alpha)
         log_likelihood_dims -= np.log(np.diag(L)).sum()
         log_likelihood_dims -= K.shape[0]/2 * np.log(2*np.pi)
-        log_likelihood = np.sum(log_likelihood_dims)
+        negativeLogLikelihood = -np.sum(log_likelihood_dims)
         
         if record:
             self.fitState["L"] = L
             self.fitState["alpha"] = alpha
-            self.fitState["objective"] = log_likelihood
+            self.fitState["objective"] = negativeLogLikelihood
 
-        return log_likelihood
+        return negativeLogLikelihood
     
     def setKernel(self, kernel: BaseKernel):
-        oldKernelNames = []
-        if self.kernel is not None:
-            oldKernelNames = [
-                name for name in self.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
-                if name != "kernel"
-            ]
-
-        kernelChoiceValue = self.setting.parVal.get("kernel", None)
-        kernelChoiceAttr = self.setting.parSet.get("kernel", None)
-        kernelChoiceOwner = self.setting.parOwner.get("kernel", None)
-
-        if oldKernelNames:
-            self.setting.removeParas(oldKernelNames)
-
-        if not hasattr(kernel, "_templateSetting"):
-            kernel._templateSetting = deepcopy(kernel.setting)
-        kernel.setting = deepcopy(kernel._templateSetting)
-        
-        self.kernel = kernel
-        self.setting.mergeSetting(self.kernel.setting)
-        self.kernel.setting = self.setting
-
-        if kernelChoiceValue is not None and kernelChoiceAttr is not None:
-            self.setting.parVal["kernel"] = self.setting._normalize_choice_array(kernel, kernelChoiceAttr)
-            self.setting.parSet["kernel"] = kernelChoiceAttr
-            self.setting.parType["kernel"] = 2
-            self.setting.parOwner["kernel"] = kernelChoiceOwner
-            self.setting.parLB["kernel"] = np.asarray([0.0])
-            self.setting.parUB["kernel"] = np.asarray([float(len(kernelChoiceAttr[0]))])
-            self.setting.parLog["kernel"] = False
-
-        if self.xTrain is not None:
-            self.kernel.initialize(self.xTrain.shape[1])
-        self._invalidate_fit_after_structure_change()
+        return installKernel(self, kernel, BaseKernel)
 
     def setKernelChoices(self, kernels):
-        self.registerChoiceParameter("kernel", kernels, owner="kernel")
-        self._kernelChoiceRegistered = True
+        self.registerChoiceParameter("kernel", [kernel.clone() for kernel in kernels], owner="kernel")
         return self

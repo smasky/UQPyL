@@ -3,8 +3,13 @@ from scipy.spatial.distance import pdist,squareform
 import abc
 
 from ...setting import Setting
-class BaseKernel(metaclass=abc.ABCMeta):
+from ..._kernel import KernelTemplate
+
+class BaseKernel(KernelTemplate, metaclass=abc.ABCMeta):
     name = None
+    # Sign of the kernel's quadratic form under its polynomial constraints.
+    smoothingSign = 1.0
+    _parameterRules = {"epsilon": (True, False, False)}
 
     def __init__(self):
         
@@ -35,10 +40,11 @@ class BaseKernel(metaclass=abc.ABCMeta):
         pass
     
     def initialize(self, nInput):
-        pass
+        self.validateParameters(nInput, checkBounds=True)
     
     def get_A_Matrix(self, xTrain):
         
+        self._checkFeatureMatrix(xTrain, "xTrain")
         dist = squareform(pdist(xTrain,'euclidean'))
         Phi = self.evaluate(dist)
         

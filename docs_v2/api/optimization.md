@@ -45,25 +45,46 @@ All standard algorithms run through:
 result = algorithm.run(problem, seed=None)
 ```
 
-Expensive optimization algorithms also accept optional initial data:
+Optimization algorithms also accept optional initial populations:
 
 ```python
-result = algorithm.run(problem, xInit=None, yInit=None, seed=None)
+result = algorithm.run(problem, initialPop=None, seed=None)
 ```
+
+`initialPop` can be either:
+
+- a decision matrix with shape `(n, nInput)`
+- a `Population` object
+
+If the provided population is not evaluated, UQPyL evaluates it with the real `Problem`. If it has fewer members than the algorithm needs for initialization, UQPyL fills the remaining members automatically.
 
 Shared constructor controls:
 
 | Parameter | Meaning |
 |---|---|
-| `maxFEs` | Maximum number of function evaluations. |
-| `maxIters` | Maximum number of iterations. |
-| `maxTolerates` | Maximum tolerated non-improving iterations. |
-| `tolerate` | Improvement tolerance. |
+| `maxFEs` | Evaluation budget; batch-based methods may finish a batch beyond it. |
+| `maxIters` | Maximum completed iterations, excluding initialization. Zero performs initialization only. |
+| `maxTolerates` | Consecutive stagnant iterations before single-objective stopping; None disables this stop. |
+| `tolerate` | Absolute objective improvement threshold; None disables stagnation stopping. |
 | `verboseFlag` | Print runtime progress and summaries. |
 | `verboseFreq` | Progress output frequency. |
 | `logFlag` | Write text logs when enabled. |
 | `saveFlag` | Persist sqlite snapshots and final result when enabled. |
-| `saveFreq` | Snapshot save frequency. |
+| `saveFreq` | SQLite snapshot save frequency. |
+| `historyFreq` | Full in-memory snapshot interval (default 10); None retains only the final snapshot. |
+
+Initialization is iteration 0 and does not increase the stagnation count. Each completed
+iteration compares the new historical best with the previous historical best. For feasible
+solutions, improvement must strictly exceed `tolerate` to reset the count; smaller improvements
+still update the best result. With constraints, any decrease in weighted violation, including
+becoming feasible, resets the count even if the objective worsens. Thus `maxTolerates=2` stops
+after two consecutive stagnant iterations; zero stops after initialization when this criterion
+is enabled. Multi-objective methods do not use this single-objective stopping criterion.
+
+Termination checks do not advance counters. Results, history, printed progress, and SQLite
+snapshots use completed iteration numbers. Custom algorithms call `update(pop)` after
+initialization and `update(pop, completed=True)` after each completed iteration. Initialization
+evaluations still count toward `maxFEs`; existing per-algorithm batch rules are unchanged.
 
 Example:
 
@@ -115,7 +136,8 @@ Methods:
 | `populations` | Population snapshots. |
 | `bests` | Best-solution snapshots. |
 | `metrics` | Metric values, such as hypervolume for multi-objective runs. |
-| `iterToFEs` | Iteration to function-evaluation mapping. |
+| `iterToFEs` | Mapping for every statistics update. |
+| `snapshotIterToFEs` | Iteration/evaluation mapping for sparse populations and bests snapshots. |
 | `bestObjHistory` | Single-objective best-value history. |
 | `numBestHistory` | Number of current best solutions for multi-objective runs. |
 | `bestMetricHistory` | Multi-objective metric history. |
@@ -326,8 +348,7 @@ EGO(nInit=50, maxFEs=1000, maxIters=1000, maxTolerates=None, ...)
 | Parameter | Meaning |
 |---|---|
 | `nInit` | Number of initial samples. |
-| `xInit` | Optional initial decision matrix passed to `run()`. |
-| `yInit` | Optional initial objective matrix passed to `run()`. |
+| `initialPop` | Optional initial `Population` or decision matrix passed to `run()`. |
 
 ### `ASMO`
 
@@ -440,3 +461,76 @@ reader.close()
 | `load_last_population()` | `Population` | Load the latest population snapshot. |
 | `load_last_best()` | `Population` | Load the latest best or Pareto snapshot. |
 | `close()` | `None` | Close the sqlite connection. |
+
+
+## Optimization coordinate convention
+
+Built-in optimizers store and search populations in `[0,1]^d`, using separate `searchLb/searchUb` bounds. The original `problem.lb/ub` are preserved. Public `initialPop` decisions are real values and are encoded once; pre-evaluated objectives must use their original objective directions.
+
+```text
+DOE(output="unit") → unit population → search/repair
+                                     → problem.unit_to_space(U) → real evaluation
+```
+
+Evaluation leaves the unit population unchanged. `OptResult`, exported history, logs, SQLite and NPZ contain real decisions and objectives in their original directions. Internal algorithm scores remain oriented toward minimization. Runtime history/best-decision snapshots are decoded and must not be passed directly to internal search operators.
+
+EGO, ASMO and MOASMO use `problem.canonicalize_unit(U)` consistently for training, prediction and candidate deduplication. Continuous coordinates are preserved; integer/discrete coordinates use bin midpoints. Duplicate physical training solutions retain their first observation. Inner surrogate problems are continuous unit-cube problems with minimization-oriented objectives. Default surrogates add no input scaling; explicitly configured model scalers still apply consistently during training and prediction.
+
+ASMO's `euclidThres` is a distance in unit coordinates. Surrogate optimizers may stop before exhausting the budget when no novel solution is found; small finite domains enumerate remaining representatives. This optimization convention does not prescribe the internal coordinates of inference algorithms.
+
+### Constraint weights
+
+`Problem(conWgt=[10, 1], nCon=2, ...)` assigns one finite nonnegative weight per constraint. The length must match `nCon`. `None` leaves violations unweighted; a zero weight ignores that constraint, including in feasibility checks.
+
+```python
+CV = np.sum(np.maximum(0, cons * conWgt), axis=1)
+```
+
+Optimizers copy the current Problem weights when accepting an initial population and after true evaluations, replacing any initial Population weights. Slicing, selection, merging and replacement preserve the configuration. Keep weights fixed during a run.
+
+Stored `cons` remain raw constraint values. Printed/logged/stored violation summaries are weighted. Result extra, history snapshots, SQLite and NPZ retain `constraint_weights`; `OptReader` restores weights when loading a Population so subsequent selection uses the same rule.
+
+### Multi-objective archive protocol
+
+- `bestDecs/bestObjs/bestCons`: historical feasible nondominated archive; empty arrays before feasibility.
+- `candidateDecs/candidateObjs/candidateCons`: up to 10 historical minimum-violation representatives before feasibility; None afterwards.
+- `minViolation`: historical minimum weighted violation, zero after feasibility.
+- `bestMetric`: feasible archive HV with a fixed reference and original scale; None before feasibility.
+- `appearFEs/appearIters`: most recent archive change, or violation reduction before feasibility.
+- `hvRefPoint`: optional constructor argument of NSGAII, NSGAIII, MOEAD, RVEA, and MOASMO, in original objective directions.
+- `Population.getParetoFront()`: current feasible front; `getInfeasibleCandidates(k=10)`: separate infeasible diagnostics.
+- `OptReader.load_candidates(snapshotId)` / `load_last_candidates()`: load separately stored candidates.
+
+New `toDict()` and NPZ fields use `candidate_decs/candidate_objs/candidate_cons/min_violation`. See [optimization](../optimization.md#constrained-multi-objective-results) for archive and HV semantics.
+
+### Batched High-dimensional HV
+
+`HV(popObjs, refPoint=None, normalize=True, nSamples=1_000_000, rng=None, *, batchSize=4096)` uses Monte Carlo estimation for four or more objectives. The positive integer `batchSize` limits the number of sampled points generated at once. Each batch is compared against at most 256 solution points at a time, avoiding a full samples-by-solutions-by-objectives array. The final incomplete batch is included.
+
+The default total sample count is unchanged. NumPy generators with identical initial states produce identical samples, estimates and post-call RNG states regardless of batch size. Smaller batches change temporary memory usage without reducing sampling accuracy. Fewer than four objectives still use the existing exact computation. batchSize is an HV function option, independent of the historyFreq retention policy below.
+
+### In-memory History and SQLite Frequency
+
+All built-in optimizers accept `historyFreq=10`, configurable before a run through `algorithm.set("historyFreq", value)`. It controls full in-memory population and best-solution/archive snapshots independently of SQLite's `saveFreq`.
+
+| Configuration | Full in-memory snapshots |
+|---|---|
+| `historyFreq=10` (default) | First update, updates whose iteration number is a multiple of 10, and final update |
+| `historyFreq=1` | Every update |
+| `historyFreq=None` | Final update only |
+
+A final update already captured is not appended twice. Lightweight statistics (iteration/evaluation counts, best values, HV, archive sizes and improvement flags) still record every update. Final best solutions and the full nondominated archive are preserved. This policy does not cap the live nondominated archive maintained by the optimizer.
+
+`history.populations` and `history.bests` align with **`history.snapshotIterToFEs`**, containing each snapshot's `[iteration, FEs]`. Do not index sparse snapshots using positions in the full `iterToFEs` statistics sequence. Snapshot iterations identify actual state updates; final `result.iters` may additionally include a termination check. `toDict()` exports `snapshot_iter_to_fes`, and `result.extra["history_freq"]` records the policy. Decisions and objective directions retain their real problem representation.
+
+For example, `GA(historyFreq=None, saveFlag=True, saveFreq=20)` retains all lightweight statistics and one final snapshot in memory, while SQLite stores full snapshots every 20 iterations and at completion. Periodic SQLite writes do not copy the accumulated in-memory history. NPZ retains its existing final-result and statistics-curve protocol; it does not automatically include full population history.
+
+Sparse recording reduces memory growth rather than imposing a fixed limit. Use `None` to avoid accumulating full history snapshots in long runs.
+
+
+Pre-evaluated `initialPop` must match the problem's objective/constraint dimensions and sample count, and must include constraints when `nCon > 0`. Incomplete evaluations raise an error before search; complete evaluations are reused. Completely unevaluated populations are evaluated normally.
+
+`OptReader.load_result()` restores an `OptResult` with history and population data from the saved snapshots, including missing HV entries and actual feasibility; it does not reconstruct unsaved iterations. Plotting filters missing values together with their coordinates. `load_algorithm()` restores stored simple configuration, including budgets, stopping rules and output flags. Component instances (surrogate models and internal optimizers) require manual restoration and produce a warning; this API does not resume search state. Random seeds are available in run metadata for an explicit new run. Runtime counters and elapsed time are recorded independently of verbose output.
+
+
+Runtime persistence uses a domain marker; readers reject another module's database and unmarked legacy databases. Every run has a UUID-based identifier shared by its database and log, even when SQLite saving is disabled. All readers support `with` and idempotent `close()`. Internal runtime objects use `state` and `params`; returned result objects retain their documented fields.

@@ -12,7 +12,7 @@ Use this page when you want to confirm that UQPyL is installed correctly and und
 
 ## 0. Install UQPyL
 
-UQPyL supports Python 3.8 and later. In most cases, install it into your project environment with:
+UQPyL supports Python 3.10 and later. In most cases, install it into your project environment with:
 
 ```bash
 python -m pip install UQPyL
@@ -58,7 +58,19 @@ Common installation issues:
 | Import works in the terminal but not in a notebook | The notebook kernel is using a different Python environment. Switch kernels or install UQPyL into the kernel environment. |
 | Source installation fails with C/C++ compiler errors | Prefer the published package when possible; otherwise install a compiler plus `Cython`, `pybind11`, and the build dependencies. |
 
-## 1. Define a Problem
+## 1. Choose a Problem Type
+
+UQPyL now has two parallel problem entry points:
+
+| Type | Main flow | Use when |
+|---|---|---|
+| `Problem` | `X -> objs/cons` | Objectives and constraints are computed directly from inputs |
+| `ModelProblem` | `X -> sim -> objs/cons` | A simulation runs first, then objectives or constraints are derived from simulation outputs |
+
+Start with `Problem` for ordinary optimization, analysis, and inference.\
+Start with `ModelProblem` for calibration, time-series simulation, or multi-series simulation workflows.
+
+## 2. Define a `Problem`
 
 A `Problem` defines the input bounds, objective function, and optimization direction. Other modules use this same object.
 
@@ -99,7 +111,66 @@ None
 
 `evaluate()` returns an `Eval` object. Use `res.objs` for objectives and `res.cons` for constraints. Here there are no constraints, so `res.cons` is `None`.
 
-## 2. Generate Samples
+## 3. Define a `ModelProblem`
+
+`ModelProblem` places simulation output `sim` in the middle of the evaluation chain. The recommended pattern is to define `simFunc(X)` first, then derive objectives or constraints from `context.sim`, `context.obs`, and `context.mask`.
+
+```python
+import numpy as np
+
+from UQPyL.problem import ModelProblem
+
+np.set_printoptions(precision=4, suppress=True)
+
+obs = np.array([[1.0], [2.0]])
+
+
+def simFunc(X):
+    X = np.atleast_2d(X)
+    sim = np.zeros((X.shape[0], 2, 1))
+    sim[:, 0, 0] = X[:, 0]
+    sim[:, 1, 0] = X[:, 1]
+    return sim
+
+
+def objFunc(X, context):
+    err = context.sim - context.obs
+    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+
+
+problem = ModelProblem(
+    nInput=2,
+    nObj=1,
+    lb=0.0,
+    ub=3.0,
+    simFunc=simFunc,
+    objFunc=objFunc,
+    obs=obs,
+    seriesLabels=["Q"],
+    name="ToyModel",
+)
+
+res = problem.evaluate([[1.0, 2.2]])
+
+print(res.objs)
+print(res.sim)
+```
+
+Example output:
+
+```text
+[[0.02]]
+[[[1. ]
+  [2.2]]]
+```
+
+The important contract here is the full chain:
+
+```text
+X -> simFunc(X) -> context.sim -> objFunc/conFunc -> Eval
+```
+
+## 4. Generate Samples
 
 DOE samplers read bounds from `problem`.
 
@@ -144,7 +215,7 @@ Example output:
 
 Rows stay aligned: `Y[i]` is the output for `X[i, :]`.
 
-## 3. Run Analysis
+## 5. Run Analysis
 
 Analysis explains how inputs affect outputs. Here `x1` should matter more because its coefficient is larger.
 
@@ -185,7 +256,7 @@ Example output:
 
 The first value belongs to `x1`, and it is much larger than the second value.
 
-## 4. Run Optimization
+## 6. Run Optimization
 
 Optimization searches for a good input vector. This problem is minimized near `[0, 0]`.
 
@@ -223,7 +294,29 @@ Example output:
 
 `bestDecs` is the best decision row found. `bestObjs` is the objective value at that row.
 
-## 5. Run Inference
+You can also pass an initial population directly to `run()`:
+
+```python
+initialPop = np.array([
+    [0.8, 0.8],
+    [0.2, 0.1],
+    [-0.5, 0.3],
+])
+
+result = GA(
+    nPop=8,
+    maxFEs=40,
+    maxIters=5,
+    tolerate=None,
+    verboseFlag=False,
+    logFlag=False,
+    saveFlag=False,
+).run(problem, initialPop=initialPop, seed=123)
+```
+
+`initialPop` can be a decision matrix or a `Population` object. If it contains fewer members than `nPop`, UQPyL fills the rest automatically.
+
+## 7. Run Inference
 
 Inference samples chains for a scalar objective or log-probability.
 
@@ -338,7 +431,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)

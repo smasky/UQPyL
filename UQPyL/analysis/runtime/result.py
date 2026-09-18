@@ -142,7 +142,7 @@ class AnaState:
             nOutput=problem.nOutput,
             nCon=problem.nCons,
             target=self.target,
-            settings=self.analysis.setting.asDict(),
+            settings=self.analysis.params.asDict(),
             meta=dict(self.meta),
             metrics=list(self.metrics),
             X=None if self.X is None else self.X.copy(),

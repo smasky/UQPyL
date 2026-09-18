@@ -4,6 +4,7 @@ import itertools
 from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
+from ._variance import scaleOutput
 from ...problem import ProblemABC as Problem
 
 class Sobol(AnalysisABC):
@@ -66,7 +67,6 @@ class Sobol(AnalysisABC):
         """
         
         # Set the problem instance for the analysis
-        self.setProblem(problem)
 
         if meta is None:
             raise TypeError(
@@ -83,7 +83,6 @@ class Sobol(AnalysisABC):
         
         nInput = problem.nInput
         
-        X, Y = self.__check_X_Y__(X, Y)
         
         # Determine the number of samples based on whether second-order indices are calculated
         if secondOrder:
@@ -95,7 +94,6 @@ class Sobol(AnalysisABC):
                 raise ValueError(f"The number of samples must be divisible by {nInput + 2}!")
             n = int(X.shape[0] / (nInput + 2))
         
-        outputLabel = "obj" if target == 'objs' else "con"
         
         
         S1 = np.zeros((numY, nInput))
@@ -103,7 +101,7 @@ class Sobol(AnalysisABC):
         S1_norm = np.zeros((numY, nInput))
         ST_norm = np.zeros((numY, nInput))
         
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         if secondOrder:
@@ -112,9 +110,9 @@ class Sobol(AnalysisABC):
 
         for i in range(numY):
             
-            Y_i = Y[:, i:i+1]
+            Y_i = scaleOutput(Y[:, i:i+1])
             yStd = float(np.std(Y_i))
-            if np.isclose(yStd, 0.0):
+            if yStd == 0.0:
                 continue
 
             Y_i = (Y_i - np.mean(Y_i)) / yStd

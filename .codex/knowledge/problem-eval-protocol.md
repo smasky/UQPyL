@@ -163,7 +163,7 @@ evaluate(X, target=None) -> Eval
 | `obs` | 观测矩阵，形状 `(n_time, n_series)` |
 | `mask` | 缺测掩码，形状与 `obs` 一致或为 `None` |
 | `obsShape` | 即 `obs.shape` |
-| `simLabels` | 序列标签 |
+| `seriesLabels` | 序列标签 |
 | `nObs` | 展平后的观测总长度 |
 | `space` | 输入空间定义 |
 

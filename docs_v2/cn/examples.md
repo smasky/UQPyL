@@ -4,6 +4,17 @@
 
 示例预算都很小，目的是快速跑通。真实任务中，通常需要增加样本数、优化预算、链长度或校准候选规模。
 
+## 先选问题类型
+
+这些例子实际落在两条并列主线上：
+
+| 类型 | 主链 | 对应工作流 |
+|---|---|---|
+| `Problem` | `X -> objs/cons` | 采样、分析、优化、推断、代理建模 |
+| `ModelProblem` | `X -> sim -> objs/cons` 或 `X -> sim -> calibration score` | 模型校准、仿真驱动任务 |
+
+如果你的模型先产生仿真结果，再去和观测比较、构造目标或计算评分，优先参考 `ModelProblem` 相关示例。
+
 ## 工作流地图
 
 | 工作流 | 示例问题 | 实际使用时替换 |
@@ -131,6 +142,12 @@ print(result.acceptanceRate)
 
 ## 模型校准
 
+这个例子对应 `ModelProblem` 主线，而不是普通 `Problem` 主线：
+
+```text
+X -> simFunc(X) -> sim -> GLUE score -> behavioral / best samples
+```
+
 这个例子用两个参数匹配两个观测时刻：
 
 ```text
@@ -157,7 +174,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -167,7 +184,7 @@ print(result.bestSim)
 print(result.behavioralDecs)
 ```
 
-实际使用时替换 `simFunc`、`obs` 和候选参数矩阵 `X`。
+实际使用时替换 `simFunc`、`obs` 和候选参数矩阵 `X`。如果你后续要切到 `SUFI2`、`ES` 或 `IES`，通常也还是保留同一个 `ModelProblem`，只更换校准方法。
 
 ## 代理模型训练和验证
 

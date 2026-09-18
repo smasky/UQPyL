@@ -21,11 +21,11 @@ class Random(Sampler):
             Design, Innovation, and Discovery, 2nd ed., Wiley, 2005.
     """
 
-    def sample(self, problem, nSamples: int = None, seed=None, nt: int = None):
-        return super().sample(problem, nSamples, seed=seed, nt=nt)
+    def sample(self, problem, nSamples: int = None, seed=None, nt: int = None, *, output="real"):
+        return super().sample(problem, nSamples, seed=seed, nt=nt, output=output)
 
-    def sampleWithMeta(self, problem, nSamples: int = None, seed=None, nt: int = None):
-        return super().sampleWithMeta(problem, nSamples, seed=seed, nt=nt)
+    def sampleWithMeta(self, problem, nSamples: int = None, seed=None, nt: int = None, *, output="real"):
+        return super().sampleWithMeta(problem, nSamples, seed=seed, nt=nt, output=output)
     
     def _generate(self, nSamples: int, nInput: int):
         """

@@ -1,6 +1,5 @@
 # Delta test
 import numpy as np
-import sys
 from scipy.spatial import KDTree
 from typing import Optional
 
@@ -56,21 +55,18 @@ class DeltaTest(AnalysisABC):
         """
         
         # Set the problem instance for analysis
-        self.setProblem(problem)
         
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
         
-        X, Y = self.__check_X_Y__(X, Y)
         nInput = problem.nInput
         numY = Y.shape[1]
         nNeighbors = self.get("nNeighbors")
         
-        outputLabel = "obj" if target == "objs" else "con"
         
         S1 = np.zeros((numY, nInput))
         S1_norm = np.zeros((numY, nInput))
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         for i in range(numY):
@@ -152,13 +148,9 @@ class DeltaTest(AnalysisABC):
         problem = Problem(nInput=nInput, nObj=nObj, ub=ub, lb=lb, 
                           varType=varType, objFunc=objective, optType='min')
 
-        publicModule = sys.modules.get("UQPyL.analysis.delta")
-        gaClass = getattr(publicModule, "GA", None) if publicModule is not None else None
-        if gaClass is None:
-            from ...optimization.soea import GA as gaClass
-
         # Initialize the GA
-        ga = gaClass(maxFEs=FEs, verboseFlag=verboseFlag, saveFlag=saveFlag)
+        from ...optimization.soea import GA
+        ga = GA(maxFEs=FEs, verboseFlag=verboseFlag, saveFlag=saveFlag)
         
         # Run the GA
         res = ga.run(problem)

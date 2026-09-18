@@ -1,3 +1,4 @@
+from .config import UQPyLConfig, config
 from .params import Params
 from .runtime import (
     array_to_json,
@@ -12,6 +13,7 @@ from .runtime import (
 
 __all__ = [
     "Params",
+    "UQPyLConfig",
     "array_to_json",
     "build_db_path",
     "ensure_result_dir",
@@ -20,4 +22,5 @@ __all__ = [
     "pickle_to_blob",
     "slugify_name",
     "spawn_seed",
+    "config",
 ]

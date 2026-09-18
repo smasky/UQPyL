@@ -1,17 +1,18 @@
 import abc
 import time
-import os
 
 import numpy as np
 
 from . import util as metric_util
+from ..core import config
 from ..core.params import Params
 from ..core.runtime_session import RunSession
+from ..core.runtime_lifecycle import RunLifecycle
 from ..problem import ModelProblem
 from .runtime import CalState, SqliteStorage, format_summary, save_log
 
 
-class CalibrationABC(metaclass=abc.ABCMeta):
+class CalibrationABC(RunLifecycle, metaclass=abc.ABCMeta):
     """
     Abstract base class for calibration methods.
 
@@ -47,13 +48,12 @@ class CalibrationABC(metaclass=abc.ABCMeta):
         self.saveFlag = saveFlag
         self.logFlag = logFlag
         self.params = Params()
-        self.setting = self.params
-        self.result = CalState(self)
-        self.state = self.result
+        self.state = CalState(self)
         self.storage = None
         self.session: RunSession | None = None
         self.runId = None
         self.metric, self.metricHigherIsBetter = self._resolve_metric(metric)
+        self.metricClosestToZero = isinstance(metric, str) and metric == "pbias"
         self.metricName = metric if isinstance(metric, str) else getattr(metric, "__name__", "custom_metric")
         self.set("verboseFlag", verboseFlag)
         self.set("verboseFreq", verboseFreq)
@@ -74,10 +74,9 @@ class CalibrationABC(metaclass=abc.ABCMeta):
 
     def setup(self, problem: ModelProblem):
         self.setProblem(problem)
-        self.result.reset()
-        self.state = self.result
-        self.workDir = getattr(problem, "workDir", os.getcwd())
-        self.runId = None
+        self._startRun()
+        self.state.reset()
+        self.workDir = config.resolveWorkDir(getattr(problem, "workDir", None))
         self.session = None
         if self.saveFlag:
             self.storage = SqliteStorage(self.workDir)
@@ -88,8 +87,7 @@ class CalibrationABC(metaclass=abc.ABCMeta):
         result = self.state.buildResult()
         if self.saveFlag and self.session is not None:
             self.storage.saveResult(self.session, result)
-            self.storage.close(self.session)
-            self.session = None
+            self._closeStandaloneSession()
         summaryText = format_summary(result)
         if self.verboseFlag:
             print(summaryText)
@@ -167,7 +165,10 @@ class CalibrationABC(metaclass=abc.ABCMeta):
         return np.asarray(self.metric(obs, sim, mask=mask), dtype=float)
 
     def normalizedScore(self, sim: np.ndarray):
+        """Return comparison losses: absolute PBIAS or direction-adjusted scores."""
         raw = self.score(sim)
+        if self.metricClosestToZero:
+            return np.abs(raw)
         if self.metricHigherIsBetter:
             return -raw
         return raw

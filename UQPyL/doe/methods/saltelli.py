@@ -41,7 +41,7 @@ class SaltelliDesign(Sampler):
         self.skipValue = skipValue
         self.secondOrder = secondOrder
 
-    def sampleWithMeta(self, problem, N: int, seed=None):
+    def sampleWithMeta(self, problem, N: int, seed=None, *, output="real"):
         """
         Generate Saltelli samples with metadata.
 
@@ -51,7 +51,7 @@ class SaltelliDesign(Sampler):
         :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
         self._validate_sampling_setup(N)
-        return super().sampleWithMeta(problem, N, seed=seed)
+        return super().sampleWithMeta(problem, N, seed=seed, output=output)
 
     def _validate_sampling_setup(self, N: int):
         if not isinstance(self.skipValue, int):

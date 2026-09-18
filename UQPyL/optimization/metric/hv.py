@@ -1,7 +1,14 @@
 import numpy as np
 
 
-def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=None):
+def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=None,
+       *, batchSize: int = 4096):
+    """Compute exact HV below four objectives, otherwise estimate by sampling.
+
+    ``batchSize`` limits samples held at once in the Monte Carlo branch.
+    Population comparisons also use blocks of at most 256 points. With a
+    seeded NumPy generator, batching preserves the samples and RNG state.
+    """
     popObjs = np.atleast_2d(np.asarray(popObjs, dtype=float))
     _, m = popObjs.shape
 
@@ -9,7 +16,8 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=No
         return 0.0
 
     if refPoint is None:
-        refPoint = np.max(popObjs, axis=0) * 1.1
+        worst = np.max(popObjs, axis=0)
+        refPoint = worst + 0.1 * np.where(worst == 0, 1.0, np.abs(worst))
     else:
         refPoint = np.asarray(refPoint, dtype=float)
 
@@ -55,11 +63,24 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=No
             return 0.0
 
         nSamples = int(nSamples)
+        if nSamples <= 0:
+            raise ValueError("nSamples must be positive.")
+        if isinstance(batchSize, (bool, np.bool_)) or not isinstance(batchSize, (int, np.integer)) or batchSize <= 0:
+            raise ValueError("batchSize must be a positive integer.")
         if rng is None:
             rng = np.random.default_rng()
-        samples = rng.uniform(lowerBounds, upperBounds, (nSamples, m))
-        dominated = np.any(np.all(popObjs <= samples[:, None], axis=2), axis=1)
-        hyperVolume = np.sum(dominated) / nSamples * totalHyperVolume
+        dominatedCount = 0
+        for start in range(0, nSamples, batchSize):
+            size = min(batchSize, nSamples - start)
+            samples = rng.uniform(lowerBounds, upperBounds, (size, m))
+            dominated = np.zeros(size, dtype=bool)
+            for pointStart in range(0, len(popObjs), 256):
+                points = popObjs[pointStart:pointStart + 256]
+                dominated |= np.any(np.all(points <= samples[:, None], axis=2), axis=1)
+                if np.all(dominated):
+                    break
+            dominatedCount += int(np.count_nonzero(dominated))
+        hyperVolume = dominatedCount / nSamples * totalHyperVolume
 
     return hyperVolume
 

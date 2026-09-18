@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -6,6 +7,7 @@ import numpy as np
 from ...core.runtime import export_runtime_meta
 
 from ..metric import HV
+from ..core.constraint import compareSolutions, calcConstraintViolation
 
 
 @dataclass
@@ -17,6 +19,7 @@ class OptHistory:
     bests: list = field(default_factory=list)
     metrics: list = field(default_factory=list)
     iterToFEs: list = field(default_factory=list)
+    snapshotIterToFEs: list = field(default_factory=list)
     bestObjHistory: list = field(default_factory=list)
     numBestHistory: list = field(default_factory=list)
     bestMetricHistory: list = field(default_factory=list)
@@ -27,6 +30,7 @@ class OptHistory:
         self.bests.clear()
         self.metrics.clear()
         self.iterToFEs.clear()
+        self.snapshotIterToFEs.clear()
         self.bestObjHistory.clear()
         self.numBestHistory.clear()
         self.bestMetricHistory.clear()
@@ -38,6 +42,7 @@ class OptHistory:
             "bests": list(self.bests),
             "metrics": list(self.metrics),
             "iter_to_fes": [list(item) for item in self.iterToFEs],
+            "snapshot_iter_to_fes": [list(item) for item in self.snapshotIterToFEs],
             "best_obj_history": list(self.bestObjHistory),
             "num_best_history": list(self.numBestHistory),
             "best_metric_history": list(self.bestMetricHistory),
@@ -62,6 +67,10 @@ class OptResult:
     runtime: float
     history: OptHistory
     extra: dict = field(default_factory=dict)
+    candidateDecs: np.ndarray | None = None
+    candidateObjs: np.ndarray | None = None
+    candidateCons: np.ndarray | None = None
+    minViolation: float | None = None
 
     def summary(self) -> dict:
         return export_runtime_meta(
@@ -89,6 +98,10 @@ class OptResult:
             "best_objs": None if self.bestObjs is None else self.bestObjs.copy(),
             "best_cons": None if self.bestCons is None else self.bestCons.copy(),
             "best_metric": self.bestMetric,
+            "candidate_decs": None if self.candidateDecs is None else self.candidateDecs.copy(),
+            "candidate_objs": None if self.candidateObjs is None else self.candidateObjs.copy(),
+            "candidate_cons": None if self.candidateCons is None else self.candidateCons.copy(),
+            "min_violation": self.minViolation,
             "history": self.history.toDict(),
             "extra": dict(self.extra),
         }
@@ -113,6 +126,7 @@ class OptState:
         pop.requireEvaluated()
 
         self.currentPop = pop
+        self.extra["constraint_weights"] = None if pop.conWgt is None else pop.conWgt.copy()
         if algType == "EA":
             improved = self._updateSingle(pop, FEs, iters)
         else:
@@ -124,15 +138,14 @@ class OptState:
         localBestDecs = bestPop.decs
         localBestObjs = bestPop.objs
         localBestCons = bestPop.cons
-        localBestFeasible = True if localBestCons is None else bool(np.all(np.maximum(0, localBestCons) <= 0))
+        localViolation = calcConstraintViolation(localBestCons, pop.conWgt)
+        localBestFeasible = localViolation is None or bool(localViolation[0] <= 0)
 
-        improved = False
-        if self.bestObjs is None:
-            improved = True
-        elif localBestFeasible and not self.bestFeasible:
-            improved = True
-        elif localBestFeasible == self.bestFeasible and float(localBestObjs[0, 0]) < float(self.bestObjs[0, 0]):
-            improved = True
+        # Reuse the same feasibility-first comparison as single-objective
+        # search operators. Equal violations retain the historical incumbent.
+        improved = self.bestObjs is None or compareSolutions(
+            localBestObjs, localBestCons, self.bestObjs, self.bestCons, pop.conWgt
+        ) < 0
 
         if improved:
             self.bestDecs = localBestDecs.copy()
@@ -145,33 +158,90 @@ class OptState:
         self.bestMetric = None
         return improved
 
-    def _updateMulti(self, pop, FEs, iters):
-        bestPop = pop.getBest()
-        localBestDecs = bestPop.decs
-        localBestObjs = bestPop.objs
-        localBestCons = bestPop.cons
-        localBestFeasible = True if localBestCons is None else bool(np.all(np.maximum(0, localBestCons) <= 0))
-        refPoint = self._getHvRefPoint(localBestObjs)
-        localMetric = float(HV(localBestObjs, refPoint=refPoint))
-
-        improved = self.bestMetric is None or localMetric > self.bestMetric
-
-        self.bestDecs = localBestDecs.copy()
-        self.bestObjs = localBestObjs.copy()
-        self.bestCons = None if localBestCons is None else localBestCons.copy()
-        self.bestFeasible = localBestFeasible
-        self.bestMetric = localMetric
-
-        if improved:
+    def observeMulti(self, pop, FEs, iters):
+        """Archive evaluated real decisions before environmental selection."""
+        if not len(pop):
+            return
+        feasible = pop.getParetoFront()
+        changed = False
+        if len(feasible):
+            combined = feasible if self.archive is None else self.archive.merged(feasible)
+            front = combined.getParetoFront()
+            # One representative per objective vector, retaining the first observation.
+            _, indices = np.unique(front.objs, axis=0, return_index=True)
+            front = front[indices]
+            changed = self.archive is None or not np.array_equal(front.objs, self.archive.objs)
+            self.archive = front
+            self.candidates = None
+            self.minViolation = 0.0
+        elif self.archive is None:
+            candidates = pop.getInfeasibleCandidates(k=len(pop))
+            if len(candidates):
+                violation = calcConstraintViolation(candidates.cons, candidates.conWgt)
+                minimum = float(violation.min())
+                changed = self.minViolation is None or minimum < self.minViolation
+                if changed:
+                    self.minViolation = minimum
+                    self.candidates = candidates[violation == minimum][:10]
+        if changed:
             self.appearFEs = FEs
             self.appearIters = iters
+            self._archiveImproved = True
 
+    def _updateMulti(self, pop, FEs, iters):
+        self.observeMulti(pop, FEs, iters)
+        improved = self._archiveImproved
+        self._archiveImproved = False
+        if improved:
+            # Evaluations may update the archive before this iteration commits.
+            self.appearIters = iters
+        front = pop[:0] if self.archive is None else self.archive
+        self.bestDecs = front.decs.copy()
+        self.bestObjs = front.objs.copy()
+        self.bestCons = None if front.cons is None else front.cons.copy()
+        self.bestFeasible = bool(len(front))
+        if self.bestFeasible:
+            refPoint = self._getHvRefPoint(front.objs)
+            if improved or self.bestMetric is None:
+                self.bestMetric = float(HV(front.objs, refPoint=refPoint, normalize=False,
+                                           rng=np.random.default_rng(0)))
+            direction = np.asarray(getattr(getattr(self.algorithm, "problem", None), "opt", 1))
+            self.extra["hv_reference_point"] = refPoint * direction
+            self.extra["hv_normalized"] = False
+        else:
+            self.bestMetric = None
         return improved
 
     def _updateHistory(self, pop, FEs, iters, improved):
+        historyFreq = getattr(self.algorithm, "historyFreq", 1)
+        if historyFreq is not None and (not self.history.iterToFEs or iters % historyFreq == 0):
+            self._recordSnapshot(pop, FEs, iters)
+        self.history.metrics.append(self.bestMetric)
+        self.history.iterToFEs.append([iters, FEs])
+        self.history.improvedHistory.append(bool(improved))
+
+        if self.bestObjs is not None and self.bestObjs.shape[1] == 1:
+            self.history.bestObjHistory.append(float(self.bestObjs[0, 0]))
+        elif self.bestObjs is not None:
+            self.history.numBestHistory.append(int(self.bestObjs.shape[0]))
+            self.history.bestMetricHistory.append(self.bestMetric)
+
+    def recordFinalSnapshot(self):
+        if self.currentPop is not None and self.history.iterToFEs:
+            iters, FEs = self.history.iterToFEs[-1]
+            self._recordSnapshot(self.currentPop, FEs, iters)
+
+    def _recordSnapshot(self, pop, FEs, iters):
+        key = [iters, FEs]
+        if self.history.snapshotIterToFEs and self.history.snapshotIterToFEs[-1] == key:
+            self.history.populations.pop()
+            self.history.bests.pop()
+            self.history.snapshotIterToFEs.pop()
+        self.history.snapshotIterToFEs.append(key)
         self.history.populations.append(
             {
                 "decs": pop.decs.copy(),
+                "constraint_weights": None if pop.conWgt is None else pop.conWgt.copy(),
                 "objs": None if pop.objs is None else pop.objs.copy(),
                 "cons": None if pop.cons is None else pop.cons.copy(),
             }
@@ -181,22 +251,30 @@ class OptState:
                 "bestDecs": None if self.bestDecs is None else self.bestDecs.copy(),
                 "bestObjs": None if self.bestObjs is None else self.bestObjs.copy(),
                 "bestCons": None if self.bestCons is None else self.bestCons.copy(),
+                "candidateDecs": None if self.candidates is None else self.candidates.decs.copy(),
+                "candidateObjs": None if self.candidates is None else self.candidates.objs.copy(),
+                "candidateCons": None if self.candidates is None else self.candidates.cons.copy(),
+                "minViolation": self.minViolation,
+                "bestFeasible": self.bestFeasible,
             }
         )
-        self.history.metrics.append(self.bestMetric)
-        self.history.iterToFEs.append([iters, FEs])
-        self.history.improvedHistory.append(bool(improved))
-
-        if self.bestObjs is not None and self.bestObjs.shape[0] == 1:
-            self.history.bestObjHistory.append(float(self.bestObjs[0, 0]))
-        elif self.bestObjs is not None:
-            self.history.numBestHistory.append(int(self.bestObjs.shape[0]))
-            self.history.bestMetricHistory.append(self.bestMetric)
-
-    def buildResult(self):
+    def buildResult(self, *, includeHistory=True):
+        direction = np.asarray(getattr(self.algorithm.problem, "opt", 1))
+        history = deepcopy(self.history) if includeHistory else OptHistory()
+        for population in history.populations:
+            if population["objs"] is not None:
+                population["objs"] *= direction
+        for best in history.bests:
+            if best["bestObjs"] is not None:
+                best["bestObjs"] *= direction
+            if best.get("candidateObjs") is not None:
+                best["candidateObjs"] *= direction
+        if direction.size == 1:
+            history.bestObjHistory = [value * float(direction.ravel()[0])
+                                      for value in history.bestObjHistory]
         return OptResult(
             bestDecs=None if self.bestDecs is None else self.bestDecs.copy(),
-            bestObjs=None if self.bestObjs is None else self.bestObjs.copy(),
+            bestObjs=None if self.bestObjs is None else self.bestObjs * direction,
             bestCons=None if self.bestCons is None else self.bestCons.copy(),
             bestMetric=self.bestMetric,
             bestFeasible=self.bestFeasible,
@@ -205,8 +283,12 @@ class OptState:
             FEs=self.algorithm.FEs,
             iters=self.algorithm.iters,
             runtime=self.runtime,
-            history=self.history,
-            extra=self.extra.copy(),
+            history=history,
+            extra=deepcopy(self.extra),
+            candidateDecs=None if self.candidates is None else self.candidates.decs.copy(),
+            candidateObjs=None if self.candidates is None else self.candidates.objs * direction,
+            candidateCons=None if self.candidates is None else self.candidates.cons.copy(),
+            minViolation=self.minViolation,
         )
 
     def toNpzPayload(self):
@@ -235,15 +317,29 @@ class OptState:
         }
         if result.bestCons is not None:
             payload["bestCons"] = result.bestCons
+        for name, key in (("candidateDecs", "candidate_decs"), ("candidateObjs", "candidate_objs"),
+                          ("candidateCons", "candidate_cons"), ("minViolation", "min_violation")):
+            value = getattr(result, name)
+            if value is not None:
+                payload[key] = np.asarray(value)
+        if "hv_reference_point" in result.extra:
+            payload["hv_reference_point"] = result.extra["hv_reference_point"]
         if self.history.bestObjHistory:
-            payload["bestObjHistory"] = np.asarray(self.history.bestObjHistory, dtype=float)
+            payload["bestObjHistory"] = np.asarray(result.history.bestObjHistory, dtype=float)
         if self.history.numBestHistory:
             payload["numBestHistory"] = np.asarray(self.history.numBestHistory, dtype=np.int64)
         if self.history.bestMetricHistory:
             payload["bestMetricHistory"] = np.asarray(self.history.bestMetricHistory, dtype=float)
+        weights = result.extra.get("constraint_weights")
+        if weights is not None:
+            payload["constraint_weights"] = np.asarray(weights).copy()
         return payload
 
     def reset(self):
+        self.archive = None
+        self.candidates = None
+        self.minViolation = None
+        self._archiveImproved = False
         self.bestDecs = None
         self.bestObjs = None
         self.bestCons = None
@@ -263,11 +359,15 @@ class OptState:
 
         algRefPoint = getattr(self.algorithm, "hvRefPoint", None)
         if algRefPoint is not None:
-            self.hvRefPoint = np.asarray(algRefPoint, dtype=float).copy()
+            reference = np.asarray(algRefPoint, dtype=float).reshape(-1)
+            if reference.shape != (bestObjs.shape[1],) or not np.all(np.isfinite(reference)):
+                raise ValueError("hvRefPoint must have one finite value per objective.")
+            direction = np.asarray(getattr(getattr(self.algorithm, "problem", None), "opt", 1))
+            self.hvRefPoint = (reference * direction).reshape(-1).copy()
             return self.hvRefPoint
 
         worst = np.max(np.asarray(bestObjs, dtype=float), axis=0)
-        self.hvRefPoint = np.where(worst == 0.0, 0.2, worst * 1.2)
+        self.hvRefPoint = worst + np.where(worst == 0.0, 0.2, np.abs(worst) * 0.2)
         return self.hvRefPoint
 
 

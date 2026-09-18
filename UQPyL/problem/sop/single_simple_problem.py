@@ -1,14 +1,14 @@
 import numpy as np
 from typing import Union
 
-from ..base import ProblemBase
+from ..problem import Problem
 
 ###################Basic Test Function##################
 #Reference: 
 #Xin Yao; Yong Liu; Guangming Lin (1999).Evolutionary programming made faster. , 3(2), 0–102.doi:10.1109/4235.771163
 ###############################################################
 
-class Sphere(ProblemBase):
+class Sphere(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -45,7 +45,7 @@ class Sphere(ProblemBase):
         
         return F
 
-class Schwefel_2_22(ProblemBase):
+class Schwefel_2_22(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -76,7 +76,7 @@ class Schwefel_2_22(ProblemBase):
         
         return F
 
-class Schwefel_1_22(ProblemBase):
+class Schwefel_1_22(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -112,7 +112,7 @@ class Schwefel_1_22(ProblemBase):
             
         return F
     
-class Schwefel_2_21(ProblemBase):
+class Schwefel_2_21(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -145,7 +145,7 @@ class Schwefel_2_21(ProblemBase):
         
         return F
     
-class Rosenbrock(ProblemBase):
+class Rosenbrock(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -179,7 +179,7 @@ class Rosenbrock(ProblemBase):
         
         return F
 
-class Step(ProblemBase):
+class Step(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -210,7 +210,7 @@ class Step(ProblemBase):
         
         return F
     
-class Quartic(ProblemBase):
+class Quartic(Problem):
     r'''
     Types:
         Single Optimization Unimodal
@@ -242,7 +242,7 @@ class Quartic(ProblemBase):
         F = np.sum(Temp, axis=1)[:, np.newaxis] + np.random.random((Temp.shape[0], 1))          
         return F
 
-class Schwefel_2_26(ProblemBase):
+class Schwefel_2_26(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -275,7 +275,7 @@ class Schwefel_2_26(ProblemBase):
             
         return F
     
-class Rastrigin(ProblemBase):
+class Rastrigin(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -307,7 +307,7 @@ class Rastrigin(ProblemBase):
         
         return F
 
-class Ackley(ProblemBase):
+class Ackley(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -340,7 +340,7 @@ class Ackley(ProblemBase):
         
         return F
     
-class Griewank(ProblemBase):
+class Griewank(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -377,7 +377,7 @@ class Griewank(ProblemBase):
 ####
 #########################
 
-class Trid(ProblemBase):
+class Trid(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -408,7 +408,7 @@ class Trid(ProblemBase):
         
         return F
 
-class Bent_Cigar(ProblemBase):
+class Bent_Cigar(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -440,7 +440,7 @@ class Bent_Cigar(ProblemBase):
         
         return F
     
-class Discus(ProblemBase):
+class Discus(Problem):
     r'''
     Types:
         Single Optimization Multimodal
@@ -472,7 +472,7 @@ class Discus(ProblemBase):
         
         return F
     
-class Weierstrass(ProblemBase):
+class Weierstrass(Problem):
     r'''
     Types:
         Single Optimization Multimodal

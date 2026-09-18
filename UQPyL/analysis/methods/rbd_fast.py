@@ -3,6 +3,7 @@ from scipy.signal import periodogram
 from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
+from ._variance import scaleOutput
 from ...problem import ProblemABC as Problem
 
 class RBDFAST(AnalysisABC):
@@ -66,27 +67,24 @@ class RBDFAST(AnalysisABC):
         M = self.get('M')
         
         # Set the problem instance for analysis
-        self.setProblem(problem)
         
         nInput = problem.nInput
         
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
         
-        X, Y = self.__check_X_Y__(X, Y)
         
         numY = Y.shape[1]
-        outputLabel = "obj" if target == "objs" else "con"
         
         # Initialize an array to store first-order sensitivity indices
         
         S1 = np.zeros((numY, nInput))
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         for i in range(numY):
             
-            Y_i = Y[:, i:i+1]
+            Y_i = scaleOutput(Y[:, i:i+1])
             
             # Calculate sensitivity indices for each input variable
             for j in range(nInput):
@@ -97,7 +95,7 @@ class RBDFAST(AnalysisABC):
                 # Perform periodogram analysis
                 _, Pxx = periodogram(Y_seq.ravel())
                 V = np.sum(Pxx[1:])
-                if np.isclose(V, 0.0):
+                if V == 0.0:
                     S1[i, j] = 0.0
                     continue
                 D1 = np.sum(Pxx[1: M+1])

@@ -35,7 +35,7 @@ class MorrisDesign(Sampler):
         
         self.numLevels = numLevels
 
-    def sampleWithMeta(self, problem, numTrajectory: int, seed=None):
+    def sampleWithMeta(self, problem, numTrajectory: int, seed=None, *, output="real"):
         """
         Generate Morris samples with metadata.
 
@@ -45,7 +45,7 @@ class MorrisDesign(Sampler):
         :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
         self._validate_num_levels()
-        return super().sampleWithMeta(problem, numTrajectory, seed=seed)
+        return super().sampleWithMeta(problem, numTrajectory, seed=seed, output=output)
 
     def _validate_num_levels(self):
         if not isinstance(self.numLevels, int):

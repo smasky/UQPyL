@@ -1,8 +1,9 @@
 import abc
+import functools
 import numpy as np
 from typing import Union, Optional
 
-from .decorators import singleEval, singleFunc
+from .decorators import singleFunc
 from .eval import Eval
 from .space import Space, SpaceBase
 
@@ -11,6 +12,26 @@ class ProblemBase(metaclass=abc.ABCMeta):
     """
     Base class for static optimization / analysis problems.
     """
+
+    _evalTargets = (None, "objs", "cons")
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+
+        evaluateMethod = cls.__dict__.get("evaluate")
+        if evaluateMethod is None or getattr(evaluateMethod, "_uqpylWrapped", False):
+            return
+
+        @functools.wraps(evaluateMethod)
+        def wrappedEvaluate(self, X, target=None):
+            if target not in self._evalTargets:
+                raise ValueError(f"The target must be one of {self._evalTargets}.")
+            x2d = self.validate(X)
+            evalRes = evaluateMethod(self, x2d, target=target)
+            return self._validate_eval_result(evalRes, x2d, target)
+
+        wrappedEvaluate._uqpylWrapped = True
+        setattr(cls, "evaluate", wrappedEvaluate)
 
     def __init__(self, nInput:int = None, nObj:int = None,
                  ub: Union[int, float, list, np.ndarray] = None, lb: Union[int, float, list, np.ndarray] = None,
@@ -89,82 +110,62 @@ class ProblemBase(metaclass=abc.ABCMeta):
         if conWgt is not None:
             if not isinstance(conWgt, list):
                 raise ValueError('The type of conWgt must be list or None.')
-            conWgt = np.array(conWgt).reshape(1, -1)
+            conWgt = np.asarray(conWgt, dtype=float)
+            if conWgt.ndim != 1 or conWgt.size != self.nCon:
+                raise ValueError("conWgt length must match nCon.")
+            if not np.all(np.isfinite(conWgt)) or np.any(conWgt < 0):
+                raise ValueError("conWgt must contain finite nonnegative weights.")
+            conWgt = conWgt.reshape(1, -1).copy()
 
         self.conWgt = conWgt
     
+    @abc.abstractmethod
     def evaluate(self, X, target=None):
-        """
-        Evaluate the problem using either a user-defined or default method.
-        
-        :param X: Input data to evaluate.
-        :return: Evaluation outputs for objectives and constraints.
-        """
-        
-        # Use the user-defined evaluation method if available
-        if target not in (None, "objs", "cons"):
-            raise ValueError("The target must be None, 'objs' or 'cons'.")
+        raise NotImplementedError
 
-        eval_fn = getattr(self, "_eval_fn", None)
-        if eval_fn is not None:
-            eval = eval_fn(X)
-            if not isinstance(eval, Eval):
-                raise TypeError("evaluate must return Eval.")
-            objs = eval.objs
-            cons = eval.cons
+    def _validate_common_eval_result(self, evalRes, X):
+        if not isinstance(evalRes, Eval):
+            raise TypeError("evaluate must return Eval.")
+
+        nSamples = X.shape[0]
+        objs = self._coerce_eval_block(evalRes.objs, nSamples, self.nObj, "objs")
+        cons = self._coerce_eval_block(evalRes.cons, nSamples, self.nCon, "cons")
+
+        return objs, cons
+
+    @abc.abstractmethod
+    def _validate_eval_result(self, evalRes, X, target):
+        raise NotImplementedError
+
+    def _coerce_eval_block(self, value, nSamples, nCols, label):
+        if value is None:
+            return None
+
+        arr = np.asarray(value)
+        if not np.issubdtype(arr.dtype, np.number):
+            raise TypeError(f"`{label}` must be numeric.")
+
+        if arr.ndim == 0:
+            if nSamples != 1 or nCols != 1:
+                raise ValueError(f"`{label}` scalar output only supports a single sample and single column.")
+            arr = arr.reshape(1, 1)
+        elif arr.ndim == 1:
+            if arr.shape[0] != nSamples:
+                raise ValueError(f"`{label}` first dimension must equal n_samples.")
+            if nCols != 1:
+                raise ValueError(f"`{label}` must be a 2D array with {nCols} columns.")
+            arr = arr.reshape(-1, 1)
+        elif arr.ndim == 2:
+            pass
         else:
-            objs = self.objFunc(X) if target in (None, "objs") else None
-            cons = self.conFunc(X) if target in (None, "cons") else None
-            return Eval(objs=objs, cons=cons)
+            raise ValueError(f"`{label}` must be a 1D or 2D numeric array.")
 
-        if target == "objs":
-            cons = None
-        elif target == "cons":
-            objs = None
+        if arr.shape[0] != nSamples:
+            raise ValueError(f"`{label}` first dimension must equal n_samples.")
+        if arr.shape[1] != nCols:
+            raise ValueError(f"`{label}` second dimension must equal {nCols}.")
 
-        return Eval(objs=objs, cons=cons)
-
-    def objFunc(self, X):
-        """
-        Default objective function.
-        
-        :param X: Input data.
-        :return: Array of objective values.
-        """
-        
-        obj_fn = getattr(self, "_obj_fn", None)
-        if obj_fn is not None:
-            return obj_fn(X)
-        
-        eval_fn = getattr(self, "_eval_fn", None)
-        if eval_fn is not None:
-            eval = eval_fn(X)
-            if not isinstance(eval, Eval):
-                raise TypeError("evaluate must return Eval.")
-            return eval.objs
-        
-        return np.full((X.shape[0], 1), np.inf)  # Default to infinity if not overridden
-  
-    def conFunc(self, X):
-        """
-        Default constraint function.
-        
-        :param X: Input data.
-        :return: Array of constraint values or None.
-        """
-        
-        con_fn = getattr(self, "_con_fn", None)
-        if con_fn is not None:
-            return con_fn(X)
-        
-        eval_fn = getattr(self, "_eval_fn", None)
-        if eval_fn is not None:
-            eval = eval_fn(X)
-            if not isinstance(eval, Eval):
-                raise TypeError("evaluate must return Eval.")
-            return eval.cons
-        
-        return None  # Default to None if not overridden
+        return arr
         
     def getOptimum(self):
         """
@@ -210,6 +211,12 @@ class ProblemBase(metaclass=abc.ABCMeta):
     def unit_to_space(self, X, IFlag=True, DFlag=True):
         return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
 
+    def space_to_unit(self, X):
+        return self.space.space_to_unit(X)
+
+    def canonicalize_unit(self, X):
+        return self.space.canonicalize_unit(X)
+
     def apply_var_type(self, X, IFlag=True, DFlag=True):
         return self.space.apply_var_type(X, IFlag=IFlag, DFlag=DFlag)
 
@@ -219,18 +226,4 @@ class ProblemBase(metaclass=abc.ABCMeta):
     def map_discrete_vars(self, X):
         return self.space.map_discrete_vars(X)
 
-    # Compatibility wrappers retained during migration.
-    def _transform_discrete_var(self, X):
-        return self.map_discrete_vars(X)
-
-    def _transform_int_var(self, X):
-        return self.cast_int_vars(X)
-
-    def _transform_to_I_D(self, X, IFlag=True, DFlag=True):
-        return self.apply_var_type(X, IFlag=IFlag, DFlag=DFlag)
-
-    def _transform_unit_X(self, X, IFlag=True, DFlag=True):
-        return self.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
-        
     singleFunc = staticmethod(singleFunc)
-    singleEval = staticmethod(singleEval)

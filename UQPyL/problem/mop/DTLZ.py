@@ -2,14 +2,14 @@ import numpy as np
 import itertools
 from typing import Union
 
-from ..base import ProblemBase
+from ..problem import Problem
 
 ##----------------Reference-------------------#
 # K. Deb, L. Thiele, M. Laumanns, and E. Zitzler, Scalable test problems
 # for evolutionary multiobjective optimization, Evolutionary multiobjective
 # Optimization. Theoretical Advances and Applications, 2005, 105-145.
 ##--------------------------------------------#
-class DTLZ1(ProblemBase):
+class DTLZ1(Problem):
     '''
     Multi-Objective problem named DTLZ1 of the DTLZ suit.
     
@@ -112,7 +112,7 @@ class DTLZ1(ProblemBase):
 
             return (f1, f2, f3)
 
-class DTLZ2(ProblemBase):
+class DTLZ2(Problem):
     '''
     Multi-Objective problem named DTLZ2 of the DTLZ suit.
     
@@ -200,7 +200,7 @@ class DTLZ2(ProblemBase):
 
             return (f1, f2, f3)
     
-class DTLZ3(ProblemBase):
+class DTLZ3(Problem):
     '''
     Multi-Objective problem named DTLZ3 of the DTLZ suit.
     
@@ -280,7 +280,7 @@ class DTLZ3(ProblemBase):
 
             return (f1, f2, f3)
 
-class DTLZ4(ProblemBase):
+class DTLZ4(Problem):
     '''
     Multi-Objective problem named DTLZ4 of the DTLZ suit.
     
@@ -364,7 +364,7 @@ class DTLZ4(ProblemBase):
 
             return (f1, f2, f3)
         
-class DTLZ5(ProblemBase):
+class DTLZ5(Problem):
     '''
     Multi-Objective problem named DTLZ5 of the DTLZ suit.
     
@@ -457,7 +457,7 @@ class DTLZ5(ProblemBase):
                 
             return (f1, f2, f3)
 
-class DTLZ6(ProblemBase):
+class DTLZ6(Problem):
     '''
     Multi-Objective problem named DTLZ6 of the DTLZ suit.
     
@@ -548,7 +548,7 @@ class DTLZ6(ProblemBase):
                 
             return (f1, f2, f3)
 
-class DTLZ7(ProblemBase):
+class DTLZ7(Problem):
     '''
     Multi-Objective problem named DTLZ7 of the DTLZ suit.
     

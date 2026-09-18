@@ -20,7 +20,7 @@ def test_ies_iterative_updates_reduce_mean_score_beyond_single_es_step():
         lb=0.0,
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="NonlinearToyModel",
     )
 

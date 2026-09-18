@@ -20,7 +20,7 @@
 
 | 对象 | 含义 |
 |---|---|
-| `problem` | 一个 `Problem` 或 benchmark problem，定义输入、边界、标签和输出。 |
+| `problem` | 一个 `ProblemBase` 协议对象，通常是 `Problem`、`ModelProblem` 或内置 benchmark direct problem，用来定义输入、边界、标签和输出。 |
 | `X` | 输入样本矩阵，形状为 `(n_samples, n_input)`。 |
 | `Y` | 输出矩阵，形状为 `(n_samples, n_outputs)`。每一行必须对应 `X` 的同一行。 |
 | `meta` | 来自 `sampleWithMeta()` 的采样元信息。`Sobol`、`FAST` 和 `Morris` 必须使用。 |

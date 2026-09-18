@@ -10,21 +10,24 @@ class ThinPlateSpline(BaseKernel):
         
         super().__init__()
         
-        self.setting.set("epsilon", epsilon, epsilon_attr)
+        self._setKernelParameter("epsilon", epsilon, epsilon_attr)
         
     def evaluate(self, dist):
+        self.validateParameters()
         
         epsilon = self.setting.get("epsilon")
         
-        dist[dist < np.finfo(float).eps] = np.finfo(float).eps
-        
-        return np.power(dist*epsilon,2)*np.log(dist*epsilon)
+        scaledDist = np.asarray(dist, dtype=float) * epsilon
+        result = np.zeros_like(scaledDist)
+        nonzero = scaledDist != 0
+        result[nonzero] = scaledDist[nonzero]**2 * np.log(scaledDist[nonzero])
+        return result
     
     def get_Tail_Matrix(self, xTrain):
         
         nSample, nFeature = xTrain.shape
         Tail = np.ones((nSample, nFeature+1))
-        Tail[:self.n_samples,:self.n_features] = xTrain
+        Tail[:, :nFeature] = xTrain
         
         return (True,Tail)
     

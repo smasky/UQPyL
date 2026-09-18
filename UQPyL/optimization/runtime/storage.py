@@ -4,13 +4,22 @@ import sqlite3
 import numpy as np
 
 from ...core.runtime import array_to_json
+from ..core.constraint import calcConstraintViolation
 from ...core.runtime_storage import BaseSqliteStorage
 
 
 class SqliteStorage(BaseSqliteStorage):
+    domain = 'optimization'
     """
     Persist optimization runs and snapshots into sqlite files.
     """
+    def _save_params(self, conn, run_id, obj):
+        super()._save_params(conn, run_id, obj)
+        for name, value in obj.exportConfig().items():
+            conn.execute("DELETE FROM runParam WHERE runId = ? AND name = ?", (run_id, name))
+            conn.execute("INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)",
+                         (run_id, name, repr(value)))
+
     def _makeRunId(self, algorithmName, problemName):
         _, runId = self._db_path(algorithmName, problemName)
         return runId
@@ -64,17 +73,26 @@ class SqliteStorage(BaseSqliteStorage):
 
         constraintViolation = 0.0
         if result.bestCons is not None:
-            constraintViolation = float(np.sum(np.maximum(0.0, result.bestCons)))
+            constraintViolation = float(np.sum(calcConstraintViolation(result.bestCons, problem.conWgt)))
 
+        if problem.nObj > 1 and result.minViolation is not None:
+            constraintViolation = result.minViolation
+
+        currentPop = None if obj.state.currentPop is None else obj.state.currentPop.copy()
+        if currentPop is not None and currentPop.objs is not None:
+            currentPop.objs = currentPop.objs * problem.opt
+        weights = None if problem.conWgt is None else np.asarray(problem.conWgt).tolist()
         populationPayload = array_to_json({
-            "decs": None if obj.state.currentPop is None else obj.state.currentPop.decs.tolist(),
-            "objs": None if obj.state.currentPop is None or obj.state.currentPop.objs is None else obj.state.currentPop.objs.tolist(),
-            "cons": None if obj.state.currentPop is None or obj.state.currentPop.cons is None else obj.state.currentPop.cons.tolist(),
+            "constraint_weights": weights,
         })
         bestPayload = array_to_json({
-            "decs": None if result.bestDecs is None else result.bestDecs.tolist(),
-            "objs": None if result.bestObjs is None else result.bestObjs.tolist(),
-            "cons": None if result.bestCons is None else result.bestCons.tolist(),
+            "constraint_weights": weights,
+            "best_feasible": result.bestFeasible,
+            "appear_fes": result.appearFEs,
+            "appear_iters": result.appearIters,
+            "improved": obj.state.history.improvedHistory[-1] if obj.state.history.improvedHistory else False,
+            "min_violation": result.minViolation,
+            "hv_reference_point": None if result.extra.get("hv_reference_point") is None else np.asarray(result.extra["hv_reference_point"]).tolist(),
         })
 
         cur = conn.execute(
@@ -99,13 +117,18 @@ class SqliteStorage(BaseSqliteStorage):
         )
         snapshotId = cur.lastrowid
 
-        currentPop = obj.state.currentPop
         if currentPop is not None:
             self._insertMembers(conn, snapshotId, "population", currentPop)
 
         if result.bestDecs is not None and result.bestObjs is not None:
             role = "best" if problem.nObj == 1 else "pareto"
             self._insertBestMembers(conn, snapshotId, role, result)
+
+        if result.candidateDecs is not None:
+            from ..population import Population
+            candidates = Population(result.candidateDecs, result.candidateObjs,
+                                    result.candidateCons, problem.conWgt)
+            self._insertMembers(conn, snapshotId, "candidate", candidates)
 
         if isFinal:
             self.finalize_run(

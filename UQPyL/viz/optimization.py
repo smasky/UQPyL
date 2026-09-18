@@ -23,31 +23,7 @@ def _coerce_opt_result(source):
 
 
 def _build_opt_result_from_reader(reader: OptReader):
-    run = reader.get_run()
-    if run is None:
-        raise ValueError("No optimization run found in sqlite database.")
-    snapshots = reader.list_snapshots()
-    best = reader.load_last_best()
-
-    history = type("History", (), {})()
-    history.iterToFEs = [[snap["iter"], snap["fe"]] for snap in snapshots]
-    history.bestObjHistory = [snap["bestObj"] for snap in snapshots if snap["bestObj"] is not None]
-    history.bestMetricHistory = [snap["hypervolume"] for snap in snapshots if snap["hypervolume"] is not None]
-    history.numBestHistory = [snap["paretoSize"] for snap in snapshots if snap["paretoSize"] is not None]
-
-    return OptResult(
-        bestDecs=best.decs.copy(),
-        bestObjs=best.objs.copy() if best.objs is not None else None,
-        bestCons=best.cons.copy() if best.cons is not None else None,
-        bestMetric=history.bestMetricHistory[-1] if history.bestMetricHistory else None,
-        bestFeasible=True,
-        appearFEs=run.get("finalFEs"),
-        appearIters=run.get("finalIters"),
-        FEs=run.get("finalFEs", 0),
-        iters=run.get("finalIters", 0),
-        runtime=run.get("runtime", 0.0) or 0.0,
-        history=history,
-    )
+    return reader.load_result()
 
 
 def _history_xy(result: OptResult, x_coord: str):
@@ -59,7 +35,10 @@ def _history_xy(result: OptResult, x_coord: str):
         y = np.asarray(result.history.bestObjHistory, dtype=float)
     else:
         y = np.asarray(result.history.bestMetricHistory, dtype=float)
-    return x[: len(y)], y
+    if len(x) != len(y):
+        raise ValueError("Optimization history coordinates and metrics must have equal lengths.")
+    valid = np.isfinite(y)
+    return x[valid], y[valid]
 
 
 def plot_op_curve(source: dict, xCoord: str = "iter", yLog: bool = False, ySmooth: bool = False, xlim=None,

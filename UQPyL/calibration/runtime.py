@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
 import os
@@ -7,7 +8,7 @@ from typing import Any
 
 import numpy as np
 
-from ..core.runtime import export_runtime_meta
+from ..core.runtime import ensure_result_dir, export_runtime_meta
 from ..core.runtime_storage import BaseSqliteStorage
 
 
@@ -33,7 +34,7 @@ class CalResult:
     createdAt: str
     obs: np.ndarray
     mask: np.ndarray
-    simLabels: list[str]
+    seriesLabels: list[str]
     bestDecs: np.ndarray | None = None
     bestSim: np.ndarray | None = None
     posteriorDecs: np.ndarray | None = None
@@ -98,6 +99,7 @@ class CalState:
         self.history.reset()
 
     def buildResult(self):
+        """Build a snapshot independent of mutable runtime state and settings."""
         problem = self.calibration.problem
         return CalResult(
             runId=getattr(self.calibration, "runId", None),
@@ -107,12 +109,12 @@ class CalState:
             nTime=problem.obs.shape[0],
             nSeries=problem.obs.shape[1],
             nObs=problem.obs.size,
-            settings=self.calibration.params.asDict(),
+            settings=deepcopy(self.calibration.params.asDict()),
             runtime=float(self.runtime),
             createdAt=self.createdAt,
             obs=problem.obs.copy(),
             mask=problem.mask.copy() if problem.mask is not None else np.zeros(problem.obs.shape, dtype=bool),
-            simLabels=list(problem.simLabels),
+            seriesLabels=list(problem.seriesLabels),
             bestDecs=None if self.bestDecs is None else self.bestDecs.copy(),
             bestSim=None if self.bestSim is None else self.bestSim.copy(),
             posteriorDecs=None if self.posteriorDecs is None else self.posteriorDecs.copy(),
@@ -121,9 +123,9 @@ class CalState:
             behavioralSims=None if self.behavioralSims is None else self.behavioralSims.copy(),
             eliteDecs=None if self.eliteDecs is None else self.eliteDecs.copy(),
             eliteSims=None if self.eliteSims is None else self.eliteSims.copy(),
-            diagnostics=dict(self.diagnostics),
-            history=self.history,
-            extra=dict(self.extra),
+            diagnostics=deepcopy(self.diagnostics),
+            history=deepcopy(self.history),
+            extra=deepcopy(self.extra),
         )
 
 
@@ -152,10 +154,9 @@ def format_summary(result: CalResult) -> str:
 
 
 def save_log(result: CalResult, workDir: str):
-    resultDir = os.path.join(workDir, "Result")
+    resultDir = ensure_result_dir(workDir)
     os.makedirs(resultDir, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    fileName = f"{result.method.lower()}_{timestamp}.log"
+    fileName = f"{result.runId}.log"
     filePath = os.path.join(resultDir, fileName)
     with open(filePath, "w", encoding="utf-8") as f:
         f.write(format_summary(result) + "\n")
@@ -184,6 +185,7 @@ def _fmt_vector(value):
 
 
 class SqliteStorage(BaseSqliteStorage):
+    domain = 'calibration'
     def _makeRunId(self, methodName, problemName):
         _, runId = self._db_path(methodName, problemName)
         return runId
@@ -216,26 +218,8 @@ class SqliteStorage(BaseSqliteStorage):
     def saveResult(self, session, result: CalResult):
         conn = session.conn
         runId = session.run_id
-        self.finalize_run(session, status="finished", runtime=result.runtime)
 
-        artifacts = {
-            "result": result,
-            "obs": result.obs,
-            "mask": result.mask,
-            "simLabels": result.simLabels,
-            "bestDecs": result.bestDecs,
-            "bestSim": result.bestSim,
-            "posteriorDecs": result.posteriorDecs,
-            "posteriorSims": result.posteriorSims,
-            "behavioralDecs": result.behavioralDecs,
-            "behavioralSims": result.behavioralSims,
-            "eliteDecs": result.eliteDecs,
-            "eliteSims": result.eliteSims,
-            "diagnostics": result.diagnostics,
-            "history": result.history,
-            "settings": result.settings,
-            "extra": result.extra,
-        }
+        artifacts = {"result": result, "summary": result.summary()}
         for name, payload in artifacts.items():
             conn.execute(
                 "INSERT INTO artifact (runId, name, payload) VALUES (?, ?, ?)",
@@ -246,7 +230,7 @@ class SqliteStorage(BaseSqliteStorage):
                 ),
             )
 
-        conn.commit()
+        self.finalize_run(session, status="finished", runtime=result.runtime)
 
     def _create_schema(self, conn):
         conn.executescript(

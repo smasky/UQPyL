@@ -30,7 +30,7 @@ class NSGAIII(AlgorithmABC):
                  maxFEs=50000, maxIters=1000, 
                  maxTolerates=None, tolerate=1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, 
-                 logFlag: bool = True, saveFlag: bool = True, saveFreq: int = 100):
+                 logFlag: bool = True, saveFlag: bool = True, saveFreq: int = 100, hvRefPoint=None, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -47,11 +47,12 @@ class NSGAIII(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, hvRefPoint=hvRefPoint, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('proC', proC)
@@ -61,12 +62,13 @@ class NSGAIII(AlgorithmABC):
         self.set('nPop', nPop)
         
     #-------------------------Public Functions------------------------#
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -80,11 +82,11 @@ class NSGAIII(AlgorithmABC):
         Z, nPop = uniformPoint(nPop, problem.nOutput)
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
         
         # Perform non-dominated sorting
-        frontNo, _ = NDSort(pop.objs, pop.cons)
+        frontNo, _ = NDSort(pop.objs, pop.cons, conWgt=pop.conWgt)
         
         # Iterative process
         while self.checkTermination(pop):
@@ -97,7 +99,7 @@ class NSGAIII(AlgorithmABC):
             matingPool = pop[matingIdx]
            
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
+            offspringDecs = gaOperator(matingPool.decs, self.searchUb, self.searchLb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring
@@ -110,16 +112,16 @@ class NSGAIII(AlgorithmABC):
             Zmin = np.min(pop.objs, axis=0, keepdims=True)
             
             # Select the best individuals to form the new population
-            nextIdx, frontNo = self.environmentSelection(pop.objs, pop.cons, Z, Zmin)
+            nextIdx, frontNo = self.environmentSelection(pop.objs, pop.cons, Z, Zmin, conWgt=pop.conWgt)
             pop = pop[nextIdx]
             
             pop.frontNo = frontNo
-            self.update(pop)
+            self.update(pop, completed=True)
             
         # Return the final result
         return self.finalize()
     
-    def environmentSelection(self, popObjs, popCons, Z, Zmin):
+    def environmentSelection(self, popObjs, popCons, Z, Zmin, conWgt=None):
         '''
         Perform environmental selection to choose the next generation.
 
@@ -133,7 +135,7 @@ class NSGAIII(AlgorithmABC):
         N = Z.shape[0]
         
         # Perform non-dominated sorting
-        frontNo, maxFNo = NDSort(popObjs,popCons, N)
+        frontNo, maxFNo = NDSort(popObjs, popCons, N, conWgt=conWgt)
         
         # Determine which individuals to keep
         nextIdx = frontNo < maxFNo
@@ -181,22 +183,24 @@ class NSGAIII(AlgorithmABC):
             Extreme[i] = np.argmin(np.max(PopObj / w[i], axis=1))
 
         # Calculate the intercepts of the hyperplane constructed by the extreme points
+        span = np.max(PopObj, axis=0)
+        fallback = np.where(span > 0, span, 1.0)
         try:
-            Hyperplane = np.linalg.solve(PopObj[Extreme, :], np.ones(M))
+            hyperplane = np.linalg.solve(PopObj[Extreme, :], np.ones(M))
+            a = np.divide(1.0, hyperplane, out=fallback.copy(), where=hyperplane > 0)
+            if np.any(hyperplane <= 0) or not np.all(np.isfinite(a)):
+                a = fallback
         except np.linalg.LinAlgError:
-            Hyperplane = np.ones(M)
-        a = 1 / Hyperplane
-        if np.any(np.isnan(a)):
-            a = np.max(PopObj, axis=0)
-        
-        # Normalize PopObj
+            a = fallback
         PopObj = PopObj / a
 
-        # Associate each solution with one reference point
-        # Calculate the cosine similarity
-        Cosine = 1 - cdist(PopObj, Z, 'cosine')
-        Distance = np.sqrt(np.sum(PopObj**2, axis=1)).reshape(-1, 1) * np.sqrt(1 - Cosine**2)
-        
+        vectorNorm = np.linalg.norm(Z, axis=1, keepdims=True)
+        if np.any(vectorNorm <= 0) or not np.all(np.isfinite(vectorNorm)):
+            raise ValueError("Reference points must be finite and nonzero.")
+        unitZ = Z / vectorNorm
+        projection = PopObj @ unitZ.T
+        Distance = np.linalg.norm(PopObj[:, None, :] - projection[:, :, None] * unitZ, axis=2)
+
         # Find the nearest reference point for each solution
         d = np.min(Distance, axis=1)
         pi = np.argmin(Distance, axis=1)

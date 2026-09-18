@@ -18,9 +18,8 @@ class LBFGSB():
         ub = np.asarray(problem.ub, dtype=float).ravel()
 
         if xInit is None:
-            if seed is not None:
-                np.random.seed(seed)
-            xInit = np.random.uniform(lb, ub, problem.nInput)
+            rng = np.random.default_rng(seed)
+            xInit = rng.uniform(lb, ub, problem.nInput)
         else:
             xInit = np.asarray(xInit, dtype=float).ravel()
 

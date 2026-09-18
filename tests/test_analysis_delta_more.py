@@ -53,7 +53,7 @@ def test_delta_find_comb_ea_monkeypatched(monkeypatch):
             assert problem.nOutput == 1
             return {"ok": True, "maxFEs": self.maxFEs}
 
-    import UQPyL.analysis.delta as delta_mod
+    import UQPyL.optimization.soea as delta_mod
 
     monkeypatch.setattr(delta_mod, "GA", DummyGA)
 
@@ -81,5 +81,4 @@ def test_delta_analyze_uses_relative_delta_change():
     assert np.all(np.isfinite(s1Metric.values))
     assert np.all(np.isfinite(s1NormMetric.values))
     assert np.argmax(s1Metric.values[0]) == 0
-
 

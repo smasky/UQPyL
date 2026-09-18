@@ -55,23 +55,20 @@ class RSA(AnalysisABC):
         """
         
         # Set the problem instance for analysis
-        self.setProblem(problem)
         
         nInput = problem.nInput
         
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
         
-        X, Y = self.__check_X_Y__(X, Y)
         
         numY = Y.shape[1]
         nRegion = self.get("nRegion")
-        outputLabel = "obj" if target == "objs" else "con"
         
         S1 = np.zeros((numY, nInput))
         S1_norm = np.zeros((numY, nInput))
         
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         for i in range(numY):

@@ -9,9 +9,10 @@ class Cubic(BaseKernel):
         
         super().__init__()
         
-        self.setting.set("epsilon", epsilon, epsilon_attr)
+        self._setKernelParameter("epsilon", epsilon, epsilon_attr)
         
     def evaluate(self, dist):
+        self.validateParameters()
         
         epsilon = self.setting.get("epsilon")
     

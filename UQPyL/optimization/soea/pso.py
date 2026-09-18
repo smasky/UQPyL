@@ -32,7 +32,7 @@ class PSO(AlgorithmABC):
                  maxFEs: int = 50000,
                  maxTolerates: int = 1000, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -48,13 +48,14 @@ class PSO(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag=logFlag, saveFlag=saveFlag,
-                         saveFreq = saveFreq)
+                         saveFreq = saveFreq, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('w', w)
@@ -62,12 +63,13 @@ class PSO(AlgorithmABC):
         self.set('c2', c2)
         self.set('nPop', nPop)
                 
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         
@@ -80,13 +82,13 @@ class PSO(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
                 
         # Initialize personal best and global best
         pBest = pop  # Personal best
         gBest = pop.getBest(k=1)  # Global best
-        vel = pop.decs  # Velocity
+        vel = np.zeros_like(pop.decs)  # No coordinate-dependent initial drift.
         
         # Iterative process
         while self.checkTermination(pop):
@@ -106,7 +108,7 @@ class PSO(AlgorithmABC):
             
             # Update global best
             gBest = pBest.getBest(k=1)
-            self.update(pop)
+            self.update(pop, completed=True)
             
         # Return the final result
         return self.finalize()
@@ -139,7 +141,7 @@ class PSO(AlgorithmABC):
         
         # Update positions
         offspringDecs = popDecs + offVel
-        np.clip(offspringDecs, self.problem.lb, self.problem.ub, out=offspringDecs)
+        np.clip(offspringDecs, self.searchLb, self.searchUb, out=offspringDecs)
         
         return offspringDecs, offVel
     
@@ -166,8 +168,8 @@ class PSO(AlgorithmABC):
         
         # Reinitialize selected particles
         offspringDecs[rows_to_mutate, cols_to_mutate] = self.rng.uniform(
-            self.problem.lb[0, cols_to_mutate],
-            self.problem.ub[0, cols_to_mutate],
+            self.searchLb[0, cols_to_mutate],
+            self.searchUb[0, cols_to_mutate],
             size=n_to_reinit,
         )
         

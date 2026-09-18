@@ -14,6 +14,7 @@ def _json_dumps(value):
 
 
 class SqliteStorage(BaseSqliteStorage):
+    domain = 'analysis'
     def _makeRunId(self, methodName, problemName):
         _, runId = self._db_path(methodName, problemName)
         return runId
@@ -46,7 +47,6 @@ class SqliteStorage(BaseSqliteStorage):
     def saveResult(self, session, result: AnaResult):
         conn = session.conn
         runId = session.run_id
-        self.finalize_run(session, status="finished", runtime=result.runtime)
         conn.execute("UPDATE run SET target=? WHERE runId=?", (result.target, runId))
 
         for metric in result.metrics:
@@ -82,7 +82,7 @@ class SqliteStorage(BaseSqliteStorage):
                 ),
             )
 
-        conn.commit()
+        self.finalize_run(session, status="finished", runtime=result.runtime)
 
     def _create_schema(self, conn):
         conn.executescript(

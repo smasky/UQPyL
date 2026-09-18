@@ -83,3 +83,73 @@ def test_base_sqlite_storage_requires_schema_hooks(local_tmp_path):
 
     with pytest.raises(NotImplementedError):
         storage.create_run(object())
+
+
+def test_global_config_controls_result_directory(local_tmp_path):
+    from UQPyL.core import build_db_path, config
+
+    config.reset()
+    try:
+        config.set(workDir=local_tmp_path, resultDirName="Runs")
+        db_path, run_id = build_db_path(None, "GA", "Sphere")
+
+        assert Path(db_path).parent == local_tmp_path / "Runs"
+        assert Path(db_path).name.startswith("ga_Sphere_")
+        assert run_id.startswith("ga_Sphere_")
+        assert (local_tmp_path / "Runs").exists()
+    finally:
+        config.reset()
+
+
+def test_explicit_root_dir_overrides_global_config(local_tmp_path):
+    from UQPyL.core import build_db_path, config
+
+    explicit_root = local_tmp_path / "explicit"
+    config.reset()
+    try:
+        config.workDir = local_tmp_path / "global"
+        db_path, _ = build_db_path(explicit_root, "GA", "Sphere")
+
+        assert Path(db_path).parent == explicit_root / "Result"
+    finally:
+        config.reset()
+
+
+def test_reader_uses_configured_result_dir_name(local_tmp_path):
+    from UQPyL.core import config
+    from UQPyL.core.runtime_reader import BaseReader
+
+    config.reset()
+    try:
+        config.resultDirName = "Runs"
+        result_dir = local_tmp_path / "Runs"
+        result_dir.mkdir()
+        db_path = result_dir / "demo.sqlite3"
+
+        conn = sqlite3.connect(db_path)
+        conn.execute(
+            """
+            CREATE TABLE run (
+                runId TEXT PRIMARY KEY,
+                method TEXT NOT NULL,
+                problem TEXT NOT NULL,
+                status TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute(
+            "INSERT INTO run (runId, method, problem, status) VALUES (?, ?, ?, ?)",
+            ("demo_002", "DemoMethod", "DemoProblem", "finished"),
+        )
+        conn.commit()
+        conn.close()
+
+        runs = BaseReader.list_runs(
+            local_tmp_path,
+            run_columns="runId, method, problem, status",
+        )
+
+        assert len(runs) == 1
+        assert runs[0]["run_id"] == "demo_002"
+    finally:
+        config.reset()

@@ -1,8 +1,8 @@
+from .._kernel import installKernel
 import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.linalg import lu, pinv
 from typing import Tuple, Optional, Literal
-from copy import deepcopy
 
 from .kernel import BaseKernel, Cubic
 from ..base import SurrogateABC
@@ -30,14 +30,15 @@ class RBF(SurrogateABC):
      
     def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None), 
                     polyFeature: PolyFeature = None,
-                        kernel: Optional[BaseKernel] = Cubic(), 
-                            C_smooth: int = 0.0, 
+                        kernel: Optional[BaseKernel] = None,
+                            C_smooth: float = 0.0,
                             C_smooth_attr: dict = {'ub': 1e5, 'lb': 1e-5, 'type': 'float', 'log': True}):
         """
         :param scalers: Tuple of input and output scalers.
         :param polyFeature: Polynomial features to be used.
         :param kernel: Kernel function for the RBF network.
-        :param C_smooth: Smoothing parameter.
+        :param C_smooth: Finite, nonnegative smoothing strength applied only to
+                         the kernel-block diagonal with the kernel's sign.
         :param C_smooth_attr: Attribute for the smoothing parameter.
         """
         super().__init__(scalers, polyFeature)
@@ -45,80 +46,21 @@ class RBF(SurrogateABC):
         self.setting.set("C_smooth", C_smooth, C_smooth_attr)
 
         self.registerParameterApplier("kernel", self.setKernel)
-        self._kernelChoiceRegistered = False
         
         self.kernel = None
-        self.setKernel(kernel)
+        self.setKernel(Cubic() if kernel is None else kernel)
 
     def _prepare_training_components(self, xTrain: np.ndarray):
         if hasattr(self.kernel, "initialize"):
             self.kernel.initialize(xTrain.shape[1])
         
     def setKernel(self, kernel: BaseKernel):
-        """
-        Set the kernel function for the RBF network.
-        """
-        oldKernelNames = []
-        if self.kernel is not None:
-            oldKernelNames = [
-                name for name in self.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
-                if name != "kernel"
-            ]
-
-        kernelChoiceValue = self.setting.parVal.get("kernel", None)
-        kernelChoiceAttr = self.setting.parSet.get("kernel", None)
-        kernelChoiceOwner = self.setting.parOwner.get("kernel", None)
-
-        if oldKernelNames:
-            self.setting.removeParas(oldKernelNames)
-
-        if not hasattr(kernel, "_templateSetting"):
-            kernel._templateSetting = deepcopy(kernel.setting)
-        kernel.setting = deepcopy(kernel._templateSetting)
-        
-        self.kernel = kernel
-        self.setting.mergeSetting(self.kernel.setting)
-        self.kernel.setting = self.setting
-
-        if kernelChoiceValue is not None and kernelChoiceAttr is not None:
-            self.setting.parVal["kernel"] = self.setting._normalize_choice_array(kernel, kernelChoiceAttr)
-            self.setting.parSet["kernel"] = kernelChoiceAttr
-            self.setting.parType["kernel"] = 2
-            self.setting.parOwner["kernel"] = kernelChoiceOwner
-            self.setting.parLB["kernel"] = np.asarray([0.0])
-            self.setting.parUB["kernel"] = np.asarray([float(len(kernelChoiceAttr[0]))])
-            self.setting.parLog["kernel"] = False
-
-        if self.xTrain is not None and hasattr(self.kernel, "initialize"):
-            self.kernel.initialize(self.xTrain.shape[1])
-        self.resetFitState()
-        return self
+        return installKernel(self, kernel, BaseKernel)
 
     def setKernelChoices(self, kernels):
-        self.registerChoiceParameter("kernel", kernels, owner="kernel")
-        self._kernelChoiceRegistered = True
+        self.registerChoiceParameter("kernel", [kernel.clone() for kernel in kernels], owner="kernel")
         return self
 
-    def _get_tail_matrix(self, kernel: BaseKernel, train_X: np.ndarray):
-        """
-        Get the tail matrix for the RBF network based on the kernel type.
-        
-        :param kernel: Kernel function used in the RBF network.
-        :param train_X: Training input data.
-        :return: Tail matrix for the RBF network.
-        """
-        if kernel.name == "Cubic" or kernel.name == "Thin_plate_spline":
-            tail_matrix = np.ones((self.n_samples, self.n_features + 1))
-            tail_matrix[:self.n_samples, :self.n_features] = train_X.copy()
-            return tail_matrix
-        elif kernel.name == "Linear" or kernel.name == "Multiquadric":
-            tail_matrix = np.ones((self.n_samples, 1))
-            return tail_matrix
-        
-        else:
-            
-            return None
-    
     def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         """
         Fit the RBF model to the training data.
@@ -131,16 +73,21 @@ class RBF(SurrogateABC):
 
         nSample, nFeature = xTrain.shape
         
-        C_smooth = self.setting.get("C_smooth")
-        
-        A_Matrix = self.kernel.get_A_Matrix(xTrain) + C_smooth
+        smooth = np.asarray(self.setting.get("C_smooth"), dtype=float)
+        if smooth.size != 1 or not np.all(np.isfinite(smooth)) or np.any(smooth < 0):
+            raise ValueError("C_smooth must be a finite, nonnegative scalar.")
+
+        A_Matrix = self.kernel.get_A_Matrix(xTrain)
+        # Preserve the polynomial tail and its zero constraint block.
+        diagonal = np.arange(nSample)
+        A_Matrix[diagonal, diagonal] += self.kernel.smoothingSign * smooth.item()
         
         P, L, U = lu(a=A_Matrix)
         L = np.dot(P, L)
         degree = self.kernel.get_degree(nFeature)
         
         if degree:
-            bias = np.vstack((yTrain, np.zeros((degree, 1))))
+            bias = np.vstack((yTrain, np.zeros((degree, yTrain.shape[1]))))
         else:
             bias = yTrain
         

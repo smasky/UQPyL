@@ -48,6 +48,11 @@ result = method.analyze(
 | `target` | 分析输出块，通常为 `"objs"` 或 `"cons"`。 |
 | `index` | 输出列选择：`"all"`、整数或整数列表。 |
 
+Sobol、FAST 和 RBDFAST 在计算方差或频谱功率前，对有限输出做内部中心化和缩放。
+改变输出单位（包括乘以负数）后，敏感度在浮点精度范围内保持一致。各输出列独立处理，
+FAST 按各轨迹块处理；结果中的原始 `Y` 保留原值。真正恒定的输出沿用返回零指标的约定，
+NaN 或无穷值会抛出 `ValueError`。输入数值舍入时已经丢失的变化无法通过内部缩放恢复。
+
 运行控制参数：
 
 | 参数 | 含义 |
@@ -116,3 +121,9 @@ result = method.analyze(
 | 用户指南 | [Analysis](../analysis.md) |
 | 生成兼容样本 | [DOE API](doe.md) |
 | 建模协议 | [Problem API](problem.md) |
+
+
+内置分析方法先将一维外部 Y 整理为列，再选择输出；统一检查 X/Y 行数及输入维度，保留所选的 problem 输出标签。导入请使用 `UQPyL.analysis` 公共入口或 `UQPyL.analysis.methods`，旧外层转发模块已删除。运行态为 `method.state`，运行参数为 `method.params`。
+
+
+持久化结果带有模块标识；reader 会拒绝其他模块及没有标识的旧数据库。每次运行都有基于 UUID 的独立 ID，数据库和日志共用，即使关闭 SQLite 保存也有 ID。所有 reader 支持 `with` 和重复 `close()`。内部运行对象统一用 `state`、`params`，返回结果的正式字段不变。

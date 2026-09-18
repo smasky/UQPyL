@@ -4,6 +4,7 @@ import numpy as np
 from typing import Optional
 
 from ..base import AnaIndex, AnalysisABC
+from ._variance import scaleOutput
 from ...problem import ProblemABC as Problem
 
 class FAST(AnalysisABC):
@@ -54,11 +55,11 @@ class FAST(AnalysisABC):
 
         This implementation follows the same frequency partition used by SALib.
         """
-        f = np.fft.fft(outputs)
+        f = np.fft.fft(scaleOutput(outputs))
         Sp = np.power(np.absolute(f[np.arange(1, math.ceil(n / 2))]) / n, 2)
 
         V = 2.0 * np.sum(Sp)
-        if np.isclose(V, 0.0):
+        if V == 0.0:
             return 0.0, 0.0
 
         D1 = 2.0 * np.sum(Sp[np.arange(1, M + 1, dtype=np.int32) * omega - 1])
@@ -89,18 +90,15 @@ class FAST(AnalysisABC):
         M = meta["M"]
         
         # Set the problem instance for analysis
-        self.setProblem(problem)
         
         Y = self.check_Y(X, Y, target, index)
         numY = Y.shape[1]
         
-        X, Y = self.__check_X_Y__(X, Y)
         
         nInput = problem.nInput
         n = int(X.shape[0] / nInput)
         
         # Initialize arrays to store sensitivity indices
-        outputLabel = "obj" if target == "objs" else "con"
         
         # Calculate the base frequency
         omega0 = math.floor((n - 1) / (2 * M))
@@ -109,7 +107,7 @@ class FAST(AnalysisABC):
         ST = np.zeros((numY, nInput))
         S1_norm = np.zeros((numY, nInput))
         ST_norm = np.zeros((numY, nInput))
-        row_label = [f"{outputLabel}{i+1}" for i in range(numY)]
+        row_label = self.outputLabels
         col_label_1 = problem.xLabels
         
         for i in range(numY):

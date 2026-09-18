@@ -13,6 +13,20 @@ Use calibration when you have:
 
 Calibration methods in UQPyL work with `ModelProblem`, not ordinary `Problem`.
 
+In UQPyL, the standard calibration flow is:
+
+```text
+X -> simFunc(X) -> sim -> calibration metric / score -> parameter update or selection
+```
+
+At the modeling level, that becomes:
+
+```text
+obs + simFunc + parameter bounds -> ModelProblem -> calibration.run(...) -> CalResult
+```
+
+In other words, calibration is not just ordinary `Problem` plus a different algorithm. It is explicitly built on the simulation-backed `ModelProblem` path.
+
 ## Choose a Calibration Method
 
 Start from how you want to use candidate parameter sets.
@@ -44,6 +58,15 @@ obs + simFunc + parameter bounds -> ModelProblem -> calibration.run(...) -> CalR
 
 ## Build a `ModelProblem`
 
+Treat `ModelProblem` as the standard modeling container for calibration:
+
+- `simFunc(X)` produces raw simulation output
+- `obs` provides the observation reference
+- `mask` controls which observation entries participate in scoring
+- calibration methods then compute metrics, keep samples, or update parameters from that simulation context
+
+For calibration, `ModelProblem` does not need to define `objFunc`. A simulation-only `ModelProblem` with `simFunc + obs` is already a valid calibration container.
+
 `ModelProblem` connects parameter samples to simulation outputs.
 
 In this toy model, the two parameters directly simulate two time steps:
@@ -72,7 +95,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 sim = problem.simFunc([[1.0, 2.0]])
 
@@ -143,7 +166,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
@@ -216,7 +239,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 X = np.array([[1.0, 2.0], [1.0, 3.0], [0.0, 0.0]])
 result = GLUE(metric="nse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.0)
@@ -259,7 +282,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, mask=mask, simLabels=["Q", "Ignored"], name="MaskedToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, mask=mask, seriesLabels=["Q", "Ignored"], name="MaskedToyModel")
 
 print(problem.obs.shape)
 print(problem.mask.shape)
@@ -300,7 +323,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
@@ -357,7 +380,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 result = SUFI2(maxIters=3, nSamples=12, verboseFlag=False, logFlag=False, saveFlag=False).run(problem, eliteSize=4, seed=123)
 
@@ -400,7 +423,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 X = np.array([[0.0, 0.0], [2.0, 3.0], [1.5, 0.5]])
 
@@ -453,7 +476,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="NonlinearToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="NonlinearToyModel")
 
 X = np.array([[0.0, 0.5], [2.0, 1.0], [1.5, 2.0]])
 
@@ -501,7 +524,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=True, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -543,7 +566,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -597,7 +620,7 @@ np.set_printoptions(precision=4, suppress=True)
 obs = np.array([[1.0], [2.0]])
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=sqliteSimFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=sqliteSimFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 resultDir = Path("Result")
@@ -673,3 +696,23 @@ Calibration persistence currently saves the final `CalResult` and related artifa
 | Look up constructors and result fields | [Calibration API](api/calibration.md) |
 | Compare with inference workflows | [Inference](inference.md) |
 | See complete workflows | [Examples](examples.md) |
+
+### ES / IES best-member metric direction
+
+Final posterior members are ranked in the configured metric direction: RMSE/MSE/MAE are minimized, while NSE/KGE/R² are maximized. Internally, `normalizedScore()` negates higher-is-better metrics and takes absolute PBIAS for minimization; it does not rescale scores to 0–1. Diagnostics and reported/saved scores retain original metric values. Metric choice does not alter the ensemble update equations.
+
+
+### PBIAS comparison semantics
+
+The explicit `metric="pbias"` label minimizes `abs(PBIAS)` in GLUE, SUFI2, ES, and IES. GLUE requires a finite nonnegative percentage-point tolerance: a threshold of 5 accepts `-5% <= PBIAS <= 5%`, including endpoints.
+
+The signed formula remains `100 * sum(sim - obs) / sum(obs)`, and diagnostics, reports, and saved scores retain that sign. Absolute value is applied after computing the full metric, not to each residual. Zero aggregate bias does not imply accurate individual observations. Callable metrics retain their default minimization semantics; the special rule is enabled by the string label.
+
+
+### ES / IES covariance rank handling
+
+Both methods solve the covariance system at full numerical rank and otherwise apply a symmetric eigendecomposition-based pseudoinverse. Eigenvalues at or below `n_valid_obs * eps * max(abs(eigenvalues))` are discarded. A zero-rank ensemble has zero gain and remains unchanged. The pseudoinverse cannot recover information absent from the ensemble.
+
+R still defaults to zero and IES lam to zero; no noise or ridge is inserted automatically. R must have the correct shape and be finite, symmetric, and positive semidefinite. Roundoff-sized asymmetry is symmetrized and roundoff-sized negative eigenvalues are clipped to zero. IES lam must be a finite nonnegative scalar.
+
+ES records solver/rank/dimension/cutoff in `diagnostics['covarianceSolve']`; IES records one entry per iteration in `diagnostics['covarianceSolves']`. Observation-space eigendecomposition adds computation; this change does not implement ensemble-space acceleration for very long observation vectors.

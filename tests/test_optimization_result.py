@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from UQPyL.optimization.population import Population
 from UQPyL.optimization.runtime import OptHistory, OptResult, Result
@@ -141,3 +142,58 @@ def test_opt_result_exports_snake_case_summary_and_dict():
     assert payload["best_feasible"] is True
     assert payload["appear_fes"] == 2
     assert payload["history"]["iter_to_fes"] == [[0, 2]]
+
+
+@pytest.mark.parametrize("oldObj,oldCons,newObj,newCons,expectedNew", [
+    (0, [10], 100, [1], True),   # Lower violation wins despite worse objective.
+    (100, [1], 0, [10], False),  # Better objective cannot hide worse violation.
+    (100, [1], 0, [1], False),   # Equal infeasible violations retain incumbent.
+    (0, [1], 100, [0], True),    # Feasible always beats infeasible.
+    (100, [0], 0, [1], False),
+    (100, [-1], 0, [0], True),   # Both feasible: compare objectives.
+    (0, [0], 100, [-1], False),
+    (100, None, 0, None, True),  # Unconstrained comparison remains unchanged.
+])
+def test_single_history_uses_feasibility_first_comparison(oldObj, oldCons, newObj, newCons, expectedNew):
+    problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda X: X)
+    algorithm = _DummyAlg(problem)
+    state = Result(algorithm)
+    old = Population([[.2]], [[oldObj]], None if oldCons is None else [oldCons])
+    new = Population([[.8]], [[newObj]], None if newCons is None else [newCons])
+    state.update(old, problem, FEs=1, iters=0, algType="EA")
+    state.update(new, problem, FEs=2, iters=1, algType="EA")
+    expected = new if expectedNew else old
+    np.testing.assert_array_equal(state.bestDecs, expected.decs)
+    np.testing.assert_array_equal(state.bestObjs, expected.objs)
+    if expected.cons is None:
+        assert state.bestCons is None
+    else:
+        np.testing.assert_array_equal(state.bestCons, expected.cons)
+    assert state.bestFeasible == (expected.cons is None or np.all(expected.cons <= 0))
+    assert state.appearFEs == (2 if expectedNew else 1)
+    assert state.appearIters == (1 if expectedNew else 0)
+    assert state.history.improvedHistory == [True, expectedNew]
+    result = state.buildResult()
+    np.testing.assert_array_equal(result.bestDecs, expected.decs)
+    np.testing.assert_array_equal(result.history.bests[-1]["bestObjs"], expected.objs)
+
+
+def test_single_history_uses_population_constraint_weights():
+    problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda X: X)
+    state = Result(_DummyAlg(problem))
+    # Unweighted sums favor the old solution (2 versus 3), but weighted
+    # violations favor the new solution (3 versus 20).
+    old = Population([[.2]], [[0]], [[2, 0]], conWgt=[10, 1])
+    new = Population([[.8]], [[100]], [[0, 3]], conWgt=[10, 1])
+    state.update(old, problem, FEs=1, iters=0, algType="EA")
+    state.update(new, problem, FEs=2, iters=1, algType="EA")
+    np.testing.assert_array_equal(state.bestDecs, new.decs)
+    assert not state.bestFeasible
+
+
+def test_single_history_feasibility_matches_zero_weight_constraint_policy():
+    problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda X: X)
+    state = Result(_DummyAlg(problem))
+    pop = Population([[.2]], [[0]], [[10, -1]], conWgt=[0, 1])
+    state.update(pop, problem, FEs=1, iters=0, algType="EA")
+    assert state.bestFeasible

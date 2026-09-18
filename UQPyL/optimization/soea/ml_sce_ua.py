@@ -31,7 +31,7 @@ class ML_SCE_UA(AlgorithmABC):
                  maxIters: int = 1000, 
                  maxTolerates: int = 1000, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -50,13 +50,14 @@ class ML_SCE_UA(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq)
+                         saveFreq = saveFreq, historyFreq=historyFreq)
         
         # Set algorithm parameters
         self.set('ngs', ngs)
@@ -67,12 +68,13 @@ class ML_SCE_UA(AlgorithmABC):
         self.set('beta', beta)
         self.set('sita', sita)
         
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -95,7 +97,7 @@ class ML_SCE_UA(AlgorithmABC):
         nInit = npg * ngs
     
         # Generate initial population
-        pop = self.initPop(nInit)
+        pop = self.initPop(nInit, initialPop=initialPop)
         self.update(pop)
         
         # Sort the population in order of increasing function values
@@ -128,7 +130,7 @@ class ML_SCE_UA(AlgorithmABC):
             # Sort the population again
             idx = pop.argsort()
             pop = pop[idx]
-            self.update(pop)
+            self.update(pop, completed=True)
                         
         # Return the final result
         return self.finalize()
@@ -160,7 +162,7 @@ class ML_SCE_UA(AlgorithmABC):
         
         # Reflection step
         sNewDecs = ((sWorstDecs - ce) * alpha * -1 + ce) * (1 - sita) + bPopDecs * sita
-        np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
+        np.clip(sNewDecs, self.searchLb, self.searchUb, out=sNewDecs)
         
         sNew = Population(sNewDecs)
         self.evaluate(sNew)
@@ -168,14 +170,14 @@ class ML_SCE_UA(AlgorithmABC):
         # Contraction step if reflection fails
         if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorst.cons, self.problem.conWgt) >= 0:
             sNewDecs = (sWorstDecs + (sNewDecs - sWorstDecs) * beta) * (1 - sita) + bPopDecs * sita
-            np.clip(sNewDecs, self.problem.lb, self.problem.ub, out=sNewDecs)
+            np.clip(sNewDecs, self.searchLb, self.searchUb, out=sNewDecs)
             
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
         
         # Random point if both reflection and contraction fail
         if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorst.cons, self.problem.conWgt) >= 0:
-            sNewDecs = self.problem.lb + self.rng.random(D) * (self.problem.ub - self.problem.lb)
+            sNewDecs = self.searchLb + self.rng.random(D) * (self.searchUb - self.searchLb)
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
         

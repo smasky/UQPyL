@@ -56,6 +56,9 @@ result = method.run(problem, gamma=0.2, seed=123)
 | `DEMC` | 多链共享差分 proposal。 |
 | `DREAM_ZS` | 更复杂后验形状和 archive-based proposal。 |
 
+`DREAM_ZS` 的提议 archive 使用内部连续坐标，独立保存初始状态、warm-up 和正式采样中接受的状态。
+更新当前链不会改写已经存入的历史点。
+
 ## `InfResult`
 
 | 字段 | 含义 |
@@ -90,3 +93,6 @@ result = method.run(problem, gamma=0.2, seed=123)
 | 用户指南 | [Inference](../inference.md) |
 | 标量问题定义 | [Problem API](problem.md) |
 | 校准工作流 | [Calibration API](calibration.md) |
+
+
+持久化结果带有模块标识；reader 会拒绝其他模块及没有标识的旧数据库。每次运行都有基于 UUID 的独立 ID，数据库和日志共用，即使关闭 SQLite 保存也有 ID。所有 reader 支持 `with` 和重复 `close()`。内部运行对象统一用 `state`、`params`，返回结果的正式字段不变。

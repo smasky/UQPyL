@@ -1,674 +1,582 @@
-# Problem
+# Problem Module
 
-The `problem` module is the modeling core of UQPyL. Sampling, analysis, optimization, inference, calibration, and surrogate workflows all start from a `Problem`-like object.
+The `problem` module abstracts real-world tasks into unified problem objects that UQPyL can consume. Each problem is described through three standardized components: **Space** (input space), **Evaluation** (evaluation process), and **Eval** (result container). Once defined, a problem object can be used consistently across sampling, optimization, calibration, and analysis workflows.
 
-Use this page when you need to turn your mathematical model, simulation model, or objective function into something UQPyL can evaluate.
+## Unit and real coordinate conversion
 
-## What You Need to Define
+`problem.unit_to_space(U)` decodes unit coordinates, `problem.space_to_unit(X)` encodes real values, and `problem.canonicalize_unit(U)` assigns equivalent integer/discrete encodings a unique representative. Each returns a copy; `Space` implements the rules behind the Problem interface.
 
-Most users need to answer four questions:
+Continuous variables use finite-bound linear scaling; fixed continuous variables encode as `0.5`. Integers from `ceil(lb)` through `floor(ub)` and discrete choices in `varSet` use equal-width bins with midpoint representatives; `U=1` selects the last value. Integer sampling therefore uses equal bins rather than linear scaling followed by rounding.
 
-| Question | Where it goes |
-|---|---|
-| What are the input variables? | `nInput`, `lb`, `ub`, optional `xLabels` |
-| What does one model evaluation compute? | `objFunc`, `conFunc`, `simFunc`, or `evaluate` |
-| Is the objective minimized or maximized? | `optType` |
-| Is this a direct objective problem or a simulation-with-observations problem? | `Problem` or `ModelProblem` |
+Discrete choices must currently be distinct finite numeric values. Their real values come from `varSet`, independently of the legacy encoding bounds in that column. Encoding validates real bounds, legal integers and choice membership. Decoding an encoded real value reproduces that value up to floating-point rounding; encoding a decoded unit point returns its canonical representative.
 
-Use `Problem` for ordinary objectives and constraints. Use `ModelProblem` when the main output is a simulation time series or multi-series simulation, especially for calibration.
+`evaluate(X)` accepts real values without guessing the coordinate system. The legacy `apply_var_type()` is no longer used by the optimization evaluation boundary.
 
-## Start With a Simple `Problem`
 
-This example defines a two-variable objective:
+`Problem = Space + Evaluation + Eval`
 
-```text
-f(x) = x1^2 + x2^2
+## Space: Input Space
+
+`Space` describes the dimensionality, ranges, and types of the input variables. If no explicit `space=` is provided, `Problem` and `ModelProblem` construct one automatically from their constructor arguments.
+
+### Basic Definition
+
+Three parameters define the basic shape of the input space:
+
+- `nInput`: number of input variables.
+- `lb` / `ub`: lower and upper bounds per dimension. A scalar is broadcast to all dimensions; a list or array specifies per-dimension bounds.
+- `xLabels`: labels for input variables. Defaults to `['x_1', 'x_2', ...]`.
+
+### Variable Types
+
+`varType` is a list of length `nInput` declaring the type of each variable:
+
+| Code | Type | Description |
+|:----:|------|------|
+| `0` | Continuous | Default. Varies continuously within `[lb, ub]`. |
+| `1` | Integer | Automatically rounded (`np.round`). |
+| `2` | Discrete | Mapped from evenly divided intervals of `[lb, ub]` to values in `varSet`. |
+
+`varSet` is a `dict` mapping dimension indices to lists of allowed discrete values. The interval `[lb_i, ub_i]` is evenly partitioned and mapped to the corresponding `varSet[i]` values.
+
+```python
+problem = Problem(
+    nInput=3, nObj=1,
+    lb=[0.0, 0.0, 0.0],
+    ub=[1.0, 5.0, 1.0],
+    varType=[0, 1, 2],                              # continuous / integer / discrete
+    varSet={2: [0.1, 0.3, 0.5, 0.7, 0.9]},          # allowed values for dimension 3
+    objFunc=objFunc,
+)
 ```
+
+### Transformation Methods
+
+`Space` provides methods to transform sample points into the valid space. These can be called directly on `Problem` / `ModelProblem` instances (delegating to `self.space`):
+
+| Method | Purpose |
+|------|------|
+| `validate(X)` | Checks dimensions, ensures 2D `(nSamples, nInput)` array |
+| `cast_int_vars(X)` | Rounds integer-typed variables |
+| `map_discrete_vars(X)` | Maps discrete-typed variables to `varSet` values |
+| `apply_var_type(X)` | Applies both rounding and discrete mapping |
+| `unit_to_space(X)` | Scales from the `[0, 1]` unit hypercube to `[lb, ub]`, then applies type transforms |
+
+A common pattern is for a sampling algorithm to generate points in the unit hypercube and then map them into the actual space with `unit_to_space`:
+
+```python
+X_unit = np.random.rand(100, problem.nInput)   # (100, nInput), range [0, 1]
+X_real = problem.unit_to_space(X_unit)          # scale + round integers + map discrete
+```
+
+---
+
+## Evaluation: Evaluation Process
+
+`Evaluation` answers a simple question: given a batch of inputs, how are the outputs produced? Users provide the evaluation logic through one or more callables, while the framework coordinates them internally through the single `evaluate()` entry point.
+
+From the standpoint of evaluation, real-world problems usually fall into two categories. In the first, objectives and constraints are computed directly from inputs, with no intermediate simulation stage. In the second, a simulation model runs first, and objectives, constraints, or error metrics are derived from the simulation output. UQPyL represents these two modes with `Problem` and `ModelProblem`, respectively.
+
+### Direct Evaluation: `Problem`
+
+Use `Problem` when objectives and constraints can be computed directly from inputs, such as in mathematical test functions or black-box scoring problems.
+
+#### objFunc
+
+`objFunc` is the required callable that maps inputs to objective values:
+
+| Item | Contract |
+|------|------|
+| Input | `X`, an `np.ndarray` of shape `(nSamples, nInput)` |
+| Output | `objs`, an `np.ndarray` of shape `(nSamples, nObj)` |
+| Batching | Always handle 2D input. Add `X = np.atleast_2d(X)` as the first line. |
+
+The framework validates output shape against `nObj` inside `evaluate()`.
+
+```python
+def objFunc(X):
+    X = np.atleast_2d(X)
+    return np.sum(X**2, axis=1, keepdims=True)   # sum across variables; keepdims preserves the column shape
+```
+
+#### conFunc
+
+`conFunc` is an optional callable describing constraint functions. If provided, `nCon` must also be declared:
+
+| Item | Contract |
+|------|------|
+| Input | `X`, shape `(nSamples, nInput)` |
+| Output | `cons`, shape `(nSamples, nCon)` |
+| Feasibility | `cons <= 0` is considered feasible. If the actual constraint is `g(x) >= 0`, negate it inside the function. |
+
+```python
+def conFunc(X):
+    X = np.atleast_2d(X)
+    return (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)   # reshape to column vector (nSamples, nCon)
+```
+
+#### Example
 
 ```python
 import numpy as np
-
 from UQPyL.problem import Problem
-
 
 def objFunc(X):
     X = np.atleast_2d(X)
     return np.sum(X**2, axis=1, keepdims=True)
 
-
-problem = Problem(nInput=2, nObj=1, ub=1.0, lb=-1.0, objFunc=objFunc, optType="min", name="Sphere2D")
-
-res = problem.evaluate([[0.2, 0.3]])
-print(res.objs)
-```
-
-Example output:
-
-```text
-[[0.13]]
-```
-
-The important contract is:
-
-```text
-input X -> objFunc(X) -> objective values
-```
-
-## Define the Input Space
-
-`nInput` is the number of input variables. `lb` and `ub` are lower and upper bounds.
-
-### Scalar Bounds
-
-Use scalar bounds when every input variable has the same range.
-
-```python
-import numpy as np
-
-from UQPyL.problem import Problem
-
-
-def objFunc(X):
+def conFunc(X):
     X = np.atleast_2d(X)
-    return np.sum(X**2, axis=1, keepdims=True)
-
-
-problem = Problem(nInput=3, nObj=1, lb=0.0, ub=1.0, objFunc=objFunc)
-
-print(problem.lb)
-print(problem.ub)
-```
-
-Example output:
-
-```text
-[[0. 0. 0.]]
-[[1. 1. 1.]]
-```
-
-Here all three variables are in `[0.0, 1.0]`.
-
-### Per-Variable Bounds
-
-Use a list or NumPy array when each input variable has its own range.
-
-```python
-import numpy as np
-
-from UQPyL.problem import Problem
-
-
-def objFunc(X):
-    X = np.atleast_2d(X)
-    return np.sum(X**2, axis=1, keepdims=True)
-
+    return (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)
 
 problem = Problem(
-    nInput=3,
-    nObj=1,
-    lb=[0.0, -5.0, 50.0],
-    ub=[1.0, 10.0, 100.0],
-    objFunc=objFunc,
-    xLabels=["width", "slope", "storage"],
+    nInput=2,              # input dimensionality
+    nObj=1,                # objective dimensionality
+    nCon=1,                # constraint dimensionality
+    lb=0.0, ub=1.0,        # input bounds
+    objFunc=objFunc,       # objective function (required)
+    conFunc=conFunc,       # constraint function (optional; nCon required if provided)
+    optType='min',         # optimization direction: 'min' / 'max' / ['min', 'max', ...]
+    varType=[0, 0],        # variable types; defaults to all continuous
+    xLabels=['x1', 'x2'],  # input labels
+    name='MyProblem',
 )
 
-print(problem.lb)
-print(problem.ub)
-print(problem.xLabels)
+res = problem.evaluate([[0.2, 0.3], [0.5, 0.6]])
 ```
 
-Example output:
+#### optType: Optimization Direction
 
-```text
-[[ 0. -5. 50.]]
-[[  1.  10. 100.]]
-['width', 'slope', 'storage']
+`optType` declares the optimization direction for each objective. The framework internally converts everything to minimization. Two forms are supported:
+
+- String: `'min'` or `'max'` — applies to all objectives when they share the same direction.
+- List: `['min', 'max', 'min']` — per-objective specification; length must equal `nObj`.
+
+After instantiation, `problem.opt` exposes the numeric form (`1` for minimization, `-1` for maximization).
+
+#### Custom Evaluator
+
+When `objFunc` and `conFunc` are not sufficient, for example because preprocessing, caching, or external process calls are involved, subclass `Evaluator` and implement `evaluate(self, X, target)` to encapsulate the full evaluation logic in one place.
+
+`Evaluator.evaluate()` contract:
+
+| Item | Contract |
+|------|------|
+| Input | `X` shape `(nSamples, nInput)`, `target` is `None` / `"objs"` / `"cons"` |
+| Output | Must return an `Eval` instance. Pass `target` through to trigger automatic cleanup. |
+
+```python
+from UQPyL.problem import Eval, Evaluator, Problem
+
+class MyEvaluator(Evaluator):
+    def evaluate(self, X, target=None):
+        X = np.atleast_2d(X)
+        objs = np.sum(X**2, axis=1, keepdims=True)
+        cons = (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)
+        return Eval(objs=objs, cons=cons, target=target)
+
+problem = Problem(
+    nInput=2, nObj=1, nCon=1,
+    lb=0.0, ub=1.0,
+    evaluator=MyEvaluator(),
+)
 ```
 
-Read this as:
+> **Note**: `evaluator` and `objFunc` / `conFunc` are mutually exclusive; they cannot be provided together.
 
-| Variable | Lower bound | Upper bound |
-|---|---:|---:|
-| `width` | `0.0` | `1.0` |
-| `slope` | `-5.0` | `10.0` |
-| `storage` | `50.0` | `100.0` |
+---
 
-## Understand Batched Evaluation
+### Simulation-Based Evaluation: `ModelProblem`
 
-UQPyL often evaluates many candidate points at once. For that reason, functions should usually accept a table-like `X`.
+Use `ModelProblem` when a simulation model must run first and objectives or constraints are derived from the simulation output, as in model calibration, time-series simulation, or process-model workflows.
 
-| Shape | Meaning |
-|---|---|
-| `(n_samples, n_input)` | A batch of input rows. |
-| One row of `X` | One candidate input vector. |
-| One column of `X` | One input variable. |
+`ModelProblem` splits evaluation into two steps: `simFunc` produces `sims`, then `objFunc` / `conFunc` compute objectives and constraints from those simulation results. The bridge between the two steps is `simContext`.
 
-For example:
+#### simFunc
+
+`simFunc` is the required callable for `ModelProblem` that runs the simulation model:
+
+| Item | Contract |
+|------|------|
+| Input | `X`, shape `(nSamples, nInput)` |
+| Output | `sims`, a 3D numeric array of shape `(nSamples, nTime, nSeries)` |
+| NaN | Simulation output must not contain NaN values, except at positions marked by `mask` when a mask matching `obs.shape` is provided. |
+
+```python
+def simFunc(X):
+    X = np.atleast_2d(X)
+    nSamples = X.shape[0]
+    sims = np.zeros((nSamples, 3, 1))            # (nSamples, nTime=3, nSeries=1)
+    sims[:, 0, 0] = X[:, 0]                      # t=0: first parameter
+    sims[:, 1, 0] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1: mean of two parameters
+    sims[:, 2, 0] = X[:, 1]                      # t=2: second parameter
+    return sims
+```
+
+#### objFunc (ModelProblem)
+
+`ModelProblem`'s `objFunc` has a different signature from `Problem`'s — it additionally receives `simContext`:
+
+| Item | Contract |
+|------|------|
+| Input | `X` shape `(nSamples, nInput)`, `simContext` is a `SimContext` instance |
+| Output | `objs`, shape `(nSamples, nObj)` |
+
+`simContext` is constructed automatically after `simFunc` returns and is then passed into `objFunc` / `conFunc`. Users do not create it manually.
+
+#### conFunc (ModelProblem)
+
+Similar to `Problem`'s `conFunc`, but also receives `simContext`:
+
+| Item | Contract |
+|------|------|
+| Input | `X` shape `(nSamples, nInput)`, `simContext` is a `SimContext` instance |
+| Output | `cons`, shape `(nSamples, nCon)` |
+| Feasibility | `cons <= 0` is considered feasible |
+
+#### SimContext
+
+`SimContext` is a frozen dataclass, automatically constructed after `simFunc` returns and then passed into `objFunc` and `conFunc`:
+
+```python
+@dataclass(frozen=True)
+class SimContext:
+    sims: np.ndarray           # simulation output, shape (nSamples, nTime, nSeries)
+    obs: np.ndarray | None     # observation data, shape (nTime, nSeries)
+    mask: np.ndarray | None    # missing data mask, same shape as obs; True = missing
+```
+
+A typical use case is to compute mean squared error between simulations and observations while excluding masked positions:
+
+```python
+def objFunc(X, simContext):
+    err = simContext.sims - simContext.obs          # element-wise error
+    if simContext.mask is not None:
+        err = err[:, ~simContext.mask]              # exclude missing positions
+    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series dimensions
+```
+
+#### obs and mask
+
+- **`obs`**: observation matrix, must be 2D `(nTime, nSeries)`. In a hydrological model, for example, `nTime` is the number of time steps and `nSeries` is the number of observation stations.
+- **`mask`**: missing data mask, a boolean 2D array with exactly the same shape as `obs`. `True` indicates missing data at that position. When a `mask` is provided, NaN values are permitted in the simulation output at masked positions.
+
+#### Example
 
 ```python
 import numpy as np
+from UQPyL.problem import ModelProblem
 
+obs = np.array([[1.0], [0.8], [2.0]])            # observations (nTime=3, nSeries=1)
+mask = np.array([[False], [True], [False]])       # second time step is missing
 
-single_x = np.array([0.2, 0.3])
-batch_x = np.array([
-    [0.2, 0.3],
-    [0.5, 0.1],
-    [0.0, 1.0],
-])
+def simFunc(X):
+    X = np.atleast_2d(X)
+    nSamples = X.shape[0]
+    sims = np.zeros((nSamples, 3, 1))            # (nSamples, nTime=3, nSeries=1)
+    sims[:, 0, 0] = X[:, 0]                      # t=0
+    sims[:, 1, 0] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1
+    sims[:, 2, 0] = X[:, 1]                      # t=2
+    return sims
 
-print(np.atleast_2d(single_x).shape)
-print(np.atleast_2d(batch_x).shape)
+def objFunc(X, simContext):
+    err = simContext.sims - simContext.obs        # element-wise error
+    if simContext.mask is not None:
+        err = err[:, ~simContext.mask]            # exclude missing positions
+    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series
+
+problem = ModelProblem(
+    nInput=2, nObj=1,
+    lb=0.0, ub=3.0,
+    simFunc=simFunc,             # simulation function (required)
+    objFunc=objFunc,             # objective function
+    obs=obs,                     # observation data
+    mask=mask,                   # missing data mask
+    seriesLabels=['Q'],          # series label
+    name='MyModel',
+)
+
+res = problem.evaluate([[0.5, 1.5]])
 ```
 
-Example output:
+#### simulate(): Simulation-Only Access
+
+Use `simulate()` when only the simulation output is needed and objectives or constraints do not need to be computed:
+
+```python
+simContext = problem.simulate(X)                   # returns SimContext, .obs / .mask accessible
+sims = problem.evaluate(X, target="sims").sims     # returns Eval, only .sims populated
+```
+
+`simulate()` returns the full `SimContext`, including observation data and mask. By contrast, `evaluate(X, target="sims")` returns an `Eval` object with only the `sims` field populated.
+
+#### Custom ModelEvaluator
+
+Subclass `ModelEvaluator` for more complex post-processing logic. `ModelEvaluator.evaluate()` contract:
+
+| Item | Contract |
+|------|------|
+| Input | `X`, `simContext`, `target` |
+| Output | Must return an `Eval` instance |
+
+```python
+from UQPyL.problem import Eval, ModelEvaluator, ModelProblem
+
+class MyModelEvaluator(ModelEvaluator):
+    def evaluate(self, X, simContext, target=None):
+        err = simContext.sims - simContext.obs          # element-wise error
+        if simContext.mask is not None:
+            err = err[:, ~simContext.mask]              # exclude missing positions
+        objs = np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series
+        return Eval(objs=objs, sims=simContext.sims, target=target)
+
+problem = ModelProblem(
+    nInput=2, nObj=1,
+    lb=0.0, ub=3.0,
+    simFunc=simFunc,
+    obs=obs,
+    evaluator=MyModelEvaluator(),
+)
+```
+
+---
+
+## Eval and evaluate()
+
+`Eval` is the unified container for evaluation results. `evaluate()` is the single entry point through which all downstream modules access a problem.
+
+### evaluate(): Unified Entry Point
+
+Users define `objFunc`, `conFunc`, `simFunc`, and related callables to describe the evaluation logic. Downstream modules do not call these functions directly; they access the problem through `evaluate()`.
+
+The internal workflow of `evaluate()`:
 
 ```text
-(1, 2)
-(3, 2)
+validate input dimensions -> call user-defined functions -> validate output shapes -> wrap in Eval
 ```
 
-`np.atleast_2d(X)` is useful because it turns both a single row and a batch into the same table shape.
+For `Problem`, `evaluate()` directly calls `objFunc` / `conFunc`. For `ModelProblem`, `evaluate()` first calls `simFunc` to obtain simulation output, constructs `simContext`, then passes it to `objFunc` / `conFunc`.
 
-After `X = np.atleast_2d(X)`:
-
-| Expression | Meaning |
-|---|---|
-| `X[:, 0]` | First variable for all samples. |
-| `X[:, 1]` | Second variable for all samples. |
-| `X.shape[0]` | Number of samples. |
-| `reshape(-1, 1)` | Make a one-column output. |
-| `keepdims=True` | Keep a NumPy reduction as a column. |
-
-## Write Objective Functions
-
-### One Objective
-
-For one objective, return shape `(n_samples, 1)`.
+### Eval Fields
 
 ```python
-import numpy as np
-
-
-def objFunc(X):
-    X = np.atleast_2d(X)
-    y = X[:, 0] ** 2 + X[:, 1] ** 2
-    return y.reshape(-1, 1)
-
-
-print(objFunc([0.2, 0.3]))
-print(objFunc([[0.2, 0.3], [0.5, 0.1]]))
+@dataclass
+class Eval:
+    objs: np.ndarray | None = None   # objective values (nSamples, nObj)
+    cons: np.ndarray | None = None   # constraint values (nSamples, nCon)
+    sims: np.ndarray | None = None   # simulation output (nSamples, nTime, nSeries)
 ```
 
-Example output:
+**Shape Rules**:
 
-```text
-[[0.13]]
-[[0.13]
- [0.26]]
-```
+| Field | Shape | Requirement |
+|------|------|------|
+| `objs` | `(nSamples, nObj)` | 2D numeric array |
+| `cons` | `(nSamples, nCon)` | 2D numeric array |
+| `sims` | `(nSamples, nTime, nSeries)` | 3D numeric array, no NaN (except at masked positions) |
 
-### Multiple Objectives
+**Null rule**: output blocks that are not provided must be `None`. Empty arrays are not a substitute for missing outputs.
 
-For multiple objectives, return one column per objective.
+Convenience properties on `Eval` instances:
 
 ```python
-import numpy as np
-
-from UQPyL.problem import Problem
-
-
-def objFunc(X):
-    X = np.atleast_2d(X)
-    f1 = np.sum(X**2, axis=1)
-    f2 = np.sum((X - 0.5) ** 2, axis=1)
-    return np.vstack([f1, f2]).T
-
-
-problem = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=objFunc, optType=["min", "min"])
-
-print(problem.evaluate([[0.2, 0.3], [0.5, 0.1]]).objs)
+res = problem.evaluate(X)
+print(res.objs)        # np.ndarray or None
+print(res.hasObjs)     # bool, equivalent to res.objs is not None
+print(res.hasCons)     # bool
+print(res.hasSims)     # bool
 ```
 
-Example output:
+### target: Selective Output
 
-```text
-[[0.13 0.13]
- [0.26 0.16]]
-```
+The `target` parameter in `evaluate(X, target=None)` controls which output blocks are returned. Unrequested blocks are set to `None`, which allows downstream modules to skip unnecessary computation.
 
-The first output row belongs to the first input row. The second output row belongs to the second input row.
+`target` values supported by both object types:
 
-## Write Constraints
+| target | Meaning | Problem | ModelProblem |
+|--------|------|:-------:|:------------:|
+| `None` | Return all available output blocks | ✅ | ✅ |
+| `"objs"` | Return objectives only; others are `None` | ✅ | ✅ |
+| `"cons"` | Return constraints only; others are `None` | ✅ | ✅ |
+| `"sims"` | Return simulation output only; others are `None` | ❌ | ✅ |
 
-Use `conFunc` when the problem has constraints. Constraint values are feasible when:
+Behavior by problem type:
 
-```text
-cons <= 0
-```
+**Problem**:
 
-This example means `x1 + x2 <= 1.0`.
+| target | objs | cons | Additional validation |
+|--------|:----:|:----:|------|
+| `None` | Always returned | Returned when nCon > 0 | — |
+| `"objs"` | ✅ | Forced to None | Error if cons is not None |
+| `"cons"` | Forced to None | ✅ | Error if objs is not None |
+
+**ModelProblem**:
+
+| target | objs | cons | sims | Additional validation |
+|--------|:----:|:----:|:----:|------|
+| `None` | Returned if objFunc is present | Returned if conFunc is present | Always returned | — |
+| `"objs"` | ✅ | Forced to None | Forced to None | Error if objs is None |
+| `"cons"` | Forced to None | ✅ | Forced to None | Error if nCon>0 and cons is None |
+| `"sims"` | Forced to None | Forced to None | ✅ | Error if objs or cons is not None |
+
+> **Key constraint**: Simulation output is validated before evaluation. The returned `Eval` includes `sims` only for `target=None` or `target="sims"`; `"objs"` and `"cons"` return only the requested block.
+
+Usage examples:
 
 ```python
-import numpy as np
+# Assume `problem` is a Problem instance with nObj=1, nCon=1
 
-from UQPyL.problem import Problem
+# target=None: return all outputs
+res = problem.evaluate(X)
+print(res.objs)   # (nSamples, 1)
+print(res.cons)   # (nSamples, 1)
 
+# target="objs": compute objectives only, cons forced to None
+res = problem.evaluate(X, target="objs")
+print(res.objs)   # (nSamples, 1)
+print(res.cons)   # None
 
-def objFunc(X):
-    X = np.atleast_2d(X)
-    return np.sum(X**2, axis=1, keepdims=True)
-
-
-def conFunc(X):
-    X = np.atleast_2d(X)
-    return (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)
-
-
-problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, objFunc=objFunc, conFunc=conFunc)
-
-res = problem.evaluate([[0.2, 0.3], [0.8, 0.4]])
-print(res.objs)
-print(res.cons)
+# target="cons": compute constraints only, objs forced to None
+res = problem.evaluate(X, target="cons")
+print(res.objs)   # None
+print(res.cons)   # (nSamples, 1)
 ```
 
-Example output:
-
-```text
-[[0.13]
- [0.8 ]]
-[[-0.5]
- [ 0.2]]
-```
-
-The first row is feasible because `-0.5 <= 0`. The second row violates the constraint because `0.2 > 0`.
-
-For two constraints, return two columns:
+For `ModelProblem`:
 
 ```python
-def conFunc(X):
-    X = np.atleast_2d(X)
-    c1 = X[:, 0] + X[:, 1] - 1.0
-    c2 = 0.2 - X[:, 0]
-    return np.vstack([c1, c2]).T
+# target="sims": return simulation output only, skipping objFunc / conFunc
+res = problem.evaluate(X, target="sims")
+print(res.sims)   # (nSamples, nTime, nSeries)
+print(res.objs)   # None
+print(res.cons)   # None
 ```
 
-Here `c1 <= 0` means `x1 + x2 <= 1.0`, and `c2 <= 0` means `x1 >= 0.2`.
+---
 
-## Check Return Shapes
+## Built-in Test Problems
 
-These are the shapes UQPyL expects:
+`UQPyL.problem` provides a collection of classic test functions that can be instantiated directly.
 
-| Function | Input shape | Return shape |
-|---|---|---|
-| `objFunc(X)` with one objective | `(n_samples, n_input)` | `(n_samples, 1)` |
-| `objFunc(X)` with two objectives | `(n_samples, n_input)` | `(n_samples, 2)` |
-| `conFunc(X)` with one constraint | `(n_samples, n_input)` | `(n_samples, 1)` |
-| `simFunc(X)` for simulation models | `(n_samples, n_input)` | `(n_samples, n_time, n_series)` |
-
-Common mistakes:
-
-| Mistake | Why it fails or confuses results | Fix |
-|---|---|---|
-| Returning `0.13` | This is a scalar, not one row per sample. | Return `[[0.13]]`. |
-| Returning shape `(n_samples,)` | This is a flat vector, not a column matrix. | Use `reshape(-1, 1)` or `keepdims=True`. |
-| Using `X[0]` as the first variable | `X[0]` is the first row. | Use `X[:, 0]`. |
-| Forgetting `np.atleast_2d(X)` | Single inputs and batch inputs may behave differently. | Start with `X = np.atleast_2d(X)`. |
-
-## Use `evaluate()`
-
-`problem.evaluate(X)` returns an `Eval` object.
+### Single-Objective (SOP)
 
 ```python
-import numpy as np
+from UQPyL.problem import Sphere, Rosenbrock, Ackley, Griewank, Rastrigin
 
-from UQPyL.problem import Problem
-
-
-def objFunc(X):
-    X = np.atleast_2d(X)
-    return np.sum(X**2, axis=1, keepdims=True)
-
-
-def conFunc(X):
-    X = np.atleast_2d(X)
-    return (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)
-
-
-problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, objFunc=objFunc, conFunc=conFunc)
-res = problem.evaluate([[0.2, 0.3], [0.8, 0.4]])
-
-print(res.objs)
-print(res.cons)
+problem = Sphere(nInput=10)
+problem = Rosenbrock(nInput=5)
 ```
 
-| Field | Meaning |
-|---|---|
-| `objs` | Objective values, or `None` when not requested. |
-| `cons` | Constraint values, or `None` when unavailable or not requested. |
-| `sim` | Simulation output for `ModelProblem`, otherwise usually `None`. |
+Full list: `Sphere`, `Schwefel_2_22`, `Schwefel_1_22`, `Schwefel_2_21`, `Rosenbrock`, `Step`, `Quartic`, `Schwefel_2_26`, `Rastrigin`, `Ackley`, `Griewank`, `Trid`, `Bent_Cigar`, `Discus`, `Weierstrass`, `RosenbrockWithCon`
 
-Use `target` to request only one output block.
+### Multi-Objective (MOP)
 
 ```python
-import numpy as np
+from UQPyL.problem import ZDT1, ZDT2, DTLZ1, DTLZ2
 
-from UQPyL.problem import Problem
-
-
-def objFunc(X):
-    X = np.atleast_2d(X)
-    return np.sum(X**2, axis=1, keepdims=True)
-
-
-def conFunc(X):
-    X = np.atleast_2d(X)
-    return (X[:, 0] + X[:, 1] - 1.0).reshape(-1, 1)
-
-
-problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, objFunc=objFunc, conFunc=conFunc)
-obj_res = problem.evaluate([[0.2, 0.3]], target="objs")
-con_res = problem.evaluate([[0.2, 0.3]], target="cons")
-
-print(obj_res.objs)
-print(obj_res.cons)
-print(con_res.objs)
-print(con_res.cons)
+problem = ZDT1(nInput=30)
+problem = DTLZ2(nInput=12, nObj=3)
 ```
 
-Example output:
+ZDT family: `ZDT1`, `ZDT2`, `ZDT3`, `ZDT4`, `ZDT6`
+DTLZ family: `DTLZ1`—`DTLZ7`
 
-```text
-[[0.13]]
-None
-None
-[[-0.5]]
-```
+---
 
-## When to Use Combined `evaluate`
+## singleFunc Decorator
 
-Use `evaluate` when objectives and constraints share expensive intermediate calculations.
+`singleFunc` wraps a single-sample function into a batch function, eliminating the need for manual `np.atleast_2d` and dimension handling:
 
 ```python
-import numpy as np
-
-from UQPyL.problem import Eval, Problem
-
-
-def evaluate(X):
-    X = np.atleast_2d(X)
-    total = np.sum(X, axis=1, keepdims=True)
-    return Eval(objs=total**2, cons=total - 1.0)
-
-
-problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, evaluate=evaluate)
-
-res = problem.evaluate([[0.2, 0.3], [0.8, 0.4]])
-print(res.objs)
-print(res.cons)
-```
-
-Example output:
-
-```text
-[[0.25]
- [1.44]]
-[[-0.5]
- [ 0.2]]
-```
-
-`Problem` accepts exactly one callable configuration:
-
-| Configuration | Use when |
-|---|---|
-| `objFunc` | The problem has objectives only. |
-| `objFunc` + `conFunc` | The problem has objectives and constraints. |
-| `evaluate` | Objectives and constraints should be computed together. |
-
-Do not combine `evaluate` with `objFunc` or `conFunc`.
-
-## Use Single-Sample Functions
-
-If a batched function feels awkward, write a one-row function and wrap it with `singleFunc`.
-
-```python
-import numpy as np
-
-from UQPyL.problem import Problem, singleFunc
-
+from UQPyL.problem import singleFunc, Problem
 
 @singleFunc
-def objFunc(x):
-    return float(np.sum(x**2))
+def objFunc(x):                        # x: (nInput,) — single sample
+    return x[0]**2 + x[1]**2           # returns scalar
 
-
-problem = Problem(nInput=2, nObj=1, ub=1.0, lb=-1.0, objFunc=objFunc)
-
-print(problem.evaluate([[0.2, 0.3], [0.5, 0.1]]).objs)
+problem = Problem(nInput=2, nObj=1, lb=-1, ub=1, objFunc=objFunc)
+res = problem.evaluate([[0.2, 0.3], [0.5, 0.6]])   # batch call works correctly
 ```
 
-Example output:
-
-```text
-[[0.13]
- [0.26]]
-```
-
-For combined objective and constraint evaluation, use `singleEval`.
+Equivalent manual implementation:
 
 ```python
-import numpy as np
-
-from UQPyL.problem import Eval, Problem, singleEval
-
-
-@singleEval
-def evaluate(x):
-    return Eval(objs=float(np.sum(x**2)), cons=np.array([x[0] + x[1] - 1.0]))
-
-
-problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, evaluate=evaluate)
-
-print(problem.evaluate([[0.2, 0.3], [0.8, 0.4]]).objs)
-print(problem.evaluate([[0.2, 0.3], [0.8, 0.4]]).cons)
-```
-
-## Use Variable Types
-
-By default, all variables are continuous. Use `varType` for integer or discrete variables.
-
-| Value | Type | Meaning |
-|---|---|---|
-| `0` | Continuous | Any value inside bounds. |
-| `1` | Integer | Rounded integer value inside bounds. |
-| `2` | Discrete | Mapped to a value from `varSet`. |
-
-Discrete variables require `varSet`.
-
-```python
-import numpy as np
-
-from UQPyL.problem import Problem
-
-
 def objFunc(X):
     X = np.atleast_2d(X)
-    return np.sum(X, axis=1, keepdims=True)
-
-
-problem = Problem(
-    nInput=3,
-    nObj=1,
-    ub=[1.0, 10.0, 1.0],
-    lb=[0.0, 0.0, 0.0],
-    varType=[0, 1, 2],
-    varSet={2: [0.1, 0.5, 0.9]},
-    objFunc=objFunc,
-)
-
-X = np.array([[0.2, 3.7, 0.8]])
-print(problem.apply_var_type(X))
+    return np.sum(X**2, axis=1, keepdims=True)
 ```
 
-Example output:
+---
 
-```text
-[[0.2 4.  0.9]]
-```
+## Parameter Reference
 
-## Use `ModelProblem` for Simulations
+### Problem Constructor Parameters
 
-Use `ModelProblem` when the main callable is a simulation model. This is common for calibration, time-series models, hydrology models, and other systems where parameters produce simulated outputs.
+| Parameter | Type | Default | Description |
+|------|------|--------|------|
+| `nInput` | `int` | — | Number of input variables |
+| `nObj` | `int` | — | Number of objectives (required) |
+| `lb` | `int/float/list/array` | — | Input lower bound |
+| `ub` | `int/float/list/array` | — | Input upper bound |
+| `objFunc` | `callable` | `None` | Objective function |
+| `conFunc` | `callable` | `None` | Constraint function |
+| `nCon` | `int` | `0` | Number of constraints |
+| `optType` | `str/list` | `'min'` | Optimization direction |
+| `conWgt` | `list` | `None` | Constraint weights, shape `(1, nCon)` |
+| `varType` | `list` | All continuous | Variable types: `0`=continuous, `1`=integer, `2`=discrete |
+| `varSet` | `dict` | `None` | Discrete value sets, e.g. `{2: [0.1, 0.3, 0.5]}` |
+| `xLabels` | `list` | Auto-generated when omitted | Input variable labels |
+| `objLabels` | `list` | Auto-generated when omitted | Objective labels |
+| `conLabels` | `list` | Auto-generated when omitted | Constraint labels |
+| `name` | `str` | Class name | Problem name |
+| `space` | `SpaceBase` | Auto-generated when omitted | Custom input space |
+| `evaluator` | `EvaluatorBase` | Auto-generated when omitted | Custom evaluator |
 
-The simulation function also receives batched input. Its usual return shape is:
+### ModelProblem Additional Parameters
 
-```text
-(n_samples, n_time, n_series)
-```
+| Parameter | Type | Default | Description |
+|------|------|--------|------|
+| `simFunc` | `callable` | — | Simulation function (required) |
+| `obs` | `np.ndarray` | `None` | Observation matrix `(nTime, nSeries)` |
+| `mask` | `np.ndarray` | `None` | Missing data mask, same shape as obs |
+| `seriesLabels` | `list` | Auto-generated when omitted | Series labels |
+| `evaluator` | `ModelEvaluatorBase` | Auto-generated when omitted | Custom simulation evaluator |
 
-This example has two parameters, two time steps, and one simulated series.
+### ProblemBase Instance Properties
+
+| Property | Type | Description |
+|------|------|------|
+| `nInput` | `int` | Input dimensionality |
+| `nObj` | `int` | Objective dimensionality |
+| `nCon` | `int` | Constraint dimensionality |
+| `lb` | `np.ndarray` | Lower bounds `(1, nInput)` |
+| `ub` | `np.ndarray` | Upper bounds `(1, nInput)` |
+| `optType` | `str` | Optimization direction string |
+| `opt` | `int/array` | `1`=minimize, `-1`=maximize |
+| `varType` | `np.ndarray` | Variable type codes |
+| `idxF` | `np.ndarray` | Continuous variable indices |
+| `idxI` | `np.ndarray` | Integer variable indices |
+| `idxD` | `np.ndarray` | Discrete variable indices |
+| `varSet` | `dict` | Discrete value sets |
+| `xLabels` | `list` | Input variable labels |
+| `objLabels` | `list` | Objective labels |
+| `conLabels` | `list` | Constraint labels (`None` when nCon=0) |
+| `conWgt` | `np.ndarray` | Constraint weights |
+
+### ModelProblem Additional Properties
+
+| Property | Type | Description |
+|------|------|------|
+| `obs` | `np.ndarray` | Observation matrix |
+| `mask` | `np.ndarray` | Missing data mask |
+| `obsShape` | `tuple` | `obs.shape` |
+| `nObs` | `int` | Total flattened observation length |
+| `seriesLabels` | `list` | Series labels |
+
+### Constraint weights
+
+`Problem(conWgt=[10, 1], nCon=2, ...)` assigns one finite nonnegative weight per constraint. The length must match `nCon`. `None` leaves violations unweighted; a zero weight ignores that constraint, including in feasibility checks.
 
 ```python
-import numpy as np
-
-from UQPyL.problem import ModelProblem
-
-
-obs = np.array([[1.0], [2.0]])
-
-
-def simFunc(X):
-    X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
-    return sim
-
-
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
-
-res = problem.evaluate([[1.0, 2.0], [1.5, 2.5]], target="sim")
-print(res.sim.shape)
-print(res.sim)
+CV = np.sum(np.maximum(0, cons * conWgt), axis=1)
 ```
-
-Example output:
-
-```text
-(2, 2, 1)
-[[[1. ]
-  [2. ]]
-
- [[1.5]
-  [2.5]]]
-```
-
-The three simulation indexes mean:
-
-| Index | Meaning |
-|---|---|
-| `sim[i, :, :]` | All outputs for sample `i`. |
-| `sim[:, t, :]` | All samples at time step `t`. |
-| `sim[:, :, j]` | All samples and times for output series `j`. |
-
-### Objective From Simulation Error
-
-If `obs` is provided, an objective can compare simulations with observations through `context`.
-
-```python
-import numpy as np
-
-from UQPyL.problem import ModelProblem
-
-
-obs = np.array([[1.0], [2.0]])
-
-
-def simFunc(X):
-    X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
-    return sim
-
-
-def objFunc(X, context):
-    err = context.sim - context.obs
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
-
-
-problem = ModelProblem(nInput=2, nObj=1, ub=3.0, lb=0.0, simFunc=simFunc, objFunc=objFunc, obs=obs, simLabels=["Q"])
-
-res = problem.evaluate([[1.0, 2.2], [0.0, 0.0]])
-print(res.objs)
-```
-
-Example output:
-
-```text
-[[0.02]
- [2.5 ]]
-```
-
-### ModelProblem Checklist
-
-| Check | Expected |
-|---|---|
-| `obs` | 2D array, usually `(n_time, n_series)`. |
-| `mask` | Same shape as `obs`; `True` means ignored. |
-| `simFunc(X).shape[0]` | Same as `np.atleast_2d(X).shape[0]`. |
-| `simFunc(X).shape[1:]` | Should match `obs.shape` when observations are used. |
-| `objFunc(X, context)` | Returns `(n_samples, n_obj)`. |
-
-## Core Objects
-
-| Concept | Role |
-|---|---|
-| `Space` | Defines input dimension, bounds, labels, and variable types. |
-| `Problem` | Defines objectives and optional constraints for static problems. |
-| `ModelProblem` | Defines simulation models with observations, masks, and simulation context. |
-| `Eval` | Standard return object from `evaluate()`. |
-| `singleFunc` | Adapts a single-sample objective function to batched input. |
-| `singleEval` | Adapts a single-sample evaluation function to batched input. |
-
-## Common Mistakes
-
-| Mistake | What happens | Fix |
-|---|---|---|
-| Returning objective values with shape `(n_samples,)`. | Some downstream methods expect a 2D objective table and may fail or misread the output. | Return `(n_samples, n_obj)`, for example `y.reshape(-1, 1)` or `keepdims=True`. |
-| Writing `objFunc` for one row but passing batched `X`. | The function works for one sample and breaks when DOE, optimization, or analysis sends many rows. | Use `np.atleast_2d(X)` and compute one output per row, or wrap a one-row function with `@singleFunc`. |
-| Using dictionary-style result access such as `res["objs"]`. | `Problem.evaluate()` returns an `Eval` object, not a dictionary. | Use `res.objs`, `res.cons`, and `res.sims`. |
-| Giving scalar `lb` and `ub` when variables need different ranges. | All variables receive the same bounds. | Use vectors such as `lb=[0.0, -5.0]` and `ub=[1.0, 10.0]`. |
-| Defining constraints with the wrong sign. | Feasible and infeasible points are reversed. | Use `cons <= 0` for feasible points. |
-| Setting `nCon=1` but returning no constraint values. | Constraint-aware methods cannot read feasibility. | Provide `conFunc` or a combined `evaluate()` that returns `Eval(cons=...)`. |
-| Returning simulation output as `(n_time, n_series)` for a batched `ModelProblem`. | Calibration expects one simulation per input row. | Return `(n_samples, n_time, n_series)` from `simFunc(X)`. |
-| Applying `mask=True` to values you want to use. | Masked values are ignored in calibration metrics. | Use `True` only for missing or ignored observations. |
-| Mixing up `optType` direction. | Optimization and inference orient the objective incorrectly. | Use `"min"` for loss/error and `"max"` for benefit/score. |
-
-## Benchmark Problems
-
-UQPyL includes benchmark problems under `UQPyL.problem`.
-
-| Type | Examples |
-|---|---|
-| Single-objective | `Sphere`, `Ackley`, `Rosenbrock`, `Rastrigin`, `Griewank`, `Trid` |
-| Constrained single-objective | `RosenbrockWithCon` |
-| Multi-objective | `ZDT1`, `ZDT2`, `ZDT3`, `ZDT4`, `ZDT6`, `DTLZ1`-`DTLZ7` |
-
-```python
-from UQPyL.problem import Sphere, ZDT1
-
-
-sphere = Sphere(nInput=10)
-zdt1 = ZDT1(nInput=5)
-
-print(sphere.evaluate([[0.0] * 10]).objs)
-print(zdt1.evaluate([[0.5] * 5]).objs)
-```
-
-## Next Steps
-
-| Goal | Read |
-|---|---|
-| Look up constructor parameters | [Problem API](api/problem.md) |
-| Generate samples from a problem | [Design of Experiment](doe.md) |
-| Run complete examples | [Examples](examples.md) |

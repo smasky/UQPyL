@@ -12,27 +12,29 @@ class Sampler(metaclass=abc.ABCMeta):
     def __init__(self):
         self.rng = None
 
-    def sample(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None):
+    def sample(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None, *, output="real"):
         """
         Generate samples in the problem space.
 
         :param problem: Problem instance.
         :param nSamples: Number of samples.
         :param seed: Random seed.
-        :return np.ndarray: Samples in the problem space.
+        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
+        :return np.ndarray: Samples in the selected coordinate space.
         """
         nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
-        X, _ = self.sampleWithMeta(problem, nSamples, seed=seed)
+        X, _ = self.sampleWithMeta(problem, nSamples, seed=seed, output=output)
         return X
 
-    def sampleWithMeta(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None):
+    def sampleWithMeta(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None, *, output="real"):
         """
         Generate samples with metadata.
 
         :param problem: Problem instance.
         :param nSamples: Number of samples.
         :param seed: Random seed.
-        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
+        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
+        :return tuple: ``(X, meta)`` with the output space recorded in metadata.
         """
         nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
         self._validate_problem(problem)
@@ -43,10 +45,19 @@ class Sampler(metaclass=abc.ABCMeta):
         U = self._generate(nSamples, nInput)
         expected_shape = self._expected_shape(nSamples, nInput)
         U = self._validate_generated_samples(U, expected_shape)
-        X = problem.unit_to_space(U)
+        X = self._select_output(problem, U, output)
 
         meta = self._build_meta(problem, nSamples, seed=seed)
+        meta["output"] = output
         return X, meta
+
+    @staticmethod
+    def _select_output(problem, U, output):
+        if output == "unit":
+            return U.copy()
+        if output == "real":
+            return problem.unit_to_space(U)
+        raise ValueError("output must be 'real' or 'unit'.")
 
     def _resolve_sample_count(self, nSamples: Optional[int] = None, nt: Optional[int] = None):
         if nSamples is None:

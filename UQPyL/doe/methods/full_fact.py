@@ -48,26 +48,28 @@ class FFD(Sampler):
         
         return H
     
-    def sample(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None):
+    def sample(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None, *, output="real"):
         """
         Generate a full factorial sample.
 
         :param problem: Problem instance.
         :param levels: Levels for each input variable.
         :param seed: Random seed kept for API consistency. It does not affect the result.
-        :return np.ndarray: Samples in the problem space.
+        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
+        :return np.ndarray: Samples in the selected coordinate space.
         """
-        X, _ = self.sampleWithMeta(problem, levels, seed=seed)
+        X, _ = self.sampleWithMeta(problem, levels, seed=seed, output=output)
         return X
 
-    def sampleWithMeta(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None):
+    def sampleWithMeta(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None, *, output="real"):
         """
         Generate a full factorial sample set with metadata.
 
         :param problem: Problem instance.
         :param levels: Levels for each input variable.
         :param seed: Random seed kept for API consistency. It does not affect the result.
-        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
+        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
+        :return tuple: ``(X, meta)`` with the output space recorded in metadata.
         """
 
         self._validate_problem(problem)
@@ -76,9 +78,10 @@ class FFD(Sampler):
         nInput = problem.nInput
         U = self._generate(levels, nInput)
         U = self._validate_generated_samples(U, (U.shape[0], nInput))
-        X = problem.unit_to_space(U)
+        X = self._select_output(problem, U, output)
 
         meta = self._build_meta(problem, levels, seed=seed)
+        meta["output"] = output
         return X, meta
 
     def _build_meta(self, problem: Problem, levels: Union[np.ndarray, int, list], seed: Optional[int] = None):

@@ -19,10 +19,9 @@ authors = [
 license = {text = "MIT"}
 description = "A python package for parameter uncertainty quantification and optimization"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
-    "numpy>=1.26; python_version>='3.9'",
-    "numpy>=1.21,<1.25; python_version<'3.9'",
+    "numpy>=1.26",
     "scipy",
 ]
 classifiers = [
@@ -30,8 +29,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -40,7 +37,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-viz = ["matplotlib"]
+viz = ["matplotlib", "seaborn"]
 
 [project.urls]
 Homepage = "https://uqpyl.readthedocs.io"
@@ -48,7 +45,7 @@ Repository = "https://github.com/smasky/UQPyL"
 Documentation = "https://uqpyl.readthedocs.io"
 
 [tool.cibuildwheel]
-build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
+build = "cp310-* cp311-* cp312-* cp313-*"
 skip = ["pp*", "*-musllinux*"]
 before-build = [
     "pip install numpy scipy cython pybind11",
@@ -71,7 +68,6 @@ norecursedirs = [
 addopts = "-ra --basetemp=.cache/pytest/tmp"
 filterwarnings = [
   "ignore:The truth value of an empty array is ambiguous.*:DeprecationWarning",
-  "ignore:Passing None has been deprecated.*:pytest.PytestRemovedIn8Warning",
   "ignore:The NumPy module was reloaded.*:UserWarning",
   "ignore:numpy\\.ndarray size changed.*:RuntimeWarning",
 ]

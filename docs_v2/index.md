@@ -41,8 +41,8 @@ Problem / ModelProblem -> Method -> Result
 
 | Concept | Where |
 |---|---|
-| `Problem` | Static objective and constraint problems. See [Problem](problem.md). |
-| `ModelProblem` | Simulation models with observations, masks, and simulation context. See [Problem](problem.md). |
+| `Problem` | Direct problems that follow `X -> objs/cons`. See [Problem](problem.md). |
+| `ModelProblem` | Simulation-backed problems that follow `X -> sim -> objs/cons`. See [Problem](problem.md). |
 | `Eval` | Standard output object from `problem.evaluate()`. See [Problem API](api/problem.md). |
 | Result objects | Module-specific outputs such as `AnaResult`, `OptResult`, `InfResult`, and `CalResult`. See [API Reference](api_reference.md). |
 | Saved runs | Runtime sqlite readers such as `AnaReader`, `OptReader`, `InfReader`, and `CalReader`. See each API page. |

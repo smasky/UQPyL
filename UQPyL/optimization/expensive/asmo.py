@@ -6,6 +6,7 @@ from typing import Literal
 
 from ..soea.sce_ua import SCE_UA
 from ..base import AlgorithmABC
+from ._base import SurrogateOptimization
 from ..population import Population
 from ...core import spawn_seed
 
@@ -13,7 +14,7 @@ from ...problem import Problem
 from ...surrogate import SurrogateABC
 from ...surrogate.kriging import KRG
 
-class ASMO(AlgorithmABC):
+class ASMO(SurrogateOptimization):
     """
     Single-objective adaptive surrogate modelling-based optimization algorithm.
 
@@ -39,7 +40,7 @@ class ASMO(AlgorithmABC):
                  maxIters: int = 1000,
                  maxTolerates: int = None,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -54,12 +55,13 @@ class ASMO(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, maxTolerates = maxTolerates, 
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq)
+                         saveFreq = saveFreq, historyFreq=historyFreq)
         
         self.set('nInit', nInit)
         self.set('euclidThres', euclidThres)
@@ -76,15 +78,14 @@ class ASMO(AlgorithmABC):
         self.optimizer = optimizer
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
         
-    def run(self, problem, xInit = None, yInit = None, seed = None, oneStep = False):
+    def run(self, problem, seed = None, oneStep = False, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
-        :param xInit: Optional initial decision variables.
-        :param yInit: Optional initial objective values.
         :param seed: Random seed.
         :param oneStep: Whether to perform only one iteration.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -95,55 +96,40 @@ class ASMO(AlgorithmABC):
         euclidThres = self.get('euclidThres')
         
         # Define a subproblem using the surrogate model
-        subProblem = Problem(objFunc = self.surrogate.predict, nInput = problem.nInput, 
-                                nObj = 1, ub = problem.ub, lb = problem.lb, 
-                                    varType = problem.varType, varSet = problem.varSet, 
-                                        optType = problem.optType)
-        
+        subProblem = Problem(objFunc=self._predictUnit, nInput=problem.nInput,
+                             nObj=1, ub=1.0, lb=0.0, optType="min")
+
         # Generate initial population
-        if xInit is not None:
-            if yInit is not None:
-                pop = Population(xInit, yInit)
-            else:
-                pop = Population(xInit)
-                self.evaluate(pop)
-            
-            if nInit > len(pop):
-                pop.merge(self.initPop(nInit - len(pop)))
-                
-        else:
-            pop = self.initPop(nInit)
+        pop = self.initPop(nInit, initialPop=initialPop)
         self.update(pop)
         
         # Iterative process
         while self.checkTermination(pop):
             
             # Build surrogate model
-            self.surrogate.fit(pop.decs, pop.objs)
+            self._fitSurrogate(self.surrogate, pop)
             
             # Run optimizer on the surrogate model
             res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
             
             # Evaluate the offspring
-            bestDecs = np.asarray(res.bestDecs)
-            
-            euclidDist = np.linalg.norm(bestDecs - pop.decs, axis = 1)
-            minEuclidDist = np.min(euclidDist)
-            
-            if minEuclidDist < euclidThres:
-                decs = self.rng.uniform(problem.lb, problem.ub, size=(1, problem.nInput))
-            else:
-                decs = bestDecs
-            
+            decs = self._novelCandidates(np.asarray(res.bestDecs), pop,
+                                         tolerance=euclidThres)
+            if not len(decs):
+                break
+
             offSpring = Population(decs = decs)
             
             self.evaluate(offSpring)
             
             # Merge offspring with current population
             pop.add(offSpring)
-            self.update(pop)
+            self.update(pop, completed=True)
             
             if oneStep:
                 break
                     
         return self.finalize()
+
+    def _predictUnit(self, X):
+        return self.surrogate.predict(self.problem.canonicalize_unit(X))

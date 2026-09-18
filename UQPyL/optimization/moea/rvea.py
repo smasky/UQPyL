@@ -6,6 +6,7 @@ from typing import Optional
 from ..base import AlgorithmABC
 from ..core import uniformPoint, gaOperator
 from ..population import Population
+from ..core.constraint import calcConstraintViolation
 
 class RVEA(AlgorithmABC):
     """
@@ -30,7 +31,7 @@ class RVEA(AlgorithmABC):
                 maxIters: int = 1000, 
                 maxTolerates=None, tolerate=1e-6, 
                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = True,
-                saveFreq: int = 100):
+                saveFreq: int = 100, hvRefPoint=None, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -45,22 +46,24 @@ class RVEA(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, hvRefPoint=hvRefPoint, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('alpha', alpha)
         self.set('fr', fr)
         self.set('nPop', nPop)
     
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -73,9 +76,10 @@ class RVEA(AlgorithmABC):
         # Generate initial reference vectors
         V0, nPop = uniformPoint(nPop, problem.nOutput)
         V = np.copy(V0)
+        self.referenceScale = np.ones(problem.nOutput)
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
         
         # Iterative process
@@ -85,7 +89,7 @@ class RVEA(AlgorithmABC):
             matingPoolIdx = self.rng.integers(0, len(pop), nPop)
             matingPool = pop[matingPoolIdx]
             # Generate offspring using genetic operations
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, rng=self.rng)
+            offspringDecs = gaOperator(matingPool.decs, self.searchUb, self.searchLb, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring
@@ -93,7 +97,7 @@ class RVEA(AlgorithmABC):
             
             # Environmental selection
             pop.merge(offspring)
-            nextIdx = self.environmentSelection(pop.objs, V, (self.FEs/self.maxFEs)**alpha)
+            nextIdx = self.environmentSelection(pop.objs, V, (self.FEs/self.maxFEs)**alpha, pop.cons, pop.conWgt)
             pop = pop[nextIdx]
             
             # Check if reference vectors need to be updated
@@ -102,7 +106,7 @@ class RVEA(AlgorithmABC):
             if condition:
                 # Update reference vectors
                 V = self.updateReferenceVector(pop.objs, V0)
-            self.update(pop)
+            self.update(pop, completed=True)
                         
         # Return the final result
         return self.finalize()
@@ -117,14 +121,16 @@ class RVEA(AlgorithmABC):
         :return: Updated reference vectors.
         """
         # Calculate scaling factors based on the population's objective values
-        scaling_factors = np.max(popObjs, axis=0) - np.min(popObjs, axis=0)
-        
-        # Scale the reference vectors
-        V = V * scaling_factors
+        span = np.ptp(popObjs, axis=0)
+        previous = getattr(self, "referenceScale", np.ones(popObjs.shape[1]))
+        self.referenceScale = np.where(np.isfinite(span) & (span > 0), span, previous)
+
+        # Retain the last useful scale for constant objectives or singleton fronts.
+        V = V * self.referenceScale
         
         return V
     
-    def environmentSelection(self, popObjs, V, theta):
+    def environmentSelection(self, popObjs, V, theta, popCons=None, conWgt=None):
         """
         Perform environmental selection to choose the next generation.
 
@@ -134,6 +140,15 @@ class RVEA(AlgorithmABC):
         
         :return: Selected population for the next generation.
         """
+        if popCons is not None:
+            violation = calcConstraintViolation(popCons, conWgt)
+            feasible = np.flatnonzero(violation <= 0)
+            if not feasible.size:
+                return np.argsort(violation, kind="stable")[:V.shape[0]]
+            # Preserve reference-vector selection among feasible solutions.
+            selected = self.environmentSelection(popObjs[feasible], V, theta)
+            return feasible[selected]
+
         M = popObjs.shape[1]
         
         nV = V.shape[0]
@@ -141,17 +156,20 @@ class RVEA(AlgorithmABC):
         # Normalize the objective values
         popObjs = popObjs - np.min(popObjs, axis=0)
         
-        # Calculate cosine similarity between reference vectors
-        cosine = 1-cdist(V, V, metric='cosine')
-        
-        np.fill_diagonal(cosine, 0)
-        
-        # Calculate the minimum angle between reference vectors
-        gamma = np.min(np.arccos(cosine), axis=1)
-        
-        # Calculate the angle between population objectives and reference vectors
-        angle = np.arccos(1-cdist(popObjs, V, metric="cosine"))
-        
+        vectorNorm = np.linalg.norm(V, axis=1, keepdims=True)
+        if np.any(vectorNorm <= 0) or not np.all(np.isfinite(vectorNorm)):
+            raise ValueError("Reference vectors must be finite and nonzero.")
+        unitV = V / vectorNorm
+        cosine = np.clip(unitV @ unitV.T, -1.0, 1.0)
+        np.fill_diagonal(cosine, -1.0)
+        gamma = np.maximum(np.min(np.arccos(cosine), axis=1), 1e-12)
+        objectiveNorm = np.linalg.norm(popObjs, axis=1, keepdims=True)
+        unitObjs = np.divide(popObjs, objectiveNorm, out=np.zeros_like(popObjs),
+                             where=objectiveNorm > 0)
+        angle = np.arccos(np.clip(unitObjs @ unitV.T, -1.0, 1.0))
+        # The ideal point has zero APD in every direction, without undefined angles.
+        angle[objectiveNorm[:, 0] == 0] = 0.0
+
         # Associate each solution with a reference vector
         associate = np.argmin(angle, axis=1)
         

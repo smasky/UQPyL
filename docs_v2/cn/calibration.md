@@ -6,6 +6,20 @@
 
 校准方法使用 `ModelProblem`，不是普通 `Problem`。
 
+在 UQPyL 里，校准问题的标准主链是：
+
+```text
+X -> simFunc(X) -> sim -> calibration metric / score -> parameter update or selection
+```
+
+对应到建模对象上就是：
+
+```text
+obs + simFunc + 参数边界 -> ModelProblem -> calibration.run(...) -> CalResult
+```
+
+也就是说，校准不是把普通 `Problem` 换个模块继续用，而是明确建立在 `ModelProblem` 这条仿真型问题主线上。
+
 ## 选择校准方法
 
 | 方法 | 适合场景 | 主要输出 |
@@ -33,6 +47,15 @@ obs + simFunc + 参数边界 -> ModelProblem -> calibration.run(...) -> CalResul
 
 ## 构建 `ModelProblem`
 
+推荐把 `ModelProblem` 理解成校准工作的标准建模容器：
+
+- `simFunc(X)` 负责生成原始仿真输出
+- `obs` 提供观测参照
+- `mask` 控制哪些观测位置参与评分
+- 校准方法再基于这些信息计算 metric、筛选样本或更新参数
+
+对校准来说，`ModelProblem` 不要求必须定义 `objFunc`。只要有 `simFunc + obs`，一个 simulation-only `ModelProblem` 就已经是合法的校准容器。
+
 这个 toy model 中，两个参数直接对应两个观测时刻：
 
 ```text
@@ -59,7 +82,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 
 sim = problem.simFunc([[1.0, 2.0]])
 
@@ -111,7 +134,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -169,7 +192,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, mask=mask, simLabels=["Q", "Ignored"], name="MaskedToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, mask=mask, seriesLabels=["Q", "Ignored"], name="MaskedToyModel")
 
 print(problem.obs.shape)
 print(problem.mask.shape)
@@ -202,7 +225,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = SUFI2(verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, eliteSize=2)
@@ -245,7 +268,7 @@ def simFunc(X):
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, simLabels=["Q"], name="NonlinearToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="NonlinearToyModel")
 X = np.array([[0.0, 0.5], [2.0, 1.0], [1.5, 2.0]])
 
 esResult = ES(verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X)
@@ -294,3 +317,23 @@ print(np.mean(esResult.diagnostics["scores"]), np.mean(iesResult.diagnostics["sc
 | 查构造参数和结果字段 | [Calibration API](api/calibration.md) |
 | 对比推断工作流 | [Inference](inference.md) |
 | 查看完整工作流 | [Examples](examples.md) |
+
+### ES / IES 最优样本的指标方向
+
+最终后验集合按指标本身的方向选出 best：RMSE/MSE/MAE 越小越好，NSE/KGE/R² 等越大越好。内部 `normalizedScore()` 对越大越好的指标取负号、对 `pbias` 取绝对值，统一供最小化比较；它不把分数缩放到 0–1。诊断、打印和保存仍使用原始指标值，指标选择不改变 ES/IES 的集合更新公式。
+
+
+### PBIAS 的距零判据
+
+使用 `metric="pbias"` 标签时，选优比较 `abs(PBIAS)`；GLUE 的阈值是非负、有限的百分数容差，例如 5 表示 `-5% <= PBIAS <= 5%`，包含边界。ES、IES、SUFI2 同样沿用距零选优。
+
+原始公式保持 `100 * sum(sim - obs) / sum(obs)`，打印、保存及 diagnostics 保留正负号。绝对值只取在最终指标外，不对逐时误差取绝对值后求和；正负误差相抵时 PBIAS 可以为零，这不表示每个时刻都准确。上述特殊规则由字符串标签启用，直接传入自定义指标函数仍沿用默认最小化约定。
+
+
+### ES / IES 的协方差退化处理
+
+观测维数超过集合规模减一、重复观测或集合没有差异时，样本协方差可能秩不足。ES/IES 共用以下求解规则：满数值秩时使用线性求解；否则使用对称特征分解构成截断伪逆。特征值不大于 `n_valid_obs * eps * max(abs(eigenvalues))` 的方向被舍弃；零秩时增益为零，集合保持不变。伪逆不能补充集合没有表达的信息，也不保证所有观测都能拟合。
+
+默认 R 仍为零，IES 的 lam 仍默认 0；不自动添加观测噪声或岭项。R 必须形状正确、有限、对称且半正定；浮点舍入范围内的不对称被对称化，极小负特征值截为零。IES lam 必须是有限非负标量。
+
+ES 的 `diagnostics['covarianceSolve']` 和 IES 的逐轮 `diagnostics['covarianceSolves']` 记录 solver、rank、dimension、cutoff。检测使用观测空间特征分解，会增加计算开销；本轮不包含针对超长观测序列的集合空间加速。

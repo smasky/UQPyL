@@ -2,12 +2,12 @@ import copy
 
 import numpy as np
 
+from .core.constraint import validateConstraintWeights
 from .core import NDSort, crowdingDist, calcConstraintViolation, argsortSolutions
 
 
 class Population:
     def __init__(self, decs, objs=None, cons=None, conWgt=None):
-        self.conWgt = conWgt
         self.decs = np.atleast_2d(np.copy(decs))
         self.objs = None if objs is None else np.atleast_2d(np.copy(objs))
         self.cons = None if cons is None else np.atleast_2d(np.copy(cons))
@@ -16,6 +16,14 @@ class Population:
         self.nOutput = None if self.objs is None else self.objs.shape[1]
         self.frontNo = None
         self.crowdDis = None
+        self.setConstraintWeights(conWgt)
+
+    def setConstraintWeights(self, conWgt):
+        nCon = None if self.cons is None else self.cons.shape[1]
+        self.conWgt = validateConstraintWeights(conWgt, nCon)
+        self.frontNo = None
+        self.crowdDis = None
+        return self
 
     @property
     def isEvaluated(self):
@@ -100,7 +108,7 @@ class Population:
             if len(feasiblePop) > 0:
                 feasibleFrontNo = feasiblePop.frontNo
                 if feasibleFrontNo is None:
-                    feasibleFrontNo, _ = NDSort(feasiblePop.objs, feasiblePop.cons)
+                    feasibleFrontNo, _ = NDSort(feasiblePop.objs, feasiblePop.cons, conWgt=feasiblePop.conWgt)
                 crowDis = feasiblePop.crowdDis
                 if crowDis is None:
                     crowDis = crowdingDist(feasiblePop.objs, feasibleFrontNo)
@@ -113,13 +121,13 @@ class Population:
                 return self[sortedIdx[:kk]]
         else:
             if frontNo is None:
-                frontNo, _ = NDSort(self.objs, self.cons)
+                frontNo, _ = NDSort(self.objs, self.cons, conWgt=self.conWgt)
             bestPop = self[frontNo == 1]
 
         if k is not None and len(bestPop) > k:
             bestFrontNo = bestPop.frontNo
             if bestFrontNo is None:
-                bestFrontNo, _ = NDSort(bestPop.objs, bestPop.cons)
+                bestFrontNo, _ = NDSort(bestPop.objs, bestPop.cons, conWgt=bestPop.conWgt)
             bestCrowdDis = bestPop.crowdDis
             if bestCrowdDis is None:
                 bestCrowdDis = crowdingDist(bestPop.objs, bestFrontNo)
@@ -132,14 +140,29 @@ class Population:
 
     def getParetoFront(self):
         self.requireEvaluated()
-        return self.getBest(k=None)
+        violation = calcConstraintViolation(self.cons, self.conWgt)
+        feasible = self if violation is None else self[violation <= 0]
+        if not len(feasible):
+            return feasible
+        frontNo, _ = NDSort(feasible.objs)
+        return feasible[frontNo == 1]
+
+    def getInfeasibleCandidates(self, k=10):
+        """Return low-violation diagnostics, separately from the feasible front."""
+        self.requireEvaluated()
+        violation = calcConstraintViolation(self.cons, self.conWgt)
+        if violation is None:
+            return self[:0]
+        indices = np.flatnonzero(violation > 0)
+        order = np.argsort(violation[indices], kind="stable")
+        return self[indices[order[:k]]]
 
     def argsort(self):
         self.requireEvaluated()
         if self.nOutput == 1:
             return argsortSolutions(self.objs, self.cons, self.conWgt)
 
-        frontNo, _ = NDSort(self.objs, self.cons)
+        frontNo, _ = NDSort(self.objs, self.cons, conWgt=self.conWgt)
         crowDis = crowdingDist(self.objs, frontNo)
         return np.lexsort((-crowDis, frontNo))
 

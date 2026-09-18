@@ -5,6 +5,7 @@ from typing import Optional
 
 from ..moea.nsga_ii import NSGAII
 from ..base import AlgorithmABC
+from ._base import SurrogateOptimization
 from ..core import NDSort
 from ..population import Population
 from ...core import spawn_seed
@@ -13,7 +14,7 @@ from ...problem import Problem
 from ...surrogate import MultiSurrogate
 from ...surrogate.rbf.radial_basis_function import RBF
 
-class MOASMO(AlgorithmABC):
+class MOASMO(SurrogateOptimization):
     """
     Multi-objective adaptive surrogate modelling-based optimization algorithm.
 
@@ -39,7 +40,7 @@ class MOASMO(AlgorithmABC):
                  maxIters: int = 100,
                  maxTolerates: int = None, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag: bool = False,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, hvRefPoint=None, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -57,11 +58,12 @@ class MOASMO(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, tolerate, 
-                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                         verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, hvRefPoint=hvRefPoint, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('pct', pct)
@@ -81,14 +83,13 @@ class MOASMO(AlgorithmABC):
         
         self.optimizer.verboseFlag, self.optimizer.logFlag, self.optimizer.saveFlag = False, False, False
         
-    def run(self, problem, xInit = None, yInit = None, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
-        :param xInit: Optional initial decision samples.
-        :param yInit: Optional initial objective samples.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -104,36 +105,22 @@ class MOASMO(AlgorithmABC):
         nInit = self.get('nInit')
         advance_infilling = self.get('advance_infilling')
         
-        nInfilling = int(pct*nInit)
+        nInfilling = max(1, int(pct*nInit))
         
         # Create a subproblem for surrogate model optimization
         nObj = getattr(problem, "nObj", getattr(problem, "nOutput"))
-        subProblem = Problem(nInput = problem.nInput, nObj = nObj, 
-                             ub = problem.ub, lb = problem.lb, objFunc = self.surrogates.predict,
-                             varType = problem.varType, 
-                             varSet = problem.varSet, optType = problem.optType, 
-                             xLabels = problem.xLabels)
-        
+        subProblem = Problem(nInput=problem.nInput, nObj=nObj, ub=1.0, lb=0.0,
+                             objFunc=self._predictUnit, optType="min", xLabels=problem.xLabels)
+
         # Generate initial population
-        if xInit is not None:
-            if yInit is not None:
-                pop = Population(xInit, yInit)
-            else:
-                pop = Population(xInit)
-                self.evaluate(pop)
-            
-            if nInit > len(pop):
-                pop.merge(self.initPop(nInit-len(pop)))
-            
-        else: 
-            pop = self.initPop(nInit)
+        pop = self.initPop(nInit, initialPop=initialPop)
         self.update(pop)
         
         # Iterative optimization process
         while self.checkTermination(pop):
             
             # Build surrogate models
-            self.surrogates.fit(pop.decs, pop.objs)
+            self._fitSurrogate(self.surrogates, pop)
             
             # Run optimization on the surrogate model
             res = self.optimizer.run(subProblem, seed=spawn_seed(self.rng))
@@ -151,8 +138,8 @@ class MOASMO(AlgorithmABC):
             else:
 
                 if offSpring.nPop > nInfilling:
-                    Known_FrontNo, _ = NDSort(pop.objs, pop.cons)
-                    Unknown_FrontNo, _ = NDSort(offSpring.objs, offSpring.cons)
+                    Known_FrontNo, _ = NDSort(pop.objs, pop.cons, conWgt=pop.conWgt)
+                    Unknown_FrontNo, _ = NDSort(offSpring.objs, offSpring.cons, conWgt=offSpring.conWgt)
 
                     Known_best_Y = pop.objs[np.where(Known_FrontNo==1)]
                     Unknown_best_Y = offSpring.objs[np.where(Unknown_FrontNo==1)]
@@ -183,11 +170,16 @@ class MOASMO(AlgorithmABC):
                 else:
                     bestOff = offSpring
             
-            # Evaluate the selected offspring
+            # Compare canonical inputs, including duplicates within the batch.
+            decs = self._novelCandidates(bestOff.decs, pop,
+                                         count=min(nInfilling, self.maxFEs-self.FEs))
+            if not len(decs):
+                break
+            bestOff = Population(decs)
             self.evaluate(bestOff)
             
             pop.add(bestOff)
-            self.update(pop)
+            self.update(pop, completed=True)
                             
         return self.finalize()
           
@@ -201,3 +193,6 @@ class MOASMO(AlgorithmABC):
         
         
         
+
+    def _predictUnit(self, X):
+        return self.surrogates.predict(self.problem.canonicalize_unit(X))

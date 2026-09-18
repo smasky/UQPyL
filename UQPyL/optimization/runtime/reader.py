@@ -1,4 +1,7 @@
 import json
+import ast
+import inspect
+import warnings
 import pickle
 import sqlite3
 from importlib import import_module
@@ -8,9 +11,11 @@ import numpy as np
 from ...core.runtime import export_reader_summary, from_json_array
 from ...core.runtime_reader import BaseReader
 from ..population import Population
+from .result import OptHistory, OptResult
 
 
 class OptReader(BaseReader):
+    domain = 'optimization'
     """
     Read optimization results from sqlite files.
     """
@@ -21,21 +26,9 @@ class OptReader(BaseReader):
             run_columns="runId, algorithm, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
         )
 
-    def __init__(self, dbPath):
-        self.dbPath = str(dbPath)
-        self.conn = sqlite3.connect(self.dbPath)
-        self.conn.row_factory = sqlite3.Row
 
-    def close(self):
-        self.conn.close()
 
-    def get_run(self):
-        row = self.conn.execute("SELECT * FROM run LIMIT 1").fetchone()
-        return dict(row) if row is not None else None
 
-    def get_run_params(self):
-        rows = self.conn.execute("SELECT name, value FROM runParam ORDER BY name").fetchall()
-        return {row["name"]: row["value"] for row in rows}
 
     def get_run_summary(self):
         run = self.get_run()
@@ -66,7 +59,19 @@ class OptReader(BaseReader):
         cls = self._resolveAlgorithmClass(run["algorithm"])
         params = self.get_run_params()
         kwargs = self._parseAlgorithmParams(params)
-        return cls(**kwargs)
+        missing = kwargs.pop('_unrestored_components', [])
+        for key in ('maxFEs', 'maxIters', 'verboseFreq', 'saveFreq'):
+            kwargs.setdefault(key, run[key])
+        accepted = inspect.signature(cls).parameters
+        algorithm = cls(**{key: value for key, value in kwargs.items() if key in accepted})
+        for key in ('tolerate', 'maxTolerates', 'hvRefPoint'):
+            if key in kwargs and key not in accepted:
+                setattr(algorithm, key, kwargs[key])
+        unknown = set(kwargs) - set(accepted) - {'tolerate', 'maxTolerates', 'hvRefPoint'}
+        if missing or unknown:
+            warnings.warn(f"Configuration restored; restore components/settings manually: {sorted(set(missing) | unknown)}. "
+                          "This does not resume optimizer state.", UserWarning, stacklevel=2)
+        return algorithm
 
     def load_problem(self):
         row = self.conn.execute("SELECT problemPayload FROM run LIMIT 1").fetchone()
@@ -97,7 +102,14 @@ class OptReader(BaseReader):
             return self._loadByRole(snapshotId, "best")
         if "pareto" in roles:
             return self._loadByRole(snapshotId, "pareto")
-        raise ValueError(f"No best/pareto records found for snapshotId={snapshotId}")
+        return self._loadByRole(snapshotId, "pareto")
+
+    def load_candidates(self, snapshotId):
+        """Load infeasible diagnostics; never substitutes them for the Pareto front."""
+        return self._loadByRole(snapshotId, "candidate")
+
+    def load_last_candidates(self):
+        return self.load_candidates(self._getLastSnapshotId())
 
     def load_last_population(self):
         snapshotId = self._getLastSnapshotId()
@@ -106,6 +118,48 @@ class OptReader(BaseReader):
     def load_last_best(self):
         snapshotId = self._getLastSnapshotId()
         return self.load_best(snapshotId)
+
+    def load_result(self):
+        """Restore the result with the history available in saved snapshots."""
+        snapshots = self.list_snapshots()
+        if not snapshots:
+            raise ValueError("No snapshot found in sqlite database.")
+        # Final saves may repeat the last completed iteration.
+        snapshots = list({(row['iter'], row['fe']): row for row in snapshots}.values())
+        history = OptHistory()
+        for row in snapshots:
+            history.iterToFEs.append([row['iter'], row['fe']])
+            history.metrics.append(row['hypervolume'])
+            history.bestObjHistory.append(row['bestObj'])
+            history.bestMetricHistory.append(row['hypervolume'])
+            history.numBestHistory.append(row['paretoSize'])
+            population = self.load_population(row['snapshotId'])
+            best = self.load_best(row['snapshotId'])
+            candidates = self.load_candidates(row['snapshotId'])
+            payload = json.loads(self.conn.execute('SELECT bestPayload FROM snapshot WHERE snapshotId=?',
+                                                  (row['snapshotId'],)).fetchone()[0])
+            history.snapshotIterToFEs.append([row['iter'], row['fe']])
+            history.populations.append(dict(decs=population.decs, objs=population.objs,
+                                            cons=population.cons, constraint_weights=population.conWgt))
+            history.bests.append(dict(bestDecs=best.decs, bestObjs=best.objs, bestCons=best.cons,
+                                      bestFeasible=bool(payload['best_feasible']),
+                                      candidateDecs=candidates.decs if len(candidates) else None,
+                                      candidateObjs=candidates.objs if len(candidates) else None,
+                                      candidateCons=candidates.cons if len(candidates) else None,
+                                      minViolation=payload.get('min_violation')))
+            history.improvedHistory.append(payload.get('improved'))
+        last = snapshots[-1]
+        return OptResult(
+            bestDecs=best.decs, bestObjs=best.objs, bestCons=best.cons,
+            bestMetric=last['hypervolume'], bestFeasible=bool(payload['best_feasible']),
+            appearFEs=payload.get('appear_fes'), appearIters=payload.get('appear_iters'),
+            FEs=last['fe'], iters=last['iter'], runtime=last['elapsed'], history=history,
+            candidateDecs=candidates.decs if len(candidates) else None,
+            candidateObjs=candidates.objs if len(candidates) else None,
+            candidateCons=candidates.cons if len(candidates) else None,
+            minViolation=payload.get('min_violation'),
+            extra={key: payload.get(key) for key in ('constraint_weights', 'hv_reference_point')},
+        )
 
     def _getLastSnapshotId(self):
         row = self.conn.execute("SELECT snapshotId FROM snapshot ORDER BY snapshotId DESC LIMIT 1").fetchone()
@@ -124,7 +178,15 @@ class OptReader(BaseReader):
             (snapshotId, role),
         ).fetchall()
         if not rows:
-            raise ValueError(f"No role={role!r} rows found for snapshotId={snapshotId}")
+            snapshot = self.conn.execute("SELECT bestPayload FROM snapshot WHERE snapshotId = ?",
+                                         (snapshotId,)).fetchone()
+            if snapshot is None or role not in ("pareto", "candidate"):
+                raise ValueError(f"No role={role!r} rows found for snapshotId={snapshotId}")
+            payload = json.loads(snapshot[0]) if snapshot[0] else {}
+            run = self.get_run()
+            return Population(np.empty((0, run["nInput"])), np.empty((0, run["nObj"])),
+                              np.empty((0, run["nCon"])) if run["nCon"] else None,
+                              payload.get("constraint_weights"))
 
         decs = []
         objs = []
@@ -148,7 +210,13 @@ class OptReader(BaseReader):
             frontNo.append(row["frontNo"])
             crowdDis.append(row["crowdDis"])
 
+        payloadColumn = "populationPayload" if role == "population" else "bestPayload"
+        snapshot = self.conn.execute(
+            f"SELECT {payloadColumn} FROM snapshot WHERE snapshotId = ?", (snapshotId,)
+        ).fetchone()
+        payload = {} if snapshot is None or snapshot[0] is None else json.loads(snapshot[0])
         pop = Population(
+            conWgt=payload.get("constraint_weights"),
             decs=np.vstack(decs),
             objs=np.vstack(objs) if hasObjs and objs else None,
             cons=np.vstack(cons) if hasCons and cons else None,
@@ -198,6 +266,6 @@ class OptReader(BaseReader):
 
     def _parseValue(self, value):
         try:
-            return eval(value, {"__builtins__": {}}, {})
-        except Exception:
+            return ast.literal_eval(value)
+        except (ValueError, SyntaxError):
             return value

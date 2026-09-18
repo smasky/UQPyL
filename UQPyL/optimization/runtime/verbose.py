@@ -7,6 +7,8 @@ from typing import Any
 
 import numpy as np
 
+from ...core import config
+from ..core.constraint import calcConstraintViolation
 from ...core.runtime import ensure_result_dir
 
 @dataclass
@@ -33,6 +35,7 @@ class ProgressState:
     hypervolume: float | None = None
     constraintViolation: float | None = None
     params: dict[str, Any] | None = None
+    bestFeasible: bool = True
 
 
 class SingleObjectiveRenderer:
@@ -70,7 +73,7 @@ class SingleObjectiveRenderer:
             ("evaluations", result.FEs),
             ("best value", _fmt(bestValue, self.config.precision)),
             ("best X", _fmt_vector(result.bestDecs, self.config.precision, 8)),
-            ("constraint viol.", _fmt(_constraint_violation(result.bestCons), self.config.precision)),
+            ("constraint viol.", _fmt(_constraint_violation(result.bestCons, result.extra.get("constraint_weights")), self.config.precision)),
             ("elapsed", f"{result.runtime:.1f}s"),
         ]
         return _renderBlock("Optimization finished", pairs)
@@ -89,11 +92,13 @@ class MultiObjectiveRenderer:
             f"eval={state.nEval} nd={state.paretoSize if state.paretoSize is not None else '-'} "
             f"hv={_fmt(state.hypervolume, self.config.precision)} "
             f"cv={_fmt(state.constraintViolation, self.config.precision)} "
+            f"status={'feasible archive' if state.bestFeasible else 'no feasible solution yet'} "
             f"time={state.elapsed:.1f}s"
         )
 
     def renderSummary(self, state: ProgressState, algorithmName: str) -> str:
         pairs = [
+            ("feasibility", "feasible archive" if state.bestFeasible else "no feasible solution yet"),
             ("iter", state.iteration),
             ("evaluations", state.nEval),
             ("pareto size", state.paretoSize if state.paretoSize is not None else "-"),
@@ -110,6 +115,7 @@ class MultiObjectiveRenderer:
 
     def renderSummaryFull(self, state: ProgressState, algorithmName: str) -> str:
         pairs = [
+            ("feasibility", "feasible archive" if state.bestFeasible else "no feasible solution yet"),
             ("iter", state.iteration),
             ("evaluations", state.nEval),
             ("pareto size", state.paretoSize if state.paretoSize is not None else "-"),
@@ -124,12 +130,12 @@ class MultiObjectiveRenderer:
     def renderFinal(self, result: Any, algorithmName: str) -> str:
         pairs = [
             ("algorithm", algorithmName),
-            ("status", "finished"),
+            ("status", "finished" if result.bestFeasible else "finished: no feasible solution found"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("pareto size", result.bestObjs.shape[0] if result.bestObjs is not None else 0),
             ("hypervolume", _fmt(result.bestMetric, self.config.precision)),
-            ("constraint viol.", _fmt(_constraint_violation(result.bestCons), self.config.precision)),
+            ("constraint viol.", _fmt(getattr(result, "minViolation", None), self.config.precision)),
             ("elapsed", f"{result.runtime:.1f}s"),
         ]
         lines = [_renderBlock("Multi-objective optimization finished", pairs), "", "  Pareto preview:"]
@@ -139,12 +145,12 @@ class MultiObjectiveRenderer:
     def renderFinalFull(self, result: Any, algorithmName: str) -> str:
         pairs = [
             ("algorithm", algorithmName),
-            ("status", "finished"),
+            ("status", "finished" if result.bestFeasible else "finished: no feasible solution found"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("pareto size", result.bestObjs.shape[0] if result.bestObjs is not None else 0),
             ("hypervolume", _fmt(result.bestMetric, self.config.precision)),
-            ("constraint viol.", _fmt(_constraint_violation(result.bestCons), self.config.precision)),
+            ("constraint viol.", _fmt(getattr(result, "minViolation", None), self.config.precision)),
             ("elapsed", f"{result.runtime:.1f}s"),
         ]
         lines = [_renderBlock("Multi-objective optimization finished", pairs), "", "  pareto:"]
@@ -214,7 +220,7 @@ class VerboseReporter:
 
 
 class Verbose:
-    workDir = os.getcwd()
+    workDir = None
 
     @staticmethod
     def _resolveRunId(obj):
@@ -226,8 +232,7 @@ class Verbose:
         runId = getattr(obj, "runId", None)
         if runId is not None:
             return runId
-        timestamp = time.strftime("%Y%m%d_%H%M")
-        return f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
+        return None
 
     @staticmethod
     def makeReporter(nObj: int, config: VerboseConfig | None = None, stream=None):
@@ -272,16 +277,19 @@ class Verbose:
 
     @staticmethod
     def printIteration(obj):
+        realObjs = None if obj.state.bestObjs is None else obj.state.bestObjs * obj.problem.opt
         state = ProgressState(
             iteration=obj.iters,
             nEval=obj.FEs,
             elapsed=obj.state.runtime,
-            bestValue=_single_best_value(obj.state.bestObjs),
+            bestValue=_single_best_value(realObjs),
             bestX=obj.state.bestDecs,
             paretoSize=None if obj.problem.nObj == 1 or obj.state.bestObjs is None else obj.state.bestObjs.shape[0],
-            paretoPreview=None if obj.problem.nObj == 1 else obj.state.bestObjs,
+            paretoPreview=None if obj.problem.nObj == 1 else realObjs,
             hypervolume=obj.state.bestMetric,
-            constraintViolation=_constraint_violation(obj.state.bestCons),
+            constraintViolation=(obj.state.minViolation if obj.problem.nObj > 1 else
+                                 _constraint_violation(obj.state.bestCons, obj.problem.conWgt)),
+            bestFeasible=obj.state.bestFeasible,
         )
         if obj.verboseFlag:
             obj.reporter.progress(state, obj.name, obj.problem)
@@ -320,7 +328,7 @@ class Verbose:
         if not obj.logFlag:
             return
         problem = obj.problem
-        workDir = problem.workDir if hasattr(problem, "GUI") else Verbose.workDir
+        workDir = config.resolveWorkDir(getattr(problem, "workDir", None), Verbose.workDir)
         folder = Verbose.checkDir(workDir)
         runId = Verbose._resolveRunId(obj)
         filepath = os.path.join(folder, f"{runId}.log")
@@ -371,14 +379,13 @@ def _renderPairs(pairs: list[tuple[str, Any]]):
     return [f"  {key.ljust(width)} : {value}" for key, value in pairs]
 
 
-def _constraint_violation(cons):
+def _constraint_violation(cons, conWgt=None):
     if cons is None:
         return 0.0
-    cons = np.asarray(cons)
-    return float(np.sum(np.maximum(0.0, cons)))
+    return float(np.sum(calcConstraintViolation(cons, conWgt)))
 
 
 def _single_best_value(bestObjs):
-    if bestObjs is None:
+    if bestObjs is None or np.asarray(bestObjs).size == 0:
         return None
     return float(np.asarray(bestObjs).reshape(-1)[0])

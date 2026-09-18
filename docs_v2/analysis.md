@@ -20,7 +20,7 @@ Most analysis workflows need four objects:
 
 | Object | Meaning |
 |---|---|
-| `problem` | A `Problem` or benchmark problem defining inputs, bounds, labels, and outputs. |
+| `problem` | A `ProblemBase` protocol object, typically `Problem`, `ModelProblem`, or a built-in benchmark direct problem. |
 | `X` | Input sample matrix with shape `(n_samples, n_input)`. |
 | `Y` | Output matrix with shape `(n_samples, n_outputs)`. Each row must correspond to the same row in `X`. |
 | `meta` | Sampling metadata from `sampleWithMeta()`. Required by `Sobol`, `FAST`, and `Morris`. |

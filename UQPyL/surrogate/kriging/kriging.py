@@ -1,8 +1,8 @@
+from .._kernel import installKernel
 import numpy as np
 from scipy.linalg import cholesky, qr, lstsq
 from scipy.spatial.distance import pdist
 from typing import Literal, Tuple, Optional, Union
-from copy import deepcopy
 
 
 from .kernel import BaseKernel, Guass
@@ -13,7 +13,7 @@ from ...optimization.base import AlgorithmABC
 from ...optimization.soea import GA
 from ..metric import r_square
 from ..split import RandSelect
-from ..scaler import Scaler, StandardScaler
+from ..scaler import Scaler
 from ..poly import PolyFeature
 from ...problem import Problem
 from ...core import spawn_seed
@@ -72,10 +72,10 @@ class KRG(SurrogateABC):
     def __init__(self, 
                  scalers: Tuple[Optional[Scaler], Optional[Scaler]]=(None, None),
                     polyFeature: PolyFeature=None,
-                        kernel: BaseKernel= Guass(),
+                        kernel: Optional[BaseKernel] = None,
                             regression: Literal['poly0','poly1','poly2']='poly0',
                                 optimizer: AlgorithmABC = "Boxmin",
-                                nRestartTimes: int=5):
+                                nRestartTimes: int = 1):
         
         super().__init__(scalers, polyFeature)
 
@@ -114,8 +114,9 @@ class KRG(SurrogateABC):
         self.nRes = nRestartTimes
 
         self.registerParameterApplier("kernel", self.setKernel)
-        self._kernelChoiceRegistered = False
         
+        if kernel is None:
+            kernel = Guass()
         if not isinstance(kernel, BaseKernel):
             raise ValueError("The kernel must be the instance of surrogates.kriging.kernel!")
         
@@ -163,16 +164,19 @@ class KRG(SurrogateABC):
         sy = F @ self.fitState['beta'] + (self.fitState['gamma'] @ r).T
         
         predictY = self.__Y_inverse_transform__(sy)
+        if not (returnStd or returnVar):
+            return predictY
 
         rt = lstsq(self.fitState['C'], r)[0]
         u = lstsq(self.fitState['G'],
                              self.fitState['Ft'].T @ rt - F.T)[0]
         
-        var = self.fitState['sigma2'] * (1 + np.sum(u**2, axis=0) - np.sum(rt ** 2, axis=0)).T
+        factor = 1 + np.sum(u**2, axis=0) - np.sum(rt ** 2, axis=0)
+        var = factor[:, None] * np.asarray(self.fitState['sigma2']).reshape(1, -1)
 
         return self._format_uncertainty_output(
             predictY,
-            var.reshape(-1, 1),
+            var,
             returnStd=returnStd,
             returnVar=returnVar,
         )
@@ -189,45 +193,11 @@ class KRG(SurrogateABC):
         return self
         
 ###-------------------private functions----------------------###
-    def setKernel(self, kernel):
-        oldKernelNames = []
-        if self.kernel is not None:
-            oldKernelNames = [
-                name for name in self.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
-                if name != "kernel"
-            ]
-
-        kernelChoiceValue = self.setting.parVal.get("kernel", None)
-        kernelChoiceAttr = self.setting.parSet.get("kernel", None)
-        kernelChoiceOwner = self.setting.parOwner.get("kernel", None)
-
-        if oldKernelNames:
-            self.setting.removeParas(oldKernelNames)
-
-        if not hasattr(kernel, "_templateSetting"):
-            kernel._templateSetting = deepcopy(kernel.setting)
-        kernel.setting = deepcopy(kernel._templateSetting)
-        
-        self.kernel = kernel
-        self.setting.mergeSetting(self.kernel.setting)
-        self.kernel.setting = self.setting
-
-        if kernelChoiceValue is not None and kernelChoiceAttr is not None:
-            self.setting.parVal["kernel"] = self.setting._normalize_choice_array(kernel, kernelChoiceAttr)
-            self.setting.parSet["kernel"] = kernelChoiceAttr
-            self.setting.parType["kernel"] = 2
-            self.setting.parOwner["kernel"] = kernelChoiceOwner
-            self.setting.parLB["kernel"] = np.asarray([0.0])
-            self.setting.parUB["kernel"] = np.asarray([float(len(kernelChoiceAttr[0]))])
-            self.setting.parLog["kernel"] = False
-
-        if self.xTrain is not None:
-            self.kernel.initialize(self.xTrain.shape[1])
-        self._invalidate_fit_after_structure_change()
+    def setKernel(self, kernel: BaseKernel):
+        return installKernel(self, kernel, BaseKernel)
 
     def setKernelChoices(self, kernels):
-        self.registerChoiceParameter("kernel", kernels, owner="kernel")
-        self._kernelChoiceRegistered = True
+        self.registerChoiceParameter("kernel", [kernel.clone() for kernel in kernels], owner="kernel")
         return self
     
     def _optimizeHyper(self, xTrain, yTrain):
@@ -241,6 +211,8 @@ class KRG(SurrogateABC):
         F, D = self._initialize(xTrain)  #fitPar
         
         nameList = self.getParaList()
+        if not nameList:
+            return self.fitModel(xTrain, yTrain)
         
         paraInfos, ub, lb = self.setting.getParaInfos(nameList) #TODO
         
@@ -342,10 +314,8 @@ class KRG(SurrogateABC):
             return np.inf
         
         if record:
-            if isinstance(self.yScaler,  StandardScaler):
-                self.fitState['sigma2'] = np.square(self.yScaler.sita)@sigma2
-            else:
-                self.fitState['sigma2'] = sigma2
+            # Keep fit state in training units; the prediction boundary restores units.
+            self.fitState['sigma2'] = sigma2
             self.fitState['beta'] = beta
             self.fitState['gamma'] = (lstsq(C.T, rho)[0]).T
             self.fitState['C'] = C

@@ -3,7 +3,7 @@ import numpy as np
 from ..core.constraint import calcConstraintViolation
 
 
-def NDSort(popObjs, popCons=None, nSort=None):
+def NDSort(popObjs, popCons=None, nSort=None, conWgt=None):
     popObjs = np.atleast_2d(np.asarray(popObjs, dtype=float))
     N, M = popObjs.shape
 
@@ -14,7 +14,7 @@ def NDSort(popObjs, popCons=None, nSort=None):
     maxFrontNo = 0
 
     if popCons is not None:
-        cv = calcConstraintViolation(popCons)
+        cv = calcConstraintViolation(popCons, conWgt)
         feasible = cv <= 0
     else:
         cv = None
@@ -51,13 +51,14 @@ def NDSort(popObjs, popCons=None, nSort=None):
         frontNo[feasibleIdx] = feasibleFrontNoUnique[indices]
 
     if infeasibleIdx.size > 0:
-        order = np.argsort(cv[infeasibleIdx])
-        ranks = np.empty(infeasibleIdx.size, dtype=float)
-        ranks[order] = np.arange(1, infeasibleIdx.size + 1)
-        frontNo[infeasibleIdx] = maxFrontNo + ranks
+        # Equal violation means equal constraint rank; diversity breaks ties.
+        _, ranks = np.unique(cv[infeasibleIdx], return_inverse=True)
+        frontNo[infeasibleIdx] = maxFrontNo + ranks + 1
 
     if np.any(np.isfinite(frontNo)):
-        maxFrontNo = int(np.max(frontNo[np.isfinite(frontNo)]))
+        # Return the last front needed for nSort, not every infeasible rank.
+        rankIndex = min(max(int(nSort), 1), N) - 1
+        maxFrontNo = int(np.sort(frontNo)[rankIndex])
     else:
         maxFrontNo = 0
     return frontNo, maxFrontNo

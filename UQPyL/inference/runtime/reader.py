@@ -9,6 +9,7 @@ from ...core.runtime_reader import BaseReader
 
 
 class InfReader(BaseReader):
+    domain = 'inference'
     @classmethod
     def list_runs(cls, result_dir):
         return super().list_runs(
@@ -16,27 +17,11 @@ class InfReader(BaseReader):
             run_columns="runId, method, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
         )
 
-    def __init__(self, dbPath):
-        self.dbPath = str(dbPath)
-        self.conn = sqlite3.connect(self.dbPath)
-        self.conn.row_factory = sqlite3.Row
 
-    def __enter__(self):
-        return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
 
-    def close(self):
-        self.conn.close()
 
-    def get_run(self):
-        row = self.conn.execute("SELECT * FROM run LIMIT 1").fetchone()
-        return dict(row) if row is not None else None
 
-    def get_run_params(self):
-        rows = self.conn.execute("SELECT name, value FROM runParam ORDER BY name").fetchall()
-        return {row["name"]: row["value"] for row in rows}
 
     def get_run_summary(self):
         run = self.get_run()

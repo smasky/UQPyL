@@ -14,15 +14,18 @@ class Constant(BaseKernel):
         
         super().__init__()
         
-        self.setting.set('constant', c, c_attr)
+        self._setKernelParameter('constant', c, c_attr)
         
     def __call__(self, trainX: np.ndarray, trainY: Optional[np.ndarray]=None):
         
+        self._validateInputs(trainX, trainY)
         c = self.setting.get('constant')
         
-        if trainY is None:
-            K=np.ones((trainX.shape[0], trainY.shape[0]))*c
-        else:
-            K=np.ones((trainX.shape[0], trainX.shape[0]))*c
+        nOther = trainX.shape[0] if trainY is None else trainY.shape[0]
+        K = np.full((trainX.shape[0], nOther), c)
         
         return K
+
+    def diag(self, X):
+        self._validateInputs(X)
+        return np.full(len(X), float(np.asarray(self.setting.get('constant')).item()))

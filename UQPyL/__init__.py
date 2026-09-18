@@ -3,6 +3,8 @@
 import importlib
 from types import ModuleType
 
+from .core import config
+
 doe = importlib.import_module(__name__ + ".doe")
 
 problem = importlib.import_module(__name__ + ".problem")
@@ -18,7 +20,7 @@ analysis = _import_submodule("analysis")
 inference = _import_submodule("inference")
 calibration = _import_submodule("calibration")
 
-__version__ = "2.1.7"
+__version__ = "2.1.6"
 __author__ = "wmtSky"
 
 __all__=[
@@ -29,5 +31,6 @@ __all__=[
     "doe",
     "inference",
     "calibration",
-    "viz"
+    "viz",
+    "config",
 ]

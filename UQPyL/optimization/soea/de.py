@@ -34,7 +34,7 @@ class DE(AlgorithmABC):
                  maxIters: int = 1000, 
                  maxTolerates: int = 1000, tolerate: float = 1e-6, 
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -49,23 +49,25 @@ class DE(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs, maxIters, maxTolerates, 
-                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq)
+                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('cr', cr)
         self.set('f', f)
         self.set('nPop', nPop)
         
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -76,7 +78,7 @@ class DE(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Population Generation
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
         
         # Iterative process
@@ -99,7 +101,7 @@ class DE(AlgorithmABC):
             # Replace inferior individuals in the population with better offspring
             idx = betterMask(offspring.objs, offspring.cons, pop.objs, pop.cons, pop.conWgt)
             pop.replace(idx, offspring[idx])
-            self.update(pop)
+            self.update(pop, completed=True)
                     
         # Return the final result
         return self.finalize()
@@ -124,6 +126,6 @@ class DE(AlgorithmABC):
         offspringDecs = np.copy(popDecs1)
         offspringDecs[sita] = popDecs1[sita] + (popDecs2[sita] - popDecs3[sita]) * f
         
-        np.clip(offspringDecs, self.problem.lb, self.problem.ub, out=offspringDecs)
+        np.clip(offspringDecs, self.searchLb, self.searchUb, out=offspringDecs)
         
         return offspringDecs

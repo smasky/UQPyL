@@ -204,7 +204,8 @@ class InfState:
         if draw == 0:
             return
 
-        self.decs = np.stack([chain.decs[:draw].copy() for chain in chains])
+        latentDecs = np.stack([chain.decs[:draw].copy() for chain in chains])
+        self.decs = self.inference._decodeDecs(latentDecs.reshape(-1, problem.nInput)).reshape(latentDecs.shape)
         self.objs = np.stack([chain.objs[:draw].copy() for chain in chains])
         self.logProb = np.stack([chain.logProb[:draw].copy() for chain in chains])
         self.accepted = np.stack([chain.accepted[:draw].copy() for chain in chains])

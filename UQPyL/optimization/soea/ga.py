@@ -35,7 +35,7 @@ class GA(AlgorithmABC):
                  maxIters: int = 1000,
                  maxTolerates: Optional[int] = None, tolerate: float = 1e-6,
                  verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag = True,
-                 saveFreq: int = 100):
+                 saveFreq: int = 100, historyFreq: int = 10):
         """
         Initialize the algorithm.
 
@@ -52,13 +52,14 @@ class GA(AlgorithmABC):
         :param verboseFreq: Summary output frequency.
         :param logFlag: Whether to save full text logs.
         :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: Snapshot save frequency.
+        :param saveFreq: SQLite snapshot save frequency.
+        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
         
         super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
                          maxTolerates = maxTolerates, tolerate = tolerate,
                          verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq)
+                         saveFreq = saveFreq, historyFreq=historyFreq)
         
         # Set user-defined parameters
         self.set('proC', proC)
@@ -68,12 +69,13 @@ class GA(AlgorithmABC):
         self.set('nPop', nPop)
         
     #--------------------Public Functions---------------------#
-    def run(self, problem, seed: Optional[int] = None):
+    def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
         :param problem: Problem instance.
         :param seed: Random seed.
+        :param initialPop: Optional initial population or decision matrix.
         :return OptResult: Final optimization result.
         """
         # setup algorithm
@@ -84,7 +86,7 @@ class GA(AlgorithmABC):
         nPop = self.get('nPop')
         
         # Generate initial population
-        pop = self.initPop(nPop)
+        pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
        
         # Iterative process
@@ -98,7 +100,7 @@ class GA(AlgorithmABC):
             matingPool = pop[matingIdx]
             
             # Generate offspring using genetic operator
-            offspringDecs = gaOperator(matingPool.decs, problem.ub, problem.lb, proC, disC, proM, disM, rng=self.rng)
+            offspringDecs = gaOperator(matingPool.decs, self.searchUb, self.searchLb, proC, disC, proM, disM, rng=self.rng)
             offspring = Population(offspringDecs)
             
             # Evaluate the offspring
@@ -109,7 +111,7 @@ class GA(AlgorithmABC):
             
             # Select the best individuals to form the new population
             pop = pop.getBest(nPop)
-            self.update(pop)
+            self.update(pop, completed=True)
                     
         # Return the final result
         return self.finalize()

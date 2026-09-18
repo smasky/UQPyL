@@ -1,5 +1,6 @@
 from UQPyL.doe.base import Sampler
 from pathlib import Path
+import UQPyL
 
 
 class DummySampler(Sampler):
@@ -19,10 +20,9 @@ def test_sampler_base_init_and_generate_placeholder():
 
 
 def test_doe_methods_module_layout():
-    doe_dir = Path(__file__).resolve().parents[1] / "UQPyL" / "doe"
+    doe_dir = Path(UQPyL.__file__).resolve().parent / "doe"
     methods_dir = doe_dir / "methods"
     assert methods_dir.is_dir()
     for name in ["lhs.py", "random.py", "sobol.py", "saltelli.py", "fast.py", "morris.py", "full_fact.py"]:
         assert (methods_dir / name).is_file()
-
 

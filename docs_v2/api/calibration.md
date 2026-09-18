@@ -40,6 +40,8 @@ The `ModelProblem` must include:
 | `obs` | 2D observation array with shape `(n_time, n_series)`. |
 | `mask` | Optional boolean mask with the same shape as `obs`. |
 
+`objFunc` is optional for calibration. Calibration methods are simulation-centric and can work with a simulation-only `ModelProblem`.
+
 `problem.simFunc(X)` must return simulation output whose first dimension is `n_samples`. Calibration methods flatten simulations and observations into a shared observation vector for scoring.
 
 Shared constructor controls:
@@ -91,7 +93,7 @@ problem = ModelProblem(
     lb=0.0,
     simFunc=simFunc,
     obs=obs,
-    simLabels=["Q"],
+    seriesLabels=["Q"],
 )
 
 X = np.array([
@@ -109,9 +111,15 @@ print(result.behavioralDecs)
 
 `CalResult` is returned by every calibration method.
 
+Each result is an independent snapshot. Reusing or resetting the method does not
+change earlier results. `history`, `diagnostics`, `extra`, and `settings` are deeply
+copied at the result boundary, including nested lists, dictionaries, and arrays.
+Editing these result fields does not modify the method's runtime state or settings.
+This copying does not perform additional model evaluations.
+
 | Field | Type | Meaning |
 |---|---|---|
-| `runId` | `str` or `None` | Saved run id when `saveFlag=True`. |
+| `runId` | `str` or `None` | Unique run id, including runs without SQLite persistence. |
 | `method` | `str` | Calibration method name. |
 | `problemName` | `str` | Problem name. |
 | `nInput` | `int` | Number of input variables. |
@@ -123,7 +131,7 @@ print(result.behavioralDecs)
 | `createdAt` | `str` | Creation timestamp. |
 | `obs` | `np.ndarray` | Observation array. |
 | `mask` | `np.ndarray` | Boolean mask array. |
-| `simLabels` | `list[str]` | Simulation series labels. |
+| `seriesLabels` | `list[str]` | Simulation series labels. |
 | `bestDecs` | `np.ndarray` or `None` | Best decision variables. |
 | `bestSim` | `np.ndarray` or `None` | Simulation output for the best decision. |
 | `posteriorDecs` | `np.ndarray` or `None` | Posterior decision ensemble. |
@@ -317,3 +325,9 @@ with CalReader("Result/glue_ToyModel_20260509_1200_0000.sqlite3") as reader:
 | `load_problem()` | problem object | Load the saved `ModelProblem`. |
 | `load_result()` | `CalResult` | Load the saved final calibration result. |
 | `close()` | `None` | Close the sqlite connection. |
+
+
+ES evaluates the initial and updated ensembles once each. IES retains full simulations between iterations, requiring one initial batch plus one batch per iteration; SUFI2 selects elite simulations from the already evaluated sample set. Masks select valid observations from those same simulations. SQLite stores one result artifact and a compact summary, without separate duplicate array artifacts. `load_result()` exposes all result fields; `get_run_summary()` reads only the small summary.
+
+
+Runtime persistence uses a domain marker; readers reject another module's database and unmarked legacy databases. Every run has a UUID-based identifier shared by its database and log, even when SQLite saving is disabled. All readers support `with` and idempotent `close()`. Internal runtime objects use `state` and `params`; returned result objects retain their documented fields.

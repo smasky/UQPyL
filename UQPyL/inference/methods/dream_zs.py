@@ -102,7 +102,8 @@ class DREAM_ZS(InferenceABC):
 
         chains = self.initChains(nChains, X_init, Objs_init, Cons_init)
         archSize = int(nChains * archSize)
-        archive = [x for x in X_init]
+        # Historical states must remain independent of in-place chain updates.
+        archive = [x.copy() for x in X_init]
         
         X_cur = X_init; Objs_cur = Objs_init; Cons_cur = Cons_init
         
@@ -128,7 +129,7 @@ class DREAM_ZS(InferenceABC):
                     if problem.nCons > 0:
                         Cons_cur[i] = Cons_star[i]
                     
-                    archive.append(X_cur[i])
+                    archive.append(X_cur[i].copy())
                     
                 if len(archive) > archSize:
                     archive = archive[-archSize:]
@@ -166,7 +167,7 @@ class DREAM_ZS(InferenceABC):
                     denom = warmUp if warmUp and warmUp > 0 else max(self.maxIters, 1)
                     ac_local[i] += 1 / denom
                     
-                    archive.append(X_cur[i])
+                    archive.append(X_cur[i].copy())
                     
                 chain.add(
                     X_cur[i],
@@ -307,12 +308,7 @@ class DREAM_ZS(InferenceABC):
         
     def check_bound(self, X, ub, lb):
         
-        span = ub - lb
-        y = (X - lb) % (2 * span)
-        y = np.where(y > span, 2 * span - y, y)
-        X_reflect = lb + y
-        
-        return X_reflect
+        return self._check_bound_(X, ub, lb)
 
     def setProblem(self, problem: ProblemABC):
         

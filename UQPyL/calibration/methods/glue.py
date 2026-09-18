@@ -51,8 +51,13 @@ class GLUE(CalibrationABC):
             threshold: Behavioral threshold under the configured metric.
                 For metrics where larger is better (for example `nse`),
                 behavioral means `score >= threshold`. Otherwise it means
-                `score <= threshold`.
+                `score <= threshold`. For `pbias`, use `abs(score) <= threshold`,
+                with a finite nonnegative threshold in percentage points.
         """
+        if self.metricClosestToZero:
+            threshold = float(threshold)
+            if not np.isfinite(threshold) or threshold < 0:
+                raise ValueError("PBIAS threshold must be finite and nonnegative.")
         X = np.atleast_2d(X)
         sim_full = self.evaluate(X, validOnly=False)
         scores = self.score(sim_full)

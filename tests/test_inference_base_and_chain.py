@@ -10,11 +10,36 @@ from UQPyL.problem import Eval
 from UQPyL.problem.problem import Problem
 
 
-@ProblemABC.singleEval
-def _eval(x):
+def _eval(X):
     # simple objective + always-feasible constraint
-    x = np.asarray(x)
-    return Eval(objs=float(np.sum(x**2)), cons=np.array([-1.0]))
+    X = np.atleast_2d(np.asarray(X))
+    return Eval(objs=np.sum(X**2, axis=1, keepdims=True), cons=-np.ones((X.shape[0], 1)))
+
+
+class _EvalOnlyProblem(Problem):
+    def __init__(self, *args, evalFunc=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.evalFunc = evalFunc
+
+    def evaluate(self, X, target=None):
+        if target not in (None, "objs", "cons"):
+            raise ValueError("The target must be None, 'objs' or 'cons'.")
+
+        X = self.validate(X)
+        res = self.evalFunc(X)
+        if not isinstance(res, Eval):
+            raise TypeError("evaluate must return Eval.")
+        if target == "objs":
+            return Eval(objs=res.objs, cons=None)
+        if target == "cons":
+            return Eval(objs=None, cons=res.cons)
+        return res
+
+    def objFunc(self, X):
+        return self.evaluate(X, target="objs").objs
+
+    def conFunc(self, X):
+        return self.evaluate(X, target="cons").cons
 
 
 class DummyInference(InferenceABC):
@@ -60,7 +85,7 @@ def test_inferenceabc_check_bound_reflection():
 
 def test_inferenceabc_run_placeholder_and_setup_seed_none_branch():
     # cover setup(seed=None) random seed branch through a concrete subclass
-    problem = Problem(nInput=2, nObj=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = _EvalOnlyProblem(nInput=2, nObj=1, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval)
     with pytest.raises(TypeError):
         InferenceABC(maxIters=1, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     inf = DummyInference(maxIters=1, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
@@ -68,7 +93,7 @@ def test_inferenceabc_run_placeholder_and_setup_seed_none_branch():
 
 
 def test_inferenceabc_check_gamma_branches():
-    problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = _EvalOnlyProblem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval)
     inf = DummyInference(maxIters=2, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     inf.set("nChains", 4)
     inf.setProblem(problem)
@@ -90,7 +115,7 @@ def test_inferenceabc_check_gamma_branches():
 
 def test_inferenceabc_initchains_and_build_result_smoke():
     # include constraint path to cover fixed branches
-    problem = Problem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = _EvalOnlyProblem(nInput=2, nObj=1, nCon=1, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval)
     inf = DummyInference(maxIters=2, verboseFlag=False, verboseFreq=10, logFlag=False, saveFlag=False)
     inf.set("nChains", 2)
     inf.setup(problem, seed=123)
@@ -110,7 +135,7 @@ def test_inferenceabc_initchains_and_build_result_smoke():
 
 
 def test_setup_uses_instance_rng_without_mutating_global_state():
-    problem = Problem(nInput=2, nObj=1, ub=1.0, lb=0.0, evaluate=_eval)
+    problem = _EvalOnlyProblem(nInput=2, nObj=1, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval)
 
     np.random.seed(2024)
     expected_after_alg = np.random.RandomState(2024).rand()
@@ -167,12 +192,11 @@ def test_inference_result_keeps_internal_camelcase_and_exports_snake_case():
 def test_amh_update_covs_keeps_nontrivial_proposal_scale_after_reinit():
     from UQPyL.inference.methods.amh import AMH
 
-    @ProblemABC.singleEval
-    def _eval_gaussian(x):
-        x = np.asarray(x)
-        return Eval(objs=float(0.5 * np.sum(x**2)))
+    def _eval_gaussian(X):
+        X = np.atleast_2d(np.asarray(X))
+        return Eval(objs=0.5 * np.sum(X**2, axis=1, keepdims=True))
 
-    problem = Problem(nInput=2, nObj=1, ub=4.0, lb=-4.0, evaluate=_eval_gaussian)
+    problem = _EvalOnlyProblem(nInput=2, nObj=1, ub=4.0, lb=-4.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval_gaussian)
     amh = AMH(nChains=3, warmUp=5, maxIterTimes=12, verboseFlag=False, saveFlag=False)
     amh.setup(problem, seed=2024)
 
@@ -205,5 +229,3 @@ def test_amh_update_covs_keeps_nontrivial_proposal_scale_after_reinit():
     min_diag = min(float(np.min(np.diag(cov))) for cov in updated)
 
     assert min_diag > 1e-3
-
-

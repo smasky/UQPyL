@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from ...core import config
 from ...core.runtime import ensure_result_dir
 
 @dataclass
@@ -28,7 +29,7 @@ class VerboseReporter:
 
 
 class Verbose:
-    workDir = os.getcwd()
+    workDir = None
 
     @staticmethod
     def _resolveRunId(obj):
@@ -61,8 +62,8 @@ class Verbose:
         run_id = Verbose._resolveRunId(obj)
         if run_id is not None:
             lines.append(f"runId: {run_id}")
-        if obj.reporter.config.showParams and obj.setting.asDict():
-            lines.append(f"params: {obj.setting.asDict()}")
+        if obj.reporter.config.showParams and obj.params.asDict():
+            lines.append(f"params: {obj.params.asDict()}")
 
         for line in lines:
             Verbose._emit(obj, line)
@@ -102,12 +103,9 @@ class Verbose:
         if not obj.logFlag:
             return
         problem = obj.problem
-        workDir = problem.workDir if hasattr(problem, "workDir") else Verbose.workDir
+        workDir = config.resolveWorkDir(getattr(problem, "workDir", None), Verbose.workDir)
         folder = Verbose.checkDir(workDir)
         run_id = Verbose._resolveRunId(obj)
-        if run_id is None:
-            timestamp = time.strftime("%Y%m%d_%H%M")
-            run_id = f"{obj.name.lower()}_{timestamp}_{os.getpid():x}"[-32:]
         filepath = os.path.join(folder, f"{run_id}.log")
         with open(filepath, "w", encoding="utf-8") as f:
             f.writelines(problem.logLines)

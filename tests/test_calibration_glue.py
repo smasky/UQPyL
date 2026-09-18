@@ -20,7 +20,7 @@ def test_glue_filters_behavioral_samples_by_rmse_threshold():
         lb=0.0,
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 
@@ -59,7 +59,7 @@ def test_glue_supports_named_metric_configuration():
         lb=0.0,
         simFunc=simf,
         obs=obs,
-        simLabels=["Q"],
+        seriesLabels=["Q"],
         name="ToyModel",
     )
 

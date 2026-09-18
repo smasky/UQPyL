@@ -48,7 +48,7 @@ def test_calibration_base_runs_on_model_problem():
         simFunc=simf,
         obs=obs,
         mask=mask,
-        simLabels=["A", "B"],
+        seriesLabels=["A", "B"],
         name="HBV",
     )
 
@@ -63,7 +63,7 @@ def test_calibration_base_runs_on_model_problem():
     assert res.nObs == 4
     assert np.array_equal(res.obs, obs)
     assert np.array_equal(res.mask, mask)
-    assert res.simLabels == ["A", "B"]
+    assert res.seriesLabels == ["A", "B"]
     assert res.bestDecs.shape == (1, 2)
     assert res.bestSim.shape == (1, 4)
     assert res.posteriorDecs is None
@@ -105,7 +105,7 @@ def test_calibration_result_summary_and_log_file():
             lb=0.0,
             simFunc=simf,
             obs=obs,
-            simLabels=["Q"],
+            seriesLabels=["Q"],
             name="HBV",
         )
         problem.workDir = str(work_dir)
@@ -139,7 +139,7 @@ def test_calibration_save_flag_writes_sqlite_result():
             lb=0.0,
             simFunc=_sqlite_simf,
             obs=np.array([[1.0], [2.0]]),
-            simLabels=["Q"],
+            seriesLabels=["Q"],
             name="HBV",
         )
         problem.workDir = str(work_dir)
@@ -172,7 +172,7 @@ def test_calibration_save_flag_writes_sqlite_result():
                 row["name"]
                 for row in conn.execute("SELECT name FROM artifact ORDER BY name").fetchall()
             }
-            assert {"result", "obs", "mask", "bestDecs", "bestSim", "settings"} <= artifactNames
+            assert artifactNames == {"result", "summary"}
             param = conn.execute(
                 "SELECT value FROM runParam WHERE name = ?",
                 ("saveFlag",),

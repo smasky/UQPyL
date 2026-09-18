@@ -3,10 +3,10 @@ import pytest
 
 from UQPyL.inference import AMH, DEMC, MH, MH_Gibbs, DREAM_ZS
 from UQPyL.inference.base import InferenceABC
-from UQPyL.problem import ProblemABC
+from UQPyL.problem import Problem
 
 
-class ConstrainedQuadratic(ProblemABC):
+class ConstrainedQuadratic(Problem):
     """Minimal constrained single-objective problem for inference branch coverage."""
 
     name = "ConstrainedQuadratic"
@@ -15,11 +15,11 @@ class ConstrainedQuadratic(ProblemABC):
         super().__init__(nInput=nInput, nObj=1, ub=1.0, lb=-1.0, nCon=1, optType="min")
 
     def objFunc(self, X):
-        X = self._check_X_2d(X)
+        X = self.validate(X)
         return np.sum(X**2, axis=1, keepdims=True)
 
     def conFunc(self, X):
-        X = self._check_X_2d(X)
+        X = self.validate(X)
         # always feasible (<=0)
         return -np.ones((X.shape[0], 1))
 
@@ -122,5 +122,4 @@ def test_dream_zs_gamma_none_and_de_prop_path_smoke():
     )
     res = alg.run(p, gamma=None, seed=123)
     assert res.cons.shape == (4, 2, 1)
-
 

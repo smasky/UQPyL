@@ -67,6 +67,8 @@ class Setting(ParameterStore):
         :param nameList: list, the name of the parameter
         :return: tuple, the parameter information, the upper bound and the lower bound
         '''
+        if len(nameList) != len(set(nameList)):
+            raise ValueError("Parameter names must be unique.")
         paraInfos = {}
         I = 0
         ub = []
@@ -80,12 +82,10 @@ class Setting(ParameterStore):
             paraInfos[name] = np.arange(I, I+length)
             I += length
 
-            if self.parLog[name]:
-                ub.append(np.log(self.parUB[name]))
-                lb.append(np.log(self.parLB[name]))
-            else:
-                ub.append(self.parUB[name])
-                lb.append(self.parLB[name])
+            upper = np.broadcast_to(self.parUB[name], (length,))
+            lower = np.broadcast_to(self.parLB[name], (length,))
+            ub.append(np.log(upper) if self.parLog[name] else upper)
+            lb.append(np.log(lower) if self.parLog[name] else lower)
             
         return paraInfos, np.concatenate(ub), np.concatenate(lb)
     
@@ -213,10 +213,9 @@ class Setting(ParameterStore):
 
             if self.isChoicePara(name):
                 self.parVal[name][:] = self._normalize_choice_array(value, self.parSet[name])
-            elif self.parLog[name]:
-                self.parVal[name][:] = np.exp(value)
             else:
-                self.parVal[name][:] = value
+                value = np.asarray(value, dtype=float)
+                self.parVal[name][:] = np.exp(value) if self.parLog[name] else value
                 
     def get(self, *args):
         '''

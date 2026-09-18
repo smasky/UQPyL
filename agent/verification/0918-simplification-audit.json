@@ -1,0 +1,12 @@
+{
+  "calibration": {
+    "oldArtifactBytes": 56322,
+    "newArtifactBytes": 28492,
+    "ratio": 0.5058769219843046
+  },
+  "gpSelfKernel": {
+    "nPred": 2000,
+    "denseBytes": 32000000,
+    "diagonalBytes": 16000
+  }
+}

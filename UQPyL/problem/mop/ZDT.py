@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Union
 
-from ..base import ProblemBase
+from ..problem import Problem
 
 ##-----------Reference------------------##
 # E. Zitzler, K. Deb, and L. Thiele, Comparison of multiobjective
@@ -9,7 +9,7 @@ from ..base import ProblemBase
 # 2000, 8(2): 173-195.
 #--------------------------------------##
 
-class ZDT1(ProblemBase):
+class ZDT1(Problem):
     
     name="ZDT1"
     
@@ -48,7 +48,7 @@ class ZDT1(ProblemBase):
         
         return (R[:,0], R[:,1])
 
-class ZDT2(ProblemBase):
+class ZDT2(Problem):
     
     name="ZDT2"
     
@@ -87,7 +87,7 @@ class ZDT2(ProblemBase):
         
         return (R[:,0], R[:,1])
     
-class ZDT3(ProblemBase):
+class ZDT3(Problem):
     
     name="ZDT3"
     
@@ -131,7 +131,7 @@ class ZDT3(ProblemBase):
         
         return (R[:,0], R[:,1])
 
-class ZDT4(ProblemBase):
+class ZDT4(Problem):
     
     name="ZDT4"
     
@@ -170,7 +170,7 @@ class ZDT4(ProblemBase):
         
         return (R[:,0], R[:,1])
 
-class ZDT6(ProblemBase):
+class ZDT6(Problem):
     
     name="ZDT6"
     

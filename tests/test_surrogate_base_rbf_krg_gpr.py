@@ -9,6 +9,28 @@ from UQPyL.surrogate.poly import PolyFeature
 from UQPyL.surrogate.scaler import MinMaxScaler, StandardScaler
 
 
+@pytest.mark.parametrize("modelClass", [GPR, KRG, RBF])
+def test_default_kernel_isolated_from_other_model_lifecycle(modelClass):
+    xTrain = np.linspace(0.0, 1.0, 8).reshape(-1, 1)
+    yTrain = np.sin(5.0 * xTrain)
+    xPred = np.array([[0.33], [0.8]])
+
+    modelA = modelClass()
+    modelA.rng = np.random.default_rng(123)
+    modelA.fit(xTrain, yTrain)
+    expected = modelA.predict(xPred).copy()
+
+    modelB = modelClass()
+    assert modelA.kernel is not modelB.kernel
+    assert modelA.kernel.setting is modelA.setting
+    assert modelB.kernel.setting is modelB.setting
+    np.testing.assert_array_equal(modelA.predict(xPred), expected)
+
+    modelB.rng = np.random.default_rng(456)
+    modelB.fit(xTrain, np.cos(3.0 * xTrain))
+    np.testing.assert_array_equal(modelA.predict(xPred), expected)
+
+
 class DummySurrogate(SurrogateABC):
     name = "DummySurrogate"
 
@@ -57,11 +79,6 @@ def test_rbf_fit_predict_and_setkernel_removes_old_kernel_setting():
     pred2 = rbf.predict(np.array([[0.2]]))
     assert pred2.shape == (1, 1)
 
-    # cover _get_tail_matrix else branch by using a kernel name not handled
-    from UQPyL.surrogate.rbf.kernel.gaussian_kernel import Gaussian
-
-    assert rbf._get_tail_matrix(Gaussian(), rbf.xTrain) is None
-
 
 def test_krg_fit_predict_smoke_with_monkeypatched_boxmin(monkeypatch):
     # Make KRG fit deterministic/fast by patching Boxmin.run to avoid explore loops.
@@ -95,4 +112,3 @@ def test_gpr_fit_predict_smoke_with_output_std(monkeypatch):
     y_mean2, y_std = gpr.predict(np.array([[0.3], [0.7]]), returnStd=True)
     assert y_mean2.shape == (2, 1)
     assert y_std.shape == (2, 1)
-
