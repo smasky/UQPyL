@@ -1,0 +1,56 @@
+{
+  "compiler": "x86_64-conda-linux-gnu-cc (GCC) 15.2.0",
+  "cython": "3.3.0",
+  "checks": [
+    {
+      "variant": "baseline",
+      "strict": false,
+      "command": [
+        "/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc",
+        "-fsyntax-only",
+        "-I/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/include",
+        "-I/home/wmtsky/anaconda3/envs/py312/include/python3.12",
+        ".cache/mars-variants/baseline/UQPyL/surrogate/mars/core/_basis.c"
+      ],
+      "exit_code": 1
+    },
+    {
+      "variant": "baseline",
+      "strict": true,
+      "command": [
+        "/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc",
+        "-fsyntax-only",
+        "-Werror=incompatible-pointer-types",
+        "-I/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/include",
+        "-I/home/wmtsky/anaconda3/envs/py312/include/python3.12",
+        ".cache/mars-variants/baseline/UQPyL/surrogate/mars/core/_basis.c"
+      ],
+      "exit_code": 1
+    },
+    {
+      "variant": "removeFinal",
+      "strict": false,
+      "command": [
+        "/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc",
+        "-fsyntax-only",
+        "-I/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/include",
+        "-I/home/wmtsky/anaconda3/envs/py312/include/python3.12",
+        ".cache/mars-variants/removeFinal/UQPyL/surrogate/mars/core/_basis.c"
+      ],
+      "exit_code": 0
+    },
+    {
+      "variant": "removeFinal",
+      "strict": true,
+      "command": [
+        "/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc",
+        "-fsyntax-only",
+        "-Werror=incompatible-pointer-types",
+        "-I/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/include",
+        "-I/home/wmtsky/anaconda3/envs/py312/include/python3.12",
+        ".cache/mars-variants/removeFinal/UQPyL/surrogate/mars/core/_basis.c"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

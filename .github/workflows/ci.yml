@@ -34,6 +34,8 @@ jobs:
           python -m pip install build
 
       - name: Build wheel with isolated dependencies
+        env:
+          CFLAGS: ${{ runner.os == 'Linux' && '-Werror=incompatible-pointer-types' || '' }}
         run: |
           python -m build --wheel --outdir dist
 

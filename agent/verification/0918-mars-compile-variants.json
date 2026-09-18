@@ -1,0 +1,22 @@
+[
+  {
+    "variant": "baseline",
+    "cython_exit": 0,
+    "compiler_exit": 1
+  },
+  {
+    "variant": "removeFinal",
+    "cython_exit": 0,
+    "compiler_exit": 0
+  },
+  {
+    "variant": "declareFinal",
+    "cython_exit": 1,
+    "compiler_exit": null
+  },
+  {
+    "variant": "removeDuplicates",
+    "cython_exit": 0,
+    "compiler_exit": 1
+  }
+]

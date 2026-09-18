@@ -1,0 +1,900 @@
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - Cython
+  - numpy>=1.21
+  - pybind11
+  - scipy
+  - setuptools
+  - wheel
+* Getting build dependencies for wheel...
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:26:0: Exception check on 'fdot' will always require the GIL to be acquired. Declare 'fdot' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:34:0: Exception check on 'fasum' will always require the GIL to be acquired. Declare 'fasum' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:41:0: Exception check on 'faxpy' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'faxpy' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'faxpy' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:49:0: Exception check on 'fnrm2' will always require the GIL to be acquired. Declare 'fnrm2' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:56:0: Exception check on 'fcopy' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:64:0: Exception check on 'fscal' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:72:0: Exception check on 'fposv' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fposv' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fposv' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:80:0: Exception check on 'ST' will always require the GIL to be acquired. Declare 'ST' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:89:0: Exception check on 'log_1pexp' will always require the GIL to be acquired. Declare 'log_1pexp' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:99:0: Exception check on 'xlogx' will always require the GIL to be acquired. Declare 'xlogx' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:105:0: Exception check on 'Nh' will always require the GIL to be acquired. Declare 'Nh' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:113:0: Exception check on 'fweighted_norm_w2' will always require the GIL to be acquired. Declare 'fweighted_norm_w2' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:127:0: Exception check on 'sigmoid' will always require the GIL to be acquired. Declare 'sigmoid' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:134:0: Exception check on 'primal_logreg' will always require the GIL to be acquired. Declare 'primal_logreg' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:155:0: Exception check on 'primal_lasso' will always require the GIL to be acquired. Declare 'primal_lasso' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:176:0: Exception check on 'primal' will always require the GIL to be acquired. Declare 'primal' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:185:0: Exception check on 'dual_enet' will always require the GIL to be acquired. Declare 'dual_enet' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:204:0: Exception check on 'dual_logreg' will always require the GIL to be acquired. Declare 'dual_logreg' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:218:0: Exception check on 'dual' will always require the GIL to be acquired. Declare 'dual' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:226:0: Exception check on 'create_dual_pt' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'create_dual_pt' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'create_dual_pt' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:383:0: Exception check on 'dnorm_enet' will always require the GIL to be acquired. Declare 'dnorm_enet' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:430:0: Exception check on 'set_prios' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'set_prios' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'set_prios' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:20: Exception check after calling 'xlogx[float]' will always require the GIL to be acquired. Declare 'xlogx[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:31: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:20: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:31: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:146:26: Exception check after calling 'log_1pexp[float]' will always require the GIL to be acquired. Declare 'log_1pexp[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:146:26: Exception check after calling 'log_1pexp[double]' will always require the GIL to be acquired. Declare 'log_1pexp[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:166:16: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:166:16: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:180:27: Exception check after calling 'primal_lasso[float,float,float[:],float[:],float[:]]' will always require the GIL to be acquired. Declare 'primal_lasso[float,float,float[:],float[:],float[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:182:28: Exception check after calling 'primal_logreg[float,float[:],float[:],float[:],float[:]]' will always require the GIL to be acquired. Declare 'primal_logreg[float,float[:],float[:],float[:],float[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:180:27: Exception check after calling 'primal_lasso[double,double,double[:],double[:],double[:]]' will always require the GIL to be acquired. Declare 'primal_lasso[double,double,double[:],double[:],double[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:182:28: Exception check after calling 'primal_logreg[double,double[:],double[:],double[:],double[:]]' will always require the GIL to be acquired. Declare 'primal_logreg[double,double[:],double[:],double[:],double[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:214:19: Exception check after calling 'Nh[float]' will always require the GIL to be acquired. Declare 'Nh[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:214:19: Exception check after calling 'Nh[double]' will always require the GIL to be acquired. Declare 'Nh[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:221:24: Exception check after calling 'dual_enet[float,float,float,float,float *,float *]' will always require the GIL to be acquired. Declare 'dual_enet[float,float,float,float,float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:223:26: Exception check after calling 'dual_logreg[float *,float *]' will always require the GIL to be acquired. Declare 'dual_logreg[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:221:24: Exception check after calling 'dual_enet[double,double,double,double,double *,double *]' will always require the GIL to be acquired. Declare 'dual_enet[double,double,double,double,double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:223:26: Exception check after calling 'dual_logreg[double *,double *]' will always require the GIL to be acquired. Declare 'dual_logreg[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:235:13: Exception check after calling 'fcopy[float *,float *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy[float *,float *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:238:35: Exception check after calling 'sigmoid[float]' will always require the GIL to be acquired. Declare 'sigmoid[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:240:9: Exception check after calling 'fscal[float *,float *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal[float *,float *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:235:13: Exception check after calling 'fcopy[double *,double *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy[double *,double *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:238:35: Exception check after calling 'sigmoid[double]' will always require the GIL to be acquired. Declare 'sigmoid[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:240:9: Exception check after calling 'fscal[double *,double *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal[double *,double *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:418:27: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:418:27: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:457:27: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:457:27: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+Compiling UQPyL/surrogate/mars/core/_types.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_util.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_forward.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_record.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_basis.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_pruning.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_qr.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_knot_search.pyx because it changed.
+Compiling UQPyL/surrogate/regression/lasso/lasso_fast.pyx because it changed.
+[1/9] Cythonizing UQPyL/surrogate/mars/core/_basis.pyx
+[2/9] Cythonizing UQPyL/surrogate/mars/core/_forward.pyx
+[3/9] Cythonizing UQPyL/surrogate/mars/core/_knot_search.pyx
+[4/9] Cythonizing UQPyL/surrogate/mars/core/_pruning.pyx
+[5/9] Cythonizing UQPyL/surrogate/mars/core/_qr.pyx
+[6/9] Cythonizing UQPyL/surrogate/mars/core/_record.pyx
+[7/9] Cythonizing UQPyL/surrogate/mars/core/_types.pyx
+[8/9] Cythonizing UQPyL/surrogate/mars/core/_util.pyx
+[9/9] Cythonizing UQPyL/surrogate/regression/lasso/lasso_fast.pyx
+running egg_info
+creating .cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info
+writing .cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/PKG-INFO
+writing dependency_links to .cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/dependency_links.txt
+writing requirements to .cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/requires.txt
+writing top-level names to .cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/top_level.txt
+writing manifest file '.cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/SOURCES.txt'
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+reading manifest file '.cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '*.pyd' found anywhere in distribution
+warning: no previously-included files matching '*.so' found anywhere in distribution
+warning: no previously-included files matching '*.dll' found anywhere in distribution
+warning: no previously-included files matching '__pycache__' found anywhere in distribution
+warning: no previously-included files matching '*.py[cod]' found anywhere in distribution
+no previously-included directories found matching 'build'
+no previously-included directories found matching 'dist'
+no previously-included directories found matching '.codex/pytest_cache'
+adding license file 'LICENSE.md'
+writing manifest file '.cache/egg_info/1a51340308814823be34ba0b18ec915a/UQPyL.egg-info/SOURCES.txt'
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+WARNING License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+WARNING License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+* Installed build dependency versions:
+  - cython==3.3.0
+  - numpy==2.5.3
+  - pybind11==3.1.0
+  - scipy==1.18.1
+  - setuptools==84.0.0
+  - wheel==0.48.0
+* Building wheel...
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:26:0: Exception check on 'fdot' will always require the GIL to be acquired. Declare 'fdot' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:34:0: Exception check on 'fasum' will always require the GIL to be acquired. Declare 'fasum' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:41:0: Exception check on 'faxpy' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'faxpy' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'faxpy' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:49:0: Exception check on 'fnrm2' will always require the GIL to be acquired. Declare 'fnrm2' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:56:0: Exception check on 'fcopy' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:64:0: Exception check on 'fscal' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:72:0: Exception check on 'fposv' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fposv' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fposv' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:80:0: Exception check on 'ST' will always require the GIL to be acquired. Declare 'ST' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:89:0: Exception check on 'log_1pexp' will always require the GIL to be acquired. Declare 'log_1pexp' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:99:0: Exception check on 'xlogx' will always require the GIL to be acquired. Declare 'xlogx' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:105:0: Exception check on 'Nh' will always require the GIL to be acquired. Declare 'Nh' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:113:0: Exception check on 'fweighted_norm_w2' will always require the GIL to be acquired. Declare 'fweighted_norm_w2' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:127:0: Exception check on 'sigmoid' will always require the GIL to be acquired. Declare 'sigmoid' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:134:0: Exception check on 'primal_logreg' will always require the GIL to be acquired. Declare 'primal_logreg' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:155:0: Exception check on 'primal_lasso' will always require the GIL to be acquired. Declare 'primal_lasso' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:176:0: Exception check on 'primal' will always require the GIL to be acquired. Declare 'primal' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:185:0: Exception check on 'dual_enet' will always require the GIL to be acquired. Declare 'dual_enet' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:204:0: Exception check on 'dual_logreg' will always require the GIL to be acquired. Declare 'dual_logreg' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:218:0: Exception check on 'dual' will always require the GIL to be acquired. Declare 'dual' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:226:0: Exception check on 'create_dual_pt' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'create_dual_pt' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'create_dual_pt' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:383:0: Exception check on 'dnorm_enet' will always require the GIL to be acquired. Declare 'dnorm_enet' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:430:0: Exception check on 'set_prios' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'set_prios' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'set_prios' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:20: Exception check after calling 'xlogx[float]' will always require the GIL to be acquired. Declare 'xlogx[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:31: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:20: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:108:31: Exception check after calling 'xlogx[double]' will always require the GIL to be acquired. Declare 'xlogx[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:146:26: Exception check after calling 'log_1pexp[float]' will always require the GIL to be acquired. Declare 'log_1pexp[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:146:26: Exception check after calling 'log_1pexp[double]' will always require the GIL to be acquired. Declare 'log_1pexp[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:166:16: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:166:16: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:180:27: Exception check after calling 'primal_lasso[float,float,float[:],float[:],float[:]]' will always require the GIL to be acquired. Declare 'primal_lasso[float,float,float[:],float[:],float[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:182:28: Exception check after calling 'primal_logreg[float,float[:],float[:],float[:],float[:]]' will always require the GIL to be acquired. Declare 'primal_logreg[float,float[:],float[:],float[:],float[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:180:27: Exception check after calling 'primal_lasso[double,double,double[:],double[:],double[:]]' will always require the GIL to be acquired. Declare 'primal_lasso[double,double,double[:],double[:],double[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:182:28: Exception check after calling 'primal_logreg[double,double[:],double[:],double[:],double[:]]' will always require the GIL to be acquired. Declare 'primal_logreg[double,double[:],double[:],double[:],double[:]]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:214:19: Exception check after calling 'Nh[float]' will always require the GIL to be acquired. Declare 'Nh[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:214:19: Exception check after calling 'Nh[double]' will always require the GIL to be acquired. Declare 'Nh[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:221:24: Exception check after calling 'dual_enet[float,float,float,float,float *,float *]' will always require the GIL to be acquired. Declare 'dual_enet[float,float,float,float,float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:223:26: Exception check after calling 'dual_logreg[float *,float *]' will always require the GIL to be acquired. Declare 'dual_logreg[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:221:24: Exception check after calling 'dual_enet[double,double,double,double,double *,double *]' will always require the GIL to be acquired. Declare 'dual_enet[double,double,double,double,double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:223:26: Exception check after calling 'dual_logreg[double *,double *]' will always require the GIL to be acquired. Declare 'dual_logreg[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:235:13: Exception check after calling 'fcopy[float *,float *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy[float *,float *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:238:35: Exception check after calling 'sigmoid[float]' will always require the GIL to be acquired. Declare 'sigmoid[float]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:240:9: Exception check after calling 'fscal[float *,float *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal[float *,float *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:235:13: Exception check after calling 'fcopy[double *,double *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fcopy[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fcopy[double *,double *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:238:35: Exception check after calling 'sigmoid[double]' will always require the GIL to be acquired. Declare 'sigmoid[double]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:240:9: Exception check after calling 'fscal[double *,double *]' will always require the GIL to be acquired.
+Possible solutions:
+	1. Declare 'fscal[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+	2. Use an 'int' return type on 'fscal[double *,double *]' to allow an error code to be returned.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:418:27: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:418:27: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:457:27: Exception check after calling 'fdot[float *,float *]' will always require the GIL to be acquired. Declare 'fdot[float *,float *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+performance hint: UQPyL/surrogate/regression/lasso/lasso_fast.pyx:457:27: Exception check after calling 'fdot[double *,double *]' will always require the GIL to be acquired. Declare 'fdot[double *,double *]' as 'noexcept' if you control the definition and you're sure you don't want the function to raise exceptions.
+Compiling UQPyL/surrogate/mars/core/_types.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_util.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_forward.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_record.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_basis.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_pruning.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_qr.pyx because it changed.
+Compiling UQPyL/surrogate/mars/core/_knot_search.pyx because it changed.
+Compiling UQPyL/surrogate/regression/lasso/lasso_fast.pyx because it changed.
+[1/9] Cythonizing UQPyL/surrogate/mars/core/_basis.pyx
+[2/9] Cythonizing UQPyL/surrogate/mars/core/_forward.pyx
+[3/9] Cythonizing UQPyL/surrogate/mars/core/_knot_search.pyx
+[4/9] Cythonizing UQPyL/surrogate/mars/core/_pruning.pyx
+[5/9] Cythonizing UQPyL/surrogate/mars/core/_qr.pyx
+[6/9] Cythonizing UQPyL/surrogate/mars/core/_record.pyx
+[7/9] Cythonizing UQPyL/surrogate/mars/core/_types.pyx
+[8/9] Cythonizing UQPyL/surrogate/mars/core/_util.pyx
+[9/9] Cythonizing UQPyL/surrogate/regression/lasso/lasso_fast.pyx
+running bdist_wheel
+running build
+running build_py
+running egg_info
+creating .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info
+writing .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/PKG-INFO
+writing dependency_links to .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/dependency_links.txt
+writing requirements to .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/requires.txt
+writing top-level names to .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/top_level.txt
+writing manifest file '.cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/SOURCES.txt'
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/arrayscalars.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarrayobject.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ndarraytypes.h won't be automatically included in the manifest: the path must be relative
+dependency /tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include/numpy/ufuncobject.h won't be automatically included in the manifest: the path must be relative
+reading manifest file '.cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no previously-included files matching '*.pyd' found anywhere in distribution
+warning: no previously-included files matching '*.so' found anywhere in distribution
+warning: no previously-included files matching '*.dll' found anywhere in distribution
+warning: no previously-included files matching '__pycache__' found anywhere in distribution
+warning: no previously-included files matching '*.py[cod]' found anywhere in distribution
+no previously-included directories found matching 'build'
+no previously-included directories found matching 'dist'
+no previously-included directories found matching '.codex/pytest_cache'
+adding license file 'LICENSE.md'
+writing manifest file '.cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info/SOURCES.txt'
+copying UQPyL/surrogate/mars/core/_basis.pyx -> build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core
+running build_ext
+building 'UQPyL.surrogate.mars.core._types' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_types.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_types.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_types.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_types.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._util' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_util.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_util.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_util.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_util.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._forward' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_forward.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_forward.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_forward.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_forward.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._record' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_record.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_record.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_record.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_record.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._basis' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_basis.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_basis.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_basis.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_basis.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._pruning' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_pruning.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_pruning.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_pruning.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_pruning.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._qr' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_qr.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_qr.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_qr.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_qr.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.mars.core._knot_search' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_knot_search.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_knot_search.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/mars/core/_knot_search.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_knot_search.cpython-312-x86_64-linux-gnu.so
+building 'UQPyL.surrogate.regression.lasso.lasso' extension
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include -fPIC -I/tmp/build-env-lg8tvx47/lib/python3.12/site-packages/numpy/_core/include -I/tmp/build-env-lg8tvx47/include -I/home/wmtsky/anaconda3/envs/py312/include/python3.12 -c .cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/regression/lasso/lasso_fast.c -o build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/regression/lasso/lasso_fast.o
+/home/wmtsky/anaconda3/envs/py312/bin/x86_64-conda-linux-gnu-cc -shared -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now -Wl,--disable-new-dtags -Wl,--gc-sections -Wl,-rpath,/home/wmtsky/anaconda3/envs/py312/lib -Wl,-rpath-link,/home/wmtsky/anaconda3/envs/py312/lib -L/home/wmtsky/anaconda3/envs/py312/lib -Werror=incompatible-pointer-types -DNDEBUG -D_FORTIFY_SOURCE=2 -O2 -isystem /home/wmtsky/anaconda3/envs/py312/include build/temp.linux-x86_64-cpython-312/.cache/cython_build/3db5c058f1014bb28c57d99c4effdd22/UQPyL/surrogate/regression/lasso/lasso_fast.o -o build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/lasso.cpython-312-x86_64-linux-gnu.so
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/UQPyL
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/mars
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/mars.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_qr.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_qr.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_forward.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_knot_search.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_forward.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_pruning.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_record.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_pruning.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_basis.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_pruning.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_knot_search.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_basis.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_types.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_record.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_record.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_knot_search.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_util.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_basis.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_util.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_types.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_forward.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_util.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_qr.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/mars/core/_types.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/mars/core
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/util
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/util/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/util
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/util/lbfgsb.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/util
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/util/boxmin.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/util
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/gp
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/gaussian_process.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/matern_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/dot_kernel_.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/rq_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/c_kernel_.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/rbf_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/gp/kernel/base_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/gp/kernel
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/svr
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/core/libsvm_interface.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/core/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/core/libsvm_interface.cpp -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/core/svm.cpp -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/core/svm.h -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/svr/support_vector_machine.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/svr
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/poly.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/scaler.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/regression
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/lasso_fast.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/cython_utils.pxd -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/lasso.cpython-312-x86_64-linux-gnu.so -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/lasso/cython_utils.pyx -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression/lasso
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/linear_regression.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/regression/polynomial_regression.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/regression
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/rbf
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/radial_basis_function.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/cubic_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/multiquadric_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/linear_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/gaussian_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/thin_plate_spline_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/rbf/kernel/base_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/rbf/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/metric.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/setting.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/kriging
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kriging.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging
+creating build/bdist.linux-x86_64/wheel/UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kernel/cubic_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kernel/guass_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kernel/exp_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kernel/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/kriging/kernel/base_kernel.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate/kriging/kernel
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/split.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+copying build/lib.linux-x86_64-cpython-312/UQPyL/surrogate/auto_tuner.py -> build/bdist.linux-x86_64/wheel/./UQPyL/surrogate
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/runtime/storage.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/runtime/reader.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/runtime/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/runtime/verbose.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/runtime/result.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/expensive/_base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/expensive/asmo.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/expensive/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/expensive/ego.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/expensive/moasmo.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/expensive
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/population.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/ga.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/csa.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/ml_sce_ua.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/pso.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/sce_ua.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/abc.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/soea/de.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/soea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/metric
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/metric/hv.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/metric
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/metric/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/metric
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/metric/gd.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/metric
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/metric/igd.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/metric
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/ga_operator.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/uniform_point.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/constraint.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/non_dominated_sort.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/tournament.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/core/crowding_distance.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/core
+creating build/bdist.linux-x86_64/wheel/UQPyL/optimization/moea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/moea/nsga_iii.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/moea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/moea/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/moea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/moea/moea_d.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/moea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/moea/rvea.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/moea
+copying build/lib.linux-x86_64-cpython-312/UQPyL/optimization/moea/nsga_ii.py -> build/bdist.linux-x86_64/wheel/./UQPyL/optimization/moea
+creating build/bdist.linux-x86_64/wheel/UQPyL/calibration
+creating build/bdist.linux-x86_64/wheel/UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/ies.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/glue.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/_ensemble.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/es.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/methods/sufi2.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/reader.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/runtime.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration
+copying build/lib.linux-x86_64-cpython-312/UQPyL/calibration/util.py -> build/bdist.linux-x86_64/wheel/./UQPyL/calibration
+creating build/bdist.linux-x86_64/wheel/UQPyL/analysis
+creating build/bdist.linux-x86_64/wheel/UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/_variance.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/sobol.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/rbd_fast.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/fast.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/mars.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/rsa.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/delta.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/methods/morris.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/methods
+creating build/bdist.linux-x86_64/wheel/UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/runtime/storage.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/runtime/reader.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/runtime/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/runtime/verbose.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/runtime/result.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis
+copying build/lib.linux-x86_64-cpython-312/UQPyL/analysis/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/analysis
+creating build/bdist.linux-x86_64/wheel/UQPyL/doe
+creating build/bdist.linux-x86_64/wheel/UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/sobol.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/random.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/fast.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/saltelli.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/lhs.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/full_fact.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/methods/morris.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe
+copying build/lib.linux-x86_64-cpython-312/UQPyL/doe/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/doe
+creating build/bdist.linux-x86_64/wheel/UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/space.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+creating build/bdist.linux-x86_64/wheel/UQPyL/problem/mop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/mop/ZDT.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/mop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/mop/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/mop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/mop/DTLZ.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/mop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/evaluator.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/evaluator_base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/model_problem.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/decorators.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/eval.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/simulator_base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/problem.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+creating build/bdist.linux-x86_64/wheel/UQPyL/problem/sop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/sop/single_simple_problem.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/sop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/sop/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/sop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/sop/single_constraint_problem.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem/sop
+copying build/lib.linux-x86_64-cpython-312/UQPyL/problem/model_evaluator.py -> build/bdist.linux-x86_64/wheel/./UQPyL/problem
+copying build/lib.linux-x86_64-cpython-312/UQPyL/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL
+creating build/bdist.linux-x86_64/wheel/UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/runtime_lifecycle.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/runtime_reader.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/params.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/config.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/runtime.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/runtime_session.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/runtime_storage.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+copying build/lib.linux-x86_64-cpython-312/UQPyL/core/parameter_store.py -> build/bdist.linux-x86_64/wheel/./UQPyL/core
+creating build/bdist.linux-x86_64/wheel/UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/surrogate.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/analysis.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/optimization.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/inference.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+copying build/lib.linux-x86_64-cpython-312/UQPyL/viz/common.py -> build/bdist.linux-x86_64/wheel/./UQPyL/viz
+creating build/bdist.linux-x86_64/wheel/UQPyL/inference
+creating build/bdist.linux-x86_64/wheel/UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/demc.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/mh_gibbs.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/dream_zs.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/mh.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/methods/amh.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/methods
+creating build/bdist.linux-x86_64/wheel/UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/runtime/storage.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/runtime/reader.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/runtime/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/runtime/verbose.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/runtime/result.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference/runtime
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/base.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/chain.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference
+copying build/lib.linux-x86_64-cpython-312/UQPyL/inference/__init__.py -> build/bdist.linux-x86_64/wheel/./UQPyL/inference
+running install_egg_info
+Copying .cache/egg_info/3db5c058f1014bb28c57d99c4effdd22/UQPyL.egg-info to build/bdist.linux-x86_64/wheel/./UQPyL-2.1.6-py3.12.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/uqpyl-2.1.6.dist-info/WHEEL
+creating '/home/wmtsky/projects/UQPyL/.cache/mars-gcc15-wheel/.tmp-3ia414pb/uqpyl-2.1.6-cp312-cp312-linux_x86_64.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'UQPyL/__init__.py'
+adding 'UQPyL/analysis/__init__.py'
+adding 'UQPyL/analysis/base.py'
+adding 'UQPyL/analysis/methods/__init__.py'
+adding 'UQPyL/analysis/methods/_variance.py'
+adding 'UQPyL/analysis/methods/delta.py'
+adding 'UQPyL/analysis/methods/fast.py'
+adding 'UQPyL/analysis/methods/mars.py'
+adding 'UQPyL/analysis/methods/morris.py'
+adding 'UQPyL/analysis/methods/rbd_fast.py'
+adding 'UQPyL/analysis/methods/rsa.py'
+adding 'UQPyL/analysis/methods/sobol.py'
+adding 'UQPyL/analysis/runtime/__init__.py'
+adding 'UQPyL/analysis/runtime/reader.py'
+adding 'UQPyL/analysis/runtime/result.py'
+adding 'UQPyL/analysis/runtime/storage.py'
+adding 'UQPyL/analysis/runtime/verbose.py'
+adding 'UQPyL/calibration/__init__.py'
+adding 'UQPyL/calibration/base.py'
+adding 'UQPyL/calibration/reader.py'
+adding 'UQPyL/calibration/runtime.py'
+adding 'UQPyL/calibration/util.py'
+adding 'UQPyL/calibration/methods/__init__.py'
+adding 'UQPyL/calibration/methods/_ensemble.py'
+adding 'UQPyL/calibration/methods/es.py'
+adding 'UQPyL/calibration/methods/glue.py'
+adding 'UQPyL/calibration/methods/ies.py'
+adding 'UQPyL/calibration/methods/sufi2.py'
+adding 'UQPyL/core/__init__.py'
+adding 'UQPyL/core/config.py'
+adding 'UQPyL/core/parameter_store.py'
+adding 'UQPyL/core/params.py'
+adding 'UQPyL/core/runtime.py'
+adding 'UQPyL/core/runtime_lifecycle.py'
+adding 'UQPyL/core/runtime_reader.py'
+adding 'UQPyL/core/runtime_session.py'
+adding 'UQPyL/core/runtime_storage.py'
+adding 'UQPyL/doe/__init__.py'
+adding 'UQPyL/doe/base.py'
+adding 'UQPyL/doe/methods/__init__.py'
+adding 'UQPyL/doe/methods/fast.py'
+adding 'UQPyL/doe/methods/full_fact.py'
+adding 'UQPyL/doe/methods/lhs.py'
+adding 'UQPyL/doe/methods/morris.py'
+adding 'UQPyL/doe/methods/random.py'
+adding 'UQPyL/doe/methods/saltelli.py'
+adding 'UQPyL/doe/methods/sobol.py'
+adding 'UQPyL/inference/__init__.py'
+adding 'UQPyL/inference/base.py'
+adding 'UQPyL/inference/chain.py'
+adding 'UQPyL/inference/methods/__init__.py'
+adding 'UQPyL/inference/methods/amh.py'
+adding 'UQPyL/inference/methods/demc.py'
+adding 'UQPyL/inference/methods/dream_zs.py'
+adding 'UQPyL/inference/methods/mh.py'
+adding 'UQPyL/inference/methods/mh_gibbs.py'
+adding 'UQPyL/inference/runtime/__init__.py'
+adding 'UQPyL/inference/runtime/reader.py'
+adding 'UQPyL/inference/runtime/result.py'
+adding 'UQPyL/inference/runtime/storage.py'
+adding 'UQPyL/inference/runtime/verbose.py'
+adding 'UQPyL/optimization/__init__.py'
+adding 'UQPyL/optimization/base.py'
+adding 'UQPyL/optimization/population.py'
+adding 'UQPyL/optimization/core/__init__.py'
+adding 'UQPyL/optimization/core/constraint.py'
+adding 'UQPyL/optimization/core/crowding_distance.py'
+adding 'UQPyL/optimization/core/ga_operator.py'
+adding 'UQPyL/optimization/core/non_dominated_sort.py'
+adding 'UQPyL/optimization/core/tournament.py'
+adding 'UQPyL/optimization/core/uniform_point.py'
+adding 'UQPyL/optimization/expensive/__init__.py'
+adding 'UQPyL/optimization/expensive/_base.py'
+adding 'UQPyL/optimization/expensive/asmo.py'
+adding 'UQPyL/optimization/expensive/ego.py'
+adding 'UQPyL/optimization/expensive/moasmo.py'
+adding 'UQPyL/optimization/metric/__init__.py'
+adding 'UQPyL/optimization/metric/gd.py'
+adding 'UQPyL/optimization/metric/hv.py'
+adding 'UQPyL/optimization/metric/igd.py'
+adding 'UQPyL/optimization/moea/__init__.py'
+adding 'UQPyL/optimization/moea/moea_d.py'
+adding 'UQPyL/optimization/moea/nsga_ii.py'
+adding 'UQPyL/optimization/moea/nsga_iii.py'
+adding 'UQPyL/optimization/moea/rvea.py'
+adding 'UQPyL/optimization/runtime/__init__.py'
+adding 'UQPyL/optimization/runtime/reader.py'
+adding 'UQPyL/optimization/runtime/result.py'
+adding 'UQPyL/optimization/runtime/storage.py'
+adding 'UQPyL/optimization/runtime/verbose.py'
+adding 'UQPyL/optimization/soea/__init__.py'
+adding 'UQPyL/optimization/soea/abc.py'
+adding 'UQPyL/optimization/soea/csa.py'
+adding 'UQPyL/optimization/soea/de.py'
+adding 'UQPyL/optimization/soea/ga.py'
+adding 'UQPyL/optimization/soea/ml_sce_ua.py'
+adding 'UQPyL/optimization/soea/pso.py'
+adding 'UQPyL/optimization/soea/sce_ua.py'
+adding 'UQPyL/problem/__init__.py'
+adding 'UQPyL/problem/base.py'
+adding 'UQPyL/problem/decorators.py'
+adding 'UQPyL/problem/eval.py'
+adding 'UQPyL/problem/evaluator.py'
+adding 'UQPyL/problem/evaluator_base.py'
+adding 'UQPyL/problem/model_evaluator.py'
+adding 'UQPyL/problem/model_problem.py'
+adding 'UQPyL/problem/problem.py'
+adding 'UQPyL/problem/simulator_base.py'
+adding 'UQPyL/problem/space.py'
+adding 'UQPyL/problem/mop/DTLZ.py'
+adding 'UQPyL/problem/mop/ZDT.py'
+adding 'UQPyL/problem/mop/__init__.py'
+adding 'UQPyL/problem/sop/__init__.py'
+adding 'UQPyL/problem/sop/single_constraint_problem.py'
+adding 'UQPyL/problem/sop/single_simple_problem.py'
+adding 'UQPyL/surrogate/__init__.py'
+adding 'UQPyL/surrogate/_kernel.py'
+adding 'UQPyL/surrogate/auto_tuner.py'
+adding 'UQPyL/surrogate/base.py'
+adding 'UQPyL/surrogate/metric.py'
+adding 'UQPyL/surrogate/poly.py'
+adding 'UQPyL/surrogate/scaler.py'
+adding 'UQPyL/surrogate/setting.py'
+adding 'UQPyL/surrogate/split.py'
+adding 'UQPyL/surrogate/gp/__init__.py'
+adding 'UQPyL/surrogate/gp/gaussian_process.py'
+adding 'UQPyL/surrogate/gp/kernel/__init__.py'
+adding 'UQPyL/surrogate/gp/kernel/base_kernel.py'
+adding 'UQPyL/surrogate/gp/kernel/c_kernel_.py'
+adding 'UQPyL/surrogate/gp/kernel/dot_kernel_.py'
+adding 'UQPyL/surrogate/gp/kernel/matern_kernel.py'
+adding 'UQPyL/surrogate/gp/kernel/rbf_kernel.py'
+adding 'UQPyL/surrogate/gp/kernel/rq_kernel.py'
+adding 'UQPyL/surrogate/kriging/__init__.py'
+adding 'UQPyL/surrogate/kriging/kriging.py'
+adding 'UQPyL/surrogate/kriging/kernel/__init__.py'
+adding 'UQPyL/surrogate/kriging/kernel/base_kernel.py'
+adding 'UQPyL/surrogate/kriging/kernel/cubic_kernel.py'
+adding 'UQPyL/surrogate/kriging/kernel/exp_kernel.py'
+adding 'UQPyL/surrogate/kriging/kernel/guass_kernel.py'
+adding 'UQPyL/surrogate/mars/__init__.py'
+adding 'UQPyL/surrogate/mars/mars.py'
+adding 'UQPyL/surrogate/mars/core/__init__.py'
+adding 'UQPyL/surrogate/mars/core/_basis.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_basis.pxd'
+adding 'UQPyL/surrogate/mars/core/_basis.pyx'
+adding 'UQPyL/surrogate/mars/core/_forward.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_forward.pxd'
+adding 'UQPyL/surrogate/mars/core/_forward.pyx'
+adding 'UQPyL/surrogate/mars/core/_knot_search.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_knot_search.pxd'
+adding 'UQPyL/surrogate/mars/core/_knot_search.pyx'
+adding 'UQPyL/surrogate/mars/core/_pruning.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_pruning.pxd'
+adding 'UQPyL/surrogate/mars/core/_pruning.pyx'
+adding 'UQPyL/surrogate/mars/core/_qr.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_qr.pxd'
+adding 'UQPyL/surrogate/mars/core/_qr.pyx'
+adding 'UQPyL/surrogate/mars/core/_record.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_record.pxd'
+adding 'UQPyL/surrogate/mars/core/_record.pyx'
+adding 'UQPyL/surrogate/mars/core/_types.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_types.pxd'
+adding 'UQPyL/surrogate/mars/core/_types.pyx'
+adding 'UQPyL/surrogate/mars/core/_util.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/mars/core/_util.pxd'
+adding 'UQPyL/surrogate/mars/core/_util.pyx'
+adding 'UQPyL/surrogate/rbf/__init__.py'
+adding 'UQPyL/surrogate/rbf/radial_basis_function.py'
+adding 'UQPyL/surrogate/rbf/kernel/__init__.py'
+adding 'UQPyL/surrogate/rbf/kernel/base_kernel.py'
+adding 'UQPyL/surrogate/rbf/kernel/cubic_kernel.py'
+adding 'UQPyL/surrogate/rbf/kernel/gaussian_kernel.py'
+adding 'UQPyL/surrogate/rbf/kernel/linear_kernel.py'
+adding 'UQPyL/surrogate/rbf/kernel/multiquadric_kernel.py'
+adding 'UQPyL/surrogate/rbf/kernel/thin_plate_spline_kernel.py'
+adding 'UQPyL/surrogate/regression/__init__.py'
+adding 'UQPyL/surrogate/regression/linear_regression.py'
+adding 'UQPyL/surrogate/regression/polynomial_regression.py'
+adding 'UQPyL/surrogate/regression/lasso/__init__.py'
+adding 'UQPyL/surrogate/regression/lasso/cython_utils.pxd'
+adding 'UQPyL/surrogate/regression/lasso/cython_utils.pyx'
+adding 'UQPyL/surrogate/regression/lasso/lasso.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/regression/lasso/lasso_fast.pyx'
+adding 'UQPyL/surrogate/svr/__init__.py'
+adding 'UQPyL/surrogate/svr/support_vector_machine.py'
+adding 'UQPyL/surrogate/svr/core/__init__.py'
+adding 'UQPyL/surrogate/svr/core/libsvm_interface.cpp'
+adding 'UQPyL/surrogate/svr/core/libsvm_interface.cpython-312-x86_64-linux-gnu.so'
+adding 'UQPyL/surrogate/svr/core/svm.cpp'
+adding 'UQPyL/surrogate/svr/core/svm.h'
+adding 'UQPyL/surrogate/util/__init__.py'
+adding 'UQPyL/surrogate/util/boxmin.py'
+adding 'UQPyL/surrogate/util/lbfgsb.py'
+adding 'UQPyL/viz/__init__.py'
+adding 'UQPyL/viz/analysis.py'
+adding 'UQPyL/viz/common.py'
+adding 'UQPyL/viz/inference.py'
+adding 'UQPyL/viz/optimization.py'
+adding 'UQPyL/viz/surrogate.py'
+adding 'uqpyl-2.1.6.dist-info/licenses/LICENSE.md'
+adding 'uqpyl-2.1.6.dist-info/METADATA'
+adding 'uqpyl-2.1.6.dist-info/WHEEL'
+adding 'uqpyl-2.1.6.dist-info/top_level.txt'
+adding 'uqpyl-2.1.6.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+WARNING `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+WARNING License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+WARNING License classifiers are deprecated.
+!!
+
+        ********************************************************************************
+        Please consider removing the following classifiers in favor of a SPDX license expression:
+
+        License :: OSI Approved :: MIT License
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+Successfully built uqpyl-2.1.6-cp312-cp312-linux_x86_64.whl

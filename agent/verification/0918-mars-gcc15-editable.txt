@@ -1,0 +1,19 @@
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Obtaining file:///home/wmtsky/projects/UQPyL
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: UQPyL
+  Building editable for UQPyL (pyproject.toml): started
+  Building editable for UQPyL (pyproject.toml): still running...
+  Building editable for UQPyL (pyproject.toml): finished with status 'done'
+  Created wheel for UQPyL: filename=uqpyl-2.1.6-0.editable-cp312-cp312-linux_x86_64.whl size=8063 sha256=54f745c6d4ac90c6e8bb208aa008706cf2c88866de0139e08ffba2b33383abfa
+  Stored in directory: /tmp/pip-ephem-wheel-cache-xw9cl47v/wheels/c8/d4/cd/d1099abf1e2343b287a43936721f8e328a7f48a21020254ff9
+Successfully built UQPyL
+Installing collected packages: UQPyL
+  Attempting uninstall: UQPyL
+    Found existing installation: UQPyL 2.1.6
+    Uninstalling UQPyL-2.1.6:
+      Successfully uninstalled UQPyL-2.1.6
+Successfully installed UQPyL-2.1.6

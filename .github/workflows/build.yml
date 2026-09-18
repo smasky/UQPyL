@@ -33,7 +33,7 @@ jobs:
       env:
         CIBW_BUILD: ${{ matrix.python[0] }}-manylinux*
         CIBW_ARCHS: x86_64
-        CIBW_ENVIRONMENT_LINUX: 'CFLAGS="-Wno-error=incompatible-pointer-types"'
+        CIBW_ENVIRONMENT_LINUX: 'CFLAGS="-Werror=incompatible-pointer-types"'
         CIBW_BEFORE_BUILD: pip install numpy scipy cython pybind11
         CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair -w {dest_dir} {wheel}
       run: cibuildwheel --output-dir wheelhouse --platform linux

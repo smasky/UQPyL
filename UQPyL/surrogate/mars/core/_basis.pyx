@@ -524,7 +524,8 @@ cdef class DataVariableBasisFunction(VariableBasisFunction):
                 j[i] += b[i]*this_deriv[i]
             b[i] *= this_val[i]
 
-@cython.final
+# Keep virtual dispatch: Cython's final-class wrapper for this inherited cpdef
+# passes incompatible self/default-argument pointers to the base vtable entry.
 cdef class MissingnessBasisFunction(VariableBasisFunction):
     def __init__(MissingnessBasisFunction self, BasisFunction parent,
                  INDEX_t variable, bint complement,

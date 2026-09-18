@@ -1,5 +1,7 @@
 # 2026-09-18 本机开发环境配置
 
+后续更新：完成 [MARS 编译兼容性修复](0918-mars-gcc15-fix.md) 后，`py312` 已升级为 GCC/G++ 15.2，并严格重建可编辑安装。下文 GCC 11.2 的安装经过是修复前记录，修复后的源码无需降级编译器。
+
 - 源码基线：`dev` / `f07f058`。
 - 环境：`/home/wmtsky/anaconda3/envs/py312`，Python 3.12.0。
 - 已安装 conda GCC/G++ 11.2，以及可编辑模式的 `UQPyL[viz]`、pytest、pytest-cov、build、Cython、pybind11。
