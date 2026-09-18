@@ -1,0 +1,556 @@
+{
+  "rmse_tie_tolerance": "1e-6 + 0.01 * max(abs(a), abs(b))",
+  "objective_tie_tolerance": "1e-12 + 1e-6 * max(abs(a), abs(b))",
+  "groups": [
+    {
+      "profile": "default",
+      "family": "GPR",
+      "pairs": 30,
+      "fit_failures": 0,
+      "rmse_wins": {
+        "Boxmin": 7,
+        "LBFGSB": 8,
+        "tie": 15
+      },
+      "objective_wins": {
+        "Boxmin": 21,
+        "LBFGSB": 2,
+        "tie": 7
+      },
+      "median_time_ratio_lbfgsb_to_boxmin": 1.6992178262414728,
+      "median_evaluation_ratio_lbfgsb_to_boxmin": 1.4891304347826086,
+      "lbfgsb_starts": 30,
+      "lbfgsb_unsuccessful_starts": 2,
+      "lbfgsb_fits_with_unsuccessful_start": 2,
+      "out_of_bounds": 0,
+      "nonfinite_objectives": 0
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "pairs": 30,
+      "fit_failures": 0,
+      "rmse_wins": {
+        "Boxmin": 7,
+        "LBFGSB": 9,
+        "tie": 14
+      },
+      "objective_wins": {
+        "Boxmin": 14,
+        "LBFGSB": 15,
+        "tie": 1
+      },
+      "median_time_ratio_lbfgsb_to_boxmin": 4.35669965948712,
+      "median_evaluation_ratio_lbfgsb_to_boxmin": 3.9,
+      "lbfgsb_starts": 60,
+      "lbfgsb_unsuccessful_starts": 13,
+      "lbfgsb_fits_with_unsuccessful_start": 10,
+      "out_of_bounds": 0,
+      "nonfinite_objectives": 0
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "pairs": 30,
+      "fit_failures": 0,
+      "rmse_wins": {
+        "Boxmin": 9,
+        "LBFGSB": 15,
+        "tie": 6
+      },
+      "objective_wins": {
+        "Boxmin": 11,
+        "LBFGSB": 19,
+        "tie": 0
+      },
+      "median_time_ratio_lbfgsb_to_boxmin": 5.2470540139513036,
+      "median_evaluation_ratio_lbfgsb_to_boxmin": 4.931336963097399,
+      "lbfgsb_starts": 30,
+      "lbfgsb_unsuccessful_starts": 5,
+      "lbfgsb_fits_with_unsuccessful_start": 5,
+      "out_of_bounds": 0,
+      "nonfinite_objectives": 0
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "pairs": 30,
+      "fit_failures": 0,
+      "rmse_wins": {
+        "Boxmin": 16,
+        "LBFGSB": 9,
+        "tie": 5
+      },
+      "objective_wins": {
+        "Boxmin": 23,
+        "LBFGSB": 7,
+        "tie": 0
+      },
+      "median_time_ratio_lbfgsb_to_boxmin": 4.005658180429407,
+      "median_evaluation_ratio_lbfgsb_to_boxmin": 4.005345806882726,
+      "lbfgsb_starts": 60,
+      "lbfgsb_unsuccessful_starts": 21,
+      "lbfgsb_fits_with_unsuccessful_start": 16,
+      "out_of_bounds": 0,
+      "nonfinite_objectives": 0
+    }
+  ],
+  "cases": [
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "smooth_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.04955385746709056,
+        "max_normalized_rmse": 0.04955385746709056,
+        "median_objective": 22455.961425444795,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0019309744993734057
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.04955385746709056,
+        "max_normalized_rmse": 0.9999140319450197,
+        "median_objective": 172285.37551628347,
+        "median_evaluations": 6.0,
+        "median_seconds": 0.0014251855009206338
+      }
+    },
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "noisy_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.05541754803674731,
+        "max_normalized_rmse": 0.05541754803674731,
+        "median_objective": 58849.47443981087,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0019676279998748214
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.05541754803674731,
+        "max_normalized_rmse": 0.619464041455569,
+        "median_objective": 7599490.328585195,
+        "median_evaluations": 6.0,
+        "median_seconds": 0.0015477754996027215
+      }
+    },
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "anisotropic_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.915054422849157,
+        "max_normalized_rmse": 0.915054422849157,
+        "median_objective": 2401227.143274783,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0020606540001608664
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.915054422849157,
+        "max_normalized_rmse": 0.950722038063067,
+        "median_objective": 60106503.04606663,
+        "median_evaluations": 6.0,
+        "median_seconds": 0.0014838309998594923
+      }
+    },
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "multioutput_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.04692112176850394,
+        "max_normalized_rmse": 0.04692112176850394,
+        "median_objective": 15053.007936963697,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0020100204992559156
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.04692112176850394,
+        "max_normalized_rmse": 1.0020558044769132,
+        "median_objective": 131607.62469349074,
+        "median_evaluations": 6.0,
+        "median_seconds": 0.0015064420003909618
+      }
+    },
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "interaction_5d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.28244301091594487,
+        "max_normalized_rmse": 0.28244301091594487,
+        "median_objective": 480.75254027224224,
+        "median_evaluations": 13.0,
+        "median_seconds": 0.0023706370002400945
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.2823752377202223,
+        "max_normalized_rmse": 0.5793821698601038,
+        "median_objective": 482.32467039734996,
+        "median_evaluations": 6.0,
+        "median_seconds": 0.0017148519991678768
+      }
+    },
+    {
+      "profile": "default",
+      "family": "GPR",
+      "case": "physical_units_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 3.92395642975841,
+        "max_normalized_rmse": 3.926442708734467,
+        "median_objective": 137789.38855847757,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.0033437265001339256
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 3.9285314607097646,
+        "max_normalized_rmse": 3.9285956177841,
+        "median_objective": 137930.93908274142,
+        "median_evaluations": 66.0,
+        "median_seconds": 0.011450955499640258
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "smooth_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 1.862184833344555e-08,
+        "max_normalized_rmse": 2.03352704037583e-08,
+        "median_objective": 1.2136328212490665e-09,
+        "median_evaluations": 20.0,
+        "median_seconds": 0.006371105499965779
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 1.3385753096473561e-08,
+        "max_normalized_rmse": 1.3385753096473561e-08,
+        "median_objective": 1.2162039047062007e-09,
+        "median_evaluations": 64.0,
+        "median_seconds": 0.022387231500943017
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "noisy_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.07728947810733412,
+        "max_normalized_rmse": 0.07728947810733412,
+        "median_objective": 0.057838672256312756,
+        "median_evaluations": 23.0,
+        "median_seconds": 0.010229342999991786
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.07726812970286603,
+        "max_normalized_rmse": 0.5259334397226167,
+        "median_objective": 0.6524750780856655,
+        "median_evaluations": 190.0,
+        "median_seconds": 0.08134557599896652
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "anisotropic_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.1706656882619566,
+        "max_normalized_rmse": 0.17524903427370458,
+        "median_objective": 0.05449313967480553,
+        "median_evaluations": 29.0,
+        "median_seconds": 0.015626750500814524
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.17377484011937644,
+        "max_normalized_rmse": 0.17377484011937644,
+        "median_objective": 0.054251330552366854,
+        "median_evaluations": 108.0,
+        "median_seconds": 0.06219678750039748
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "multioutput_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.0027093634940853813,
+        "max_normalized_rmse": 0.0027093634940853813,
+        "median_objective": 0.00041606887075925427,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.012374894499771472
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.0017798923274459347,
+        "max_normalized_rmse": 0.0017798923274459347,
+        "median_objective": 0.0004219855635581539,
+        "median_evaluations": 142.0,
+        "median_seconds": 0.0779528865004977
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "interaction_5d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.3254446364782063,
+        "max_normalized_rmse": 0.3301634980597689,
+        "median_objective": 0.107985245561692,
+        "median_evaluations": 23.0,
+        "median_seconds": 0.024863718001142843
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.3250268454311414,
+        "max_normalized_rmse": 0.3250271972164679,
+        "median_objective": 0.10797639969753867,
+        "median_evaluations": 44.0,
+        "median_seconds": 0.04631673350013443
+      }
+    },
+    {
+      "profile": "default",
+      "family": "KRG",
+      "case": "physical_units_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.8522732869304946,
+        "max_normalized_rmse": 0.8540369205871898,
+        "median_objective": 169.71119653594428,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.012416221999956178
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.8522177361512949,
+        "max_normalized_rmse": 0.8522177361512949,
+        "median_objective": 169.7091611023123,
+        "median_evaluations": 50.0,
+        "median_seconds": 0.03036074249939702
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "smooth_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 1.93792305308121e-06,
+        "max_normalized_rmse": 1.9592975557160242e-06,
+        "median_objective": -148.35316103064397,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.0029979205000927323
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 1.8275731379930377e-06,
+        "max_normalized_rmse": 8.755720190766593e-06,
+        "median_objective": -138.22806780270744,
+        "median_evaluations": 150.0,
+        "median_seconds": 0.02088203149924084
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "noisy_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.033548358086816846,
+        "max_normalized_rmse": 0.07733880060553217,
+        "median_objective": -18.36405686333903,
+        "median_evaluations": 23.0,
+        "median_seconds": 0.0030160224996507168
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.0331831154050899,
+        "max_normalized_rmse": 0.03318312039101678,
+        "median_objective": -18.39120561719453,
+        "median_evaluations": 60.0,
+        "median_seconds": 0.009055623499989451
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "anisotropic_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.0018568242291130035,
+        "max_normalized_rmse": 0.008187987264617063,
+        "median_objective": -78.68154800305524,
+        "median_evaluations": 37.0,
+        "median_seconds": 0.005089278000014019
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.0014170058101632035,
+        "max_normalized_rmse": 0.0015947312783752832,
+        "median_objective": -83.57257519363924,
+        "median_evaluations": 184.0,
+        "median_seconds": 0.02584675050002261
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "multioutput_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.002738746951283685,
+        "max_normalized_rmse": 0.006229802942415448,
+        "median_objective": -214.89901295747723,
+        "median_evaluations": 36.0,
+        "median_seconds": 0.004620836999492894
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.002559637340059477,
+        "max_normalized_rmse": 0.002654047432882508,
+        "median_objective": -219.47291718295955,
+        "median_evaluations": 216.0,
+        "median_seconds": 0.03044587050044356
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "interaction_5d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.017645298179552005,
+        "max_normalized_rmse": 0.01991922866719852,
+        "median_objective": -77.65198681522094,
+        "median_evaluations": 56.0,
+        "median_seconds": 0.00797542800046358
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.015486010464225847,
+        "max_normalized_rmse": 0.015497011392150055,
+        "median_objective": -79.05209498827531,
+        "median_evaluations": 287.0,
+        "median_seconds": 0.04350473299928126
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "GPR",
+      "case": "physical_units_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 5.338586909750094e-05,
+        "max_normalized_rmse": 5.451882018025869e-05,
+        "median_objective": -231.350499797272,
+        "median_evaluations": 25.0,
+        "median_seconds": 0.0035352269997019903
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.00013152504948631748,
+        "max_normalized_rmse": 0.00034194124782325347,
+        "median_objective": -217.92822047297255,
+        "median_evaluations": 140.0,
+        "median_seconds": 0.01983816200026922
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "smooth_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 1.8514726170281375e-08,
+        "max_normalized_rmse": 2.0115244229207437e-08,
+        "median_objective": 2.6452455743347797e-09,
+        "median_evaluations": 22.0,
+        "median_seconds": 0.006867203000183508
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 1.3422290449227622e-08,
+        "max_normalized_rmse": 1.3422290449227622e-08,
+        "median_objective": 2.654870055956894e-09,
+        "median_evaluations": 54.0,
+        "median_seconds": 0.01776112750030734
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "noisy_1d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.07726756304101433,
+        "max_normalized_rmse": 0.07726756304101433,
+        "median_objective": 0.12627476852320613,
+        "median_evaluations": 19.0,
+        "median_seconds": 0.008868130998962442
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.053578605320036256,
+        "max_normalized_rmse": 0.059403721770077446,
+        "median_objective": 3.0673961433459316,
+        "median_evaluations": 232.0,
+        "median_seconds": 0.09914022900011332
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "anisotropic_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.002501092867510499,
+        "max_normalized_rmse": 0.003380079812902756,
+        "median_objective": 0.00035436022373160216,
+        "median_evaluations": 66.0,
+        "median_seconds": 0.033007386498866254
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.0039358424793869435,
+        "max_normalized_rmse": 0.0039358424793869435,
+        "median_objective": 0.00035635537542139085,
+        "median_evaluations": 207.0,
+        "median_seconds": 0.10938606650051952
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "multioutput_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.0006481451277503487,
+        "max_normalized_rmse": 0.0006481451277503487,
+        "median_objective": 0.0002346160001429223,
+        "median_evaluations": 56.0,
+        "median_seconds": 0.027348995000465948
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.0020997159101735453,
+        "max_normalized_rmse": 0.0020997159101735453,
+        "median_objective": 0.00032263310042443354,
+        "median_evaluations": 252.0,
+        "median_seconds": 0.13194052549988555
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "interaction_5d",
+      "Boxmin": {
+        "median_normalized_rmse": 0.010294016171347491,
+        "max_normalized_rmse": 0.011319506728921375,
+        "median_objective": 0.0027337563133969043,
+        "median_evaluations": 110.0,
+        "median_seconds": 0.11182891099997505
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.009318152113638503,
+        "max_normalized_rmse": 0.009336579010983635,
+        "median_objective": 0.0024777848567081196,
+        "median_evaluations": 336.0,
+        "median_seconds": 0.34245803150042775
+      }
+    },
+    {
+      "profile": "scaled_ard",
+      "family": "KRG",
+      "case": "physical_units_2d",
+      "Boxmin": {
+        "median_normalized_rmse": 7.583530185840269e-06,
+        "max_normalized_rmse": 7.710248233667837e-06,
+        "median_objective": 7.827604841995643e-08,
+        "median_evaluations": 42.0,
+        "median_seconds": 0.021348619000491453
+      },
+      "LBFGSB": {
+        "median_normalized_rmse": 0.00019188302960095348,
+        "max_normalized_rmse": 0.00019188302960095348,
+        "median_objective": 5.218440360506698e-06,
+        "median_evaluations": 186.0,
+        "median_seconds": 0.09538157799943292
+      }
+    }
+  ]
+}

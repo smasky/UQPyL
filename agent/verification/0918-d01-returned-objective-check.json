@@ -1,0 +1,303 @@
+{
+  "tolerance": "1e-10 + 1e-8 * max(abs(recomputed), abs(reported))",
+  "discrepancies": [
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "smooth_1d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 1,
+      "reported_objective": 3.116051037261547,
+      "recomputed_objective": 3.02347898682964,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 0,
+      "reported_objective": 6.94035002645363,
+      "recomputed_objective": 6.887861153651711,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 1,
+      "restart_index": 0,
+      "reported_objective": 6.94035002645363,
+      "recomputed_objective": 6.887861153651711,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 0,
+      "reported_objective": 6.94035002645363,
+      "recomputed_objective": 6.887861153651711,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 3,
+      "restart_index": 0,
+      "reported_objective": 6.94035002645363,
+      "recomputed_objective": 6.887861153651711,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 3,
+      "restart_index": 1,
+      "reported_objective": 1.5778528020010998,
+      "recomputed_objective": 1.5234819395917325,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 4,
+      "restart_index": 0,
+      "reported_objective": 6.94035002645363,
+      "recomputed_objective": 6.887861153651711,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "anisotropic_2d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 1,
+      "reported_objective": 6.703844385542914,
+      "recomputed_objective": 6.693435796686181,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "multioutput_2d",
+      "optimizer": "LBFGSB",
+      "seed": 4,
+      "restart_index": 1,
+      "reported_objective": 0.07883188581688749,
+      "recomputed_objective": 0.07710957556610594,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "default",
+      "case": "interaction_5d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 1,
+      "reported_objective": 9.724664041970355,
+      "recomputed_objective": 9.675028435320035,
+      "success": false
+    },
+    {
+      "family": "GPR",
+      "profile": "scaled_ard",
+      "case": "smooth_1d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 0,
+      "reported_objective": -148.35331442957394,
+      "recomputed_objective": -148.35331719456633,
+      "success": false
+    },
+    {
+      "family": "GPR",
+      "profile": "scaled_ard",
+      "case": "smooth_1d",
+      "optimizer": "LBFGSB",
+      "seed": 1,
+      "restart_index": 0,
+      "reported_objective": -148.2749425759133,
+      "recomputed_objective": -148.27494573223757,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 0,
+      "reported_objective": 15.09689342596343,
+      "recomputed_objective": 14.88704158576631,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 1,
+      "reported_objective": 0.2989111815767048,
+      "recomputed_objective": 0.2958168938572849,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 1,
+      "restart_index": 0,
+      "reported_objective": 15.09689342596343,
+      "recomputed_objective": 14.88704158576631,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 1,
+      "restart_index": 1,
+      "reported_objective": 619130.6140484994,
+      "recomputed_objective": 615530.6561897929,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 0,
+      "reported_objective": 15.09689342596343,
+      "recomputed_objective": 14.88704158576631,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 1,
+      "reported_objective": 0.2509433158399291,
+      "recomputed_objective": 0.2500217536781868,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 3,
+      "restart_index": 0,
+      "reported_objective": 15.09689342596343,
+      "recomputed_objective": 14.88704158576631,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 3,
+      "restart_index": 1,
+      "reported_objective": 28.066691467013854,
+      "recomputed_objective": 27.6529325014124,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 4,
+      "restart_index": 0,
+      "reported_objective": 15.09689342596343,
+      "recomputed_objective": 14.88704158576631,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "noisy_1d",
+      "optimizer": "LBFGSB",
+      "seed": 4,
+      "restart_index": 1,
+      "reported_objective": 3.150669766687168,
+      "recomputed_objective": 3.0673961433459316,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "multioutput_2d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 1,
+      "reported_objective": 243.6219033344119,
+      "recomputed_objective": 243.60431580513867,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "multioutput_2d",
+      "optimizer": "LBFGSB",
+      "seed": 2,
+      "restart_index": 1,
+      "reported_objective": 0.183952900680982,
+      "recomputed_objective": 0.18361577930224787,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "multioutput_2d",
+      "optimizer": "LBFGSB",
+      "seed": 3,
+      "restart_index": 1,
+      "reported_objective": 0.4924793701898944,
+      "recomputed_objective": 0.49234199229972025,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "physical_units_2d",
+      "optimizer": "LBFGSB",
+      "seed": 0,
+      "restart_index": 1,
+      "reported_objective": 121.08121416781759,
+      "recomputed_objective": 121.03739725671801,
+      "success": false
+    },
+    {
+      "family": "KRG",
+      "profile": "scaled_ard",
+      "case": "physical_units_2d",
+      "optimizer": "LBFGSB",
+      "seed": 1,
+      "restart_index": 1,
+      "reported_objective": 0.35046506512275094,
+      "recomputed_objective": 0.349711246854758,
+      "success": false
+    }
+  ],
+  "selection_changes": []
+}

@@ -6,7 +6,7 @@
 - 该提交的生产源码仍与 `f07f058` 一致。基线独立 wheel 为 1345 passed、0 skipped、4 warnings。
 - 修复前 wheel 保存在 `.cache/mars-baseline/uqpyl-2.1.6-cp312-cp312-linux_x86_64.whl`，SHA256：`9ca29bd8642f49d61f92e9acf7517f532db4c8db81b947ef11790cbae370a986`。
 - 基线依赖列表与数值快照分别在 `.cache/mars-baseline/pip-freeze.txt`、`numerical.npz`。这些缓存不会随 Git 提交；源码基线由上述本地分支保留。
-- 基线记录已本地提交，本轮没有推送或发布。
+- 保存基线时仅本地提交；后续修复及基线分支均已推送，远程验证见文末。本轮没有正式发布。
 
 ## 根因与最小修复
 
@@ -42,5 +42,5 @@ conda run -n py312 python agent/verification/mars_numerical_check.py compare .ca
 
 ## 边界与接续
 
-本轮修复已通过本机 GCC 15 / Python 3.12 验证。此前六组远程 CI 通过的是 `f07f058`；本轮新增源码与工作流改动尚未推送，不能把旧 CI 结果当作新改动的远程验证。
-后续推送后检查新提交的六组 CI。D01（Boxmin/LBFGSB）和 D02（预算规则）保持原状。
+后续已将修复提交为 `c38078e` 并推送 `dev`，基线分支也已推送。新提交的 [CI run 35356942866](https://github.com/smasky/UQPyL/actions/runs/35356942866) 六组 Linux/Windows/macOS × Python 3.10/3.12 全部成功，[逐项证据](verification/0918-mars-fixed-ci-jobs.json)。MARS 修复已完成本机与远程验证，没有正式发布。
+D01 已完成 [优化器实测对照](0918-d01-optimizer-comparison.md)，建议保留 Boxmin 默认；D02（预算规则）保持原状。
