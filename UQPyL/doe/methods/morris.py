@@ -8,7 +8,7 @@ class MorrisDesign(Sampler):
     Morris design for sensitivity analysis.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=3)
         >>> sampler = MorrisDesign(numLevels=4)
         >>> X, meta = sampler.sampleWithMeta(problem, 10, seed=21)

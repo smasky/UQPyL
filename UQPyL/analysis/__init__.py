@@ -5,10 +5,7 @@ from .methods.rbd_fast import RBDFAST
 from .methods.rsa import RSA
 from .methods.sobol import Sobol
 
-try:
-    from .methods.mars import MARS
-except Exception:
-    MARS = None
+from .methods import MARS
 
 __all__ = [
     "DeltaTest",

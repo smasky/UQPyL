@@ -9,7 +9,7 @@ class SaltelliDesign(Sampler):
     Saltelli design for sensitivity analysis.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=3)
         >>> sampler = SaltelliDesign(secondOrder=True)
         >>> X, meta = sampler.sampleWithMeta(problem, 128, seed=11)

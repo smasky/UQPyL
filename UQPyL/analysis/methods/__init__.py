@@ -7,7 +7,9 @@ from .sobol import Sobol
 
 try:
     from .mars import MARS
-except Exception:
+except ModuleNotFoundError as error:
+    if not (error.name or "").startswith("UQPyL.surrogate.mars.core."):
+        raise
     MARS = None
 
 __all__ = [

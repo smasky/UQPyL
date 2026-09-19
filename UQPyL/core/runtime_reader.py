@@ -64,9 +64,12 @@ class BaseReader:
             if run is None:
                 continue
             item = dict(run)
-            if "runId" in item:
-                item["run_id"] = item.pop("runId")
-            item["dbPath"] = str(db_path)
-            item["fileName"] = db_path.name
+            for internalName, publicName in {"runId": "run_id", "createdAt": "created_at",
+                                             "finishedAt": "finished_at", "finalFEs": "final_fes",
+                                             "finalIters": "final_iters"}.items():
+                if internalName in item:
+                    item[publicName] = item.pop(internalName)
+            item["db_path"] = str(db_path)
+            item["file_name"] = db_path.name
             rows.append(item)
         return rows

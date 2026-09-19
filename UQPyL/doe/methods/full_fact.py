@@ -10,7 +10,7 @@ class FFD(Sampler):
     Full factorial design.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=2)
         >>> sampler = FFD()
         >>> X, meta = sampler.sampleWithMeta(problem, levels=[3, 4])

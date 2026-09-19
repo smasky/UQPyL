@@ -1,5 +1,7 @@
 # Inference API
 
+DEMC 默认 nChains=3；构造时要求整数且至少为 3，拒绝布尔值。 各 Reader 的 `list_runs()` 使用 `run_id`、`created_at`、`finished_at`、`final_fes`/`final_iters`（适用时）、`db_path`、`file_name`；数据库列名及内部对象字段保持原协议。
+
 ## `UQPyL.inference`
 
 `inference` 模块对标量 `Problem` 运行 MCMC 风格采样。

@@ -150,7 +150,7 @@ class LHS(Sampler):
     Latin hypercube sampler.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=3)
         >>> sampler = LHS(criterion="maximin", iterations=10)
         >>> X, meta = sampler.sampleWithMeta(problem, 20, seed=123)

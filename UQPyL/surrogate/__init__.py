@@ -11,10 +11,14 @@ from .scaler import Scaler, MinMaxScaler, StandardScaler
 
 try:
     from . import mars
-except ModuleNotFoundError:
+except ModuleNotFoundError as error:
+    if not (error.name or "").startswith("UQPyL.surrogate.mars.core."):
+        raise
     mars = None
 
 try:
     from . import svr
-except ModuleNotFoundError:
+except ModuleNotFoundError as error:
+    if not (error.name or "").startswith("UQPyL.surrogate.svr.core."):
+        raise
     svr = None

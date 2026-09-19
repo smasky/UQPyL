@@ -429,8 +429,8 @@ def test_analysis_list_runs_includes_filename():
         runs = AnaReader.list_runs(".cache")
         assert len(runs) >= 1
         matched = next(item for item in runs if item["run_id"] == "fast_Demo_20260503_1817_abcd")
-        assert matched["fileName"] == dbPath.name
-        assert matched["dbPath"].endswith(dbPath.name)
+        assert matched["file_name"] == dbPath.name
+        assert matched["db_path"].endswith(dbPath.name)
     finally:
         reader_mod.sqlite3.connect = origConnect
         Path.glob = origGlob

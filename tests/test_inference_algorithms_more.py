@@ -137,7 +137,7 @@ def test_dream_zs_run_does_not_mutate_global_random_state():
     assert np.isclose(got_next, expected_next)
 
 
-def test_amh_helpers_update_covs_and_check_alpha():
+def test_amh_helpers_update_covs_and_check_gamma_():
     from UQPyL.inference import AMH
     from UQPyL.inference.chain import Chain
 
@@ -146,10 +146,10 @@ def test_amh_helpers_update_covs_and_check_alpha():
     alg.setup(problem, seed=123)
     alg.set("nChains", 2)
 
-    # _check_alpha branches
-    assert alg._check_alpha(0.1).shape == (2, 3)
-    assert alg._check_alpha(np.array([0.1, 0.2, 0.3])).shape == (2, 3)
-    assert alg._check_alpha(np.ones((2, 3))).shape == (2, 3)
+    # _check_gamma_ branches
+    assert alg._check_gamma_(0.1).shape == (2, 3)
+    assert alg._check_gamma_(np.array([0.1, 0.2, 0.3])).shape == (2, 3)
+    assert alg._check_gamma_(np.ones((2, 3))).shape == (2, 3)
 
     # updateCovs smoke
     chains = [Chain(3, 1, 0, 3), Chain(3, 1, 0, 3)]
@@ -161,7 +161,7 @@ def test_amh_helpers_update_covs_and_check_alpha():
     assert covs[0].shape == (3, 3)
 
 
-def test_demc_helpers_check_alpha_and_f_prop():
+def test_demc_helpers_check_gamma__and_f_prop():
     from UQPyL.inference import DEMC
 
     problem = _make_problem(2)
@@ -169,10 +169,10 @@ def test_demc_helpers_check_alpha_and_f_prop():
     alg.setup(problem, seed=123)
     alg.set("nChains", 3)
 
-    # _check_alpha branches
-    assert alg._check_alpha(0.1).shape == (3, 2)
-    assert alg._check_alpha(np.array([0.1, 0.2])).shape == (3, 2)
-    assert alg._check_alpha(np.ones((3, 2))).shape == (3, 2)
+    # _check_gamma_ branches
+    assert alg._check_gamma_(0.1).shape == (3, 2)
+    assert alg._check_gamma_(np.array([0.1, 0.2])).shape == (3, 2)
+    assert alg._check_gamma_(np.ones((3, 2))).shape == (3, 2)
 
     X_cur = np.array([[0.0, 0.0], [0.1, 0.0], [0.0, 0.1]])
     X_star = alg.f_prop(X_cur, problem.ub, problem.lb, gamma=None)

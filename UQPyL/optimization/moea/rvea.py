@@ -67,6 +67,8 @@ class RVEA(AlgorithmABC):
         :return OptResult: Final optimization result.
         """
         # setup algorithm
+        if problem.nObj < 2:
+            raise ValueError("RVEA requires at least two objectives.")
         self.setup(problem, seed)
         
         # Parameters setting

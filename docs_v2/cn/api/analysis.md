@@ -1,5 +1,9 @@
 # Analysis API
 
+DeltaTest 的删变量敏感性分析要求至少两个输入；邻居数须为正整数且小于样本数。MARS 缺失编译扩展时可选组件不可用；其他导入/初始化错误会原样抛出。 各 Reader 的 `list_runs()` 使用 `run_id`、`created_at`、`finished_at`、`final_fes`/`final_iters`（适用时）、`db_path`、`file_name`；数据库列名及内部对象字段保持原协议。
+
+RSA 支持二值和离散输出：分位数组内输出值相同不再使输入分布比较失效；分组及其补集各须至少有两个样本。若没有有效比较（包括全部输出恒定），指标仍为有限的零值。
+
 ## `UQPyL.analysis`
 
 `analysis` 模块评估输入变量如何影响目标或约束输出。

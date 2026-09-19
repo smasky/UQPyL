@@ -69,6 +69,8 @@ class MOEAD(AlgorithmABC):
         :return OptResult: Final optimization result.
         """
         # setup algorithm
+        if problem.nObj < 2:
+            raise ValueError("MOEAD requires at least two objectives.")
         self.setup(problem, seed)
         
         # Retrieve parameter values

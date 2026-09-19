@@ -23,7 +23,7 @@ class DEMC(InferenceABC):
     
     name = "DEMC"
     
-    def __init__(self,  nChains: int = 1, warmUp: int = 1000, 
+    def __init__(self,  nChains: int = 3, warmUp: int = 1000,
                         maxIterTimes: int = 1000, 
                         verboseFlag: bool = True, verboseFreq: int = 10,
                         logFlag: bool = False, saveFlag: bool = True,
@@ -45,6 +45,8 @@ class DEMC(InferenceABC):
             maxInitAttempts: Maximum LHS batches used to find feasible initial chains.
         """
         
+        if isinstance(nChains, (bool, np.bool_)) or not isinstance(nChains, (int, np.integer)) or nChains < 3:
+            raise ValueError("DEMC requires an integer nChains >= 3.")
         super().__init__(
             maxIterTimes, verboseFlag, verboseFreq, logFlag, saveFlag,
             saveFreq, logProbFunc, maxInitAttempts,
@@ -122,37 +124,11 @@ class DEMC(InferenceABC):
 
         return self.finalize()
     
-    def _check_alpha(self, alpha):
-        
-        nChains = self.get('nChains')
-        nInput = self.problem.nInput
-        
-        if isinstance(alpha, float):
-            alpha = np.full((nChains, nInput), alpha)
-            
-        elif isinstance(alpha, np.ndarray):
-            alpha = np.atleast_2d(alpha)
-            n, _ = alpha.shape
-            if n == 1:
-                alpha = np.tile(alpha, (nChains, 1))
-            elif n == nChains:
-                alpha = alpha
-            else:
-                raise ValueError("The shape of alpha must be (nChains, nInput) or (1, nInput)")
-        else:
-            raise ValueError("alpha must be a float or a numpy array")
-        
-        return alpha
-
     def validateProblem(self):
         super().validateProblem()
         if self.get('nChains') < 3:
             raise ValueError("DEMC requires nChains >= 3.")
     
-    
-    def check_bound(self, X, ub, lb):
-        
-        return self._check_bound_(X, ub, lb)
     
     def f_prop(self, X_cur, ub, lb, gamma = None):
         
@@ -171,7 +147,7 @@ class DEMC(InferenceABC):
             
             X_star[i] = X_cur[i] + gamma[i] * (X_cur[j] - X_cur[k]) + 1e-6 * gamma[i]
         
-        return self.check_bound(X_star, ub, lb)
+        return self._check_bound_(X_star, ub, lb)
         
     def setProblem(self, problem: ProblemABC):
         

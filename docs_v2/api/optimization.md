@@ -1,5 +1,9 @@
 # Optimization API
 
+Surrogate-assisted optimization assigns a child seed to each surrogate fit from the outer RNG, including MultiSurrogate children. Built-in models reproduce with identical data, initial configuration and outer seed. History sequences shorter than the smoothing window are returned unchanged. Reader `list_runs()` outputs use `run_id`, `created_at`, `finished_at`, `final_fes`/`final_iters` where applicable, `db_path`, and `file_name`; database column names and internal object fields retain their existing protocols.
+
+MOEAD, NSGAIII and RVEA require at least two objectives and reject single-objective problems before evaluation. The NBI reference-direction helper accepts one objective and returns the sole direction `[1]`; reference-point counts and dimensions must be positive integers.
+
 ## `UQPyL.optimization`
 
 The `optimization` module searches for optimal decision variables for a `Problem`.

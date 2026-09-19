@@ -1,9 +1,11 @@
 import abc
+from copy import deepcopy
 import numpy as np
 from typing import Literal, Tuple
 
 from .setting import Setting
 from .scaler import Scaler
+from ..core import spawn_seed
 
 Scale_T=Tuple[Literal['StandardScaler','MinMaxScaler'], Literal['StandardScaler','MinMaxScaler']]
 
@@ -30,8 +32,8 @@ class SurrogateABC(metaclass = abc.ABCMeta):
         self.setting.defaultOwner = "model"
         self.rng = np.random.default_rng()
         
-        self.xScaler = scalers[0] if scalers[0] else None
-        self.yScaler = scalers[1] if scalers[1] else None
+        self.xScaler = deepcopy(scalers[0]) if scalers[0] is not None else None
+        self.yScaler = deepcopy(scalers[1]) if scalers[1] is not None else None
         self.polyFeature = polyFeature if polyFeature else None
 
         self._parameterAppliers = {}
@@ -302,8 +304,15 @@ class SurrogateABC(metaclass = abc.ABCMeta):
         return mean, var
          
     def fit(self, xTrain: np.ndarray, yTrain: np.ndarray):
-        xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
-        self.fitHyper(xTrain, yTrain)
+        self.resetFitState()
+        self.xTrain = self.yTrain = None
+        try:
+            xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+            self.fitHyper(xTrain, yTrain)
+        except BaseException:
+            self.resetFitState()
+            self.xTrain = self.yTrain = None
+            raise
         return self
     
     @abc.abstractmethod
@@ -346,6 +355,7 @@ class MultiSurrogate():
         
         for i, model in enumerate(self.models_list):
             
+            model.rng = np.random.default_rng(spawn_seed(self.rng))
             model.fit(trainX, trainY[:, i])
     
     def predict(self, testX: np.ndarray) -> np.ndarray:

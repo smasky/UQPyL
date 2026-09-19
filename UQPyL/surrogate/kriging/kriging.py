@@ -11,9 +11,6 @@ from ..util.boxmin import Boxmin
 from ..util.lbfgsb import LBFGSB
 from ..base import SurrogateABC
 from ...optimization.base import AlgorithmABC
-from ...optimization.soea import GA
-from ..metric import r_square
-from ..split import RandSelect
 from ..scaler import Scaler
 from ..poly import PolyFeature
 from ...problem import Problem

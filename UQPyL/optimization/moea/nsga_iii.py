@@ -72,6 +72,8 @@ class NSGAIII(AlgorithmABC):
         :return OptResult: Final optimization result.
         """
         # setup algorithm
+        if problem.nObj < 2:
+            raise ValueError("NSGAIII requires at least two objectives.")
         self.setup(problem, seed)
         
         # Parameter Setting

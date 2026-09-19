@@ -16,8 +16,12 @@ def check_plot_var(var, n, default):
 
 def smooth_curve(y, window=10):
     y = np.asarray(y, dtype=float)
-    if window < 2:
-        return y
+    if isinstance(window, (bool, np.bool_)) or not isinstance(window, (int, np.integer)) or window < 1:
+        raise ValueError("window must be a positive integer.")
+    if y.ndim != 1:
+        raise ValueError("Smoothing requires a one-dimensional sequence.")
+    if window < 2 or len(y) < window:
+        return y.copy()
     box = np.ones(window) / window
     y_smooth = np.convolve(y, box, mode="same")
     y_smooth[: window * 2] = y[: window * 2]

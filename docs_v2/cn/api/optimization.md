@@ -1,5 +1,9 @@
 # Optimization API
 
+代理辅助优化会用外层随机流给每次代理拟合分配子 seed，包括 MultiSurrogate 的子模型；内置模型在相同数据、初始配置和外层 seed 下可复现。短于平滑窗口的历史序列直接保留，不再发生长度错配。 各 Reader 的 `list_runs()` 使用 `run_id`、`created_at`、`finished_at`、`final_fes`/`final_iters`（适用时）、`db_path`、`file_name`；数据库列名及内部对象字段保持原协议。
+
+MOEAD、NSGAIII、RVEA 要求至少两个目标，在评价前拒绝单目标问题。NBI 参考向量工具允许单目标，返回唯一方向 `[1]`；点数和维数须为正整数。
+
 ## `UQPyL.optimization`
 
 `optimization` 模块运行单目标、多目标和昂贵模型优化算法。

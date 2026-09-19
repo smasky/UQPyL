@@ -5,7 +5,14 @@ import numpy as np
 from scipy.special import comb
 
 
+def validateDimensions(N, M):
+    for name, value in [('N', N), ('M', M)]:
+        if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value <= 0:
+            raise ValueError(f'{name} must be a positive integer.')
+
+
 def grid(N: int, M: int):
+    validateDimensions(N, M)
     gap = np.linspace(0, 1, int(np.ceil(N ** (1 / M))))
     c = [np.copy(gap) for _ in range(M)]
     c_grid = np.meshgrid(*c, indexing="ij")
@@ -15,6 +22,9 @@ def grid(N: int, M: int):
 
 
 def NBI(N: int, M: int):
+    validateDimensions(N, M)
+    if M == 1:
+        return np.ones((1, 1)), 1
     H1 = 1
     while comb(H1 + M, M - 1) <= N:
         H1 += 1

@@ -14,7 +14,7 @@ def plot_surrogate(name: str, yPred: np.ndarray, yTrue: np.ndarray, fontsize=20,
     yMin = np.min(np.concatenate([yTrue, yPred])) * 0.9
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
     r2 = r_square(yTrue, yPred)
-    rmse = np.sqrt(mse(yTrue, yPred))
+    rmse = np.sqrt(mse(yTrue, yPred)).item()
     colors = ["#F08080" if pred > true else "#4682B4" for pred, true in zip(yPred, yTrue)]
     ax.scatter(yTrue, yPred, c=colors, s=markersize, alpha=1.0, edgecolor="black", linewidth=1.5)
     if ylim is not None:

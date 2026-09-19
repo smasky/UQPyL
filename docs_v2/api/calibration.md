@@ -1,5 +1,7 @@
 # Calibration API
 
+Reader `list_runs()` outputs use `run_id`, `created_at`, `finished_at`, `final_fes`/`final_iters` where applicable, `db_path`, and `file_name`; database column names and internal object fields retain their existing protocols.
+
 ## `UQPyL.calibration`
 
 The `calibration` module calibrates simulation models represented by `ModelProblem`.

@@ -1,5 +1,7 @@
 # Inference API
 
+DEMC defaults to nChains=3 and requires an integer of at least three at construction; booleans are rejected. Reader `list_runs()` outputs use `run_id`, `created_at`, `finished_at`, `final_fes`/`final_iters` where applicable, `db_path`, and `file_name`; database column names and internal object fields retain their existing protocols.
+
 ## `UQPyL.inference`
 
 The `inference` module runs MCMC-style parameter inference on scalar-objective `Problem` instances.
@@ -212,7 +214,7 @@ Differential evolution MCMC sampler.
 
 ```python
 DEMC(
-    nChains=1,
+    nChains=3,
     warmUp=1000,
     maxIterTimes=1000,
     verboseFlag=True,

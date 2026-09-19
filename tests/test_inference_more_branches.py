@@ -87,19 +87,19 @@ def test_amh_propdist_else_branch_raises_direct_call():
         alg.f_prop(X_cur, "bad", covs, p.ub, p.lb)
 
 
-def test_demc_warmup_branch_and_check_alpha_error_branch():
+def test_demc_warmup_branch_and_check_gamma__error_branch():
     p = ConstrainedQuadratic(nInput=2)
     alg = DEMC(nChains=3, warmUp=1, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(p, gamma=0.05, seed=123)
     assert res.cons.shape == (3, 3, 1)
 
-    # _check_alpha error branches
+    # _check_gamma_ error branches
     alg.setup(p, seed=123)
     alg.set("nChains", 3)
     with pytest.raises(ValueError):
-        alg._check_alpha(np.ones((2, 2)))
+        alg._check_gamma_(np.ones((2, 2)))
     with pytest.raises(ValueError):
-        alg._check_alpha("bad")
+        alg._check_gamma_("bad")
 
 
 def test_dream_zs_gamma_none_and_de_prop_path_smoke():

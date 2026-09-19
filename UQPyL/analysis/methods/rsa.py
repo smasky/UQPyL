@@ -129,8 +129,8 @@ class RSA(AnalysisABC):
         """
         Check if the selected samples are sufficient for analysis.
 
-        This helper ensures that the selected group is non-empty and
-        retains enough variation for the two-sample statistic.
+        Each input-sample group needs at least two observations for the
+        two-sample statistic. Constant output values within a group are valid.
 
         Args:
             y: Output values for one analyzed target.
@@ -140,7 +140,6 @@ class RSA(AnalysisABC):
             Whether the region has enough samples for RSA.
         """
         return (
-            (np.count_nonzero(sel) != 0)
-            and (len(y[~sel]) != 0)
-            and np.unique(y[sel]).size > 1
+            (np.count_nonzero(sel) >= 2)
+            and (len(y[~sel]) >= 2)
         )

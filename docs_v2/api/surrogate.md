@@ -1,6 +1,12 @@
 # Surrogate API
 
+`rank_score` averages per-output Kendall tau-b, assigns zero to constant columns, and requires at least two samples. `MultiSurrogate.rng` seeds independent child streams. AutoTuner records numerical linear-algebra/arithmetic failures and nonfinite predictions/scores in `candidateFailures` (candidate_index, error_type, message), reset per tuning call; programming errors propagate without being printed and swallowed.
+
+Surrogate models copy supplied input/output scalers, so fitting one model does not refit another model’s scaler. A failed public `fit()` invalidates fitted state: prediction raises until a subsequent successful fit. MSE/R²/NSE accept `(n,)` as single-output `(n, 1)`, require matching finite nonempty arrays, and reject implicit broadcasting. AutoTuner requires at least two validation samples and finite nonzero total validation variation for its aggregate R² score; increase `ratio` when necessary. If every candidate fails or scores non-finitely, tuning raises instead of returning an arbitrary candidate. Direct R²/NSE calls retain their non-finite result for constant targets.
+
 For GPR/KRG, `nRestartTimes` counts additional searches: `0` means one search. The default `None` resolves to 4 restarts (5 searches total) for local optimizers (Boxmin/LBFGSB/MP), and retains 1 restart for EA. Local optimization starts from the current configured parameters (including fitted values on a repeated fit), then samples uniformly within optimization-coordinate bounds, hence in log space for log parameters. Set `model.rng = np.random.default_rng(42)` for reproducibility with identical data, initial parameters and RNG state. Selection uses finite objectives recomputed at returned points; all-invalid candidates raise an error. More restarts do not guarantee lower prediction error.
+
+`LBFGSB` returns the best finite evaluated point (including finite-difference probes) and its matching objective; this does not imply convergence. Its `lastResult` retains the last raw SciPy result, including `success/status/message`; its `x/fun` may differ from the wrapper return. Objectives must be deterministic; no finite candidate raises an error. Pass `LBFGSB(options={"maxls": 50})` explicitly to increase the line-search step limit, without a universal improvement guarantee.
 
 ## `UQPyL.surrogate`
 

@@ -37,6 +37,8 @@ class DeltaTest(AnalysisABC):
             logFlag: Whether to write a log file.
             saveFlag: Whether to persist results to sqlite.
         """
+        if isinstance(nNeighbors, (bool, np.bool_)) or not isinstance(nNeighbors, (int, np.integer)) or nNeighbors < 1:
+            raise ValueError("nNeighbors must be a positive integer.")
         super().__init__(verboseFlag, logFlag, saveFlag)
         self.set("nNeighbors", nNeighbors)
 
@@ -60,6 +62,8 @@ class DeltaTest(AnalysisABC):
         Y = self.check_Y(X, Y, target, index)
         
         nInput = problem.nInput
+        if nInput < 2:
+            raise ValueError("DeltaTest sensitivity analysis requires at least two inputs.")
         numY = Y.shape[1]
         nNeighbors = self.get("nNeighbors")
         
@@ -222,7 +226,12 @@ class DeltaTest(AnalysisABC):
         Returns:
             The calculated delta value.
         """
-        N, _ = X.shape
+        N, nInput = X.shape
+        if nInput == 0:
+            raise ValueError("DeltaTest requires at least one input column for neighbor search.")
+        if (isinstance(nNeighbors, (bool, np.bool_)) or not isinstance(nNeighbors, (int, np.integer))
+                or not 1 <= nNeighbors < N):
+            raise ValueError("nNeighbors must be a positive integer smaller than the sample count.")
         
         # Build a KDTree for fast nearest neighbor search
         tree = KDTree(X)

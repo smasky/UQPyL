@@ -1,6 +1,12 @@
 # Surrogate API
 
+`rank_score` 逐输出计算 Kendall tau-b 后取平均；常数列计 0，至少需要两条样本。`MultiSurrogate.rng` 为各子模型分配独立随机流。AutoTuner 仅将线性代数/算术数值失败和非有限预测或评分视作候选失败，记录到 `candidateFailures`（candidate_index、error_type、message），每次调参重置；程序错误直接抛出，不再打印并吞掉。
+
+代理模型会复制传入的输入/输出 Scaler，训练一个模型不会重新拟合另一个模型的 Scaler。公共 `fit()` 失败后模型失效，重新拟合成功前预测会报错。MSE/R²/NSE 将 `(n,)` 统一为单输出 `(n, 1)`，要求非空、有限且形状匹配，禁止隐式广播。AutoTuner 的汇总 R² 要求验证集至少两点、总离差平方和有限且非零；必要时增加 `ratio`。所有候选失败或评分非有限时明确报错，不再任取首个候选。直接调用 R²/NSE 时仍保留恒定目标产生非有限结果的原语义。
+
 GPR/KRG 的 `nRestartTimes` 表示首次搜索之外的额外重启次数；`0` 只搜索一次。默认 `None` 对局部优化器（Boxmin/LBFGSB/MP）采用 4 次重启，即总共 5 次；EA 保留 1 次额外重启。局部优化首次从当前配置参数出发（重复拟合时包含上次拟合值），后续在参数优化坐标的边界内均匀随机采样，log 参数因此按对数空间采样。可设置 `model.rng = np.random.default_rng(42)`；相同数据、初始参数和 RNG 状态可复现。最终按返回点复算的有限训练目标选优；全部候选无效时明确报错。更多重启不保证预测误差降低。
+
+`LBFGSB` 返回搜索过程中实际评价过的最佳有限点（含数值差分探测点），并保持点与目标值对应；这不代表求解器已收敛。其 `lastResult` 保留最后一次调用的原始 SciPy 结果，可检查 `success/status/message`，其中的 `x/fun` 可能不同于包装器返回值。目标函数须确定性；没有有限候选时明确报错。可显式传入 `LBFGSB(options={"maxls": 50})` 增加线搜索步数上限，但不保证改善所有问题。
 
 ## `UQPyL.surrogate`
 

@@ -1,5 +1,7 @@
 # Calibration API
 
+各 Reader 的 `list_runs()` 使用 `run_id`、`created_at`、`finished_at`、`final_fes`/`final_iters`（适用时）、`db_path`、`file_name`；数据库列名及内部对象字段保持原协议。
+
 ## `UQPyL.calibration`
 
 `calibration` 模块通过比较仿真和观测来估计模型参数。所有校准方法都使用 `ModelProblem`。

@@ -158,7 +158,7 @@ def test_autotuner_opt_tune_spawns_seed_for_inner_optimizer():
 
             class _Res:
                 bestDecs = np.zeros((1, problem.nInput))
-                bestObjs = np.zeros((1, 1))
+                bestObjs = problem.evaluate(bestDecs).objs
 
             return _Res()
 

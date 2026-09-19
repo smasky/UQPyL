@@ -7,7 +7,7 @@ class Random(Sampler):
     Uniform random sampler.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=2)
         >>> sampler = Random()
         >>> X, meta = sampler.sampleWithMeta(problem, 5, seed=42)

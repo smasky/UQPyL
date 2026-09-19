@@ -152,33 +152,6 @@ class AMH(InferenceABC):
         
         return propCovs
     
-    def _check_alpha(self, gamma):
-        
-        nChains = self.get('nChains')
-        nInput = self.problem.nInput
-        
-        if isinstance(gamma, float):
-            gamma = np.full((nChains, nInput), gamma)
-            
-        elif isinstance(gamma, np.ndarray):
-            gamma = np.atleast_2d(gamma)
-            n, _ = gamma.shape
-            if n == 1:
-                gamma = np.tile(gamma, (nChains, 1))
-            elif n == nChains:
-                gamma = gamma
-            else:
-                raise ValueError("The shape of gamma must be (nChains, nInput) or (1, nInput)")
-        else:
-            raise ValueError("gamma must be a float or a numpy array")
-        
-        return gamma
-    
-    
-    def check_bound(self, X, ub, lb):
-        
-        return self._check_bound_(X, ub, lb)
-    
     def f_prop(self, X_cur, propDist, propCovs, ub, lb):
         
         X_star = np.zeros(X_cur.shape)
@@ -191,7 +164,7 @@ class AMH(InferenceABC):
             else:
                 raise ValueError("propDist must be 'gauss' or 'uniform'")
         
-        return self.check_bound(X_star, ub, lb)
+        return self._check_bound_(X_star, ub, lb)
         
     def setProblem(self, problem: ProblemABC):
         

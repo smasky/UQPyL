@@ -3,6 +3,7 @@ import numpy as np
 from itertools import product
 
 from ..base import AlgorithmABC
+from ...core import spawn_seed
 
 
 class SurrogateOptimization(AlgorithmABC):
@@ -11,6 +12,7 @@ class SurrogateOptimization(AlgorithmABC):
         _, indices = np.unique(unitX, axis=0, return_index=True)
         indices = np.sort(indices)
         # The same physical solution must not become multiple model locations.
+        surrogate.rng = np.random.default_rng(spawn_seed(self.rng))
         surrogate.fit(unitX[indices], pop.objs[indices])
 
     def _novelCandidates(self, candidates, pop, count=1, tolerance=1e-12):

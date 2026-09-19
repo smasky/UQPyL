@@ -1,5 +1,9 @@
 # Analysis API
 
+DeltaTest leave-one-input-out sensitivity analysis requires at least two inputs and a positive integer neighbor count smaller than the sample count. Missing compiled MARS extensions leave the optional component unavailable; other import/initialization errors propagate. Reader `list_runs()` outputs use `run_id`, `created_at`, `finished_at`, `final_fes`/`final_iters` where applicable, `db_path`, and `file_name`; database column names and internal object fields retain their existing protocols.
+
+RSA supports binary and discrete outputs: constant output values inside a quantile group do not invalidate the comparison of input distributions. Each group and its complement must contain at least two samples. If no valid comparison exists (including constant outputs), indices remain finite zeros.
+
 ## `UQPyL.analysis`
 
 The `analysis` module evaluates how input variables affect objective or constraint outputs.

@@ -9,12 +9,12 @@ class FASTDesign(Sampler):
     FAST design for sensitivity analysis.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=3)
         >>> sampler = FASTDesign(M=4)
-        >>> X, meta = sampler.sampleWithMeta(problem, 128, seed=5)
+        >>> X, meta = sampler.sampleWithMeta(problem, 256, seed=5)
         >>> print(X.shape)
-        (384, 3)
+        (768, 3)
         >>> print(meta["M"])
         4
 

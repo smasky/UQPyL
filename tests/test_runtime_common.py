@@ -73,7 +73,7 @@ def test_base_sqlite_reader_lists_runs_from_result_dir(local_tmp_path):
 
     assert len(runs) == 1
     assert runs[0]["run_id"] == "demo_001"
-    assert runs[0]["dbPath"].endswith("demo.sqlite3")
+    assert runs[0]["db_path"].endswith("demo.sqlite3")
 
 
 def test_base_sqlite_storage_requires_schema_hooks(local_tmp_path):

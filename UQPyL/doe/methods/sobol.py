@@ -9,7 +9,7 @@ class Sobol(Sampler):
     Sobol low-discrepancy sampler.
 
     Examples:
-        >>> from UQPyL.problems import Sphere
+        >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=4)
         >>> sampler = Sobol(scramble=True, skipValue=8)
         >>> X, meta = sampler.sampleWithMeta(problem, 16, seed=7)

@@ -28,6 +28,8 @@ def test_tuner_fits_scalers_only_on_training_then_refits_full_data(monkeypatch, 
             return super().fit(X)
     sx, sy = TrackingScaler(), TrackingScaler()
     model = LinearRegression(scalers=(sx, sy), polyFeature=PolyFeature(degree=2), lossType='Ridge')
+    # Models own independent scaler copies; inspect the installed components.
+    sx, sy = model.xScaler, model.yScaler
     queries = []
     originalPredict = model.predict
     def predict(X):

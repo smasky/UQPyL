@@ -32,9 +32,13 @@ class AutoTuner():
         self.model = model
         self.rng = np.random.default_rng()
         self.lastSplit = None
+        self.candidateFailures = []
+        self._candidateCount = 0
         self._modelSeed = None
 
     def _splitData(self, xRaw, ratio, seed, rng):
+        self.candidateFailures = []
+        self._candidateCount = 0
         parent = self.rng if seed is None and rng is None else _resolveRng(seed, rng)
         splitSeed, modelSeed, optimizerSeed = (spawn_seed(parent) for _ in range(3))
         trainIdx, testIdx = RandSelect(ratio).split(xRaw, seed=splitSeed)
@@ -45,6 +49,20 @@ class AutoTuner():
             "train_indices": trainIdx.copy(), "test_indices": testIdx.copy(),
         }
         return trainIdx, testIdx
+
+    def _validateValidation(self, values):
+        if len(values) < 2:
+            raise ValueError('R2 validation requires at least two samples; increase ratio or supply more data.')
+        if not np.all(np.isfinite(values)):
+            raise ValueError('R2 validation outputs must be finite.')
+        variation = np.sum((values - np.mean(values, axis=0))**2)
+        if not np.isfinite(variation) or variation <= 0:
+            raise ValueError('R2 validation requires nonconstant outputs with finite variation.')
+
+    def _noValidCandidate(self):
+        self.model.resetFitState()
+        self.model.xTrain = self.model.yTrain = None
+        raise RuntimeError('No candidate produced a finite validation score.')
 
     def _initialize_model_components(self, xData: np.ndarray):
         kernel = getattr(self.model, "kernel", None)
@@ -61,6 +79,24 @@ class AutoTuner():
             self.model.fitHyper(xTrain, yTrain)
         else:
             raise ValueError("tuneMode must be either 'joint' or 'separate'.")
+
+    def _scoreCandidate(self, xTrain, yTrain, xTest, yTest, tuneMode):
+        candidateIndex = self._candidateCount
+        self._candidateCount += 1
+        try:
+            self._fit_with_mode(xTrain, yTrain, tuneMode)
+            prediction = self.model.predict(xTest)
+            if not np.all(np.isfinite(prediction)):
+                raise FloatingPointError('Candidate predictions are not finite.')
+            score = r_square(yTest, prediction)
+            if not np.isfinite(score):
+                raise FloatingPointError('Candidate validation score is not finite.')
+            return score
+        except (np.linalg.LinAlgError, ArithmeticError) as error:
+            self.candidateFailures.append({'candidate_index': candidateIndex,
+                                           'error_type': type(error).__name__,
+                                           'message': str(error)})
+            return -np.inf
 
     def _resolve_para_list(self, paraList = None, owner = None):
         if paraList is not None:
@@ -95,6 +131,7 @@ class AutoTuner():
         # Fit preprocessing on the training split only; predict handles the
         # held-out raw inputs using those fitted components.
         trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng)
+        self._validateValidation(yRaw[testIdx])
         xTrain, yTrain = self.model.prepareTrainingData(xRaw[trainIdx], yRaw[trainIdx])
         self.model.storeTrainingData(xTrain, yTrain)
         xTestRaw, yTestRaw = xRaw[testIdx], yRaw[testIdx]
@@ -121,7 +158,10 @@ class AutoTuner():
                     raise ValueError(f"Parameter '{name}' changed bounds or encoding during optTune; "
                                      "use compatible kernel settings or separate searches.")
             
+        hasValidCandidate = False
+
         def objFunc(X):
+            nonlocal hasValidCandidate
             
             Y = np.zeros((X.shape[0], 1))
             
@@ -131,18 +171,9 @@ class AutoTuner():
                 
                 applyCandidate(x)
                 
-                try:
-                    self._fit_with_mode(xTrain, yTrain, tuneMode)
-                        
-                    yPred = self.model.predict(xTestRaw)
-                        
-                    obj = r_square(yTestRaw, yPred)
-                
-                except Exception as e:
-                    
-                    print(f"Warning: Error in fitting the model: {e}")
-                    obj = -np.inf
-                
+                obj = self._scoreCandidate(xTrain, yTrain, xTestRaw, yTestRaw, tuneMode)
+                hasValidCandidate = hasValidCandidate or np.isfinite(obj)
+
                 Y[i, 0] = obj
                 
             return Y
@@ -153,6 +184,8 @@ class AutoTuner():
         res = self.optimizer.run(problem=problem, seed=self.lastSplit["optimizer_seed"])
         bestTrueDecs = np.asarray(res.bestDecs).ravel()
         bestTrueObj = np.asarray(res.bestObjs).ravel()
+        if not hasValidCandidate or not np.all(np.isfinite(bestTrueObj)):
+            self._noValidCandidate()
         
         applyCandidate(bestTrueDecs)
         
@@ -191,6 +224,7 @@ class AutoTuner():
         # Fit preprocessing on the training split only; predict handles the
         # held-out raw inputs using those fitted components.
         trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng)
+        self._validateValidation(yRaw[testIdx])
         xTrain, yTrain = self.model.prepareTrainingData(xRaw[trainIdx], yRaw[trainIdx])
         self.model.storeTrainingData(xTrain, yTrain)
         xTestRaw, yTestRaw = xRaw[testIdx], yRaw[testIdx]
@@ -221,29 +255,15 @@ class AutoTuner():
             
             self._applyGridCandidate(paraList, paraComb)
             
-            try:
-                self._fit_with_mode(xTrain, yTrain, tuneMode)
-                
-                yPred = self.model.predict(xTestRaw)
-                
-                obj = r_square(yTestRaw, yPred)
-                # Guard against NaN/Inf (e.g., degenerate test split).
-                if not np.isfinite(obj):
-                    obj = -np.inf
-            
-            except Exception as e:
-                
-                print(f"Warning: Error in fitting the model: {e}")
-                obj = -np.inf
-                
+            obj = self._scoreCandidate(xTrain, yTrain, xTestRaw, yTestRaw, tuneMode)
+
             if obj > bestObj:
                 
                 bestObj = obj
                 bestDecs = paraComb
                 
-        # If all candidates failed (or produced NaN), fall back to the first combination.
         if bestDecs is None:
-            bestDecs = tuple(items[0] for items in choices)
+            self._noValidCandidate()
         self._applyGridCandidate(paraList, bestDecs)
         
         # Refit preprocessing and the selected model on all supplied data.

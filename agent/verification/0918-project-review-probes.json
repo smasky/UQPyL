@@ -1,0 +1,64 @@
+{
+  "shared_scaler_prediction_delta": {
+    "value": 0.989723048292759,
+    "warnings": []
+  },
+  "failed_refit_stale_prediction_delta": {
+    "value": 0.989723048292759,
+    "warnings": []
+  },
+  "mse_equal_values_mixed_shapes": {
+    "value": [
+      1.6666666666666667,
+      0.6666666666666666,
+      1.6666666666666667
+    ],
+    "warnings": []
+  },
+  "rank_second_output_reversed": {
+    "value": 1.0,
+    "warnings": []
+  },
+  "grid_single_validation_sample": {
+    "value": "(1e-09, -inf)",
+    "warnings": [
+      "divide by zero encountered in scalar divide"
+    ]
+  },
+  "smooth_three_samples": {
+    "error": "ValueError",
+    "message": "could not broadcast input array from shape (3,) into shape (10,)",
+    "warnings": []
+  },
+  "delta_one_input": {
+    "error": "IndexError",
+    "message": "Out of bounds on buffer access (axis 0)",
+    "warnings": []
+  },
+  "delta_two_samples": {
+    "error": "IndexError",
+    "message": "index 2 is out of bounds for axis 0 with size 2",
+    "warnings": []
+  },
+  "demc_default": {
+    "error": "ValueError",
+    "message": "DEMC requires nChains >= 3.",
+    "warnings": []
+  },
+  "rsa_threshold_output": {
+    "value": [
+      [
+        0.0
+      ]
+    ],
+    "warnings": []
+  },
+  "reference_vectors_single_objective": {
+    "value": {
+      "timeout_seconds": 5,
+      "stdout": "b'entered\\n'"
+    },
+    "warnings": []
+  },
+  "python_files_parsed": 169
+}
