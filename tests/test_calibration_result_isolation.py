@@ -9,12 +9,12 @@ from UQPyL.problem import ModelProblem
 
 
 def simulate(X):
-    return np.column_stack((X[:, 0], X[:, 1] ** 2))[:, :, None]
+    return np.column_stack((X[:, 0], X[:, 1] ** 2))
 
 
 def makeProblem():
     return ModelProblem(nInput=2, lb=0., ub=3., simFunc=simulate,
-                        obs=np.array([[1.], [2.]]), seriesLabels=["Q"])
+                        obs=np.array([1.0, 2.0]))
 
 
 def runMethod(method, problem):

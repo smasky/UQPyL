@@ -1,5 +1,9 @@
 # Design of Experiment API
 
+LHS 的 `maximin` / `center_maximin` 在 `nSamples=1` 时发出 `RuntimeWarning`，分别使用 classic / center，元数据保留请求的 `criterion` 并以 `effective_criterion` 记录实际模式。三个优化 criterion 的 `iterations` 必须为正整数，拒绝布尔值；无效配置明确报参数错误。
+
+Sobol 和 Saltelli 的 `skipValue` 必须为非负整数，但可超过本次基础样本数。基础样本数不是2的幂，或为2的幂但 `skipValue` 不是该样本数的整数倍时，发出一次 `UserWarning` 后继续生成，不裁剪或补齐样本。默认 `skipValue=0`；对齐配置不触发这项质量告警，不代表任意模型的积分/敏感性误差已收敛。Sobol 通过 fast_forward 跳过前缀，不再构造并保留全部被跳过的点。FFD 返回的 `levels` 元数据是独立副本。
+
 ## `UQPyL.doe`
 
 `doe` 模块从 `Problem` 或 `ModelProblem` 的输入空间生成样本。采样器通常先在 `[0, 1]` 单位空间生成点，再通过 `problem.unit_to_space()` 映射到真实边界。
@@ -59,6 +63,8 @@ from UQPyL.doe import LHS, Random, FFD, Sobol
 | `SaltelliDesign(secondOrder=True)` | 带二阶指标的 `analysis.Sobol` | `((2 * D + 2) * N, D)` |
 | `FASTDesign(M=4)` | `analysis.FAST` | `(N * D, D)`，且 `N > 4 * M^2` |
 | `MorrisDesign(numLevels=4)` | `analysis.Morris` | `(numTrajectory * (D + 1), D)` |
+
+FAST 的 `N > 4 * M^2` 只是允许采样的下限。要为 `D` 个变量分配互不重复的辅助频率，还需满足 `N >= 4 * M^2 * (D - 1) + 1`。例如 `M=4、D=3` 时至少取 `N=129`，总样本数为 387。较小但合法的配置仍会提示频率复用风险；满足此条件只代表避免辅助频率复用，不保证敏感性估计已经收敛。
 
 这些设计必须用 `sampleWithMeta()`，并把返回的 `meta` 传给对应分析方法。
 

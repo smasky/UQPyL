@@ -626,6 +626,12 @@ Use metric magnitudes as rankings, not as exact physical constants. Sensitivity 
 | Confusing `S1` and `ST` | Interactions may be missed. | If `ST` is much larger than `S1`, interactions or nonlinear effects may matter. |
 | Saving an interactive `objFunc` | Pickling can fail when `saveFlag=True`. | Use importable problem classes or functions for saved sqlite runs. |
 
+## Plotting Metrics and Values
+
+`UQPyL.viz.plot_sa({"Result": result}, metric="S1", outputIndex=0)` plots stored values directly, without dividing by their sum. Select `metric="S1_norm"` explicitly for normalized values, or `"mu"` / `"mu_star"` for Morris. The zero-based `outputIndex` selects the output row.
+
+Negative values and values above 1 remain visible. Multiple results are aligned by the first result's parameter names and must contain the same parameter set. Nonfinite values trigger a `RuntimeWarning` and their bars are omitted without changing the result.
+
 ## Next Steps
 
 | Goal | Read |

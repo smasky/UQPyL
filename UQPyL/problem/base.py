@@ -33,28 +33,37 @@ class ProblemBase(metaclass=abc.ABCMeta):
         wrappedEvaluate._uqpylWrapped = True
         setattr(cls, "evaluate", wrappedEvaluate)
 
-    def __init__(self, nInput:int = None, nObj:int = None,
-                 ub: Union[int, float, list, np.ndarray] = None, lb: Union[int, float, list, np.ndarray] = None,
-                 nCon: int = 0,
-                 optType: Union[str, list, None] = 'min', conWgt: Optional[list] = None,
-                 varType: Optional[list] = None, varSet: Optional[dict] = None,
-                 xLabels: Optional[list] = None,
-                 space: Optional[SpaceBase] = None,
-                 objLabels: Optional[list] = None, conLabels: Optional[list] = None):
+    def __init__(
+        self,
+        nInput: int = None,
+        nObj: int = None,
+        ub: Union[int, float, list, np.ndarray] = None,
+        lb: Union[int, float, list, np.ndarray] = None,
+        nCon: int = 0,
+        optType: Union[str, list, None] = "min",
+        conWgt: Optional[list] = None,
+        varType: Optional[list] = None,
+        varSet: Optional[dict] = None,
+        xLabels: Optional[list] = None,
+        space: Optional[SpaceBase] = None,
+        objLabels: Optional[list] = None,
+        conLabels: Optional[list] = None,
+    ):
         """
         Initialize the problem with input and output dimensions, bounds, and other configurations.
-        
-        :param nInput: Number of input variables.
-        :param nObj: Number of objective variables.
-        :param ub: Upper bounds for input variables.
-        :param lb: Lower bounds for input variables.
-        :param optType: Optimization type ('min' or 'max').
-        :param conWgt: Constraint weights.
-        :param varType: Types of variables (0 for continuous, 1 for integer, 2 for discrete).
-        :param varSet: Sets of possible values for discrete variables.
-        :param xLabels: Labels for input variables.
+
+        Args:
+            nInput: Number of input variables.
+            nObj: Number of objective variables.
+            ub: Upper bounds for input variables.
+            lb: Lower bounds for input variables.
+            optType: Optimization type ('min' or 'max').
+            conWgt: Constraint weights.
+            varType: Types of variables (0 for continuous, 1 for integer, 2 for discrete).
+            varSet: Sets of possible values for discrete variables.
+            xLabels: Labels for input variables.
         """
-        
+
         if nObj is None:
             raise ValueError("nObj must be provided.")
 
@@ -94,7 +103,7 @@ class ProblemBase(metaclass=abc.ABCMeta):
             self.xLabels = xLabels
 
         if objLabels is None:
-            self.objLabels = ['obj_' + str(i) for i in range(1, self.nObj + 1)]
+            self.objLabels = ["obj_" + str(i) for i in range(1, self.nObj + 1)]
         else:
             self.objLabels = objLabels
         self.yLabels = self.objLabels
@@ -102,14 +111,14 @@ class ProblemBase(metaclass=abc.ABCMeta):
         if self.nCon == 0:
             self.conLabels = None
         elif conLabels is None:
-            self.conLabels = ['con_' + str(i) for i in range(1, self.nCon + 1)]
+            self.conLabels = ["con_" + str(i) for i in range(1, self.nCon + 1)]
         else:
             self.conLabels = conLabels
 
         # Set constraint weights
         if conWgt is not None:
             if not isinstance(conWgt, list):
-                raise ValueError('The type of conWgt must be list or None.')
+                raise ValueError("The type of conWgt must be list or None.")
             conWgt = np.asarray(conWgt, dtype=float)
             if conWgt.ndim != 1 or conWgt.size != self.nCon:
                 raise ValueError("conWgt length must match nCon.")
@@ -118,7 +127,7 @@ class ProblemBase(metaclass=abc.ABCMeta):
             conWgt = conWgt.reshape(1, -1).copy()
 
         self.conWgt = conWgt
-    
+
     @abc.abstractmethod
     def evaluate(self, X, target=None):
         raise NotImplementedError
@@ -166,40 +175,43 @@ class ProblemBase(metaclass=abc.ABCMeta):
             raise ValueError(f"`{label}` second dimension must equal {nCols}.")
 
         return arr
-        
+
     def getOptimum(self):
         """
         Abstract method to get the optimum solution.
         """
         pass
-    
+
     def _check_optType(self, t):
         """
         Validate and set the optimization type.
-        
-        :param t: Optimization type ('min' or 'max').
-        :return: String representation of the optimization type.
+
+        Args:
+            t: Optimization type ('min' or 'max').
+
+        Returns:
+            String representation of the optimization type.
         """
-        
+
         if isinstance(t, str):
-            if t not in ['min', 'max']:
+            if t not in ["min", "max"]:
                 raise ValueError("The optType must be 'min' or 'max'.")
-            
-            self.opt = 1 if t == 'min' else -1
+
+            self.opt = 1 if t == "min" else -1
             t = [t.lower()]
         elif isinstance(t, list):
             if len(t) != self.nObj:
                 raise ValueError("The length of optType must be equal to nObj.")
-            
+
             for i in t:
-                if i not in ['min', 'max']:
+                if i not in ["min", "max"]:
                     raise ValueError("The optType must be 'min' or 'max'.")
-            
+
             t = [i.lower() for i in t]
-            self.opt = np.array([1 if i == 'min' else -1 for i in t])
+            self.opt = np.array([1 if i == "min" else -1 for i in t])
         else:
             raise ValueError("The type of optType must be str or list.")
-        
+
         return " ".join(t)
 
     def validate(self, X):

@@ -9,7 +9,8 @@ from ...core.runtime_reader import BaseReader
 
 
 class InfReader(BaseReader):
-    domain = 'inference'
+    domain = "inference"
+
     @classmethod
     def list_runs(cls, result_dir):
         return super().list_runs(
@@ -17,16 +18,12 @@ class InfReader(BaseReader):
             run_columns="runId, method, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
         )
 
-
-
-
-
-
-
     def get_run_summary(self):
         run = self.get_run()
         if run is None:
             raise ValueError("No run record found in sqlite database.")
+        snapshot = self.conn.execute("SELECT statePayload FROM snapshot ORDER BY snapshotId DESC LIMIT 1").fetchone()
+        stopReason = None if snapshot is None else json.loads(snapshot[0]).get("stop_reason")
         return export_reader_summary(
             run_id=run["runId"],
             method=run["method"],
@@ -41,6 +38,7 @@ class InfReader(BaseReader):
                 "status": run["status"],
                 "final_fes": run["finalFEs"],
                 "final_iters": run["finalIters"],
+                "stop_reason": stopReason,
             },
         )
 
@@ -98,3 +96,40 @@ class InfReader(BaseReader):
         if row is None:
             raise ValueError("No result artifact found in sqlite database.")
         return pickle.loads(row["payload"])
+
+    def load_partial_result(self):
+        """Read saved chain endpoints, including failed runs, without inventing draws.
+
+        Returns:
+            dict: Run summary and sparse snapshots in real decision coordinates
+            and original objective direction. This is not a resumable checkpoint
+            or a complete chain, even when the run has finished.
+        """
+        snapshots = []
+        for row in self.list_snapshots():
+            members = self.load_snapshot_members(row["snapshotId"])
+            snapshots.append(
+                {
+                    "snapshot_id": row["snapshotId"],
+                    "iter": row["iter"],
+                    "fes": row["fe"],
+                    "runtime": row["elapsed"],
+                    "members": [
+                        {
+                            **{key: value for key, value in member.items() if key != "logProb"},
+                            "log_prob": member["logProb"],
+                        }
+                        for member in members
+                    ],
+                }
+            )
+        return {
+            **self.get_run_summary(),
+            "complete": False,
+            "resumable": False,
+            "sample_scope": "saved_chain_endpoints",
+            "snapshot_count": len(snapshots),
+            "last_saved_iter": None if not snapshots else snapshots[-1]["iter"],
+            "last_saved_fes": None if not snapshots else snapshots[-1]["fes"],
+            "snapshots": snapshots,
+        }

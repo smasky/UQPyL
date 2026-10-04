@@ -1,0 +1,13 @@
+144 records
+3 0 128 top0 12 / 12 active_top_two 12
+3 0 512 top0 12 / 12 active_top_two 12
+3 0 2048 top0 12 / 12 active_top_two 12
+3 1.5 128 top0 12 / 12 active_top_two 12
+3 1.5 512 top0 12 / 12 active_top_two 12
+3 1.5 2048 top0 12 / 12 active_top_two 12
+10 0 128 top0 12 / 12 active_top_two 12
+10 0 512 top0 12 / 12 active_top_two 12
+10 0 2048 top0 12 / 12 active_top_two 12
+10 1.5 128 top0 12 / 12 active_top_two 12
+10 1.5 512 top0 12 / 12 active_top_two 12
+10 1.5 2048 top0 12 / 12 active_top_two 12

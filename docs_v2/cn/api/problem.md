@@ -1,5 +1,11 @@
 # Problem API
 
+> 2.1.7 开发接口：`obs` / `mask` 为 `(nObs,)`，`simFunc(X)` 返回 `(nSamples,nObs)`。不自动展平、不接受旧网格协议；观测按数组位置对应，不需要观测标签。`CalResult` 与 SQLite 汇总以 `nObs` / `n_obs` 表示观测数，`n_output=n_obs`；移除 `nTime/nSeries/seriesLabels`。旧校准数据库不兼容，需使用新接口重新运行。
+
+参数上下界支持实数标量、一维向量、行向量和列向量，内部统一为独立的浮点 `(1,nInput)` 数组；不接受含多行多列的矩阵或更高维布局。修改构造时传入的边界数组不会改变问题边界。连续变量单位转换在范围差溢出时使用安全插值/半尺度比值，避免有限边界产生NaN或错误端点；普通尺度运算路径保持。此处理不表示支持任意超大整数离散计数。
+
+`singleFunc` 在每次单点评价后复制返回值，再堆叠为批量结果，因此模型可以复用返回缓冲区或返回其切片，不会使先前样本的结果被最后一次计算覆盖。此复制不改变用户回调自身对输入或外部状态的副作用。
+
 ## `UQPyL.problem`
 
 `UQPyL.problem` 定义 UQPyL 的统一问题协议。所有采样、优化、分析、推断、校准与代理建模流程，最终都通过 `Problem` 或 `ModelProblem` 消费问题对象。
@@ -312,7 +318,6 @@ ModelProblem(
     objLabels=None,
     conLabels=None,
     evaluator=None,
-    seriesLabels=None,
 )
 ```
 
@@ -326,7 +331,7 @@ ModelProblem(
 | `simFunc` | callable | 仿真函数，签名为 `simFunc(X)` |
 | `objFunc` | callable 或 `None` | 目标函数，签名为 `objFunc(X, simContext)` |
 | `conFunc` | callable 或 `None` | 约束函数，签名为 `conFunc(X, simContext)` |
-| `obs` | `np.ndarray` 或 `None` | 观测矩阵，形状为 `(n_time, n_series)` |
+| `obs` | `np.ndarray` 或 `None` | 观测向量，形状为 `(n_obs,)` |
 | `mask` | `np.ndarray` 或 `None` | 观测掩码，形状需与 `obs` 一致 |
 | `conWgt` | `list` 或 `None` | 约束权重 |
 | `nCon` | `int` | 约束个数 |
@@ -339,7 +344,6 @@ ModelProblem(
 | `objLabels` | `list` 或 `None` | 目标标签 |
 | `conLabels` | `list` 或 `None` | 约束标签 |
 | `evaluator` | `ModelEvaluatorBase` 或 `None` | 高级 model evaluator 实例 |
-| `seriesLabels` | `list` 或 `None` | 仿真序列标签 |
 
 ### 语义规则
 
@@ -375,9 +379,9 @@ ModelProblem(
 | `simFunc(X)` | `np.ndarray` | 调用仿真函数并校验输出 |
 | `objFunc(X, simContext)` | `np.ndarray` | 调用目标函数 |
 | `conFunc(X, simContext)` | `np.ndarray` / `None` | 调用约束函数 |
-| `flattenSim(sim)` | `np.ndarray` | 将仿真输出展平为 `(n_samples, n_obs)` |
-| `flattenObs()` | `np.ndarray` | 将观测展平为 `(n_obs,)` |
-| `flattenMask()` | `np.ndarray` | 将掩码展平为 `(n_obs,)` |
+| `flattenSim(sim)` | `np.ndarray` | 校验并返回已有 `(n_samples, n_obs)` 矩阵，不再转换三维张量 |
+| `flattenObs()` | `np.ndarray` | 返回已有 `(n_obs,)` 观测向量 |
+| `flattenMask()` | `np.ndarray` | 返回 `(n_obs,)` 掩码；未提供时返回全 False |
 
 ### `target`
 
@@ -396,20 +400,20 @@ import numpy as np
 from UQPyL.problem import ModelProblem
 
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sims = np.zeros((X.shape[0], 2, 1))
-    sims[:, 0, 0] = X[:, 0]
-    sims[:, 1, 0] = X[:, 1]
+    sims = np.zeros((X.shape[0], 2))
+    sims[:, 0] = X[:, 0]
+    sims[:, 1] = X[:, 1]
     return sims
 
 
 def objFunc(X, simContext):
     err = simContext.sims - simContext.obs
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+    return np.mean(err**2, axis=1).reshape(-1, 1)
 
 
 problem = ModelProblem(
@@ -420,7 +424,6 @@ problem = ModelProblem(
     simFunc=simFunc,
     objFunc=objFunc,
     obs=obs,
-    seriesLabels=["Q"],
 )
 ```
 
@@ -455,7 +458,7 @@ from UQPyL.problem import Eval, ModelEvaluator
 class MSEEvaluator(ModelEvaluator):
     def evaluate(self, X, simContext, target=None):
         err = simContext.sims - simContext.obs
-        objs = np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+        objs = np.mean(err**2, axis=1).reshape(-1, 1)
         return Eval(objs=objs, sims=simContext.sims, target=target)
 ```
 
@@ -496,6 +499,10 @@ def objFunc(x):
 离散 `varSet` 当前要求互不重复的有限数值；离散真实取值由 `varSet` 决定，不必落在该列用于旧编码的 `lb/ub` 内。真实值编码时检查边界、整数合法性和候选成员关系。默认解码与编码满足 `unit_to_space(space_to_unit(X)) == X`（浮点误差范围内）；反向仅得到规范代表点，不保证恢复原始整数/离散编码。
 
 `evaluate(X)` 接收真实值，不会猜测是否为单位区间编码。旧的 `apply_var_type()` 仍供已有路径使用，但不再用于优化评估入口。
+
+离散辅助映射 `map_discrete_vars`、启用 `DFlag` 的 `apply_var_type` 和 `Space.transform` 在存在离散列时使用浮点副本，
+保留 `varSet` 中的小数选项，避免整数/布尔输入截断或 float32 写回舍入破坏成员关系；原输入不变。
+这些辅助接口仍按旧编码边界分箱，正式单位区间转换使用上方的 `unit_to_space`。
 
 ### 约束权重
 

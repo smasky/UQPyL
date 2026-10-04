@@ -1,0 +1,137 @@
+[
+  {
+    "kind": "distribution",
+    "case": "uniform4",
+    "method": "DREAM_ZS",
+    "seed": 41,
+    "draws": 120000,
+    "warmup": 1000,
+    "seconds": 39.642391117988154,
+    "reference": {
+      "mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "variance": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    "mean": [
+      0.005633811195659741,
+      -0.009886675960625226,
+      -0.022733284648781042,
+      0.010694268758646475
+    ],
+    "variance": [
+      0.3283155847341947,
+      0.33045488540490636,
+      0.3303820012700843,
+      0.34012727932413284
+    ],
+    "covariance": [
+      [
+        0.32831558473419603,
+        0.016591333399718057,
+        -0.016110564977545767,
+        -0.005060966226839565
+      ],
+      [
+        0.016591333399718057,
+        0.3304548854048965,
+        -0.008411239030770928,
+        0.005698991566627388
+      ],
+      [
+        -0.016110564977545767,
+        -0.008411239030770928,
+        0.33038200127007833,
+        0.005512551046815798
+      ],
+      [
+        -0.005060966226839565,
+        0.005698991566627388,
+        0.005512551046815798,
+        0.3401272793241261
+      ]
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 3,
+      "n_draws": 60000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 30000,
+        "values": [
+          1.001081500315742,
+          1.007938686538808,
+          1.0035821206952587,
+          1.0011551405338306
+        ],
+        "status": [
+          "available",
+          "available",
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0020925981608522,
+          1.007774017641798,
+          1.0033864449163628,
+          1.0011200517883876
+        ],
+        "status": [
+          "available",
+          "available",
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          528.7315092706472,
+          556.0679718118018,
+          567.4492163131493,
+          603.9486955979214
+        ],
+        "status": [
+          "available",
+          "available",
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          2638.9641415176475,
+          1896.4796843282131,
+          1925.7480790485233,
+          2225.7735358710183
+        ],
+        "status": [
+          "available",
+          "available",
+          "available",
+          "available"
+        ]
+      }
+    },
+    "rank": 4,
+    "warnings": [
+      "DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics."
+    ]
+  }
+]

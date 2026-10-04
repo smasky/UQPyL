@@ -10,6 +10,7 @@ from .runtime_lifecycle import recordCleanupError
 
 class BaseSqliteStorage:
     domain = None
+
     def __init__(self, root_dir):
         self.root_dir = str(root_dir)
 
@@ -22,7 +23,7 @@ class BaseSqliteStorage:
         if not hasattr(self, "_insert_run") or self.__class__._insert_run is BaseSqliteStorage._insert_run:
             raise NotImplementedError("Subclasses must implement _insert_run().")
 
-        db_path, run_id = self._db_path(obj.name, obj.problem.name, getattr(obj, 'runId', None))
+        db_path, run_id = self._db_path(obj.name, obj.problem.name, getattr(obj, "runId", None))
         conn = sqlite3.connect(db_path)
         session = RunSession(run_id=run_id, db_path=db_path, conn=conn, root_dir=self.root_dir)
         ownsRun = False
@@ -34,7 +35,8 @@ class BaseSqliteStorage:
                 conn.execute("INSERT OR IGNORE INTO runtimeMeta VALUES ('domain', ?)", (self.domain,))
                 if conn.execute("SELECT value FROM runtimeMeta WHERE name='domain'").fetchone()[0] != self.domain:
                     raise ValueError("Database belongs to a different runtime domain.")
-            self._insert_run(conn, run_id, obj, datetime.now().isoformat(timespec="seconds"))
+            createdAt = getattr(getattr(obj, "state", None), "createdAt", None)
+            self._insert_run(conn, run_id, obj, createdAt or datetime.now().isoformat(timespec="seconds"))
             conn.commit()  # Keep an identifiable run if parameter initialization fails.
             ownsRun = True
             self._save_params(conn, run_id, obj)
@@ -57,8 +59,9 @@ class BaseSqliteStorage:
             # Never commit failure metadata over an unrolled-back partial write.
             try:
                 if owns_run:
-                    self.finalize_run(session, status="failed", runtime=runtime,
-                                      final_fes=final_fes, final_iters=final_iters)
+                    self.finalize_run(
+                        session, status="failed", runtime=runtime, final_fes=final_fes, final_iters=final_iters
+                    )
             except BaseException as cleanupError:
                 recordCleanupError(error, "failure status", cleanupError)
         try:

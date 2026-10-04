@@ -1,0 +1,2337 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFF.FF.FFFFFFF.FF............FFFFFFFFFFFFFFFFF [ 83%]
+FF..FFFFFFFFFF                                                           [100%]
+=================================== FAILURES ===================================
+_____ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-RBF] ______
+
+name = 'RBF', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d926c680>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-GPR] ______
+
+name = 'GPR', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8b09610>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-KRG] ______
+
+name = 'KRG', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87413a0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-MARS] _____
+
+name = 'MARS', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87439e0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-SVR] ______
+
+name = 'SVR', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87d9d00>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+__ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Origin] ___
+
+name = 'LR_Origin', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8742d50>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Ridge] ___
+
+name = 'LR_Ridge', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8743830>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Lasso] ___
+
+name = 'LR_Lasso', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87da5a0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+__ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Origin] ___
+
+name = 'PR_Origin', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87db6e0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Ridge] ___
+
+name = 'PR_Ridge', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8741e20>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Lasso] ___
+
+name = 'PR_Lasso', entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87db9b0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:309: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-RBF] _
+
+name = 'RBF', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87db020>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-GPR] _
+
+name = 'GPR', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f0980>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-KRG] _
+
+name = 'KRG', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5b8bbc0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-MARS] _
+
+name = 'MARS', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5bb9d00>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-SVR] _
+
+name = 'SVR', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5be3650>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Origin] _
+
+name = 'LR_Origin', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5bf0560>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Ridge] _
+
+name = 'LR_Ridge', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5bbb7a0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Lasso] _
+
+name = 'LR_Lasso', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5be1730>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Origin] _
+
+name = 'PR_Origin', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87dbbc0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Ridge] _
+
+name = 'PR_Ridge', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87d9b50>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Lasso] _
+
+name = 'PR_Lasso', entry = 'prepareTrainingData'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70e5bb8bf0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:220: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:79: in _checkAndScale
+    yTrain = self.yScaler.fit_transform(yTrain) if self.yScaler else np.copy(yTrain)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:35: in fit_transform
+    self.fit(trainX)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  4.        ],
+       [-0.83333333,  3.91666667],
+       [-0.66666667,  3.83333333],
+       [-0.5....25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-RBF] ___
+
+name = 'RBF', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87d9940>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/rbf/radial_basis_function.py:86: in fitModel
+    A_Matrix = self.kernel.get_A_Matrix(xTrain)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...3333],
+       [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-GPR] ___
+
+name = 'GPR', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87dba70>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/gp/gaussian_process.py:103: in fitModel
+    self._objfunc(xTrain, yTrain, record=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {'record': True}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-KRG] ___
+
+name = 'KRG', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8743980>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/kriging/kriging.py:195: in fitModel
+    F, D = self._initialize(xTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...3333],
+       [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+__ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-MARS] ___
+
+name = 'MARS', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f3b60>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/mars/mars.py:187: in fitModel
+    self.xlabels_ = self._scrape_labels(xTrain)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...3333],
+       [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-SVR] ___
+
+name = 'SVR', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87dbd40>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/svr/support_vector_machine.py:145: in fitModel
+    par = self._build_parameter()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (), kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-LR_Origin] _
+
+name = 'LR_Origin', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87d8260>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:72: in fitModel
+    self.fitOrigin(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-LR_Ridge] _
+
+name = 'LR_Ridge', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d8702780>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:74: in fitModel
+    self.fitRidge(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-PR_Origin] _
+
+name = 'PR_Origin', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f05f0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:87: in fitModel
+    self.fitOrigin(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  1.        ],
+       [-0.91666667,  0.84027778],
+       [-0.83333333,  0.69444444],
+       [-0.7...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-PR_Ridge] _
+
+name = 'PR_Ridge', entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f37d0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:89: in fitModel
+    self.fitRidge(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  1.        ],
+       [-0.91666667,  0.84027778],
+       [-0.83333333,  0.69444444],
+       [-0.7...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-RBF] ___
+
+name = 'RBF', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87e1df0>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/rbf/radial_basis_function.py:86: in fitModel
+    A_Matrix = self.kernel.get_A_Matrix(xTrain)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...3333],
+       [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-GPR] ___
+
+name = 'GPR', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f1280>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/gp/gaussian_process.py:107: in fitHyper
+    self._optimizeHyper(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-KRG] ___
+
+name = 'KRG', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f3890>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/kriging/kriging.py:200: in fitHyper
+    self._optimizeHyper(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+__ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-MARS] ___
+
+name = 'MARS', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87da360>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/mars/mars.py:212: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/mars/mars.py:187: in fitModel
+    self.xlabels_ = self._scrape_labels(xTrain)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...3333],
+       [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]),)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-SVR] ___
+
+name = 'SVR', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87e1100>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/svr/support_vector_machine.py:153: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/svr/support_vector_machine.py:145: in fitModel
+    par = self._build_parameter()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (), kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-LR_Origin] _
+
+name = 'LR_Origin', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87e0800>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/linear_regression.py:72: in fitModel
+    self.fitOrigin(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-LR_Ridge] _
+
+name = 'LR_Ridge', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87da360>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/linear_regression.py:74: in fitModel
+    self.fitRidge(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-PR_Origin] _
+
+name = 'PR_Origin', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f2d80>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/polynomial_regression.py:87: in fitModel
+    self.fitOrigin(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  1.        ],
+       [-0.91666667,  0.84027778],
+       [-0.83333333,  0.69444444],
+       [-0.7...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-PR_Ridge] _
+
+name = 'PR_Ridge', entry = 'fitHyper'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87e3680>
+
+    @pytest.mark.parametrize("name", modelNames)
+    @pytest.mark.parametrize("entry", ["fit", "prepareTrainingData", "fitModel", "fitHyper"])
+    def testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork(name, entry, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name)
+        blockBackend(model, entry, monkeypatch)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_single_output_contract.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/polynomial_regression.py:89: in fitModel
+    self.fitRidge(xTrain, yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ,  1.        ],
+       [-0.91666667,  0.84027778],
+       [-0.83333333,  0.69444444],
+       [-0.7...2.25      ],
+       [ 2.66666667,  2.16666667],
+       [ 2.83333333,  2.08333333],
+       [ 3.        ,  2.        ]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-LR_Origin] ____
+
+name = 'LR_Origin', entry = 'fit'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+______ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-GPR] _______
+
+name = 'GPR', entry = 'fit'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+______ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-KRG] _______
+
+name = 'KRG', entry = 'fit'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+______ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-MARS] ______
+
+name = 'MARS', entry = 'fit'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+______ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-SVR] _______
+
+name = 'SVR', entry = 'fit'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+_ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-LR_Origin] _
+
+name = 'LR_Origin', entry = 'fitModel'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-GPR] ____
+
+name = 'GPR', entry = 'fitModel'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-KRG] ____
+
+name = 'KRG', entry = 'fitModel'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+___ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-MARS] ____
+
+name = 'MARS', entry = 'fitModel'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-SVR] ____
+
+name = 'SVR', entry = 'fitModel'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+_ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-LR_Origin] _
+
+name = 'LR_Origin', entry = 'fitHyper'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-GPR] ____
+
+name = 'GPR', entry = 'fitHyper'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-KRG] ____
+
+name = 'KRG', entry = 'fitHyper'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+___ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-MARS] ____
+
+name = 'MARS', entry = 'fitHyper'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+____ testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-SVR] ____
+
+name = 'SVR', entry = 'fitHyper'
+
+    @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])
+    @pytest.mark.parametrize("entry", ["fit", "fitModel", "fitHyper"])
+    def testRejectedRefitDoesNotLeavePreviousPredictionAvailable(name, entry):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel(name).fit(inputs, outputs[:, :1])
+>       with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:95: Failed
+__ testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[joint-gridTune] ___
+
+entry = 'gridTune', tuneMode = 'joint'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d86e3230>
+
+    @pytest.mark.parametrize("entry", ["gridTune", "optTune"])
+    @pytest.mark.parametrize("tuneMode", ["joint", "separate"])
+    def testTunerRejectsMultipleOutputsBeforeSplittingOrSearching(entry, tuneMode, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel("LR_Ridge").fit(inputs, outputs[:, :1])
+        tuner = AutoTuner(model, SimpleNamespace(run=forbidden))
+        monkeypatch.setattr(tuner, "_splitData", forbidden)
+        arguments = {"paraGrid": {"C": [np.log(0.1)]}} if entry == "gridTune" else {"paraList": ["C"]}
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(tuner, entry)(inputs, outputs, ratio=20, tuneMode=tuneMode, seed=7, **arguments)
+
+tests/test_surrogate_single_output_contract.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/auto_tuner.py:22: in wrapped
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/auto_tuner.py:502: in gridTune
+    xRaw, yRaw, xTrain, yTrain, xTestRaw, yTestRaw = self._prepareTuningData(
+UQPyL/surrogate/auto_tuner.py:191: in _prepareTuningData
+    trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng, splitter=splitter, splitIndices=splitIndices)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...  [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]), 20, 7, None)
+kwargs = {'splitter': None, 'splitIndices': None}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+___ testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[joint-optTune] ___
+
+entry = 'optTune', tuneMode = 'joint'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d86e2d20>
+
+    @pytest.mark.parametrize("entry", ["gridTune", "optTune"])
+    @pytest.mark.parametrize("tuneMode", ["joint", "separate"])
+    def testTunerRejectsMultipleOutputsBeforeSplittingOrSearching(entry, tuneMode, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel("LR_Ridge").fit(inputs, outputs[:, :1])
+        tuner = AutoTuner(model, SimpleNamespace(run=forbidden))
+        monkeypatch.setattr(tuner, "_splitData", forbidden)
+        arguments = {"paraGrid": {"C": [np.log(0.1)]}} if entry == "gridTune" else {"paraList": ["C"]}
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(tuner, entry)(inputs, outputs, ratio=20, tuneMode=tuneMode, seed=7, **arguments)
+
+tests/test_surrogate_single_output_contract.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/auto_tuner.py:22: in wrapped
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/auto_tuner.py:371: in optTune
+    xRaw, yRaw, xTrain, yTrain, xTestRaw, yTestRaw = self._prepareTuningData(
+UQPyL/surrogate/auto_tuner.py:191: in _prepareTuningData
+    trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng, splitter=splitter, splitIndices=splitIndices)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...  [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]), 20, 7, None)
+kwargs = {'splitter': None, 'splitIndices': None}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[separate-gridTune] _
+
+entry = 'gridTune', tuneMode = 'separate'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87b8d70>
+
+    @pytest.mark.parametrize("entry", ["gridTune", "optTune"])
+    @pytest.mark.parametrize("tuneMode", ["joint", "separate"])
+    def testTunerRejectsMultipleOutputsBeforeSplittingOrSearching(entry, tuneMode, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel("LR_Ridge").fit(inputs, outputs[:, :1])
+        tuner = AutoTuner(model, SimpleNamespace(run=forbidden))
+        monkeypatch.setattr(tuner, "_splitData", forbidden)
+        arguments = {"paraGrid": {"C": [np.log(0.1)]}} if entry == "gridTune" else {"paraList": ["C"]}
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(tuner, entry)(inputs, outputs, ratio=20, tuneMode=tuneMode, seed=7, **arguments)
+
+tests/test_surrogate_single_output_contract.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/auto_tuner.py:22: in wrapped
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/auto_tuner.py:502: in gridTune
+    xRaw, yRaw, xTrain, yTrain, xTestRaw, yTestRaw = self._prepareTuningData(
+UQPyL/surrogate/auto_tuner.py:191: in _prepareTuningData
+    trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng, splitter=splitter, splitIndices=splitIndices)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...  [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]), 20, 7, None)
+kwargs = {'splitter': None, 'splitIndices': None}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_ testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[separate-optTune] __
+
+entry = 'optTune', tuneMode = 'separate'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87b9b50>
+
+    @pytest.mark.parametrize("entry", ["gridTune", "optTune"])
+    @pytest.mark.parametrize("tuneMode", ["joint", "separate"])
+    def testTunerRejectsMultipleOutputsBeforeSplittingOrSearching(entry, tuneMode, monkeypatch):
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        outputs = np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3))
+        model = newModel("LR_Ridge").fit(inputs, outputs[:, :1])
+        tuner = AutoTuner(model, SimpleNamespace(run=forbidden))
+        monkeypatch.setattr(tuner, "_splitData", forbidden)
+        arguments = {"paraGrid": {"C": [np.log(0.1)]}} if entry == "gridTune" else {"paraList": ["C"]}
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(tuner, entry)(inputs, outputs, ratio=20, tuneMode=tuneMode, seed=7, **arguments)
+
+tests/test_surrogate_single_output_contract.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/auto_tuner.py:22: in wrapped
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/auto_tuner.py:371: in optTune
+    xRaw, yRaw, xTrain, yTrain, xTestRaw, yTestRaw = self._prepareTuningData(
+UQPyL/surrogate/auto_tuner.py:191: in _prepareTuningData
+    trainIdx, testIdx = self._splitData(xRaw, ratio, seed, rng, splitter=splitter, splitIndices=splitIndices)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[-1.        ],
+       [-0.91666667],
+       [-0.83333333],
+       [-0.75      ],
+       [-0.66666667],
+       ...  [ 0.66666667],
+       [ 0.75      ],
+       [ 0.83333333],
+       [ 0.91666667],
+       [ 1.        ]]), 20, 7, None)
+kwargs = {'splitter': None, 'splitIndices': None}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape2] ______
+
+shape = (25, 2, 1)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f2750>
+
+    @pytest.mark.parametrize("shape", [(25, 0), (25, 3), (25, 2, 1), (24, 2), ()])
+    def testMultiSurrogateValidatesWholeTargetBeforeFittingChildren(shape, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("LR_Ridge")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "fit", forbidden)
+        with pytest.raises(ValueError, match="outputs|shape|sample"):
+>           container.fit(np.zeros((25, 1)), np.ones(shape))
+
+tests/test_surrogate_single_output_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:362: in fit
+    model.fit(trainX, trainY[:, i])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+...
+       [1.],
+       [1.],
+       [1.],
+       [1.],
+       [1.],
+       [1.],
+       [1.],
+       [1.],
+       [1.]]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape3] ______
+
+shape = (24, 2)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d87f3c80>
+
+    @pytest.mark.parametrize("shape", [(25, 0), (25, 3), (25, 2, 1), (24, 2), ()])
+    def testMultiSurrogateValidatesWholeTargetBeforeFittingChildren(shape, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("LR_Ridge")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "fit", forbidden)
+        with pytest.raises(ValueError, match="outputs|shape|sample"):
+>           container.fit(np.zeros((25, 1)), np.ones(shape))
+
+tests/test_surrogate_single_output_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:362: in fit
+    model.fit(trainX, trainY[:, i])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+...[0.]]), array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+       1., 1., 1., 1., 1., 1., 1.]))
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("Invalid multi-output data reached preprocessing, fitting or search")
+E       AssertionError: Invalid multi-output data reached preprocessing, fitting or search
+
+tests/test_surrogate_single_output_contract.py:37: AssertionError
+_____ testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape4] ______
+
+shape = ()
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d926e2a0>
+
+    @pytest.mark.parametrize("shape", [(25, 0), (25, 3), (25, 2, 1), (24, 2), ()])
+    def testMultiSurrogateValidatesWholeTargetBeforeFittingChildren(shape, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("LR_Ridge")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "fit", forbidden)
+        with pytest.raises(ValueError, match="outputs|shape|sample"):
+>           container.fit(np.zeros((25, 1)), np.ones(shape))
+
+tests/test_surrogate_single_output_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.base.MultiSurrogate object at 0x7a70d8f66570>
+trainX = array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+ ...,
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.]])
+trainY = array(1.)
+
+    def fit(self, trainX: np.ndarray, trainY: np.ndarray):
+        self._validateModels(self.models_list)
+        trainY = np.asarray(trainY)
+        if trainY.ndim == 1:
+            trainY = trainY.reshape(-1, 1)
+    
+>       if trainY.shape[1] != self.n_surrogates:
+           ^^^^^^^^^^^^^^^
+E       IndexError: tuple index out of range
+
+UQPyL/surrogate/base.py:354: IndexError
+_ testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions[std] __
+
+distribution = 'std'
+
+    @pytest.mark.parametrize("distribution", ["std", "var"])
+    def testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions(distribution):
+        inputs = np.array([[0.0], [0.2], [0.55], [0.85], [1.0]])
+        outputs = np.column_stack((np.sin(4 * inputs[:, 0]), 20 * np.cos(3 * inputs[:, 0]) + 50))
+        probes = np.array([[0.13], [0.4], [0.72]])
+        lengths, noises = [0.5, 0.9], [0.02, 0.07]
+        models = [GPR(kernel=GpRbf(length_scale=length, length_attr=None), C=noise, C_attr=None, scalers=(None, StandardScaler())) for length, noise in zip(lengths, noises)]
+        container = MultiSurrogate(2, models)
+>       assert container.fit(inputs, outputs) is container
+E       assert None is <UQPyL.surrogate.base.MultiSurrogate object at 0x7a70d87b8200>
+E        +  where None = fit(array([[0.  ],\n       [0.2 ],\n       [0.55],\n       [0.85],\n       [1.  ]]), array([[ 0.        , 70.        ],\n       [ 0.71735609, 66.5067123 ],\n       [ 0.8084964 , 48.41758222],\n       [-0.2555411 , 33.3989293 ],\n       [-0.7568025 , 30.20015007]]))
+E        +    where fit = <UQPyL.surrogate.base.MultiSurrogate object at 0x7a70d87b8200>.fit
+
+tests/test_surrogate_single_output_contract.py:134: AssertionError
+_ testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions[var] __
+
+distribution = 'var'
+
+    @pytest.mark.parametrize("distribution", ["std", "var"])
+    def testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions(distribution):
+        inputs = np.array([[0.0], [0.2], [0.55], [0.85], [1.0]])
+        outputs = np.column_stack((np.sin(4 * inputs[:, 0]), 20 * np.cos(3 * inputs[:, 0]) + 50))
+        probes = np.array([[0.13], [0.4], [0.72]])
+        lengths, noises = [0.5, 0.9], [0.02, 0.07]
+        models = [GPR(kernel=GpRbf(length_scale=length, length_attr=None), C=noise, C_attr=None, scalers=(None, StandardScaler())) for length, noise in zip(lengths, noises)]
+        container = MultiSurrogate(2, models)
+>       assert container.fit(inputs, outputs) is container
+E       assert None is <UQPyL.surrogate.base.MultiSurrogate object at 0x7a70d86e3740>
+E        +  where None = fit(array([[0.  ],\n       [0.2 ],\n       [0.55],\n       [0.85],\n       [1.  ]]), array([[ 0.        , 70.        ],\n       [ 0.71735609, 66.5067123 ],\n       [ 0.8084964 , 48.41758222],\n       [-0.2555411 , 33.3989293 ],\n       [-0.7568025 , 30.20015007]]))
+E        +    where fit = <UQPyL.surrogate.base.MultiSurrogate object at 0x7a70d86e3740>.fit
+
+tests/test_surrogate_single_output_contract.py:134: AssertionError
+____ testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags0] _____
+
+flags = {'returnStd': True}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d86e1160>
+
+    @pytest.mark.parametrize("flags", [{"returnStd": True}, {"returnVar": True}, {"returnStd": True, "returnVar": True}])
+    def testMultiSurrogateUncertaintyRequestsValidateBeforePrediction(flags, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("GPR")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "predict", forbidden)
+        error = ValueError if len(flags) == 2 else NotImplementedError
+        with pytest.raises(error):
+>           container.predict(np.zeros((3, 1)), **flags)
+E           TypeError: MultiSurrogate.predict() got an unexpected keyword argument 'returnStd'
+
+tests/test_surrogate_single_output_contract.py:157: TypeError
+____ testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags1] _____
+
+flags = {'returnVar': True}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d86493d0>
+
+    @pytest.mark.parametrize("flags", [{"returnStd": True}, {"returnVar": True}, {"returnStd": True, "returnVar": True}])
+    def testMultiSurrogateUncertaintyRequestsValidateBeforePrediction(flags, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("GPR")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "predict", forbidden)
+        error = ValueError if len(flags) == 2 else NotImplementedError
+        with pytest.raises(error):
+>           container.predict(np.zeros((3, 1)), **flags)
+E           TypeError: MultiSurrogate.predict() got an unexpected keyword argument 'returnVar'
+
+tests/test_surrogate_single_output_contract.py:157: TypeError
+____ testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags2] _____
+
+flags = {'returnStd': True, 'returnVar': True}
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d864ab70>
+
+    @pytest.mark.parametrize("flags", [{"returnStd": True}, {"returnVar": True}, {"returnStd": True, "returnVar": True}])
+    def testMultiSurrogateUncertaintyRequestsValidateBeforePrediction(flags, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("GPR")]
+        container = MultiSurrogate(2, models)
+        for model in models:
+            monkeypatch.setattr(model, "predict", forbidden)
+        error = ValueError if len(flags) == 2 else NotImplementedError
+        with pytest.raises(error):
+>           container.predict(np.zeros((3, 1)), **flags)
+E           TypeError: MultiSurrogate.predict() got an unexpected keyword argument 'returnStd'
+
+tests/test_surrogate_single_output_contract.py:157: TypeError
+_ testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis[badShape0] _
+
+badShape = (3, 2)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d864bdd0>
+
+    @pytest.mark.parametrize("badShape", [(3, 2), (2, 1)])
+    def testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis(badShape, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("LR_Ridge")]
+        container = MultiSurrogate(2, models)
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        container.fit(inputs, np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3)))
+        monkeypatch.setattr(models[0], "predict", lambda values: np.zeros(badShape))
+>       with pytest.raises(ValueError, match="prediction.*shape"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_surrogate_single_output_contract.py:167: Failed
+_ testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis[badShape1] _
+
+badShape = (2, 1)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7a70d864a390>
+
+    @pytest.mark.parametrize("badShape", [(3, 2), (2, 1)])
+    def testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis(badShape, monkeypatch):
+        models = [newModel("LR_Origin"), newModel("LR_Ridge")]
+        container = MultiSurrogate(2, models)
+        inputs = np.linspace(-1, 1, 25)[:, None]
+        container.fit(inputs, np.column_stack((2 * inputs[:, 0] + 1, -inputs[:, 0] + 3)))
+        monkeypatch.setattr(models[0], "predict", lambda values: np.zeros(badShape))
+>       with pytest.raises(ValueError, match="prediction.*shape"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'prediction.*shape'
+E         Actual message: 'all the input array dimensions except for the concatenation axis must match exactly, but along dimension 0, the array at index 0 has size 2 and the array at index 1 has size 3'
+
+tests/test_surrogate_single_output_contract.py:167: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-RBF]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-LR_Lasso]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fit-PR_Lasso]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-RBF]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-LR_Lasso]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[prepareTrainingData-PR_Lasso]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-RBF]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-LR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-PR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitModel-PR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-RBF]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-LR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-PR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork[fitHyper-PR_Ridge]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fit-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitModel-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-LR_Origin]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-GPR]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-KRG]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-MARS]
+FAILED tests/test_surrogate_single_output_contract.py::testRejectedRefitDoesNotLeavePreviousPredictionAvailable[fitHyper-SVR]
+FAILED tests/test_surrogate_single_output_contract.py::testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[joint-gridTune]
+FAILED tests/test_surrogate_single_output_contract.py::testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[joint-optTune]
+FAILED tests/test_surrogate_single_output_contract.py::testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[separate-gridTune]
+FAILED tests/test_surrogate_single_output_contract.py::testTunerRejectsMultipleOutputsBeforeSplittingOrSearching[separate-optTune]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape2]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape3]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateValidatesWholeTargetBeforeFittingChildren[shape4]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions[std]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions[var]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags0]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags1]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateUncertaintyRequestsValidateBeforePrediction[flags2]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis[badShape0]
+FAILED tests/test_surrogate_single_output_contract.py::testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis[badShape1]
+69 failed, 17 passed in 1.50s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_surrogate_single_output_contract.py` failed. (See above for error)

@@ -7,205 +7,227 @@ from ..problem import Problem
 # E. Zitzler, K. Deb, and L. Thiele, Comparison of multiobjective
 # evolutionary algorithms: Empirical results, Evolutionary computation,
 # 2000, 8(2): 173-195.
-#--------------------------------------##
+# --------------------------------------##
+
 
 class ZDT1(Problem):
-    
-    name="ZDT1"
-    
-    def __init__(self, nInput:int =30, nObj: int=2, 
-                    ub: Union[int, float, np.ndarray, list] =1, 
-                        lb: Union[int, float, np.ndarray, list] =0):
-        
+    name = "ZDT1"
+
+    def __init__(
+        self,
+        nInput: int = 30,
+        nObj: int = 2,
+        ub: Union[int, float, np.ndarray, list] = 1,
+        lb: Union[int, float, np.ndarray, list] = 0,
+    ):
+
         super().__init__(nInput, nObj, ub, lb)
-        
-        if nObj!=2:
+
+        if nObj != 2:
             raise ValueError("ZDT1 is a bi-objective optimization problem")
-    
+
     def objFunc(self, X):
-        
-        X=self._check_X_2d(X)
+
+        X = self._check_X_2d(X)
 
         Y = np.zeros((X.shape[0], self.nObj))
-        Y[:,0] = X[:,0]
+        Y[:, 0] = X[:, 0]
         g = 1 + 9 * np.mean(X[:, 1:], axis=1)
-        h = 1 - np.sqrt(Y[:,0]/g)
-        Y[:,1] = g * h
-        
+        h = 1 - np.sqrt(Y[:, 0] / g)
+        Y[:, 1] = g * h
+
         return Y
-    
+
     def getOptimum(self, N=100):
-        
-        R = np.zeros((N,self.nObj))
-        R[:,0] = np.linspace(0,1,N)
-        R[:,1] = 1-np.sqrt(R[:,0])
-        
+
+        R = np.zeros((N, self.nObj))
+        R[:, 0] = np.linspace(0, 1, N)
+        R[:, 1] = 1 - np.sqrt(R[:, 0])
+
         return R
-    
+
     def getPF(self):
-        
-        R=self.getOptimum(100)
-        
-        return (R[:,0], R[:,1])
+
+        R = self.getOptimum(100)
+
+        return (R[:, 0], R[:, 1])
+
 
 class ZDT2(Problem):
-    
-    name="ZDT2"
-    
-    def __init__(self, nInput:int =30, nObj: int=2, 
-                    ub: Union[int,float,np.ndarray] =1, 
-                        lb: Union[int,float,np.ndarray] =0):
-        
+    name = "ZDT2"
+
+    def __init__(
+        self,
+        nInput: int = 30,
+        nObj: int = 2,
+        ub: Union[int, float, np.ndarray] = 1,
+        lb: Union[int, float, np.ndarray] = 0,
+    ):
+
         super().__init__(nInput, nObj, ub, lb)
-        
-        if nObj!=2:
+
+        if nObj != 2:
             raise ValueError("ZDT2 is a bi-objective optimization problem")
-    
+
     def objFunc(self, X):
-        
+
         X = self._check_X_2d(X)
-        
+
         Y = np.zeros((X.shape[0], self.nObj))
-        Y[:,0] = X[:,0]
-        g = 1 + 9 * np.sum(X[:, 1:], axis=1)/(self.nInput-1)
-        h = 1-(Y[:,0]/g)**2
-        Y[:,1] = g * h
-        
+        Y[:, 0] = X[:, 0]
+        g = 1 + 9 * np.sum(X[:, 1:], axis=1) / (self.nInput - 1)
+        h = 1 - (Y[:, 0] / g) ** 2
+        Y[:, 1] = g * h
+
         return Y
-    
+
     def getOptimum(self, N=100):
-        
-        R = np.zeros((N,self.nObj))
-        R[:,0] = np.linspace(0,1,N)
-        R[:,1] = 1-(R[:,0])**2
-        
-        return R
-    
-    def getPF(self):
-        
-        R = self.getOptimum(100)
-        
-        return (R[:,0], R[:,1])
-    
-class ZDT3(Problem):
-    
-    name="ZDT3"
-    
-    def __init__(self, nInput:int =30, nObj: int=2, ub: Union[int,float,np.ndarray] =1, lb: Union[int,float,np.ndarray] =0):
-        
-        super().__init__(nInput, nObj, ub, lb)
-        
-        if nObj!=2:
-            raise ValueError("ZDT4 is a bi-objective optimization problem")
-    
-    def objFunc(self, X):
-        
-        X=self._check_X_2d(X)
-        
-        Y = np.zeros((X.shape[0], self.nObj))
-        Y[:,0] = X[:,0]
-        g = 1 + 9 * np.sum(X[:, 1:], axis=1)/(self.nInput-1)
-        h = 1 - np.sqrt(Y[:,0]/g)-(Y[:,0]/g) * np.sin(10*np.pi*Y[:,0])
-        Y[:,1] = g * h
-        
-        return Y
-    
-    def getOptimum(self, N=100):
-        
-        from ...optimization.core import NDSort
-        
+
         R = np.zeros((N, self.nObj))
-        R[:,0] = np.linspace(0,1,N)
-        R[:,1] = 1 - np.sqrt(R[:,0]) - R[:, 0] * np.sin(10 * np.pi * R[:, 0])
-        
+        R[:, 0] = np.linspace(0, 1, N)
+        R[:, 1] = 1 - (R[:, 0]) ** 2
+
+        return R
+
+    def getPF(self):
+
+        R = self.getOptimum(100)
+
+        return (R[:, 0], R[:, 1])
+
+
+class ZDT3(Problem):
+    name = "ZDT3"
+
+    def __init__(
+        self,
+        nInput: int = 30,
+        nObj: int = 2,
+        ub: Union[int, float, np.ndarray] = 1,
+        lb: Union[int, float, np.ndarray] = 0,
+    ):
+
+        super().__init__(nInput, nObj, ub, lb)
+
+        if nObj != 2:
+            raise ValueError("ZDT4 is a bi-objective optimization problem")
+
+    def objFunc(self, X):
+
+        X = self._check_X_2d(X)
+
+        Y = np.zeros((X.shape[0], self.nObj))
+        Y[:, 0] = X[:, 0]
+        g = 1 + 9 * np.sum(X[:, 1:], axis=1) / (self.nInput - 1)
+        h = 1 - np.sqrt(Y[:, 0] / g) - (Y[:, 0] / g) * np.sin(10 * np.pi * Y[:, 0])
+        Y[:, 1] = g * h
+
+        return Y
+
+    def getOptimum(self, N=100):
+
+        from ...optimization.core import NDSort
+
+        R = np.zeros((N, self.nObj))
+        R[:, 0] = np.linspace(0, 1, N)
+        R[:, 1] = 1 - np.sqrt(R[:, 0]) - R[:, 0] * np.sin(10 * np.pi * R[:, 0])
+
         # `NDSort(popObjs, popCons=None, nSort=None)`:
         # second positional argument is constraints, so pass nSort by keyword.
         FrontNo, _ = NDSort(R, nSort=1)
-        R[FrontNo>1,:] = np.nan
-        
+        R[FrontNo > 1, :] = np.nan
+
         return R
-    
+
     def getPF(self):
-        
+
         R = self.getOptimum(300)
-        
-        return (R[:,0], R[:,1])
+
+        return (R[:, 0], R[:, 1])
+
 
 class ZDT4(Problem):
-    
-    name="ZDT4"
-    
-    def __init__(self, nInput:int =30, nObj: int=2, 
-                    ub: Union[int,float,np.ndarray] =1, 
-                        lb: Union[int,float,np.ndarray] =0):
-       
+    name = "ZDT4"
+
+    def __init__(
+        self,
+        nInput: int = 30,
+        nObj: int = 2,
+        ub: Union[int, float, np.ndarray] = 1,
+        lb: Union[int, float, np.ndarray] = 0,
+    ):
+
         super().__init__(nInput, nObj, ub, lb)
-        
-        if nObj!=2:
+
+        if nObj != 2:
             raise ValueError("ZDT4 is a bi-objective optimization problem")
-    
+
     def objFunc(self, X):
-        
-        X=self._check_X_2d(X)
-            
+
+        X = self._check_X_2d(X)
+
         Y = np.zeros((X.shape[0], 2))
         Y[:, 0] = X[:, 0]
         g = 1 + 10 * (X.shape[1] - 1) + np.sum(X[:, 1:] ** 2 - 10 * np.cos(4 * np.pi * X[:, 1:]), axis=1)
         h = 1 - (X[:, 0] / g) ** 0.5
         Y[:, 1] = g * h
-        
+
         return Y
-    
+
     def getOptimum(self, N=100):
-        
+
         R = np.zeros((N, 2))
         R[:, 0] = np.linspace(0, 1, N)
         R[:, 1] = 1 - R[:, 0] ** 0.5
-        
+
         return R
 
     def getPF(self):
-        
+
         R = self.getOptimum(100)
-        
-        return (R[:,0], R[:,1])
+
+        return (R[:, 0], R[:, 1])
+
 
 class ZDT6(Problem):
-    
-    name="ZDT6"
-    
-    def __init__(self, nInput:int =30, nObj: int=2, 
-                    ub: Union[int,float,np.ndarray] =1, 
-                    lb: Union[int,float,np.ndarray] =0):
-        
+    name = "ZDT6"
+
+    def __init__(
+        self,
+        nInput: int = 30,
+        nObj: int = 2,
+        ub: Union[int, float, np.ndarray] = 1,
+        lb: Union[int, float, np.ndarray] = 0,
+    ):
+
         super().__init__(nInput, nObj, ub, lb)
-        
-        if nObj!=2:
+
+        if nObj != 2:
             raise ValueError("ZDT6 is a bi-objective optimization problem")
-    
+
     def objFunc(self, X):
-        
-        X=self._check_X_2d(X)
-        
-        Y=np.zeros((X.shape[0], self.nObj))
-        Y[:,0]=1-np.exp(-4*X[:,0])*np.sin(6*np.pi*X[:,0])**6
-        g=1+9*np.sum(X[:, 1:], axis=1)/(self.nInput-1)**0.25
-        h=1-(Y[:,0]/g)**2
-        Y[:,1]=g*h
-        
+
+        X = self._check_X_2d(X)
+
+        Y = np.zeros((X.shape[0], self.nObj))
+        Y[:, 0] = 1 - np.exp(-4 * X[:, 0]) * np.sin(6 * np.pi * X[:, 0]) ** 6
+        g = 1 + 9 * np.sum(X[:, 1:], axis=1) / (self.nInput - 1) ** 0.25
+        h = 1 - (Y[:, 0] / g) ** 2
+        Y[:, 1] = g * h
+
         return Y
-    
+
     def getOptimum(self, N=100):
-        
-        min=0.280775
-        R=np.zeros((N,self.nObj))
-        R[:,0]=np.linspace(min,1,N)
-        R[:,1]=1-R[:,0]**2
-        
+
+        min = 0.280775
+        R = np.zeros((N, self.nObj))
+        R[:, 0] = np.linspace(min, 1, N)
+        R[:, 1] = 1 - R[:, 0] ** 2
+
         return R
-    
+
     def getPF(self):
-        
-        R=self.getOptimum(100)
-        
-        return (R[:,0], R[:,1])
+
+        R = self.getOptimum(100)
+
+        return (R[:, 0], R[:, 1])

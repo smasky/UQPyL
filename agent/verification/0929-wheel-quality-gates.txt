@@ -1,0 +1,2 @@
+Coverage reporting: four path formats, exact rates, append-only summary and missing-branch rejection passed.
+Missing MARS, SVR and Lasso extensions: all three fail collection instead of skipping.

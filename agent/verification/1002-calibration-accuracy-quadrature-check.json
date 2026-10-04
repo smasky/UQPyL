@@ -1,0 +1,16 @@
+[
+  {
+    "case": "nonlinear_monotone",
+    "grid_mean": 0.7526846107223119,
+    "grid_variance": 0.03974745863680805,
+    "quadrature_mean": 0.752684610722312,
+    "quadrature_variance": 0.03974745863680804
+  },
+  {
+    "case": "nonlinear_bimodal",
+    "grid_mean": 0.0,
+    "grid_variance": 0.9580119431678262,
+    "quadrature_mean": 0.0,
+    "quadrature_variance": 0.9580119431678262
+  }
+]

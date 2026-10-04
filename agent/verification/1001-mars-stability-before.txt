@@ -1,0 +1,247 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+______________ testMarsWarnsAboutGcvSearchDespiteHighValidationR2 ______________
+
+    def testMarsWarnsAboutGcvSearchDespiteHighValidationR2():
+        problem = makeProblem(5)
+        x = LHS("classic").sample(problem, 512, seed=41)
+        y = (3*x[:, 0] + 2*x[:, 1]*x[:, 2]*x[:, 3])[:, None]
+>       with pytest.warns(RuntimeWarning, match="GCV.*search"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_mars_stability.py:23: Failed
+__________ testMarsRepeatedHoldoutsPreservePrimaryScoresAndModelCalls __________
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testMarsRepeatedHoldoutsPreser0')
+
+    def testMarsRepeatedHoldoutsPreservePrimaryScoresAndModelCalls(tmp_path):
+        calls = []
+    
+        def objective(x):
+            calls.append(x.copy())
+            return 3*x[:, :1] + x[:, 1:2]
+    
+        problem = makeProblem(objFunc=objective)
+        problem.workDir = str(tmp_path)
+        x = LHS("classic").sample(problem, 512, seed=17)
+        primary = MARS(verboseFlag=False).analyze(problem, x)
+        calls.clear()
+>       repeated = MARS(verboseFlag=False, saveFlag=True, nValidationRepeats=3).analyze(problem, x)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:49: TypeError
+_________ testMarsRepeatedWeightVariationMatchesIndependentStatistics __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ed4d93e9ca0>
+
+    def testMarsRepeatedWeightVariationMatchesIndependentStatistics(monkeypatch):
+        module = importlib.import_module("UQPyL.analysis.methods.mars")
+    
+        class ControlledModel:
+            fitCount = 0
+    
+            def __init__(self, **kwargs):
+                pass
+    
+            def fit(self, x, y):
+                # Two fits with exact predictions but reversed GCV deletion losses.
+                gcvSchedules = [[1, 9, 3, 1], [1, 3, 9, 1]]
+                group, position = divmod(ControlledModel.fitCount, 4)
+                self.gcv_ = gcvSchedules[group][position]
+                ControlledModel.fitCount += 1
+                self.coef = np.linalg.lstsq(np.column_stack([np.ones(len(x)), x]), y, rcond=None)[0]
+    
+            def predict(self, x):
+                return np.column_stack([np.ones(len(x)), x]) @ self.coef
+    
+        monkeypatch.setattr(module, "MARSModel", ControlledModel)
+        problem = makeProblem()
+        x = LHS("classic").sample(problem, 100, seed=4)
+        with pytest.warns(RuntimeWarning, match="normalized.*range"):
+>           result = MARS(verboseFlag=False, nValidationRepeats=2).analyze(problem, x, x[:, :1])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:91: TypeError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ed4d93e9ca0>
+
+    def testMarsRepeatedWeightVariationMatchesIndependentStatistics(monkeypatch):
+        module = importlib.import_module("UQPyL.analysis.methods.mars")
+    
+        class ControlledModel:
+            fitCount = 0
+    
+            def __init__(self, **kwargs):
+                pass
+    
+            def fit(self, x, y):
+                # Two fits with exact predictions but reversed GCV deletion losses.
+                gcvSchedules = [[1, 9, 3, 1], [1, 3, 9, 1]]
+                group, position = divmod(ControlledModel.fitCount, 4)
+                self.gcv_ = gcvSchedules[group][position]
+                ControlledModel.fitCount += 1
+                self.coef = np.linalg.lstsq(np.column_stack([np.ones(len(x)), x]), y, rcond=None)[0]
+    
+            def predict(self, x):
+                return np.column_stack([np.ones(len(x)), x]) @ self.coef
+    
+        monkeypatch.setattr(module, "MARSModel", ControlledModel)
+        problem = makeProblem()
+        x = LHS("classic").sample(problem, 100, seed=4)
+>       with pytest.warns(RuntimeWarning, match="normalized.*range"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_mars_stability.py:90: Failed
+_____________ testMarsRepeatedConstantOutputIsZeroWithoutWarnings ______________
+
+    def testMarsRepeatedConstantOutputIsZeroWithoutWarnings():
+        problem = makeProblem()
+        x = LHS("classic").sample(problem, 100, seed=19)
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always")
+>           result = MARS(verboseFlag=False, nValidationRepeats=3).analyze(problem, x, np.full((100, 1), 1e300))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:108: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs0] _______________
+
+kwargs = {'nValidationRepeats': 0}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs1] _______________
+
+kwargs = {'nValidationRepeats': True}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs2] _______________
+
+kwargs = {'nValidationRepeats': 1.5}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'nValidationRepeats'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs3] _______________
+
+kwargs = {'stabilityTolerance': 0}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'stabilityTolerance'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs4] _______________
+
+kwargs = {'stabilityTolerance': inf}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'stabilityTolerance'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs5] _______________
+
+kwargs = {'stabilityTolerance': 1.1}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'stabilityTolerance'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs6] _______________
+
+kwargs = {'gcvImprovementTolerance': 0}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'gcvImprovementTolerance'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+______________ testMarsRejectsInvalidDiagnosticSettings[kwargs7] _______________
+
+kwargs = {'gcvImprovementTolerance': nan}
+
+    @pytest.mark.parametrize("kwargs", [
+        {"nValidationRepeats": 0}, {"nValidationRepeats": True}, {"nValidationRepeats": 1.5},
+        {"stabilityTolerance": 0}, {"stabilityTolerance": np.inf}, {"stabilityTolerance": 1.1},
+        {"gcvImprovementTolerance": 0}, {"gcvImprovementTolerance": np.nan},
+    ])
+    def testMarsRejectsInvalidDiagnosticSettings(kwargs):
+        with pytest.raises(ValueError):
+>           MARS(**kwargs)
+E           TypeError: MARS.__init__() got an unexpected keyword argument 'gcvImprovementTolerance'
+
+tests/test_analysis_mars_stability.py:123: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_mars_stability.py::testMarsWarnsAboutGcvSearchDespiteHighValidationR2
+FAILED tests/test_analysis_mars_stability.py::testMarsRepeatedHoldoutsPreservePrimaryScoresAndModelCalls
+FAILED tests/test_analysis_mars_stability.py::testMarsRepeatedWeightVariationMatchesIndependentStatistics
+FAILED tests/test_analysis_mars_stability.py::testMarsRepeatedConstantOutputIsZeroWithoutWarnings
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs0]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs1]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs2]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs3]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs4]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs5]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs6]
+FAILED tests/test_analysis_mars_stability.py::testMarsRejectsInvalidDiagnosticSettings[kwargs7]
+12 failed in 6.97s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_analysis_mars_stability.py -W error` failed. (See above for error)

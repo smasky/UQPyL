@@ -1,0 +1,366 @@
+FFFFFF.FFFFF..                                                           [100%]
+=================================== FAILURES ===================================
+___________ testDeltaUnitsMatchIndependentScaledDistanceReference[1] ___________
+
+factor = 1
+
+    @pytest.mark.parametrize("factor", [1, 0.001, 1000])
+    def testDeltaUnitsMatchIndependentScaledDistanceReference(factor):
+        x, y, _, expected = makeData()
+        scale, shift = np.array([factor, 1, 1]), np.array([10, -3, 20])
+        p = Problem(nInput=3, nObj=1, lb=-scale+shift, ub=scale+shift, objFunc=lambda x: x[:, :1])
+        real = x * scale + shift
+        savedX, savedY = real.copy(), y.copy()
+        result = DeltaTest(**QUIET).analyze(p, real, y)
+        np.testing.assert_allclose(result["S1"].values[0], expected, atol=1e-14)
+>       np.testing.assert_allclose(result["S1_norm"].values[0], expected/np.sum(abs(expected)), atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0]: 0.1915854999038718 (ACTUAL), 0.17663651511961406 (DESIRED)
+E        [1]: 0.8507301695774204 (ACTUAL), 0.784349611722557 (DESIRED)
+E        [2]: -0.04231566948129229 (ACTUAL), -0.039013873157828796 (DESIRED)
+E       Max absolute difference among violations: 0.06638056
+E       Max relative difference among violations: 0.08463134
+E        ACTUAL: array([ 0.191585,  0.85073 , -0.042316])
+E        DESIRED: array([ 0.176637,  0.78435 , -0.039014])
+
+tests/test_analysis_delta_scaling.py:41: AssertionError
+_________ testDeltaUnitsMatchIndependentScaledDistanceReference[0.001] _________
+
+factor = 0.001
+
+    @pytest.mark.parametrize("factor", [1, 0.001, 1000])
+    def testDeltaUnitsMatchIndependentScaledDistanceReference(factor):
+        x, y, _, expected = makeData()
+        scale, shift = np.array([factor, 1, 1]), np.array([10, -3, 20])
+        p = Problem(nInput=3, nObj=1, lb=-scale+shift, ub=scale+shift, objFunc=lambda x: x[:, :1])
+        real = x * scale + shift
+        savedX, savedY = real.copy(), y.copy()
+        result = DeltaTest(**QUIET).analyze(p, real, y)
+>       np.testing.assert_allclose(result["S1"].values[0], expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0]: 0.0 (ACTUAL), 0.2969021192842364 (DESIRED)
+E        [1]: 1.2417197524862051 (ACTUAL), 1.3183857359419577 (DESIRED)
+E        [2]: -0.05688222852761604 (ACTUAL), -0.06557705021638259 (DESIRED)
+E       Max absolute difference among violations: 0.29690212
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([ 0.      ,  1.24172 , -0.056882])
+E        DESIRED: array([ 0.296902,  1.318386, -0.065577])
+
+tests/test_analysis_delta_scaling.py:40: AssertionError
+_________ testDeltaUnitsMatchIndependentScaledDistanceReference[1000] __________
+
+factor = 1000
+
+    @pytest.mark.parametrize("factor", [1, 0.001, 1000])
+    def testDeltaUnitsMatchIndependentScaledDistanceReference(factor):
+        x, y, _, expected = makeData()
+        scale, shift = np.array([factor, 1, 1]), np.array([10, -3, 20])
+        p = Problem(nInput=3, nObj=1, lb=-scale+shift, ub=scale+shift, objFunc=lambda x: x[:, :1])
+        real = x * scale + shift
+        savedX, savedY = real.copy(), y.copy()
+        result = DeltaTest(**QUIET).analyze(p, real, y)
+>       np.testing.assert_allclose(result["S1"].values[0], expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0]: -0.9657511238095223 (ACTUAL), 0.2969021192842364 (DESIRED)
+E        [1]: 0.0 (ACTUAL), 1.3183857359419577 (DESIRED)
+E        [2]: 0.0 (ACTUAL), -0.06557705021638259 (DESIRED)
+E       Max absolute difference among violations: 1.31838574
+E       Max relative difference among violations: 4.25275928
+E        ACTUAL: array([-0.965751,  0.      ,  0.      ])
+E        DESIRED: array([ 0.296902,  1.318386, -0.065577])
+
+tests/test_analysis_delta_scaling.py:40: AssertionError
+______ testDeltaSignedNormalizationPreservesOrderAndCancellation[scores0] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd8610050>
+scores = [-3, 1, -1]
+
+    @pytest.mark.parametrize("scores", [[-3, 1, -1], [2, -2, 0], [-1, -2, -3]])
+    def testDeltaSignedNormalizationPreservesOrderAndCancellation(monkeypatch, scores):
+        p = Problem(nInput=3, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.random.default_rng(7).random((10, 3))
+        # Isolate reductions with controlled Delta values; the independent pairwise
+        # tests above exercise the actual estimator and distance preprocessing.
+        values = iter([10]+[10+s for s in scores])
+        method = DeltaTest(**QUIET)
+        monkeypatch.setattr(method, "_cal_delta", lambda *args: next(values))
+        if max(scores) <= 0:
+            with pytest.warns(RuntimeWarning, match="no positive"):
+                result = method.analyze(p, x, x[:, :1])
+        else:
+            result = method.analyze(p, x, x[:, :1])
+        np.testing.assert_array_equal(result["S1"].values, [scores])
+>       np.testing.assert_allclose(result["S1_norm"].values[0], np.array(scores)/sum(abs(np.array(scores))))
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0]: 1.0 (ACTUAL), -0.6 (DESIRED)
+E        [1]: -0.3333333333333333 (ACTUAL), 0.2 (DESIRED)
+E        [2]: 0.3333333333333333 (ACTUAL), -0.2 (DESIRED)
+E       Max absolute difference among violations: 1.6
+E       Max relative difference among violations: 2.66666667
+E        ACTUAL: array([ 1.      , -0.333333,  0.333333])
+E        DESIRED: array([-0.6,  0.2, -0.2])
+
+tests/test_analysis_delta_scaling.py:62: AssertionError
+______ testDeltaSignedNormalizationPreservesOrderAndCancellation[scores1] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd8611550>
+scores = [2, -2, 0]
+
+    @pytest.mark.parametrize("scores", [[-3, 1, -1], [2, -2, 0], [-1, -2, -3]])
+    def testDeltaSignedNormalizationPreservesOrderAndCancellation(monkeypatch, scores):
+        p = Problem(nInput=3, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.random.default_rng(7).random((10, 3))
+        # Isolate reductions with controlled Delta values; the independent pairwise
+        # tests above exercise the actual estimator and distance preprocessing.
+        values = iter([10]+[10+s for s in scores])
+        method = DeltaTest(**QUIET)
+        monkeypatch.setattr(method, "_cal_delta", lambda *args: next(values))
+        if max(scores) <= 0:
+            with pytest.warns(RuntimeWarning, match="no positive"):
+                result = method.analyze(p, x, x[:, :1])
+        else:
+            result = method.analyze(p, x, x[:, :1])
+        np.testing.assert_array_equal(result["S1"].values, [scores])
+>       np.testing.assert_allclose(result["S1_norm"].values[0], np.array(scores)/sum(abs(np.array(scores))))
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 2 / 3 (66.7%)
+E       Mismatch at indices:
+E        [0]: 0.0 (ACTUAL), 0.5 (DESIRED)
+E        [1]: 0.0 (ACTUAL), -0.5 (DESIRED)
+E       Max absolute difference among violations: 0.5
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([0., 0., 0.])
+E        DESIRED: array([ 0.5, -0.5,  0. ])
+
+tests/test_analysis_delta_scaling.py:62: AssertionError
+______ testDeltaSignedNormalizationPreservesOrderAndCancellation[scores2] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd86134d0>
+scores = [-1, -2, -3]
+
+    @pytest.mark.parametrize("scores", [[-3, 1, -1], [2, -2, 0], [-1, -2, -3]])
+    def testDeltaSignedNormalizationPreservesOrderAndCancellation(monkeypatch, scores):
+        p = Problem(nInput=3, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.random.default_rng(7).random((10, 3))
+        # Isolate reductions with controlled Delta values; the independent pairwise
+        # tests above exercise the actual estimator and distance preprocessing.
+        values = iter([10]+[10+s for s in scores])
+        method = DeltaTest(**QUIET)
+        monkeypatch.setattr(method, "_cal_delta", lambda *args: next(values))
+        if max(scores) <= 0:
+>           with pytest.warns(RuntimeWarning, match="no positive"):
+E           Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E            Emitted warnings: [].
+
+tests/test_analysis_delta_scaling.py:57: Failed
+________ testDeltaNonconstantOutputsWithoutPositiveScoresWarnAndReturn _________
+
+    def testDeltaNonconstantOutputsWithoutPositiveScoresWarnAndReturn():
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.zeros((3, 2))
+        y = np.array([[0.0], [1.0], [4.0]])
+>       with pytest.warns(RuntimeWarning, match="no positive"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_delta_scaling.py:83: Failed
+___________ testDeltaSubsetSearchUsesSameScaledDistances[vio-0.001] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd8613440>
+factor = 0.001, entry = 'vio'
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    def testDeltaSubsetSearchUsesSameScaledDistances(monkeypatch, factor, entry):
+        x, y, unit, _ = makeData()
+        scale = np.array([factor, 1, 1])
+        p = Problem(nInput=3, nObj=1, lb=-scale, ub=scale, objFunc=lambda x: x[:, :1])
+        masks = np.array(list(product([0, 1], repeat=3)))
+        expected = np.array([pairwiseDelta(unit[:, mask.astype(bool)], y) if np.any(mask) else np.inf for mask in masks])
+        if entry == "vio":
+            labels = DeltaTest(**QUIET).findCombVio(p, x*scale, y)
+>           assert labels == [p.xLabels[j] for j in np.flatnonzero(masks[np.argmin(expected)])]
+E           AssertionError: assert ['x_2'] == ['x_1', 'x_2']
+E             
+E             At index 0 diff: 'x_2' != 'x_1'
+E             Right contains one more item: 'x_2'
+E             Use -v to get more diff
+
+tests/test_analysis_delta_scaling.py:101: AssertionError
+____________ testDeltaSubsetSearchUsesSameScaledDistances[vio-1000] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd863cdd0>
+factor = 1000, entry = 'vio'
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    def testDeltaSubsetSearchUsesSameScaledDistances(monkeypatch, factor, entry):
+        x, y, unit, _ = makeData()
+        scale = np.array([factor, 1, 1])
+        p = Problem(nInput=3, nObj=1, lb=-scale, ub=scale, objFunc=lambda x: x[:, :1])
+        masks = np.array(list(product([0, 1], repeat=3)))
+        expected = np.array([pairwiseDelta(unit[:, mask.astype(bool)], y) if np.any(mask) else np.inf for mask in masks])
+        if entry == "vio":
+            labels = DeltaTest(**QUIET).findCombVio(p, x*scale, y)
+>           assert labels == [p.xLabels[j] for j in np.flatnonzero(masks[np.argmin(expected)])]
+E           AssertionError: assert ['x_2'] == ['x_1', 'x_2']
+E             
+E             At index 0 diff: 'x_2' != 'x_1'
+E             Right contains one more item: 'x_2'
+E             Use -v to get more diff
+
+tests/test_analysis_delta_scaling.py:101: AssertionError
+____________ testDeltaSubsetSearchUsesSameScaledDistances[ea-0.001] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd8611790>
+factor = 0.001, entry = 'ea'
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    def testDeltaSubsetSearchUsesSameScaledDistances(monkeypatch, factor, entry):
+        x, y, unit, _ = makeData()
+        scale = np.array([factor, 1, 1])
+        p = Problem(nInput=3, nObj=1, lb=-scale, ub=scale, objFunc=lambda x: x[:, :1])
+        masks = np.array(list(product([0, 1], repeat=3)))
+        expected = np.array([pairwiseDelta(unit[:, mask.astype(bool)], y) if np.any(mask) else np.inf for mask in masks])
+        if entry == "vio":
+            labels = DeltaTest(**QUIET).findCombVio(p, x*scale, y)
+            assert labels == [p.xLabels[j] for j in np.flatnonzero(masks[np.argmin(expected)])]
+        else:
+            import UQPyL.optimization.soea as optimization
+    
+            class ExhaustiveGA:
+                def __init__(self, **kwargs):
+                    pass
+    
+                def run(self, selectionProblem):
+                    values = selectionProblem.evaluate(masks).objs[:, 0]
+                    np.testing.assert_allclose(values, expected, atol=1e-14)
+                    return int(np.argmin(values))
+    
+            monkeypatch.setattr(optimization, "GA", ExhaustiveGA)
+>           best = DeltaTest(**QUIET).findCombEA(p, x*scale, y, FEs=8, verboseFlag=False, saveFlag=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_scaling.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:175: in findCombEA
+    res = ga.run(problem)
+          ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_analysis_delta_scaling.testDeltaSubsetSearchUsesSameScaledDistances.<locals>.ExhaustiveGA object at 0x7cfcd8612930>
+selectionProblem = <UQPyL.problem.problem.Problem object at 0x7cfcd8613f50>
+
+    def run(self, selectionProblem):
+        values = selectionProblem.evaluate(masks).objs[:, 0]
+>       np.testing.assert_allclose(values, expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 8 (37.5%)
+E       Mismatch at indices:
+E        [5]: 1.6256955266361395 (ACTUAL), 1.4054593908076556 (DESIRED)
+E        [6]: 0.3270935456223182 (ACTUAL), 0.021496604649315246 (DESIRED)
+E        [7]: 0.3839757741499342 (ACTUAL), 0.08707365486569783 (DESIRED)
+E       Max absolute difference among violations: 0.30559694
+E       Max relative difference among violations: 14.21605625
+E        ACTUAL: array([     inf, 1.625696, 0.327094, 0.383976, 1.349727, 1.625696,
+E              0.327094, 0.383976])
+E        DESIRED: array([     inf, 1.625696, 0.327094, 0.383976, 1.349727, 1.405459,
+E              0.021497, 0.087074])
+
+tests/test_analysis_delta_scaling.py:111: AssertionError
+____________ testDeltaSubsetSearchUsesSameScaledDistances[ea-1000] _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7cfcd8613bf0>
+factor = 1000, entry = 'ea'
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    def testDeltaSubsetSearchUsesSameScaledDistances(monkeypatch, factor, entry):
+        x, y, unit, _ = makeData()
+        scale = np.array([factor, 1, 1])
+        p = Problem(nInput=3, nObj=1, lb=-scale, ub=scale, objFunc=lambda x: x[:, :1])
+        masks = np.array(list(product([0, 1], repeat=3)))
+        expected = np.array([pairwiseDelta(unit[:, mask.astype(bool)], y) if np.any(mask) else np.inf for mask in masks])
+        if entry == "vio":
+            labels = DeltaTest(**QUIET).findCombVio(p, x*scale, y)
+            assert labels == [p.xLabels[j] for j in np.flatnonzero(masks[np.argmin(expected)])]
+        else:
+            import UQPyL.optimization.soea as optimization
+    
+            class ExhaustiveGA:
+                def __init__(self, **kwargs):
+                    pass
+    
+                def run(self, selectionProblem):
+                    values = selectionProblem.evaluate(masks).objs[:, 0]
+                    np.testing.assert_allclose(values, expected, atol=1e-14)
+                    return int(np.argmin(values))
+    
+            monkeypatch.setattr(optimization, "GA", ExhaustiveGA)
+>           best = DeltaTest(**QUIET).findCombEA(p, x*scale, y, FEs=8, verboseFlag=False, saveFlag=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_scaling.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:175: in findCombEA
+    res = ga.run(problem)
+          ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_analysis_delta_scaling.testDeltaSubsetSearchUsesSameScaledDistances.<locals>.ExhaustiveGA object at 0x7cfcd8611b80>
+selectionProblem = <UQPyL.problem.problem.Problem object at 0x7cfcd86121b0>
+
+    def run(self, selectionProblem):
+        values = selectionProblem.evaluate(masks).objs[:, 0]
+>       np.testing.assert_allclose(values, expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 8 (37.5%)
+E       Mismatch at indices:
+E        [5]: 1.3497268979594566 (ACTUAL), 1.4054593908076556 (DESIRED)
+E        [6]: 1.3497268979594566 (ACTUAL), 0.021496604649315246 (DESIRED)
+E        [7]: 1.3497268979594566 (ACTUAL), 0.08707365486569783 (DESIRED)
+E       Max absolute difference among violations: 1.32823029
+E       Max relative difference among violations: 61.78791093
+E        ACTUAL: array([     inf, 1.625696, 0.327094, 0.383976, 1.349727, 1.349727,
+E              1.349727, 1.349727])
+E        DESIRED: array([     inf, 1.625696, 0.327094, 0.383976, 1.349727, 1.405459,
+E              0.021497, 0.087074])
+
+tests/test_analysis_delta_scaling.py:111: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_delta_scaling.py::testDeltaUnitsMatchIndependentScaledDistanceReference[1]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaUnitsMatchIndependentScaledDistanceReference[0.001]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaUnitsMatchIndependentScaledDistanceReference[1000]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSignedNormalizationPreservesOrderAndCancellation[scores0]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSignedNormalizationPreservesOrderAndCancellation[scores1]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSignedNormalizationPreservesOrderAndCancellation[scores2]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaNonconstantOutputsWithoutPositiveScoresWarnAndReturn
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSubsetSearchUsesSameScaledDistances[vio-0.001]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSubsetSearchUsesSameScaledDistances[vio-1000]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSubsetSearchUsesSameScaledDistances[ea-0.001]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaSubsetSearchUsesSameScaledDistances[ea-1000]
+11 failed, 3 passed in 0.81s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q tests/test_analysis_delta_scaling.py -W error` failed. (See above for error)

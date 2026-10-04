@@ -1,0 +1,55 @@
+........................................................................ [ 20%]
+........................................................................ [ 40%]
+........................................................................ [ 60%]
+........................................................................ [ 80%]
+....................................F...............................     [100%]
+=================================== FAILURES ===================================
+____ test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics ____
+
+    def test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics():
+        obs = np.array([[1.0], [2.0]])
+    
+        def simf(X):
+            X = np.atleast_2d(X)
+            sim = np.zeros((X.shape[0], 2, 1))
+            sim[:, 0, 0] = X[:, 0]
+            sim[:, 1, 0] = X[:, 1]
+            return sim
+    
+        problem = ModelProblem(
+            nInput=2,
+            ub=[3.0, 3.0],
+            lb=[0.0, 0.0],
+            simFunc=simf,
+            obs=obs,
+            seriesLabels=["Q"],
+            name="ToyModel",
+        )
+    
+        X = np.array([
+            [1.0, 2.0],
+            [1.2, 2.2],
+            [0.0, 0.0],
+        ])
+    
+        method = SUFI2(verboseFlag=False)
+        res = method.run(problem, X, eliteSize=2)
+    
+        assert res.method == "SUFI2"
+        assert np.allclose(res.bestDecs, [[1.0, 2.0]])
+        assert np.allclose(res.bestSim, [[1.0, 2.0]])
+        assert np.allclose(res.eliteDecs, [[1.0, 2.0], [1.2, 2.2]])
+        assert np.allclose(res.eliteSims, [[1.0, 2.0], [1.2, 2.2]])
+        assert np.allclose(res.diagnostics["scores"], [0.0, 0.2, 1.5811388300841898])
+        assert np.array_equal(res.diagnostics["eliteMask"], np.array([True, True, False]))
+        assert np.allclose(res.diagnostics["updatedLb"], [1.0, 2.0])
+        assert np.allclose(res.diagnostics["updatedUb"], [1.2, 2.2])
+>       assert np.allclose(res.diagnostics["pfactor"], 0.0)
+E       assert False
+E        +  where False = <function allclose at 0x7c0416d7cc70>(1.0, 0.0)
+E        +    where <function allclose at 0x7c0416d7cc70> = np.allclose
+
+tests/test_calibration_sufi2.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_calibration_sufi2.py::test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics
+1 failed, 355 passed in 3.38s

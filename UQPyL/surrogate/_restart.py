@@ -7,10 +7,10 @@ from ..core import spawn_seed
 
 def resolveRestarts(optimizer, count):
     if count is None:
-        family = getattr(optimizer, 'alg_type', getattr(optimizer, 'type', None))
-        return 4 if family == 'MP' else 1
+        family = getattr(optimizer, "alg_type", getattr(optimizer, "type", None))
+        return 4 if family == "MP" else 1
     if isinstance(count, (bool, np.bool_)) or not isinstance(count, (int, np.integer)) or count < 0:
-        raise ValueError('nRestartTimes must be a non-negative integer.')
+        raise ValueError("nRestartTimes must be a non-negative integer.")
     return int(count)
 
 
@@ -36,5 +36,5 @@ def runLocalRestarts(model, problem, paraInfos):
         if np.isfinite(value) and value < bestValue:
             bestPoint, bestValue = point.copy(), value
     if bestPoint is None:
-        raise RuntimeError('No restart returned a finite, in-bounds hyperparameter solution.')
+        raise RuntimeError("No restart returned a finite, in-bounds hyperparameter solution.")
     return bestPoint, bestValue

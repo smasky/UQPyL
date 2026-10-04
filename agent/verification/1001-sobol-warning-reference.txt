@@ -1,0 +1,4 @@
+Seven Sobol controls pass: two validated, three recovered with warnings, two not estimated with warnings.
+All computed metrics exactly match the saved valid complete-block baselines.
+Wrong secondOrder now recovers the actual design instead of returning the old incorrect scores.
+Saved /home/wmtsky/projects/UQPyL/agent/verification/1001-sobol-warning-reference.json

@@ -1,0 +1,842 @@
+.F..........FFFFFFFFFFFFFFF                                              [100%]
+=================================== FAILURES ===================================
+____________________ testRsaConstantOutputRemainsFiniteZero ____________________
+
+    def testRsaConstantOutputRemainsFiniteZero():
+        x = np.linspace(0, 1, 8)[:, None]
+        p = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: np.ones_like(x))
+        result = RSA(verboseFlag=False).analyze(p, x, np.ones_like(x))
+        np.testing.assert_array_equal(result["S1"].values, [[0.0]])
+>       assert result.extra["rsa_regions"]["outputs"][0]["status"] == "constant_output"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'rsa_regions'
+
+tests/test_analysis_rsa_statistics.py:31: KeyError
+________ testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall[3-2] _________
+
+nSamples = 3, nRegion = 2
+
+    @pytest.mark.parametrize("nSamples,nRegion", [(3, 2), (20, 20)])
+    def testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall(nSamples, nRegion):
+        x = np.linspace(0, 1, nSamples)[:, None]
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: x)
+>       with pytest.warns(RuntimeWarning, match="no valid region comparisons") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:71: Failed
+_______ testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall[20-20] ________
+
+nSamples = 20, nRegion = 20
+
+    @pytest.mark.parametrize("nSamples,nRegion", [(3, 2), (20, 20)])
+    def testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall(nSamples, nRegion):
+        x = np.linspace(0, 1, nSamples)[:, None]
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: x)
+>       with pytest.warns(RuntimeWarning, match="no valid region comparisons") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:71: Failed
+________ testRsaWarnsForRareBinaryOutputWithoutEnoughComplementSamples _________
+
+    def testRsaWarnsForRareBinaryOutputWithoutEnoughComplementSamples():
+        x = np.linspace(0, 1, 20)[:, None]
+        y = np.zeros_like(x)
+        y[-1] = 1
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: x)
+>       with pytest.warns(RuntimeWarning, match="at least two samples"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:91: Failed
+______ testRsaAdequateRegionsKeepHandDerivedStatisticAndResetDiagnostics _______
+
+    def testRsaAdequateRegionsKeepHandDerivedStatisticAndResetDiagnostics():
+        x = np.linspace(0, 1, 20)[:, None]
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: x)
+        method = RSA(verboseFlag=False)
+>       with pytest.warns(RuntimeWarning, match="no valid region comparisons"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:103: Failed
+__________ testRsaSelectedOutputsWarnOnlyForUnavailableColumn[False] ___________
+
+provideY = False
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testRsaSelectedOutputsWarnOnlyForUnavailableColumn(provideY):
+        x = np.linspace(0, 1, 20)[:, None]
+        y = np.column_stack([x[:, 0], (x[:, 0] > 0.5).astype(float), np.ones(20)])
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return y.copy()
+    
+        problem = Problem(nInput=1, nObj=3, lb=0, ub=1, objLabels=["active", "binary", "constant"], objFunc=objective)
+>       with pytest.warns(RuntimeWarning, match="output 'active'") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:128: Failed
+___________ testRsaSelectedOutputsWarnOnlyForUnavailableColumn[True] ___________
+
+provideY = True
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testRsaSelectedOutputsWarnOnlyForUnavailableColumn(provideY):
+        x = np.linspace(0, 1, 20)[:, None]
+        y = np.column_stack([x[:, 0], (x[:, 0] > 0.5).astype(float), np.ones(20)])
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return y.copy()
+    
+        problem = Problem(nInput=1, nObj=3, lb=0, ub=1, objLabels=["active", "binary", "constant"], objFunc=objective)
+>       with pytest.warns(RuntimeWarning, match="output 'active'") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:128: Failed
+______________ testRsaUnavailableStatusSurvivesSqlitePersistence _______________
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testRsaUnavailableStatusSurviv0')
+
+    def testRsaUnavailableStatusSurvivesSqlitePersistence(tmp_path):
+        x = np.linspace(0, 1, 20)[:, None]
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=lambda x: x)
+        problem.workDir = str(tmp_path)
+>       with pytest.warns(RuntimeWarning, match="no valid region comparisons"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_rsa_statistics.py:145: Failed
+___________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[0] ___________
+
+nRegion = 0
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.rsa.RSA object at 0x72034da51b50>
+problem = <UQPyL.problem.problem.Problem object at 0x72034daf1730>
+X = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+Y = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run RSA on the provided samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Input sample matrix.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Optional sampling metadata for persistence only.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for analysis
+    
+        nInput = problem.nInput
+        if not np.all(np.isfinite(X)):
+            raise ValueError("RSA requires finite input values.")
+    
+        # Evaluate the problem if Y is not provided
+        Y = self.check_Y(X, Y, target, index)
+        calculationY = np.asarray(Y, dtype=float)
+        if not np.all(np.isfinite(calculationY)):
+            raise ValueError("RSA requires finite output values.")
+    
+        numY = Y.shape[1]
+        nRegion = self.get("nRegion")
+    
+        S1 = np.zeros((numY, nInput))
+        S1_norm = np.zeros((numY, nInput))
+    
+        row_label = self.outputLabels
+        col_label_1 = problem.xLabels
+    
+        for i in range(numY):
+            Y_i = calculationY[:, i : i + 1]
+    
+            # Define the sequence for dividing the input space into regions
+            seq = np.linspace(0.0, 1.0, nRegion + 1)
+            results = np.full((nRegion, nInput), np.nan)
+            X_di = np.empty(X.shape[0])
+    
+            trr = Y_i.ravel()
+            mrr = X_di
+            quants = self._outputQuantiles(trr, seq)
+    
+            # Loop over each input dimension to perform RSA
+            for d_i in range(nInput):
+                X_di[:] = X[:, d_i]
+    
+                # Perform analysis for each region
+>               b = (quants[0] <= trr) & (trr <= quants[1])
+                                                 ^^^^^^^^^
+E               IndexError: index 1 is out of bounds for axis 0 with size 1
+
+UQPyL/analysis/methods/rsa.py:102: IndexError
+___________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[1] ___________
+
+nRegion = 1
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+>       with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_rsa_statistics.py:167: Failed
+__________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[-1] ___________
+
+nRegion = -1
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+>       with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'nRegion.*integer.*at least 2'
+E         Actual message: 'negative dimensions are not allowed'
+
+tests/test_analysis_rsa_statistics.py:167: AssertionError
+__________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[2.5] __________
+
+nRegion = 2.5
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:89: in _analyzeCore
+    seq = np.linspace(0.0, 1.0, nRegion + 1)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+start = 0.0, stop = 1.0, num = 3.5, endpoint = True, retstep = False
+dtype = None, axis = 0, device = None
+
+    @array_function_dispatch(_linspace_dispatcher)
+    def linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None,
+                 axis=0, *, device=None):
+        """
+        Return evenly spaced numbers over a specified interval.
+    
+        Returns `num` evenly spaced samples, calculated over the
+        interval [`start`, `stop`].
+    
+        The endpoint of the interval can optionally be excluded.
+    
+        .. versionchanged:: 1.20.0
+            Values are rounded towards ``-inf`` instead of ``0`` when an
+            integer ``dtype`` is specified. The old behavior can
+            still be obtained with ``np.linspace(start, stop, num).astype(np.int_)``
+    
+        Parameters
+        ----------
+        start : array_like
+            The starting value of the sequence.
+        stop : array_like
+            The end value of the sequence, unless `endpoint` is set to False.
+            In that case, the sequence consists of all but the last of ``num + 1``
+            evenly spaced samples, so that `stop` is excluded.  Note that the step
+            size changes when `endpoint` is False.
+        num : int, optional
+            Number of samples to generate. Default is 50. Must be non-negative.
+        endpoint : bool, optional
+            If True, `stop` is the last sample. Otherwise, it is not included.
+            Default is True.
+        retstep : bool, optional
+            If True, return (`samples`, `step`), where `step` is the spacing
+            between samples.
+        dtype : dtype, optional
+            The type of the output array.  If `dtype` is not given, the data type
+            is inferred from `start` and `stop`. The inferred dtype will never be
+            an integer; `float` is chosen even if the arguments would produce an
+            array of integers.
+        axis : int, optional
+            The axis in the result to store the samples.  Relevant only if start
+            or stop are array-like.  By default (0), the samples will be along a
+            new axis inserted at the beginning. Use -1 to get an axis at the end.
+        device : str, optional
+            The device on which to place the created array. Default: None.
+            For Array-API interoperability only, so must be ``"cpu"`` if passed.
+    
+            .. versionadded:: 2.0.0
+    
+        Returns
+        -------
+        samples : ndarray
+            There are `num` equally spaced samples in the closed interval
+            ``[start, stop]`` or the half-open interval ``[start, stop)``
+            (depending on whether `endpoint` is True or False).
+        step : float, optional
+            Only returned if `retstep` is True
+    
+            Size of spacing between samples.
+    
+    
+        See Also
+        --------
+        arange : Similar to `linspace`, but uses a step size (instead of the
+                 number of samples).
+        geomspace : Similar to `linspace`, but with numbers spaced evenly on a log
+                    scale (a geometric progression).
+        logspace : Similar to `geomspace`, but with the end points specified as
+                   logarithms.
+        :ref:`how-to-partition`
+    
+        Examples
+        --------
+        >>> import numpy as np
+        >>> np.linspace(2.0, 3.0, num=5)
+        array([2.  , 2.25, 2.5 , 2.75, 3.  ])
+        >>> np.linspace(2.0, 3.0, num=5, endpoint=False)
+        array([2. ,  2.2,  2.4,  2.6,  2.8])
+        >>> np.linspace(2.0, 3.0, num=5, retstep=True)
+        (array([2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)
+    
+        Graphical illustration:
+    
+        >>> import matplotlib.pyplot as plt
+        >>> N = 8
+        >>> y = np.zeros(N)
+        >>> x1 = np.linspace(0, 10, N, endpoint=True)
+        >>> x2 = np.linspace(0, 10, N, endpoint=False)
+        >>> plt.plot(x1, y, 'o')
+        [<matplotlib.lines.Line2D object at 0x...>]
+        >>> plt.plot(x2, y + 0.5, 'o')
+        [<matplotlib.lines.Line2D object at 0x...>]
+        >>> plt.ylim([-0.5, 1])
+        (-0.5, 1)
+        >>> plt.show()
+    
+        """
+>       num = operator.index(num)
+              ^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'float' object cannot be interpreted as an integer
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/function_base.py:123: TypeError
+_________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[True] __________
+
+nRegion = True
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:90: in _analyzeCore
+    results = np.full((nRegion, nInput), np.nan)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+shape = (True, 1), fill_value = array(nan), dtype = dtype('float64')
+order = 'C', device = None, like = None
+
+    @finalize_array_function_like
+    @set_module('numpy')
+    def full(shape, fill_value, dtype=None, order='C', *, device=None, like=None):
+        """
+        Return a new array of given shape and type, filled with `fill_value`.
+    
+        Parameters
+        ----------
+        shape : int or sequence of ints
+            Shape of the new array, e.g., ``(2, 3)`` or ``2``.
+        fill_value : scalar or array_like
+            Fill value.
+        dtype : data-type, optional
+            The desired data-type for the array  The default, None, means
+             ``np.array(fill_value).dtype``.
+        order : {'C', 'F'}, optional
+            Whether to store multidimensional data in C- or Fortran-contiguous
+            (row- or column-wise) order in memory.
+        device : str, optional
+            The device on which to place the created array. Default: None.
+            For Array-API interoperability only, so must be ``"cpu"`` if passed.
+    
+            .. versionadded:: 2.0.0
+        ${ARRAY_FUNCTION_LIKE}
+    
+            .. versionadded:: 1.20.0
+    
+        Returns
+        -------
+        out : ndarray
+            Array of `fill_value` with the given shape, dtype, and order.
+    
+        See Also
+        --------
+        full_like : Return a new array with shape of input filled with value.
+        empty : Return a new uninitialized array.
+        ones : Return a new array setting values to one.
+        zeros : Return a new array setting values to zero.
+    
+        Examples
+        --------
+        >>> import numpy as np
+        >>> np.full((2, 2), np.inf)
+        array([[inf, inf],
+               [inf, inf]])
+        >>> np.full((2, 2), 10)
+        array([[10, 10],
+               [10, 10]])
+    
+        >>> np.full((2, 2), [1, 2])
+        array([[1, 2],
+               [1, 2]])
+    
+        """
+        if like is not None:
+            return _full_with_like(
+                like, shape, fill_value, dtype=dtype, order=order, device=device
+            )
+    
+        if dtype is None:
+            fill_value = asarray(fill_value)
+            dtype = fill_value.dtype
+>       a = empty(shape, dtype, order, device=device)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: an integer is required
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/numeric.py:385: TypeError
+_______ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[nRegion5] ________
+
+nRegion = np.False_
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:90: in _analyzeCore
+    results = np.full((nRegion, nInput), np.nan)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+shape = (np.False_, 1), fill_value = array(nan), dtype = dtype('float64')
+order = 'C', device = None, like = None
+
+    @finalize_array_function_like
+    @set_module('numpy')
+    def full(shape, fill_value, dtype=None, order='C', *, device=None, like=None):
+        """
+        Return a new array of given shape and type, filled with `fill_value`.
+    
+        Parameters
+        ----------
+        shape : int or sequence of ints
+            Shape of the new array, e.g., ``(2, 3)`` or ``2``.
+        fill_value : scalar or array_like
+            Fill value.
+        dtype : data-type, optional
+            The desired data-type for the array  The default, None, means
+             ``np.array(fill_value).dtype``.
+        order : {'C', 'F'}, optional
+            Whether to store multidimensional data in C- or Fortran-contiguous
+            (row- or column-wise) order in memory.
+        device : str, optional
+            The device on which to place the created array. Default: None.
+            For Array-API interoperability only, so must be ``"cpu"`` if passed.
+    
+            .. versionadded:: 2.0.0
+        ${ARRAY_FUNCTION_LIKE}
+    
+            .. versionadded:: 1.20.0
+    
+        Returns
+        -------
+        out : ndarray
+            Array of `fill_value` with the given shape, dtype, and order.
+    
+        See Also
+        --------
+        full_like : Return a new array with shape of input filled with value.
+        empty : Return a new uninitialized array.
+        ones : Return a new array setting values to one.
+        zeros : Return a new array setting values to zero.
+    
+        Examples
+        --------
+        >>> import numpy as np
+        >>> np.full((2, 2), np.inf)
+        array([[inf, inf],
+               [inf, inf]])
+        >>> np.full((2, 2), 10)
+        array([[10, 10],
+               [10, 10]])
+    
+        >>> np.full((2, 2), [1, 2])
+        array([[1, 2],
+               [1, 2]])
+    
+        """
+        if like is not None:
+            return _full_with_like(
+                like, shape, fill_value, dtype=dtype, order=order, device=device
+            )
+    
+        if dtype is None:
+            fill_value = asarray(fill_value)
+            dtype = fill_value.dtype
+>       a = empty(shape, dtype, order, device=device)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: an integer is required
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/numeric.py:385: TypeError
+___________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[2] ___________
+
+nRegion = '2'
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.rsa.RSA object at 0x72034dacfef0>
+problem = <UQPyL.problem.problem.Problem object at 0x72034dacf8f0>
+X = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+Y = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run RSA on the provided samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Input sample matrix.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Optional sampling metadata for persistence only.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for analysis
+    
+        nInput = problem.nInput
+        if not np.all(np.isfinite(X)):
+            raise ValueError("RSA requires finite input values.")
+    
+        # Evaluate the problem if Y is not provided
+        Y = self.check_Y(X, Y, target, index)
+        calculationY = np.asarray(Y, dtype=float)
+        if not np.all(np.isfinite(calculationY)):
+            raise ValueError("RSA requires finite output values.")
+    
+        numY = Y.shape[1]
+        nRegion = self.get("nRegion")
+    
+        S1 = np.zeros((numY, nInput))
+        S1_norm = np.zeros((numY, nInput))
+    
+        row_label = self.outputLabels
+        col_label_1 = problem.xLabels
+    
+        for i in range(numY):
+            Y_i = calculationY[:, i : i + 1]
+    
+            # Define the sequence for dividing the input space into regions
+>           seq = np.linspace(0.0, 1.0, nRegion + 1)
+                                        ^^^^^^^^^^^
+E           TypeError: can only concatenate str (not "int") to str
+
+UQPyL/analysis/methods/rsa.py:89: TypeError
+_________ testRsaRejectsInvalidRegionCountBeforeModelEvaluation[None] __________
+
+nRegion = None
+
+    @pytest.mark.parametrize("nRegion", [0, 1, -1, 2.5, True, np.bool_(False), "2", None])
+    def testRsaRejectsInvalidRegionCountBeforeModelEvaluation(nRegion):
+        x = np.linspace(0, 1, 20)[:, None]
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples
+    
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=1, objFunc=objective)
+        method = RSA(nRegion=2, verboseFlag=False)
+        method.set("nRegion", nRegion)
+        with pytest.raises(ValueError, match="nRegion.*integer.*at least 2"):
+>           method.analyze(problem, x)
+
+tests/test_analysis_rsa_statistics.py:168: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.rsa.RSA object at 0x72034daf2c90>
+problem = <UQPyL.problem.problem.Problem object at 0x72034daf33b0>
+X = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+Y = array([[0.        ],
+       [0.05263158],
+       [0.10526316],
+       [0.15789474],
+       [0.21052632],
+       [0.263...[0.73684211],
+       [0.78947368],
+       [0.84210526],
+       [0.89473684],
+       [0.94736842],
+       [1.        ]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run RSA on the provided samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Input sample matrix.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Optional sampling metadata for persistence only.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for analysis
+    
+        nInput = problem.nInput
+        if not np.all(np.isfinite(X)):
+            raise ValueError("RSA requires finite input values.")
+    
+        # Evaluate the problem if Y is not provided
+        Y = self.check_Y(X, Y, target, index)
+        calculationY = np.asarray(Y, dtype=float)
+        if not np.all(np.isfinite(calculationY)):
+            raise ValueError("RSA requires finite output values.")
+    
+        numY = Y.shape[1]
+        nRegion = self.get("nRegion")
+    
+        S1 = np.zeros((numY, nInput))
+        S1_norm = np.zeros((numY, nInput))
+    
+        row_label = self.outputLabels
+        col_label_1 = problem.xLabels
+    
+        for i in range(numY):
+            Y_i = calculationY[:, i : i + 1]
+    
+            # Define the sequence for dividing the input space into regions
+>           seq = np.linspace(0.0, 1.0, nRegion + 1)
+                                        ^^^^^^^^^^^
+E           TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'
+
+UQPyL/analysis/methods/rsa.py:89: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_rsa_statistics.py::testRsaConstantOutputRemainsFiniteZero
+FAILED tests/test_analysis_rsa_statistics.py::testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall[3-2]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall[20-20]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaWarnsForRareBinaryOutputWithoutEnoughComplementSamples
+FAILED tests/test_analysis_rsa_statistics.py::testRsaAdequateRegionsKeepHandDerivedStatisticAndResetDiagnostics
+FAILED tests/test_analysis_rsa_statistics.py::testRsaSelectedOutputsWarnOnlyForUnavailableColumn[False]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaSelectedOutputsWarnOnlyForUnavailableColumn[True]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaUnavailableStatusSurvivesSqlitePersistence
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[0]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[1]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[-1]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[2.5]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[True]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[nRegion5]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[2]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsInvalidRegionCountBeforeModelEvaluation[None]
+16 failed, 11 passed in 1.12s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_analysis_rsa_statistics.py` failed. (See above for error)

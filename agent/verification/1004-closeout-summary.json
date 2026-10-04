@@ -1,0 +1,36 @@
+[
+  {
+    "python": "3.12.0",
+    "result": "3084 passed in 134.52s",
+    "wheel": ".cache/1004-wheel312/uqpyl-2.1.6-cp312-cp312-linux_x86_64.whl",
+    "sha256": "15a5236169e806a3f8f6facc6a7d72f08770f17b72179b788df21ce2dfcf2906",
+    "coverage": {
+      "python_version": "3.12.0",
+      "platform": "linux",
+      "commit_sha": null,
+      "lines_covered": 11083,
+      "lines_total": 11772,
+      "branches_covered": 2911,
+      "branches_total": 3498,
+      "line_rate": 0.9414712878015631,
+      "branch_rate": 0.8321898227558605
+    }
+  },
+  {
+    "python": "3.14.7",
+    "result": "3084 passed in 119.77s",
+    "wheel": ".cache/1004-wheel314/uqpyl-2.1.6-cp314-cp314-linux_x86_64.whl",
+    "sha256": "c882770d80a1b7106dfdc4df19b10583673bf1bebe99413cfeb861a4ad16a139",
+    "coverage": {
+      "python_version": "3.14.7",
+      "platform": "linux",
+      "commit_sha": null,
+      "lines_covered": 11068,
+      "lines_total": 11757,
+      "branches_covered": 2911,
+      "branches_total": 3498,
+      "line_rate": 0.9413966147826827,
+      "branch_rate": 0.8321898227558605
+    }
+  }
+]

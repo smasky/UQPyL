@@ -1,0 +1,34 @@
+{
+  "before_count": 3084,
+  "after_count": 3094,
+  "removed": [],
+  "added": [
+    "tests/test_doe_design_structure.py::testFastTrajectoryMatchesIndependentTriangularWave[1]",
+    "tests/test_doe_design_structure.py::testFastTrajectoryMatchesIndependentTriangularWave[3]",
+    "tests/test_doe_design_structure.py::testMorrisTrajectoryVisitsEveryAxisOnceOnLevelGrid[4-1]",
+    "tests/test_doe_design_structure.py::testMorrisTrajectoryVisitsEveryAxisOnceOnLevelGrid[4-3]",
+    "tests/test_doe_design_structure.py::testMorrisTrajectoryVisitsEveryAxisOnceOnLevelGrid[8-1]",
+    "tests/test_doe_design_structure.py::testMorrisTrajectoryVisitsEveryAxisOnceOnLevelGrid[8-3]",
+    "tests/test_doe_design_structure.py::testSaltelliRowsReplaceExactlyOneCoordinate[False-1]",
+    "tests/test_doe_design_structure.py::testSaltelliRowsReplaceExactlyOneCoordinate[False-3]",
+    "tests/test_doe_design_structure.py::testSaltelliRowsReplaceExactlyOneCoordinate[True-1]",
+    "tests/test_doe_design_structure.py::testSaltelliRowsReplaceExactlyOneCoordinate[True-3]"
+  ],
+  "marker_counts": {
+    "numerical": 149,
+    "statistical": 8
+  },
+  "domain_counts": {
+    "analysis": 369,
+    "calibration": 418,
+    "doe": 108,
+    "inference": 340,
+    "integration": 24,
+    "optimization": 517,
+    "problem": 199,
+    "runtime": 46,
+    "surrogate": 1051,
+    "util": 6,
+    "viz": 16
+  }
+}

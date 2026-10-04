@@ -151,7 +151,7 @@ X -> simFunc(X) -> sim -> GLUE score -> behavioral / best samples
 这个例子用两个参数匹配两个观测时刻：
 
 ```text
-obs = [[1.0], [2.0]]
+obs = [1.0, 2.0]
 sim(t1) = x1
 sim(t2) = x2
 ```
@@ -163,18 +163,18 @@ from UQPyL.calibration import GLUE
 from UQPyL.problem import ModelProblem
 
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -198,7 +198,6 @@ from UQPyL.problem import Problem
 from UQPyL.surrogate import RandSelect, mse, r_square
 from UQPyL.surrogate.rbf import RBF
 
-np.random.seed(123)
 
 
 def objFunc(X):
@@ -210,7 +209,7 @@ problem = Problem(nInput=2, nObj=1, ub=1.0, lb=0.0, objFunc=objFunc, optType="mi
 
 X = LHS("classic").sample(problem, nSamples=30, seed=123)
 Y = problem.evaluate(X).objs
-trainIdx, testIdx = RandSelect(pTest=25).split(X)
+trainIdx, testIdx = RandSelect(pTest=25).split(X, seed=123)
 
 model = RBF()
 model.fit(X[trainIdx], Y[trainIdx])

@@ -1,0 +1,138 @@
+[
+  {
+    "file": "test_analysis_coordinates_and_effects.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_analysis_delta_validation.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_analysis_rsa_statistics.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_analysis_shape_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_autotuner_split_and_report_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_calibration_ensemble_preflight.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_calibration_evaluation_and_storage.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_calibration_gain_work.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_calibration_projection_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_doe_documentation_examples.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_inference_demc_configuration.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_inference_diagnostics_and_partial_results.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_inference_incremental_history.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_inference_result_isolation_and_directions.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_inference_stop_reason_persistence.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_asmo_reproducibility.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_capabilities_and_stop_reasons.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_configuration_lifecycle.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_ego_component_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_evaluation_and_persistence.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_hv_scheduling.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_optimization_reference_point_validation.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_problem_public_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_runtime_domain_and_identity.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_runtime_reader_field_names.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_fit_and_validation.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_mars_derivative_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_mars_refit_lifecycle.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_prediction_work.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_public_fit_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_randomness_and_failures.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_surrogate_tuning_lifecycle.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_viz_smoothing_contracts.py",
+    "return_code": 0
+  },
+  {
+    "file": "test_viz_surrogate_limits.py",
+    "return_code": 0
+  }
+]

@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import minimize
 
 
-class LBFGSB():
+class LBFGSB:
     """
     Internal MP optimizer backed by scipy.optimize.minimize(method='L-BFGS-B').
 
@@ -23,9 +23,9 @@ class LBFGSB():
         lb = np.asarray(problem.lb, dtype=float).ravel()
         ub = np.asarray(problem.ub, dtype=float).ravel()
         if lb.size != problem.nInput or ub.size != problem.nInput or not lb.size:
-            raise ValueError('LBFGSB bounds must match problem.nInput.')
+            raise ValueError("LBFGSB bounds must match problem.nInput.")
         if not np.all(np.isfinite(lb)) or not np.all(np.isfinite(ub)) or np.any(lb > ub):
-            raise ValueError('LBFGSB requires finite, ordered bounds.')
+            raise ValueError("LBFGSB requires finite, ordered bounds.")
 
         if xInit is None:
             rng = np.random.default_rng(seed)
@@ -33,7 +33,7 @@ class LBFGSB():
         else:
             xInit = np.asarray(xInit, dtype=float).ravel()
             if xInit.size != lb.size or not np.all(np.isfinite(xInit)):
-                raise ValueError('xInit must contain one finite value per input.')
+                raise ValueError("xInit must contain one finite value per input.")
 
         xInit = np.clip(xInit, lb, ub)
         bounds = list(zip(lb, ub))
@@ -62,6 +62,6 @@ class LBFGSB():
         if point.size == lb.size and np.all(np.isfinite(point)) and np.all(point >= lb) and np.all(point <= ub):
             obj_func(point)
         if bestDec is None:
-            raise RuntimeError('LBFGSB found no finite, in-bounds objective value.')
+            raise RuntimeError("LBFGSB found no finite, in-bounds objective value.")
 
         return bestDec.copy(), bestObj

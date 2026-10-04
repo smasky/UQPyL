@@ -9,8 +9,8 @@ from UQPyL.problem import ModelProblem
 def biasProblem():
     obs = np.array([[10.], [20.], [30.]])
     def simulate(X):
-        return np.broadcast_to(obs[None, :, :]+X[:, None, :], (len(X), 3, 1)).copy()
-    return ModelProblem(nInput=1, lb=-20, ub=20, obs=obs, simFunc=simulate)
+        return (np.broadcast_to(obs[None, :, :]+X[:, None, :], (len(X), 3, 1)).copy()).reshape(len(X), -1)
+    return ModelProblem(nInput=1, lb=-20, ub=20, obs=(obs).reshape(-1), simFunc=simulate)
 
 
 def test_pbias_retains_sign_and_sums_before_comparison_absolute_value():
@@ -51,7 +51,7 @@ def test_sufi2_ranks_absolute_bias_but_keeps_signed_elite_scores():
 
 @pytest.mark.parametrize('methodClass', [ES, IES])
 def test_smoothers_choose_nearest_zero_and_keep_raw_bias(methodClass):
-    options = dict(maxIters=2, lam=1e-6) if methodClass is IES else {}
+    options = dict(maxIters=2, lam=1e-6, seed=12) if methodClass is IES else {}
     result = methodClass(metric='pbias', **options).run(
         biasProblem(), [[-6], [-1], [0], [1], [6]], r=np.eye(3)*3)
     scores = result.diagnostics['scores']

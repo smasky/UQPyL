@@ -1,0 +1,1846 @@
+[
+  {
+    "case": "local_peak",
+    "seed": 11,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 298,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1299,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 253,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 104,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 72,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 19342,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [
+          "SVR reached maxIter=100000; returning an approximate model. Convergence is not established; inspect fitState['solver']."
+        ],
+        "solver": {
+          "iterations": 100000,
+          "maxIterations": 100000,
+          "iterationLimitReached": true
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 801,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1412,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 5294,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 72,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1716,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 1,
+    "validation_r2": 0.28508505858627253,
+    "test_r2": 0.09990825625524613,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 1716,
+      "max_iterations": 100000,
+      "iteration_limit_reached": false
+    }
+  },
+  {
+    "case": "local_peak",
+    "seed": 11,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 298,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1299,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 253,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 104,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 72,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 19342,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 177735,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 801,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1412,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 5294,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 72,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1716,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 1,
+    "validation_r2": 0.28508505858627253,
+    "test_r2": 0.09990825625524613,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 1716,
+      "max_iterations": 1000000,
+      "iteration_limit_reached": false
+    },
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "local_peak",
+    "seed": 23,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 164,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 999,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 366,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 22,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 12,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 48,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 18078,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [
+          "SVR reached maxIter=100000; returning an approximate model. Convergence is not established; inspect fitState['solver']."
+        ],
+        "solver": {
+          "iterations": 100000,
+          "maxIterations": 100000,
+          "iterationLimitReached": true
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 488,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 698,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 227,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 48,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1664,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.5270944528306266,
+    "test_r2": 0.9373051340482704,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 1664,
+      "max_iterations": 100000,
+      "iteration_limit_reached": false
+    }
+  },
+  {
+    "case": "local_peak",
+    "seed": 23,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 164,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 999,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 366,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 22,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 12,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 48,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 18078,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 101004,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 488,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 698,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 227,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 48,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1664,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.5270944528306266,
+    "test_r2": 0.9373051340482704,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 1664,
+      "max_iterations": 1000000,
+      "iteration_limit_reached": false
+    },
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "local_peak",
+    "seed": 47,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 217,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1122,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 390,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 18,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 39,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 12146,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [
+          "SVR reached maxIter=100000; returning an approximate model. Convergence is not established; inspect fitState['solver']."
+        ],
+        "solver": {
+          "iterations": 100000,
+          "maxIterations": 100000,
+          "iterationLimitReached": true
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 656,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 663,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 863,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 5667,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.8640199777726978,
+    "test_r2": 0.939867043411885,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 5667,
+      "max_iterations": 100000,
+      "iteration_limit_reached": false
+    }
+  },
+  {
+    "case": "local_peak",
+    "seed": 47,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 217,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1122,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 390,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 18,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 39,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 12146,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 116805,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 656,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 663,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 863,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 45,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 5667,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.8640199777726978,
+    "test_r2": 0.939867043411885,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 5667,
+      "max_iterations": 1000000,
+      "iteration_limit_reached": false
+    },
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "discontinuous",
+    "seed": 11,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 139,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 707,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1404,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 156,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 258,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 309,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 8466,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 53437,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 2998,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 7988,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 13014,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 349,
+          "maxIterations": 100000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [
+          "SVR reached maxIter=100000; returning an approximate model. Convergence is not established; inspect fitState['solver']."
+        ],
+        "solver": {
+          "iterations": 100000,
+          "maxIterations": 100000,
+          "iterationLimitReached": true
+        }
+      }
+    ],
+    "selected_candidate": 7,
+    "validation_r2": 0.8624262951455508,
+    "test_r2": 0.8932783971385466,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 100000,
+      "max_iterations": 100000,
+      "iteration_limit_reached": true
+    }
+  },
+  {
+    "case": "discontinuous",
+    "seed": 11,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 139,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 707,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 1404,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 156,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 258,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 309,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 8466,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 53437,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 2998,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 7988,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 13014,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 349,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "",
+        "python_warnings": [],
+        "solver": {
+          "iterations": 124173,
+          "maxIterations": 1000000,
+          "iterationLimitReached": false
+        }
+      }
+    ],
+    "selected_candidate": 7,
+    "validation_r2": 0.8624262951455508,
+    "test_r2": 0.8933699648691564,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel",
+      "solver"
+    ],
+    "final_solver": {
+      "iterations": 124173,
+      "max_iterations": 1000000,
+      "iteration_limit_reached": false
+    },
+    "max_prediction_change": 0.004624721240545804
+  }
+]

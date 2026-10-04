@@ -1,0 +1,1166 @@
+[
+  {
+    "case": "local_peak",
+    "seed": 11,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "WARNING: reaching max number of iterations"
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 1,
+    "validation_r2": 0.28508505858627253,
+    "test_r2": 0.09990825625524613,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ]
+  },
+  {
+    "case": "local_peak",
+    "seed": 11,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 1,
+    "validation_r2": 0.28508505858627253,
+    "test_r2": 0.09990825625524613,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ],
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "local_peak",
+    "seed": 23,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "WARNING: reaching max number of iterations"
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.5270944528306266,
+    "test_r2": 0.9373051340482704,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ]
+  },
+  {
+    "case": "local_peak",
+    "seed": 23,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.5270944528306266,
+    "test_r2": 0.9373051340482704,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ],
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "local_peak",
+    "seed": 47,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "WARNING: reaching max number of iterations"
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.8640199777726978,
+    "test_r2": 0.939867043411885,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ]
+  },
+  {
+    "case": "local_peak",
+    "seed": 47,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 8,
+    "validation_r2": 0.8640199777726978,
+    "test_r2": 0.939867043411885,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ],
+    "max_prediction_change": 0.0
+  },
+  {
+    "case": "discontinuous",
+    "seed": 11,
+    "max_iter": 100000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": "WARNING: reaching max number of iterations"
+      }
+    ],
+    "selected_candidate": 7,
+    "validation_r2": 0.8624262951455508,
+    "test_r2": 0.8932783971385466,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ]
+  },
+  {
+    "case": "discontinuous",
+    "seed": 11,
+    "max_iter": 1000000,
+    "fits": [
+      {
+        "index": 0,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 1,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 2,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 3,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 4,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 5,
+        "n_train": 144,
+        "parameters": {
+          "C": 1.0,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 6,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 7,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 8,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 9,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 1.0
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 10,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 11,
+        "n_train": 144,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.10000000000000002,
+          "gamma": 100.00000000000004
+        },
+        "native_stderr": ""
+      },
+      {
+        "index": 12,
+        "n_train": 192,
+        "parameters": {
+          "C": 100.00000000000004,
+          "epsilon": 0.0010000000000000002,
+          "gamma": 10.000000000000002
+        },
+        "native_stderr": ""
+      }
+    ],
+    "selected_candidate": 7,
+    "validation_r2": 0.8624262951455508,
+    "test_r2": 0.8933699648691564,
+    "fit_state_keys": [
+      "innerModel",
+      "symbol",
+      "kernel"
+    ],
+    "max_prediction_change": 0.004624721240545804
+  }
+]

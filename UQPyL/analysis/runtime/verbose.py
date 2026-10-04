@@ -9,6 +9,7 @@ import numpy as np
 from ...core import config
 from ...core.runtime import ensure_result_dir
 
+
 @dataclass
 class VerboseConfig:
     precision: int = 4
@@ -130,6 +131,7 @@ class Verbose:
     def _emitLog(obj, text):
         if obj.problem.logLines is not None:
             obj.problem.logLines.append(text + "\n")
+
 
 def _format_value(value, precision: int):
     value = float(value)

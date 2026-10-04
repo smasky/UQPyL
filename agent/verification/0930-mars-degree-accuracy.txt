@@ -1,0 +1,79 @@
+additive 128 3 2 MAE 0.0013138183848636395 weights [0.96793848 0.03206152 0.         0.         0.        ]
+additive 128 3 3 MAE 0.0011812899937044083 weights [0.9682698 0.0317302 0.        0.        0.       ]
+second_order 128 3 2 MAE 0.02043842754279543 weights [5.01999436e-01 4.20602044e-01 7.73797966e-02 9.36148346e-06
+ 9.36148346e-06]
+second_order 128 3 3 MAE 0.013871658960712657 weights [4.78170412e-01 4.37018966e-01 8.47960181e-02 7.30222994e-06
+ 7.30222994e-06]
+weak_third_order 128 3 2 MAE 0.05161290322580642 weights [1. 0. 0. 0. 0.]
+weak_third_order 128 3 3 MAE 0.034029376956642085 weights [0.95604118 0.01452359 0.01303747 0.01639776 0.        ]
+strong_third_order 128 3 2 MAE 0.1976306878732817 weights [0.64901834 0.00767869 0.12211611 0.12612848 0.09505838]
+strong_third_order 128 3 3 MAE 0.09625111782315332 weights [0.46921123 0.08035244 0.17901977 0.27141657 0.        ]
+additive 128 17 2 MAE 0.0010406447597656437 weights [0.96862141 0.03137859 0.         0.         0.        ]
+additive 128 17 3 MAE 0.00047999623717948634 weights [0.97002303 0.02997697 0.         0.         0.        ]
+second_order 128 17 2 MAE 0.0031871079689895 weights [4.78651227e-01 4.63730343e-01 5.76124807e-02 3.99784949e-06
+ 1.95119964e-06]
+second_order 128 17 3 MAE 0.010695717168438876 weights [4.44958820e-01 4.93799112e-01 6.12256734e-02 3.26577428e-32
+ 1.63942361e-05]
+weak_third_order 128 17 2 MAE 0.05161290322580642 weights [1. 0. 0. 0. 0.]
+weak_third_order 128 17 3 MAE 0.03791186321340754 weights [0.9657474  0.01264979 0.01140877 0.01019404 0.        ]
+strong_third_order 128 17 2 MAE 0.3 weights [1. 0. 0. 0. 0.]
+strong_third_order 128 17 3 MAE 0.11191291564083272 weights [0.52978229 0.14759422 0.19954562 0.12307787 0.        ]
+additive 128 41 2 MAE 0.0007830867475387276 weights [0.9692653 0.0307347 0.        0.        0.       ]
+additive 128 41 3 MAE 0.001060155141701455 weights [0.96857263 0.03142737 0.         0.         0.        ]
+second_order 128 41 2 MAE 0.012613274946028413 weights [4.46199328e-01 4.65663711e-01 8.80843257e-02 1.36802602e-07
+ 5.24984026e-05]
+second_order 128 41 3 MAE 0.013553742067893618 weights [4.52485694e-01 4.57026177e-01 9.04495811e-02 3.76452738e-05
+ 9.02360484e-07]
+weak_third_order 128 41 2 MAE 0.04932822883861335 weights [0.99082484 0.00571169 0.         0.         0.00346347]
+weak_third_order 128 41 3 MAE 0.03264924050881316 weights [0.95259084 0.00982218 0.02432585 0.01326112 0.        ]
+strong_third_order 128 41 2 MAE 0.16905738784336796 weights [0.65640253 0.20812705 0.11922948 0.         0.01624094]
+strong_third_order 128 41 3 MAE 0.16060601198478416 weights [0.65151503 0.06599517 0.18177457 0.10071523 0.        ]
+additive 512 3 2 MAE 0.0003348671090266403 weights [0.97206019 0.02793981 0.         0.         0.        ]
+additive 512 3 3 MAE 0.0003103448627669918 weights [0.97199888 0.02800112 0.         0.         0.        ]
+second_order 512 3 2 MAE 0.0015042734191720183 weights [0.4742102  0.46793743 0.05785237 0.         0.        ]
+second_order 512 3 3 MAE 0.005191456267045971 weights [0.48234307 0.45871947 0.05893745 0.         0.        ]
+weak_third_order 512 3 2 MAE 0.049617874007104976 weights [9.95012427e-01 4.52326855e-03 4.04421708e-04 5.98827934e-05
+ 0.00000000e+00]
+weak_third_order 512 3 3 MAE 0.00902239217339822 weights [0.89352372 0.03815364 0.03372372 0.03459892 0.        ]
+strong_third_order 512 3 2 MAE 0.2654866673830305 weights [0.91371667 0.07067762 0.00956022 0.00604549 0.        ]
+strong_third_order 512 3 3 MAE 0.029033022107619332 weights [0.32258256 0.23818122 0.21564791 0.22358831 0.        ]
+additive 512 17 2 MAE 0.0003004368416138437 weights [9.70471929e-01 2.95280705e-02 5.15877579e-31 5.15877579e-31
+ 5.15877579e-31]
+additive 512 17 3 MAE 5.829404739726221e-05 weights [9.71077286e-01 2.89227135e-02 4.96483345e-31 4.96483345e-31
+ 4.96483345e-31]
+second_order 512 17 2 MAE 0.002093984683512182 weights [0.47104039 0.47693307 0.05202653 0.         0.        ]
+second_order 512 17 3 MAE 0.0034694765039911995 weights [4.65717312e-01 4.80371361e-01 5.39108838e-02 2.21848978e-07
+ 2.21848978e-07]
+weak_third_order 512 17 2 MAE 0.05065079691924512 weights [0.99759473 0.         0.         0.00240527 0.        ]
+weak_third_order 512 17 3 MAE 0.013263350160639615 weights [0.90412612 0.03237833 0.03108771 0.03240785 0.        ]
+strong_third_order 512 17 2 MAE 0.28695922083758685 weights [0.96739805 0.         0.         0.03260195 0.        ]
+strong_third_order 512 17 3 MAE 0.0790243701842915 weights [0.44756093 0.18610973 0.1803569  0.18597244 0.        ]
+additive 512 41 2 MAE 0.00018178621655967828 weights [9.70768556e-01 2.92314440e-02 3.35018975e-32 3.35018975e-32
+ 3.35018975e-32]
+additive 512 41 3 MAE 0.0003711830919661735 weights [9.70295064e-01 2.97049361e-02 3.46375691e-32 3.46375691e-32
+ 3.46375691e-32]
+second_order 512 41 2 MAE 0.002734602755916103 weights [0.46486161 0.47230507 0.06283333 0.         0.        ]
+second_order 512 41 3 MAE 0.003894251695665073 weights [4.75273772e-01 4.61962484e-01 6.27637442e-02 2.21854181e-33
+ 2.21854181e-33]
+weak_third_order 512 41 2 MAE 0.051547517360183204 weights [9.99836535e-01 1.63464664e-04 0.00000000e+00 0.00000000e+00
+ 0.00000000e+00]
+weak_third_order 512 41 3 MAE 0.048086851594243474 weights [0.99118487 0.00216125 0.00362152 0.00303236 0.        ]
+strong_third_order 512 41 2 MAE 0.293693757790955 weights [0.98423439 0.01576561 0.         0.         0.        ]
+strong_third_order 512 41 3 MAE 0.10540762976919171 weights [0.51351907 0.12832415 0.1739246  0.18423218 0.        ]
+SUMMARY {"model": "additive", "samples": 128, "degree": 2, "runs": 3, "mean_normalized_mae": 0.0010458499640560036, "max_normalized_mae": 0.0013138183848636395, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999985586157946, "mean_seconds": 0.4969101493479684, "degree_three_improves_mae_pairs": 2}
+SUMMARY {"model": "additive", "samples": 128, "degree": 3, "runs": 3, "mean_normalized_mae": 0.0009071471241951165, "max_normalized_mae": 0.0011812899937044083, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999985586157946, "mean_seconds": 0.5937183906401818, "degree_three_improves_mae_pairs": 2}
+SUMMARY {"model": "additive", "samples": 512, "degree": 2, "runs": 3, "mean_normalized_mae": 0.0002723633890667207, "max_normalized_mae": 0.0003348671090266403, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 5.493794767138763e-31, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999999926333357, "mean_seconds": 1.1689307410269976, "degree_three_improves_mae_pairs": 2}
+SUMMARY {"model": "additive", "samples": 512, "degree": 3, "runs": 3, "mean_normalized_mae": 0.0002466073340434758, "max_normalized_mae": 0.0003711830919661735, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 5.311209142365203e-31, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999999926333357, "mean_seconds": 1.500975580691981, "degree_three_improves_mae_pairs": 2}
+SUMMARY {"model": "second_order", "samples": 128, "degree": 2, "runs": 3, "mean_normalized_mae": 0.012079603485937779, "max_normalized_mae": 0.02043842754279543, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 2.5769073759399647e-05, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 1.0, "mean_seconds": 0.8970271333431205, "degree_three_improves_mae_pairs": 1}
+SUMMARY {"model": "second_order", "samples": 128, "degree": 3, "runs": 3, "mean_normalized_mae": 0.012707039399015052, "max_normalized_mae": 0.013871658960712657, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 2.3182110073425194e-05, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999876891917993, "mean_seconds": 1.2593511317002897, "degree_three_improves_mae_pairs": 1}
+SUMMARY {"model": "second_order", "samples": 512, "degree": 2, "runs": 3, "mean_normalized_mae": 0.002110953619533434, "max_normalized_mae": 0.002734602755916103, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999995625101262, "mean_seconds": 1.9230015799791242, "degree_three_improves_mae_pairs": 0}
+SUMMARY {"model": "second_order", "samples": 512, "degree": 3, "runs": 3, "mean_normalized_mae": 0.0041850614889007475, "max_normalized_mae": 0.005191456267045971, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 1.4789931898958884e-07, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9999999011976256, "mean_seconds": 2.63349012300993, "degree_three_improves_mae_pairs": 0}
+SUMMARY {"model": "weak_third_order", "samples": 128, "degree": 2, "runs": 3, "mean_normalized_mae": 0.05085134509674206, "max_normalized_mae": 0.05161290322580642, "all_active_above_inactive": 0, "missing_active_variables": 8, "mean_inactive_mass": 0.0011544910461119405, "mean_pairwise_order_accuracy": 0.6190476190476191, "mean_validation_r2": 0.917313587305027, "mean_seconds": 1.6120342569580923, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "weak_third_order", "samples": 128, "degree": 3, "runs": 3, "mean_normalized_mae": 0.03486349355962093, "max_normalized_mae": 0.03791186321340754, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9492984834458196, "mean_seconds": 1.9146469353387754, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "weak_third_order", "samples": 512, "degree": 2, "runs": 3, "mean_normalized_mae": 0.0506053960955111, "max_normalized_mae": 0.051547517360183204, "all_active_above_inactive": 1, "missing_active_variables": 4, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 0.8095238095238096, "mean_validation_r2": 0.9299270850715432, "mean_seconds": 3.5129272253252566, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "weak_third_order", "samples": 512, "degree": 3, "runs": 3, "mean_normalized_mae": 0.023457531309427102, "max_normalized_mae": 0.048086851594243474, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.9813102890133484, "mean_seconds": 3.862115587689914, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "strong_third_order", "samples": 128, "degree": 2, "runs": 3, "mean_normalized_mae": 0.22222935857221657, "max_normalized_mae": 0.3, "all_active_above_inactive": 0, "missing_active_variables": 4, "mean_inactive_mass": 0.037099772984233996, "mean_pairwise_order_accuracy": 0.5833333333333334, "mean_validation_r2": -0.24671446970968816, "mean_seconds": 1.6179194426707302, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "strong_third_order", "samples": 128, "degree": 3, "runs": 3, "mean_normalized_mae": 0.12292334848292341, "max_normalized_mae": 0.16060601198478416, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.4366819323485492, "mean_seconds": 1.9977477322875832, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "strong_third_order", "samples": 512, "degree": 2, "runs": 3, "mean_normalized_mae": 0.28204654867052414, "max_normalized_mae": 0.293693757790955, "all_active_above_inactive": 1, "missing_active_variables": 4, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 0.6666666666666666, "mean_validation_r2": 0.31243986909771726, "mean_seconds": 3.356608015989574, "degree_three_improves_mae_pairs": 3}
+SUMMARY {"model": "strong_third_order", "samples": 512, "degree": 3, "runs": 3, "mean_normalized_mae": 0.07115500735370085, "max_normalized_mae": 0.10540762976919171, "all_active_above_inactive": 3, "missing_active_variables": 0, "mean_inactive_mass": 0.0, "mean_pairwise_order_accuracy": 1.0, "mean_validation_r2": 0.7866326385507367, "mean_seconds": 4.255192240622516, "degree_three_improves_mae_pairs": 3}
+Saved 48 fits to /home/wmtsky/projects/UQPyL/agent/verification/0930-mars-degree-accuracy.json

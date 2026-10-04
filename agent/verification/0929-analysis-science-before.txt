@@ -1,0 +1,81 @@
+F.FFF.........                                                           [100%]
+=================================== FAILURES ===================================
+__________ testDeltaMagnitudeMatchesIndependentPairwiseDefinition[1] ___________
+
+neighbors = 1
+
+    @pytest.mark.parametrize('neighbors',[1,2,3])
+    def testDeltaMagnitudeMatchesIndependentPairwiseDefinition(neighbors):
+        X=np.random.default_rng(91).random((12,3))
+        Y=(X[:,0]+2*X[:,1]**2)[:,None]
+        method=DeltaTest(nNeighbors=neighbors,**QUIET)
+>       assert method._cal_delta(X,Y,neighbors)==pytest.approx(bruteDelta(X,Y,neighbors),rel=1e-13)
+E       assert 0.046688855725245226 == 0.023344427862622613 ± 1.0e-12
+E         
+E         comparison failed
+E         Obtained: 0.046688855725245226
+E         Expected: 0.023344427862622613 ± 1.0e-12
+
+tests/test_analysis_scientific_references.py:25: AssertionError
+__________ testDeltaMagnitudeMatchesIndependentPairwiseDefinition[3] ___________
+
+neighbors = 3
+
+    @pytest.mark.parametrize('neighbors',[1,2,3])
+    def testDeltaMagnitudeMatchesIndependentPairwiseDefinition(neighbors):
+        X=np.random.default_rng(91).random((12,3))
+        Y=(X[:,0]+2*X[:,1]**2)[:,None]
+        method=DeltaTest(nNeighbors=neighbors,**QUIET)
+>       assert method._cal_delta(X,Y,neighbors)==pytest.approx(bruteDelta(X,Y,neighbors),rel=1e-13)
+E       assert 0.10737207447565811 == 0.16105811171348716 ± 1.0e-12
+E         
+E         comparison failed
+E         Obtained: 0.10737207447565811
+E         Expected: 0.16105811171348716 ± 1.0e-12
+
+tests/test_analysis_scientific_references.py:25: AssertionError
+_______________ testDeltaDuplicateInputsStillExcludeTheQueryRow ________________
+
+    def testDeltaDuplicateInputsStillExcludeTheQueryRow():
+        X=np.zeros((3,2))
+        Y=np.array([[0.],[1.],[4.]])
+>       assert DeltaTest(**QUIET)._cal_delta(X,Y,2)==pytest.approx(13/3)
+E       assert 3.5 == 4.333333333333333 ± 4.3e-06
+E         
+E         comparison failed
+E         Obtained: 3.5
+E         Expected: 4.333333333333333 ± 4.3e-06
+
+tests/test_analysis_scientific_references.py:34: AssertionError
+___________ testDeltaNormalizedImportanceDoesNotDependOnOutputUnits ____________
+
+    def testDeltaNormalizedImportanceDoesNotDependOnOutputUnits():
+        p=Problem(nInput=3,nObj=1,lb=0,ub=1,objFunc=lambda x:x[:,:1]+2*x[:,1:2])
+        X=LHS('classic').sample(p,128,seed=31)
+        Y=p.evaluate(X).objs
+        method=DeltaTest(**QUIET)
+        original=method.analyze(p,X,Y)
+        scaled=method.analyze(p,X,Y*1e-6)
+        np.testing.assert_allclose(scaled['S1'].values,original['S1'].values*1e-12,rtol=1e-12,atol=0)
+>       np.testing.assert_allclose(scaled['S1_norm'].values,original['S1_norm'].values,rtol=1e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-12, atol=0
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0.0 (ACTUAL), 0.20778395976617256 (DESIRED)
+E        [0, 1]: 0.0 (ACTUAL), 0.8286315571626399 (DESIRED)
+E        [0, 2]: 0.0 (ACTUAL), -0.036415516928812536 (DESIRED)
+E       Max absolute difference among violations: 0.82863156
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0., 0., 0.]])
+E        DESIRED: array([[ 0.207784,  0.828632, -0.036416]])
+
+tests/test_analysis_scientific_references.py:45: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_scientific_references.py::testDeltaMagnitudeMatchesIndependentPairwiseDefinition[1]
+FAILED tests/test_analysis_scientific_references.py::testDeltaMagnitudeMatchesIndependentPairwiseDefinition[3]
+FAILED tests/test_analysis_scientific_references.py::testDeltaDuplicateInputsStillExcludeTheQueryRow
+FAILED tests/test_analysis_scientific_references.py::testDeltaNormalizedImportanceDoesNotDependOnOutputUnits
+4 failed, 10 passed in 1.70s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_analysis_scientific_references.py` failed. (See above for error)

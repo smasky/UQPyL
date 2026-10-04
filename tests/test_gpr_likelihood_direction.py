@@ -5,6 +5,7 @@ from scipy.stats import multivariate_normal
 from UQPyL.optimization.soea import GA
 from UQPyL.surrogate.gp import GPR
 from UQPyL.surrogate.gp.kernel import RBF
+from UQPyL.surrogate import MultiSurrogate
 
 
 def negativeLogDensity(X, Y, lengthScale, noise):
@@ -18,12 +19,15 @@ def negativeLogDensity(X, Y, lengthScale, noise):
 def test_fixed_gpr_records_negative_joint_log_density(nOutputs):
     X = np.linspace(0, 1, 12).reshape(-1, 1)
     Y = np.column_stack([np.sin(6 * X[:, 0]), np.cos(3 * X[:, 0])])[:, :nOutputs]
-    model = GPR(kernel=RBF(length_scale=0.3, length_attr=None), C=1e-6, C_attr=None)
+    children = [GPR(kernel=RBF(length_scale=0.3, length_attr=None), C=1e-6, C_attr=None) for _ in range(nOutputs)]
+    model = children[0] if nOutputs == 1 else MultiSurrogate(nOutputs, children)
     model.fit(X, Y)
 
     expected = negativeLogDensity(X, Y, 0.3, 1e-6)
-    assert model.fitState["objective"] == pytest.approx(expected, rel=1e-7)
-    assert model._objfunc(X, Y) == pytest.approx(expected, rel=1e-7)
+    assert sum(child.fitState["objective"] for child in children) == pytest.approx(expected, rel=1e-7)
+    assert sum(child._objfunc(X, Y[:, index : index + 1]) for index, child in enumerate(children)) == pytest.approx(
+        expected, rel=1e-7
+    )
 
 
 @pytest.mark.parametrize("optimizerName", ["Boxmin", "LBFGSB", "GA"])
@@ -33,11 +37,11 @@ def test_internal_optimization_improves_log_density(optimizerName, logScale):
     Y = np.sin(6 * X)
     optimizer = optimizerName
     if optimizerName == "GA":
-        optimizer = GA(nPop=16, maxFEs=192, tolerate=None,
-                       verboseFlag=False, logFlag=False, saveFlag=False)
+        optimizer = GA(nPop=16, maxFEs=192, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
     lengthAttr = {"lb": 0.1, "ub": 3.0, "type": "float", "log": logScale}
-    model = GPR(kernel=RBF(length_scale=0.3, length_attr=lengthAttr),
-                C=1e-6, C_attr=None, optimizer=optimizer, nRestartTimes=1)
+    model = GPR(
+        kernel=RBF(length_scale=0.3, length_attr=lengthAttr), C=1e-6, C_attr=None, optimizer=optimizer, nRestartTimes=1
+    )
     model.rng = np.random.default_rng(2)
     model.fit(X, Y)
 
@@ -46,4 +50,4 @@ def test_internal_optimization_improves_log_density(optimizerName, logScale):
     baseline = negativeLogDensity(X, Y, 0.3, 1e-6)
     assert objective < baseline
     assert model.fitState["objective"] == pytest.approx(objective, rel=1e-7)
-    assert np.sqrt(np.mean((model.predict(X) - Y)**2)) < 1e-3
+    assert np.sqrt(np.mean((model.predict(X) - Y) ** 2)) < 1e-3

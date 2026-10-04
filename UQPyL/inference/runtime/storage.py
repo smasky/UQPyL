@@ -8,7 +8,8 @@ from ...core.runtime_storage import BaseSqliteStorage
 
 
 class SqliteStorage(BaseSqliteStorage):
-    domain = 'inference'
+    domain = "inference"
+
     def _makeRunId(self, methodName, problemName):
         _, runId = self._db_path(methodName, problemName)
         return runId
@@ -49,10 +50,12 @@ class SqliteStorage(BaseSqliteStorage):
             ),
         )
 
-    def saveSnapshot(self, session, obj, result, isFinal=False):
+    def saveSnapshot(self, session, obj, result=None, isFinal=False):
         conn = session.conn
         runId = session.run_id
         state = obj.state
+        iters, FEs = (obj.iters, obj.FEs) if result is None else (result.iters, result.FEs)
+        runtime = state.runtime if result is None else result.runtime
 
         cur = conn.execute(
             """
@@ -63,26 +66,29 @@ class SqliteStorage(BaseSqliteStorage):
             """,
             (
                 runId,
-                result.iters,
-                result.FEs,
-                result.runtime,
+                iters,
+                FEs,
+                runtime,
                 state.meanLogProb,
                 state.bestObj,
                 state.feasibleRate,
                 state.acceptanceRateMean,
-                json.dumps(state.buildSnapshot(result.FEs, result.iters), ensure_ascii=True),
+                json.dumps(state.buildSnapshot(FEs, iters), ensure_ascii=True),
             ),
         )
         snapshotId = cur.lastrowid
-        self._insertSnapshotMembers(conn, snapshotId, state)
+        # Intermediate saves need only the latest member of each chain.
+        self._insertSnapshotMembers(
+            conn, snapshotId, state if result is None else result, direction=obj.problem.opt if result is None else 1
+        )
 
         if isFinal:
             self.finalize_run(
                 session,
                 status="finished",
-                runtime=result.runtime,
-                final_fes=result.FEs,
-                final_iters=result.iters,
+                runtime=runtime,
+                final_fes=FEs,
+                final_iters=iters,
             )
 
         conn.commit()
@@ -100,11 +106,11 @@ class SqliteStorage(BaseSqliteStorage):
         )
         conn.commit()
 
-    def _insertSnapshotMembers(self, conn, snapshotId, state):
-        if state.decs is None or state.decs.shape[1] == 0:
+    def _insertSnapshotMembers(self, conn, snapshotId, result, direction=1):
+        if result.decs is None or result.decs.shape[1] == 0:
             return
-        last = state.decs.shape[1] - 1
-        nChains = state.decs.shape[0]
+        last = result.decs.shape[1] - 1
+        nChains = result.decs.shape[0]
         for chain in range(nChains):
             conn.execute(
                 """
@@ -115,12 +121,12 @@ class SqliteStorage(BaseSqliteStorage):
                 (
                     snapshotId,
                     chain,
-                    array_to_json(state.decs[chain, last]),
-                    array_to_json(state.objs[chain, last]),
-                    array_to_json(None if state.cons is None else state.cons[chain, last]),
-                    None if state.logProb is None else float(state.logProb[chain, last]),
-                    int(state.accepted[chain, last]),
-                    int(state.feasibleMask[chain, last]),
+                    array_to_json(result.decs[chain, last]),
+                    array_to_json(result.objs[chain, last] * direction),
+                    array_to_json(None if result.cons is None else result.cons[chain, last]),
+                    None if result.logProb is None else float(result.logProb[chain, last]),
+                    int(result.accepted[chain, last]),
+                    int(result.feasibleMask[chain, last]),
                 ),
             )
 

@@ -52,7 +52,11 @@ def test_kriging_kernels_call_on_dimensionwise_pdist():
     for k in range(nFeature):
         D[:, k] = pdist(X[:, [k]], metric="euclidean")
 
-    kernels = [Guass(heterogeneous=True, theta=0.1), Cubic(heterogeneous=True, theta=0.1), Exp(heterogeneous=True, theta=0.1)]
+    kernels = [
+        Guass(heterogeneous=True, theta=0.1),
+        Cubic(heterogeneous=True, theta=0.1),
+        Exp(heterogeneous=True, theta=0.1),
+    ]
     for ker in kernels:
         ker.initialize(nFeature)
         r = ker(D)
@@ -79,8 +83,9 @@ def test_gp_kernels_matern_and_rq_basic_properties_on_zdt_points():
     assert np.allclose(np.diag(K2), 1.0)
 
 
-def test_gp_compiled_kernels_import_optional():
-    # These are C-extension wrappers in some environments; skip if not available.
-    pytest.importorskip("UQPyL.surrogate.gp.kernel.c_kernel_")
-    pytest.importorskip("UQPyL.surrogate.gp.kernel.dot_kernel_")
+def test_gp_kernel_modules_import():
+    # These are Python modules, not optional compiled extensions.
+    from UQPyL.surrogate.gp.kernel.c_kernel_ import Constant
+    from UQPyL.surrogate.gp.kernel.dot_kernel_ import DotProduct
 
+    assert callable(Constant) and callable(DotProduct)

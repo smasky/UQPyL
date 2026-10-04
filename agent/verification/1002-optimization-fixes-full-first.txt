@@ -1,0 +1,347 @@
+................................................................F.F.F.F. [  2%]
+...F.................................................................... [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 85%]
+........................................................................ [ 88%]
+........................................................................ [ 90%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+...................................................                      [100%]
+=================================== FAILURES ===================================
+__ testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1-ea] ___
+
+entry = 'ea', factor = 1
+
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    @pytest.mark.parametrize("factor", [1, 1e-200, -1e-200, 1e200])
+    def testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling(entry, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            method = DeltaTest(verboseFlag=False)
+            if entry == "vio":
+                assert method.findCombVio(p, x, y) == [p.xLabels[0]]
+            else:
+>               result = method.findCombEA(p, x, y, FEs=50, verboseFlag=False, saveFlag=False, seed=17)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_subset_range.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:230: in findCombEA
+    res = ga.run(problem) if seed is None else ga.run(problem, seed=seed)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/soea/ga.py:113: in run
+    pop = self.initPop(nPop, initialPop=initialPop)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:179: in initPop
+    return self._sampleInitialPop(nInit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:200: in _sampleInitialPop
+    self.evaluate(pop)
+UQPyL/optimization/base.py:241: in evaluate
+    self._validateSearchEvaluation(res.objs, res.cons)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.optimization.soea.ga.GA object at 0x7896779f72c0>
+objs = array([[           inf],
+       [4.38206101e-05],
+       [1.10188142e-01],
+       [4.38206101e-05],
+       [1.42142379... [           inf],
+       [1.42142379e-03],
+       [1.10188142e-01],
+       [1.42142379e-03],
+       [           inf]])
+cons = None
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values) or not np.all(np.isfinite(values)):
+>               raise ValueError(f"Optimization {name} must contain finite real values.")
+E               ValueError: Optimization objs must contain finite real values.
+
+UQPyL/optimization/base.py:258: ValueError
+_ testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1e-200-ea] _
+
+entry = 'ea', factor = 1e-200
+
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    @pytest.mark.parametrize("factor", [1, 1e-200, -1e-200, 1e200])
+    def testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling(entry, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            method = DeltaTest(verboseFlag=False)
+            if entry == "vio":
+                assert method.findCombVio(p, x, y) == [p.xLabels[0]]
+            else:
+>               result = method.findCombEA(p, x, y, FEs=50, verboseFlag=False, saveFlag=False, seed=17)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_subset_range.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:230: in findCombEA
+    res = ga.run(problem) if seed is None else ga.run(problem, seed=seed)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/soea/ga.py:113: in run
+    pop = self.initPop(nPop, initialPop=initialPop)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:179: in initPop
+    return self._sampleInitialPop(nInit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:200: in _sampleInitialPop
+    self.evaluate(pop)
+UQPyL/optimization/base.py:241: in evaluate
+    self._validateSearchEvaluation(res.objs, res.cons)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.optimization.soea.ga.GA object at 0x789677add490>
+objs = array([[           inf],
+       [4.38206101e-05],
+       [1.10188142e-01],
+       [4.38206101e-05],
+       [1.42142379... [           inf],
+       [1.42142379e-03],
+       [1.10188142e-01],
+       [1.42142379e-03],
+       [           inf]])
+cons = None
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values) or not np.all(np.isfinite(values)):
+>               raise ValueError(f"Optimization {name} must contain finite real values.")
+E               ValueError: Optimization objs must contain finite real values.
+
+UQPyL/optimization/base.py:258: ValueError
+_ testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[-1e-200-ea] _
+
+entry = 'ea', factor = -1e-200
+
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    @pytest.mark.parametrize("factor", [1, 1e-200, -1e-200, 1e200])
+    def testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling(entry, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            method = DeltaTest(verboseFlag=False)
+            if entry == "vio":
+                assert method.findCombVio(p, x, y) == [p.xLabels[0]]
+            else:
+>               result = method.findCombEA(p, x, y, FEs=50, verboseFlag=False, saveFlag=False, seed=17)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_subset_range.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:230: in findCombEA
+    res = ga.run(problem) if seed is None else ga.run(problem, seed=seed)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/soea/ga.py:113: in run
+    pop = self.initPop(nPop, initialPop=initialPop)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:179: in initPop
+    return self._sampleInitialPop(nInit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:200: in _sampleInitialPop
+    self.evaluate(pop)
+UQPyL/optimization/base.py:241: in evaluate
+    self._validateSearchEvaluation(res.objs, res.cons)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.optimization.soea.ga.GA object at 0x789677a218b0>
+objs = array([[           inf],
+       [4.38206101e-05],
+       [1.10188142e-01],
+       [4.38206101e-05],
+       [1.42142379... [           inf],
+       [1.42142379e-03],
+       [1.10188142e-01],
+       [1.42142379e-03],
+       [           inf]])
+cons = None
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values) or not np.all(np.isfinite(values)):
+>               raise ValueError(f"Optimization {name} must contain finite real values.")
+E               ValueError: Optimization objs must contain finite real values.
+
+UQPyL/optimization/base.py:258: ValueError
+_ testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1e+200-ea] _
+
+entry = 'ea', factor = 1e+200
+
+    @pytest.mark.parametrize("entry", ["vio", "ea"])
+    @pytest.mark.parametrize("factor", [1, 1e-200, -1e-200, 1e200])
+    def testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling(entry, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            method = DeltaTest(verboseFlag=False)
+            if entry == "vio":
+                assert method.findCombVio(p, x, y) == [p.xLabels[0]]
+            else:
+>               result = method.findCombEA(p, x, y, FEs=50, verboseFlag=False, saveFlag=False, seed=17)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_subset_range.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:230: in findCombEA
+    res = ga.run(problem) if seed is None else ga.run(problem, seed=seed)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/soea/ga.py:113: in run
+    pop = self.initPop(nPop, initialPop=initialPop)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:179: in initPop
+    return self._sampleInitialPop(nInit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:200: in _sampleInitialPop
+    self.evaluate(pop)
+UQPyL/optimization/base.py:241: in evaluate
+    self._validateSearchEvaluation(res.objs, res.cons)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.optimization.soea.ga.GA object at 0x7896779f1430>
+objs = array([[           inf],
+       [4.38206101e-05],
+       [1.10188142e-01],
+       [4.38206101e-05],
+       [1.42142379... [           inf],
+       [1.42142379e-03],
+       [1.10188142e-01],
+       [1.42142379e-03],
+       [           inf]])
+cons = None
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values) or not np.all(np.isfinite(values)):
+>               raise ValueError(f"Optimization {name} must contain finite real values.")
+E               ValueError: Optimization objs must contain finite real values.
+
+UQPyL/optimization/base.py:258: ValueError
+___________ testDeltaScaledSelectionMetadataSurvivesSqliteRoundTrip ____________
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testDeltaScaledSelectionMetada0')
+
+    def testDeltaScaledSelectionMetadataSurvivesSqliteRoundTrip(tmp_path):
+        from UQPyL.optimization.runtime import OptReader
+    
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        p.workDir = str(tmp_path)
+        x = LHS("classic").sample(p, 128, seed=17)
+>       result = DeltaTest(verboseFlag=False).findCombEA(p, x, x[:, :1], FEs=50, verboseFlag=False, saveFlag=True, seed=17)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_subset_range.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:230: in findCombEA
+    res = ga.run(problem) if seed is None else ga.run(problem, seed=seed)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/soea/ga.py:113: in run
+    pop = self.initPop(nPop, initialPop=initialPop)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:179: in initPop
+    return self._sampleInitialPop(nInit)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/base.py:200: in _sampleInitialPop
+    self.evaluate(pop)
+UQPyL/optimization/base.py:241: in evaluate
+    self._validateSearchEvaluation(res.objs, res.cons)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.optimization.soea.ga.GA object at 0x7896779f7920>
+objs = array([[           inf],
+       [4.38206101e-05],
+       [1.10188142e-01],
+       [4.38206101e-05],
+       [1.42142379... [           inf],
+       [1.42142379e-03],
+       [1.10188142e-01],
+       [1.42142379e-03],
+       [           inf]])
+cons = None
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values) or not np.all(np.isfinite(values)):
+>               raise ValueError(f"Optimization {name} must contain finite real values.")
+E               ValueError: Optimization objs must contain finite real values.
+
+UQPyL/optimization/base.py:258: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1-ea]
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1e-200-ea]
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[-1e-200-ea]
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling[1e+200-ea]
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaScaledSelectionMetadataSurvivesSqliteRoundTrip
+5 failed, 2854 passed in 101.27s (0:01:41)

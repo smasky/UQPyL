@@ -1,0 +1,6 @@
+Permutation references passed: 90
+Output-scale checks passed: 16
+Linear screening checks passed: 144
+Maximum permutation reference error: 1.1102230246251565e-16
+Timing: [{"samples": "continuous", "size": 128, "previous_seconds": 0.0003380869748070836, "repaired_seconds": 0.0005188280483707786, "ratio": 1.534599339908992}, {"samples": "continuous", "size": 2048, "previous_seconds": 0.006211621919646859, "repaired_seconds": 0.009183441987261176, "ratio": 1.4784290006793057}, {"samples": "identical", "size": 128, "previous_seconds": 0.0002963789738714695, "repaired_seconds": 0.001071722013875842, "ratio": 3.616052784974602}, {"samples": "identical", "size": 2048, "previous_seconds": 0.013348223990760744, "repaired_seconds": 0.023862798931077123, "ratio": 1.7877134027413883}]
+Saved 250 verification records to /home/wmtsky/projects/UQPyL/agent/verification/0930-delta-ties-range-repair.json

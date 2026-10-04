@@ -1,0 +1,11 @@
+{
+  "python_version": "3.14.7",
+  "platform": "linux",
+  "commit_sha": null,
+  "lines_covered": 9835,
+  "lines_total": 10503,
+  "branches_covered": 2440,
+  "branches_total": 2992,
+  "line_rate": 0.9363991240597924,
+  "branch_rate": 0.8155080213903744
+}

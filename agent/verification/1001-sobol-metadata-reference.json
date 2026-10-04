@@ -1,0 +1,135 @@
+{
+  "case_count": 5,
+  "records": [
+    {
+      "case": "complete_design",
+      "actual_base_samples": 128,
+      "meta": {
+        "designType": "saltelli",
+        "N": 128,
+        "secondOrder": true,
+        "skipValue": 0,
+        "scramble": true,
+        "blockSize": 6,
+        "seed": 17,
+        "output": "real"
+      },
+      "population_s1": [
+        0.2,
+        0.8
+      ],
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.20721715869518526,
+              0.8018215386176553
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.2053609631097627,
+              0.7946390368902373
+            ]
+          ],
+          "ST": [
+            [
+              0.19826353364708743,
+              0.7925430254369639
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.20010317032052316,
+              0.7998968296794767
+            ]
+          ],
+          "S2": [
+            [
+              -0.01790725009619587
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "one_complete_block_removed",
+      "actual_base_samples": 127,
+      "metadata_base_samples": 128,
+      "observed": {
+        "status": "error",
+        "exception_type": "ValueError",
+        "exception_message": "Sobol requires exactly 768 rows for N=128 and blockSize=6; received 762 rows.",
+        "warnings": []
+      }
+    },
+    {
+      "case": "inconsistent_base_size",
+      "actual_base_samples": 128,
+      "metadata_base_samples": 1,
+      "observed": {
+        "status": "error",
+        "exception_type": "ValueError",
+        "exception_message": "Sobol requires exactly 6 rows for N=1 and blockSize=6; received 768 rows.",
+        "warnings": []
+      }
+    },
+    {
+      "case": "inconsistent_order",
+      "actual_second_order": true,
+      "metadata_second_order": false,
+      "metadata_block_size": 6,
+      "observed": {
+        "status": "error",
+        "exception_type": "ValueError",
+        "exception_message": "Sobol metadata blockSize must equal 4 for nInput=2 and secondOrder=False.",
+        "warnings": []
+      }
+    },
+    {
+      "case": "updated_metadata_after_whole_block_removal",
+      "actual_base_samples": 127,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.20329251111691765,
+              0.8056306522937031
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.20149454238883382,
+              0.7985054576111661
+            ]
+          ],
+          "ST": [
+            [
+              0.20081839941705296,
+              0.8047746785536337
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.19970145361611852,
+              0.8002985463838814
+            ]
+          ],
+          "S2": [
+            [
+              -0.004948223399729557
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    }
+  ]
+}

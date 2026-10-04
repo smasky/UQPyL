@@ -15,7 +15,7 @@ QUIET = dict(verboseFlag=False, logFlag=False, saveFlag=False)
 
 def makeState(ref=None, opt=1):
     algorithm = SimpleNamespace(problem=SimpleNamespace(opt=opt), FEs=0, iters=0,
-                                hvRefPoint=ref)
+                                hvRefPoint=ref, hvFreq=1)
     return OptState(algorithm)
 
 

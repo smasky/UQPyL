@@ -20,14 +20,15 @@ def test_sobol_sample_skip_value_validation_branches():
         SaltelliDesign(skipValue=-1).sampleWithMeta(problem, 8)  # negative
     with pytest.warns(UserWarning):
         SaltelliDesign(skipValue=3).sampleWithMeta(problem, 8)  # not power of 2 now warns
-    with pytest.raises(ValueError):
-        SaltelliDesign(skipValue=8).sampleWithMeta(problem, 4)  # N < skipValue
+    X, _ = SaltelliDesign(skipValue=8).sampleWithMeta(problem, 4)
+    assert X.shape == (20, 3)  # An aligned skip may exceed the requested count.
 
 
 def test_sobol_sample_skip_value_fast_forward_branch():
     problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
 
-    X, _ = SaltelliDesign(secondOrder=False, skipValue=4, scramble=False).sampleWithMeta(problem, 8, seed=123)
+    with pytest.warns(UserWarning, match="not aligned"):
+        X, _ = SaltelliDesign(secondOrder=False, skipValue=4, scramble=False).sampleWithMeta(problem, 8, seed=123)
     assert X.shape == ((problem.nInput + 2) * 8, problem.nInput)
 
 
@@ -37,13 +38,19 @@ def test_sobol_analyze_divisibility_validation_branches():
 
     # secondOrder=True requires divisible by (2*nInput+2)=8
     X_bad = np.zeros((7, 3))
-    with pytest.raises(ValueError):
-        sob.analyze(problem, X_bad, Y=np.zeros((7, 1)), meta={"designType": "saltelli", "secondOrder": True})
+    with pytest.warns(RuntimeWarning, match="Sobol.*rows"):
+        result = sob.analyze(
+            problem, X_bad, Y=np.zeros((7, 1)), meta={"designType": "saltelli", "N": 1, "secondOrder": True}
+        )
+    assert result.extra["sobol_design"]["status"] == "not_estimated"
 
     # secondOrder=False requires divisible by (nInput+2)=5
     X_bad2 = np.zeros((6, 3))
-    with pytest.raises(ValueError):
-        sob.analyze(problem, X_bad2, Y=np.zeros((6, 1)), meta={"designType": "saltelli", "secondOrder": False})
+    with pytest.warns(RuntimeWarning, match="Sobol.*rows"):
+        result = sob.analyze(
+            problem, X_bad2, Y=np.zeros((6, 1)), meta={"designType": "saltelli", "N": 1, "secondOrder": False}
+        )
+    assert result.extra["sobol_design"]["status"] == "not_estimated"
 
 
 def test_sobol_constant_output_returns_finite_zero_indices():
@@ -56,5 +63,3 @@ def test_sobol_constant_output_returns_finite_zero_indices():
     for metric in res.metrics:
         assert np.all(np.isfinite(metric.values))
         assert np.allclose(metric.values, 0.0)
-
-

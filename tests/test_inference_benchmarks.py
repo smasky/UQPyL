@@ -63,9 +63,9 @@ def test_inference_algorithms_on_gaussian_energy_benchmark():
     problem = _small_gaussian_problem(nInput=2)
     algorithms = [
         (MH(nChains=3, warmUp=5, maxIters=35, verboseFlag=False, saveFlag=False), 3),
-        (AMH(nChains=3, warmUp=5, maxIterTimes=35, verboseFlag=False, saveFlag=False), 3),
+        (AMH(nChains=3, warmUp=5, maxIters=35, verboseFlag=False, saveFlag=False), 3),
         (MH_Gibbs(nChains=3, warmUp=5, maxIters=35, verboseFlag=False, saveFlag=False), 3),
-        (DEMC(nChains=4, warmUp=5, maxIterTimes=35, verboseFlag=False, saveFlag=False), 4),
+        (DEMC(nChains=4, warmUp=5, maxIters=35, verboseFlag=False, saveFlag=False), 4),
         (DREAM_ZS(nChains=4, warmUp=5, maxIters=35, archSize=3, verboseFlag=False, saveFlag=False), 4),
     ]
 
@@ -86,9 +86,9 @@ def test_inference_algorithms_on_shifted_quadratic_benchmark():
     )
     algorithms = [
         (MH(nChains=3, warmUp=8, maxIters=45, verboseFlag=False, saveFlag=False), 0.8),
-        (AMH(nChains=3, warmUp=8, maxIterTimes=45, verboseFlag=False, saveFlag=False), 0.8),
+        (AMH(nChains=3, warmUp=8, maxIters=45, verboseFlag=False, saveFlag=False), 0.8),
         (MH_Gibbs(nChains=3, warmUp=8, maxIters=45, verboseFlag=False, saveFlag=False), 0.9),
-        (DEMC(nChains=4, warmUp=8, maxIterTimes=45, verboseFlag=False, saveFlag=False), 0.9),
+        (DEMC(nChains=4, warmUp=8, maxIters=45, verboseFlag=False, saveFlag=False), 0.9),
         (DREAM_ZS(nChains=4, warmUp=8, maxIters=45, archSize=3, verboseFlag=False, saveFlag=False), 1.0),
     ]
 
@@ -120,8 +120,10 @@ def test_inference_opt_type_max_score_semantics():
     _assert_best_close(res, target=[-0.4, 0.6], tol=0.8)
     # bestObjs are reported back in the user's original score direction.
     assert float(np.ravel(res.bestObjs)[0]) > -0.6
-    # Trace objs store the internal oriented objective, so logProb is -objs.
-    assert np.allclose(res.logProb, -res.objs[..., 0])
+    # Public trace objectives use original units; this maximum score is logProb.
+    np.testing.assert_allclose(res.objs.reshape(-1, 1),
+                               problem.evaluate(res.decs.reshape(-1, 2)).objs)
+    assert np.allclose(res.logProb, res.objs[..., 0])
 
 
 def test_inference_anisotropic_quadratic_benchmark():
@@ -138,7 +140,7 @@ def test_inference_anisotropic_quadratic_benchmark():
     res = AMH(
         nChains=3,
         warmUp=8,
-        maxIterTimes=45,
+        maxIters=45,
         verboseFlag=False,
         saveFlag=False,
     ).run(problem, gamma=0.2, seed=77)

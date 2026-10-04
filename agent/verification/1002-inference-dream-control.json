@@ -1,0 +1,314 @@
+[
+  {
+    "case": "normal",
+    "method": "DreamNoSnooker",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        0.0,
+        0.0
+      ],
+      "variance": [
+        0.9999999270894057,
+        0.9999999270894057
+      ],
+      "covariance": 0.0
+    },
+    "mean": [
+      0.13008146091862513,
+      -0.05996211874289265
+    ],
+    "variance": [
+      0.7545689000646706,
+      0.5912940302119343
+    ],
+    "covariance": -0.08715361711683203,
+    "positive_mass": 0.5646666666666667,
+    "acceptance": [
+      0.804300716786131,
+      0.7982997166194366,
+      0.8156359393232205,
+      0.8081346891148524
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0058898026481122,
+          1.021605879486957
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0069124390063546,
+          1.021837796822227
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          147.2490204988931,
+          198.48515402685248
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          358.9805598341663,
+          321.73981344855423
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.14286832511425,
+    "quantiles": [
+      [
+        -1.608189104140056,
+        -1.535691144716011
+      ],
+      [
+        0.12472358755251367,
+        -0.06752677530885576
+      ],
+      [
+        1.857589221356939,
+        1.569172205008832
+      ]
+    ]
+  },
+  {
+    "case": "normal",
+    "method": "DreamNoSnooker",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        0.0,
+        0.0
+      ],
+      "variance": [
+        0.9999999270894057,
+        0.9999999270894057
+      ],
+      "covariance": 0.0
+    },
+    "mean": [
+      0.07390745814503581,
+      -0.03192993268264941
+    ],
+    "variance": [
+      0.7392535731733306,
+      0.7431798875191585
+    ],
+    "covariance": 0.04548404693416756,
+    "positive_mass": 0.5378333333333334,
+    "acceptance": [
+      0.8073012168694782,
+      0.799966661110185,
+      0.8028004667444574,
+      0.8006334389064844
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0171558067890571,
+          1.0415315375505108
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0172819598504819,
+          1.042491576003424
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          205.76543628475704,
+          110.12080884304062
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          623.5080416000123,
+          318.61151422460733
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.020950663136318,
+    "quantiles": [
+      [
+        -1.6852187174288893,
+        -1.7242132285098295
+      ],
+      [
+        0.097312324832878,
+        -0.031116971893307976
+      ],
+      [
+        1.6749549128348908,
+        1.6831613331603643
+      ]
+    ]
+  },
+  {
+    "case": "normal",
+    "method": "DreamNoSnooker",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        0.0,
+        0.0
+      ],
+      "variance": [
+        0.9999999270894057,
+        0.9999999270894057
+      ],
+      "covariance": 0.0
+    },
+    "mean": [
+      -0.00672174339420447,
+      -0.1902206445252215
+    ],
+    "variance": [
+      0.722687702602343,
+      0.7857391511392718
+    ],
+    "covariance": 0.0039928442890314565,
+    "positive_mass": 0.492,
+    "acceptance": [
+      0.8124687447907984,
+      0.8084680780130021,
+      0.8068011335222537,
+      0.8181363560593432
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0082335450343674,
+          1.0226933830847516
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0199962210524811,
+          1.0234440969963146
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          284.5436609346106,
+          159.31625796311607
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          665.0140395955765,
+          344.0929331190194
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.031096898950636,
+    "quantiles": [
+      [
+        -1.717554985753818,
+        -1.8089535781366441
+      ],
+      [
+        -0.016323032973116103,
+        -0.22941430052763012
+      ],
+      [
+        1.660277304739655,
+        1.6179654813747006
+      ]
+    ]
+  }
+]

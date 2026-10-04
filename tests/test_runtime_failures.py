@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 
 import numpy as np
 import pytest
@@ -24,7 +25,7 @@ def makeRun(kind, tmpPath, *, saveFlag=True):
         return np.sum(X ** 2, axis=1, keepdims=True) + 1
 
     def simulate(X):
-        return np.repeat(objective(X)[:, :, None], 3, axis=1)
+        return (np.repeat(objective(X)[:, :, None], 3, axis=1)).reshape(len(X), -1)
 
     flags = dict(verboseFlag=False, saveFlag=saveFlag)
     problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
@@ -39,7 +40,7 @@ def makeRun(kind, tmpPath, *, saveFlag=True):
         method = RSA(nRegion=2, **flags)
         run = lambda: method.analyze(problem, samples)
     else:
-        problem = ModelProblem(nInput=2, lb=0, ub=1, simFunc=simulate, obs=np.ones((3, 1)))
+        problem = ModelProblem(nInput=2, lb=0, ub=1, simFunc=simulate, obs=np.ones(3))
         method = GLUE(**flags)
         run = lambda: method.run(problem, samples, threshold=10)
     problem.workDir = str(tmpPath)
@@ -65,7 +66,7 @@ def assertClosed(method, session, conn, status):
     assert session.conn is None
     with pytest.raises(sqlite3.ProgrammingError, match="closed"):
         conn.execute("SELECT 1")
-    with sqlite3.connect(session.db_path) as reader:
+    with closing(sqlite3.connect(session.db_path)) as reader:
         row = reader.execute("SELECT status, finishedAt, runtime FROM run").fetchone()
     assert row[0] == status and row[1] is not None and row[2] >= 0
 
@@ -115,7 +116,7 @@ def test_failure_closes_marks_failed_and_allows_reuse(kind, stage, tmp_path, mon
         assert reader.get_run_summary()["status"] == "failed"
     finally:
         reader.close()
-    with sqlite3.connect(session.db_path) as reader:
+    with closing(sqlite3.connect(session.db_path)) as reader:
         assert reader.execute("SELECT count(*) FROM runParam WHERE name='partial_write'").fetchone()[0] == 0
     result = run()
     assert result is not None
@@ -141,7 +142,7 @@ def test_parameter_initialization_failure_closes_unreturned_session(kind, tmp_pa
     with pytest.raises(sqlite3.ProgrammingError, match="closed"):
         captured[0].execute("SELECT 1")
     dbPath = next(tmp_path.rglob("*.sqlite3"))
-    with sqlite3.connect(dbPath) as reader:
+    with closing(sqlite3.connect(dbPath)) as reader:
         assert reader.execute("SELECT status FROM run").fetchone()[0] == "failed"
         assert reader.execute("SELECT count(*) FROM runParam").fetchone()[0] == 0
 
@@ -192,7 +193,7 @@ def test_failed_snapshot_rolls_back_only_current_write(kind, tmp_path, monkeypat
     with pytest.raises(RuntimeError, match="partial snapshot"):
         run()
     assertClosed(method, *sessions[-1], "failed")
-    with sqlite3.connect(sessions[-1][0].db_path) as reader:
+    with closing(sqlite3.connect(sessions[-1][0].db_path)) as reader:
         assert reader.execute("SELECT count(*) FROM snapshot").fetchone()[0] == 1
         counters = reader.execute("SELECT finalFEs, finalIters FROM run").fetchone()
         assert counters == (method.FEs, method.iters)
@@ -221,7 +222,7 @@ def test_result_serialization_failure_rolls_back_partial_artifacts(kind, tmp_pat
     with pytest.raises(ValueError, match="array serialization failed"):
         run()
     assertClosed(method, *sessions[-1], "failed")
-    with sqlite3.connect(sessions[-1][0].db_path) as reader:
+    with closing(sqlite3.connect(sessions[-1][0].db_path)) as reader:
         assert reader.execute("SELECT count(*) FROM artifact").fetchone()[0] == 0
         if kind == "analysis":
             assert reader.execute("SELECT count(*) FROM metric").fetchone()[0] == 0
@@ -316,5 +317,5 @@ def test_rollback_failure_does_not_commit_partial_data(tmp_path, sessions):
     assert raised.value is control["error"]
     assert any("rollback failed" in note for note in raised.value.__notes__)
     assert method.session is None
-    with sqlite3.connect(sessions[-1][0].db_path) as reader:
+    with closing(sqlite3.connect(sessions[-1][0].db_path)) as reader:
         assert reader.execute("SELECT count(*) FROM runParam WHERE name='partial_write'").fetchone()[0] == 0

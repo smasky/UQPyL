@@ -64,7 +64,7 @@ def test_checktermination_gui_stop_preserves_counters():
 def test_algorithm_evaluate_accepts_model_problem():
     def simf(X):
         X = np.atleast_2d(X)
-        return np.sum(X, axis=1)
+        return (np.sum(X, axis=1)).reshape(len(X), -1)
 
     def objf(X, context):
         return context.sims.reshape(-1, 1)

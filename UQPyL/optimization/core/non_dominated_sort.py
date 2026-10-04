@@ -9,9 +9,13 @@ def NDSort(popObjs, popCons=None, nSort=None, conWgt=None):
 
     if nSort is None:
         nSort = N
+    if isinstance(nSort, (bool, np.bool_)) or not isinstance(nSort, (int, np.integer)) or nSort < 0:
+        raise ValueError("nSort must be a nonnegative integer.")
 
     frontNo = np.inf * np.ones(N)
     maxFrontNo = 0
+    if nSort == 0 or N == 0:
+        return frontNo, maxFrontNo
 
     if popCons is not None:
         cv = calcConstraintViolation(popCons, conWgt)
@@ -39,9 +43,7 @@ def NDSort(popObjs, popCons=None, nSort=None, conWgt=None):
                 if feasibleFrontNoUnique[i] == np.inf:
                     dominated = False
                     for j in range(nUnique):
-                        if feasibleFrontNoUnique[j] == maxFrontNo and dominates(
-                            uniqueObjs[j], uniqueObjs[i]
-                        ):
+                        if feasibleFrontNoUnique[j] == maxFrontNo and dominates(uniqueObjs[j], uniqueObjs[i]):
                             dominated = True
                             break
                     if not dominated:

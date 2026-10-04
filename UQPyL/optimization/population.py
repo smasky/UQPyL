@@ -172,10 +172,13 @@ class Population:
 
     def replace(self, index, pop):
         self.requireConsistentEvalState(pop)
+        self.decs = self.decs.astype(np.result_type(self.decs.dtype, pop.decs.dtype), copy=False)
         self.decs[index, :] = pop.decs
         if self.isEvaluated:
+            self.objs = self.objs.astype(np.result_type(self.objs.dtype, pop.objs.dtype), copy=False)
             self.objs[index, :] = pop.objs
             if self.hasCons:
+                self.cons = self.cons.astype(np.result_type(self.cons.dtype, pop.cons.dtype), copy=False)
                 self.cons[index, :] = pop.cons
         self.frontNo = None
         self.crowdDis = None
@@ -198,9 +201,9 @@ class Population:
             objs = self.objs[index] if self.objs is not None else None
             cons = self.cons[index] if self.cons is not None else None
         elif isinstance(index, (int, np.integer)):
-            decs = self.decs[index:index + 1]
-            objs = self.objs[index:index + 1] if self.objs is not None else None
-            cons = self.cons[index:index + 1] if self.cons is not None else None
+            decs = self.decs[index][None, :]
+            objs = self.objs[index][None, :] if self.objs is not None else None
+            cons = self.cons[index][None, :] if self.cons is not None else None
         else:
             raise TypeError("Index must be int, slice, list, or ndarray")
         return Population(decs, objs, cons, self.conWgt)

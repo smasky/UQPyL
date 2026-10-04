@@ -1,0 +1,2012 @@
+{
+  "files": [
+    {
+      "path": "tests/algorithm_capability_test_support.py",
+      "test_definitions": []
+    },
+    {
+      "path": "tests/analysis_test_support.py",
+      "test_definitions": []
+    },
+    {
+      "path": "tests/conftest.py",
+      "test_definitions": []
+    },
+    {
+      "path": "tests/optimization_test_support.py",
+      "test_definitions": []
+    },
+    {
+      "path": "tests/test_abc_abandonment.py",
+      "test_definitions": [
+        "testAbandonedBeesAreReevaluatedAndCountersReset",
+        "testAbandonmentUsesStrictLimitBoundary",
+        "testShortRunActuallyResetsStagnantBees"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_base_branches.py",
+      "test_definitions": [
+        "test_analysisabc_check_y_target_and_index_validation",
+        "test_analysisabc_check_xy_type_validation_and_reshape",
+        "test_analysisabc_evaluate_target_validation",
+        "test_analysisabc_setting_helpers"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_benchmarks.py",
+      "test_definitions": [
+        "test_sobol_ishigami_matches_theoretical_indices",
+        "test_fast_ishigami_is_reasonably_close_to_theoretical_indices",
+        "test_rbd_fast_ishigami_recovers_first_order_ranking"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_coordinates_and_effects.py",
+      "test_definitions": [
+        "testAnalysisUnitCoordinatesMatchReal",
+        "testAnalysisMixedUnitCoordinatesAndUnknownSpace",
+        "testMorrisUnitsPreserveNormalizedEffectsAndDimensionalStatistics",
+        "testMorrisConstantAndMultiOutputScales",
+        "testMorrisNonlinearSigmaMatchesAnalyticalEffects",
+        "testDecodedAnalysisMetadataAndSamplesSurviveSqlite"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta.py",
+      "test_definitions": [
+        "test_delta_test_sample_and_analyze_smoke"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta_more.py",
+      "test_definitions": [
+        "test_delta_private_cal_delta_smoke",
+        "test_delta_find_comb_vio_small_problem",
+        "test_delta_find_comb_ea_monkeypatched",
+        "test_delta_analyze_uses_relative_delta_change"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta_scaling.py",
+      "test_definitions": [
+        "testDeltaUnitsMatchIndependentScaledDistanceReference",
+        "testDeltaSignedNormalizationPreservesOrderAndCancellation",
+        "testDeltaFixedAndSampleConstantColumnsHaveZeroContribution",
+        "testDeltaNonconstantOutputsWithoutPositiveScoresWarnAndReturn",
+        "testDeltaSubsetSearchUsesSameScaledDistances",
+        "testDeltaUnitMetadataAndEvaluationUseRealCoordinates",
+        "testDeltaNumericDiscreteChoicesUsePhysicalValueRange",
+        "testDeltaEmptySamplesStillRaiseSampleCountError"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta_subset_range.py",
+      "test_definitions": [
+        "testDeltaSubsetSelectionKeepsActiveVariableUnderCommonOutputScaling",
+        "testDeltaSubsetCommonScalePreservesMultiOutputRelativeWeight",
+        "testDeltaConstantLargeOutputColumnDoesNotEraseSmallActiveOutput",
+        "testDeltaScaledSelectionMetadataSurvivesSqliteRoundTrip",
+        "testSquaredRestorationHandlesTinyMantissaWithLargeExponent"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta_ties.py",
+      "test_definitions": [
+        "testDeltaDuplicateCutoffMatchesHandAverage",
+        "testDeltaCutoffWeightDoesNotReweightStrictlyCloserNeighbors",
+        "testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation",
+        "testDeltaAllDuplicateRowsUseAllOtherOutputs",
+        "testDeltaDistinctNearbyDistancesAreNotMerged",
+        "testDeltaLargeDuplicateGroupDoesNotQueryEveryBoundarySet",
+        "testDeltaSubsetSearchUsesSamePermutationInvariantTieRule"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_delta_validation.py",
+      "test_definitions": [
+        "testDeltaRejectsInvalidNeighbors",
+        "testDeltaReportsUnsupportedData"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_design_validation.py",
+      "test_definitions": [
+        "testFastRejectsMissingOrExtraRows",
+        "testFastRejectsInvalidMetadataBeforeEvaluation",
+        "testFastRequiresBaseSizeInMetadata",
+        "testFastRejectsInsufficientSpectralBudget",
+        "testFastCompleteDesignMatchesAnalyticalEffects",
+        "testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids",
+        "testSobolAdequateRareEventSamplesMatchPopulationReference",
+        "testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns",
+        "testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure",
+        "testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks",
+        "testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks",
+        "testSobolWarnsForWrongMetadataEvenForConstantOutputs",
+        "testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects",
+        "testSobolAmbiguousConflictingLayoutsWarnAndRemainUnavailable",
+        "testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls",
+        "testSobolRecoveredDesignAndOriginalMetadataPersist",
+        "testSobolDivisibleRowsWithoutSaltelliStructureAreNotEstimated"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_extreme_input_and_statistics.py",
+      "test_definitions": [
+        "testDeltaInputScalingAgainstDecimal",
+        "testDeltaAnalysisAndSubsetSelectionSurviveExtremeInputUnits",
+        "testDeltaExtremeDiscreteAndFixedColumns",
+        "testMorrisSigmaRangeIsExplicitAndNormalizedEffectSurvives",
+        "testMorrisUnrepresentableMeanIsMarkedWithoutMislabelingExactZero"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_mars_reliability.py",
+      "test_definitions": [
+        "testMarsRecoversInteractionInsteadOfRankingInactiveInput",
+        "testMarsWarnsAndReturnsUnlearnedInteractionWhenConfiguredAsAdditive",
+        "testMarsWarnsAndReturnsNoiseImportance",
+        "testMarsConstantAndSingleInputAreDefined",
+        "testMarsRejectsInvalidSettings",
+        "testMarsRequiresEnoughRowsForValidation",
+        "testMarsDoesNotConvertImprovedReducedGcvIntoImportance",
+        "testMarsDefaultWarningThresholdIsPointEight"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_mars_stability.py",
+      "test_definitions": [
+        "testMarsWarnsAboutGcvSearchDespiteHighValidationR2",
+        "testMarsRepeatedHoldoutsPreservePrimaryScoresAndModelCalls",
+        "testMarsRepeatedWeightVariationMatchesIndependentStatistics",
+        "testMarsRepeatedConstantOutputIsZeroWithoutWarnings",
+        "testMarsRejectsInvalidDiagnosticSettings"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_more_methods.py",
+      "test_definitions": [
+        "test_sobol_sample_validation_and_analyze_smoke",
+        "test_fast_sample_and_analyze_smoke",
+        "test_rbd_fast_sample_and_analyze_smoke",
+        "test_rsa_sample_and_analyze_smoke",
+        "test_rbd_fast_multi_output_uses_current_output_only",
+        "test_fast_constant_output_returns_finite_zero_indices",
+        "test_fast_compute_orders_matches_salib_reference_formula",
+        "test_sobol_multi_output_columnwise_normalization",
+        "test_rsa_sparse_bins_remain_finite",
+        "test_rbd_fast_bias_correction_is_clipped_to_unit_interval",
+        "test_mars_sample_and_analyze_smoke",
+        "test_analysis_log_writes_full_metric_table",
+        "test_ana_result_convenience_api",
+        "test_ana_reader_context_and_metric_lookup",
+        "test_analysis_storage_runid_includes_problem_slug",
+        "test_analysis_list_runs_includes_filename"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_morris.py",
+      "test_definitions": [
+        "test_morris_sample_and_analyze_smoke",
+        "test_morris_invalid_trajectory_structure_raises"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_morris_unit_effects.py",
+      "test_definitions": [
+        "testMorrisUnitEffectsMatchAnalyticalLinearEffects",
+        "testMorrisUnitEffectsIgnoreInputUnitsAndOrigin",
+        "testMorrisUnitNonlinearMeanAndSampleSigma",
+        "testMorrisDecodesSamplesOnceAndPersistsEffectUnits",
+        "testMorrisUsesPhysicalDiscreteRange",
+        "testMorrisInteractionEffectsMatchHandDerivedTrajectories",
+        "testMorrisRequiresFinitePositiveRanges",
+        "testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes",
+        "testMorrisEvaluatedUnsignedOutputMatchesAnalyticalEffects",
+        "testMorrisIntegerInputUsesSignedRangeRelativeSteps",
+        "testMorrisRequiresEnoughTrajectoriesForSampleSigma"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_output_range.py",
+      "test_definitions": [
+        "testNormalizedImportanceSurvivesExtremeOutputUnits",
+        "testUnrepresentableRawImportanceRaisesExplicitRangeError",
+        "testEachOutputKeepsItsOwnScaleAndConstantDefinition",
+        "testHugeFiniteConstantOutputsStayZeroWithoutWarnings",
+        "testNonfiniteConstantOutputsAreRejectedBeforeConstantDetection",
+        "testMarsOutputScalingFitsOnlyTrainingRows",
+        "testSquaredUnitRestorationAvoidsIntermediateRangeLoss"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_output_scale.py",
+      "test_definitions": [
+        "testNonzeroOutputScalingPreservesAllIndices",
+        "testExactlyConstantOutputRetainsZeroConvention",
+        "testRepresentableVariationSurvivesExtremeUnits",
+        "testMultiOutputUsesIndependentScalesAndPreservesInput",
+        "testAdditiveModelRetainsKnownSensitivity",
+        "testNonfiniteOutputsAreRejected"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_rbd_fast_validation.py",
+      "test_definitions": [
+        "testRbdFastFixedInputHasZeroEffectUnderRowPermutations",
+        "testRbdFastRejectsNonconstantRepeatedInputValues",
+        "testRbdFastRejectsInvalidHarmonicSampleBudget",
+        "testRbdFastRequiresPositiveIntegerHarmonics",
+        "testRbdFastRejectsNonfiniteInputs",
+        "testRbdFastContinuousSamplePermutationPreservesAnalyticalRanking"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_rsa_statistics.py",
+      "test_definitions": [
+        "testRsaBinaryOutputMatchesIndependentTwoSampleStatistic",
+        "testRsaConstantOutputRemainsFiniteZero",
+        "testRsaOutputUnitsPreserveHandDerivedRankStatistic",
+        "testRsaPreservesRegionsAcrossExtremelyUnequalOutputMagnitudes",
+        "testRsaRejectsNonfiniteDataInsteadOfReturningZero",
+        "testRsaWarnsAndMarksUnavailableWhenEveryRegionIsTooSmall",
+        "testRsaWarnsForRareBinaryOutputWithoutEnoughComplementSamples",
+        "testRsaAdequateRegionsKeepHandDerivedStatisticAndResetDiagnostics",
+        "testRsaSelectedOutputsWarnOnlyForUnavailableColumn",
+        "testRsaUnavailableStatusSurvivesSqlitePersistence",
+        "testRsaRejectsInvalidRegionCountBeforeModelEvaluation"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_scientific_references.py",
+      "test_definitions": [
+        "testDeltaMagnitudeMatchesIndependentPairwiseDefinition",
+        "testDeltaDuplicateInputsStillExcludeTheQueryRow",
+        "testDeltaNormalizedImportanceDoesNotDependOnOutputUnits",
+        "testVarianceIndicesMatchAnalyticMainAndInteractionEffects",
+        "testMorrisReportsStandardEffectsOnUnequalBounds",
+        "testRsaMatchesHandDerivedRankStatistic",
+        "testMarsIdentifiesSingleActiveInputWithoutCallingItVarianceShare",
+        "testMarsNormalizedImportanceDoesNotDependOnOutputUnits"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_shape_contracts.py",
+      "test_definitions": [
+        "testAnalysisShapesAndSelectedLabels"
+      ]
+    },
+    {
+      "path": "tests/test_analysis_sobol_more.py",
+      "test_definitions": [
+        "test_sobol_sample_skip_value_validation_branches",
+        "test_sobol_sample_skip_value_fast_forward_branch",
+        "test_sobol_analyze_divisibility_validation_branches",
+        "test_sobol_constant_output_returns_finite_zero_indices"
+      ]
+    },
+    {
+      "path": "tests/test_autotuner_preprocessing.py",
+      "test_definitions": [
+        "test_tuner_fits_scalers_only_on_training_then_refits_full_data"
+      ]
+    },
+    {
+      "path": "tests/test_autotuner_split_and_report_contracts.py",
+      "test_definitions": [
+        "testTunerRejectsMultiobjectiveOptimizerBeforeFitting",
+        "testExplicitSplitIsUsedWithoutPreprocessingLeakage",
+        "testBadValidationSplitFailsBeforeFitting",
+        "testSplitAmbiguityAndMultipleFoldsAreExplicit",
+        "testTuningReportSeparatesCandidateFitAndFullRefitWithoutExtraCalls",
+        "testReportRecordsFailuresAndResetsOnNextCall"
+      ]
+    },
+    {
+      "path": "tests/test_autotuner_vector_parameters.py",
+      "test_definitions": [
+        "test_apply_uses_all_vector_coordinates_without_shifting_scalar",
+        "test_kriging_accepts_full_theta_vector",
+        "test_vector_values_broadcast_scalar_bounds_consistently",
+        "test_wrong_candidate_width_is_rejected_without_numeric_mutation",
+        "test_numeric_choice_is_not_decoded_twice",
+        "test_fixed_slices_survive_inactive_then_reactivated_kernel_parameter",
+        "test_real_ga_joint_tuning_uses_two_dimensions_and_restores_selected_fit",
+        "test_vector_grid_keeps_each_pair_intact_and_returns_best_real_values",
+        "test_joint_structure_search_initializes_vectors_and_returns_inactive_as_none",
+        "test_default_grid_preserves_vector_and_does_not_exponentiate_twice",
+        "test_default_grid_preserves_zero_smoothing",
+        "test_real_ga_joint_kernel_and_vector_search",
+        "test_grid_can_apply_parameter_that_becomes_active_after_kernel_switch",
+        "test_opt_tune_rejects_incompatible_shared_parameter_spaces",
+        "test_empty_grids_fail_at_the_input_boundary",
+        "test_inactive_parameters_are_rejected_when_requested"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_accuracy_repairs.py",
+      "test_definitions": [
+        "testWeightedUncertaintyMatchesGaussianPosteriorAndSqlite",
+        "testGeneratedUncertaintyUsesOriginalUniformDomainNotEliteBounds",
+        "testIndependentUncertaintyDoesNotChangeSearchAndRetainsIncumbent",
+        "testLowEffectiveSampleSizeWarnsAndPreservesWeights",
+        "testUncertaintyPreflightBeforeSimulation",
+        "testLocalRmlMatchesIndependentScalarMap",
+        "testLocalModePreservesLinearSolution",
+        "testLocalPerturbationsRespectBoundsFixedParametersAndMask"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_base.py",
+      "test_definitions": [
+        "test_calibration_base_runs_on_model_problem",
+        "test_calibration_base_constructor_keeps_common_runtime_flags",
+        "test_calibration_result_summary_and_log_file",
+        "test_calibration_save_flag_writes_sqlite_result"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_covariance.py",
+      "test_definitions": [
+        "test_default_rank_deficient_update_matches_independent_pseudoinverse",
+        "test_zero_spread_is_finite_and_leaves_ensemble_unchanged",
+        "test_explicit_observation_noise_uses_full_rank_solve",
+        "test_invalid_observation_covariance_is_rejected",
+        "test_invalid_regularization_is_rejected",
+        "test_full_rank_gain_matches_solve_and_does_not_mutate_covariance",
+        "test_numerically_unresolved_direction_is_discarded"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_ensemble_preflight.py",
+      "test_definitions": [
+        "testEnsembleRejectsInvalidCovarianceBeforeSimulation",
+        "testIesValidatesRuntimeSettingsBeforeSimulation",
+        "testEnsembleRejectsInvalidObservationsBeforeSimulation",
+        "testIesValidatesCovarianceOnceAndReusesSimulation",
+        "testIesSingleUpdateAlsoValidatesBeforeSimulation"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_es.py",
+      "test_definitions": [
+        "test_es_updates_ensemble_towards_observation_in_single_pass",
+        "test_es_supports_custom_metric_callable"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_evaluation_and_storage.py",
+      "test_definitions": [
+        "testCalibrationReusesSimulationBatches",
+        "testCalibrationStorageAndSummaryAvoidDuplicatePayloads"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_followup_controls.py",
+      "test_definitions": [
+        "testSufiIterationValidationBeforeSimulation",
+        "testSufiZeroIterationsWarnsAndScreensOnce",
+        "testSufiRejectsInvalidSamplingOptions",
+        "testSingleEliteDoesNotFreezeSampling",
+        "testGuardedMixedSamplingRetainsGlobalLegalSupport",
+        "testGlueWeightsAndDiscreteCdfQuantilesWithMask",
+        "testGlueUniformAndZeroLikelihoodSamples",
+        "testGlueInvalidLikelihoodFailsExplicitly",
+        "testAdaptiveCubicRejectsOvershootAndReducesFixedRmlObjective",
+        "testAdaptiveFailureKeepsLastAcceptedEnsembleAndWarns",
+        "testAdaptiveLinearRetainsAnalyticFixedPoint",
+        "testBoundaryRescalingKeepsSpreadAndReportsMomentChange"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_gain_work.py",
+      "test_definitions": [
+        "testSingleDecompositionGainMatchesIndependentReference",
+        "testFixedNoiseValidatedOnceAcrossIesIterations"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_glue.py",
+      "test_definitions": [
+        "test_glue_filters_behavioral_samples_by_rmse_threshold",
+        "test_glue_supports_named_metric_configuration"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_ies.py",
+      "test_definitions": [
+        "test_ies_iterative_updates_reduce_mean_score_beyond_single_es_step"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_metric_boundaries.py",
+      "test_definitions": [
+        "testMetricsRejectNoObservations",
+        "testSharedMetricPreparationRejectsInvalidShapes",
+        "testUndefinedMetricsRaiseExplicitErrors",
+        "testMaskedMissingValuesMatchSubsetWithoutMutation",
+        "testIntervalMetricsRejectInvalidInputs",
+        "testIntervalMetricsMaskMissingValuesAndIncludeEndpoints",
+        "testConstantObservationsAreValidForCoverageButNotNormalizedWidth",
+        "testZeroMeanStillAllowsLossEfficiencyAndCorrelation",
+        "testMaskedReversedIntervalsAreIgnoredWithoutMutatingBounds"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_metric_direction.py",
+      "test_definitions": [
+        "test_best_member_follows_metric_direction_and_preserves_raw_scores"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_metric_scaling.py",
+      "test_definitions": [
+        "testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion",
+        "testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows",
+        "testTrueConstantObservationsRemainUndefinedInSmallUnits",
+        "testGenuineZeroObservationSumOrMeanRemainsUndefined",
+        "testSmallNonzeroObservationMeanIsNotRejected",
+        "testCancellationDoesNotHideANonzeroObservationSum",
+        "testCorrelationAllowsIndependentSimulationRowScales",
+        "testLargeFiniteKgeUsesFiniteRatiosWithoutSquaringOverflow",
+        "testNseRetainsRepresentableVariationAroundALargeOffset",
+        "testTrueConstantSimulationRowStillRaises",
+        "testConstantDetectionDoesNotDependOnMeanRounding",
+        "testNseCalibrationWorkflowIsInvariantToObservationUnits"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_pbias.py",
+      "test_definitions": [
+        "test_pbias_retains_sign_and_sums_before_comparison_absolute_value",
+        "test_glue_symmetric_inclusive_threshold_and_raw_diagnostics",
+        "test_glue_rejects_invalid_pbias_tolerance",
+        "test_glue_rejects_large_negative_bias_and_preserves_callable_semantics",
+        "test_sufi2_ranks_absolute_bias_but_keeps_signed_elite_scores",
+        "test_smoothers_choose_nearest_zero_and_keep_raw_bias"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_posterior_moments.py",
+      "test_definitions": [
+        "testSquareRootMatchesAnalyticKalmanMoments",
+        "testOriginalScalarUnderdispersionIsFixed",
+        "testIesLinearMembersMatchFixedRandomizedMap",
+        "testDampingMatchesIndependentNormalEquations",
+        "testHardObservationAndUnobservedDirection",
+        "testIesSeedReproducibilityAndGlobalRngIsolation",
+        "testNoisyProjectionAndMaskAreAppliedBeforeSimulation",
+        "testStochasticIesRecoversScalarPosteriorMomentsAtLargeSample",
+        "testDampingDoesNotDependOnObservationUnits",
+        "testIesRegressionIsStableAcrossParameterUnits"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_projection_contracts.py",
+      "test_definitions": [
+        "testEnsembleProjectsBeforeSimulation",
+        "testEnsembleRejectsUnsupportedInitialDomainBeforeSimulation",
+        "testEnsembleFixedBoundAndInteriorUpdate",
+        "testProjectedCalibrationResultSurvivesSqlite"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_range_and_ess.py",
+      "test_definitions": [
+        "testErrorMatchesDecimalAcrossUnitsAndMask",
+        "testRecoverableExtremesAndCancellation",
+        "testGenuineRangeLimitsWarnOnce",
+        "testActualCalibrationSelectionWithLargeUnits",
+        "testConcentratedGlueWeightsWarnWithoutChangingResults",
+        "testUniformLikelihoodAtOrAboveThresholdDoesNotWarn",
+        "testUniformScreeningRecordsSmallEssWithoutLikelihoodWarning",
+        "testSufiUniformTwentyPriorMembersDoNotSpuriouslyWarn"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_result_isolation.py",
+      "test_definitions": [
+        "testRealDiagnosticArraysAreIsolatedInBothDirections",
+        "testReusingAlgorithmPreservesEntirePreviousResult",
+        "testNestedContainersAndArrayViewsAreIsolated",
+        "testResetAndFailedNextRunPreservePreviousResult",
+        "testBuildingSnapshotsDoesNotEvaluateModelOrChangeValues",
+        "testSqliteResultMatchesIndependentInMemorySnapshot"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_rmse_range.py",
+      "test_definitions": [
+        "test_rmse_matches_decimal_with_independent_row_scaling",
+        "test_rmse_residual_edge_cases",
+        "test_unrepresentable_final_rmse_warns",
+        "test_scale_does_not_change_actual_calibration_selection"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_sufi2.py",
+      "test_definitions": [
+        "test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics",
+        "test_sufi2_supports_named_metric_configuration",
+        "test_sufi2_iterative_mode_samples_and_updates_bounds_history"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_unified_output.py",
+      "test_definitions": [
+        "testUniformRowsAndSqliteSummary",
+        "testNewResultArraysDoNotAliasStateOrLegacyArrays",
+        "testIntervalsKeepMasksAndIndependentPriorProvenance",
+        "testUnestimatedIntervalsStayEmpty",
+        "testBestScoreSummaryUsesBestMemberNotFirstCandidate"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_util.py",
+      "test_definitions": [
+        "test_batch_metrics_basic_perfect_and_imperfect_cases",
+        "test_metrics_support_mask",
+        "test_pfactor_and_rfactor"
+      ]
+    },
+    {
+      "path": "tests/test_calibration_zero_noise.py",
+      "test_definitions": [
+        "testZeroNoiseMatchesDenseGain",
+        "testZeroSpreadAndRidgeNullspaceRank",
+        "testObservationDimensionControlsNumericalRank",
+        "testRealRunMatchesExplicitZeroNoiseWithMaskAndBounds",
+        "testDefaultRunNeverBuildsDenseCovariance"
+      ]
+    },
+    {
+      "path": "tests/test_closeout_runtime_and_plot_data.py",
+      "test_definitions": [
+        "testCompletePublicResultsRoundtripAndReuse",
+        "testSensitivityBarsRetainSignsScaleAndAlignLabels",
+        "testSensitivitySelectsOutputAndReportsNonfiniteBars",
+        "testStatisticsMatchOnlyCommonCoordinatesAndRetainNegativeBand",
+        "testMissingHistoryMetricsKeepTheirOwnCoordinates",
+        "testParetoReferenceUsesPointRows",
+        "testTraceTitleRetainsOriginalVariableIndex"
+      ]
+    },
+    {
+      "path": "tests/test_documented_workflows.py",
+      "test_definitions": [
+        "testDocumentedCompleteWorkflows",
+        "testDocumentedTuningIsReproducible",
+        "testDocumentedModelEvaluatorAndEvalContract"
+      ]
+    },
+    {
+      "path": "tests/test_doe_base.py",
+      "test_definitions": [
+        "test_sampler_base_init_and_generate_placeholder",
+        "test_doe_methods_module_layout"
+      ]
+    },
+    {
+      "path": "tests/test_doe_design_structure.py",
+      "test_definitions": [
+        "testSaltelliRowsReplaceExactlyOneCoordinate",
+        "testMorrisTrajectoryVisitsEveryAxisOnceOnLevelGrid",
+        "testFastTrajectoryMatchesIndependentTriangularWave"
+      ]
+    },
+    {
+      "path": "tests/test_doe_documentation_examples.py",
+      "test_definitions": [
+        "testDoeDocumentationExamplesExecute"
+      ]
+    },
+    {
+      "path": "tests/test_doe_edge_regressions.py",
+      "test_definitions": [
+        "testSinglePointFallsBackWithAccurateMetadata",
+        "testInvalidOptimizationCountIsAnExplicitParameterError",
+        "testOrdinaryMaximinRetainsBestCandidate",
+        "testSobolBlocksMatchIndependentSequenceAndWarnOnlyOnMisalignment",
+        "testNonPowerSizeProducesOneQualityWarningAndStillReturns",
+        "testIllegalSkipFailsBeforeSequenceGeneration",
+        "testFactorialMetadataIsIndependentOfInputAndOtherResults"
+      ]
+    },
+    {
+      "path": "tests/test_doe_sampling.py",
+      "test_definitions": [
+        "test_lhs_classic_sample_shape_and_bounds",
+        "test_lhs_other_criteria_smoke",
+        "test_lhs_invalid_criterion_raises",
+        "test_lhs_reproducible_given_seed",
+        "test_random_sample_shape_and_bounds",
+        "test_random_reproducible_given_seed",
+        "test_ffd_levels_int_produces_cartesian_grid",
+        "test_ffd_levels_length_mismatch_raises",
+        "test_sobol_sequence_shape_bounds_and_reproducible",
+        "test_sampler_uses_problem_unit_to_space_mapping",
+        "test_sampler_invalid_generate_shape_raises"
+      ]
+    },
+    {
+      "path": "tests/test_dream_archive_isolation.py",
+      "test_definitions": [
+        "test_archive_records_occupation_states_then_freezes",
+        "test_real_de_and_snooker_runs_preserve_history_and_reproduce"
+      ]
+    },
+    {
+      "path": "tests/test_gpr_likelihood_crosschecks.py",
+      "test_definitions": [
+        "test_fixed_parameters_match_independent_objective_and_posterior",
+        "test_objective_matches_effective_covariance_for_degenerate_data",
+        "test_ea_restarts_keep_best_likelihood_and_rebuild_its_state"
+      ]
+    },
+    {
+      "path": "tests/test_gpr_likelihood_direction.py",
+      "test_definitions": [
+        "test_fixed_gpr_records_negative_joint_log_density",
+        "test_internal_optimization_improves_log_density"
+      ]
+    },
+    {
+      "path": "tests/test_gpr_noise_accuracy.py",
+      "test_definitions": [
+        "test_default_gp_learns_noise_and_predicts_clean_function",
+        "test_fixed_noise_is_preserved_and_matches_dense_posterior",
+        "test_explicit_noise_range_remains_authoritative"
+      ]
+    },
+    {
+      "path": "tests/test_hv_batching.py",
+      "test_definitions": [
+        "test_batches_match_unbatched_estimate_and_rng_state",
+        "test_normalization_and_outside_reference_points_are_batch_independent",
+        "test_rng_never_receives_more_than_batch_size",
+        "test_invalid_batch_size_is_rejected",
+        "test_nonpositive_sample_count_is_rejected",
+        "test_exact_low_dimensional_branch_does_not_sample"
+      ]
+    },
+    {
+      "path": "tests/test_inference_algorithms_more.py",
+      "test_definitions": [
+        "test_mh_gibbs_invalid_propdist_raises",
+        "test_mh_gibbs_run_smoke",
+        "test_amh_multi_output_rejected_and_run_smoke",
+        "test_demc_run_smoke_gamma_none_and_float",
+        "test_dream_zs_adaption_and_snooker_edge_case",
+        "test_dream_zs_run_smoke_small_iters",
+        "test_mh_run_does_not_mutate_global_random_state",
+        "test_dream_zs_run_does_not_mutate_global_random_state",
+        "test_amh_helpers_update_covs_and_check_gamma_",
+        "test_demc_helpers_check_gamma__and_f_prop"
+      ]
+    },
+    {
+      "path": "tests/test_inference_base_and_chain.py",
+      "test_definitions": [
+        "test_chain_add_and_count",
+        "test_chain_with_constraints_stores_cons",
+        "test_inferenceabc_check_bound_reflection",
+        "test_inferenceabc_run_placeholder_and_setup_seed_none_branch",
+        "test_inferenceabc_check_gamma_branches",
+        "test_inferenceabc_initchains_and_build_result_smoke",
+        "test_setup_uses_instance_rng_without_mutating_global_state",
+        "test_inference_result_keeps_internal_camelcase_and_exports_snake_case",
+        "test_amh_update_covs_keeps_nontrivial_proposal_scale_after_reinit"
+      ]
+    },
+    {
+      "path": "tests/test_inference_benchmarks.py",
+      "test_definitions": [
+        "test_inference_algorithms_on_gaussian_energy_benchmark",
+        "test_inference_algorithms_on_shifted_quadratic_benchmark",
+        "test_inference_opt_type_max_score_semantics",
+        "test_inference_anisotropic_quadratic_benchmark",
+        "test_inference_hard_constraint_keeps_trace_feasible",
+        "test_inference_hard_constraint_with_narrow_feasible_region",
+        "test_inference_sqlite_reader_roundtrip"
+      ]
+    },
+    {
+      "path": "tests/test_inference_common_structure.py",
+      "test_definitions": [
+        "testCommonInvalidSettingsStopBeforeModelEvaluation",
+        "testInvalidGammaStopsBeforeModelEvaluation",
+        "testScalarVectorAndMatrixGammaProduceIdenticalSampling",
+        "testMutatedParametersAreValidatedOnReuse",
+        "testMutatedProposalDistributionIsValidatedBeforeEvaluation",
+        "testSamplerPolicyIsConsistentIsolatedAndPersisted"
+      ]
+    },
+    {
+      "path": "tests/test_inference_demc_configuration.py",
+      "test_definitions": [
+        "testDemcInvalidChainsAtConstruction",
+        "testDemcDefaultRuns"
+      ]
+    },
+    {
+      "path": "tests/test_inference_diagnostics.py",
+      "test_definitions": [
+        "testMatchesPinnedArvizReference",
+        "testExtremePowerOfTwoScalesPreserveDiagnosticsWithoutMutatingInput",
+        "testUnavailableShapesAndConstantChains",
+        "testInvalidColumnDoesNotHideValidColumns",
+        "testOneFrozenChainIsNotReportedAsFullSampleEss",
+        "testDiscreteDegenerateFoldAndTailHaveExplicitStatus",
+        "testFoldedRhatDetectsScaleMismatchMissedByClassicalStatistic",
+        "testArEssAgreesWithAsymptoticCorrelationScale",
+        "testDiagnosticsUseFftAndDoNotReorderOrConsumeGlobalRandomness",
+        "testResultAndReaderDiagnosticsAreExplicitAndIndependent",
+        "testMalformedShapeIsRejected"
+      ]
+    },
+    {
+      "path": "tests/test_inference_diagnostics_and_partial_results.py",
+      "test_definitions": [
+        "testPartialResultPreservesSparseSavedEndpoints",
+        "testSplitRhatMatchesHandCalculatedExampleAndScaling",
+        "testUnavailableDiagnosticsDoNotPretendConvergence",
+        "testOddDrawDiagnosticsAndIndependentVersusShiftedChains",
+        "testDiagnosticsAreExplicitAndResultExportsUseSnakeCase",
+        "testAllInferenceConstructorsUseMaxIters"
+      ]
+    },
+    {
+      "path": "tests/test_inference_incremental_history.py",
+      "test_definitions": [
+        "testIncrementalInferenceMatchesFullHistory",
+        "testInferenceHistoryWorkIsLinearAndSnapshotsAreLight"
+      ]
+    },
+    {
+      "path": "tests/test_inference_mh.py",
+      "test_definitions": [
+        "test_mh_setup_rejects_multi_output_problem",
+        "test_mh_run_smoke_returns_inf_result"
+      ]
+    },
+    {
+      "path": "tests/test_inference_mixed_coordinates.py",
+      "test_definitions": [
+        "test_mixed_chains_match_actual_evaluations_and_custom_log_probability",
+        "test_decoding_does_not_snap_or_modify_latent_proposals",
+        "test_fixed_continuous_dimension_survives_reflection",
+        "test_discrete_result_and_snapshot_roundtrip",
+        "test_mh_discrete_marginal_matches_target_masses",
+        "test_integer_values_occupy_equal_latent_widths"
+      ]
+    },
+    {
+      "path": "tests/test_inference_more_branches.py",
+      "test_definitions": [
+        "test_inferenceabc_checktermination_branch",
+        "test_inference_setting_getval_tuple_branch",
+        "test_mh_invalid_propdist_raises",
+        "test_mh_uniform_propdist_smoke_with_constraints",
+        "test_mh_gibbs_uniform_propdist_smoke_with_constraints",
+        "test_amh_invalid_propdist_raises",
+        "test_amh_propdist_else_branch_raises_direct_call",
+        "test_demc_warmup_branch_and_check_gamma__error_branch",
+        "test_dream_zs_gamma_none_and_de_prop_path_smoke"
+      ]
+    },
+    {
+      "path": "tests/test_inference_probability_and_covariance.py",
+      "test_definitions": [
+        "testInvalidLogProbabilityCannotProduceASuccessfulResult",
+        "testMalformedBatchLogProbabilityIsRejected",
+        "testAcceptedLogProbabilityShapes",
+        "testZeroProbabilityRegionIsResampledInitiallyAndRejectedLater",
+        "testEmptySupportStopsAtInitializationBudget",
+        "testTwoZeroProbabilityStatesNeverSubtractInfinities",
+        "testInvalidProbabilityDuringProposalStopsAndClosesSavedRun",
+        "testSnookerSmallArchiveExploresAllActiveDirectionsAndReportsRefresh",
+        "testSnookerRefreshRespectsFixedAxesAndUnits",
+        "testRefreshProbabilityMustProvideFullSupport",
+        "testIncrementalCovarianceMatchesIndependentCenteredMoments",
+        "testIncrementalCovarianceSkipsOldRowsAndResetsCleanly"
+      ]
+    },
+    {
+      "path": "tests/test_inference_proposal_scales.py",
+      "test_definitions": [
+        "testProposalMatchesIndependentRandomGeneratorAtDeclaredScale",
+        "testProposalVarianceMatchesDistributionDefinition",
+        "testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates",
+        "testAdaptiveCovarianceAndFloorUseParameterUnits",
+        "testAdaptiveFallbackRespectsBoundsAndRetainsProvidedCovarianceCopy",
+        "testFixedParameterStaysFixedAfterWarmUpAndSampling",
+        "testGaussianProposalStillUsesFullCorrelatedCovariance"
+      ]
+    },
+    {
+      "path": "tests/test_inference_result_isolation_and_directions.py",
+      "test_definitions": [
+        "testInferencePreviousResultSurvivesReuseResetAndFailure",
+        "testInferenceNestedStateIsolation",
+        "testInferencePublicObjectiveDirectionsAndSamplingUnchanged",
+        "testInferenceSqliteSnapshotsUseOriginalObjectives"
+      ]
+    },
+    {
+      "path": "tests/test_inference_stop_reason_persistence.py",
+      "test_definitions": [
+        "testInferenceStopReasonRoundTrip"
+      ]
+    },
+    {
+      "path": "tests/test_inference_transition_correctness.py",
+      "test_definitions": [
+        "testOutsideProposalsNeverReachModelOrCountAsAccepted",
+        "testAmhRetainsRawCorrelatedProposalForRejection",
+        "testDemcConditionsEachChainOnEarlierAcceptedUpdates",
+        "testDemcNoiseIsCenteredIndependentAndEscapesCollapsedPopulation",
+        "testSnookerProjectionAndReverseHastingsRatio",
+        "testOneActiveDimensionHasUnitSnookerCorrection",
+        "testZeroSnookerAxisIsFiniteSelfTransition",
+        "testSnookerLogCorrectionSurvivesHugeDensityRatios",
+        "testDreamAdaptationUsesActualWarmupWindowAndSquaredJumpNorm",
+        "testDifferentialSamplingIsInvariantToParameterUnits",
+        "testKnownGaussianMoments",
+        "testDreamRejectsUndefinedProposalConfiguration"
+      ]
+    },
+    {
+      "path": "tests/test_kriging_quadratic_trend.py",
+      "test_definitions": [
+        "testQuadraticBasisMatchesExplicitTerms",
+        "testQuadraticTrendReproducesKnownPolynomial",
+        "testQuadraticTrendUncertaintyMatchesIndependentDenseSolve",
+        "testQuadraticTrendRejectsUnidentifiableDesign"
+      ]
+    },
+    {
+      "path": "tests/test_lasso_input_isolation.py",
+      "test_definitions": [
+        "test_prepared_inputs_and_parent_arrays_survive_repeated_fits",
+        "test_one_feature_solution_matches_closed_form",
+        "test_duplicate_tuning_candidates_have_identical_predictions_and_scores",
+        "test_grid_candidate_order_does_not_change_selected_model",
+        "test_solver_failure_does_not_leave_inputs_centered"
+      ]
+    },
+    {
+      "path": "tests/test_lbfgsb_returns.py",
+      "test_definitions": [
+        "testReturnsBestEvaluatedPairAndPreservesRawStatus",
+        "testRealEarlyStopStillReturnsConsistentImprovement",
+        "testNoFiniteCandidateRaisesAndStateResets",
+        "testInvalidBounds"
+      ]
+    },
+    {
+      "path": "tests/test_lhs_correlation.py",
+      "test_definitions": [
+        "testSelectsLeastCorrelatedCandidateColumns",
+        "testDegenerateCasesUseClassicLhsWithoutCorrelation",
+        "testTwoSampleCorrelationStillReturnsValidLatinDesign",
+        "testPerfectOffDiagonalCorrelationIsIncludedInScore",
+        "testInvalidCorrelationIterationsFailClearly",
+        "testRealAndUnitOutputsReproduceWithoutChangingGlobalRng",
+        "testCorrelationMatrixUsesVariableDimensions"
+      ]
+    },
+    {
+      "path": "tests/test_mars_missingness_basis.py",
+      "test_definitions": [
+        "testMissingnessApplyWrapper",
+        "testMissingnessBasisTransformDispatch",
+        "testMissingnessPicklePreservesRecursiveApply"
+      ]
+    },
+    {
+      "path": "tests/test_moasmo_advanced_infilling.py",
+      "test_definitions": [
+        "testAdvancedInfillingSelectsNovelPointsAndCountsEvaluations",
+        "testAdvancedInfillingStopsWhenDiscreteDomainIsExhausted",
+        "testAdvancedInfillingWithRealSurrogatesAndInnerSearch"
+      ]
+    },
+    {
+      "path": "tests/test_model_problem.py",
+      "test_definitions": [
+        "test_model_problem_name_default_and_custom",
+        "test_model_eval_context_is_public",
+        "test_model_problem_simfunc_returns_eval_sims",
+        "test_model_problem_simulate_returns_sim_context",
+        "test_model_problem_is_problem_base_and_evaluates_with_context",
+        "test_model_problem_target_returns_requested_blocks",
+        "test_model_problem_validates_simulation_before_filtering",
+        "test_model_problem_custom_evaluate_rejects_unrequested_sims",
+        "test_model_problem_target_sims_skips_obj_and_con",
+        "test_model_problem_supports_custom_evaluator_subclass",
+        "test_model_problem_rejects_callable_evaluator",
+        "test_model_problem_objfunc_requires_explicit_context",
+        "test_model_problem_rejects_invalid_target",
+        "test_model_problem_custom_evaluate_must_return_eval",
+        "test_model_problem_custom_evaluate_requires_sim",
+        "test_model_problem_rejects_missing_callable_configuration",
+        "test_model_problem_rejects_non_array_sim",
+        "test_model_problem_accepts_non_3d_sim",
+        "test_model_problem_rejects_wrong_sample_dimension",
+        "test_model_problem_allows_sim_shape_independent_from_obs",
+        "test_model_problem_rejects_nan_in_sim",
+        "test_model_problem_allows_nan_in_masked_sim_positions",
+        "test_model_problem_rejects_nan_in_unmasked_sim_positions_even_with_mask",
+        "test_model_problem_supports_custom_space_and_labels",
+        "test_model_problem_validates_obs_mask_and_labels",
+        "test_model_problem_flattens_mask"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_algorithms_smoke.py",
+      "test_definitions": [
+        "test_ga_run_smoke_small_budget",
+        "test_de_run_smoke_small_budget",
+        "test_nsga2_run_smoke_small_budget",
+        "test_ga_run_does_not_mutate_global_random_state"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_asmo_reproducibility.py",
+      "test_definitions": [
+        "testAsmoSeedControlsActualKrgFitsAndEvaluations"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_base_termination_branches.py",
+      "test_definitions": [
+        "test_checktermination_gui_stop_preserves_counters",
+        "test_algorithm_evaluate_accepts_model_problem",
+        "test_initpop_accepts_decision_matrix_and_fills_remaining",
+        "test_initpop_uses_evaluated_population_without_reevaluation",
+        "test_initpop_rejects_oversized_initial_population"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_capabilities_and_stop_reasons.py",
+      "test_definitions": [
+        "testUnsupportedObjectiveCountRejectedBeforeEvaluation",
+        "testWrongInnerOptimizerRejectedBeforeExpensiveEvaluation",
+        "testEgoRequiresDeclaredPredictiveVarianceBeforeEvaluation",
+        "testCapabilityDeclarationsDistinguishConstraintSemantics",
+        "testOptimizationStopReasonPersistsAndDoesNotLeak",
+        "testUserStopReason",
+        "testNoNovelCandidateReason",
+        "testAsmoOneStepReason"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_configuration_lifecycle.py",
+      "test_definitions": [
+        "testMoasmoDefaultPopulationSizeIsUsed",
+        "testMoasmoCustomOptimizerKeepsPopulationSize",
+        "testMoasmoAutomaticSurrogatesFollowCurrentProblem",
+        "testMoasmoRetainsSuppliedSurrogatesAndChecksMismatchBeforeEvaluation",
+        "testMoasmoMalformedCustomSurrogatesFailBeforeEvaluation",
+        "testMoasmoAllowsExplicitReplacementOfAutomaticSurrogates",
+        "testOptimizationSetterControlsActualTermination",
+        "testOptimizationCommonConfigurationUsesLiveAttributes",
+        "testOptimizationHistoryAndReferencePointConfiguration",
+        "testOptimizationResultIdentitySurvivesReuseAndDatabaseRoundTrip"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_constraint_weights.py",
+      "test_definitions": [
+        "test_problem_rejects_invalid_constraint_weights",
+        "test_weighted_violation_formula_and_broadcast_validation",
+        "test_problem_weights_override_initial_population_and_are_copied",
+        "test_population_slice_best_merge_replace_keep_independent_weights",
+        "test_algorithm_offspring_and_history_keep_problem_weights",
+        "test_weighted_multiobjective_sort_and_selection",
+        "test_zero_weight_is_consistent_for_multiobjective_feasibility",
+        "test_sqlite_reader_and_npz_preserve_weights_and_weighted_violation",
+        "test_expensive_optimizers_preserve_weights_after_true_evaluation",
+        "test_rvea_feasible_candidates_exclude_infeasible_even_with_better_objectives"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_ego_component_contracts.py",
+      "test_definitions": [
+        "testEgoComponentInjectionAndDefaultIsolation"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_evaluation_and_persistence.py",
+      "test_definitions": [
+        "testPreEvaluatedPopulationContract",
+        "testSavedOptimizationResultPreservesMissingMetrics",
+        "testOptimizationElapsedTimeIsSaved",
+        "testEveryOptimizationConfigurationCanBeRestored",
+        "testOptimizationConfigurationRoundTrip"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_history_policy.py",
+      "test_definitions": [
+        "test_sparse_history_preserves_curves_final_results_and_real_values",
+        "test_sqlite_frequency_is_independent_and_does_not_copy_history",
+        "test_short_run_has_one_final_snapshot_without_duplicate",
+        "test_history_frequency_validation",
+        "test_all_optimizers_forward_history_configuration"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_hv_scheduling.py",
+      "test_definitions": [
+        "testHvConfigurationIsAvailableAndExportable",
+        "testInvalidHvConfigurationFailsWithoutChangingSettings",
+        "testHvScheduleFinalResultAndSqliteAlignment",
+        "testHvPolicyDoesNotChangeSearchTrajectory",
+        "testUnchangedFrontReusesHvAtScheduledIterations",
+        "testAutomaticReferenceDoesNotDependOnHvSchedule",
+        "testMoasmoDefaultInnerSearchSkipsUnusedHv"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_iteration_budget.py",
+      "test_definitions": [
+        "testBudgetCheckedBetweenCompleteIterations"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_logic_and_range.py",
+      "test_definitions": [
+        "testSceRanksAndAllEvaluatedIncumbents",
+        "testScePopulationParametersAreHonored",
+        "testSceReflectionAndContractionUseCentroidExcludingWorst",
+        "testSingleEvaluatedCandidateSurvivesDiscardWithoutChangingIterationAccounting",
+        "testAbcSuccessResetsFailureCount",
+        "testAbcRepeatedSourceFailuresAccumulate",
+        "testAbcAllEmployedAndRecoverableSmallPopulation",
+        "testPopulationNegativeIndexAndFloatingReplacement",
+        "testGaOperatorRetainsOddPopulationAndFixedCoordinates",
+        "testDeZeroCrossoverStillAttemptsOneDonorCoordinate",
+        "testDistancesMatchIndependentHypot",
+        "testDistanceMeanRepresentableWhenIndividualDistanceOverflows",
+        "testCrowdingKeepsDimensionlessDistances",
+        "testRveaKeepsDirectionsAcrossCommonScale",
+        "testMultiObjectivePublicRunsKeepScaleEquivalentSearch",
+        "testHypervolumeAvoidsIntermediateVolumeRangeFailures",
+        "testHypervolumeNormalizationAtExtremePositiveAndNegativeValues",
+        "testInvalidControlsFailBeforeModelEvaluation",
+        "testNonfiniteOrComplexEvaluationsCannotBecomeOptimizationResults",
+        "testPreEvaluatedFirstIncumbentRetainsEqualScoreAndCopies",
+        "testSinglePendingIncumbentUsesWeightedFeasibilityFirst",
+        "testRveaSupportsIterationOnlyBudget",
+        "testZeroRequestedFrontsAndEmptyInput",
+        "testScalarWorstDirectionInfinityPenaltyIsPreserved",
+        "testAutomaticHypervolumeReferenceReportsUnrepresentableMargin",
+        "testPreEvaluatedIntegerScoresConvertBeforeMaximization"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_module_layout.py",
+      "test_definitions": [
+        "test_core_exports_available_after_layout_refactor",
+        "test_runtime_exports_available_after_layout_refactor",
+        "test_algorithm_base_accepts_hv_reference_point",
+        "test_core_modules_no_longer_forward_to_optimization_util",
+        "test_shared_params_class_is_used_by_runtime_bases",
+        "test_runtime_bases_use_session_without_duplicate_storage_context",
+        "test_surrogate_setting_provides_params_like_base_interface",
+        "test_surrogate_setting_keeps_base_mapping_in_sync_after_mutations"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_more_algorithms_smoke.py",
+      "test_definitions": [
+        "test_abc_runs_on_sphere_small_budget",
+        "test_csa_runs_on_sphere_small_budget",
+        "test_ego_runs_on_sphere_with_dummy_surrogate_and_small_inner_ga",
+        "test_asmo_one_step_runs_on_sphere_with_dummy_surrogate",
+        "test_moead_runs_on_zdt1_small_budget",
+        "test_nsgaiii_runs_on_zdt1_small_budget",
+        "test_rvea_runs_on_zdt1_small_budget",
+        "test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget",
+        "test_expensive_algorithms_spawn_deterministic_distinct_child_seeds"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_more_coverage.py",
+      "test_definitions": [
+        "test_algorithmabc_setup_seed_none_and_save_result_branches",
+        "test_ga_operator_smoke_and_bounds",
+        "test_ga_operator_half_smoke_and_bounds",
+        "test_uniform_point_nbi_h2_branch"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_multiobjective_regressions.py",
+      "test_definitions": [
+        "test_infeasible_diagnostics_are_not_a_pareto_front",
+        "test_first_feasible_is_improvement_and_initializes_reference",
+        "test_infeasible_progress_uses_weighted_violation_and_retains_history",
+        "test_archive_survives_regression_and_ignores_duplicates",
+        "test_archive_changes_outside_hv_reference_are_still_improvements",
+        "test_hv_fixed_scale_preserves_strict_improvement_for_negative_objectives",
+        "test_reference_and_archive_exports_restore_mixed_objective_directions",
+        "test_reference_validates_dimension_and_finiteness",
+        "test_evaluated_offspring_enters_archive_before_survivor_selection",
+        "test_equal_violation_is_same_front_and_uses_diversity",
+        "test_moead_small_population_finishes_iteration_at_budget_boundary",
+        "test_rvea_singleton_keeps_reference_scale_and_diverse_feasible_solutions",
+        "test_reference_selection_is_finite_with_constant_objectives",
+        "test_empty_pareto_and_candidates_roundtrip_sqlite_npz",
+        "test_complete_constrained_runs_archive_every_evaluation",
+        "test_feasible_archive_roundtrip_with_original_maximization_values",
+        "test_preevaluated_initial_members_enter_archive_without_counting_evaluations",
+        "test_candidate_result_and_history_restore_directions_without_shared_arrays"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_population.py",
+      "test_definitions": [
+        "test_population_evaluate_and_get_best_single_objective"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_population_branches.py",
+      "test_definitions": [
+        "test_population_argsort_single_with_constraints_branch",
+        "test_population_best_multi_feasible_and_crowding_k_branch",
+        "test_population_best_multi_infeasible_only_branch_returns_topk_by_cv",
+        "test_population_get_pareto_front_constraint_branches",
+        "test_population_clip_replace_size_merge"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_population_more.py",
+      "test_definitions": [
+        "test_population_add_overloads_and_getitem_type_error"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_reference_point_validation.py",
+      "test_definitions": [
+        "testSingleObjectiveReferencePointTerminates",
+        "testReferencePointInputValidation",
+        "testMoeaRejectsSingleObjectiveBeforeEvaluation"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_result.py",
+      "test_definitions": [
+        "test_result_update_single_builds_opt_result",
+        "test_result_update_multi_builds_opt_result",
+        "test_result_multi_freezes_auto_generated_hv_reference_point",
+        "test_result_multi_prefers_explicit_hv_reference_point",
+        "test_opt_result_exports_snake_case_summary_and_dict",
+        "test_single_history_uses_feasibility_first_comparison",
+        "test_single_history_uses_population_constraint_weights",
+        "test_single_history_feasibility_matches_zero_weight_constraint_policy"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_sce_pso_smoke.py",
+      "test_definitions": [
+        "test_sce_ua_runs_on_sphere_small_budget",
+        "test_ml_sce_ua_runs_on_sphere_small_budget",
+        "test_pso_runs_on_sphere_and_hits_random_particle_branch",
+        "test_pso_run_does_not_mutate_global_random_state"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_sqlite_reader.py",
+      "test_definitions": [
+        "test_sqlite_save_and_reader_roundtrip",
+        "test_log_file_contains_full_summary_and_final",
+        "test_optimization_storage_runid_includes_problem_slug",
+        "test_runtime_common_helpers_match_storage_naming"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_stopping_semantics.py",
+      "test_definitions": [
+        "test_every_algorithm_counts_completed_iterations_exactly",
+        "test_stagnation_starts_after_initialization_and_resets_on_improvement",
+        "test_objective_tolerance_uses_new_historical_best",
+        "test_weighted_constraint_progress_resets_stagnation_even_when_objective_worsens",
+        "test_infeasible_objective_changes_do_not_reset_stagnation",
+        "test_disabled_stagnation_does_not_stop_flat_sequence",
+        "test_zero_stagnation_allowance_stops_after_initialization",
+        "test_repeated_termination_checks_do_not_change_counters_or_history",
+        "test_real_ga_does_not_stop_during_continuous_improvement",
+        "test_existing_batch_budget_rule_is_preserved",
+        "test_exhausted_discrete_search_does_not_count_an_unfinished_iteration",
+        "test_multiobjective_archive_discovery_uses_completed_iteration_and_exact_evaluation",
+        "test_asmo_one_step_counts_one_completed_iteration",
+        "test_reusing_algorithm_resets_iteration_and_stagnation_counts",
+        "test_saved_iteration_numbers_match_completed_history"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_unit_space.py",
+      "test_definitions": [
+        "test_mixed_encode_decode_endpoints_midpoints_and_copies",
+        "test_fixed_and_fractional_integer_bounds_and_invalid_inputs",
+        "test_all_sampler_output_modes_share_samples",
+        "test_all_search_algorithms_keep_unit_population_and_export_real_solutions",
+        "test_initial_real_population_encoding_and_result_history_isolation",
+        "test_pre_evaluated_real_initial_population_is_encoded_without_evaluation",
+        "test_real_surrogate_training_prediction_and_nested_search_use_canonical_unit",
+        "test_surrogate_training_merges_equivalent_discrete_encodings",
+        "test_finite_discrete_search_stops_without_repeated_true_evaluations",
+        "test_sqlite_npz_and_history_export_real_decisions",
+        "test_constraint_evaluation_receives_real_values_without_mutating_unit_population",
+        "test_unit_conversion_roundoff_at_mixed_boundary",
+        "test_surrogate_maximization_subproblem_uses_minimization_of_internal_scores",
+        "test_multiobjective_mixed_directions_export_original_objectives"
+      ]
+    },
+    {
+      "path": "tests/test_optimization_utils_and_metrics.py",
+      "test_definitions": [
+        "test_ndsort_basic_and_with_constraints_does_not_crash",
+        "test_crowding_distance_branches",
+        "test_tournament_selection_errors_and_empty",
+        "test_tournament_selection_smoke_reproducible_shape",
+        "test_uniform_point_grid_and_nbi_shapes_and_sums",
+        "test_metrics_gd_igd_hv_smoke_and_hv_high_dim_branch",
+        "test_gd_and_igd_match_known_asymmetric_values",
+        "test_gd_and_igd_are_zero_on_exact_match",
+        "test_gd_and_igd_raise_on_empty_input",
+        "test_hv_returns_zero_for_points_outside_reference_box",
+        "test_hv_matches_known_2d_union_area",
+        "test_hv_matches_known_3d_single_point_volume",
+        "test_hv_matches_known_3d_union_volume",
+        "test_hv_normalize_preserves_value_inside_unit_box",
+        "test_hv_helpers_head_tail_insert_add_slice_branches"
+      ]
+    },
+    {
+      "path": "tests/test_package_entry.py",
+      "test_definitions": [
+        "test_package_entry_re_raises_non_module_not_found"
+      ]
+    },
+    {
+      "path": "tests/test_problem.py",
+      "test_definitions": [
+        "test_problem_name_default_and_custom",
+        "test_problem_bounds_scalar_and_list",
+        "test_problem_opt_type_validation",
+        "test_problem_var_type_and_var_set_validation",
+        "test_problem_evaluate_only_behavior",
+        "test_problem_evaluate_target_objs_and_cons_split",
+        "test_problem_evaluate_invalid_target_raises",
+        "test_problem_custom_evaluate_must_return_eval",
+        "test_problem_custom_evaluate_shape_is_validated",
+        "test_problem_supports_custom_space_and_transparent_fields",
+        "test_problem_supports_component_style_evaluator",
+        "test_problem_supports_custom_evaluator_subclass",
+        "test_problem_rejects_callable_evaluator",
+        "test_problem_new_nobj_ncon_and_label_fields",
+        "test_problem_rejects_confunc_without_objfunc",
+        "test_problem_rejects_missing_callable_configuration",
+        "test_problem_objfunc_missing_raises"
+      ]
+    },
+    {
+      "path": "tests/test_problem_base.py",
+      "test_definitions": [
+        "test_problemabc_opt_type_list_branch",
+        "test_problemabc_bounds_length_mismatch_raises",
+        "test_problemabc_conwgt_type_validation",
+        "test_problemabc_transform_int_var_rounding",
+        "test_problemabc_transform_discrete_var_mapping",
+        "test_problemabc_transform_to_I_D_respects_flags",
+        "test_problemabc_custom_evaluate_can_return_batched_eval",
+        "test_problemabc_custom_labels_conwgt_and_evaluate_only_branches",
+        "test_problemabc_set_bounds_invalid_types_raise",
+        "test_problemabc_check_opttype_invalid_list_and_type",
+        "test_problemabc_transform_unit_x_hits_mix_branch",
+        "test_problemabc_transform_unit_x_uses_direct_unit_scaling",
+        "test_problem_space_missing_discrete_varset_raises_cleanly",
+        "test_problem_space_validate_rejects_wrong_column_count",
+        "test_problem_space_new_naming_methods_work"
+      ]
+    },
+    {
+      "path": "tests/test_problem_conversion_regressions.py",
+      "test_definitions": [
+        "testBoundsHaveCanonicalShapeAndKeepSampleRows",
+        "testAmbiguousBoundLayoutsAreRejected",
+        "testSingleFuncSnapshotsReusedBuffers",
+        "testContinuousConversionMatchesDecimal",
+        "testExtremeContinuousCoordinatesWithMixedAndFixedAxes"
+      ]
+    },
+    {
+      "path": "tests/test_problem_discrete_mapping.py",
+      "test_definitions": [
+        "testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs",
+        "testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns",
+        "testProblemDelegatesKeepDecimalDiscreteValues",
+        "testFormalMixedUnitDecoderAndRealEvaluationStayCorrect"
+      ]
+    },
+    {
+      "path": "tests/test_problem_docstrings.py",
+      "test_definitions": [
+        "test_problem_benchmark_modules_import_without_syntaxwarning"
+      ]
+    },
+    {
+      "path": "tests/test_problem_eval_contract.py",
+      "test_definitions": [
+        "test_overridden_evaluate_receives_normalized_batch",
+        "test_invalid_input_rejected_before_custom_evaluation",
+        "test_invalid_target_rejected_before_custom_evaluation",
+        "test_problem_rejects_missing_objectives",
+        "test_custom_evaluator_missing_objectives_is_rejected",
+        "test_subclass_result_is_validated_after_super_call",
+        "test_declared_constraints_must_be_returned",
+        "test_unconstrained_cons_request_can_be_empty",
+        "test_simulation_only_model_remains_supported",
+        "test_builtin_evaluate_validates_eval_result_once",
+        "test_problem_normalizes_input_once",
+        "test_scalar_simulation_has_clear_shape_error",
+        "test_infinite_objective_penalty_remains_supported"
+      ]
+    },
+    {
+      "path": "tests/test_problem_mop_pf.py",
+      "test_definitions": [
+        "testZdtFrontSatisfiesAnalyticRelation",
+        "testDtlzFrontSatisfiesGeometry",
+        "testFrontProblemsRejectUnsupportedObjectiveCounts"
+      ]
+    },
+    {
+      "path": "tests/test_problem_public_contracts.py",
+      "test_definitions": [
+        "testInvalidVariableTypesAreRejected",
+        "testValidMixedVariableTypesRoundTrip",
+        "testProblemStarImportExportsPublicNames",
+        "testEvaluationCallsOnlyRequestedCallback"
+      ]
+    },
+    {
+      "path": "tests/test_problem_sop_mop_smoke.py",
+      "test_definitions": [
+        "test_sop_all_obj_funcs_smoke",
+        "test_sop_constraint_problem_smoke",
+        "test_mop_zdt_smoke_and_optimum",
+        "test_mop_dtlz_smoke_and_optimum"
+      ]
+    },
+    {
+      "path": "tests/test_problem_utils.py",
+      "test_definitions": [
+        "test_ndsort_basic_two_objectives",
+        "test_ndsort_all_identical_hits_single_unique_branch",
+        "test_ndsort_with_constraints_penalizes_infeasible",
+        "test_uniform_point_nbi_and_grid_shapes_and_basic_properties",
+        "test_uniform_point_nbi_triggers_secondary_layer_branch"
+      ]
+    },
+    {
+      "path": "tests/test_rbf_singular_warning.py",
+      "test_definitions": [
+        "test_duplicate_observations_match_independent_averaged_interpolation",
+        "test_singular_cubic_keeps_linear_trend_in_different_units",
+        "test_rank_deficient_trend_is_explicitly_marked",
+        "test_failed_fallback_does_not_reuse_previous_fit"
+      ]
+    },
+    {
+      "path": "tests/test_rbf_smoothing.py",
+      "test_definitions": [
+        "test_predictions_match_scipy_with_matching_kernel_conventions",
+        "test_smoothing_preserves_the_supported_polynomial_trend",
+        "test_large_smoothing_approaches_unpenalized_trend",
+        "test_positive_smoothing_handles_duplicate_points",
+        "test_smoothing_supports_multiple_outputs_and_scaling",
+        "test_invalid_smoothing_is_rejected_before_solving",
+        "test_smoothing_validation_also_covers_optimizer_updates"
+      ]
+    },
+    {
+      "path": "tests/test_rng_no_global_numpy_random_usage.py",
+      "test_definitions": [
+        "test_optimization_inference_and_surrogate_optimizers_do_not_use_global_numpy_random_calls"
+      ]
+    },
+    {
+      "path": "tests/test_runtime_common.py",
+      "test_definitions": [
+        "test_run_session_holds_runtime_resources",
+        "test_base_sqlite_reader_lists_runs_from_result_dir",
+        "test_base_sqlite_storage_requires_schema_hooks",
+        "test_global_config_controls_result_directory",
+        "test_explicit_root_dir_overrides_global_config",
+        "test_reader_uses_configured_result_dir_name"
+      ]
+    },
+    {
+      "path": "tests/test_runtime_domain_and_identity.py",
+      "test_definitions": [
+        "testReadersRejectOtherDomains",
+        "testRunIdCollisionDoesNotChangePreviousRun",
+        "testLogOnlyRunsHaveDistinctIdsAndFiles"
+      ]
+    },
+    {
+      "path": "tests/test_runtime_failures.py",
+      "test_definitions": [
+        "test_failure_closes_marks_failed_and_allows_reuse",
+        "test_parameter_initialization_failure_closes_unreturned_session",
+        "test_failure_without_storage_preserves_exception",
+        "test_cleanup_error_does_not_replace_model_error",
+        "test_failed_snapshot_rolls_back_only_current_write",
+        "test_result_serialization_failure_rolls_back_partial_artifacts",
+        "test_early_database_initialization_failure_closes_connection",
+        "test_keyboard_interrupt_also_closes_session",
+        "test_subclass_super_run_keeps_outer_lifetime",
+        "test_close_failure_is_reported_and_retains_session_for_cleanup",
+        "test_rollback_failure_does_not_commit_partial_data"
+      ]
+    },
+    {
+      "path": "tests/test_runtime_reader_field_names.py",
+      "test_definitions": [
+        "testReaderListUsesSnakeCaseFields"
+      ]
+    },
+    {
+      "path": "tests/test_sufi2_mixed_domains.py",
+      "test_definitions": [
+        "test_mixed_sampling_and_successive_elite_envelopes",
+        "test_discrete_envelope_retains_unobserved_legal_choices",
+        "test_illegal_supplied_samples_fail_before_simulation"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_autotuner.py",
+      "test_definitions": [
+        "test_autotuner_grid_tune_smoke",
+        "test_autotuner_grid_tune_with_owner_filter",
+        "test_setting_owner_and_autotuner_default_owner_resolution",
+        "test_autotuner_grid_tune_joint_mode_with_kernel_choice",
+        "test_autotuner_joint_mode_skips_fit_hyper",
+        "test_autotuner_grid_tune_uses_raw_test_data_for_predict",
+        "test_autotuner_opt_tune_spawns_seed_for_inner_optimizer"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_base_rbf_krg_gpr.py",
+      "test_definitions": [
+        "test_default_kernel_isolated_from_other_model_lifecycle",
+        "test_surrogateabc_check_and_scale_errors_and_polyfeature_branch",
+        "test_rbf_fit_predict_and_setkernel_removes_old_kernel_setting",
+        "test_krg_fit_predict_smoke_with_monkeypatched_boxmin",
+        "test_gpr_fit_predict_smoke_with_output_std"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_boxmin_via_gp.py",
+      "test_definitions": [
+        "test_boxmin_covered_via_gpr_fit_with_real_optimizer",
+        "test_lbfgsb_covered_via_gpr_fit_with_real_optimizer"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_fit_and_validation.py",
+      "test_definitions": [
+        "testScalerOwnership",
+        "testFailedRefitInvalidatesAndCanRecover",
+        "testMetricMixedSingleOutputShapes",
+        "testMetricRejectsIncompatibleData",
+        "testTunerRejectsUndefinedValidation",
+        "testTunerAllCandidatesFailClearly"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_gp_kriging.py",
+      "test_definitions": [
+        "test_gpr_predict_protocol_smoke",
+        "test_krg_predict_protocol_smoke",
+        "test_gpr_predict_before_fit_raises_clear_error",
+        "test_krg_predict_before_fit_raises_clear_error",
+        "test_gpr_kernel_choice_apply_parameter_values_switches_kernel",
+        "test_gpr_predict_missing_fit_state_raises_clear_error",
+        "test_gpr_kernel_switch_invalidates_fit_state",
+        "test_krg_kernel_switch_invalidates_fit_state",
+        "test_gpr_and_krg_record_fit_objective",
+        "test_gpr_krg_only_accept_boxmin_string_optimizer",
+        "test_gpr_krg_accept_lbfgsb_string_optimizer",
+        "test_krg_ea_branch_respects_setting_log_transform",
+        "test_gpr_krg_default_mp_restart_times_are_four",
+        "test_gpr_krg_ea_restart_times_still_follow_explicit_argument",
+        "test_gpr_krg_spawn_deterministic_distinct_child_seeds_for_ea_optimizer"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_kernel_regressions.py",
+      "test_definitions": [
+        "test_kriging_signed_differences_and_training_reconstruction",
+        "test_kriging_cubic_product_support_and_positive_semidefinite_matrix",
+        "test_thin_plate_spline_zero_readonly_distances_and_tail",
+        "test_thin_plate_spline_real_fit_reproduces_affine_function",
+        "test_constant_self_and_rectangular_cross_covariance",
+        "test_matern_optimized_nu_encoding_clone_and_tuning",
+        "test_matern_rejects_invalid_nu",
+        "test_matern_rejects_non_candidate_for_optimized_nu",
+        "test_matern_general_nu_duplicate_points_and_reference",
+        "test_fixed_parameters_initialize_without_becoming_tunable",
+        "test_all_fixed_kriging_parameters_support_public_fit",
+        "test_all_fixed_gp_parameters_support_public_fit",
+        "test_matern_against_high_precision_reference",
+        "test_matern_wide_range_is_finite_bounded_and_decreasing",
+        "test_matern_large_order_covariance_and_gp_fit",
+        "test_matern_large_finite_order_converges_to_gaussian_limit"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_kernel_templates.py",
+      "test_definitions": [
+        "test_template_reuse_and_training_leave_other_model_unchanged",
+        "test_template_edits_only_affect_later_copies_and_setkernel",
+        "test_clone_current_internal_kernel_excludes_model_parameters",
+        "test_kernel_choices_snapshot_templates_and_do_not_train_candidates"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_kernel_validation.py",
+      "test_definitions": [
+        "test_positive_parameter_domains",
+        "test_nonnegative_parameter_domains",
+        "test_valid_zero_parameters_and_numeric_scalars_are_preserved",
+        "test_length_parameter_rejects_invalid_structure_and_types",
+        "test_scalar_parameters_reject_vectors",
+        "test_feature_dimensions_checked_before_initialization_and_evaluation",
+        "test_gp_input_shape_and_cross_feature_mismatch",
+        "test_direct_parameter_mutation_is_checked_before_calculation",
+        "test_optimizer_update_is_checked_before_model_fit",
+        "test_invalid_length_optimization_bounds",
+        "test_logarithmic_bounds_and_anisotropic_bound_dimensions",
+        "test_optimized_nu_rejects_invalid_choice_coordinates"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_kernels.py",
+      "test_definitions": [
+        "test_rbf_kernels_evaluate_and_a_matrix_shapes_on_sphere_points",
+        "test_kriging_kernels_call_on_dimensionwise_pdist",
+        "test_gp_kernels_matern_and_rq_basic_properties_on_zdt_points",
+        "test_gp_kernel_modules_import"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_linear_regression_more.py",
+      "test_definitions": [
+        "test_linear_regression_ridge_fit_predict_on_sphere",
+        "test_linear_regression_invalid_loss_type_raises",
+        "test_linear_regression_default_tune_parameters_and_activation",
+        "test_linear_regression_apply_parameter_values_updates_model_context",
+        "test_linear_regression_lasso_smoke",
+        "test_linear_regression_ridge_matches_simple_linear_trend"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_mars_derivative_contracts.py",
+      "test_definitions": [
+        "testMarsDerivativeMatchesPredictionInOriginalUnits",
+        "testMarsUnsupportedDerivativePreprocessingIsExplicit",
+        "testMarsNonlinearDerivativeUsesTransformedCoordinates"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_mars_initialization.py",
+      "test_definitions": [
+        "testMarsInitialOutcomeIgnoresInactiveQrRows"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_mars_refit_lifecycle.py",
+      "test_definitions": [
+        "testMarsRefitsAcrossDimensionsAndRecoversAfterFailure",
+        "testMarsRefitWithoutPruningDoesNotKeepOldTrace"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_mars_smoke.py",
+      "test_definitions": [
+        "test_mars_fit_predict_smoke",
+        "test_mars_default_tune_parameters"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_mp_bounds_rng.py",
+      "test_definitions": [
+        "test_every_evaluation_and_returned_point_is_bounded",
+        "test_internal_optimizer_does_not_change_global_rng",
+        "test_seed_reproduces_entire_evaluation_sequence",
+        "test_boxmin_can_move_away_from_zero_towards_interior_optimum",
+        "test_boxmin_rejects_invalid_bounds_before_evaluation",
+        "test_boxmin_rejects_invalid_initial_points",
+        "test_boxmin_search_is_invariant_to_affine_parameter_coordinates",
+        "test_real_model_tuning_stays_bounded_and_preserves_global_rng"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_numeric_ranges.py",
+      "test_definitions": [
+        "test_dimensionless_scores_match_hand_calculation",
+        "test_score_preserves_output_weights_and_ignores_constant_column_scale",
+        "test_tuner_accepts_nonconstant_extreme_targets",
+        "test_standard_scaler_extreme_columns_match_sample_moments",
+        "test_standard_scaler_true_constant_stays_exact",
+        "test_standard_scaler_opposite_extremes_roundtrip_without_intermediate_overflow",
+        "test_minmax_nonzero_target_origin_preserves_constant_column",
+        "test_finite_standard_deviation_is_restored_without_squaring_scale",
+        "test_representable_variance_survives_unrepresentable_scale_square",
+        "test_gpr_rejects_bad_data_before_kernel_and_invalidates_fit",
+        "test_gpr_zero_noise_remains_valid_and_negative_search_bounds_rejected"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_polynomial_regression.py",
+      "test_definitions": [
+        "test_polynomial_regression_fit_predict_smoke",
+        "test_polynomial_regression_default_tune_parameters_and_activation",
+        "test_polynomial_regression_default_degree_configuration_is_conservative",
+        "test_polynomial_regression_only_interaction_changes_feature_count",
+        "test_polynomial_regression_ridge_fit_predict_smoke",
+        "test_polynomial_regression_apply_parameter_values_updates_model_context"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_prediction_accuracy.py",
+      "test_definitions": [
+        "test_gp_default_length_domain_resolves_short_scale_function",
+        "test_default_mars_recovers_pairwise_interaction",
+        "test_svr_validation_tuning_generalizes_to_independent_oscillatory_points",
+        "test_gp_default_uncertainty_no_longer_misses_smooth_function_systematically"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_prediction_work.py",
+      "test_definitions": [
+        "testKernelDiagonalMatchesFullKernel",
+        "testMeanPredictionSkipsVarianceWork"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_public_fit_contracts.py",
+      "test_definitions": [
+        "testMarsPublicResultsRequireValidFit",
+        "testMarsScoresMatchOriginalUnitPredictions",
+        "testMarsScoresPreserveExplicitMissingMask",
+        "testMarsMissingWithPreprocessingExplicitlyUnsupported",
+        "testUnknownGridParametersRejectedBeforeCandidateFit",
+        "testInactiveParameterRecognizedAcrossStructureChoices"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_randomness_and_failures.py",
+      "test_definitions": [
+        "testRankUsesEveryOutputAndHandlesTies",
+        "testMultiSurrogatePropagatesIndependentReproducibleStreams",
+        "testTunerProgrammingErrorsPropagate",
+        "testTunerRecordsNumericalFailuresWithoutPrinting",
+        "testOptionalMarsDoesNotHideUnexpectedImportFailures",
+        "testOptionalMarsMissingExtensionIsRecognized"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_rbf_smoke.py",
+      "test_definitions": [
+        "test_rbf_predict_protocol_smoke",
+        "test_rbf_predict_before_fit_raises_clear_error",
+        "test_rbf_kernel_switch_invalidates_fit_state",
+        "test_rbf_kernel_choice_apply_parameter_values_switches_kernel"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_regression.py",
+      "test_definitions": [
+        "test_linear_regression_origin_fit_predict",
+        "test_multi_surrogate_fit_predict_and_type_check"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_regression_multioutput.py",
+      "test_definitions": [
+        "testContainerOutputsKeepAxesAndMatchIndependentMatrixSolution",
+        "testPreparedSingleOutputModelsCombineWithCorrectOutputScaling",
+        "testRefitSingleModelsAndContainerAcceptSingleOutputVectors",
+        "testLassoRejectsMultipleOutputsBeforeCallingNativeSolver",
+        "testLassoMultiSurrogateStillMatchesIndependentSoftThresholdSolution"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_restarts.py",
+      "test_definitions": [
+        "testStartsSelectionAndReproducibility",
+        "testInvalidRestartCount",
+        "testEaDefaultUnchanged",
+        "testFixedParametersSkipOptimizer",
+        "testAllNonfiniteCandidatesFailClearly",
+        "testInvalidFirstCandidateDoesNotPoisonSelection"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_scaler_regressions.py",
+      "test_definitions": [
+        "test_affine_inverse_mean_std_variance_and_no_mutation",
+        "test_constant_and_singleton_columns_stay_finite_and_reversible",
+        "test_scaler_validation_and_refit",
+        "test_invalid_configuration_is_rejected",
+        "test_prediction_units_under_shift_and_tenfold_output_scaling",
+        "test_multioutput_matches_independent_fixed_models",
+        "test_mean_only_custom_scaler_has_clear_uncertainty_error"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_single_output_contract.py",
+      "test_definitions": [
+        "testAllModelTrainingEntriesRejectMultipleOutputsBeforeWork",
+        "testSingleOutputVectorAndMatrixKeepSamePredictions",
+        "testRejectedRefitDoesNotLeavePreviousPredictionAvailable",
+        "testTunerRejectsMultipleOutputsBeforeSplittingOrSearching",
+        "testMultiSurrogateValidatesWholeTargetBeforeFittingChildren",
+        "testMultiSurrogateGaussianUncertaintyMatchesIndependentMatrixSolutions",
+        "testMultiSurrogateUncertaintyRequestsValidateBeforePrediction",
+        "testMultiSurrogateRejectsChildPredictionWithWrongOutputOrSampleAxis",
+        "testFailedContainerRefitInvalidatesAllChildrenAndCanRecover",
+        "testMultiSurrogateDerivativeRequiresSupportingModels"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_solver_boundaries.py",
+      "test_definitions": [
+        "test_cubic_rbf_preserves_solution_under_input_units",
+        "test_singular_rbf_warns_and_reports_conflicting_observations",
+        "test_lasso_integer_inputs_match_float_without_mutation",
+        "test_nu_svr_default_search_stays_valid",
+        "test_nu_svr_rejects_invalid_parameters_before_backend"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_split_randomness.py",
+      "test_definitions": [
+        "test_split_is_reproducible_and_does_not_modify_input_or_global_state",
+        "test_kfold_every_sample_validated_once_and_balanced",
+        "test_rng_objects_advance_and_conflicting_inputs_are_rejected",
+        "test_invalid_split_parameters",
+        "test_invalid_fold_count_and_mode",
+        "test_real_tuning_reproducible_and_global_rng_unchanged",
+        "test_separate_mode_model_rng_is_seeded_and_replayable",
+        "test_randselect_uses_requested_percentage_without_fold_rounding"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_svr_smoke.py",
+      "test_definitions": [
+        "test_svr_invalid_params_raise",
+        "test_svr_parameter_activation_and_default_tune_parameters",
+        "test_svr_fit_predict_smoke"
+      ]
+    },
+    {
+      "path": "tests/test_surrogate_tuning_lifecycle.py",
+      "test_definitions": [
+        "testTuningFailureInvalidatesAndAllowsRefit",
+        "testEmptyGridInvalidatesPreviousFit",
+        "testOptimizerFailureInvalidatesPreviousFit",
+        "testDuplicateModelsRejectedWithoutChangingContainer",
+        "testMutatedModelListRejectedBeforeUse",
+        "testSuccessfulTuningRefitsFullData"
+      ]
+    },
+    {
+      "path": "tests/test_svr_convergence_status.py",
+      "test_definitions": [
+        "test_limit_warns_and_retains_approximation_then_refit_clears_status",
+        "test_tuner_records_candidate_and_final_solver_status",
+        "test_warning_as_error_invalidates_model"
+      ]
+    },
+    {
+      "path": "tests/test_user_workflows.py",
+      "test_definitions": [
+        "testDesignEvaluationAnalysisAndReader",
+        "testTuningOptimizationTrueModelCheckAndReader",
+        "testSimulationCalibrationInferenceDiagnosticsAndReaders"
+      ]
+    },
+    {
+      "path": "tests/test_util_metric.py",
+      "test_definitions": [
+        "test_metric_r2_nse_mse_basic",
+        "test_metric_r2_warns_on_constant_target",
+        "test_metric_rank_and_sort_scores_branches"
+      ]
+    },
+    {
+      "path": "tests/test_util_split.py",
+      "test_definitions": [
+        "test_randselect_split_small_dataset_no_div0",
+        "test_randselect_split_single_sample",
+        "test_kfold_split_modes_shapes"
+      ]
+    },
+    {
+      "path": "tests/test_viz_smoothing_contracts.py",
+      "test_definitions": [
+        "testSmoothingPreservesLengthAndInputs"
+      ]
+    },
+    {
+      "path": "tests/test_viz_sqlite_plots.py",
+      "test_definitions": [
+        "test_viz_exports_work_with_result_objects",
+        "test_viz_optimization_accepts_sqlite_path_and_reader"
+      ]
+    },
+    {
+      "path": "tests/test_viz_surrogate_limits.py",
+      "test_definitions": [
+        "testSurrogatePlotIncludesAllData",
+        "testSurrogatePlotHonorsExplicitLimits"
+      ]
+    }
+  ],
+  "test_definition_count": 1003,
+  "duplicate_body_candidates": [
+    [
+      {
+        "path": "tests/test_analysis_delta_scaling.py",
+        "name": "run",
+        "line": 108
+      },
+      {
+        "path": "tests/test_analysis_delta_ties.py",
+        "name": "run",
+        "line": 120
+      }
+    ],
+    [
+      {
+        "path": "tests/test_analysis_design_validation.py",
+        "name": "objective",
+        "line": 107
+      },
+      {
+        "path": "tests/test_analysis_design_validation.py",
+        "name": "objective",
+        "line": 140
+      }
+    ],
+    [
+      {
+        "path": "tests/test_calibration_base.py",
+        "name": "_sqlite_simf",
+        "line": 23
+      },
+      {
+        "path": "tests/test_calibration_base.py",
+        "name": "simf",
+        "line": 92
+      },
+      {
+        "path": "tests/test_calibration_es.py",
+        "name": "simf",
+        "line": 10
+      },
+      {
+        "path": "tests/test_calibration_es.py",
+        "name": "simf",
+        "line": 48
+      },
+      {
+        "path": "tests/test_calibration_glue.py",
+        "name": "simf",
+        "line": 10
+      },
+      {
+        "path": "tests/test_calibration_glue.py",
+        "name": "simf",
+        "line": 49
+      },
+      {
+        "path": "tests/test_calibration_sufi2.py",
+        "name": "simf",
+        "line": 10
+      },
+      {
+        "path": "tests/test_calibration_sufi2.py",
+        "name": "simf",
+        "line": 56
+      },
+      {
+        "path": "tests/test_calibration_sufi2.py",
+        "name": "simf",
+        "line": 89
+      }
+    ],
+    [
+      {
+        "path": "tests/test_inference_algorithms_more.py",
+        "name": "_quad_obj",
+        "line": 10
+      },
+      {
+        "path": "tests/test_inference_mh.py",
+        "name": "_quad_obj",
+        "line": 10
+      },
+      {
+        "path": "tests/test_optimization_more_coverage.py",
+        "name": "_obj_single",
+        "line": 10
+      },
+      {
+        "path": "tests/test_optimization_population.py",
+        "name": "_quad_obj",
+        "line": 9
+      },
+      {
+        "path": "tests/test_optimization_result.py",
+        "name": "_obj_single",
+        "line": 11
+      }
+    ],
+    [
+      {
+        "path": "tests/test_model_problem.py",
+        "name": "simf",
+        "line": 186
+      },
+      {
+        "path": "tests/test_model_problem.py",
+        "name": "simf",
+        "line": 211
+      }
+    ],
+    [
+      {
+        "path": "tests/test_model_problem.py",
+        "name": "simf",
+        "line": 230
+      },
+      {
+        "path": "tests/test_optimization_base_termination_branches.py",
+        "name": "simf",
+        "line": 65
+      }
+    ],
+    [
+      {
+        "path": "tests/test_problem.py",
+        "name": "_zero_obj",
+        "line": 20
+      },
+      {
+        "path": "tests/test_problem_base.py",
+        "name": "_zero_obj",
+        "line": 14
+      }
+    ],
+    [
+      {
+        "path": "tests/test_surrogate_tuning_lifecycle.py",
+        "name": "optimize",
+        "line": 25
+      },
+      {
+        "path": "tests/test_surrogate_tuning_lifecycle.py",
+        "name": "optimize",
+        "line": 127
+      }
+    ]
+  ]
+}

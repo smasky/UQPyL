@@ -1,0 +1,21 @@
+✔ select a successful matching candidate (1.280693ms)
+✔ explicit run ID works (0.248831ms)
+✔ reject explicit source with wrong head_sha (0.557803ms)
+✔ reject explicit source with wrong status (1.119229ms)
+✔ reject explicit source with wrong conclusion (0.180922ms)
+✔ reject explicit source with wrong event (0.170774ms)
+✔ reject explicit source with wrong path (0.148928ms)
+✔ reject explicit source with wrong repository (0.15599ms)
+✔ reject malformed run ID (0.239998ms)
+✔ reject expired explicit artifact (0.28268ms)
+✔ skip expired latest run and reuse older same-SHA candidate (0.298466ms)
+✔ PR artifacts are never automatically released (0.205475ms)
+✔ missing candidate fails without starting a build (0.150868ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65.76177

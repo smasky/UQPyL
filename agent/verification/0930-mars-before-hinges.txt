@@ -1,0 +1,100 @@
+...F...........                                                          [100%]
+=================================== FAILURES ===================================
+_______ testMarsRecoversInteractionInsteadOfRankingInactiveInput[True-3] _______
+
+seed = 3, mixed = True
+
+    @pytest.mark.parametrize('seed', [3, 17, 73])
+    @pytest.mark.parametrize('mixed', [False, True])
+    def testMarsRecoversInteractionInsteadOfRankingInactiveInput(seed, mixed):
+        p = makeProblem()
+        x = LHS('classic').sample(p, 512, seed=seed)
+        y = (x[:, 0]*x[:, 1] + (0.1*x[:, 2] if mixed else 0))[:, None]
+>       result = MARS(verboseFlag=False).analyze(p, x, y)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_mars_reliability.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.mars.MARS object at 0x74fa79610bc0>
+problem = <UQPyL.problem.problem.Problem object at 0x74fa79c06480>
+X = array([[-0.50890532, -0.85410605,  0.40501493],
+       [-0.18945988, -0.15646026, -0.62176058],
+       [ 0.92477853,  ...7039],
+       [-0.59812244,  0.10341459,  0.06664444],
+       [-0.54983381, -0.27548918,  0.26141788]], shape=(512, 3))
+Y = array([[ 4.75160603e-01],
+       [-3.25331140e-02],
+       [ 1.78096659e-01],
+       [ 1.63348929e-01],
+       [ 5.230...16731594e-01],
+       [ 3.15655869e-01],
+       [ 3.04479670e-01],
+       [-5.51901432e-02],
+       [ 1.77615057e-01]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        Y = self.check_Y(X, Y, target, index)
+        if len(X) < 20:
+            raise ValueError("MARS analysis requires at least 20 samples for training and validation.")
+        # A fixed local split makes repeat runs comparable without changing global RNG.
+        order = np.random.default_rng(0).permutation(len(X))
+        validationRows, trainRows = order[: max(5, len(X) // 5)], order[max(5, len(X) // 5) :]
+        # Fit preprocessing on training rows only; constant columns remain zero.
+        origin = np.min(X[trainRows], axis=0)
+        spread = np.ptp(X[trainRows], axis=0)
+        scaledX = (X - origin) / np.where(spread > 0, spread, 1.0)
+        # Forward search can add two terms past max_terms. Keep GCV effective
+        # parameter count (2.5 * basis_size - 1.5 at penalty=3) below training N.
+        termLimit = min(self.get("maxTerms"), max(1, int((len(trainRows) - 1) / 2.5) - 2))
+        scores = np.zeros((Y.shape[1], problem.nInput))
+        diagnostics = []
+        for outputIndex in range(Y.shape[1]):
+            values = Y[:, outputIndex : outputIndex + 1]
+            offset = float(np.mean(values[trainRows]))
+            outputScale = float(np.max(np.abs(values[trainRows] - offset)))
+            if outputScale == 0:
+                if not np.all(values == values[0]):
+                    raise ValueError("MARS training output is constant but validation output is not.")
+                diagnostics.append(dict(validation_r2=None, constant_output=True))
+                continue
+            scaledY = (values - offset) / outputScale
+    
+            def fitModel(inputs):
+                model = MARSModel(max_degree=self.get("maxDegree"), max_terms=termLimit, thresh=1e-6)
+                model.fit(inputs[trainRows], scaledY[trainRows])
+                return model
+    
+            model = fitModel(scaledX)
+            actual = scaledY[validationRows]
+            residual = actual - model.predict(scaledX[validationRows])
+            total = float(np.sum((actual - np.mean(actual)) ** 2))
+            r2 = 1 - float(np.sum(residual**2)) / total if total > 0 else -np.inf
+            if not np.isfinite(r2) or r2 < self.get("minValidationR2"):
+>               raise ValueError(
+                    f"MARS output {outputIndex} validation R2={r2:.6g} is below "
+                    f"minValidationR2={self.get('minValidationR2')}; importance is unreliable. "
+                    "Provide more representative samples or adjust maxDegree/maxTerms."
+                )
+E               ValueError: MARS output 0 validation R2=0.0304175 is below minValidationR2=0.9; importance is unreliable. Provide more representative samples or adjust maxDegree/maxTerms.
+
+UQPyL/analysis/methods/mars.py:83: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_mars_reliability.py::testMarsRecoversInteractionInsteadOfRankingInactiveInput[True-3]
+1 failed, 14 passed in 8.12s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q tests/test_analysis_mars_reliability.py -W error` failed. (See above for error)

@@ -1,8 +1,18 @@
 import numpy as np
 
 
-def plot_surrogate(name: str, yPred: np.ndarray, yTrue: np.ndarray, fontsize=20, markersize: float = 300,
-                   xLabel="True Value", yLabel="Predicted Value", title=None, ylim=None, yMajorLocator=None):
+def plot_surrogate(
+    name: str,
+    yPred: np.ndarray,
+    yTrue: np.ndarray,
+    fontsize=20,
+    markersize: float = 300,
+    xLabel="True Value",
+    yLabel="Predicted Value",
+    title=None,
+    ylim=None,
+    yMajorLocator=None,
+):
     from matplotlib.ticker import MultipleLocator
     import matplotlib.pyplot as plt
 
@@ -10,8 +20,10 @@ def plot_surrogate(name: str, yPred: np.ndarray, yTrue: np.ndarray, fontsize=20,
 
     yTrue = np.asarray(yTrue).ravel()
     yPred = np.asarray(yPred).ravel()
-    yMax = np.max(np.concatenate([yTrue, yPred])) * 1.1
-    yMin = np.min(np.concatenate([yTrue, yPred])) * 0.9
+    values = np.concatenate([yTrue, yPred])
+    yMin, yMax = float(np.min(values)), float(np.max(values))
+    margin = 0.1 * (yMax - yMin) if yMax > yMin else 0.1 * max(abs(yMin), 1.0)
+    yMin, yMax = yMin - margin, yMax + margin
     fig, ax = plt.subplots(1, 1, figsize=(10, 10))
     r2 = r_square(yTrue, yPred)
     rmse = np.sqrt(mse(yTrue, yPred)).item()
@@ -32,10 +44,25 @@ def plot_surrogate(name: str, yPred: np.ndarray, yTrue: np.ndarray, fontsize=20,
     ax.set_ylabel(yLabel, fontweight="bold", fontsize=fontsize)
     if title is not None:
         ax.set_title(title, fontweight="bold", fontsize=fontsize)
-    ax.text(0.05, 0.95, f"$R^2$ = {r2:.3f}, RMSE = {rmse:.3f}", transform=ax.transAxes,
-            ha="left", va="top", fontsize=int(fontsize * 0.9),
-            bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8))
-    ax.text(0.5, -0.15, f"(a) {name}", fontweight="bold", transform=ax.transAxes,
-            ha="center", va="top", fontsize=int(fontsize * 0.9))
+    ax.text(
+        0.05,
+        0.95,
+        f"$R^2$ = {r2:.3f}, RMSE = {rmse:.3f}",
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=int(fontsize * 0.9),
+        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", alpha=0.8),
+    )
+    ax.text(
+        0.5,
+        -0.15,
+        f"(a) {name}",
+        fontweight="bold",
+        transform=ax.transAxes,
+        ha="center",
+        va="top",
+        fontsize=int(fontsize * 0.9),
+    )
     plt.show()
     return fig, ax

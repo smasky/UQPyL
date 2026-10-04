@@ -6,6 +6,7 @@ from ..base import AnaIndex, AnalysisABC
 from ._variance import scaleOutput
 from ...problem import ProblemABC as Problem
 
+
 class RBDFAST(AnalysisABC):
     """
     Random Balance Designs Fourier Amplitude Sensitivity Test (RBD-FAST)
@@ -19,18 +20,17 @@ class RBDFAST(AnalysisABC):
         >>> rbd_method.analyze(problem, X, Y, target="objs")
 
     References:
-        [1] S. Tarantola et al, Random balance designs for the estimation of first order global sensitivity indices, 
+        [1] S. Tarantola et al, Random balance designs for the estimation of first order global sensitivity indices,
             Reliability Engineering & System Safety, vol. 91, no. 6, pp. 717-727, Jun. 2006,
             doi: 10.1016/j.ress.2005.06.003.
         [2] J.-Y. Tissot and C. Prieur, Bias correction for the estimation of sensitivity indices based on random balance designs,
-            Reliability Engineering & System Safety, vol. 107, pp. 205-213, Nov. 2012, 
+            Reliability Engineering & System Safety, vol. 107, pp. 205-213, Nov. 2012,
             doi: 10.1016/j.ress.2012.06.010.
     """
-    
+
     name = "RBDFAST"
-    
-    def __init__(self, M: int = 4, 
-                 verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
+
+    def __init__(self, M: int = 4, verboseFlag: bool = True, logFlag: bool = False, saveFlag: bool = False):
         """
         Initialize the RBD-FAST method for global sensitivity analysis.
 
@@ -44,14 +44,21 @@ class RBDFAST(AnalysisABC):
         self.firstOrder = True
         self.secondOrder = False
         self.totalOrder = False
-        
+
         super().__init__(verboseFlag, logFlag, saveFlag)
-        
+
         # Set the parameter for the number of harmonics
         self.set("M", M)
-    
-    def _analyzeCore(self, problem: Problem, X: np.ndarray, Y: Optional[np.ndarray] = None, meta: Optional[dict] = None,
-                     target: str = 'objs', index: AnaIndex = 'all') -> None:
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
         """
         Run RBD-FAST on the provided samples.
 
@@ -64,55 +71,76 @@ class RBDFAST(AnalysisABC):
             index: Output column selection.
         """
         # Retrieve the parameter for the number of harmonics
-        M = self.get('M')
-        
+        M = self.get("M")
+        if not isinstance(M, (int, np.integer)) or isinstance(M, (bool, np.bool_)) or M <= 0:
+            raise ValueError("RBDFAST M must be a positive integer.")
+        M = int(M)
+        nSamples = X.shape[0]
+        if nSamples <= 2 * M:
+            raise ValueError(f"RBDFAST requires N > 2*M for bias correction; received N={nSamples}, M={M}.")
+        if not np.all(np.isfinite(X)):
+            raise ValueError("RBDFAST requires finite input values.")
+
         # Set the problem instance for analysis
-        
+
         nInput = problem.nInput
-        
+
         # Evaluate the problem if Y is not provided
         Y = self.check_Y(X, Y, target, index)
-        
-        
+
         numY = Y.shape[1]
-        
+
+        # Reuse permutations across outputs. Tied nonconstant values have no
+        # defined spectral ordering; retaining their row order invents effects.
+        permutations = []
+        for variable in range(nInput):
+            column = X[:, variable]
+            if np.all(column == column[0]):
+                permutations.append(None)
+                continue
+            order = np.argsort(column)
+            sortedValues = column[order]
+            if np.any(sortedValues[1:] == sortedValues[:-1]):
+                raise ValueError(
+                    f"RBDFAST cannot analyze nonconstant input {problem.xLabels[variable]!r} with repeated values; "
+                    "the spectral estimate requires distinct values in each varying input column."
+                )
+            permutations.append(np.concatenate([order[::2], order[1::2][::-1]]))
+
         # Initialize an array to store first-order sensitivity indices
-        
+
         S1 = np.zeros((numY, nInput))
         row_label = self.outputLabels
         col_label_1 = problem.xLabels
-        
+
         for i in range(numY):
-            
-            Y_i = scaleOutput(Y[:, i:i+1])
-            
+            Y_i = scaleOutput(Y[:, i : i + 1])
+
             # Calculate sensitivity indices for each input variable
             for j in range(nInput):
-                idx = np.argsort(X[:, j])
-                idx = np.concatenate([idx[::2], idx[1::2][::-1]])
+                idx = permutations[j]
+                if idx is None:
+                    continue
                 Y_seq = Y_i[idx]
-                
+
                 # Perform periodogram analysis
                 _, Pxx = periodogram(Y_seq.ravel())
                 V = np.sum(Pxx[1:])
                 if V == 0.0:
                     S1[i, j] = 0.0
                     continue
-                D1 = np.sum(Pxx[1: M+1])
+                D1 = np.sum(Pxx[1 : M + 1])
                 S1_sub = D1 / V
-                
+
                 # Normalization
-                lamb = (2 * M) / Y.shape[0]
-                if np.isclose(1 - lamb, 0.0):
-                    S1[i, j] = S1_sub
-                    continue
+                lamb = (2 * M) / nSamples
                 S1_sub = S1_sub - lamb / (1 - lamb) * (1 - S1_sub)
                 S1_sub = float(np.clip(S1_sub, 0.0, 1.0))
-                
+
                 S1[i, j] = S1_sub
-        
-        res = [('S1', S1, row_label, col_label_1, 'decsDim1')]
-        
+
+        res = [("S1", S1, row_label, col_label_1, "decsDim1")]
+
         self.recordResult(X, Y, res, target=target, meta=meta)
-        
+
         return None

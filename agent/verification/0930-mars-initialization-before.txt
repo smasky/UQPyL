@@ -1,0 +1,25 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ testMarsInitialOutcomeIgnoresInactiveQrRows __________________
+
+    def testMarsInitialOutcomeIgnoresInactiveQrRows():
+        weights = SingleWeightDependentData.alloc(np.ones(4), 4, 3, 1e-12)
+        # Poison unused storage deterministically rather than relying on allocator
+        # history; inf*0 exposes any attempted projection before a basis exists.
+        np.asarray(weights.Q_t)[:] = np.inf
+        y = np.array([0.0, 1.0, 2.0, 4.0])
+        with np.errstate(invalid="raise"):
+>           outcome = SingleOutcomeDependentData.alloc(y, weights, 4, 3)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_mars_initialization.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   theta = np.dot(weight.Q_t, wy)
+E   FloatingPointError: invalid value encountered in dot
+
+UQPyL/surrogate/mars/core/_knot_search.pyx:160: FloatingPointError
+=========================== short test summary info ============================
+FAILED tests/test_surrogate_mars_initialization.py::testMarsInitialOutcomeIgnoresInactiveQrRows
+1 failed in 0.81s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q tests/test_surrogate_mars_initialization.py -W error` failed. (See above for error)

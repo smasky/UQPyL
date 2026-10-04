@@ -1,10 +1,7 @@
 import numpy as np
 import pytest
 
-MARS = pytest.importorskip(
-    "UQPyL.surrogate.mars.mars",
-    reason="MARS extension modules are not available in this environment.",
-).MARS
+from UQPyL.surrogate.mars.mars import MARS
 
 
 def test_mars_fit_predict_smoke():
@@ -24,5 +21,10 @@ def test_mars_default_tune_parameters():
 
     assert list(model.getDefaultTuneParameters()) == ["max_terms", "max_degree", "penalty"]
     assert list(model.getDefaultTuneParameters(advanced=True)) == [
-        "max_terms", "max_degree", "penalty", "endspan", "minspan", "thresh"
+        "max_terms",
+        "max_degree",
+        "penalty",
+        "endspan",
+        "minspan",
+        "thresh",
     ]

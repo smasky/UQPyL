@@ -1,5 +1,15 @@
 # Surrogate Modeling
 
+GPR 的 `C` 是加到核矩阵对角线的观测噪声方差/正则项，不是标准差。默认初值仍为 `1e-9`；`C_attr` 默认在 `[1e-12, 1]` 按对数坐标搜索，允许近乎无噪声及含噪声拟合。`C_attr=None` 固定 C，显式 `C_attr` 优先。C 使用预处理后目标的方差单位；设置输出 Scaler 时按该尺度解释。该默认上限并不覆盖任意原始输出单位，较大或较小目标尺度可配置输出 Scaler 或自定义范围。扩大范围不等于固定加入更大噪声，也不保证所有数据的精度或不确定性校准。
+
+
+GPR 的 RBF、Matern、RationalQuadratic 核默认长度尺度搜索范围为 `[0.01, 1e5]`（对数坐标）；长度对应预处理后的输入单位。非单位尺度输入建议配置输入 Scaler，或显式指定 `length_attr`，固定长度仍可用 `length_attr=None`。默认范围不是所有问题的精度保证。独立 MARS 现在默认 `max_degree=2`，允许二阶交互；显式 `max_degree=1` 保留加性模型，二阶可能增加拟合开销。
+
+SVR 的 `fit()` 使用当前参数，不自动搜索超参数。需要调参时使用 `AutoTuner.gridTune`/`optTune`，在训练数据内部留出验证并在选择后全量重拟合；最终精度另用独立测试点评价。C、epsilon、gamma 默认是 log 参数，显式 `paraGrid` 应传 `np.log(...)`，例如 `{"C": np.log([1, 100]), "epsilon": np.log([0.001, 0.01]), "gamma": np.log([1, 10, 100])}`；这只是起始候选集，不是通用最优范围。输入和目标单位变化时同时考虑 Scaler 与参数范围。
+
+GPR/KRG 返回的标准差是所选模型假设下的不确定性，不是对实际预测误差的保证；模型失配、数据不足或外推时可能过度自信。放宽搜索范围可消除已复现的 GPR 短尺度失配，但不代表任意数据上的区间已经校准。
+
+
 GPR/KRG 的 `nRestartTimes` 表示首次搜索之外的额外重启次数；`0` 只搜索一次。默认 `None` 对局部优化器（Boxmin/LBFGSB/MP）采用 4 次重启，即总共 5 次；EA 保留 1 次额外重启。局部优化首次从当前配置参数出发（重复拟合时包含上次拟合值），后续在参数优化坐标的边界内均匀随机采样，log 参数因此按对数空间采样。可设置 `model.rng = np.random.default_rng(42)`；相同数据、初始参数和 RNG 状态可复现。最终按返回点复算的有限训练目标选优；全部候选无效时明确报错。更多重启不保证预测误差降低。
 
 `surrogate` 模块用已经评估过的输入输出数据训练廉价预测模型。
@@ -86,12 +96,11 @@ from UQPyL.surrogate import RandSelect, mse, r_square
 from UQPyL.surrogate.rbf import RBF
 
 np.set_printoptions(precision=4, suppress=True)
-np.random.seed(123)
 
 X = np.linspace(0.0, 1.0, 24).reshape(-1, 1)
 Y = np.sin(2 * np.pi * X) + 0.2 * X
 
-trainIdx, testIdx = RandSelect(pTest=25).split(X)
+trainIdx, testIdx = RandSelect(pTest=25).split(X, seed=123)
 
 model = RBF()
 model.fit(X[trainIdx], Y[trainIdx])
@@ -178,7 +187,8 @@ model.predict(Xnew, returnVar=True) -> mean, variance
 
 ## 多输出代理模型
 
-多输出时，可以用 `MultiSurrogate` 为每个输出列训练一个模型。
+所有单个代理模型只拟合一个输出，Y 为 `(nSamples,)` 或 `(nSamples,1)`；
+多输出统一用 `MultiSurrogate` 为每个输出列训练一个独立模型。
 
 ```python
 import numpy as np
@@ -203,6 +213,11 @@ print(pred)
 
 `n_surrogates` 必须与 `Y.shape[1]` 一致，`models_list` 的长度也必须一致。
 
+`fit` 返回容器自身；每个子模型接收一列 Y。所有子模型都支持不确定性时，
+`predict(X,returnStd=True)` / `returnVar=True` 返回按输出拼接的均值与标准差/方差；
+支持导数的子模型可用 `predict_deriv` 合并为 `(nPred,nVariables,nOutputs)`。
+每列独立训练、缩放和调参，不提供跨输出协方差。单模型或容器拟合失败后需重新成功拟合。
+
 ## 调参
 
 `AutoTuner` 用验证集搜索参数。`gridTune()` 显式、容易检查，适合先用。
@@ -214,7 +229,6 @@ from UQPyL.surrogate import AutoTuner, StandardScaler
 from UQPyL.surrogate.rbf import RBF
 
 np.set_printoptions(precision=4, suppress=True)
-np.random.seed(123)
 
 X = np.linspace(0.0, 1.0, 16).reshape(-1, 1)
 Y = X**2 + 0.1
@@ -225,7 +239,7 @@ model = RBF(
 )
 tuner = AutoTuner(model=model)
 
-bestParams, bestScore = tuner.gridTune(X, Y, paraGrid={"C_smooth": [0.0, 1e-6, 1e-4]}, ratio=25)
+bestParams, bestScore = tuner.gridTune(X, Y, paraGrid={"C_smooth": [0.0, 1e-6, 1e-4]}, ratio=25, seed=123)
 
 print(bestParams)
 print(round(float(bestScore), 4))
@@ -374,7 +388,7 @@ assert modelB.kernel is not modelA.kernel
 
 `scalers=(xScaler, yScaler)` 仍为可选配置，不强制改变各模型默认值。优化内部已经提供 0–1 输入时，通常不需要再次启用输入 Scaler；独立代理模型仍可对真实输入和输出作预处理。
 
-内置 `StandardScaler` 和 `MinMaxScaler` 提供 `inverse_transform_std()` 与 `inverse_transform_var()`。对于逆变换 `y = b + a*z`，均值按该式还原，标准差乘 `abs(a)`，方差乘 `a**2`，不加偏移。GPR/KRG 在模型内部保留训练尺度的方差，预测输出时统一还原一次；多输出均值、标准差、方差形状均为 `(n_predictions, n_outputs)`。
+内置 `StandardScaler` 和 `MinMaxScaler` 提供 `inverse_transform_std()` 与 `inverse_transform_var()`。对于逆变换 `y = b + a*z`，均值按该式还原，标准差乘 `abs(a)`，方差乘 `a**2`，不加偏移。GPR/KRG 在模型内部保留训练尺度的方差，预测输出时统一还原一次；单模型均值、标准差、方差形状为 `(n_predictions,1)`，MultiSurrogate 合并后为 `(n_predictions,n_outputs)`。
 
 `StandardScaler(muX, sitaX)` 允许自定义目标均值和正标准差；常规多样本数据保留 `ddof=1`。单样本及常数列用源尺度 1 回退；`MinMaxScaler(min_, max_)` 的常数列也用源跨度 1 回退。这样训练值映射到目标中心/下界，变换仍可逆，不会把常数观测误当成预测方差必须为零。
 
@@ -393,3 +407,9 @@ Scaler 接收二维 `(n_samples, n_features)`；一维输入沿用单行语义�
 AutoTuner 为拆分、模型拟合和优化器派生独立子种子；候选拟合及最终拟合使用相同模型子种子的初始随机状态。固定数据、配置和实现时可复现；用户自定义组件需使用模型提供的 rng 才能受这一控制。`tuner.lastSplit` 保存最近调用的 `train_indices/test_indices` 以及 `seed/split_seed/model_seed/optimizer_seed`，返回的参数和分数二元组不变。该信息保留在内存，按需由调用者导出。
 
 KFold 将余数均匀分配到各折，每个样本在 full 模式中恰好参与一次验证，折大小最多差 1；single 模式在相同 seed 下返回 full 的第一折。折数须为 2 到样本数之间的整数。RandSelect 的 pTest 表示验证集百分比，须在 0 和 100 之间；普通数据取 floor(n*pTest/100)，并至少各保留一个训练/验证样本。单样本仍返回空验证集，它不能产生有效的验证评分。
+
+## 一维输入的含义
+
+建议 fit 和 predict 都显式传二维 X：`(样本数, 参数数)`。现有便捷规则是：fit 的一维 xTrain 解释为多个单参数样本；predict 的一维 X 解释为一个多参数样本。两者不是同一种语义，不要将同一个一维数组不经处理地交给两个入口。
+
+例如单参数训练数据可以用 `xTrain.reshape(-1, 1)`，多个单参数预测点也使用 `xPred.reshape(-1, 1)`。预测入口会在缩放和矩阵运算前检查参数列数，并提示如何明确样本维度。二维批量输入不受影响。

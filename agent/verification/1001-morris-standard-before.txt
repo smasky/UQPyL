@@ -1,0 +1,291 @@
+FFFFFF.FFFFFF                                                            [100%]
+=================================== FAILURES ===================================
+______________ testMorrisUnitEffectsMatchAnalyticalLinearEffects _______________
+
+    def testMorrisUnitEffectsMatchAnalyticalLinearEffects():
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=17)
+        y = problem.evaluate(x).objs
+        unit = Morris(verboseFlag=False).analyze(problem, x, y, meta)
+>       np.testing.assert_allclose(unit["mu"].values, [[60, -6, 0]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 3 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 3.0000000000000004 (ACTUAL), 60 (DESIRED)
+E        [0, 1]: -1.9999999999999996 (ACTUAL), -6 (DESIRED)
+E       Max absolute difference among violations: 57.
+E       Max relative difference among violations: 0.95
+E        ACTUAL: array([[ 3., -2.,  0.]])
+E        DESIRED: array([[60, -6,  0]])
+
+tests/test_analysis_morris_unit_effects.py:24: AssertionError
+____________ testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[0.001] _____________
+
+factor = 0.001
+
+    @pytest.mark.parametrize("factor", [0.001, 1000.0])
+    def testMorrisUnitEffectsIgnoreInputUnitsAndOrigin(factor):
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=3)
+        y = problem.evaluate(x).objs
+        converted = x.copy()
+        converted[:, 0] = x[:, 0] * factor + 7
+        lb, ub = problem.lb.astype(float), problem.ub.astype(float)
+        lb[0, 0], ub[0, 0] = lb[0, 0] * factor + 7, ub[0, 0] * factor + 7
+        convertedProblem = Problem(nInput=3, nObj=1, lb=lb, ub=ub, objFunc=lambda x: x[:, :1])
+        expected = Morris(verboseFlag=False).analyze(problem, x, y, meta)
+        actual = Morris(verboseFlag=False).analyze(convertedProblem, converted, y, meta)
+        for name in ("mu", "mu_star", "sigma", "S1_norm"):
+>           np.testing.assert_allclose(actual[name].values, expected[name].values, atol=1e-10)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-07, atol=1e-10
+E           
+E           Mismatched elements: 1 / 3 (33.3%)
+E           Mismatch at index:
+E            [0, 0]: 2999.999999999931 (ACTUAL), 3.0000000000000004 (DESIRED)
+E           Max absolute difference among violations: 2997.
+E           Max relative difference among violations: 999.
+E            ACTUAL: array([[ 3.e+03, -2.e+00,  0.e+00]])
+E            DESIRED: array([[ 3., -2.,  0.]])
+
+tests/test_analysis_morris_unit_effects.py:42: AssertionError
+____________ testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[1000.0] ____________
+
+factor = 1000.0
+
+    @pytest.mark.parametrize("factor", [0.001, 1000.0])
+    def testMorrisUnitEffectsIgnoreInputUnitsAndOrigin(factor):
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=3)
+        y = problem.evaluate(x).objs
+        converted = x.copy()
+        converted[:, 0] = x[:, 0] * factor + 7
+        lb, ub = problem.lb.astype(float), problem.ub.astype(float)
+        lb[0, 0], ub[0, 0] = lb[0, 0] * factor + 7, ub[0, 0] * factor + 7
+        convertedProblem = Problem(nInput=3, nObj=1, lb=lb, ub=ub, objFunc=lambda x: x[:, :1])
+        expected = Morris(verboseFlag=False).analyze(problem, x, y, meta)
+        actual = Morris(verboseFlag=False).analyze(convertedProblem, converted, y, meta)
+        for name in ("mu", "mu_star", "sigma", "S1_norm"):
+>           np.testing.assert_allclose(actual[name].values, expected[name].values, atol=1e-10)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-07, atol=1e-10
+E           
+E           Mismatched elements: 1 / 3 (33.3%)
+E           Mismatch at index:
+E            [0, 0]: 0.0030000000000000005 (ACTUAL), 3.0000000000000004 (DESIRED)
+E           Max absolute difference among violations: 2.997
+E           Max relative difference among violations: 0.999
+E            ACTUAL: array([[ 0.003, -2.   ,  0.   ]])
+E            DESIRED: array([[ 3., -2.,  0.]])
+
+tests/test_analysis_morris_unit_effects.py:42: AssertionError
+________________ testMorrisUnitNonlinearMeanAndSampleSigma[1.0] ________________
+
+scale = 1.0
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1] ** 2 + 3 * x[:, 1:2]) * scale
+        result = Morris(verboseFlag=False).analyze(problem, x, y, META)
+>       np.testing.assert_allclose(result["mu"].values / scale, [[4, 12]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 2.0 (ACTUAL), 4 (DESIRED)
+E        [0, 1]: 3.0 (ACTUAL), 12 (DESIRED)
+E       Max absolute difference among violations: 9.
+E       Max relative difference among violations: 0.75
+E        ACTUAL: array([[2., 3.]])
+E        DESIRED: array([[ 4, 12]])
+
+tests/test_analysis_morris_unit_effects.py:52: AssertionError
+______________ testMorrisUnitNonlinearMeanAndSampleSigma[1e-200] _______________
+
+scale = 1e-200
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1] ** 2 + 3 * x[:, 1:2]) * scale
+        result = Morris(verboseFlag=False).analyze(problem, x, y, META)
+>       np.testing.assert_allclose(result["mu"].values / scale, [[4, 12]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 2.0 (ACTUAL), 4 (DESIRED)
+E        [0, 1]: 3.0 (ACTUAL), 12 (DESIRED)
+E       Max absolute difference among violations: 9.
+E       Max relative difference among violations: 0.75
+E        ACTUAL: array([[2., 3.]])
+E        DESIRED: array([[ 4, 12]])
+
+tests/test_analysis_morris_unit_effects.py:52: AssertionError
+______________ testMorrisUnitNonlinearMeanAndSampleSigma[-1e+200] ______________
+
+scale = -1e+200
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1] ** 2 + 3 * x[:, 1:2]) * scale
+        result = Morris(verboseFlag=False).analyze(problem, x, y, META)
+>       np.testing.assert_allclose(result["mu"].values / scale, [[4, 12]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 2.0 (ACTUAL), 4 (DESIRED)
+E        [0, 1]: 3.0 (ACTUAL), 12 (DESIRED)
+E       Max absolute difference among violations: 9.
+E       Max relative difference among violations: 0.75
+E        ACTUAL: array([[2., 3.]])
+E        DESIRED: array([[ 4, 12]])
+
+tests/test_analysis_morris_unit_effects.py:52: AssertionError
+_____________________ testMorrisUsesPhysicalDiscreteRange ______________________
+
+    def testMorrisUsesPhysicalDiscreteRange():
+        problem = Problem(
+            nInput=2, nObj=1, lb=[0, 0], ub=[1, 4], varType=[2, 0], varSet={0: [10, 15, 30]}, objFunc=lambda x: x[:, :1]
+        )
+        x = np.array([[10, 0], [15, 0], [15, 2], [30, 4], [15, 4], [15, 2]], dtype=float)
+        y = 2 * x[:, :1] + 3 * x[:, 1:2]
+        result = Morris(verboseFlag=False).analyze(problem, x, y, META)
+>       np.testing.assert_allclose(result["mu"].values, [[40, 12]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 2.0 (ACTUAL), 40 (DESIRED)
+E        [0, 1]: 3.0 (ACTUAL), 12 (DESIRED)
+E       Max absolute difference among violations: 38.
+E       Max relative difference among violations: 0.95
+E        ACTUAL: array([[2., 3.]])
+E        DESIRED: array([[40, 12]])
+
+tests/test_analysis_morris_unit_effects.py:82: AssertionError
+___________ testMorrisInteractionEffectsMatchHandDerivedTrajectories ___________
+
+    def testMorrisInteractionEffectsMatchHandDerivedTrajectories():
+        # x0*x1 gives unit effects x0=[0, 8], x1=[4, 4].
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1]*x[:, 1:2])
+        result = Morris(verboseFlag=False).analyze(problem, x, meta=META)
+>       np.testing.assert_allclose(result["mu"].values, [[4, 4]], atol=1e-13)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-13
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 2.0 (ACTUAL), 4 (DESIRED)
+E        [0, 1]: 1.0 (ACTUAL), 4 (DESIRED)
+E       Max absolute difference among violations: 3.
+E       Max relative difference among violations: 0.75
+E        ACTUAL: array([[2., 1.]])
+E        DESIRED: array([[4, 4]])
+
+tests/test_analysis_morris_unit_effects.py:91: AssertionError
+_________________ testMorrisRequiresFinitePositiveRanges[ub0] __________________
+
+ub = [0, 4]
+
+    @pytest.mark.parametrize("ub", [[0, 4], [np.inf, 4]])
+    def testMorrisRequiresFinitePositiveRanges(ub):
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=ub, objFunc=lambda x: x[:, :1])
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+>       with pytest.raises(ValueError, match="finite, positive"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_morris_unit_effects.py:101: Failed
+_________________ testMorrisRequiresFinitePositiveRanges[ub1] __________________
+
+ub = [inf, 4]
+
+    @pytest.mark.parametrize("ub", [[0, 4], [np.inf, 4]])
+    def testMorrisRequiresFinitePositiveRanges(ub):
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=ub, objFunc=lambda x: x[:, :1])
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+>       with pytest.raises(ValueError, match="finite, positive"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_morris_unit_effects.py:101: Failed
+______________ testMorrisReportsStandardEffectsOnUnequalBounds[4] ______________
+
+numLevels = 4
+
+    @pytest.mark.parametrize("numLevels", [4, 6])
+    def testMorrisReportsStandardEffectsOnUnequalBounds(numLevels):
+        p = Problem(
+            nInput=3, nObj=1, lb=[10, -2, 100], ub=[30, 1, 105], objFunc=lambda x: (3 * x[:, 0] - 2 * x[:, 1])[:, None]
+        )
+        X, meta = MorrisDesign(numLevels=numLevels).sampleWithMeta(p, 20, seed=19)
+        result = Morris(**QUIET).analyze(p, X, meta=meta)
+>       np.testing.assert_allclose(result["mu"].values, [[60, -6, 0]], atol=1e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-12
+E       
+E       Mismatched elements: 2 / 3 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 3.0000000000000004 (ACTUAL), 60 (DESIRED)
+E        [0, 1]: -1.9999999999999996 (ACTUAL), -6 (DESIRED)
+E       Max absolute difference among violations: 57.
+E       Max relative difference among violations: 0.95
+E        ACTUAL: array([[ 3., -2.,  0.]])
+E        DESIRED: array([[60, -6,  0]])
+
+tests/test_analysis_scientific_references.py:83: AssertionError
+______________ testMorrisReportsStandardEffectsOnUnequalBounds[6] ______________
+
+numLevels = 6
+
+    @pytest.mark.parametrize("numLevels", [4, 6])
+    def testMorrisReportsStandardEffectsOnUnequalBounds(numLevels):
+        p = Problem(
+            nInput=3, nObj=1, lb=[10, -2, 100], ub=[30, 1, 105], objFunc=lambda x: (3 * x[:, 0] - 2 * x[:, 1])[:, None]
+        )
+        X, meta = MorrisDesign(numLevels=numLevels).sampleWithMeta(p, 20, seed=19)
+        result = Morris(**QUIET).analyze(p, X, meta=meta)
+>       np.testing.assert_allclose(result["mu"].values, [[60, -6, 0]], atol=1e-12)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-12
+E       
+E       Mismatched elements: 2 / 3 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 3.0000000000000004 (ACTUAL), 60 (DESIRED)
+E        [0, 1]: -1.999999999999999 (ACTUAL), -6 (DESIRED)
+E       Max absolute difference among violations: 57.
+E       Max relative difference among violations: 0.95
+E        ACTUAL: array([[ 3., -2.,  0.]])
+E        DESIRED: array([[60, -6,  0]])
+
+tests/test_analysis_scientific_references.py:83: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitEffectsMatchAnalyticalLinearEffects
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[0.001]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[1000.0]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitNonlinearMeanAndSampleSigma[1.0]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitNonlinearMeanAndSampleSigma[1e-200]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUnitNonlinearMeanAndSampleSigma[-1e+200]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisUsesPhysicalDiscreteRange
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisInteractionEffectsMatchHandDerivedTrajectories
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisRequiresFinitePositiveRanges[ub0]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisRequiresFinitePositiveRanges[ub1]
+FAILED tests/test_analysis_scientific_references.py::testMorrisReportsStandardEffectsOnUnequalBounds[4]
+FAILED tests/test_analysis_scientific_references.py::testMorrisReportsStandardEffectsOnUnequalBounds[6]
+12 failed, 1 passed, 14 deselected in 0.96s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_analysis_morris_unit_effects.py tests/test_analysis_scientific_references.py -k Morris -W error` failed. (See above for error)

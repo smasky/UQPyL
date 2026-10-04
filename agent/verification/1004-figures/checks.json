@@ -1,0 +1,43 @@
+[
+  {
+    "plot": "sensitivity",
+    "values": [
+      1.0,
+      -2.0,
+      4.0
+    ]
+  },
+  {
+    "plot": "optimization",
+    "x": [
+      20,
+      30
+    ],
+    "warnings": [
+      "plot_op_curve_stat: histories differ; using only shared coordinates without interpolation."
+    ]
+  },
+  {
+    "plot": "pareto",
+    "reference_x": [
+      0.0,
+      0.5,
+      1.0
+    ]
+  },
+  {
+    "plot": "trace",
+    "titles": [
+      "Decision Variable 3",
+      "Decision Variable 1"
+    ]
+  },
+  {
+    "plot": "distribution",
+    "dimensions": 3
+  },
+  {
+    "plot": "surrogate",
+    "points": 4
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "scope": "Synthetic gain calculation, one BLAS thread; not end-to-end or peak memory.",
+  "dense_memory_optimization": false,
+  "records": [
+    {
+      "observations": 80,
+      "ensemble_members": 32,
+      "parameters": 5,
+      "max_abs_difference": 7.91033905045424e-16,
+      "one_dense_matrix_bytes": 51200,
+      "decompositions_per_full_rank_update_before": 2,
+      "decompositions_per_full_rank_update_after": 1,
+      "previous_median_seconds": 0.0003392220023670234,
+      "current_median_seconds": 0.00032684199686627835
+    },
+    {
+      "observations": 240,
+      "ensemble_members": 32,
+      "parameters": 5,
+      "max_abs_difference": 2.418204525511669e-15,
+      "one_dense_matrix_bytes": 460800,
+      "decompositions_per_full_rank_update_before": 2,
+      "decompositions_per_full_rank_update_after": 1,
+      "previous_median_seconds": 0.0034633909963304177,
+      "current_median_seconds": 0.0032217940024565905
+    },
+    {
+      "observations": 480,
+      "ensemble_members": 32,
+      "parameters": 5,
+      "max_abs_difference": 1.4779844015322396e-15,
+      "one_dense_matrix_bytes": 1843200,
+      "decompositions_per_full_rank_update_before": 2,
+      "decompositions_per_full_rank_update_after": 1,
+      "previous_median_seconds": 0.018442189997585956,
+      "current_median_seconds": 0.016641600006551016
+    }
+  ]
+}

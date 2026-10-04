@@ -1,0 +1,2 @@
+Verified 123 migrated function ASTs, 488 case mappings, dependencies and all 2005 collected IDs.
+Only intentional in-function change: configuration restore imports the shared factory module.

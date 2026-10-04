@@ -12,7 +12,8 @@ from ..core.runtime_session import RunSession
 from ..core.runtime_lifecycle import RunLifecycle
 from ..problem.eval import Eval
 
-class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
+
+class AlgorithmABC(RunLifecycle, metaclass=abc.ABCMeta):
     """
     Base class for bounded optimization in unit coordinates.
 
@@ -21,81 +22,165 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
     Runtime decision snapshots are decoded; exported results also restore
     objective directions. Problem bounds are never overwritten.
     """
-    def __init__(self, maxFEs: int = None, maxIters: int = None, maxTolerates: int = None, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = True, saveFlag: bool = False,
-                 saveFreq: int = 100, hvRefPoint = None, historyFreq: int = 10):
-        
+
+    constraintHandling = "feasibility_first"
+    requiresUncertainty = False
+
+    @classmethod
+    def getCapabilities(cls):
+        """Declare supported problem semantics without evaluating a model."""
+        family = getattr(cls, "alg_type", None)
+        return {
+            "min_objectives": 2 if family == "MOEA" else 1,
+            "max_objectives": 1 if family == "EA" else None,
+            "constraint_handling": cls.constraintHandling,
+            "variable_types": ["continuous", "integer", "discrete"],
+            "requires_finite_bounds": True,
+            "requires_predictive_variance": cls.requiresUncertainty,
+        }
+
+    def _checkObjectiveCount(self, nObj):
+        capabilities = self.getCapabilities()
+        if capabilities["max_objectives"] == 1 and nObj != 1:
+            raise ValueError(f"{self.name} requires exactly one objective.")
+        if nObj < capabilities["min_objectives"]:
+            raise ValueError(f"{self.name} requires at least two objectives.")
+
+    def validateProblem(self, problem):
+        self._checkObjectiveCount(problem.nObj)
+        problem.canonicalize_unit(np.zeros((1, problem.nInput)))
+
+    _configAttributes = {
+        "maxIters": "maxIter",
+        "maxFEs": "maxFEs",
+        "maxTolerates": "maxTolerates",
+        "tolerate": "tolerate",
+        "verboseFlag": "verboseFlag",
+        "verboseFreq": "verboseFreq",
+        "logFlag": "logFlag",
+        "saveFlag": "saveFlag",
+        "saveFreq": "saveFreq",
+        "historyFreq": "historyFreq",
+        "hvRefPoint": "hvRefPoint",
+        "hvFlag": "hvFlag",
+        "hvFreq": "hvFreq",
+        "hvSamples": "hvSamples",
+    }
+
+    def __init__(
+        self,
+        maxFEs: int = None,
+        maxIters: int = None,
+        maxTolerates: int = None,
+        tolerate: float = 1e-6,
+        verboseFlag: bool = True,
+        verboseFreq: int = 10,
+        logFlag: bool = True,
+        saveFlag: bool = False,
+        saveFreq: int = 100,
+        hvRefPoint=None,
+        historyFreq: int = 10,
+        hvFlag: bool = True,
+        hvFreq: int = 10,
+        hvSamples: int = 10_000,
+    ):
+
         self.params = Params()
         self.state = Result(self)
-        
+
         self.problem = None
         self.maxFEs = maxFEs
         self.maxIter = maxIters
         self.maxTolerates = maxTolerates
         self.tolerate = tolerate
-        
+
         self.verboseFlag = verboseFlag
         self.verboseFreq = verboseFreq
         self.logFlag = logFlag
         self.saveFlag = saveFlag
         self.saveFreq = saveFreq
         self.setHistoryFreq(historyFreq)
+        self.set("hvFlag", hvFlag)
+        self.set("hvFreq", hvFreq)
+        self.set("hvSamples", hvSamples)
         self.hvRefPoint = None if hvRefPoint is None else np.asarray(hvRefPoint, dtype=float).copy()
         self.storage = None
         self.session: RunSession | None = None
         self.runId = None
 
         if self.hvRefPoint is not None:
-            self.set('hvRefPoint', self.hvRefPoint.copy())
-    
+            self.set("hvRefPoint", self.hvRefPoint.copy())
+
     def reset(self):
-        
-        self.FEs = 0; self.iters = 0; self.tolerateTimes = 0
+
+        self.FEs = 0
+        self.iters = 0
+        self.tolerateTimes = 0
         self.startTime = time.perf_counter()
-        
+
         self.state.reset()
-        self.state.extra['history_freq'] = self.historyFreq
+        self.state.extra["history_freq"] = self.historyFreq
 
     def setHistoryFreq(self, historyFreq):
         if historyFreq is not None:
-            if isinstance(historyFreq, (bool, np.bool_)) or not isinstance(historyFreq, (int, np.integer)) or historyFreq <= 0:
+            if (
+                isinstance(historyFreq, (bool, np.bool_))
+                or not isinstance(historyFreq, (int, np.integer))
+                or historyFreq <= 0
+            ):
                 raise ValueError("historyFreq must be a positive integer or None.")
             historyFreq = int(historyFreq)
         self.historyFreq = historyFreq
-        self.params.set('historyFreq', historyFreq)
-    
+
     def setup(self, problem, seed):
-        
+        self._validateSearchParameters()
         self.setProblem(problem)
         self._startRun()
-        
+
         self.reset()
         Verbose.setupContext(self, problem)
         if self.saveFlag:
             rootDir = config.resolveWorkDir(getattr(problem, "workDir", None))
             self.storage = SqliteStorage(rootDir)
         self.session = None
-        
+
         if seed is None:
             seed = int(np.random.default_rng().integers(0, 1000000))
         self.rng = np.random.default_rng(seed)
-        
-        self.set('seed', seed)
-        self.set('saveFreq', self.saveFreq)
+
+        self.set("seed", seed)
+        self.set("saveFreq", self.saveFreq)
         if self.saveFlag:
             self.session = self.storage.create_run(self)
             self.runId = self.session.run_id
         Verbose.printSettings(self)
-    
+
+    def _validateSearchParameters(self):
+        """Reject invalid controls before sampling or evaluating a model."""
+        for name in ("nPop", "nInit", "M"):
+            if name in self.params.data:
+                value = self.get(name)
+                if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < 1:
+                    raise ValueError(f"{name} must be a positive integer.")
+        bounded = {"cr": (0, 1), "proC": (0, 1), "sita": (0, 1), "employedRate": (0, 1)}
+        nonnegative = ("proM", "disM", "disC", "f", "w", "c1", "c2", "alpha", "beta", "pct", "euclidThres", "fr")
+        for name in (*bounded, *nonnegative):
+            if name not in self.params.data:
+                continue
+            value = self.get(name)
+            lower, upper = bounded.get(name, (0, np.inf))
+            if not np.isscalar(value) or not np.isfinite(value) or not lower <= value <= upper:
+                raise ValueError(f"{name} must be finite and in [{lower}, {upper}].")
+            if name in ("employedRate", "pct", "fr") and value == 0:
+                raise ValueError(f"{name} must be positive.")
+
     def initPop(self, nInit, initialPop=None):
         if initialPop is None:
             return self._sampleInitialPop(nInit)
 
         pop = self._coerceInitialPop(initialPop)
         if len(pop) > nInit:
-            raise ValueError(
-                f"initialPop has {len(pop)} members, but this algorithm expects at most {nInit}."
-            )
+            raise ValueError(f"initialPop has {len(pop)} members, but this algorithm expects at most {nInit}.")
 
         if not pop.isEvaluated:
             self.evaluate(pop)
@@ -106,7 +191,7 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
         return pop
 
     def _sampleInitialPop(self, nInit):
-        lhs = LHS('classic')
+        lhs = LHS("classic")
 
         seed = int(self.rng.integers(0, 1000000))
         xInit = lhs.sample(self.problem, nInit, seed, output="unit")
@@ -123,41 +208,68 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
             objs, cons = self.problem._validate_common_eval_result(Eval(objs=pop.objs, cons=pop.cons), pop.decs)
             if self.problem.nCon > 0 and cons is None:
                 raise ValueError("Evaluated initialPop requires cons when nCon > 0.")
-            pop.assignEval(objs, cons)
+            self._validateSearchEvaluation(objs, cons)
+            pop.assignEval(np.asarray(objs, dtype=float), cons)
         pop.setConstraintWeights(self.problem.conWgt)
         pop.decs = self.problem.space_to_unit(pop.decs)
         if pop.isEvaluated:
             pop.objs = pop.objs * self.problem.opt
             if self.problem.nObj > 1:
-                self.state.observeMulti(Population(self.problem.unit_to_space(pop.decs),
-                                                  pop.objs, pop.cons, pop.conWgt),
-                                        self.FEs, self.iters)
+                self.state.observeMulti(
+                    Population(self.problem.unit_to_space(pop.decs), pop.objs, pop.cons, pop.conWgt),
+                    self.FEs,
+                    self.iters,
+                )
+            else:
+                self.state.observeSingle(
+                    Population(self.problem.unit_to_space(pop.decs), pop.objs, pop.cons, pop.conWgt), self.FEs
+                )
         return pop
 
     def setProblem(self, problem):
+        self.validateProblem(problem)
         self.problem = problem
         self.searchLb = np.zeros((1, problem.nInput))
         self.searchUb = np.ones((1, problem.nInput))
-        problem.canonicalize_unit(self.searchLb)  # Validate bounded conversion before running.
         self.optType = getattr(problem, "optType", None)
         if hasattr(problem, "optType"):
-            self.set('optType', problem.optType)
-    
+            self.set("optType", problem.optType)
+
     def evaluate(self, pop):
         decs = self.problem.unit_to_space(pop.decs)
         res = self.problem.evaluate(decs)
-        objs = res.objs * self.problem.opt
+        self._validateSearchEvaluation(res.objs, res.cons)
+        objs = np.asarray(res.objs, dtype=float) * self.problem.opt
         pop.assignEval(objs, res.cons)
         pop.setConstraintWeights(self.problem.conWgt)
         self.FEs += pop.nPop
         if self.problem.nObj > 1:
-            self.state.observeMulti(Population(decs, objs, res.cons, pop.conWgt),
-                                    self.FEs, self.iters)
+            self.state.observeMulti(Population(decs, objs, res.cons, pop.conWgt), self.FEs, self.iters)
+        else:
+            self.state.observeSingle(Population(decs, objs, res.cons, pop.conWgt), self.FEs)
         return pop
+
+    def _validateSearchEvaluation(self, objs, cons):
+        for name, values, required in [("objs", objs, True), ("cons", cons, self.problem.nCon > 0)]:
+            if values is None:
+                if required:
+                    raise ValueError(f"Optimization evaluation requires {name}.")
+            elif np.iscomplexobj(values):
+                raise ValueError(f"Optimization {name} must contain finite real values.")
+            elif name == "objs" and self.problem.nObj == 1:
+                # A worst-direction infinity is an intentional exclusion penalty
+                # in existing scalar searches (e.g. DeltaTest's empty subset).
+                internal = np.asarray(values, dtype=float) * self.problem.opt
+                if np.any(np.isnan(internal)) or np.any(np.isneginf(internal)):
+                    raise ValueError(
+                        "Optimization objs must contain finite real values or worst-direction infinity penalties."
+                    )
+            elif not np.all(np.isfinite(values)):
+                raise ValueError(f"Optimization {name} must contain finite real values.")
 
     def updateState(self, pop):
         self.state.runtime = time.perf_counter() - self.startTime
-        algType = 'EA' if self.problem.nObj == 1 else 'MOEA'
+        algType = "EA" if self.problem.nObj == 1 else "MOEA"
         realPop = pop.copy()
         realPop.decs = self.problem.unit_to_space(pop.decs)
         self.state.update(realPop, self.problem, self.FEs, self.iters, algType)
@@ -165,8 +277,9 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
 
     def update(self, pop, *, completed=False):
         """Record initialization, or commit one completed iteration."""
-        trackStagnation = (completed and self.problem.nObj == 1
-                           and self.tolerate is not None and self.state.bestObjs is not None)
+        trackStagnation = (
+            completed and self.problem.nObj == 1 and self.tolerate is not None and self.state.bestObjs is not None
+        )
         if trackStagnation:
             previousBest = self.state.bestObj
             previousCons = self.state.bestCons
@@ -178,49 +291,62 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
             currentViolation = calcConstraintViolation(self.state.bestCons, self.problem.conWgt)
             previousCV = 0.0 if previousViolation is None else float(previousViolation[0])
             currentCV = 0.0 if currentViolation is None else float(currentViolation[0])
-            improved = (currentCV < previousCV or
-                        (previousCV == 0 and currentCV == 0
-                         and previousBest - self.state.bestObj > self.tolerate))
+            improved = currentCV < previousCV or (
+                previousCV == 0 and currentCV == 0 and previousBest - self.state.bestObj > self.tolerate
+            )
             self.tolerateTimes = 0 if improved else self.tolerateTimes + 1
         if self.verboseFlag > 0 or self.logFlag > 0 or self.saveFlag > 0:
             Verbose.printIteration(self)
         if self.saveFlag and self.session is not None and self.iters % self.saveFreq == 0:
             self.storage.saveSnapshot(self.session, self, self.state.buildResult(includeHistory=False), isFinal=False)
         return self.state
-    
+
     def checkTermination(self, pop):
         """Check iteration boundaries; initialization and started iterations finish fully.
 
         maxFEs is a stopping threshold, not a per-evaluation hard cap.
         """
         if self.maxFEs is not None and self.FEs >= self.maxFEs:
+            self.state.stopReason = "max_fes"
             return False
         if self.maxIter is not None and self.iters >= self.maxIter:
+            self.state.stopReason = "max_iters"
             return False
-        if (self.problem.nObj == 1 and self.tolerate is not None
-                and self.maxTolerates is not None and self.tolerateTimes >= self.maxTolerates):
+        if (
+            self.problem.nObj == 1
+            and self.tolerate is not None
+            and self.maxTolerates is not None
+            and self.tolerateTimes >= self.maxTolerates
+        ):
+            self.state.stopReason = "stagnation"
             return False
-        if hasattr(self.problem, 'GUI'):
+        if hasattr(self.problem, "GUI"):
             self.problem.iterEmit.send()
             if self.problem.isStop:
+                self.state.stopReason = "user_stop"
                 return False
         return True
-    
+
     # NOTE: setProblem is defined above; keep a single implementation.
-    
+
     def saveResult(self):
         return self.state.toNpzPayload()
 
     def exportConfig(self):
         """Export scalar/array settings; live model components require caller restoration."""
         config = dict(self.params.items())
-        config.update({name: getattr(self, name) for name in (
-            'maxFEs', 'maxTolerates', 'tolerate', 'verboseFlag', 'verboseFreq',
-            'logFlag', 'saveFlag', 'saveFreq', 'historyFreq', 'hvRefPoint')})
-        config['maxIters'] = self.maxIter
-        config['_unrestored_components'] = [name for name in ('surrogate', 'surrogates', 'optimizer') if hasattr(self, name)]
-        return {key: value.tolist() if isinstance(value, np.ndarray) else
-                value.item() if isinstance(value, np.generic) else value for key, value in config.items()}
+        config.update({name: self.get(name) for name in self._configAttributes})
+        config["_unrestored_components"] = [
+            name for name in ("surrogate", "surrogates", "optimizer") if hasattr(self, name)
+        ]
+        return {
+            key: value.tolist()
+            if isinstance(value, np.ndarray)
+            else value.item()
+            if isinstance(value, np.generic)
+            else value
+            for key, value in config.items()
+        }
 
     def buildResult(self):
         self.state.runtime = time.perf_counter() - self.startTime
@@ -230,6 +356,8 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
         return result
 
     def finalize(self):
+        if self.state.stopReason is None:
+            self.state.stopReason = "completed"
         self.state.recordFinalSnapshot()
         result = self.buildResult()
         Verbose.printConclusion(self, result)
@@ -244,13 +372,34 @@ class AlgorithmABC(RunLifecycle, metaclass = abc.ABCMeta):
     @abc.abstractmethod
     def run(self, problem, seed=None, initialPop=None):
         raise NotImplementedError
-                    
+
     def set(self, key, value):
-        if key == 'historyFreq':
+        if key == "historyFreq":
             self.setHistoryFreq(value)
+            return
+        if key == "hvFlag":
+            if not isinstance(value, (bool, np.bool_)):
+                raise ValueError("hvFlag must be a boolean.")
+            value = bool(value)
+        if key in ("hvFreq", "hvSamples"):
+            if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value <= 0:
+                raise ValueError(f"{key} must be a positive integer.")
+            value = int(value)
+        if key == "hvRefPoint":
+            value = None if value is None else np.asarray(value, dtype=float).copy()
+            self.state.hvRefPoint = None
+        if key in ("hvFlag", "hvFreq", "hvSamples", "hvRefPoint"):
+            self.state._hvDirty = True
+        if key in self._configAttributes:
+            setattr(self, self._configAttributes[key], value)
         else:
             self.params.set(key, value)
 
     def get(self, *args):
-        return self.params.get(*args)
-    
+        values = []
+        for key in args:
+            value = (
+                getattr(self, self._configAttributes[key]) if key in self._configAttributes else self.params.get(key)
+            )
+            values.append(value.copy() if isinstance(value, np.ndarray) else value)
+        return tuple(values) if len(values) > 1 else values[0]

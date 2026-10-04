@@ -1,3 +1,5 @@
+from contextlib import nullcontext
+
 import numpy as np
 import pytest
 
@@ -20,11 +22,17 @@ class ArchiveProbe(DREAM_ZS):
         self.acceptCalls = 0
         self.proposalCalls = 0
         self.acceptedCount = 0
+        self.frozenArchive = None
         return X, objs, cons
 
     def checkArchive(self, current, archive):
         capacity = self.get("nChains") * self.get("archSize")
-        np.testing.assert_array_equal(np.asarray(archive[-capacity:]), self.expectedArchive[-capacity:])
+        expectedCount = min(capacity, 3 * (1 + min(self.proposalCalls, self.get("warmUp"))))
+        assert len(archive) == expectedCount
+        for point in archive:
+            assert any(np.array_equal(point, occupied) for occupied in self.expectedArchive)
+        if self.frozenArchive is not None:
+            np.testing.assert_array_equal(archive, self.frozenArchive)
         # Check even entries already evicted from the rolling archive.
         for point, snapshot in self.retained.values():
             np.testing.assert_array_equal(point, snapshot)
@@ -36,11 +44,15 @@ class ArchiveProbe(DREAM_ZS):
             self.retained.setdefault(id(point), (point, point.copy()))
 
     def f_prop_ratio(self, X_cur, archive, *args, **kwargs):
+        if 0 < self.proposalCalls <= self.get("warmUp"):
+            self.expectedArchive.extend(point.copy() for point in X_cur)
+        if self.proposalCalls == self.get("warmUp"):
+            self.frozenArchive = np.array(archive).copy()
         self.checkArchive(X_cur, archive)
         self.proposalCalls += 1
         self.lastCurrent, self.lastArchive = X_cur, archive
         if self.controlled:
-            return 0.9 * X_cur + 0.02, np.ones(3), np.zeros(3, dtype=int)
+            return 0.9 * X_cur + 0.02, np.zeros(3), np.zeros(3, dtype=int)
         return super().f_prop_ratio(X_cur, archive, *args, **kwargs)
 
     def accept(self, *args, **kwargs):
@@ -51,13 +63,11 @@ class ArchiveProbe(DREAM_ZS):
                         or (self.acceptance == "alternating" and self.acceptCalls % 2 == 0))
         self.acceptCalls += 1
         if accepted:
-            self.expectedArchive.append(kwargs["decStar"].copy())
             self.acceptedCount += 1
         return accepted
 
     def finalize(self):
-        # The formal loop trims after all chains, so this list also contains
-        # the final accepted points, even if its prefix has just been evicted.
+        # Formal updates cannot alter the warm-up reservoir.
         self.checkArchive(self.lastCurrent, self.lastArchive)
         return super().finalize()
 
@@ -69,13 +79,13 @@ def flatProblem():
 @pytest.mark.parametrize("warmUp", [0, 3])
 @pytest.mark.parametrize("archSize", [1, 5])
 @pytest.mark.parametrize("acceptance", ["all", "alternating", "none"])
-def test_archive_records_independent_accepted_states_in_both_phases(warmUp, archSize, acceptance):
+def test_archive_records_occupation_states_then_freezes(warmUp, archSize, acceptance):
     method = ArchiveProbe(warmUp=warmUp, archSize=archSize, maxIters=5,
                           controlled=True, acceptance=acceptance)
     result = method.run(flatProblem(), gamma=0.1, seed=3)
     assert method.proposalCalls == warmUp + 4
     assert method.acceptCalls == 3 * method.proposalCalls
-    assert len(method.expectedArchive) == 3 + method.acceptedCount
+    assert len(method.expectedArchive) == 3 * (1 + warmUp)
     assert result.decs.shape == (3, 5, 2)
     assert np.isfinite(result.decs).all()
     if acceptance == "all":
@@ -97,9 +107,11 @@ def test_real_de_and_snooker_runs_preserve_history_and_reproduce(ps, warmUp, see
     method = ArchiveProbe(warmUp=warmUp, archSize=2, maxIters=8, ps=ps, adpInterval=2)
     problem = flatProblem()
     before = np.random.get_state()
-    first = method.run(problem, gamma=0.1, seed=seed)
+    with pytest.warns(RuntimeWarning, match="full-dimensional Gaussian refresh") if ps == 1 else nullcontext():
+        first = method.run(problem, gamma=0.1, seed=seed)
     assert method.acceptedCount > 0
-    second = method.run(problem, gamma=0.1, seed=seed)
+    with pytest.warns(RuntimeWarning, match="full-dimensional Gaussian refresh") if ps == 1 else nullcontext():
+        second = method.run(problem, gamma=0.1, seed=seed)
     after = np.random.get_state()
     assert before[0] == after[0] and before[2:] == after[2:]
     np.testing.assert_array_equal(before[1], after[1])

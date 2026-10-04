@@ -1,0 +1,136 @@
+
+test_analysis_coordinates_and_effects.py
+..............................                                           [100%]
+30 passed in 1.18s
+
+test_analysis_delta_validation.py
+......                                                                   [100%]
+6 passed in 0.82s
+
+test_analysis_rsa_statistics.py
+..                                                                       [100%]
+2 passed in 0.91s
+
+test_analysis_shape_contracts.py
+......                                                                   [100%]
+6 passed in 1.02s
+
+test_autotuner_split_and_report_contracts.py
+.....................................                                    [100%]
+37 passed in 0.91s
+
+test_calibration_ensemble_preflight.py
+.......................                                                  [100%]
+23 passed in 0.92s
+
+test_calibration_evaluation_and_storage.py
+....                                                                     [100%]
+4 passed in 0.98s
+
+test_calibration_gain_work.py
+.....                                                                    [100%]
+5 passed in 0.81s
+
+test_calibration_projection_contracts.py
+......................                                                   [100%]
+22 passed in 1.18s
+
+test_doe_documentation_examples.py
+.......                                                                  [100%]
+7 passed in 0.97s
+
+test_inference_demc_configuration.py
+.....                                                                    [100%]
+5 passed in 1.24s
+
+test_inference_diagnostics_and_partial_results.py
+....................                                                     [100%]
+20 passed in 1.64s
+
+test_inference_incremental_history.py
+...............                                                          [100%]
+15 passed in 1.98s
+
+test_inference_result_isolation_and_directions.py
+.........................                                                [100%]
+25 passed in 1.41s
+
+test_inference_stop_reason_persistence.py
+.....                                                                    [100%]
+5 passed in 1.38s
+
+test_optimization_asmo_reproducibility.py
+.                                                                        [100%]
+1 passed in 1.15s
+
+test_optimization_capabilities_and_stop_reasons.py
+.............................                                            [100%]
+29 passed in 1.82s
+
+test_optimization_configuration_lifecycle.py
+..........................                                               [100%]
+26 passed in 1.49s
+
+test_optimization_ego_component_contracts.py
+.                                                                        [100%]
+1 passed in 1.32s
+
+test_optimization_evaluation_and_persistence.py
+......................                                                   [100%]
+22 passed in 4.50s
+
+test_optimization_hv_scheduling.py
+.................................                                        [100%]
+33 passed in 2.99s
+
+test_optimization_reference_point_validation.py
+..................                                                       [100%]
+18 passed in 2.15s
+
+test_problem_public_contracts.py
+...................                                                      [100%]
+19 passed in 1.28s
+
+test_runtime_domain_and_identity.py
+...                                                                      [100%]
+3 passed in 1.59s
+
+test_runtime_reader_field_names.py
+.                                                                        [100%]
+1 passed in 1.43s
+
+test_surrogate_fit_and_validation.py
+..............................                                           [100%]
+30 passed in 1.16s
+
+test_surrogate_mars_derivative_contracts.py
+..............                                                           [100%]
+14 passed in 1.19s
+
+test_surrogate_mars_refit_lifecycle.py
+...                                                                      [100%]
+3 passed in 1.24s
+
+test_surrogate_prediction_work.py
+.......                                                                  [100%]
+7 passed in 1.13s
+
+test_surrogate_public_fit_contracts.py
+..........................                                               [100%]
+26 passed in 1.09s
+
+test_surrogate_randomness_and_failures.py
+............                                                             [100%]
+12 passed in 1.01s
+
+test_surrogate_tuning_lifecycle.py
+.................                                                        [100%]
+17 passed in 1.12s
+
+test_viz_smoothing_contracts.py
+.......                                                                  [100%]
+7 passed in 1.00s
+
+test_viz_surrogate_limits.py
+.......                                                                  [100%]
+7 passed in 1.53s

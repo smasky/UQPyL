@@ -14,7 +14,8 @@ def _json_dumps(value):
 
 
 class SqliteStorage(BaseSqliteStorage):
-    domain = 'analysis'
+    domain = "analysis"
+
     def _makeRunId(self, methodName, problemName):
         _, runId = self._db_path(methodName, problemName)
         return runId

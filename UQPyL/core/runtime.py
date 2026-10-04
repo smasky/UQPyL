@@ -77,7 +77,9 @@ def export_runtime_meta(*, run_id, method, problem_name, n_input, n_output, n_co
     return payload
 
 
-def export_reader_summary(*, run_id, method, problem_name, n_input, n_output, n_con, runtime, created_at, finished_at, extra=None):
+def export_reader_summary(
+    *, run_id, method, problem_name, n_input, n_output, n_con, runtime, created_at, finished_at, extra=None
+):
     payload = export_runtime_meta(
         run_id=run_id,
         method=method,

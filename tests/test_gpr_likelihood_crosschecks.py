@@ -7,29 +7,30 @@ from UQPyL.optimization.base import AlgorithmABC
 from UQPyL.surrogate.gp import GPR
 from UQPyL.surrogate.gp.kernel import Matern, RBF, RationalQuadratic
 from UQPyL.surrogate.scaler import StandardScaler
+from UQPyL.surrogate import MultiSurrogate
 
 
 def referenceKernel(X, Z, lengthScale, family):
-    distanceSquared = np.sum(((X[:, None, :] - Z[None, :, :]) / lengthScale)**2, axis=2)
+    distanceSquared = np.sum(((X[:, None, :] - Z[None, :, :]) / lengthScale) ** 2, axis=2)
     if family == "rbf":
         return np.exp(-0.5 * distanceSquared)
     if family == "matern":
         radius = np.sqrt(5 * distanceSquared)
         return (1 + radius + radius**2 / 3) * np.exp(-radius)
-    return (1 + distanceSquared / (2 * 0.7))**-0.7
+    return (1 + distanceSquared / (2 * 0.7)) ** -0.7
 
 
 def referenceObjective(covariance, Y):
     # Independent dense solve/log-determinant, without GPR's Cholesky factors.
     sign, logDet = np.linalg.slogdet(covariance)
     assert sign == 1
-    return 0.5 * (np.sum(Y * np.linalg.solve(covariance, Y))
-                  + Y.shape[1] * (logDet + len(Y) * np.log(2 * np.pi)))
+    return 0.5 * (np.sum(Y * np.linalg.solve(covariance, Y)) + Y.shape[1] * (logDet + len(Y) * np.log(2 * np.pi)))
 
 
 @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
 @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
 @pytest.mark.parametrize("scaled", [False, True])
+@pytest.mark.numerical
 def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
     rng = np.random.default_rng(39)
     X = rng.uniform(-2, 2, (9, nInputs))
@@ -44,7 +45,9 @@ def test_fixed_parameters_match_independent_objective_and_posterior(family, nInp
     else:
         kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
     scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
-    model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+    children = [GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers) for _ in range(nOutputs)]
+    model = children[0] if nOutputs == 1 else MultiSurrogate(nOutputs, children)
+    model.fit(X, Y)
 
     xOffset, xScale = (X.mean(0), X.std(0, ddof=1)) if scaled else (0, 1)
     yOffset, yScale = (Y.mean(0), Y.std(0, ddof=1)) if scaled else (0, 1)
@@ -56,7 +59,8 @@ def test_fixed_parameters_match_independent_objective_and_posterior(family, nInp
     expectedVar = 1 - np.sum(crossCovariance * np.linalg.solve(covariance, crossCovariance.T).T, axis=1)
     expectedVar = np.broadcast_to(expectedVar[:, None] * yScale**2, (len(XTest), nOutputs))
 
-    assert model.fitState["objective"] == pytest.approx(referenceObjective(covariance, yPrepared), rel=1e-10)
+    objective = sum(child.fitState["objective"] for child in children)
+    assert objective == pytest.approx(referenceObjective(covariance, yPrepared), rel=1e-10)
     mean, variance = model.predict(XTest, returnVar=True)
     meanWithStd, std = model.predict(XTest, returnStd=True)
     np.testing.assert_allclose(mean, expectedMean, rtol=1e-9, atol=1e-10)
@@ -109,4 +113,6 @@ def test_ea_restarts_keep_best_likelihood_and_rebuild_its_state(lengths):
     assert optimizer.calls == 3
     assert float(np.asarray(model.setting.get("l")).item()) == pytest.approx(0.36)
     assert model.fitState["objective"] == pytest.approx(referenceObjective(covariance, Y), rel=1e-7)
-    np.testing.assert_allclose(model.predict(X), referenceKernel(X, X, 0.36, "rbf") @ np.linalg.solve(covariance, Y), atol=1e-8)
+    np.testing.assert_allclose(
+        model.predict(X), referenceKernel(X, X, 0.36, "rbf") @ np.linalg.solve(covariance, Y), atol=1e-8
+    )

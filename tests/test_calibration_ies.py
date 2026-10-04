@@ -12,15 +12,14 @@ def test_ies_iterative_updates_reduce_mean_score_beyond_single_es_step():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1] ** 2
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=3.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="NonlinearToyModel",
     )
 

@@ -1,0 +1,71 @@
+{
+  "scope": "Gain calculation only; tracemalloc peak excludes input arrays and may exclude native workspace. Not process RSS.",
+  "records": [
+    {
+      "ensemble_members": 32,
+      "observations": 24,
+      "lam": 0.0,
+      "max_abs_difference": 0.0,
+      "default_solver": "eigh",
+      "dense_median_seconds": 8.242999319918454e-05,
+      "dense_traced_peak_bytes": 36986,
+      "default_median_seconds": 9.770099131856114e-05,
+      "default_traced_peak_bytes": 36986
+    },
+    {
+      "ensemble_members": 32,
+      "observations": 24,
+      "lam": 0.1,
+      "max_abs_difference": 0.0,
+      "default_solver": "eigh",
+      "dense_median_seconds": 8.712800627108663e-05,
+      "dense_traced_peak_bytes": 36962,
+      "default_median_seconds": 8.068600436672568e-05,
+      "default_traced_peak_bytes": 36986
+    },
+    {
+      "ensemble_members": 16,
+      "observations": 128,
+      "lam": 0.0,
+      "max_abs_difference": 2.3592239273284576e-16,
+      "default_solver": "svd",
+      "dense_median_seconds": 0.0011378519993741065,
+      "dense_traced_peak_bytes": 935522,
+      "default_median_seconds": 0.000131132997921668,
+      "default_traced_peak_bytes": 83136
+    },
+    {
+      "ensemble_members": 16,
+      "observations": 128,
+      "lam": 0.1,
+      "max_abs_difference": 8.049116928532385e-15,
+      "default_solver": "svd",
+      "dense_median_seconds": 0.0010986150009557605,
+      "dense_traced_peak_bytes": 935522,
+      "default_median_seconds": 0.00012419199629221112,
+      "default_traced_peak_bytes": 83136
+    },
+    {
+      "ensemble_members": 24,
+      "observations": 512,
+      "lam": 0.0,
+      "max_abs_difference": 8.413408858487514e-17,
+      "default_solver": "svd",
+      "dense_median_seconds": 0.027014334002160467,
+      "dense_traced_peak_bytes": 14747234,
+      "default_median_seconds": 0.00047275598626583815,
+      "default_traced_peak_bytes": 425760
+    },
+    {
+      "ensemble_members": 24,
+      "observations": 512,
+      "lam": 0.1,
+      "max_abs_difference": 1.0255685189974884e-14,
+      "default_solver": "svd",
+      "dense_median_seconds": 0.0282557739992626,
+      "dense_traced_peak_bytes": 14747234,
+      "default_median_seconds": 0.00047044901293702424,
+      "default_traced_peak_bytes": 425760
+    }
+  ]
+}

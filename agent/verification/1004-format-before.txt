@@ -1,0 +1,906 @@
+unformatted: File would be reformatted
+   --> UQPyL/analysis/methods/delta.py:354:46
+    |
+353 |             if np.any(unsafe):
+    -                 halfSpread = upper[unsafe] * .5 - lower[unsafe] * .5
+    -                 scaled[:, unsafe] = (values[:, unsafe] * .5 - lower[unsafe] * .5) / halfSpread
+354 +                 halfSpread = upper[unsafe] * 0.5 - lower[unsafe] * 0.5
+355 +                 scaled[:, unsafe] = (values[:, unsafe] * 0.5 - lower[unsafe] * 0.5) / halfSpread
+356 |         if not np.all(np.isfinite(scaled)):
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/analysis/methods/morris.py:179:44
+    |
+178 |                             "see extra['morris_statistic_status']. S1_norm remains available.",
+    -                             RuntimeWarning, stacklevel=2,
+179 +                             RuntimeWarning,
+180 +                             stacklevel=2,
+181 |                         )
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/calibration/methods/es.py:141:70
+    |
+140 |         )
+    -         self.state.diagnostics.setdefault("boundEffects", []).append({
+    -             "mode": self.get("boundHandling"),
+    -             "adjusted_fraction": float(np.mean(np.any(changed, axis=1))),
+    -             "mean_before": X.mean(axis=0), "mean_after": bounded.mean(axis=0),
+    -             "spread_before": np.ptp(X, axis=0), "spread_after": np.ptp(bounded, axis=0),
+    -             "unconstrained_moments_preserved": not bool(np.any(changed)),
+    -         })
+141 +         self.state.diagnostics.setdefault("boundEffects", []).append(
+142 +             {
+143 +                 "mode": self.get("boundHandling"),
+144 +                 "adjusted_fraction": float(np.mean(np.any(changed, axis=1))),
+145 +                 "mean_before": X.mean(axis=0),
+146 +                 "mean_after": bounded.mean(axis=0),
+147 +                 "spread_before": np.ptp(X, axis=0),
+148 +                 "spread_after": np.ptp(bounded, axis=0),
+149 +                 "unconstrained_moments_preserved": not bool(np.any(changed)),
+150 +             }
+151 +         )
+152 |         return bounded
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/calibration/methods/glue.py:103:27
+    |
+102 |         if lowEss and logLikelihood is not None:
+    -             warnings.warn("GLUE uncertainty effective sample size is below 20; weighted intervals may be unreliable.",
+    -                           RuntimeWarning, stacklevel=2)
+103 +             warnings.warn(
+104 +                 "GLUE uncertainty effective sample size is below 20; weighted intervals may be unreliable.",
+105 +                 RuntimeWarning,
+106 +                 stacklevel=2,
+107 +             )
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/calibration/methods/ies.py:48:26
+    |
+47  |     ):
+    -         super().__init__(verboseFlag=verboseFlag, verboseFreq=verboseFreq,
+    -                          saveFlag=saveFlag, logFlag=logFlag, metric=metric, boundHandling=boundHandling)
+48  +         super().__init__(
+49  +             verboseFlag=verboseFlag,
+50  +             verboseFreq=verboseFreq,
+51  +             saveFlag=saveFlag,
+52  +             logFlag=logFlag,
+53  +             metric=metric,
+54  +             boundHandling=boundHandling,
+55  +         )
+56  |         self.set("maxIters", maxIters)
+--------------------------------------------------------------------------------
+76  |         return {
+    -             "prior": X.copy(), "anomalies": anomalies, "scales": scales,
+    -             "targets": targets, "referenceNorm": float(np.linalg.norm(normalized)),
+77  +             "prior": X.copy(),
+78  +             "anomalies": anomalies,
+79  +             "scales": scales,
+80  +             "targets": targets,
+81  +             "referenceNorm": float(np.linalg.norm(normalized)),
+82  |             "sensitivity": np.zeros((X.shape[1], len(obs))),
+--------------------------------------------------------------------------------
+99  |             raise ValueError("tolerance must be finite and nonnegative.")
+    -         if isinstance(maxBacktracks, (bool, np.bool_)) or not isinstance(maxBacktracks, (int, np.integer)) or maxBacktracks < 0:
+100 +         if (
+101 +             isinstance(maxBacktracks, (bool, np.bool_))
+102 +             or not isinstance(maxBacktracks, (int, np.integer))
+103 +             or maxBacktracks < 0
+104 +         ):
+105 |             raise ValueError("maxBacktracks must be a nonnegative integer.")
+--------------------------------------------------------------------------------
+111 |         self.state.diagnostics["seed"] = self.get("seed")
+    -         self.state.diagnostics["linearization"] = "member_finite_difference" if self.get("localLinearization") else "ensemble_regression"
+112 +         self.state.diagnostics["linearization"] = (
+113 +             "member_finite_difference" if self.get("localLinearization") else "ensemble_regression"
+114 +         )
+115 |         merit = self._makeMerit(context, r, sim_post_flat) if adaptive else None
+--------------------------------------------------------------------------------
+131 |                     hardTolerance = 1e-12 * max(1.0, before[0])
+    -                     accepted = bool(np.isfinite(after).all() and (
+    -                         after[0] < before[0] - hardTolerance or
+    -                         (after[0] <= before[0] + hardTolerance and after[1] <= before[1] + 1e-12 * max(1., before[1]))))
+132 +                     accepted = bool(
+133 +                         np.isfinite(after).all()
+134 +                         and (
+135 +                             after[0] < before[0] - hardTolerance
+136 +                             or (
+137 +                                 after[0] <= before[0] + hardTolerance
+138 +                                 and after[1] <= before[1] + 1e-12 * max(1.0, before[1])
+139 +                             )
+140 +                         )
+141 +                     )
+142 |                     self.state.diagnostics["boundUpdates"][-1]["accepted"] = accepted
+    -                     self.state.diagnostics.setdefault("lineSearch", []).append({
+    -                         "iteration": iterIdx + 1, "step": step, "merit_before": list(before),
+    -                         "merit_after": list(after), "accepted": accepted,
+    -                     })
+143 +                     self.state.diagnostics.setdefault("lineSearch", []).append(
+144 +                         {
+145 +                             "iteration": iterIdx + 1,
+146 +                             "step": step,
+147 +                             "merit_before": list(before),
+148 +                             "merit_after": list(after),
+149 +                             "accepted": accepted,
+150 +                         }
+151 +                     )
+152 |                     if accepted:
+153 |                         break
+154 |                 if not accepted:
+155 |                     stopReason = "line_search_stalled"
+    -                     warnings.warn("IES line search found no improving step; retaining the last accepted ensemble.", RuntimeWarning, stacklevel=2)
+156 +                     warnings.warn(
+157 +                         "IES line search found no improving step; retaining the last accepted ensemble.",
+158 +                         RuntimeWarning,
+159 +                         stacklevel=2,
+160 +                     )
+161 |                     break
+--------------------------------------------------------------------------------
+176 |         self.recordPosterior(X_cur.copy(), sim_post_flat.copy())
+    -         self.recordBest(X_cur[bestIdx:bestIdx + 1], sim_post_flat[bestIdx:bestIdx + 1])
+177 +         self.recordBest(X_cur[bestIdx : bestIdx + 1], sim_post_flat[bestIdx : bestIdx + 1])
+178 |         self.state.diagnostics["priorMean"] = context["prior"].mean(axis=0)
+--------------------------------------------------------------------------------
+202 |             sensitivity, rank = regressionSensitivity(
+    -                 X, Y, context["scales"], context["sensitivity"], context["referenceNorm"])
+203 +                 X, Y, context["scales"], context["sensitivity"], context["referenceNorm"]
+204 +             )
+205 |             context["sensitivity"] = sensitivity
+--------------------------------------------------------------------------------
+216 |         scores = self.score(sim_post_flat)
+    -         return X_post, scores, {
+    -             "priorScores": self.score(fullSim), "covarianceSolve": solveInfo,
+    -             "posteriorSims": sim_post_flat, "regressionRank": rank, "analysis": analysis,
+    -         }
+217 +         return (
+218 +             X_post,
+219 +             scores,
+220 +             {
+221 +                 "priorScores": self.score(fullSim),
+222 +                 "covarianceSolve": solveInfo,
+223 +                 "posteriorSims": sim_post_flat,
+224 +                 "regressionRank": rank,
+225 +                 "analysis": analysis,
+226 +             },
+227 +         )
+228 |
+--------------------------------------------------------------------------------
+283 |             coordinates = displacement @ basis
+    -             if np.max(np.abs(displacement - coordinates @ basis.T), initial=0) > 1e-10 * max(1., np.max(np.abs(displacement))):
+284 +             if np.max(np.abs(displacement - coordinates @ basis.T), initial=0) > 1e-10 * max(
+285 +                 1.0, np.max(np.abs(displacement))
+286 +             ):
+287 |                 return np.array([np.inf, np.inf])
+    -             priorCost = np.mean(np.sum((coordinates / priorRoot)**2, axis=1))
+288 +             priorCost = np.mean(np.sum((coordinates / priorRoot) ** 2, axis=1))
+289 |             residual = simulation[:, self.getValidMask()] - context["targets"]
+--------------------------------------------------------------------------------
+293 |                 hard = (residual / dataScale) @ hardBasis
+    -                 soft = np.mean(np.sum((residual @ softBasis / softRoot)**2, axis=1))
+294 +                 soft = np.mean(np.sum((residual @ softBasis / softRoot) ** 2, axis=1))
+295 |             return np.array([np.mean(np.sum(hard**2, axis=1)), priorCost + soft])
+296 +
+297 |         return merit
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/calibration/methods/sufi2.py:65:18
+    |
+64  |
+    -     def _runCore(self, problem, X=None, eliteSize: int = 5, seed: int | None = None,
+    -                  logLikelihood=None, uncertaintyX=None, uncertaintySamples: int = 2048,
+    -                  interval: float = 0.95):
+65  +     def _runCore(
+66  +         self,
+67  +         problem,
+68  +         X=None,
+69  +         eliteSize: int = 5,
+70  +         seed: int | None = None,
+71  +         logLikelihood=None,
+72  +         uncertaintyX=None,
+73  +         uncertaintySamples: int = 2048,
+74  +         interval: float = 0.95,
+75  +     ):
+76  |         """
+--------------------------------------------------------------------------------
+116 |         elif logLikelihood is not None:
+    -             if isinstance(uncertaintySamples, (bool, np.bool_)) or not isinstance(uncertaintySamples, (int, np.integer)) or uncertaintySamples < 2:
+117 +             if (
+118 +                 isinstance(uncertaintySamples, (bool, np.bool_))
+119 +                 or not isinstance(uncertaintySamples, (int, np.integer))
+120 +                 or uncertaintySamples < 2
+121 +             ):
+122 |                 raise ValueError("uncertaintySamples must be an integer of at least two.")
+--------------------------------------------------------------------------------
+139 |                     center = lb_cur * 0.5 + ub_cur * 0.5
+    -                     samplingLb[active] = np.maximum(originalLb, np.minimum(center - width / 2, originalUb - width))[active]
+140 +                     samplingLb[active] = np.maximum(originalLb, np.minimum(center - width / 2, originalUb - width))[
+141 +                         active
+142 +                     ]
+143 |                     samplingUb[active] = np.minimum(originalUb, samplingLb + width)[active]
+--------------------------------------------------------------------------------
+157 |                     globalProblem = self._makeSamplingProblem(problem, originalLb, originalUb, originalChoices)
+    -                     globalSeed = None if iter_seed is None else int(np.random.SeedSequence([iter_seed, 1]).generate_state(1)[0])
+158 +                     globalSeed = (
+159 +                         None if iter_seed is None else int(np.random.SeedSequence([iter_seed, 1]).generate_state(1)[0])
+160 +                     )
+161 |                     batches.append(sampler.sample(globalProblem, explorationCount, seed=globalSeed))
+--------------------------------------------------------------------------------
+230 |             self.state.extra["uncertainty"] = {
+    -                 "method": "prior_importance_weighting", "prior_source": source,
+    -                 "interval": float(interval), "effective_sample_size": ess,
+    -                 "samples": uncertaintyX.copy(), "weights": weights.copy(),
+    -                 "parameter_mean": mean, "parameter_variance": weights @ (uncertaintyX - mean)**2,
+    -                 "parameter_lower": parameterBounds[0], "parameter_upper": parameterBounds[1],
+    -                 "simulation_lower": simulationBounds[0], "simulation_upper": simulationBounds[1],
+231 +                 "method": "prior_importance_weighting",
+232 +                 "prior_source": source,
+233 +                 "interval": float(interval),
+234 +                 "effective_sample_size": ess,
+235 +                 "samples": uncertaintyX.copy(),
+236 +                 "weights": weights.copy(),
+237 +                 "parameter_mean": mean,
+238 +                 "parameter_variance": weights @ (uncertaintyX - mean) ** 2,
+239 +                 "parameter_lower": parameterBounds[0],
+240 +                 "parameter_upper": parameterBounds[1],
+241 +                 "simulation_lower": simulationBounds[0],
+242 +                 "simulation_upper": simulationBounds[1],
+243 |             }
+244 |             self.state.diagnostics["uncertaintyStatus"] = "estimated"
+245 |             if ess < 20 * (1 - 64 * np.finfo(float).eps):
+    -                 warnings.warn("SUFI2 uncertainty effective sample size is below 20; weighted intervals may be unreliable.", RuntimeWarning, stacklevel=2)
+246 +                 warnings.warn(
+247 +                     "SUFI2 uncertainty effective sample size is below 20; weighted intervals may be unreliable.",
+248 +                     RuntimeWarning,
+249 +                     stacklevel=2,
+250 +                 )
+251 |                 self.state.diagnostics["uncertaintyStatus"] = "low_effective_sample_size"
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/calibration/runtime.py:166:30
+    |
+165 |                 return
+    -             intervals.append({
+    -                 "kind": kind, "space": space, "lower": np.asarray(lower).copy(),
+    -                 "upper": np.asarray(upper).copy(), "probability": probability,
+    -                 "sample_source": source,
+    -                 "indices": validIndices.copy() if space == "simulation" else np.arange(problem.nInput),
+    -             })
+166 +             intervals.append(
+167 +                 {
+168 +                     "kind": kind,
+169 +                     "space": space,
+170 +                     "lower": np.asarray(lower).copy(),
+171 +                     "upper": np.asarray(upper).copy(),
+172 +                     "probability": probability,
+173 +                     "sample_source": source,
+174 +                     "indices": validIndices.copy() if space == "simulation" else np.arange(problem.nInput),
+175 +                 }
+176 +             )
+177 |
+    -         addInterval("weighted_empirical" if behavioral else "sampling_envelope", "simulation",
+    -                     self.diagnostics.get("ppuLower"), self.diagnostics.get("ppuUpper"),
+    -                     self.diagnostics.get("interval", .95), "samples")
+178 +         addInterval(
+179 +             "weighted_empirical" if behavioral else "sampling_envelope",
+180 +             "simulation",
+181 +             self.diagnostics.get("ppuLower"),
+182 +             self.diagnostics.get("ppuUpper"),
+183 +             self.diagnostics.get("interval", 0.95),
+184 +             "samples",
+185 +         )
+186 |         uncertainty = deepcopy(self.extra.get("uncertainty"))
+187 |         if uncertainty is not None:
+188 |             for space in ("parameter", "simulation"):
+    -                 addInterval("prior_importance_weighting", space,
+    -                             uncertainty.get(f"{space}_lower"), uncertainty.get(f"{space}_upper"),
+    -                             uncertainty["interval"], "uncertainty.samples")
+    -         return dict(samples=None if samples is None else samples.copy(),
+    -                     simulations=None if simulations is None else simulations.copy(),
+    -                     scores=None if scores is None else np.asarray(scores).copy(),
+    -                     sample_kind=self.sampleKind, weights=None if weights is None else weights.copy(),
+    -                     intervals=intervals, uncertainty=uncertainty, best_score=bestScore, best_index=bestIndex)
+189 +                 addInterval(
+190 +                     "prior_importance_weighting",
+191 +                     space,
+192 +                     uncertainty.get(f"{space}_lower"),
+193 +                     uncertainty.get(f"{space}_upper"),
+194 +                     uncertainty["interval"],
+195 +                     "uncertainty.samples",
+196 +                 )
+197 +         return dict(
+198 +             samples=None if samples is None else samples.copy(),
+199 +             simulations=None if simulations is None else simulations.copy(),
+200 +             scores=None if scores is None else np.asarray(scores).copy(),
+201 +             sample_kind=self.sampleKind,
+202 +             weights=None if weights is None else weights.copy(),
+203 +             intervals=intervals,
+204 +             uncertainty=uncertainty,
+205 +             best_score=bestScore,
+206 +             best_index=bestIndex,
+207 +         )
+208 |
+    |
+
+unformatted: File would be reformatted
+  --> UQPyL/doe/methods/_sobol.py:2:1
+   |
+1  | """Shared validation of Sobol sequence blocks, including Saltelli base blocks."""
+2  +
+3  | import warnings
+--------------------------------------------------------------------------------
+16 |             f"Consider using {1 << count.bit_length()} points and skipValue=0.",
+   -             UserWarning, stacklevel=3,
+17 +             UserWarning,
+18 +             stacklevel=3,
+19 |         )
+--------------------------------------------------------------------------------
+23 |             "balance is not guaranteed. Use skipValue=0 or a multiple of the base size.",
+   -             UserWarning, stacklevel=3,
+24 +             UserWarning,
+25 +             stacklevel=3,
+26 |         )
+   |
+
+unformatted: File would be reformatted
+   --> UQPyL/doe/methods/lhs.py:235:17
+    |
+234 |         if self.criterion in ["maximin", "center_maximin", "correlation"]:
+    -             if (isinstance(self.iterations, (bool, np.bool_))
+    -                     or not isinstance(self.iterations, (int, np.integer)) or self.iterations <= 0):
+235 +             if (
+236 +                 isinstance(self.iterations, (bool, np.bool_))
+237 +                 or not isinstance(self.iterations, (int, np.integer))
+238 +                 or self.iterations <= 0
+239 +             ):
+240 |                 raise ValueError("iterations must be a positive integer for optimized LHS.")
+--------------------------------------------------------------------------------
+244 |                     f"LHS: {self.criterion} has no pairwise distance for one sample; using {fallback}.",
+    -                     RuntimeWarning, stacklevel=2,
+245 +                     RuntimeWarning,
+246 +                     stacklevel=2,
+247 |                 )
+--------------------------------------------------------------------------------
+259 |             "iterations": self.iterations,
+    -             "effective_criterion": ({"maximin": "classic", "center_maximin": "center"}.get(
+    -                 self.criterion, self.criterion) if nSamples == 1 else self.criterion),
+260 +             "effective_criterion": (
+261 +                 {"maximin": "classic", "center_maximin": "center"}.get(self.criterion, self.criterion)
+262 +                 if nSamples == 1
+263 +                 else self.criterion
+264 +             ),
+265 |             "seed": seed,
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/doe/methods/saltelli.py:101:26
+    |
+100 |             warnings.filterwarnings(
+    -                 "ignore", message=r"The balance properties of Sobol' points require n to be a power of 2\.",
+101 +                 "ignore",
+102 +                 message=r"The balance properties of Sobol' points require n to be a power of 2\.",
+103 |                 category=UserWarning,
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/base.py:197:27
+    |
+196 |         for attempt in range(maxAttempts):
+    -             sampleSeed = (seed if attempt == 0 and problem.nCons == 0 and seed is not None
+    -                           else int(self.rng.integers(0, 1000000)))
+197 +             sampleSeed = (
+198 +                 seed if attempt == 0 and problem.nCons == 0 and seed is not None else int(self.rng.integers(0, 1000000))
+199 +             )
+200 |             batch = self._sampleLatent(sampler, nChains, sampleSeed)
+--------------------------------------------------------------------------------
+214 |                 if len(xs) == nChains:
+    -                     return np.asarray(xs), np.asarray(objectives), np.asarray(constraints) if problem.nCons > 0 else None
+215 +                     return (
+216 +                         np.asarray(xs),
+217 +                         np.asarray(objectives),
+218 +                         np.asarray(constraints) if problem.nCons > 0 else None,
+219 +                     )
+220 |         raise ValueError(
+--------------------------------------------------------------------------------
+278 |         chain.add(
+    -             current[index], currentObjs[index], constraints,
+279 +             current[index],
+280 +             currentObjs[index],
+281 +             constraints,
+282 |             logProb=self.log_prob(currentObjs[index], decs=current[index], cons=constraints),
+--------------------------------------------------------------------------------
+370 |
+    -     def accept(self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None,
+    -                logQRatio=None):
+371 +     def accept(
+372 +         self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None, logQRatio=None
+373 +     ):
+374 |         """
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/methods/amh.py:117:27
+    |
+116 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+117 +                         i,
+118 +                         X_cur,
+119 +                         Objs_cur,
+120 +                         Cons_cur,
+121 +                         X_star[i],
+122 +                         Objs_star[i],
+123 |                         Cons_star[i] if problem.nCons > 0 else None,
+--------------------------------------------------------------------------------
+144 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+145 +                         i,
+146 +                         X_cur,
+147 +                         Objs_cur,
+148 +                         Cons_cur,
+149 +                         X_star[i],
+150 +                         Objs_star[i],
+151 |                         Cons_star[i] if problem.nCons > 0 else None,
+--------------------------------------------------------------------------------
+175 |             origin = chain.decs[0].copy()
+    -             shifted = chain.decs[:chain.count] - origin
+176 +             shifted = chain.decs[: chain.count] - origin
+177 |             mean = shifted.mean(axis=0)
+--------------------------------------------------------------------------------
+181 |             count, origin, mean, scatter = cached
+    -             for point in chain.decs[count:chain.count]:
+182 +             for point in chain.decs[count : chain.count]:
+183 |                 delta = (point - origin) - mean
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/methods/demc.py:85:77
+    |
+84  |                 proposed = self.f_prop(current, problem.ub, problem.lb, gamma, chainIndex=index)
+    -                 consRow = None if currentCons is None else currentCons[index:index + 1]
+    -                 objs, cons, valid = self.evaluateProposal(proposed, currentObjs[index:index + 1], consRow)
+85  +                 consRow = None if currentCons is None else currentCons[index : index + 1]
+86  +                 objs, cons, valid = self.evaluateProposal(proposed, currentObjs[index : index + 1], consRow)
+87  |                 accepted = valid[0] and self.accept(
+    -                     objs[0], currentObjs[index], cons[0] if problem.nCons else None,
+    -                     decStar=proposed[0], decCur=current[index],
+88  +                     objs[0],
+89  +                     currentObjs[index],
+90  +                     cons[0] if problem.nCons else None,
+91  +                     decStar=proposed[0],
+92  +                     decCur=current[index],
+93  |                     consCur=currentCons[index] if problem.nCons else None,
+94  |                 )
+95  |                 if accepted:
+96  |                     self.updateChainState(
+    -                         index, current, currentObjs, currentCons, proposed[0], objs[0],
+97  +                         index,
+98  +                         current,
+99  +                         currentObjs,
+100 +                         currentCons,
+101 +                         proposed[0],
+102 +                         objs[0],
+103 |                         cons[0] if problem.nCons else None,
+--------------------------------------------------------------------------------
+110 |         chains = self.initChains(nChains, current, currentObjs, currentCons)
+    -         self.setSamplerDiagnostics(gamma, proposalSettings={
+    -             "unit_jump_probability": .1 if gamma is None else 0., "noise_scale": 1e-6,
+    -         })
+111 +         self.setSamplerDiagnostics(
+112 +             gamma,
+113 +             proposalSettings={
+114 +                 "unit_jump_probability": 0.1 if gamma is None else 0.0,
+115 +                 "noise_scale": 1e-6,
+116 +             },
+117 +         )
+118 |         self.update(chains)
+--------------------------------------------------------------------------------
+137 |             # isolated chains rejoin the population (ter Braak & Vrugt, 2008).
+    -             scale = 1. if defaultGamma and self.rng.random() < .1 else gamma[index]
+138 +             scale = 1.0 if defaultGamma and self.rng.random() < 0.1 else gamma[index]
+139 |             # Symmetric, independent perturbations preserve full-dimensional
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/methods/dream_zs.py:109:115
+    |
+108 |         ps, k, jitter = self.get("ps", "k", "jitter")
+    -         refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+109 +         refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.0
+110 |         if refreshProbability:
+111 |             warnings.warn(
+112 |                 f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+113 |                 "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+    -                 RuntimeWarning, stacklevel=2,
+114 +                 RuntimeWarning,
+115 +                 stacklevel=2,
+116 |             )
+117 |         capacity = nChains * self.get("archSize")
+118 |         interval, nCR, target = self.get("adpInterval", "nCR", "acTarget")
+    -         crSet = np.linspace(1 / nCR, 1., nCR)
+119 +         crSet = np.linspace(1 / nCR, 1.0, nCR)
+120 |         pCR = np.ones(nCR) / nCR
+--------------------------------------------------------------------------------
+125 |         gamma = self._check_gamma_(gamma)
+    -         gammaScale = 1.
+126 +         gammaScale = 1.0
+127 |         current, currentObjs, currentCons = self.initialSampling(problem, nChains)
+--------------------------------------------------------------------------------
+137 |             proposed, logRatios, crIndices = self.f_prop_ratio(
+    -                 current, archive, ps, k, jitter, gamma, gammaScale, crSet, pCR, tries,
+    -                 problem.ub, problem.lb, logRatio=True,
+138 +                 current,
+139 +                 archive,
+140 +                 ps,
+141 +                 k,
+142 +                 jitter,
+143 +                 gamma,
+144 +                 gammaScale,
+145 +                 crSet,
+146 +                 pCR,
+147 +                 tries,
+148 +                 problem.ub,
+149 +                 problem.lb,
+150 +                 logRatio=True,
+151 |             )
+--------------------------------------------------------------------------------
+157 |                 accepted = valid[index] and self.accept(
+    -                     objs[index], currentObjs[index], cons[index] if problem.nCons else None,
+    -                     decStar=proposed[index], decCur=current[index],
+    -                     consCur=currentCons[index] if problem.nCons else None, logQRatio=logRatios[index],
+158 +                     objs[index],
+159 +                     currentObjs[index],
+160 +                     cons[index] if problem.nCons else None,
+161 +                     decStar=proposed[index],
+162 +                     decCur=current[index],
+163 +                     consCur=currentCons[index] if problem.nCons else None,
+164 +                     logQRatio=logRatios[index],
+165 |                 )
+166 |                 if accepted:
+167 |                     if chains is None:
+168 |                         if crIndices[index] >= 0:
+    -                             jump = np.divide(proposed[index] - current[index], span,
+    -                                              out=np.zeros_like(span), where=span > 0)
+169 +                             jump = np.divide(
+170 +                                 proposed[index] - current[index], span, out=np.zeros_like(span), where=span > 0
+171 +                             )
+172 |                             gains[crIndices[index]] += np.sum(jump**2 / variance)
+173 |                         acceptedCounts[index] += 1
+174 |                     self.updateChainState(
+    -                         index, current, currentObjs, currentCons, proposed[index], objs[index],
+175 +                         index,
+176 +                         current,
+177 +                         currentObjs,
+178 +                         currentCons,
+179 +                         proposed[index],
+180 +                         objs[index],
+181 |                         cons[index] if problem.nCons else None,
+--------------------------------------------------------------------------------
+200 |                 pCR, gains, tries, gammaScale = self.adaption(
+    -                     pCR, gains, tries, acceptedCounts / attempts, gammaScale, target,
+201 +                     pCR,
+202 +                     gains,
+203 +                     tries,
+204 +                     acceptedCounts / attempts,
+205 +                     gammaScale,
+206 +                     target,
+207 |                 )
+--------------------------------------------------------------------------------
+213 |         self.setSamplerDiagnostics(
+    -             gamma, proposalSettings={
+    -                 "snooker_probability": ps, "pair_count": k, "jitter": jitter,
+    -                 "full_support_refresh_probability": refreshProbability, "refresh_scale": .1,
+214 +             gamma,
+215 +             proposalSettings={
+216 +                 "snooker_probability": ps,
+217 +                 "pair_count": k,
+218 +                 "jitter": jitter,
+219 +                 "full_support_refresh_probability": refreshProbability,
+220 +                 "refresh_scale": 0.1,
+221 |                 "effective_snooker_probability": (1 - refreshProbability) * ps,
+222 |             },
+    -             archive_policy="warmup_reservoir_frozen", archive_size=len(archive),
+    -             gamma_scale=float(gammaScale), crossover_probabilities=pCR.tolist(),
+223 +             archive_policy="warmup_reservoir_frozen",
+224 +             archive_size=len(archive),
+225 +             gamma_scale=float(gammaScale),
+226 +             crossover_probabilities=pCR.tolist(),
+227 |         )
+--------------------------------------------------------------------------------
+276 |
+    -     def f_prop_ratio(self, X_cur, archive, ps, k, jitter, gamma, gamma_scale, crSet, pCR, cr_tries,
+    -                      ub, lb, logRatio=False):
+277 +     def f_prop_ratio(
+278 +         self, X_cur, archive, ps, k, jitter, gamma, gamma_scale, crSet, pCR, cr_tries, ub, lb, logRatio=False
+279 +     ):
+280 |         proposals = np.empty_like(X_cur)
+--------------------------------------------------------------------------------
+285 |         for index in range(len(X_cur)):
+    -             refresh = self.get("snookerRefreshProb") if ps == 1 and np.any(ub > lb) else 0.
+286 +             refresh = self.get("snookerRefreshProb") if ps == 1 and np.any(ub > lb) else 0.0
+287 |             if refresh and self.rng.random() < refresh:
+288 |                 # Symmetric full-support kernel; never project or reflect this move.
+    -                 proposals[index] = X_cur[index] + self.rng.normal(size=X_cur.shape[1]) * (.1 * (ub-lb).ravel())
+289 +                 proposals[index] = X_cur[index] + self.rng.normal(size=X_cur.shape[1]) * (0.1 * (ub - lb).ravel())
+290 |             elif self.rng.random() < ps:
+291 |                 proposals[index], logRatios[index] = self.snooker_update(
+    -                     index, X_cur, archive, self.rng.uniform(1.2, 2.2), logRatio=True,
+292 +                     index,
+293 +                     X_cur,
+294 +                     archive,
+295 +                     self.rng.uniform(1.2, 2.2),
+296 +                     logRatio=True,
+297 |                 )
+--------------------------------------------------------------------------------
+320 |         if dimension == 0 or distance == 0:
+    -             return current.copy(), 0. if logRatio else 1.
+321 +             return current.copy(), 0.0 if logRatio else 1.0
+322 |         direction = axis / distance
+    -         difference = np.divide(np.asarray(archive[leftIndex]) - archive[rightIndex], span,
+    -                                out=np.zeros_like(current), where=active)
+323 +         difference = np.divide(
+324 +             np.asarray(archive[leftIndex]) - archive[rightIndex], span, out=np.zeros_like(current), where=active
+325 +         )
+326 |         # A scalar step preserves the anchor-current line in unit coordinates.
+--------------------------------------------------------------------------------
+333 |         if dimension == 1:
+    -             correction = 0.
+334 +             correction = 0.0
+335 |         elif proposedDistance == 0:
+--------------------------------------------------------------------------------
+358 |             proposed[mask] += np.asarray(gamma)[mask] * scaling * delta[mask] + noise[mask]
+    -         return proposed, 1.
+359 +         return proposed, 1.0
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/methods/mh.py:116:27
+    |
+115 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+116 +                         i,
+117 +                         X_cur,
+118 +                         Objs_cur,
+119 +                         Cons_cur,
+120 +                         X_star[i],
+121 +                         Objs_star[i],
+122 |                         Cons_star[i] if problem.nCons > 0 else None,
+--------------------------------------------------------------------------------
+143 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+144 +                         i,
+145 +                         X_cur,
+146 +                         Objs_cur,
+147 +                         Cons_cur,
+148 +                         X_star[i],
+149 +                         Objs_star[i],
+150 |                         Cons_star[i] if problem.nCons > 0 else None,
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/inference/methods/mh_gibbs.py:120:27
+    |
+119 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+120 +                         i,
+121 +                         X_cur,
+122 +                         Objs_cur,
+123 +                         Cons_cur,
+124 +                         X_star[i],
+125 +                         Objs_star[i],
+126 |                         Cons_star[i] if problem.nCons > 0 else None,
+--------------------------------------------------------------------------------
+151 |                     self.updateChainState(
+    -                         i, X_cur, Objs_cur, Cons_cur, X_star[i], Objs_star[i],
+152 +                         i,
+153 +                         X_cur,
+154 +                         Objs_cur,
+155 +                         Cons_cur,
+156 +                         X_star[i],
+157 +                         Objs_star[i],
+158 |                         Cons_star[i] if problem.nCons > 0 else None,
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/optimization/base.py:264:38
+    |
+263 |                 if np.any(np.isnan(internal)) or np.any(np.isneginf(internal)):
+    -                     raise ValueError("Optimization objs must contain finite real values or worst-direction infinity penalties.")
+264 +                     raise ValueError(
+265 +                         "Optimization objs must contain finite real values or worst-direction infinity penalties."
+266 +                     )
+267 |             elif not np.all(np.isfinite(values)):
+    |
+
+unformatted: File would be reformatted
+  --> UQPyL/optimization/core/numerical.py:2:1
+   |
+1  | """Binary scaling for objective geometry, without changing objective units relatively."""
+2  +
+3  | import numpy as np
+--------------------------------------------------------------------------------
+20 |         half = np.any(np.isinf(delta), axis=0)
+   -         delta[:, half] = values[:, half] * .5 - minimum[half] * .5
+21 +         delta[:, half] = values[:, half] * 0.5 - minimum[half] * 0.5
+22 |         span = np.max(delta, axis=0)
+--------------------------------------------------------------------------------
+42 |     with np.errstate(over="ignore"):
+   -         reference = worst + margin * np.where(worst == 0, 1., np.abs(worst))
+43 +         reference = worst + margin * np.where(worst == 0, 1.0, np.abs(worst))
+44 |     if np.any(np.isposinf(reference)):
+   -         warnings.warn("Automatic hypervolume reference exceeds floating-point range; "
+   -                       "clipping its margin. Supply an explicit reference point for interpretable HV.",
+   -                       RuntimeWarning, stacklevel=3)
+45 +         warnings.warn(
+46 +             "Automatic hypervolume reference exceeds floating-point range; "
+47 +             "clipping its margin. Supply an explicit reference point for interpretable HV.",
+48 +             RuntimeWarning,
+49 +             stacklevel=3,
+50 +         )
+51 |         reference = np.minimum(reference, np.finfo(float).max)
+   |
+
+unformatted: File would be reformatted
+   --> UQPyL/optimization/expensive/moasmo.py:205:59
+    |
+204 |                         distanceValues, _ = shiftedObjectives(np.vstack((Unknown_best_Y, Known_best_Y)))
+    -                         distances = cdist(distanceValues[:len(Unknown_best_Y)], distanceValues[len(Unknown_best_Y):])
+205 +                         distances = cdist(distanceValues[: len(Unknown_best_Y)], distanceValues[len(Unknown_best_Y) :])
+206 |
+    |
+
+unformatted: File would be reformatted
+  --> UQPyL/optimization/metric/_distance.py:2:1
+   |
+1  | """Bounded-memory nearest-distance means with full floating-point range."""
+2  +
+3  | import warnings
+--------------------------------------------------------------------------------
+18 |     for start in range(0, len(points), 128):
+   -         query = points[start:start + 128]
+   -         mantissa = bestMantissa[start:start + len(query)]
+   -         exponent = bestExponent[start:start + len(query)]
+19 +         query = points[start : start + 128]
+20 +         mantissa = bestMantissa[start : start + len(query)]
+21 +         exponent = bestExponent[start : start + len(query)]
+22 |         for refStart in range(0, len(reference), 128):
+   -             target = reference[refStart:refStart + 128]
+23 +             target = reference[refStart : refStart + 128]
+24 |             with np.errstate(over="ignore", under="ignore"):
+25 |                 delta = query[:, None, :] - target[None, :, :]
+26 |                 half = np.any(np.isinf(delta), axis=2)
+27 |                 if np.any(half):
+   -                     halfDelta = query[:, None, :] * .5 - target[None, :, :] * .5
+28 +                     halfDelta = query[:, None, :] * 0.5 - target[None, :, :] * 0.5
+29 |                     delta[half] = halfDelta[half]
+--------------------------------------------------------------------------------
+45 |     if mean > 0 and (result == 0 or np.isinf(result)):
+   -         warnings.warn("Mean distance exceeds floating-point range; returning zero or infinity.",
+   -                       RuntimeWarning, stacklevel=3)
+46 +         warnings.warn(
+47 +             "Mean distance exceeds floating-point range; returning zero or infinity.", RuntimeWarning, stacklevel=3
+48 +         )
+49 |     return float(result)
+   |
+
+unformatted: File would be reformatted
+  --> UQPyL/optimization/metric/hv.py:21:46
+   |
+20 |         worst = np.max(popObjs, axis=0)
+   -         refPoint = automaticReference(worst, .1)
+21 +         refPoint = automaticReference(worst, 0.1)
+22 |     else:
+--------------------------------------------------------------------------------
+34 |     powers = np.frexp(magnitude)[1]
+   -     extreme = np.any(np.abs(powers) > 400) or np.sum(np.maximum(powers, 0)) > 900 or np.sum(np.minimum(powers, 0)) < -900
+35 +     extreme = (
+36 +         np.any(np.abs(powers) > 400) or np.sum(np.maximum(powers, 0)) > 900 or np.sum(np.minimum(powers, 0)) < -900
+37 +     )
+38 |     if extreme and not normalize:
+--------------------------------------------------------------------------------
+45 |         if value > 0 and (result == 0 or np.isinf(result)):
+   -             warnings.warn("Hypervolume exceeds floating-point range; returning zero or infinity.",
+   -                           RuntimeWarning, stacklevel=2)
+46 +             warnings.warn(
+47 +                 "Hypervolume exceeds floating-point range; returning zero or infinity.", RuntimeWarning, stacklevel=2
+48 +             )
+49 |         return float(result)
+   |
+
+unformatted: File would be reformatted
+   --> UQPyL/optimization/moea/moea_d.py:155:47
+    |
+154 |                 # keeping subtraction and norms in range. TCH_N normalizes axes.
+    -                 scaled, _ = shiftedObjectives(np.vstack((Z, pop.objs, offspring.objs)),
+    -                                               perColumn=aggregation == "TCH_N")
+155 +                 scaled, _ = shiftedObjectives(
+156 +                     np.vstack((Z, pop.objs, offspring.objs)), perColumn=aggregation == "TCH_N"
+157 +                 )
+158 |                 deltaP = scaled[1:-1][P]
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/optimization/moea/rvea.py:140:68
+    |
+139 |             progress = self.FEs / self.maxFEs if self.maxFEs is not None else (self.iters + 1) / self.maxIter
+    -             nextIdx = self.environmentSelection(pop.objs, V, min(1., progress) ** alpha, pop.cons, pop.conWgt)
+140 +             nextIdx = self.environmentSelection(pop.objs, V, min(1.0, progress) ** alpha, pop.cons, pop.conWgt)
+141 |             pop = pop[nextIdx]
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/optimization/runtime/result.py:188:12
+    |
+187 |         pending = getattr(self, "_singlePending", None)
+    -         if pending is None or compareSolutions(candidate.objs, candidate.cons,
+    -                                                pending[0].objs, pending[0].cons, pop.conWgt) < 0:
+188 +         if (
+189 +             pending is None
+190 +             or compareSolutions(candidate.objs, candidate.cons, pending[0].objs, pending[0].cons, pop.conWgt) < 0
+191 +         ):
+192 |             self._singlePending = (candidate, FEs)
+--------------------------------------------------------------------------------
+443 |         worst = np.max(np.asarray(bestObjs, dtype=float), axis=0)
+    -         self.hvRefPoint = automaticReference(worst, .2)
+444 +         self.hvRefPoint = automaticReference(worst, 0.2)
+445 |         return self.hvRefPoint
+    |
+
+unformatted: File would be reformatted
+   --> UQPyL/problem/space.py:143:35
+    |
+142 |             # avoids forming that range and retains both finite endpoints.
+    -             decoded[:, unsafe] = ((1 - U[:, unsafe]) * self.lb[:, unsafe]
+    -                                   + U[:, unsafe] * self.ub[:, unsafe])
+143 +             decoded[:, unsafe] = (1 - U[:, unsafe]) * self.lb[:, unsafe] + U[:, unsafe] * self.ub[:, unsafe]
+144 |         decoded = np.clip(decoded, self.lb, self.ub)
+--------------------------------------------------------------------------------
+172 |                 else:
+    -                     encoded[:, index] = (real[:, index] * .5 - lower * .5) / (upper * .5 - lower * .5)
+173 +                     encoded[:, index] = (real[:, index] * 0.5 - lower * 0.5) / (upper * 0.5 - lower * 0.5)
+174 |         for index in self.idxI:
+    |
+
+unformatted: File would be reformatted
+  --> UQPyL/viz/analysis.py:63:27
+   |
+62 |         if np.any(~np.isfinite(si)):
+   -             warnings.warn(f"plot_sa: {label}/{metric} has non-finite values; those bars are omitted.",
+   -                           RuntimeWarning, stacklevel=2)
+63 +             warnings.warn(
+64 +                 f"plot_sa: {label}/{metric} has non-finite values; those bars are omitted.",
+65 +                 RuntimeWarning,
+66 +                 stacklevel=2,
+67 +             )
+68 |             si[~np.isfinite(si)] = np.nan
+   |
+
+unformatted: File would be reformatted
+  --> UQPyL/viz/inference.py:56:118
+   |
+55 |         ax.set_title(
+   -             subtitle[i] if subtitle is not None else f"Decision Variable {idx[i] + 1 if idx is not None else i + 1}", fontsize=int(fontsize * 0.9)
+56 +             subtitle[i] if subtitle is not None else f"Decision Variable {idx[i] + 1 if idx is not None else i + 1}",
+57 +             fontsize=int(fontsize * 0.9),
+58 |         )
+   |
+
+unformatted: File would be reformatted
+   --> UQPyL/viz/optimization.py:169:23
+    |
+168 |             raise ValueError("Run histories have no common coordinates to average.")
+    -         warnings.warn("plot_op_curve_stat: histories differ; using only shared coordinates without interpolation.",
+    -                       RuntimeWarning, stacklevel=2)
+169 +         warnings.warn(
+170 +             "plot_op_curve_stat: histories differ; using only shared coordinates without interpolation.",
+171 +             RuntimeWarning,
+172 +             stacklevel=2,
+173 +         )
+174 |     if not len(xCoords):
+    |
+
+28 files would be reformatted, 145 files already formatted
+ERROR conda.cli.main_run:execute(148): `conda run ruff format --check UQPyL` failed. (See above for error)

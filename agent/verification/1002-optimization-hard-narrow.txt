@@ -1,0 +1,8 @@
+narrow 10 records
+narrow 20 records
+narrow 30 records
+narrow 40 records
+narrow 50 records
+narrow 60 records
+narrow 70 records
+completed narrow 78 records; warnings 0

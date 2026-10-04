@@ -1,0 +1,1224 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+................................FFF...FFF...FFF...FFF.......F........... [ 31%]
+........................................................................ [ 34%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 46%]
+........................................................................ [ 49%]
+........................................................................ [ 52%]
+........................................................................ [ 54%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 69%]
+.......................................FFFFFFFFFF....................... [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+..........................................                               [100%]
+=================================== FAILURES ===================================
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-rbf] _
+
+family = 'rbf', nInputs = 1, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-matern] _
+
+family = 'matern', nInputs = 1, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-rq] _
+
+family = 'rq', nInputs = 1, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-rbf] _
+
+family = 'rbf', nInputs = 3, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-matern] _
+
+family = 'matern', nInputs = 3, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-rq] _
+
+family = 'rq', nInputs = 3, nOutputs = 2, scaled = False
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-rbf] _
+
+family = 'rbf', nInputs = 1, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-matern] _
+
+family = 'matern', nInputs = 1, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-rq] _
+
+family = 'rq', nInputs = 1, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[3.95254425, 2.51488055],
+       [4.02857739, 3.71376859],
+       [1.38336238, 3.46136955],
+       [0.50088953,...89595, 2.00271645],
+       [1.86803586, 3.13126239],
+       [1.65167789, 2.88668373],
+       [3.00995036, 4.37067968]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-rbf] _
+
+family = 'rbf', nInputs = 3, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-matern] _
+
+family = 'matern', nInputs = 3, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-rq] _
+
+family = 'rq', nInputs = 3, nOutputs = 2, scaled = True
+
+    @pytest.mark.parametrize("family", ["rbf", "matern", "rq"])
+    @pytest.mark.parametrize("nInputs,nOutputs", [(1, 1), (1, 2), (3, 1), (3, 2)])
+    @pytest.mark.parametrize("scaled", [False, True])
+    def test_fixed_parameters_match_independent_objective_and_posterior(family, nInputs, nOutputs, scaled):
+        rng = np.random.default_rng(39)
+        X = rng.uniform(-2, 2, (9, nInputs))
+        XTest = rng.uniform(-2, 2, (5, nInputs))
+        Y = rng.normal(size=(9, nOutputs)) + np.arange(nOutputs) + 2
+        lengthScale = np.linspace(0.4, 1.2, nInputs)
+        kernelArgs = dict(length_scale=lengthScale, length_attr=None, heterogeneous=True)
+        if family == "rbf":
+            kernel = RBF(**kernelArgs)
+        elif family == "matern":
+            kernel = Matern(**kernelArgs, nu=2.5)
+        else:
+            kernel = RationalQuadratic(**kernelArgs, alpha=0.7, alpha_attr=None)
+        scalers = (StandardScaler(), StandardScaler()) if scaled else (None, None)
+>       model = GPR(kernel=kernel, C=0.02, C_attr=None, scalers=scalers).fit(X, Y)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_gpr_likelihood_crosschecks.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[1.72527656, 4.20798583],
+       [0.22954901, 2.44034631],
+       [0.87610901, 2.86862594],
+       [2.84300672,...16044, 4.47987748],
+       [2.38129343, 4.34990296],
+       [0.86606437, 3.31003981],
+       [3.08914148, 2.93901779]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_____________ test_fixed_gpr_records_negative_joint_log_density[2] _____________
+
+nOutputs = 2
+
+    @pytest.mark.parametrize("nOutputs", [1, 2])
+    def test_fixed_gpr_records_negative_joint_log_density(nOutputs):
+        X = np.linspace(0, 1, 12).reshape(-1, 1)
+        Y = np.column_stack([np.sin(6 * X[:, 0]), np.cos(3 * X[:, 0])])[:, :nOutputs]
+        model = GPR(kernel=RBF(length_scale=0.3, length_attr=None), C=1e-6, C_attr=None)
+>       model.fit(X, Y)
+
+tests/test_gpr_likelihood_direction.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[ 0.        ,  1.        ],
+       [ 0.51880673,  0.96303986],
+       [ 0.88704699,  0.85489156],
+       [ 0.99...-0.57370472],
+       [-0.98071647, -0.77312222],
+       [-0.73701276, -0.91539031],
+       [-0.2794155 , -0.9899925 ]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+___ test_smoothing_supports_multiple_outputs_and_scaling[0.0-Cubic-cubic-1] ____
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.cubic_kernel.Cubic'>
+scipyName = 'cubic', degree = 1, smooth = 0.0
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.0-ThinPlateSpline-thin_plate_spline-1] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.thin_plate_spline_kernel.ThinPlateSpline'>
+scipyName = 'thin_plate_spline', degree = 1, smooth = 0.0
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+__ test_smoothing_supports_multiple_outputs_and_scaling[0.0-Linear-linear-0] ___
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.linear_kernel.Linear'>
+scipyName = 'linear', degree = 0, smooth = 0.0
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.0-Multiquadric-multiquadric-0] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.multiquadric_kernel.Multiquadric'>
+scipyName = 'multiquadric', degree = 0, smooth = 0.0
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.0-Gaussian-gaussian--1] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.gaussian_kernel.Gaussian'>
+scipyName = 'gaussian', degree = -1, smooth = 0.0
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+___ test_smoothing_supports_multiple_outputs_and_scaling[0.2-Cubic-cubic-1] ____
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.cubic_kernel.Cubic'>
+scipyName = 'cubic', degree = 1, smooth = 0.2
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.2-ThinPlateSpline-thin_plate_spline-1] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.thin_plate_spline_kernel.ThinPlateSpline'>
+scipyName = 'thin_plate_spline', degree = 1, smooth = 0.2
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+__ test_smoothing_supports_multiple_outputs_and_scaling[0.2-Linear-linear-0] ___
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.linear_kernel.Linear'>
+scipyName = 'linear', degree = 0, smooth = 0.2
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.2-Multiquadric-multiquadric-0] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.multiquadric_kernel.Multiquadric'>
+scipyName = 'multiquadric', degree = 0, smooth = 0.2
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+_ test_smoothing_supports_multiple_outputs_and_scaling[0.2-Gaussian-gaussian--1] _
+
+kernelClass = <class 'UQPyL.surrogate.rbf.kernel.gaussian_kernel.Gaussian'>
+scipyName = 'gaussian', degree = -1, smooth = 0.2
+
+    @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
+    @pytest.mark.parametrize("smooth", [0.0, 0.2])
+    def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName, degree, smooth):
+        X = np.linspace(-2, 3, 12).reshape(-1, 1)
+        Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
+        originalX, originalY = X.copy(), Y.copy()
+        model = RBF(kernel=kernelClass(), C_smooth=smooth,
+>                   scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+                                                                  ^^^^^^^^^
+
+tests/test_rbf_smoothing.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:322: in fit
+    xTrain, yTrain = self.prepareTrainingData(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:224: in prepareTrainingData
+    xTrain, yTrain = self._checkAndScale(xTrain, yTrain)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:78: in _checkAndScale
+    self._checkSingleOutput(yTrain)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+yTrain = array([[  9.09070257, -41.61468365],
+       [  9.00032109,   2.5339069 ],
+       [  9.11295301,  46.16791514],
+       ...03399],
+       [ 10.86776314, -49.69779935],
+       [ 10.56145091, -82.75100431],
+       [ 10.14112001, -98.99924966]])
+
+    @staticmethod
+    def _checkSingleOutput(yTrain):
+        values = np.asarray(yTrain)
+        if values.ndim not in {1, 2} or (values.ndim == 2 and values.shape[1] != 1):
+>           raise ValueError(
+                "yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. "
+                "Use MultiSurrogate for multiple outputs."
+            )
+E           ValueError: yTrain must have shape (n_samples,) or (n_samples, 1): each surrogate supports a single output. Use MultiSurrogate for multiple outputs.
+
+UQPyL/surrogate/base.py:238: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-rbf]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-matern]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-1-2-rq]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-rbf]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-matern]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[False-3-2-rq]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-rbf]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-matern]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-1-2-rq]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-rbf]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-matern]
+FAILED tests/test_gpr_likelihood_crosschecks.py::test_fixed_parameters_match_independent_objective_and_posterior[True-3-2-rq]
+FAILED tests/test_gpr_likelihood_direction.py::test_fixed_gpr_records_negative_joint_log_density[2]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.0-Cubic-cubic-1]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.0-ThinPlateSpline-thin_plate_spline-1]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.0-Linear-linear-0]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.0-Multiquadric-multiquadric-0]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.0-Gaussian-gaussian--1]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.2-Cubic-cubic-1]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.2-ThinPlateSpline-thin_plate_spline-1]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.2-Linear-linear-0]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.2-Multiquadric-multiquadric-0]
+FAILED tests/test_rbf_smoothing.py::test_smoothing_supports_multiple_outputs_and_scaling[0.2-Gaussian-gaussian--1]
+23 failed, 2467 passed in 76.92s (0:01:16)
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error` failed. (See above for error)

@@ -401,6 +401,8 @@ public:
 	virtual ~Solver() {};
 
 	struct SolutionInfo {
+		int iterations;
+		bool iterationLimitReached;
 		double obj;
 		double rho;
 		double upper_bound_p;
@@ -733,6 +735,8 @@ void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,
 		}
 	}
 
+	si->iterations = iter;
+	si->iterationLimitReached = iter >= max_iter;
 	if(iter >= max_iter)
 	{
 		if(active_size < l)
@@ -742,7 +746,7 @@ void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,
 			active_size = l;
 			info("*");
 		}
-		fprintf(stderr,"\nWARNING: reaching max number of iterations\n");
+		// The Python wrapper reports the structured iteration-limit status.
 	}
 
 	// calculate rho
@@ -1651,6 +1655,8 @@ static void solve_nu_svr(
 //
 struct decision_function
 {
+	int iterations;
+	bool iterationLimitReached;
 	double *alpha;
 	double rho;
 };
@@ -1660,7 +1666,7 @@ static decision_function svm_train_one(
 	double Cp, double Cn)
 {
 	double *alpha = Malloc(double,prob->l);
-	Solver::SolutionInfo si;
+	Solver::SolutionInfo si = {};
 	switch(param->svm_type)
 	{
 		case C_SVC:
@@ -1709,6 +1715,8 @@ static decision_function svm_train_one(
 	decision_function f;
 	f.alpha = alpha;
 	f.rho = si.rho;
+	f.iterations = si.iterations;
+	f.iterationLimitReached = si.iterationLimitReached;
 	return f;
 }
 
@@ -2180,6 +2188,8 @@ static void svm_group_classes(const svm_problem *prob, int *nr_class_ret, int **
 svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 {
 	svm_model *model = Malloc(svm_model,1);
+	model->iterations = 0;
+	model->iterationLimitReached = false;
 	model->param = *param;
 	model->free_sv = 0;	// XXX
 	MAX_I=param->max_Iter;
@@ -2196,6 +2206,8 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 		model->sv_coef = Malloc(double *,1);
 
 		decision_function f = svm_train_one(prob,param,0,0);
+		model->iterations = f.iterations;
+		model->iterationLimitReached = f.iterationLimitReached;
 		model->rho = Malloc(double,1);
 		model->rho[0] = f.rho;
 
@@ -2314,6 +2326,8 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 					svm_binary_svc_probability(&sub_prob,param,weighted_C[i],weighted_C[j],probA[p],probB[p]);
 
 				f[p] = svm_train_one(&sub_prob,param,weighted_C[i],weighted_C[j]);
+				model->iterations += f[p].iterations;
+				model->iterationLimitReached |= f[p].iterationLimitReached;
 				for(k=0;k<ci;k++)
 					if(!nonzero[si+k] && fabs(f[p].alpha[k]) > 0)
 						nonzero[si+k] = true;
@@ -3028,6 +3042,8 @@ svm_model *svm_load_model(const char *model_file_name)
 
 	svm_model *model = Malloc(svm_model,1);
 	model->rho = NULL;
+	model->iterations = -1;
+	model->iterationLimitReached = false;
 	model->probA = NULL;
 	model->probB = NULL;
 	model->prob_density_marks = NULL;

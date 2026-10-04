@@ -1,0 +1,18 @@
+E731 Do not assign a `lambda` expression, use a `def`
+  --> tests/test_inference_result_isolation_and_directions.py:74:5
+   |
+72 | @pytest.mark.parametrize("direction", ["min", "max"])
+73 | def testInferencePublicObjectiveDirectionsAndSamplingUnchanged(methodClass, direction):
+74 |     objective = lambda x: x[:, :1] + 2 * x[:, 1:2]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+75 |     problem = Problem(nInput=2, nObj=1, lb=0.0, ub=1.0, objFunc=objective, optType=direction)
+76 |     result = makeInference(methodClass).run(problem, seed=4)
+   |
+help: Rewrite `objective` as a `def`
+
+Found 1 error.
+No fixes available (1 hidden fix can be enabled with the `--unsafe-fixes` option).
+38 files already formatted
+
+Undefined-name and syntax checks (existing E731 preserved for AST equivalence):
+All checks passed!

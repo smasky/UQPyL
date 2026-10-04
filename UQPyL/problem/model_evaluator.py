@@ -11,11 +11,11 @@ class ModelEvaluator(ModelEvaluatorBase):
         sims = simContext.sims
 
         objs = None
-        if target in (None, 'objs') and self.objFunc is not None:
+        if target in (None, "objs") and self.objFunc is not None:
             objs = self.objFunc(X, simContext)
 
         cons = None
-        if target in (None, 'cons') and self.conFunc is not None:
+        if target in (None, "cons") and self.conFunc is not None:
             cons = self.conFunc(X, simContext)
 
         return Eval(objs=objs, cons=cons, sims=sims, target=target)

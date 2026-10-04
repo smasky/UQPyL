@@ -22,7 +22,8 @@ class RunLifecycle:
 
     def _startRun(self):
         from .runtime import make_run_id
-        self.runId = make_run_id(getattr(self, 'name', type(self).__name__), self.problem.name)
+
+        self.runId = make_run_id(getattr(self, "name", type(self).__name__), self.problem.name)
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
@@ -48,7 +49,9 @@ class RunLifecycle:
                 session = self.session
                 if session is not None:
                     self.storage.abort_run(
-                        session, error, runtime=time.perf_counter() - start,
+                        session,
+                        error,
+                        runtime=time.perf_counter() - start,
                         final_fes=getattr(self, "FEs", None),
                         final_iters=getattr(self, "iters", None),
                     )

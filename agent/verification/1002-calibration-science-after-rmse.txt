@@ -1,0 +1,63 @@
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0, 'iterations': 1, 'regularization': 0, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 11, 'noise': 0, 'max_error': 8.881784197001252e-16}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0, 'iterations': 1, 'regularization': 0.2, 'max_error': 2.220446049250313e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0, 'iterations': 3, 'regularization': 0, 'max_error': 1.1102230246251565e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0, 'iterations': 3, 'regularization': 0.2, 'max_error': 9.43689570931383e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0.1, 'iterations': 1, 'regularization': 0, 'max_error': 1.3322676295501878e-15, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 11, 'noise': 0.1, 'max_error': 1.3322676295501878e-15}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0.1, 'iterations': 1, 'regularization': 0.2, 'max_error': 1.7763568394002505e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0.1, 'iterations': 3, 'regularization': 0, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 0.1, 'iterations': 3, 'regularization': 0.2, 'max_error': 7.494005416219807e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 1, 'iterations': 1, 'regularization': 0, 'max_error': 4.440892098500626e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 11, 'noise': 1, 'max_error': 4.440892098500626e-16}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 1, 'iterations': 1, 'regularization': 0.2, 'max_error': 2.220446049250313e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 1, 'iterations': 3, 'regularization': 0, 'max_error': 1.942890293094024e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 11, 'noise': 1, 'iterations': 3, 'regularization': 0.2, 'max_error': 2.220446049250313e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0, 'iterations': 1, 'regularization': 0, 'max_error': 7.771561172376096e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 23, 'noise': 0, 'max_error': 7.771561172376096e-16}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0, 'iterations': 1, 'regularization': 0.2, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0, 'iterations': 3, 'regularization': 0, 'max_error': 1.1102230246251565e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0, 'iterations': 3, 'regularization': 0.2, 'max_error': 7.632783294297951e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0.1, 'iterations': 1, 'regularization': 0, 'max_error': 7.771561172376096e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 23, 'noise': 0.1, 'max_error': 7.771561172376096e-16}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0.1, 'iterations': 1, 'regularization': 0.2, 'max_error': 1.1102230246251565e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0.1, 'iterations': 3, 'regularization': 0, 'max_error': 5.551115123125783e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 0.1, 'iterations': 3, 'regularization': 0.2, 'max_error': 6.661338147750939e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 1, 'iterations': 1, 'regularization': 0, 'max_error': 4.440892098500626e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 23, 'noise': 1, 'max_error': 4.440892098500626e-16}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 1, 'iterations': 1, 'regularization': 0.2, 'max_error': 6.661338147750939e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 1, 'iterations': 3, 'regularization': 0, 'max_error': 2.220446049250313e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 23, 'noise': 1, 'iterations': 3, 'regularization': 0.2, 'max_error': 3.7470027081099033e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0, 'iterations': 1, 'regularization': 0, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 47, 'noise': 0, 'max_error': 8.881784197001252e-16}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0, 'iterations': 1, 'regularization': 0.2, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0, 'iterations': 3, 'regularization': 0, 'max_error': 1.1102230246251565e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0, 'iterations': 3, 'regularization': 0.2, 'max_error': 6.869504964868156e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0.1, 'iterations': 1, 'regularization': 0, 'max_error': 2.220446049250313e-15, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 47, 'noise': 0.1, 'max_error': 2.220446049250313e-15}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0.1, 'iterations': 1, 'regularization': 0.2, 'max_error': 1.5543122344752192e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0.1, 'iterations': 3, 'regularization': 0, 'max_error': 1.6653345369377348e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 0.1, 'iterations': 3, 'regularization': 0.2, 'max_error': 1.0547118733938987e-15, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 1, 'iterations': 1, 'regularization': 0, 'max_error': 4.440892098500626e-16, 'correct': True}
+{'case': 'es_dense_reference', 'seed': 47, 'noise': 1, 'max_error': 4.440892098500626e-16}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 1, 'iterations': 1, 'regularization': 0.2, 'max_error': 8.881784197001252e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 1, 'iterations': 3, 'regularization': 0, 'max_error': 2.7755575615628914e-16, 'correct': True}
+{'case': 'ies_dense_reference', 'seed': 47, 'noise': 1, 'iterations': 3, 'regularization': 0.2, 'max_error': 2.3592239273284576e-16, 'correct': True}
+{'case': 'posterior_interpretation', 'iterations': 1, 'actual_mean': 0.5, 'actual_variance': 0.25, 'gaussian_posterior_mean': 0.5, 'gaussian_posterior_variance': 0.5}
+{'case': 'posterior_interpretation', 'iterations': 3, 'actual_mean': 0.6551724137931035, 'actual_variance': 0.11890606420927466, 'gaussian_posterior_mean': 0.5, 'gaussian_posterior_variance': 0.5}
+{'case': 'posterior_interpretation', 'iterations': 10, 'actual_mean': 0.7911754118862416, 'actual_variance': 0.043607708600880764, 'gaussian_posterior_mean': 0.5, 'gaussian_posterior_variance': 0.5}
+{'case': 'glue_screening', 'correct': True}
+{'case': 'sufi_quantile', 'correct': True}
+{'case': 'sufi_internal_domain', 'variable_type': 1, 'invalid_count': 0, 'example': [1.0, 2.0, 1.0, 2.0, 0.0]}
+{'case': 'sufi_supplied_domain', 'variable_type': 1, 'correct': True}
+{'case': 'sufi_internal_domain', 'variable_type': 2, 'invalid_count': 0, 'example': [0.75, 0.75, 0.25, 0.75, 0.25]}
+{'case': 'sufi_supplied_domain', 'variable_type': 2, 'correct': True}
+{'case': 'rmse_range', 'scale': 1.0, 'actual': ['0.1581138830084191', '0.07071067811865482'], 'expected': [0.1581138830084191, 0.07071067811865482], 'warnings': []}
+{'case': 'rmse_workflow', 'scale': 1.0, 'method': 'GLUE', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': [False, True]}
+{'case': 'rmse_workflow', 'scale': 1.0, 'method': 'SUFI2', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': []}
+{'case': 'rmse_range', 'scale': 1e-200, 'actual': ['1.581138830084191e-201', '7.071067811865491e-202'], 'expected': [1.581138830084191e-201, 7.071067811865482e-202], 'warnings': []}
+{'case': 'rmse_workflow', 'scale': 1e-200, 'method': 'GLUE', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': [False, True]}
+{'case': 'rmse_workflow', 'scale': 1e-200, 'method': 'SUFI2', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': []}
+{'case': 'rmse_range', 'scale': 1e+200, 'actual': ['1.58113883008419e+199', '7.071067811865477e+198'], 'expected': [1.5811388300841911e+199, 7.071067811865482e+198], 'warnings': []}
+{'case': 'rmse_workflow', 'scale': 1e+200, 'method': 'GLUE', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': [False, True]}
+{'case': 'rmse_workflow', 'scale': 1e+200, 'method': 'SUFI2', 'best': 1.0, 'expected_best': 1.0, 'behavioral_mask': []}

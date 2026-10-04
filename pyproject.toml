@@ -2,8 +2,8 @@
 requires = [
     "setuptools",
     "wheel",
-    "Cython",
-    "pybind11",
+    "Cython>=3.1",
+    "pybind11>=3.0",
     "numpy>=1.21",
     "scipy",
 ]
@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "UQPyL"
-version = "2.1.6"
+version = "2.1.7"
 authors = [
     {name = "wmtSky", email = "wmtsky@hhu.edu.cn"}
 ]
@@ -33,11 +33,25 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
 
 [project.optional-dependencies]
 viz = ["matplotlib", "seaborn"]
+dev = ["pytest", "ruff==0.16.8"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+extend-exclude = ["UQPyL/surrogate/mars/core", "UQPyL/surrogate/svr/core", "agent", "build"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F821", "F822", "F823"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
 
 [project.urls]
 Homepage = "https://uqpyl.readthedocs.io"
@@ -45,14 +59,15 @@ Repository = "https://github.com/smasky/UQPyL"
 Documentation = "https://uqpyl.readthedocs.io"
 
 [tool.cibuildwheel]
-build = "cp310-* cp311-* cp312-* cp313-*"
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"
 skip = ["pp*", "*-musllinux*"]
-before-build = [
-    "pip install numpy scipy cython pybind11",
-]
 build-verbosity = 1
 
 [tool.pytest.ini_options]
+markers = [
+  "numerical: reviewed numerical reference, invariant, or held-out accuracy checks (not an exhaustive correctness label)",
+  "statistical: empirical sampling moment/distribution checks with fixed seeds and finite-sample tolerances",
+]
 testpaths = ["tests"]
 cache_dir = ".cache/pytest/cache"
 python_files = ["test_*.py"]

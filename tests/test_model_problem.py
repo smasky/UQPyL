@@ -9,8 +9,8 @@ def test_model_problem_name_default_and_custom():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 4, 3)),
-        obs=np.ones((4, 3)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 4, 3))).reshape(len(X), -1),
+        obs=np.ones(12),
     )
     assert p1.name == "ModelProblem"
 
@@ -18,8 +18,8 @@ def test_model_problem_name_default_and_custom():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 4, 3)),
-        obs=np.ones((4, 3)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 4, 3))).reshape(len(X), -1),
+        obs=np.ones(12),
         name="HBVModel",
     )
     assert p2.name == "HBVModel"
@@ -40,18 +40,17 @@ def test_model_problem_simfunc_returns_eval_sims():
         sim[:, 0, 1] = np.prod(X, axis=1)
         sim[:, 1, 0] = np.sum(X, axis=1) + 1.0
         sim[:, 1, 1] = np.prod(X, axis=1) + 1.0
-        return sim
+        return (sim).reshape(len(X), -1)
 
-    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=simf, obs=np.ones((2, 2)))
+    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=simf, obs=np.ones(4))
     X = np.array([[0.1, 0.2], [0.3, 0.4]])
     res = p.evaluate(X, target="sims")
 
-    assert res.sims.shape == (2, 2, 2)
-    assert np.allclose(res.sims[:, 0, 0], [0.3, 0.7])
-    assert np.allclose(res.sims[:, 0, 1], [0.02, 0.12])
+    assert res.sims.shape == (2, 4)
+    assert np.allclose(res.sims[:, 0], [0.3, 0.7])
+    assert np.allclose(res.sims[:, 1], [0.02, 0.12])
     assert p.nObs == 4
     assert p.nOutput == 1
-    assert p.seriesLabels == ["series_1", "series_2"]
     assert p.flattenSim(res.sims).shape == (2, 4)
     assert p.flattenObs().shape == (4,)
 
@@ -61,16 +60,16 @@ def test_model_problem_simulate_returns_sim_context():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 1)),
-        obs=np.ones((2, 1)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 2, 1))).reshape(len(X), -1),
+        obs=np.ones(2),
     )
     X = np.array([[0.1, 0.2]])
 
     context = p.simulate(X)
 
     assert isinstance(context, SimContext)
-    assert np.allclose(context.sims, np.ones((1, 2, 1)))
-    assert np.allclose(context.obs, np.ones((2, 1)))
+    assert np.allclose(context.sims, np.ones((1, 2)))
+    assert np.array_equal(context.obs, np.ones(2))
     assert context.mask is None
 
 
@@ -80,7 +79,7 @@ def test_model_problem_is_problem_base_and_evaluates_with_context():
     def simf(X):
         calls["sim"] += 1
         X = np.atleast_2d(X)
-        return np.stack([np.sum(X, axis=1), np.prod(X, axis=1)], axis=1)
+        return (np.stack([np.sum(X, axis=1), np.prod(X, axis=1)], axis=1)).reshape(len(X), -1)
 
     def objf(X, context):
         calls["obj"] += 1
@@ -117,7 +116,7 @@ def test_model_problem_target_returns_requested_blocks(target):
     X = np.array([[0.2], [0.7]])
     p = ModelProblem(
         nInput=1, nObj=1, nCon=1, lb=0.0, ub=1.0,
-        simFunc=lambda X: X * 2,
+        simFunc=lambda X: (X * 2).reshape(len(X), -1),
         objFunc=lambda X, context: context.sims ** 2,
         conFunc=lambda X, context: context.sims - 1,
     )
@@ -136,7 +135,7 @@ def test_model_problem_target_returns_requested_blocks(target):
 def test_model_problem_validates_simulation_before_filtering(target):
     p = ModelProblem(
         nInput=1, nObj=1, nCon=1, lb=0.0, ub=1.0,
-        simFunc=lambda X: np.full_like(X, np.nan),
+        simFunc=lambda X: (np.full_like(X, np.nan)).reshape(len(X), -1),
         objFunc=lambda X, context: X,
         conFunc=lambda X, context: X,
     )
@@ -171,13 +170,13 @@ def test_model_problem_target_sims_skips_obj_and_con():
         nCon=1,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.sum(np.atleast_2d(X), axis=1),
+        simFunc=lambda X: (np.sum(np.atleast_2d(X), axis=1)).reshape(len(X), -1),
         objFunc=fail_obj,
         conFunc=fail_con,
     )
 
     res = p.evaluate(np.array([[0.1, 0.2], [0.3, 0.4]]), target="sims")
-    assert np.allclose(res.sims, [0.3, 0.7])
+    assert np.allclose(res.sims, [[0.3], [0.7]])
     assert res.objs is None
     assert res.cons is None
 
@@ -185,7 +184,7 @@ def test_model_problem_target_sims_skips_obj_and_con():
 def test_model_problem_supports_custom_evaluator_subclass():
     def simf(X):
         X = np.atleast_2d(X)
-        return np.sum(X, axis=1).reshape(-1, 1)
+        return (np.sum(X, axis=1).reshape(-1, 1)).reshape(len(X), -1)
 
     class PlusOneEvaluator(ModelEvaluator):
         def evaluate(self, X, simContext, target=None):
@@ -210,7 +209,7 @@ def test_model_problem_supports_custom_evaluator_subclass():
 def test_model_problem_rejects_callable_evaluator():
     def simf(X):
         X = np.atleast_2d(X)
-        return np.sum(X, axis=1).reshape(-1, 1)
+        return (np.sum(X, axis=1).reshape(-1, 1)).reshape(len(X), -1)
 
     def evaluateFunc(X, target=None):
         return Eval(objs=np.sum(np.atleast_2d(X), axis=1, keepdims=True))
@@ -229,7 +228,7 @@ def test_model_problem_rejects_callable_evaluator():
 def test_model_problem_objfunc_requires_explicit_context():
     def simf(X):
         X = np.atleast_2d(X)
-        return np.sum(X, axis=1)
+        return (np.sum(X, axis=1)).reshape(len(X), -1)
 
     def objf(X, context):
         return (context.sims + 1.0).reshape(-1, 1)
@@ -248,8 +247,8 @@ def test_model_problem_rejects_invalid_target():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 3, 2)),
-        obs=np.ones((3, 2)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 3, 2))).reshape(len(X), -1),
+        obs=np.ones(6),
     )
     with pytest.raises(ValueError):
         p.evaluate(np.array([[0.1, 0.2]]), target="bad")
@@ -264,9 +263,9 @@ def test_model_problem_custom_evaluate_must_return_eval():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 1)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 2, 1))).reshape(len(X), -1),
         objFunc=lambda X, context: np.ones((np.atleast_2d(X).shape[0], 1)),
-        obs=np.ones((2, 1)),
+        obs=np.ones(2),
     )
     with pytest.raises(TypeError, match="return Eval"):
         p.evaluate(np.array([[0.1, 0.2]]))
@@ -282,9 +281,9 @@ def test_model_problem_custom_evaluate_requires_sim():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 1)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 2, 1))).reshape(len(X), -1),
         objFunc=lambda X, context: np.ones((np.atleast_2d(X).shape[0], 1)),
-        obs=np.ones((2, 1)),
+        obs=np.ones(2),
     )
     with pytest.raises(ValueError, match="must return `sims`"):
         p.evaluate(np.array([[0.1, 0.2]]))
@@ -292,17 +291,17 @@ def test_model_problem_custom_evaluate_requires_sim():
 
 def test_model_problem_rejects_missing_callable_configuration():
     with pytest.raises(ValueError, match="simFunc"):
-        ModelProblem(nInput=2, ub=1.0, lb=0.0, obs=np.ones((3, 2)))
+        ModelProblem(nInput=2, ub=1.0, lb=0.0, obs=np.ones(6))
 
 
 def test_model_problem_rejects_non_array_sim():
-    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: [[[1.0, 2.0]]], obs=np.ones((1, 2)))
+    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: [[[1.0, 2.0]]], obs=np.ones(2))
     with pytest.raises(TypeError, match="np.ndarray"):
         p.evaluate(np.array([[0.1, 0.2]]))
 
 
-def test_model_problem_accepts_non_3d_sim():
-    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: np.array([[1.0, 2.0]]), obs=np.ones((1, 2)))
+def test_model_problem_accepts_2d_sim():
+    p = ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: (np.array([[1.0, 2.0]])).reshape(len(X), -1), obs=np.ones(2))
     res = p.evaluate(np.array([[0.1, 0.2]]), target="sims")
     assert np.allclose(res.sims, [[1.0, 2.0]])
 
@@ -312,23 +311,23 @@ def test_model_problem_rejects_wrong_sample_dimension():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0] + 1, 2, 2)),
-        obs=np.ones((2, 2)),
+        simFunc=lambda X: np.ones((len(X) + 1, 4)),
+        obs=np.ones(4),
     )
     with pytest.raises(ValueError, match="first dimension"):
         p.evaluate(np.array([[0.1, 0.2], [0.3, 0.4]]))
 
 
-def test_model_problem_allows_sim_shape_independent_from_obs():
+def test_model_problem_rejects_sim_column_count_different_from_obs():
     p = ModelProblem(
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 3, 2)),
-        obs=np.ones((2, 2)),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 3, 2))).reshape(len(X), -1),
+        obs=np.ones(4),
     )
-    res = p.evaluate(np.array([[0.1, 0.2]]), target="sims")
-    assert res.sims.shape == (1, 3, 2)
+    with pytest.raises(ValueError, match="column count"):
+        p.evaluate(np.array([[0.1, 0.2]]), target="sims")
 
 
 def test_model_problem_rejects_nan_in_sim():
@@ -336,8 +335,8 @@ def test_model_problem_rejects_nan_in_sim():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.array([[[1.0, np.nan]]] * np.atleast_2d(X).shape[0]),
-        obs=np.ones((1, 2)),
+        simFunc=lambda X: (np.array([[[1.0, np.nan]]] * np.atleast_2d(X).shape[0])).reshape(len(X), -1),
+        obs=np.ones(2),
     )
     with pytest.raises(ValueError, match="NaN"):
         p.evaluate(np.array([[0.1, 0.2]]))
@@ -349,14 +348,14 @@ def test_model_problem_allows_nan_in_masked_sim_positions():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.array([[[1.0, np.nan], [2.0, 3.0]]] * np.atleast_2d(X).shape[0]),
-        obs=np.ones((2, 2)),
-        mask=mask,
+        simFunc=lambda X: (np.array([[[1.0, np.nan], [2.0, 3.0]]] * np.atleast_2d(X).shape[0])).reshape(len(X), -1),
+        obs=np.ones(4),
+        mask=None if mask is None else mask.reshape(-1),
     )
 
     res = p.evaluate(np.array([[0.1, 0.2]]), target="sims")
-    assert res.sims.shape == (1, 2, 2)
-    assert np.isnan(res.sims[0, 0, 1])
+    assert res.sims.shape == (1, 4)
+    assert np.isnan(res.sims[0, 1])
     assert p.flattenSim(res.sims).shape == (1, 4)
 
 
@@ -366,9 +365,9 @@ def test_model_problem_rejects_nan_in_unmasked_sim_positions_even_with_mask():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.array([[[np.nan, np.nan], [2.0, 3.0]]] * np.atleast_2d(X).shape[0]),
-        obs=np.ones((2, 2)),
-        mask=mask,
+        simFunc=lambda X: (np.array([[[np.nan, np.nan], [2.0, 3.0]]] * np.atleast_2d(X).shape[0])).reshape(len(X), -1),
+        obs=np.ones(4),
+        mask=None if mask is None else mask.reshape(-1),
     )
 
     with pytest.raises(ValueError, match="outside masked positions"):
@@ -379,44 +378,24 @@ def test_model_problem_supports_custom_space_and_labels():
     space = Space(nInput=2, ub=[1.0, 2.0], lb=[0.0, -1.0], xLabels=["p1", "p2"])
     p = ModelProblem(
         space=space,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 4, 2)),
-        obs=np.ones((4, 2)),
-        seriesLabels=["s1", "s2"],
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 4, 2))).reshape(len(X), -1),
+        obs=np.ones(8),
     )
     res = p.evaluate(np.array([[0.1, 0.2]]), target="sims")
 
     assert p.space is space
     assert p.xLabels == ["p1", "p2"]
-    assert p.seriesLabels == ["s1", "s2"]
-    assert res.sims.shape == (1, 4, 2)
+    assert res.sims.shape == (1, 8)
 
 
 def test_model_problem_validates_obs_mask_and_labels():
+    options = dict(nInput=2, lb=0., ub=1., simFunc=lambda X: np.ones((len(X), 4)))
     with pytest.raises(TypeError, match="obs"):
-        ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 2)), obs=[[1.0, 2.0]])
-
-    with pytest.raises(ValueError, match="2D"):
-        ModelProblem(nInput=2, ub=1.0, lb=0.0, simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 2)), obs=np.ones(2))
-
+        ModelProblem(**options, obs=[1., 2.])
+    with pytest.raises(ValueError, match="1D"):
+        ModelProblem(**options, obs=np.ones((2, 2)))
     with pytest.raises(ValueError, match="Mask shape"):
-        ModelProblem(
-            nInput=2,
-            ub=1.0,
-            lb=0.0,
-            simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 2)),
-            obs=np.ones((2, 2)),
-            mask=np.ones((4,), dtype=bool),
-        )
-
-    p = ModelProblem(
-        nInput=2,
-        ub=1.0,
-        lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 2)),
-        obs=np.ones((2, 2)),
-        seriesLabels=["only_one"],
-    )
-    assert p.seriesLabels == ["only_one"]
+        ModelProblem(**options, obs=np.ones(4), mask=np.ones((2, 2), dtype=bool))
 
 
 def test_model_problem_flattens_mask():
@@ -424,8 +403,8 @@ def test_model_problem_flattens_mask():
         nInput=2,
         ub=1.0,
         lb=0.0,
-        simFunc=lambda X: np.ones((np.atleast_2d(X).shape[0], 2, 2)),
-        obs=np.ones((2, 2)),
-        mask=np.array([[False, True], [True, False]]),
+        simFunc=lambda X: (np.ones((np.atleast_2d(X).shape[0], 2, 2))).reshape(len(X), -1),
+        obs=np.ones(4),
+        mask=np.array([False, True, True, False]),
     )
     assert np.array_equal(p.flattenMask(), np.array([False, True, True, False]))

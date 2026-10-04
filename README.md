@@ -138,17 +138,17 @@ import numpy as np
 from UQPyL.calibration import GLUE
 from UQPyL.problem import ModelProblem
 
-obs = np.array([[1.0], [2.0], [3.0]])
+obs = np.array([1.0, 2.0, 3.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
     # Here we assume each parameter sample returns one simulated series
-    # with 3 time steps, so the output shape is (n_samples, 3, 1).
-    sim = np.zeros((X.shape[0], 3, 1))
-    sim[:, 0, 0] = X[:, 0] * 1.0
-    sim[:, 1, 0] = X[:, 0] * 2.0
-    sim[:, 2, 0] = X[:, 0] * 3.0
+    # with 3 time steps, so the output shape is (n_samples, 3).
+    sim = np.zeros((X.shape[0], 3))
+    sim[:, 0] = X[:, 0] * 1.0
+    sim[:, 1] = X[:, 0] * 2.0
+    sim[:, 2] = X[:, 0] * 3.0
     return sim
 
 
@@ -251,6 +251,8 @@ result = Sobol(verboseFlag=False).analyze(problem, X, Y, meta=meta, target="objs
 ## Installation
 
 UQPyL requires Python 3.10 or newer.
+
+The development branch targets CPython 3.10–3.14; CI builds and tests installed wheels on Linux, Windows, and macOS. Python 3.14 support does not include free-threaded builds.
 
 ```bash
 pip install -U UQPyL

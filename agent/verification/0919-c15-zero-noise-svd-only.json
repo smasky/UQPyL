@@ -1,0 +1,65 @@
+{
+  "scope": "Gain calculation only; tracemalloc peak excludes input arrays and may exclude native workspace. Not process RSS.",
+  "records": [
+    {
+      "ensemble_members": 32,
+      "observations": 24,
+      "lam": 0.0,
+      "max_abs_difference": 4.6629367034256575e-15,
+      "dense_median_seconds": 8.874900231603533e-05,
+      "dense_traced_peak_bytes": 36962,
+      "svd_median_seconds": 0.00013359999866224825,
+      "svd_traced_peak_bytes": 52480
+    },
+    {
+      "ensemble_members": 32,
+      "observations": 24,
+      "lam": 0.1,
+      "max_abs_difference": 4.884981308350689e-15,
+      "dense_median_seconds": 8.291799167636782e-05,
+      "dense_traced_peak_bytes": 36986,
+      "svd_median_seconds": 0.00012217099720146507,
+      "svd_traced_peak_bytes": 52480
+    },
+    {
+      "ensemble_members": 16,
+      "observations": 128,
+      "lam": 0.0,
+      "max_abs_difference": 2.3592239273284576e-16,
+      "dense_median_seconds": 0.0010740739962784573,
+      "dense_traced_peak_bytes": 935546,
+      "svd_median_seconds": 0.00011907400039490312,
+      "svd_traced_peak_bytes": 83136
+    },
+    {
+      "ensemble_members": 16,
+      "observations": 128,
+      "lam": 0.1,
+      "max_abs_difference": 8.049116928532385e-15,
+      "dense_median_seconds": 0.0010566880082478747,
+      "dense_traced_peak_bytes": 935546,
+      "svd_median_seconds": 0.00012807300663553178,
+      "svd_traced_peak_bytes": 83136
+    },
+    {
+      "ensemble_members": 24,
+      "observations": 512,
+      "lam": 0.0,
+      "max_abs_difference": 8.413408858487514e-17,
+      "dense_median_seconds": 0.025003143993671983,
+      "dense_traced_peak_bytes": 14747258,
+      "svd_median_seconds": 0.00045375699119176716,
+      "svd_traced_peak_bytes": 425760
+    },
+    {
+      "ensemble_members": 24,
+      "observations": 512,
+      "lam": 0.1,
+      "max_abs_difference": 1.0255685189974884e-14,
+      "dense_median_seconds": 0.025963552005123347,
+      "dense_traced_peak_bytes": 14747258,
+      "svd_median_seconds": 0.00044110900489613414,
+      "svd_traced_peak_bytes": 425760
+    }
+  ]
+}

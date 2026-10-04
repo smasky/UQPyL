@@ -210,9 +210,9 @@ def objFunc(X):
 problem = Problem(nInput=2, nObj=1, lb=-2.0, ub=2.0, objFunc=objFunc, optType="min", name="SpherePosterior")
 methods = [
     MH(nChains=3, warmUp=3, maxIters=12, verboseFlag=False, logFlag=False, saveFlag=False),
-    AMH(nChains=3, warmUp=3, maxIterTimes=12, verboseFlag=False, logFlag=False, saveFlag=False),
+    AMH(nChains=3, warmUp=3, maxIters=12, verboseFlag=False, logFlag=False, saveFlag=False),
     MH_Gibbs(nChains=3, warmUp=3, maxIters=12, verboseFlag=False, logFlag=False, saveFlag=False),
-    DEMC(nChains=4, warmUp=3, maxIterTimes=12, verboseFlag=False, logFlag=False, saveFlag=False),
+    DEMC(nChains=4, warmUp=3, maxIters=12, verboseFlag=False, logFlag=False, saveFlag=False),
     DREAM_ZS(nChains=4, warmUp=3, maxIters=12, archSize=3, verboseFlag=False, logFlag=False, saveFlag=False),
 ]
 
@@ -232,6 +232,23 @@ DREAM-ZS (4, 12, 2) [0.818 1.    1.    1.   ]
 ```
 
 Do not choose a method only because one short run has a higher acceptance rate. Acceptance rate is a diagnostic, not the final quality measure. Also inspect whether chains explore the parameter space and whether summaries are stable under a larger sampling budget.
+
+## Bounds and Warm-up
+
+AMH, DEMC and DREAM reject out-of-box proposals without evaluating the user model;
+these draws retain the current state. Evaluation counts can therefore be smaller
+than chains multiplied by total steps. MH/MH_Gibbs retain reflection for their
+symmetric coordinate proposals.
+
+DEMC updates chains sequentially. DREAM adapts its scale, crossover weights and
+occupation-state reservoir during warm-up, then freezes them for formal sampling.
+All formal donors come from this archive. Zero warm-up is supported but leaves
+proposal settings unadapted. AMH continues covariance adaptation over its growing
+history. All five methods record boundary/update/adaptation policies and proposal settings in
+`result.diagnostics["sampler"]`; DREAM retains its archive and frozen settings.
+
+Convergence diagnostics cannot replace known-target checks. Multimodal or strongly
+correlated targets still require adequate sampling and checks across seeds.
 
 ## Set Proposal Scale
 
@@ -537,4 +554,11 @@ Problem evaluation, custom `logProbFunc` decision arguments, public results, pri
 
 Equal-width intervals assign equal base mass to legal choices under a constant target. Nonuniform priors belong in the objective or custom log probability. Existing objective-direction and hard-constraint conventions remain unchanged. Tests verify coordinate consistency in all five methods and an MH known discrete marginal, not general convergence of every sampler.
 
-Bounds must be finite and ordered. Multiple discrete choices require a positive-width latent interval; fixed continuous dimensions remain fixed during reflection. Proposal adaptation and DREAM proposal archives continue to use latent coordinates.
+Bounds must be finite and ordered. Multiple discrete choices require a positive-width latent interval; fixed continuous dimensions remain fixed during proposal and boundary handling. Proposal adaptation and DREAM proposal archives continue to use latent coordinates.
+
+
+A custom `logProbFunc` must return one real value per row, shaped `(n,)` or `(n,1)`; a scalar is also accepted for one state. `-inf` denotes zero probability. NaN, positive infinity, complex values and invalid shapes stop the run instead of producing a successful invalid chain. Initialization retains only feasible states with finite log probability, using at most `maxInitAttempts` LHS batches; insufficient support stops initialization. Zero-probability proposals are rejected without subtracting two negative infinities. The callback is also used for initialization validation and may be called repeatedly for the same state; it must return a deterministic log density.
+
+With active dimensions, `DREAM_ZS(ps=1)` now mixes in a 10% full-dimensional symmetric Gaussian random walk to escape the affine subspace of a small archive. `snookerRefreshProb` accepts `(0,1]` and applies only when `ps=1`. Refresh standard deviations are 0.1 times each coordinate range; out-of-bounds proposals are rejected. A `RuntimeWarning` announces the policy, and `diagnostics['sampler']['proposal_settings']` records `full_support_refresh_probability`, `effective_snooker_probability` and `refresh_scale`. The default effective snooker probability is therefore 90%; ordinary `ps<1` runs do not use this refresh.
+
+AMH computes unbiased history covariance from incremental centered moments, retaining rejected repeats, the existing scaling and covariance floor. Updates process only appended rows, with an extra mean vector and scatter matrix per chain; reset clears this cache. Full sample history is still retained. Rounding differences from full-history recomputation can change long trajectories, so bitwise equality is not guaranteed.

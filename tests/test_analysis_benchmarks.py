@@ -1,3 +1,5 @@
+import pytest
+
 import numpy as np
 
 from UQPyL.doe import FASTDesign, LHS, SaltelliDesign
@@ -26,6 +28,7 @@ def _make_ishigami_problem():
     )
 
 
+@pytest.mark.numerical
 def test_sobol_ishigami_matches_theoretical_indices():
     problem = _make_ishigami_problem()
     sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
@@ -43,6 +46,7 @@ def test_sobol_ishigami_matches_theoretical_indices():
     assert np.allclose(stMetric.values[0], expectedST, atol=0.08)
 
 
+@pytest.mark.numerical
 def test_fast_ishigami_is_reasonably_close_to_theoretical_indices():
     problem = _make_ishigami_problem()
     fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
@@ -60,6 +64,7 @@ def test_fast_ishigami_is_reasonably_close_to_theoretical_indices():
     assert np.allclose(stMetric.values[0], expectedST, atol=0.15)
 
 
+@pytest.mark.numerical
 def test_rbd_fast_ishigami_recovers_first_order_ranking():
     problem = _make_ishigami_problem()
     rbd = RBDFAST(M=4, verboseFlag=False, logFlag=False, saveFlag=False)

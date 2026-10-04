@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import warnings
 from scipy.stats import t
 
 from ..optimization.runtime import OptReader, OptResult
@@ -41,11 +42,29 @@ def _history_xy(result: OptResult, x_coord: str):
     return x[valid], y[valid]
 
 
-def plot_op_curve(source: dict, xCoord: str = "iter", yLog: bool = False, ySmooth: bool = False, xlim=None,
-                  xMajorLocator=None, ylim=None, yMajorLocator=None, gridOn: bool = True, fontsize=20,
-                  title="Optimization Curve", xLabel="Iterations", yLabel="Best Objective", color=None,
-                  linewidth=2.5, linestyle="--", marker=None, markersize=15, markevery=30,
-                  markeredgecolor="black", markeredgewidth=2):
+def plot_op_curve(
+    source: dict,
+    xCoord: str = "iter",
+    yLog: bool = False,
+    ySmooth: bool = False,
+    xlim=None,
+    xMajorLocator=None,
+    ylim=None,
+    yMajorLocator=None,
+    gridOn: bool = True,
+    fontsize=20,
+    title="Optimization Curve",
+    xLabel="Iterations",
+    yLabel="Best Objective",
+    color=None,
+    linewidth=2.5,
+    linestyle="--",
+    marker=None,
+    markersize=15,
+    markevery=30,
+    markeredgecolor="black",
+    markeredgewidth=2,
+):
     import matplotlib.pyplot as plt
     from matplotlib.ticker import MultipleLocator
 
@@ -105,9 +124,24 @@ def plot_op_curve(source: dict, xCoord: str = "iter", yLog: bool = False, ySmoot
     return fig, ax
 
 
-def plot_op_curve_stat(source: dict, xCoord: str = "iter", ci: str = "std", yLog: bool = False, ySmooth: bool = False,
-                       fontsize=20, xlim=None, xMajorLocator=None, ylim=None, yMajorLocator=None, gridOn=True,
-                       title=None, xLabel="Iter", yLabel="Best Objective", mean_color="#3F72AF", fill_color="#B7C4CF"):
+def plot_op_curve_stat(
+    source: dict,
+    xCoord: str = "iter",
+    ci: str = "std",
+    yLog: bool = False,
+    ySmooth: bool = False,
+    fontsize=20,
+    xlim=None,
+    xMajorLocator=None,
+    ylim=None,
+    yMajorLocator=None,
+    gridOn=True,
+    title=None,
+    xLabel="Iter",
+    yLabel="Best Objective",
+    mean_color="#3F72AF",
+    fill_color="#B7C4CF",
+):
     import matplotlib.pyplot as plt
     from matplotlib.ticker import MultipleLocator
 
@@ -118,12 +152,31 @@ def plot_op_curve_stat(source: dict, xCoord: str = "iter", ci: str = "std", yLog
     if not isinstance(items, (list, tuple)):
         items = [items]
     results = [_coerce_opt_result(item) for item in items]
+    if xCoord not in {"iter", "fe"}:
+        raise ValueError("xCoord must be 'iter' or 'fe'.")
+    if not results:
+        raise ValueError("The run group is empty.")
+    coordinates = [_history_xy(result, xCoord) for result in results]
+    xCoords = coordinates[0][0]
+    if any(not np.array_equal(xCoords, x) for x, _ in coordinates[1:]):
+        for x, _ in coordinates:
+            if len(np.unique(x)) != len(x):
+                raise ValueError("Cannot align histories with duplicate coordinates.")
+        for x, _ in coordinates[1:]:
+            xCoords = np.intersect1d(xCoords, x)
+        if not len(xCoords):
+            raise ValueError("Run histories have no common coordinates to average.")
+        warnings.warn(
+            "plot_op_curve_stat: histories differ; using only shared coordinates without interpolation.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    if not len(xCoords):
+        raise ValueError("No finite history values to plot.")
     series = []
-    xCoords = None
-    for result in results:
-        x, y = _history_xy(result, xCoord)
-        xCoords = x
-        series.append(y)
+    for x, y in coordinates:
+        indices = [int(np.flatnonzero(x == point)[0]) for point in xCoords]
+        series.append(y[indices])
 
     values = np.asarray(series, dtype=float)
     obj_mean = np.mean(values, axis=0)
@@ -140,7 +193,9 @@ def plot_op_curve_stat(source: dict, xCoord: str = "iter", ci: str = "std", yLog
         delta = se * t.ppf(0.975, df=max(values.shape[0] - 1, 1))
         ci_label = "95% CI"
 
-    lo = np.maximum(obj_mean - delta, np.finfo(float).tiny)
+    lo = obj_mean - delta
+    if yLog:
+        lo = np.maximum(lo, np.finfo(float).tiny)
     hi = obj_mean + delta
 
     fig, ax = plt.subplots(figsize=(15, 8))
@@ -172,9 +227,23 @@ def plot_op_curve_stat(source: dict, xCoord: str = "iter", ci: str = "std", yLog
     return fig, ax
 
 
-def plot_op_pareto(source, optima: np.ndarray = None, fontsize=20, facecolor="none", edgecolor="#F67280",
-                   markersize=200, linewidth=2.5, marker="o", gridOn=True, xlim=None, xMajorLocator=None,
-                   ylim=None, yMajorLocator=None, title=None, coordLabels=None):
+def plot_op_pareto(
+    source,
+    optima: np.ndarray = None,
+    fontsize=20,
+    facecolor="none",
+    edgecolor="#F67280",
+    markersize=200,
+    linewidth=2.5,
+    marker="o",
+    gridOn=True,
+    xlim=None,
+    xMajorLocator=None,
+    ylim=None,
+    yMajorLocator=None,
+    title=None,
+    coordLabels=None,
+):
     import matplotlib.pyplot as plt
     from matplotlib.ticker import MultipleLocator
 
@@ -186,10 +255,22 @@ def plot_op_pareto(source, optima: np.ndarray = None, fontsize=20, facecolor="no
 
     if nO == 2:
         fig, ax = plt.subplots(figsize=(15, 8))
-        ax.scatter(objs[:, 0], objs[:, 1], facecolors=facecolor, edgecolors=edgecolor, s=markersize,
-                   linewidths=linewidth, marker=marker, label="Pareto Front", zorder=10)
+        ax.scatter(
+            objs[:, 0],
+            objs[:, 1],
+            facecolors=facecolor,
+            edgecolors=edgecolor,
+            s=markersize,
+            linewidths=linewidth,
+            marker=marker,
+            label="Pareto Front",
+            zorder=10,
+        )
         if optima is not None:
-            ax.plot(optima[0], optima[1], color="#83C5BE", label="Optima", linewidth=3)
+            reference = np.asarray(optima)
+            if reference.ndim != 2 or reference.shape[1] != 2:
+                raise ValueError("optima must have shape (nPoints, 2), like bestObjs.")
+            ax.plot(reference[:, 0], reference[:, 1], color="#83C5BE", label="Optima", linewidth=3)
         ax.set_xlabel(coordLabels[0] if coordLabels else "Objective 1", fontsize=int(fontsize * 0.9))
         ax.set_ylabel(coordLabels[1] if coordLabels else "Objective 2", fontsize=int(fontsize * 0.9))
         if xlim is not None:
@@ -203,8 +284,23 @@ def plot_op_pareto(source, optima: np.ndarray = None, fontsize=20, facecolor="no
     else:
         fig = plt.figure(figsize=(12, 12))
         ax = fig.add_subplot(111, projection="3d")
-        ax.scatter(objs[:, 0], objs[:, 1], objs[:, 2], facecolors=facecolor, edgecolors=edgecolor, s=markersize,
-                   linewidths=linewidth, marker=marker, label="Pareto Front", zorder=10)
+        ax.scatter(
+            objs[:, 0],
+            objs[:, 1],
+            objs[:, 2],
+            facecolors=facecolor,
+            edgecolors=edgecolor,
+            s=markersize,
+            linewidths=linewidth,
+            marker=marker,
+            label="Pareto Front",
+            zorder=10,
+        )
+        if optima is not None:
+            reference = np.asarray(optima)
+            if reference.ndim != 2 or reference.shape[1] != 3:
+                raise ValueError("optima must have shape (nPoints, 3), like bestObjs.")
+            ax.scatter(reference[:, 0], reference[:, 1], reference[:, 2], label="Optima")
         if coordLabels is not None:
             ax.set_xlabel(coordLabels[0], fontsize=int(fontsize * 0.9))
             ax.set_ylabel(coordLabels[1], fontsize=int(fontsize * 0.9))

@@ -43,13 +43,13 @@ def test_analysisabc_check_xy_type_validation_and_reshape():
     a.setProblem(Problem(nInput=2, nObj=1, ub=1., lb=0., objFunc=_zero_obj))
 
     with pytest.raises(TypeError):
-        a.__check_X_Y__("not-array", np.zeros((3, 1)))
+        a._checkXY("not-array", np.zeros((3, 1)))
     with pytest.raises(TypeError):
-        a.__check_X_Y__(np.zeros((3, 2)), "not-array")
+        a._checkXY(np.zeros((3, 2)), "not-array")
 
     X = np.zeros((3, 2))
     Y = np.array([1.0, 2.0, 3.0])  # 1d should be reshaped to (n,1)
-    X2, Y2 = a.__check_X_Y__(X, Y)
+    X2, Y2 = a._checkXY(X, Y)
     assert X2.shape == (3, 2)
     assert Y2.shape == (3, 1)
 

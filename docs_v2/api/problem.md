@@ -1,5 +1,11 @@
 # Problem API
 
+> 2.1.7 development interface: `obs` / `mask` are `(nObs,)`; `simFunc(X)` returns `(nSamples,nObs)`. No automatic flattening or legacy grid layout. Observations align by array position; observation labels are not required. CalResult/SQLite summaries use `nObs` / `n_obs` and `n_output=n_obs`; `nTime/nSeries/seriesLabels` are removed. Old calibration databases are incompatible; rerun with the new interface.
+
+Bounds accept real scalars, one-dimensional vectors, row vectors and column vectors, normalized into independent floating-point `(1,nInput)` arrays. General matrices and higher-dimensional layouts are rejected. Mutating the original bound arrays does not change the problem bounds. Continuous unit conversions use safe interpolation and half-scaled ratios when a finite range difference overflows; ordinary-scale arithmetic is preserved. This does not imply support for arbitrary enormous integer category counts.
+
+`singleFunc` copies each single-sample return value before stacking results. Model adapters may reuse output buffers or return views without overwriting earlier samples. This snapshot does not alter side effects performed by the user callback on its inputs or external state.
+
 ## `UQPyL.problem`
 
 The `problem` module defines the shared modeling protocol used by sampling, analysis, optimization, inference, calibration, and surrogate modeling.
@@ -197,7 +203,7 @@ Use `ModelProblem` when the primary callable is a simulation model.
 The recommended `ModelProblem` flow is:
 
 ```text
-X -> simFunc(X) -> context.sim -> objFunc/conFunc -> Eval
+X -> simFunc(X) -> context.sims -> objFunc/conFunc -> Eval
 ```
 
 ```python
@@ -221,18 +227,16 @@ ModelProblem(
     space=None,
     objLabels=None,
     conLabels=None,
-    seriesLabels=None,
 )
 ```
 
 | Parameter | Meaning |
 |---|---|
 | `simFunc` | Required simulation callable. Receives batched `X`; returns numeric NumPy array whose first dimension is `n_samples`. |
-| `objFunc` | Optional objective callable. Receives `(X, context)`. Prefer deriving objectives from `context.sim`. |
-| `conFunc` | Optional constraint callable. Receives `(X, context)`. Prefer deriving constraints from `context.sim`. |
-| `obs` | Optional 2D observation array with shape `(n_time, n_series)`. |
+| `objFunc` | Optional objective callable. Receives `(X, context)`. Prefer deriving objectives from `context.sims`. |
+| `conFunc` | Optional constraint callable. Receives `(X, context)`. Prefer deriving constraints from `context.sims`. |
+| `obs` | Optional 1D observation array with shape `(n_obs,)`. |
 | `mask` | Optional boolean mask with the same shape as `obs`. |
-| `seriesLabels` | Optional labels for simulation series. |
 
 Usage note:
 
@@ -245,7 +249,7 @@ Other parameters are the same as `Problem`.
 Extension layers for `ModelProblem` are:
 
 - Simple route: `simFunc`, `objFunc`, `conFunc`
-- Advanced route: `evaluator`, and `simulator` when needed
+- Advanced route: pass a custom `evaluator` with `simFunc`
 
 ### Methods
 
@@ -256,15 +260,15 @@ Extension layers for `ModelProblem` are:
 | `simulate(X)` | `SimContext` | Run the configured simulator and return the simulation context. |
 | `objFunc(X, context)` | `np.ndarray` | Evaluate objectives with an explicit simulation context. |
 | `conFunc(X, context)` | `np.ndarray` or `None` | Evaluate constraints with an explicit simulation context. |
-| `flattenSim(sim)` | `np.ndarray` | Flatten simulation output to `(n_samples, n_obs)`. |
-| `flattenObs()` | `np.ndarray` | Flatten observations to `(n_obs,)`. |
-| `flattenMask()` | `np.ndarray` | Flatten mask to `(n_obs,)`. |
+| `flattenSim(sim)` | `np.ndarray` | Validate and return the existing `(n_samples, n_obs)` matrix; does not flatten tensors. |
+| `flattenObs()` | `np.ndarray` | Return the existing `(n_obs,)` observation vector. |
+| `flattenMask()` | `np.ndarray` | Return `(n_obs,)` mask, or an all-False vector when omitted. |
 
 `ModelProblem.evaluate()` supports one extra target:
 
 | Value | Meaning |
 |---|---|
-| `"sim"` | Return simulation output only in `Eval.sim`. |
+| `"sims"` | Return simulation output only in `Eval.sims`. |
 
 ### Recommended Extension Route
 
@@ -273,7 +277,8 @@ Use this priority order:
 1. `simFunc + objFunc`
 2. `simFunc + objFunc + conFunc`
 3. subclass `ModelEvaluator` and override `evaluate(X, simContext, target=None)`
-4. when needed, also pass a custom `simulator`
+
+`ModelProblem` creates its simulator internally; its constructor does not accept a `simulator` argument.
 
 ### Object `evaluator` Example
 
@@ -285,23 +290,23 @@ import numpy as np
 from UQPyL.problem import Eval, ModelEvaluator, ModelProblem
 
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
 class MSEEvaluator(ModelEvaluator):
     def evaluate(self, X, simContext, target=None):
-        sim = simContext.sim
+        sim = simContext.sims
         err = sim - simContext.obs
-        objs = np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
-        return Eval(objs=objs, sim=sim, target=target)
+        objs = np.mean(err**2, axis=1).reshape(-1, 1)
+        return Eval(objs=objs, sims=sim, target=target)
 
 
 problem = ModelProblem(
@@ -325,20 +330,20 @@ import numpy as np
 from UQPyL.problem import ModelProblem
 
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
 def objFunc(X, context):
-    err = context.sim - context.obs
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+    err = context.sims - context.obs
+    return np.mean(err**2, axis=1).reshape(-1, 1)
 
 
 problem = ModelProblem(
@@ -353,7 +358,7 @@ problem = ModelProblem(
 
 res = problem.evaluate([[1.0, 2.2]])
 print(res.objs)
-print(res.sim)
+print(res.sims)
 ```
 
 ## `Eval`
@@ -361,20 +366,21 @@ print(res.sim)
 `Eval` is the standard return object from `evaluate()`.
 
 ```python
-Eval(objs=None, cons=None, sim=None)
+Eval(objs=None, cons=None, sims=None, target=None)
 ```
 
 | Field | Type | Meaning |
 |---|---|---|
 | `objs` | `np.ndarray` or `None` | Objective values. |
 | `cons` | `np.ndarray` or `None` | Constraint values. Feasible constraints satisfy `cons <= 0`. |
-| `sim` | `np.ndarray` or `None` | Simulation output for `ModelProblem`. |
+| `sims` | `np.ndarray` or `None` | Simulation output for `ModelProblem`. |
+| `target` | `str` or `None` | Keep all fields with `None`, or only the requested `"objs"`, `"cons"`, or `"sims"` field. |
 
 | Property | Meaning |
 |---|---|
 | `hasObjs` | `True` when `objs` is not `None`. |
 | `hasCons` | `True` when `cons` is not `None`. |
-| `hasSim` | `True` when `sim` is not `None`. |
+| `hasSims` | `True` when `sims` is not `None`. |
 
 ## `Space`
 
@@ -519,6 +525,12 @@ Continuous variables use finite-bound linear scaling; fixed continuous variables
 Discrete choices must currently be distinct finite numeric values. Their real values come from `varSet`, independently of the legacy encoding bounds in that column. Encoding validates real bounds, legal integers and choice membership. Decoding an encoded real value reproduces that value up to floating-point rounding; encoding a decoded unit point returns its canonical representative.
 
 `evaluate(X)` accepts real values without guessing the coordinate system. The legacy `apply_var_type()` is no longer used by the optimization evaluation boundary.
+
+When discrete columns exist, `map_discrete_vars`, `apply_var_type` with `DFlag`
+enabled, and `Space.transform` map through a floating-point copy. Fractional
+`varSet` choices survive integer/boolean inputs and float32 write-back rounding,
+preserving choice membership and leaving inputs unchanged. These helpers retain
+legacy encoding-bound bins; use `unit_to_space` for formal unit conversion.
 
 ### Constraint weights
 

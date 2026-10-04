@@ -1,6 +1,21 @@
-from .sop import (Sphere, Schwefel_2_22, Schwefel_1_22, Schwefel_2_21, Rosenbrock, 
-                         Step, Quartic, Schwefel_2_26, Rastrigin, Ackley, Griewank, 
-                         Trid, Bent_Cigar, Discus, Weierstrass, RosenbrockWithCon)
+from .sop import (
+    Sphere,
+    Schwefel_2_22,
+    Schwefel_1_22,
+    Schwefel_2_21,
+    Rosenbrock,
+    Step,
+    Quartic,
+    Schwefel_2_26,
+    Rastrigin,
+    Ackley,
+    Griewank,
+    Trid,
+    Bent_Cigar,
+    Discus,
+    Weierstrass,
+    RosenbrockWithCon,
+)
 
 from .mop import ZDT1, ZDT2, ZDT3, ZDT4, ZDT6
 from .mop import DTLZ1, DTLZ2, DTLZ3, DTLZ4, DTLZ5, DTLZ6, DTLZ7
@@ -14,17 +29,31 @@ from .model_problem import SimContext, ModelProblem
 from .eval import Eval
 from .simulator_base import SimulatorBase
 from .space import SpaceBase, Space
+
 ProblemABC = ProblemBase
 
-sop = ["Sphere", "Schwefel_2_22", "Schwefel_1_22", "Schwefel_2_21", "Rosenbrock",
-                "Step", "Quartic", "Schwefel_2_26", "Rastrigin", "Ackley", "Griewank",
-                "Trid", "Bent_Cigar", "Discus", "Weierstrass", "RosenbrockWithCon"]
+sop = [
+    "Sphere",
+    "Schwefel_2_22",
+    "Schwefel_1_22",
+    "Schwefel_2_21",
+    "Rosenbrock",
+    "Step",
+    "Quartic",
+    "Schwefel_2_26",
+    "Rastrigin",
+    "Ackley",
+    "Griewank",
+    "Trid",
+    "Bent_Cigar",
+    "Discus",
+    "Weierstrass",
+    "RosenbrockWithCon",
+]
 
-mop = ["ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6",
-               "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5",
-               "DTLZ6", "DTLZ7"]
+mop = ["ZDT1", "ZDT2", "ZDT3", "ZDT4", "ZDT6", "DTLZ1", "DTLZ2", "DTLZ3", "DTLZ4", "DTLZ5", "DTLZ6", "DTLZ7"]
 
-__all__=[
+__all__ = [
     *sop,
     *mop,
     "ProblemBase",
@@ -40,5 +69,5 @@ __all__=[
     "Evaluator",
     "ModelEvaluator",
     "SpaceBase",
-    "Space"
+    "Space",
 ]

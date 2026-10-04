@@ -1,0 +1,212 @@
+FFFFFFFFFFFFFF                                                           [100%]
+=================================== FAILURES ===================================
+_________________ testMorrisModesMatchAnalyticalLinearEffects __________________
+
+    def testMorrisModesMatchAnalyticalLinearEffects():
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=17)
+        y = problem.evaluate(x).objs
+        physical = Morris(verboseFlag=False).analyze(problem, x, y, meta)
+>       unit = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, meta)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:24: TypeError
+____________ testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[0.001] _____________
+
+factor = 0.001
+
+    @pytest.mark.parametrize("factor", [0.001, 1000.0])
+    def testMorrisUnitEffectsIgnoreInputUnitsAndOrigin(factor):
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=3)
+        y = problem.evaluate(x).objs
+        converted = x.copy()
+        converted[:, 0] = x[:, 0]*factor + 7
+        lb, ub = problem.lb.copy(), problem.ub.copy()
+        lb[0, 0], ub[0, 0] = lb[0, 0]*factor+7, ub[0, 0]*factor+7
+        convertedProblem = Problem(nInput=3, nObj=1, lb=lb, ub=ub, objFunc=lambda x: x[:, :1])
+>       expected = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, meta)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:42: TypeError
+____________ testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[1000.0] ____________
+
+factor = 1000.0
+
+    @pytest.mark.parametrize("factor", [0.001, 1000.0])
+    def testMorrisUnitEffectsIgnoreInputUnitsAndOrigin(factor):
+        problem = makeProblem()
+        x, meta = MorrisDesign().sampleWithMeta(problem, 12, seed=3)
+        y = problem.evaluate(x).objs
+        converted = x.copy()
+        converted[:, 0] = x[:, 0]*factor + 7
+        lb, ub = problem.lb.copy(), problem.ub.copy()
+        lb[0, 0], ub[0, 0] = lb[0, 0]*factor+7, ub[0, 0]*factor+7
+        convertedProblem = Problem(nInput=3, nObj=1, lb=lb, ub=ub, objFunc=lambda x: x[:, :1])
+>       expected = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, meta)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:42: TypeError
+________________ testMorrisUnitNonlinearMeanAndSampleSigma[1.0] ________________
+
+scale = 1.0
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1]**2 + 3*x[:, 1:2])*scale
+>       result = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, META)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:56: TypeError
+______________ testMorrisUnitNonlinearMeanAndSampleSigma[1e-200] _______________
+
+scale = 1e-200
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1]**2 + 3*x[:, 1:2])*scale
+>       result = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, META)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:56: TypeError
+______________ testMorrisUnitNonlinearMeanAndSampleSigma[-1e+200] ______________
+
+scale = -1e+200
+
+    @pytest.mark.parametrize("scale", [1.0, 1e-200, -1e200])
+    def testMorrisUnitNonlinearMeanAndSampleSigma(scale):
+        # The signed unit steps yield x0 effects 2, 6 and x1 effects 12, 12.
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[2, 4], objFunc=lambda x: x[:, :1])
+        y = (x[:, :1]**2 + 3*x[:, 1:2])*scale
+>       result = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, META)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:56: TypeError
+_____________ testMorrisUnitModeDecodesSamplesOnceAndPersistsUnits _____________
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testMorrisUnitModeDecodesSampl0')
+
+    def testMorrisUnitModeDecodesSamplesOnceAndPersistsUnits(tmp_path):
+        problem = makeProblem()
+        problem.workDir = str(tmp_path)
+        real, realMeta = MorrisDesign().sampleWithMeta(problem, 10, seed=7)
+        unit, unitMeta = MorrisDesign().sampleWithMeta(problem, 10, seed=7, output="unit")
+>       expected = Morris(verboseFlag=False, effectMode="unit").analyze(problem, real, meta=realMeta)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:70: TypeError
+_________________ testMorrisUnitModeUsesPhysicalDiscreteRange __________________
+
+    def testMorrisUnitModeUsesPhysicalDiscreteRange():
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=[1, 4], varType=[2, 0],
+                          varSet={0: [10, 15, 30]}, objFunc=lambda x: x[:, :1])
+        x = np.array([[10, 0], [15, 0], [15, 2], [30, 4], [15, 4], [15, 2]], dtype=float)
+        y = 2*x[:, :1] + 3*x[:, 1:2]
+>       result = Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, y, META)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:86: TypeError
+___________________ testMorrisRejectsInvalidEffectMode[None] ___________________
+
+mode = None
+
+    @pytest.mark.parametrize("mode", [None, True, "normalized", []])
+    def testMorrisRejectsInvalidEffectMode(mode):
+        with pytest.raises(ValueError, match="effectMode"):
+>           Morris(effectMode=mode)
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:94: TypeError
+___________________ testMorrisRejectsInvalidEffectMode[True] ___________________
+
+mode = True
+
+    @pytest.mark.parametrize("mode", [None, True, "normalized", []])
+    def testMorrisRejectsInvalidEffectMode(mode):
+        with pytest.raises(ValueError, match="effectMode"):
+>           Morris(effectMode=mode)
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:94: TypeError
+________________ testMorrisRejectsInvalidEffectMode[normalized] ________________
+
+mode = 'normalized'
+
+    @pytest.mark.parametrize("mode", [None, True, "normalized", []])
+    def testMorrisRejectsInvalidEffectMode(mode):
+        with pytest.raises(ValueError, match="effectMode"):
+>           Morris(effectMode=mode)
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:94: TypeError
+__________________ testMorrisRejectsInvalidEffectMode[mode3] ___________________
+
+mode = []
+
+    @pytest.mark.parametrize("mode", [None, True, "normalized", []])
+    def testMorrisRejectsInvalidEffectMode(mode):
+        with pytest.raises(ValueError, match="effectMode"):
+>           Morris(effectMode=mode)
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:94: TypeError
+_____________ testMorrisUnitModeRequiresFinitePositiveRanges[ub0] ______________
+
+ub = [0, 4]
+
+    @pytest.mark.parametrize("ub", [[0, 4], [np.inf, 4]])
+    def testMorrisUnitModeRequiresFinitePositiveRanges(ub):
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=ub, objFunc=lambda x: x[:, :1])
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        with pytest.raises(ValueError, match="finite, positive"):
+>           Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, x[:, :1], META)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:102: TypeError
+_____________ testMorrisUnitModeRequiresFinitePositiveRanges[ub1] ______________
+
+ub = [inf, 4]
+
+    @pytest.mark.parametrize("ub", [[0, 4], [np.inf, 4]])
+    def testMorrisUnitModeRequiresFinitePositiveRanges(ub):
+        problem = Problem(nInput=2, nObj=1, lb=[0, 0], ub=ub, objFunc=lambda x: x[:, :1])
+        x = np.array([[0, 0], [1, 0], [1, 2], [2, 4], [1, 4], [1, 2]], dtype=float)
+        with pytest.raises(ValueError, match="finite, positive"):
+>           Morris(verboseFlag=False, effectMode="unit").analyze(problem, x, x[:, :1], META)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: Morris.__init__() got an unexpected keyword argument 'effectMode'
+
+tests/test_analysis_morris_effect_modes.py:102: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisModesMatchAnalyticalLinearEffects
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[0.001]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitEffectsIgnoreInputUnitsAndOrigin[1000.0]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitNonlinearMeanAndSampleSigma[1.0]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitNonlinearMeanAndSampleSigma[1e-200]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitNonlinearMeanAndSampleSigma[-1e+200]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitModeDecodesSamplesOnceAndPersistsUnits
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitModeUsesPhysicalDiscreteRange
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisRejectsInvalidEffectMode[None]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisRejectsInvalidEffectMode[True]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisRejectsInvalidEffectMode[normalized]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisRejectsInvalidEffectMode[mode3]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitModeRequiresFinitePositiveRanges[ub0]
+FAILED tests/test_analysis_morris_effect_modes.py::testMorrisUnitModeRequiresFinitePositiveRanges[ub1]
+14 failed in 0.83s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_analysis_morris_effect_modes.py -W error` failed. (See above for error)

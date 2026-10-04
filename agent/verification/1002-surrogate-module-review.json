@@ -1,0 +1,7133 @@
+{
+  "environment": "conda py312; single BLAS/OMP thread",
+  "summary": {
+    "total": 215,
+    "statuses": {
+      "control": 181,
+      "issue": 34
+    },
+    "issues_by_group": {
+      "SR01": 4,
+      "SR02": 10,
+      "SR03": 3,
+      "SR04": 6,
+      "SR05": 2,
+      "SR06": 6,
+      "SR07": 3
+    }
+  },
+  "records": [
+    {
+      "group": "SR01",
+      "case": "linear:range=1.0:xScaler=False",
+      "status": "control",
+      "actual": [
+        [
+          2.210000000000088
+        ],
+        [
+          2.6300000000000447
+        ],
+        [
+          3.589999999999985
+        ],
+        [
+          4.729999999999863
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 1.376676550535194e-13,
+      "training_max_abs_diff": 1.900701818158268e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=1.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.210000000000088
+        ],
+        [
+          2.6300000000000447
+        ],
+        [
+          3.589999999999985
+        ],
+        [
+          4.729999999999863
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 1.376676550535194e-13,
+      "training_max_abs_diff": 1.900701818158268e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=100.0:xScaler=False",
+      "status": "control",
+      "actual": [
+        [
+          2.209999999999865
+        ],
+        [
+          2.6299999999997157
+        ],
+        [
+          3.589999999994997
+        ],
+        [
+          4.729999999918625
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 8.137579499134517e-11,
+      "training_max_abs_diff": 8.171241461241152e-14,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=100.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.210000000000088
+        ],
+        [
+          2.6300000000000447
+        ],
+        [
+          3.589999999999985
+        ],
+        [
+          4.729999999999863
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 1.376676550535194e-13,
+      "training_max_abs_diff": 1.900701818158268e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=1000.0:xScaler=False",
+      "status": "issue",
+      "actual": [
+        [
+          2.209985775261967
+        ],
+        [
+          2.6301020064832645
+        ],
+        [
+          3.5912873750201877
+        ],
+        [
+          4.75088432866123
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 0.020884328661229468,
+      "training_max_abs_diff": 1.092459456231154e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 8,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=1000.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.210000000000088
+        ],
+        [
+          2.6300000000000447
+        ],
+        [
+          3.589999999999985
+        ],
+        [
+          4.729999999999863
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 1.376676550535194e-13,
+      "training_max_abs_diff": 1.900701818158268e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=10000.0:xScaler=False",
+      "status": "issue",
+      "actual": [
+        [
+          2.230200866255443
+        ],
+        [
+          2.6178611333428914
+        ],
+        [
+          3.5930752292168475
+        ],
+        [
+          4.8033277442376985
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 0.07332774423769806,
+      "training_max_abs_diff": 9.325873406851315e-14,
+      "triangular_max_abs_diff": 8.881784197001252e-16,
+      "upper_pseudoinverse_rank": 7,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "linear:range=10000.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.210000000000088
+        ],
+        [
+          2.6300000000000447
+        ],
+        [
+          3.589999999999985
+        ],
+        [
+          4.729999999999863
+        ]
+      ],
+      "expected": [
+        [
+          2.21
+        ],
+        [
+          2.63
+        ],
+        [
+          3.59
+        ],
+        [
+          4.73
+        ]
+      ],
+      "max_abs_diff": 1.376676550535194e-13,
+      "training_max_abs_diff": 1.900701818158268e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=1.0:xScaler=False",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656443453
+        ],
+        [
+          3.496860038340932
+        ],
+        [
+          4.063969599120894
+        ],
+        [
+          3.782954832325667
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.705747068735946e-14,
+      "training_max_abs_diff": 8.08242361927114e-14,
+      "triangular_max_abs_diff": 3.9968028886505635e-15,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=1.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656443453
+        ],
+        [
+          3.496860038340932
+        ],
+        [
+          4.063969599120894
+        ],
+        [
+          3.782954832325667
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.705747068735946e-14,
+      "training_max_abs_diff": 8.08242361927114e-14,
+      "triangular_max_abs_diff": 3.9968028886505635e-15,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=100.0:xScaler=False",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656441894
+        ],
+        [
+          3.4968600383407002
+        ],
+        [
+          4.063969599117095
+        ],
+        [
+          3.7829548322636057
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.212852454723361e-11,
+      "training_max_abs_diff": 1.7408297026122455e-13,
+      "triangular_max_abs_diff": 4.440892098500626e-16,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=100.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656443453
+        ],
+        [
+          3.496860038340932
+        ],
+        [
+          4.063969599120894
+        ],
+        [
+          3.782954832325667
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.705747068735946e-14,
+      "training_max_abs_diff": 8.08242361927114e-14,
+      "triangular_max_abs_diff": 3.9968028886505635e-15,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=1000.0:xScaler=False",
+      "status": "issue",
+      "actual": [
+        [
+          2.5530599514498022
+        ],
+        [
+          3.4969354362849794
+        ],
+        [
+          4.06492116049858
+        ],
+        [
+          3.798391453543873
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 0.015436621218138935,
+      "training_max_abs_diff": 1.0302869668521453e-13,
+      "triangular_max_abs_diff": 8.881784197001252e-16,
+      "upper_pseudoinverse_rank": 8,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=1000.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656443453
+        ],
+        [
+          3.496860038340932
+        ],
+        [
+          4.063969599120894
+        ],
+        [
+          3.782954832325667
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.705747068735946e-14,
+      "training_max_abs_diff": 8.08242361927114e-14,
+      "triangular_max_abs_diff": 3.9968028886505635e-15,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=10000.0:xScaler=False",
+      "status": "issue",
+      "actual": [
+        [
+          2.5788768167783793
+        ],
+        [
+          3.4813025126702652
+        ],
+        [
+          4.067204444359992
+        ],
+        [
+          3.865367387401389
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 0.08241255507565493,
+      "training_max_abs_diff": 1.2079226507921703e-13,
+      "triangular_max_abs_diff": 8.881784197001252e-16,
+      "upper_pseudoinverse_rank": 7,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR01",
+      "case": "nonlinear:range=10000.0:xScaler=True",
+      "status": "control",
+      "actual": [
+        [
+          2.5530704656443453
+        ],
+        [
+          3.496860038340932
+        ],
+        [
+          4.063969599120894
+        ],
+        [
+          3.782954832325667
+        ]
+      ],
+      "expected": [
+        [
+          2.553070465644314
+        ],
+        [
+          3.4968600383409236
+        ],
+        [
+          4.063969599120918
+        ],
+        [
+          3.7829548323257343
+        ]
+      ],
+      "max_abs_diff": 6.705747068735946e-14,
+      "training_max_abs_diff": 8.08242361927114e-14,
+      "triangular_max_abs_diff": 3.9968028886505635e-15,
+      "upper_pseudoinverse_rank": 9,
+      "full_matrix_size": 9
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=False:X=float64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            0.0
+          ],
+          [
+            2.194285714285714
+          ],
+          [
+            4.388571428571428
+          ],
+          [
+            6.582857142857142
+          ],
+          [
+            8.777142857142856
+          ],
+          [
+            10.97142857142857
+          ],
+          [
+            13.165714285714284
+          ],
+          [
+            15.359999999999998
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.194285714285714
+        ],
+        [
+          4.388571428571428
+        ],
+        [
+          6.582857142857142
+        ],
+        [
+          8.777142857142856
+        ],
+        [
+          10.97142857142857
+        ],
+        [
+          13.165714285714284
+        ],
+        [
+          15.359999999999998
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=False:X=int64:Y=float64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "TypeError",
+        "message": "No matching signature found",
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.194285714285714
+        ],
+        [
+          4.388571428571428
+        ],
+        [
+          6.582857142857142
+        ],
+        [
+          8.777142857142856
+        ],
+        [
+          10.97142857142857
+        ],
+        [
+          13.165714285714284
+        ],
+        [
+          15.359999999999998
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=False:X=float64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "Buffer dtype mismatch, expected 'double' but got 'long'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.194285714285714
+        ],
+        [
+          4.388571428571428
+        ],
+        [
+          6.582857142857142
+        ],
+        [
+          8.777142857142856
+        ],
+        [
+          10.97142857142857
+        ],
+        [
+          13.165714285714284
+        ],
+        [
+          15.359999999999998
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=False:X=int64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "TypeError",
+        "message": "No matching signature found",
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.194285714285714
+        ],
+        [
+          4.388571428571428
+        ],
+        [
+          6.582857142857142
+        ],
+        [
+          8.777142857142856
+        ],
+        [
+          10.97142857142857
+        ],
+        [
+          13.165714285714284
+        ],
+        [
+          15.359999999999998
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=True:X=float64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            1.0666666666666664
+          ],
+          [
+            3.0476190476190474
+          ],
+          [
+            5.0285714285714285
+          ],
+          [
+            7.0095238095238095
+          ],
+          [
+            8.99047619047619
+          ],
+          [
+            10.971428571428572
+          ],
+          [
+            12.952380952380953
+          ],
+          [
+            14.933333333333334
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.0666666666666664
+        ],
+        [
+          3.0476190476190474
+        ],
+        [
+          5.0285714285714285
+        ],
+        [
+          7.0095238095238095
+        ],
+        [
+          8.99047619047619
+        ],
+        [
+          10.971428571428572
+        ],
+        [
+          12.952380952380953
+        ],
+        [
+          14.933333333333334
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=True:X=int64:Y=float64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "UFuncTypeError",
+        "message": "Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.0666666666666664
+        ],
+        [
+          3.0476190476190474
+        ],
+        [
+          5.0285714285714285
+        ],
+        [
+          7.0095238095238095
+        ],
+        [
+          8.99047619047619
+        ],
+        [
+          10.971428571428572
+        ],
+        [
+          12.952380952380953
+        ],
+        [
+          14.933333333333334
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=True:X=float64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "UFuncTypeError",
+        "message": "Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.0666666666666664
+        ],
+        [
+          3.0476190476190474
+        ],
+        [
+          5.0285714285714285
+        ],
+        [
+          7.0095238095238095
+        ],
+        [
+          8.99047619047619
+        ],
+        [
+          10.971428571428572
+        ],
+        [
+          12.952380952380953
+        ],
+        [
+          14.933333333333334
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "LinearRegression:intercept=True:X=int64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "UFuncTypeError",
+        "message": "Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.0666666666666664
+        ],
+        [
+          3.0476190476190474
+        ],
+        [
+          5.0285714285714285
+        ],
+        [
+          7.0095238095238095
+        ],
+        [
+          8.99047619047619
+        ],
+        [
+          10.971428571428572
+        ],
+        [
+          12.952380952380953
+        ],
+        [
+          14.933333333333334
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=False:X=float64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            0.0
+          ],
+          [
+            2.273209910136182
+          ],
+          [
+            4.508703186383995
+          ],
+          [
+            6.706479828743438
+          ],
+          [
+            8.866539837214512
+          ],
+          [
+            10.988883211797217
+          ],
+          [
+            13.073509952491552
+          ],
+          [
+            15.120420059297517
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.273209910136182
+        ],
+        [
+          4.508703186383995
+        ],
+        [
+          6.706479828743438
+        ],
+        [
+          8.866539837214512
+        ],
+        [
+          10.988883211797217
+        ],
+        [
+          13.073509952491552
+        ],
+        [
+          15.120420059297517
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=False:X=int64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            0.0
+          ],
+          [
+            2.273209910136182
+          ],
+          [
+            4.508703186383995
+          ],
+          [
+            6.706479828743438
+          ],
+          [
+            8.866539837214512
+          ],
+          [
+            10.988883211797217
+          ],
+          [
+            13.073509952491552
+          ],
+          [
+            15.120420059297517
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.273209910136182
+        ],
+        [
+          4.508703186383995
+        ],
+        [
+          6.706479828743438
+        ],
+        [
+          8.866539837214512
+        ],
+        [
+          10.988883211797217
+        ],
+        [
+          13.073509952491552
+        ],
+        [
+          15.120420059297517
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=False:X=float64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "Buffer dtype mismatch, expected 'double' but got 'long'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.273209910136182
+        ],
+        [
+          4.508703186383995
+        ],
+        [
+          6.706479828743438
+        ],
+        [
+          8.866539837214512
+        ],
+        [
+          10.988883211797217
+        ],
+        [
+          13.073509952491552
+        ],
+        [
+          15.120420059297517
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=False:X=int64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "Buffer dtype mismatch, expected 'double' but got 'long'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          0.0
+        ],
+        [
+          2.273209910136182
+        ],
+        [
+          4.508703186383995
+        ],
+        [
+          6.706479828743438
+        ],
+        [
+          8.866539837214512
+        ],
+        [
+          10.988883211797217
+        ],
+        [
+          13.073509952491552
+        ],
+        [
+          15.120420059297517
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=True:X=float64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            1.2422446919147685
+          ],
+          [
+            3.069600419511392
+          ],
+          [
+            4.948671898750451
+          ],
+          [
+            6.879459129631946
+          ],
+          [
+            8.861962112155876
+          ],
+          [
+            10.896180846322242
+          ],
+          [
+            12.982115332131043
+          ],
+          [
+            15.11976556958228
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.2422446919147685
+        ],
+        [
+          3.069600419511392
+        ],
+        [
+          4.948671898750451
+        ],
+        [
+          6.879459129631946
+        ],
+        [
+          8.861962112155876
+        ],
+        [
+          10.896180846322242
+        ],
+        [
+          12.982115332131043
+        ],
+        [
+          15.11976556958228
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=True:X=int64:Y=float64",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            1.2422446919147685
+          ],
+          [
+            3.069600419511392
+          ],
+          [
+            4.948671898750451
+          ],
+          [
+            6.879459129631946
+          ],
+          [
+            8.861962112155876
+          ],
+          [
+            10.896180846322242
+          ],
+          [
+            12.982115332131043
+          ],
+          [
+            15.11976556958228
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.2422446919147685
+        ],
+        [
+          3.069600419511392
+        ],
+        [
+          4.948671898750451
+        ],
+        [
+          6.879459129631946
+        ],
+        [
+          8.861962112155876
+        ],
+        [
+          10.896180846322242
+        ],
+        [
+          12.982115332131043
+        ],
+        [
+          15.11976556958228
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=True:X=float64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "UFuncTypeError",
+        "message": "Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.2422446919147685
+        ],
+        [
+          3.069600419511392
+        ],
+        [
+          4.948671898750451
+        ],
+        [
+          6.879459129631946
+        ],
+        [
+          8.861962112155876
+        ],
+        [
+          10.896180846322242
+        ],
+        [
+          12.982115332131043
+        ],
+        [
+          15.11976556958228
+        ]
+      ]
+    },
+    {
+      "group": "SR02",
+      "case": "PolynomialRegression:intercept=True:X=int64:Y=int64",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "UFuncTypeError",
+        "message": "Cannot cast ufunc 'subtract' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'",
+        "warnings": []
+      },
+      "expected": [
+        [
+          1.2422446919147685
+        ],
+        [
+          3.069600419511392
+        ],
+        [
+          4.948671898750451
+        ],
+        [
+          6.879459129631946
+        ],
+        [
+          8.861962112155876
+        ],
+        [
+          10.896180846322242
+        ],
+        [
+          12.982115332131043
+        ],
+        [
+          15.11976556958228
+        ]
+      ]
+    },
+    {
+      "group": "SR03",
+      "case": "seed=1:corrected_bounds=False",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 2,
+      "report": {
+        "method": "optTune",
+        "status": "failed",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                -9.962003584353859
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.2102707208858061,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 4.715815598296179e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 8.871499449014664e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 4.715815598296179e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0002715939190238714
+          },
+          {
+            "candidate_index": 1,
+            "candidate_encoded": {
+              "nu": [
+                6.756234655634538
+              ]
+            },
+            "status": "failed",
+            "validation_score": null,
+            "error_type": "RuntimeError",
+            "message": "nu <= 0 or nu > 1",
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "failed",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 859.4001583819714,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "error_type": "RuntimeError",
+              "message": "nu <= 0 or nu > 1",
+              "elapsed_seconds": 8.887704461812973e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 859.4001583819714,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001854670699685812
+          }
+        ],
+        "fit_calls": 2,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": 0,
+        "best_validation_score": -1.2102707208858061,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 1,
+          "split_seed": 2032329982,
+          "model_seed": 2198257138,
+          "optimizer_seed": 3243419749,
+          "train_indices": [
+            19,
+            17,
+            9,
+            11,
+            24,
+            16,
+            14,
+            5,
+            13,
+            0,
+            7,
+            25,
+            29,
+            22,
+            21,
+            27,
+            10,
+            4,
+            3,
+            28,
+            15
+          ],
+          "test_indices": [
+            1,
+            26,
+            23,
+            20,
+            12,
+            8,
+            6,
+            18,
+            2
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "elapsed_seconds": 0.0012939181178808212
+      }
+    },
+    {
+      "group": "SR03",
+      "case": "seed=1:corrected_bounds=True",
+      "status": "control",
+      "actual": {
+        "value": [
+          0.9096454328835669,
+          [
+            0.9991649665977669
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 8,
+      "report": {
+        "method": "optTune",
+        "status": "finished",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                -10.543599289584998
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.2109968952450143,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.6361675461761956e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 3.946688957512379e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.6361675461761956e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00017783697694540024
+          },
+          {
+            "candidate_index": 1,
+            "candidate_encoded": {
+              "nu": [
+                -0.09470038959224958
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.9991649665977669,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.9096454328835669,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 7.879897020757198e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.9096454328835669,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00020488793961703777
+          },
+          {
+            "candidate_index": 2,
+            "candidate_encoded": {
+              "nu": [
+                -4.398652411691384
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.8085367781645749,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.01229389585558128,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.6227906346321106e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.01229389585558128,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00013595214113593102
+          },
+          {
+            "candidate_index": 3,
+            "candidate_encoded": {
+              "nu": [
+                -3.876671726792611
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.56328865671998,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.020719671275627256,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.6442809030413628e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.020719671275627256,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00015159603208303452
+          },
+          {
+            "candidate_index": 4,
+            "candidate_encoded": {
+              "nu": [
+                -9.968844684942287
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.2102819464088768,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 4.683664329854096e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.1907035261392593e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 4.683664329854096e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012545310892164707
+          },
+          {
+            "candidate_index": 5,
+            "candidate_encoded": {
+              "nu": [
+                -2.359869821833433
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.60733939914523,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0944325154479189,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.35049519687891e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0944325154479189,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012171012349426746
+          },
+          {
+            "candidate_index": 6,
+            "candidate_encoded": {
+              "nu": [
+                -6.1354326240762544
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.137107660065599,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.00216478847565617,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.0961975678801537e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.00216478847565617,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00011726189404726028
+          },
+          {
+            "candidate_index": 7,
+            "candidate_encoded": {
+              "nu": [
+                -7.6148722712346615
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.1947364066749397,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0004930636566640058,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.0217150449752808e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0004930636566640058,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00011946400627493858
+          }
+        ],
+        "fit_calls": 9,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": 1,
+        "best_validation_score": 0.9991649665977669,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 1,
+          "split_seed": 2032329982,
+          "model_seed": 2198257138,
+          "optimizer_seed": 3243419749,
+          "train_indices": [
+            19,
+            17,
+            9,
+            11,
+            24,
+            16,
+            14,
+            5,
+            13,
+            0,
+            7,
+            25,
+            29,
+            22,
+            21,
+            27,
+            10,
+            4,
+            3,
+            28,
+            15
+          ],
+          "test_indices": [
+            1,
+            26,
+            23,
+            20,
+            12,
+            8,
+            6,
+            18,
+            2
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "selected_candidate_encoded": {
+          "nu": [
+            -0.09470038959224958
+          ]
+        },
+        "final_refit": {
+          "entry_point": "fitModel",
+          "status": "finished",
+          "parameters_before_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.9096454328835669,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          },
+          "elapsed_seconds": 0.0003432817757129669,
+          "objective_evaluations": null,
+          "parameters_after_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.9096454328835669,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          }
+        },
+        "final_parameters": {
+          "symbol": 4,
+          "kernel": 2,
+          "C": 1.0,
+          "epsilon": 0.1,
+          "gamma": 1.0,
+          "coe0": 0.1,
+          "nu": 0.9096454328835669,
+          "degree": 3,
+          "maxIter": 100000.0,
+          "eps": 0.001
+        },
+        "elapsed_seconds": 0.002741894917562604
+      }
+    },
+    {
+      "group": "SR03",
+      "case": "seed=2:corrected_bounds=False",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 3,
+      "report": {
+        "method": "optTune",
+        "status": "failed",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                -0.9385638773656844
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.9981459108291196,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.39118922785221977,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 6.03341031819582e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.39118922785221977,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00019795680418610573
+          },
+          {
+            "candidate_index": 1,
+            "candidate_encoded": {
+              "nu": [
+                -11.222238168258276
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.6762812231202382,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 1.3373463259647327e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.3799948394298553e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 1.3373463259647327e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001413880381733179
+          },
+          {
+            "candidate_index": 2,
+            "candidate_encoded": {
+              "nu": [
+                0.799855695207702
+              ]
+            },
+            "status": "failed",
+            "validation_score": null,
+            "error_type": "RuntimeError",
+            "message": "nu <= 0 or nu > 1",
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "failed",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.2252197954421074,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "error_type": "RuntimeError",
+              "message": "nu <= 0 or nu > 1",
+              "elapsed_seconds": 3.8702040910720825e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.2252197954421074,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001378969755023718
+          }
+        ],
+        "fit_calls": 3,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": 0,
+        "best_validation_score": 0.9981459108291196,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 2,
+          "split_seed": 3597359296,
+          "model_seed": 1123615559,
+          "optimizer_seed": 469463395,
+          "train_indices": [
+            6,
+            27,
+            19,
+            11,
+            16,
+            5,
+            29,
+            28,
+            1,
+            15,
+            22,
+            3,
+            2,
+            13,
+            9,
+            8,
+            25,
+            4,
+            18,
+            21,
+            0
+          ],
+          "test_indices": [
+            24,
+            7,
+            14,
+            12,
+            17,
+            23,
+            20,
+            26,
+            10
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "elapsed_seconds": 0.0012189960107207298
+      }
+    },
+    {
+      "group": "SR03",
+      "case": "seed=2:corrected_bounds=True",
+      "status": "control",
+      "actual": {
+        "value": [
+          0.28996657637969214,
+          [
+            0.9959649787989953
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 8,
+      "report": {
+        "method": "optTune",
+        "status": "finished",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                -4.903949472717389
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.5021424009077131,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0074172309950130775,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 3.172620199620724e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0074172309950130775,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00016471999697387218
+          },
+          {
+            "candidate_index": 1,
+            "candidate_encoded": {
+              "nu": [
+                -11.33124590452526
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.6763149201180461,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 1.1992298516238924e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.5061191990971565e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 1.1992298516238924e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001517990604043007
+          },
+          {
+            "candidate_index": 2,
+            "candidate_encoded": {
+              "nu": [
+                -3.8174372398590224
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.19745534141775511,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.02198406865796775,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.9638100638985634e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.02198406865796775,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012954603880643845
+          },
+          {
+            "candidate_index": 3,
+            "candidate_encoded": {
+              "nu": [
+                -9.163336462898053
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.6740513391139697,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.00010481261062784863,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.8214108422398567e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.00010481261062784863,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012318394146859646
+          },
+          {
+            "candidate_index": 4,
+            "candidate_encoded": {
+              "nu": [
+                -8.018873223435584
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.6685879312213925,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0003291907383272111,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.8007121980190277e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0003291907383272111,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001249639317393303
+          },
+          {
+            "candidate_index": 5,
+            "candidate_encoded": {
+              "nu": [
+                -1.2379896165069848
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.9959649787989953,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.28996657637969214,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 4.940084181725979e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.28996657637969214,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00015164213255047798
+          },
+          {
+            "candidate_index": 6,
+            "candidate_encoded": {
+              "nu": [
+                -2.7616832620385683
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.4344108619498558,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.06318532134285197,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.853611320257187e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.06318532134285197,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00011672382242977619
+          },
+          {
+            "candidate_index": 7,
+            "candidate_encoded": {
+              "nu": [
+                -5.812556304445945
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.6047145795419042,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.002989777513807476,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.9138911738991737e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.002989777513807476,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012942706234753132
+          }
+        ],
+        "fit_calls": 9,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": 5,
+        "best_validation_score": 0.9959649787989953,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 2,
+          "split_seed": 3597359296,
+          "model_seed": 1123615559,
+          "optimizer_seed": 469463395,
+          "train_indices": [
+            6,
+            27,
+            19,
+            11,
+            16,
+            5,
+            29,
+            28,
+            1,
+            15,
+            22,
+            3,
+            2,
+            13,
+            9,
+            8,
+            25,
+            4,
+            18,
+            21,
+            0
+          ],
+          "test_indices": [
+            24,
+            7,
+            14,
+            12,
+            17,
+            23,
+            20,
+            26,
+            10
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "selected_candidate_encoded": {
+          "nu": [
+            -1.2379896165069848
+          ]
+        },
+        "final_refit": {
+          "entry_point": "fitModel",
+          "status": "finished",
+          "parameters_before_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.28996657637969214,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          },
+          "elapsed_seconds": 0.00011235498823225498,
+          "objective_evaluations": null,
+          "parameters_after_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.28996657637969214,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          }
+        },
+        "final_parameters": {
+          "symbol": 4,
+          "kernel": 2,
+          "C": 1.0,
+          "epsilon": 0.1,
+          "gamma": 1.0,
+          "coe0": 0.1,
+          "nu": 0.28996657637969214,
+          "degree": 3,
+          "maxIter": 100000.0,
+          "eps": 0.001
+        },
+        "elapsed_seconds": 0.0022886719089001417
+      }
+    },
+    {
+      "group": "SR03",
+      "case": "seed=3:corrected_bounds=False",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 1,
+      "report": {
+        "method": "optTune",
+        "status": "failed",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                1.007313557961245
+              ]
+            },
+            "status": "failed",
+            "validation_score": null,
+            "error_type": "RuntimeError",
+            "message": "nu <= 0 or nu > 1",
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "failed",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.738235015623757,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "error_type": "RuntimeError",
+              "message": "nu <= 0 or nu > 1",
+              "elapsed_seconds": 4.160194657742977e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.738235015623757,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00012985989451408386
+          }
+        ],
+        "fit_calls": 1,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": null,
+        "best_validation_score": null,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 3,
+          "split_seed": 3485385463,
+          "model_seed": 367860370,
+          "optimizer_seed": 770692084,
+          "train_indices": [
+            6,
+            22,
+            5,
+            16,
+            2,
+            12,
+            14,
+            20,
+            18,
+            29,
+            15,
+            24,
+            23,
+            8,
+            9,
+            10,
+            26,
+            21,
+            4,
+            28,
+            25
+          ],
+          "test_indices": [
+            17,
+            3,
+            19,
+            11,
+            27,
+            7,
+            1,
+            13,
+            0
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "error_type": "RuntimeError",
+        "message": "nu <= 0 or nu > 1",
+        "elapsed_seconds": 0.0006525120697915554
+      }
+    },
+    {
+      "group": "SR03",
+      "case": "seed=3:corrected_bounds=True",
+      "status": "control",
+      "actual": {
+        "value": [
+          0.37035525213879283,
+          [
+            0.9936997420109179
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "finite completed search with 0 < nu <= 1",
+      "candidates": 8,
+      "report": {
+        "method": "optTune",
+        "status": "finished",
+        "candidates": [
+          {
+            "candidate_index": 0,
+            "candidate_encoded": {
+              "nu": [
+                -3.687776075638058
+              ]
+            },
+            "status": "finished",
+            "validation_score": -0.7849847796827782,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.025027599685546353,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 3.1144823879003525e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.025027599685546353,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00015487405471503735
+          },
+          {
+            "candidate_index": 1,
+            "candidate_encoded": {
+              "nu": [
+                -10.55214704186491
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.710341234434369,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.61373026977645e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.339412458240986e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 2.61373026977645e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00013553397729992867
+          },
+          {
+            "candidate_index": 2,
+            "candidate_encoded": {
+              "nu": [
+                -6.9721704482904086
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.672806630632011,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0009376156494726088,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.1674903109669685e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0009376156494726088,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00013311300426721573
+          },
+          {
+            "candidate_index": 3,
+            "candidate_encoded": {
+              "nu": [
+                -0.99329259306867
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.9936997420109179,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.37035525213879283,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 4.7551002353429794e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.37035525213879283,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00015188404358923435
+          },
+          {
+            "candidate_index": 4,
+            "candidate_encoded": {
+              "nu": [
+                -5.398962201607558
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.5280190349956273,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.004521270676132285,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 2.14229803532362e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.004521270676132285,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00013314420357346535
+          },
+          {
+            "candidate_index": 5,
+            "candidate_encoded": {
+              "nu": [
+                -9.648754254774609
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.7087554238665916,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 6.450587488805857e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.7006881535053253e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 6.450587488805857e-05,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.0001163179986178875
+          },
+          {
+            "candidate_index": 6,
+            "candidate_encoded": {
+              "nu": [
+                -7.204570825723067
+              ]
+            },
+            "status": "finished",
+            "validation_score": -1.6807893084663763,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0007431810818927246,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.7076032236218452e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.0007431810818927246,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00011361995711922646
+          },
+          {
+            "candidate_index": 7,
+            "candidate_encoded": {
+              "nu": [
+                -2.5968140111896307
+              ]
+            },
+            "status": "finished",
+            "validation_score": 0.3585440474998539,
+            "fit": {
+              "entry_point": "fitModel",
+              "status": "finished",
+              "parameters_before_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.07451059036197288,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              },
+              "elapsed_seconds": 1.664389856159687e-05,
+              "objective_evaluations": null,
+              "parameters_after_fit": {
+                "symbol": 4,
+                "kernel": 2,
+                "C": 1.0,
+                "epsilon": 0.1,
+                "gamma": 1.0,
+                "coe0": 0.1,
+                "nu": 0.07451059036197288,
+                "degree": 3,
+                "maxIter": 100000.0,
+                "eps": 0.001
+              }
+            },
+            "elapsed_seconds": 0.00011393497698009014
+          }
+        ],
+        "fit_calls": 9,
+        "tracked_objective_evaluations": 0,
+        "best_candidate_index": 3,
+        "best_validation_score": 0.9936997420109179,
+        "tune_mode": "joint",
+        "split": {
+          "seed": 3,
+          "split_seed": 3485385463,
+          "model_seed": 367860370,
+          "optimizer_seed": 770692084,
+          "train_indices": [
+            6,
+            22,
+            5,
+            16,
+            2,
+            12,
+            14,
+            20,
+            18,
+            29,
+            15,
+            24,
+            23,
+            8,
+            9,
+            10,
+            26,
+            21,
+            4,
+            28,
+            25
+          ],
+          "test_indices": [
+            17,
+            3,
+            19,
+            11,
+            27,
+            7,
+            1,
+            13,
+            0
+          ],
+          "strategy": "random_holdout"
+        },
+        "training_samples": 21,
+        "validation_samples": 9,
+        "refit_samples": 30,
+        "selected_candidate_encoded": {
+          "nu": [
+            -0.99329259306867
+          ]
+        },
+        "final_refit": {
+          "entry_point": "fitModel",
+          "status": "finished",
+          "parameters_before_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.37035525213879283,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          },
+          "elapsed_seconds": 0.0001238151453435421,
+          "objective_evaluations": null,
+          "parameters_after_fit": {
+            "symbol": 4,
+            "kernel": 2,
+            "C": 1.0,
+            "epsilon": 0.1,
+            "gamma": 1.0,
+            "coe0": 0.1,
+            "nu": 0.37035525213879283,
+            "degree": 3,
+            "maxIter": 100000.0,
+            "eps": 0.001
+          }
+        },
+        "final_parameters": {
+          "symbol": 4,
+          "kernel": 2,
+          "C": 1.0,
+          "epsilon": 0.1,
+          "gamma": 1.0,
+          "coe0": 0.1,
+          "nu": 0.37035525213879283,
+          "degree": 3,
+          "maxIter": 100000.0,
+          "eps": 0.001
+        },
+        "elapsed_seconds": 0.002232837025076151
+      }
+    },
+    {
+      "group": "SR04",
+      "case": "r_square:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "nse:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "AutoTuner:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": [
+          2,
+          1.0
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "degree 2, R2=1"
+    },
+    {
+      "group": "SR04",
+      "case": "r_square:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "nse:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "AutoTuner:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": [
+          2,
+          1.0
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "degree 2, R2=1"
+    },
+    {
+      "group": "SR04",
+      "case": "r_square:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "value": "nan",
+        "accepted": true,
+        "warnings": [
+          "invalid value encountered in scalar divide"
+        ]
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "nse:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "value": "nan",
+        "accepted": true,
+        "warnings": [
+          "invalid value encountered in scalar divide"
+        ]
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "AutoTuner:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "R2 validation requires nonconstant outputs with finite variation.",
+        "warnings": []
+      },
+      "expected": "degree 2, R2=1"
+    },
+    {
+      "group": "SR04",
+      "case": "r_square:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "nse:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": 0.968,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "AutoTuner:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": [
+          2,
+          1.0
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "degree 2, R2=1"
+    },
+    {
+      "group": "SR04",
+      "case": "r_square:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "value": "nan",
+        "accepted": true,
+        "warnings": [
+          "overflow encountered in square",
+          "overflow encountered in square",
+          "invalid value encountered in scalar divide"
+        ]
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "nse:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "value": "nan",
+        "accepted": true,
+        "warnings": [
+          "overflow encountered in square",
+          "overflow encountered in square",
+          "invalid value encountered in scalar divide"
+        ]
+      },
+      "expected": 0.968
+    },
+    {
+      "group": "SR04",
+      "case": "AutoTuner:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "R2 validation requires nonconstant outputs with finite variation.",
+        "warnings": [
+          "overflow encountered in square"
+        ]
+      },
+      "expected": "degree 2, R2=1"
+    },
+    {
+      "group": "SR05",
+      "case": "StandardScaler:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            -1.161895003862225
+          ],
+          [
+            -0.3872983346207417
+          ],
+          [
+            0.3872983346207417
+          ],
+          [
+            1.161895003862225
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          -1.161895003862225
+        ],
+        [
+          -0.3872983346207417
+        ],
+        [
+          0.3872983346207417
+        ],
+        [
+          1.161895003862225
+        ]
+      ],
+      "fitted_std": [
+        1.2909944487358056
+      ],
+      "expected_std": 1.2909944487358056
+    },
+    {
+      "group": "SR05",
+      "case": "StandardScaler:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            -1.161895003862225
+          ],
+          [
+            -0.3872983346207417
+          ],
+          [
+            0.3872983346207417
+          ],
+          [
+            1.161895003862225
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          -1.161895003862225
+        ],
+        [
+          -0.3872983346207417
+        ],
+        [
+          0.3872983346207417
+        ],
+        [
+          1.161895003862225
+        ]
+      ],
+      "fitted_std": [
+        1.2909944487358057e-100
+      ],
+      "expected_std": 1.2909944487358057e-100
+    },
+    {
+      "group": "SR05",
+      "case": "StandardScaler:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            -1.5e-200
+          ],
+          [
+            -5e-201
+          ],
+          [
+            5e-201
+          ],
+          [
+            1.5e-200
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          -1.161895003862225
+        ],
+        [
+          -0.3872983346207417
+        ],
+        [
+          0.3872983346207417
+        ],
+        [
+          1.161895003862225
+        ]
+      ],
+      "fitted_std": [
+        0.0
+      ],
+      "expected_std": 1.2909944487358056e-200
+    },
+    {
+      "group": "SR05",
+      "case": "StandardScaler:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            -1.1618950038622249
+          ],
+          [
+            -0.3872983346207416
+          ],
+          [
+            0.38729833462074187
+          ],
+          [
+            1.161895003862225
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": [
+        [
+          -1.161895003862225
+        ],
+        [
+          -0.3872983346207417
+        ],
+        [
+          0.3872983346207417
+        ],
+        [
+          1.161895003862225
+        ]
+      ],
+      "fitted_std": [
+        1.2909944487358057e+100
+      ],
+      "expected_std": 1.2909944487358055e+100
+    },
+    {
+      "group": "SR05",
+      "case": "StandardScaler:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "Scaler fitted offsets and scales must be finite, with positive scales.",
+        "warnings": [
+          "overflow encountered in square",
+          "invalid value encountered in multiply"
+        ]
+      },
+      "expected": [
+        [
+          -1.161895003862225
+        ],
+        [
+          -0.3872983346207417
+        ],
+        [
+          0.3872983346207417
+        ],
+        [
+          1.161895003862225
+        ]
+      ],
+      "fitted_std": [
+        "inf"
+      ],
+      "expected_std": 1.2909944487358056e+160
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4783178858636177
+            ],
+            [
+              1.794363964837079
+            ]
+          ],
+          [
+            [
+              0.07395429041721814
+            ],
+            [
+              0.8042584790856697
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4783178858636177
+          ],
+          [
+            1.794363964837079
+          ]
+        ],
+        "std": [
+          [
+            0.07395429041721666
+          ],
+          [
+            0.8042584790856694
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478317885863618e-100
+            ],
+            [
+              1.7943639648370795e-100
+            ]
+          ],
+          [
+            [
+              7.395429041721815e-102
+            ],
+            [
+              8.042584790856696e-101
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.478317885863618e-100
+          ],
+          [
+            1.7943639648370792e-100
+          ]
+        ],
+        "std": [
+          [
+            7.395429041721666e-102
+          ],
+          [
+            8.042584790856694e-101
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4783178858636182e-200
+            ],
+            [
+              1.794363964837079e-200
+            ]
+          ],
+          [
+            [
+              0.0
+            ],
+            [
+              0.0
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4783178858636176e-200
+          ],
+          [
+            1.794363964837079e-200
+          ]
+        ],
+        "std": [
+          [
+            7.395429041721665e-202
+          ],
+          [
+            8.042584790856693e-201
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478317885863618e+100
+            ],
+            [
+              1.794363964837079e+100
+            ]
+          ],
+          [
+            [
+              7.395429041721814e+98
+            ],
+            [
+              8.042584790856697e+99
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4783178858636178e+100
+          ],
+          [
+            1.794363964837079e+100
+          ]
+        ],
+        "std": [
+          [
+            7.395429041721665e+98
+          ],
+          [
+            8.042584790856694e+99
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4783178858636183e+160
+            ],
+            [
+              1.794363964837079e+160
+            ]
+          ],
+          [
+            [
+              "inf"
+            ],
+            [
+              "inf"
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": [
+          "overflow encountered in square"
+        ]
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4783178858636176e+160
+          ],
+          [
+            1.794363964837079e+160
+          ]
+        ],
+        "std": [
+          [
+            7.395429041721665e+158
+          ],
+          [
+            8.042584790856694e+159
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "GPR:MultiSurrogate:mixed_units",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4783178858636177,
+              2.4783178858636182e-200
+            ],
+            [
+              1.794363964837079,
+              1.794363964837079e-200
+            ]
+          ],
+          [
+            [
+              0.07395429041721814,
+              0.0
+            ],
+            [
+              0.8042584790856697,
+              0.0
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4783178858636177,
+            2.4783178858636176e-200
+          ],
+          [
+            1.794363964837079,
+            1.794363964837079e-200
+          ]
+        ],
+        "std": [
+          [
+            0.07395429041721666,
+            7.395429041721665e-202
+          ],
+          [
+            0.8042584790856694,
+            8.042584790856693e-201
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:scale=1.0",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478753573170313
+            ],
+            [
+              2.262912273970556
+            ]
+          ],
+          [
+            [
+              0.12946854651968032
+            ],
+            [
+              0.3726630061110801
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.478753573170313
+          ],
+          [
+            2.2629122739705556
+          ]
+        ],
+        "std": [
+          [
+            0.1294685465196805
+          ],
+          [
+            0.3726630061110805
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:scale=1e-100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4787535731703133e-100
+            ],
+            [
+              2.262912273970556e-100
+            ]
+          ],
+          [
+            [
+              1.2946854651968035e-101
+            ],
+            [
+              3.726630061110802e-101
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4787535731703133e-100
+          ],
+          [
+            2.2629122739705558e-100
+          ]
+        ],
+        "std": [
+          [
+            1.2946854651968052e-101
+          ],
+          [
+            3.726630061110805e-101
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:scale=1e-200",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.4787535731703127e-200
+            ],
+            [
+              2.2629122739705557e-200
+            ]
+          ],
+          [
+            [
+              0.0
+            ],
+            [
+              0.0
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.478753573170313e-200
+          ],
+          [
+            2.2629122739705554e-200
+          ]
+        ],
+        "std": [
+          [
+            1.294685465196805e-201
+          ],
+          [
+            3.726630061110805e-201
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:scale=1e+100",
+      "status": "control",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478753573170313e+100
+            ],
+            [
+              2.2629122739705558e+100
+            ]
+          ],
+          [
+            [
+              1.294685465196803e+99
+            ],
+            [
+              3.726630061110801e+99
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4787535731703134e+100
+          ],
+          [
+            2.2629122739705558e+100
+          ]
+        ],
+        "std": [
+          [
+            1.2946854651968052e+99
+          ],
+          [
+            3.7266300611108053e+99
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:scale=1e+160",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478753573170313e+160
+            ],
+            [
+              2.262912273970556e+160
+            ]
+          ],
+          [
+            [
+              "inf"
+            ],
+            [
+              "inf"
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": [
+          "overflow encountered in square"
+        ]
+      },
+      "expected": {
+        "mean": [
+          [
+            2.4787535731703133e+160
+          ],
+          [
+            2.2629122739705557e+160
+          ]
+        ],
+        "std": [
+          [
+            1.2946854651968052e+159
+          ],
+          [
+            3.726630061110805e+159
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR06",
+      "case": "KRG:MultiSurrogate:mixed_units",
+      "status": "issue",
+      "actual": {
+        "value": [
+          [
+            [
+              2.478753573170313,
+              2.4787535731703127e-200
+            ],
+            [
+              2.262912273970556,
+              2.2629122739705557e-200
+            ]
+          ],
+          [
+            [
+              0.12946854651968032,
+              0.0
+            ],
+            [
+              0.3726630061110801,
+              0.0
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": {
+        "mean": [
+          [
+            2.478753573170313,
+            2.478753573170313e-200
+          ],
+          [
+            2.2629122739705556,
+            2.2629122739705554e-200
+          ]
+        ],
+        "std": [
+          [
+            0.1294685465196805,
+            1.294685465196805e-201
+          ],
+          [
+            0.3726630061110805,
+            3.726630061110805e-201
+          ]
+        ]
+      }
+    },
+    {
+      "group": "SR07",
+      "case": "positive_noise",
+      "status": "control",
+      "actual": {
+        "value": true,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "successful finite fit",
+      "fitted_state_keys": [
+        "L",
+        "alpha",
+        "objective"
+      ],
+      "mean_prediction": {
+        "value": [
+          [
+            1.8048030042589402e-05
+          ],
+          [
+            0.4747103588185717
+          ],
+          [
+            0.8331951872094824
+          ],
+          [
+            0.9876847055262266
+          ],
+          [
+            0.9003545616827764
+          ],
+          [
+            0.5925861692898863
+          ],
+          [
+            0.13974530967370186
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "variance_prediction": {
+        "value": [
+          [
+            [
+              1.8048030042589402e-05
+            ],
+            [
+              0.4747103588185717
+            ],
+            [
+              0.8331951872094824
+            ],
+            [
+              0.9876847055262266
+            ],
+            [
+              0.9003545616827764
+            ],
+            [
+              0.5925861692898863
+            ],
+            [
+              0.13974530967370186
+            ]
+          ],
+          [
+            [
+              0.009900988648387399
+            ],
+            [
+              0.009900987197743683
+            ],
+            [
+              0.009900987197722588
+            ],
+            [
+              0.0099009871977227
+            ],
+            [
+              0.0099009871977227
+            ],
+            [
+              0.009900987197743905
+            ],
+            [
+              0.00990098864838751
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      }
+    },
+    {
+      "group": "SR07",
+      "case": "negative_noise",
+      "status": "issue",
+      "actual": {
+        "value": true,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "reject before fitting",
+      "fitted_state_keys": [
+        "L",
+        "alpha",
+        "objective"
+      ],
+      "mean_prediction": {
+        "value": [
+          [
+            -1.878208830459775e-05
+          ],
+          [
+            0.48423532899436095
+          ],
+          [
+            0.8499128321369989
+          ],
+          [
+            1.0075021060743692
+          ],
+          [
+            0.9184197260810175
+          ],
+          [
+            0.6044762201685985
+          ],
+          [
+            0.1425220169487398
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "variance_prediction": {
+        "value": [
+          [
+            [
+              -1.878208830459775e-05
+            ],
+            [
+              0.48423532899436095
+            ],
+            [
+              0.8499128321369989
+            ],
+            [
+              1.0075021060743692
+            ],
+            [
+              0.9184197260810175
+            ],
+            [
+              0.6044762201685985
+            ],
+            [
+              0.1425220169487398
+            ]
+          ],
+          [
+            [
+              0.0
+            ],
+            [
+              0.0
+            ],
+            [
+              0.0
+            ],
+            [
+              0.0
+            ],
+            [
+              0.0
+            ],
+            [
+              0.0
+            ],
+            [
+              0.0
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      }
+    },
+    {
+      "group": "SR07",
+      "case": "nan_noise",
+      "status": "issue",
+      "actual": {
+        "value": true,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "reject before fitting",
+      "fitted_state_keys": [
+        "L",
+        "alpha",
+        "objective"
+      ],
+      "mean_prediction": {
+        "value": [
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "variance_prediction": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "array must not contain infs or NaNs",
+        "warnings": []
+      }
+    },
+    {
+      "group": "SR07",
+      "case": "nan_targets",
+      "status": "issue",
+      "actual": {
+        "value": true,
+        "accepted": true,
+        "warnings": []
+      },
+      "expected": "reject before fitting",
+      "fitted_state_keys": [
+        "L",
+        "alpha",
+        "objective"
+      ],
+      "mean_prediction": {
+        "value": [
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ],
+          [
+            "nan"
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      },
+      "variance_prediction": {
+        "value": [
+          [
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ],
+            [
+              "nan"
+            ]
+          ],
+          [
+            [
+              0.009900988648387399
+            ],
+            [
+              0.009900987197743683
+            ],
+            [
+              0.009900987197722588
+            ],
+            [
+              0.0099009871977227
+            ],
+            [
+              0.0099009871977227
+            ],
+            [
+              0.009900987197743905
+            ],
+            [
+              0.00990098864838751
+            ]
+          ]
+        ],
+        "accepted": true,
+        "warnings": []
+      }
+    },
+    {
+      "group": "SR07",
+      "case": "nan_targets_scaled",
+      "status": "control",
+      "actual": {
+        "accepted": false,
+        "error_type": "ValueError",
+        "message": "Scaler values must be finite.",
+        "warnings": []
+      },
+      "expected": "reject before fitting",
+      "fitted_state_keys": []
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=1:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=1:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=1:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=1:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=2:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=2:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=2:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=2:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=3:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=3:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=3:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=3:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=4:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=4:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=4:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=4:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=5:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=5:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=5:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=5:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=6:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=6:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=6:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=6:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=7:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=7:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=7:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          1
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=1:degree=7:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=1:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=1:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=1:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          2
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=1:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=2:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=2:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=2:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=2:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=3:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          9
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          9
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=3:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          10
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          10
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=3:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=3:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=4:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          14
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          14
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=4:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=4:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=4:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=5:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          20
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          20
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=5:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          21
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          21
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=5:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=5:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=6:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          27
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          27
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=6:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          28
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          28
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=6:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=6:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=7:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          35
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          35
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=7:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          36
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          36
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=7:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=2:degree=7:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=1:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=1:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=1:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          3
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=1:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=2:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          9
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          9
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=2:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          10
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          10
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=2:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=2:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=3:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          19
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          19
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=3:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          20
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          20
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=3:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=3:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=4:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          34
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          34
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=4:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          35
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          35
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=4:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=4:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=5:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          55
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          55
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=5:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          56
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          56
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=5:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=5:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=6:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          83
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          83
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=6:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          84
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          84
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=6:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=6:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=7:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          119
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          119
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=7:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          120
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          120
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=7:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          7
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          7
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=3:degree=7:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          8
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          8
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=1:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=1:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=1:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          4
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=1:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=2:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          14
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          14
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=2:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=2:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          10
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          10
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=2:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          11
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          11
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=3:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          34
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          34
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=3:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          35
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          35
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=3:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          14
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          14
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=3:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=4:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          69
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          69
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=4:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          70
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          70
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=4:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=4:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          16
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          16
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=5:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          125
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          125
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=5:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          126
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          126
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=5:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=5:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          16
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          16
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=6:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          209
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          209
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=6:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          210
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          210
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=6:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=6:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          16
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          16
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=7:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          329
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          329
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=7:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          330
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          330
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=7:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=4:degree=7:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          16
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          16
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=1:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=1:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=1:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          5
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=1:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          6
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=2:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          20
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          20
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=2:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          21
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          21
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=2:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          15
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          15
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=2:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          16
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          16
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=3:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          55
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          55
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=3:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          56
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          56
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=3:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          25
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          25
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=3:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          26
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          26
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=4:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          125
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          125
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=4:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          126
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          126
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=4:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          30
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          30
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=4:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          31
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          31
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=5:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          251
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          251
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=5:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          252
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          252
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=5:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          31
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          31
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=5:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          32
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          32
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=6:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          461
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          461
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=6:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          462
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          462
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=6:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          31
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          31
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=6:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          32
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          32
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=7:interaction=False:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          791
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          791
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=7:interaction=False:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          792
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          792
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=7:interaction=True:bias=False",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          31
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          31
+        ]
+      }
+    },
+    {
+      "group": "control_poly",
+      "case": "n=5:degree=7:interaction=True:bias=True",
+      "status": "control",
+      "actual": {
+        "accepted": true,
+        "shape": [
+          3,
+          32
+        ],
+        "warnings": []
+      },
+      "expected": {
+        "shape": [
+          3,
+          32
+        ]
+      }
+    }
+  ]
+}

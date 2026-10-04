@@ -1,0 +1,27 @@
+covariance_cost 2000 FullHistoryAMH 
+covariance_cost 2000 AMH 
+covariance_cost 8000 FullHistoryAMH 
+covariance_cost 8000 AMH 
+covariance_cost 16000 FullHistoryAMH 
+covariance_cost 16000 AMH 
+distribution normal FullHistoryAMH 5
+distribution normal FullHistoryAMH 17
+distribution normal FullHistoryAMH 41
+distribution normal AMH 5
+distribution normal AMH 17
+distribution normal AMH 41
+distribution bounded FullHistoryAMH 5
+distribution bounded FullHistoryAMH 17
+distribution bounded FullHistoryAMH 41
+distribution bounded AMH 5
+distribution bounded AMH 17
+distribution bounded AMH 41
+distribution uniform4 DREAM_ZS 5
+distribution uniform4 DREAM_ZS 17
+distribution uniform4 DREAM_ZS 41
+distribution normal_snooker DREAM_ZS 5
+distribution normal_snooker DREAM_ZS 17
+distribution normal_snooker DREAM_ZS 41
+distribution restricted_support MH 5
+distribution restricted_support MH 17
+distribution restricted_support MH 41

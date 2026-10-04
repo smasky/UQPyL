@@ -1,0 +1,17 @@
+{
+  "total": 215,
+  "statuses": {
+    "control": 181,
+    "issue": 34
+  },
+  "issues_by_group": {
+    "SR01": 4,
+    "SR02": 10,
+    "SR03": 3,
+    "SR04": 6,
+    "SR05": 2,
+    "SR06": 6,
+    "SR07": 3
+  }
+}
+Evidence: /home/wmtsky/projects/UQPyL/agent/verification/1002-surrogate-module-review.json

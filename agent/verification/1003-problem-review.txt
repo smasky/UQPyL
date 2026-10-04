@@ -1,0 +1,21 @@
+records 62
+{'case': 'bounds_vector_1', 'value': [[0.5, 15.0]], 'warnings': []}
+{'case': 'bounds_vector_2', 'value': [[0.5, 15.0], [0.5, 15.0]], 'warnings': []}
+{'case': 'bounds_vector_3', 'value': [[0.5, 15.0], [0.5, 15.0], [0.5, 15.0]], 'warnings': []}
+{'case': 'lhs_vector', 'value': [[0.42253739639895077, 16.840399708321357], [0.7788722736828461, 10.804865455845535]], 'warnings': []}
+{'case': 'bounds_row_1', 'value': [[0.5, 15.0]], 'warnings': []}
+{'case': 'bounds_row_2', 'value': [[0.5, 15.0], [0.5, 15.0]], 'warnings': []}
+{'case': 'bounds_row_3', 'value': [[0.5, 15.0], [0.5, 15.0], [0.5, 15.0]], 'warnings': []}
+{'case': 'lhs_row', 'value': [[0.42253739639895077, 16.840399708321357], [0.7788722736828461, 10.804865455845535]], 'warnings': []}
+{'case': 'bounds_column_1', 'value': [[0.5, 0.5], [15.0, 15.0]], 'warnings': []}
+{'case': 'bounds_column_2', 'value': [[0.5, 0.5], [15.0, 15.0]], 'warnings': []}
+{'case': 'bounds_column_3', 'error': 'ValueError', 'message': 'operands could not be broadcast together with shapes (3,2) (2,1) ', 'warnings': []}
+{'case': 'lhs_column', 'value': [[0.42253739639895077, 0.6840399708321356], [17.78872273682846, 10.804865455845535]], 'warnings': []}
+{'case': 'extreme_decode', 'value': [[nan], [1e+308], [1e+308], [1e+308], [1e+308]], 'warnings': ['overflow encountered in subtract', 'invalid value encountered in multiply']}
+{'case': 'extreme_encode', 'value': [[0.0], [0.0], [0.0], [0.0], [nan]], 'warnings': ['overflow encountered in subtract', 'overflow encountered in scalar subtract', 'invalid value encountered in divide']}
+{'case': 'single_func_reused_buffer', 'value': [[3.0, 6.0], [3.0, 6.0], [3.0, 6.0]], 'warnings': []}
+{'case': 'masked_nan_False', 'error': 'ValueError', 'message': 'Simulation output must not contain NaN values.', 'warnings': []}
+{'case': 'masked_nan_True', 'value': [[[1.0], [nan]]], 'warnings': []}
+{'case': 'malformed_output_(3, 1)', 'error': 'ValueError', 'message': '`objs` first dimension must equal n_samples.', 'warnings': []}
+{'case': 'malformed_output_(2, 2)', 'error': 'ValueError', 'message': '`objs` second dimension must equal 1.', 'warnings': []}
+{'case': 'malformed_output_(2,)', 'error': 'TypeError', 'message': '`objs` must be numeric.', 'warnings': []}

@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/home/wmtsky/projects/UQPyL/agent/verification/review_other_modules.py", line 473, in <module>
+    main()
+  File "/home/wmtsky/projects/UQPyL/agent/verification/review_other_modules.py", line 454, in main
+    review()
+  File "/home/wmtsky/projects/UQPyL/agent/verification/review_other_modules.py", line 78, in reviewMetrics
+    record("calibration_controls", f"{name}/scale={scale}", max_error=checkClose(actual, reference, atol=0))
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wmtsky/projects/UQPyL/agent/verification/review_other_modules.py", line 32, in checkClose
+    np.testing.assert_allclose(actual, expected, rtol=2e-10, atol=atol)
+  File "/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 1780, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+  File "/home/wmtsky/anaconda3/envs/py312/lib/python3.12/site-packages/numpy/testing/_private/utils.py", line 988, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=2e-10, atol=0
+
+Mismatched elements: 2 / 2 (100%)
+Mismatch at indices:
+ [0]: 0.0 (ACTUAL), 1.581138830084191e-201 (DESIRED)
+ [1]: 0.0 (ACTUAL), 2.000000000000001e-201 (DESIRED)
+Max absolute difference among violations: 2.e-201
+Max relative difference among violations: 1.
+ ACTUAL: array([0., 0.])
+ DESIRED: array([1.581139e-201, 2.000000e-201])
+ERROR conda.cli.main_run:execute(148): `conda run python -W error agent/verification/review_other_modules.py` failed. (See above for error)

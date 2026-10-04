@@ -2,61 +2,139 @@ name: CI
 
 on:
   push:
-    branches:
-      - "**"
+    branches: ["**"]
   pull_request: {}
   workflow_dispatch: {}
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  style:
+    # Same-repository PR commits are already tested by the branch push.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          python -m pip install ruff==0.16.8 pytest packaging PyYAML
+          python -m ruff format --check UQPyL
+          python -m ruff check UQPyL .github/scripts .github/tests
+          python -m pytest -q .github/tests -W error --basetemp=.cache/pytest/release-gates
+          node --test .github/tests/test_release_run.cjs
+
   tests:
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+    needs: style
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    name: Wheel ${{ matrix.python }} / ${{ matrix.target.id }}
+    runs-on: ${{ matrix.target.os }}
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.12"]
+        python: ["cp310", "cp311", "cp312", "cp313", "cp314"]
+        target:
+          - {id: linux-x86_64, os: ubuntu-latest, platform: linux, arch: x86_64, tag: manylinux_x86_64}
+          - {id: windows-amd64, os: windows-latest, platform: windows, arch: AMD64, tag: win_amd64}
+          - {id: macos-x86_64, os: macos-15-intel, platform: macos, arch: x86_64, tag: macosx_x86_64}
+          - {id: macos-arm64, os: macos-15, platform: macos, arch: arm64, tag: macosx_arm64}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install build frontend
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install build
-
-      - name: Build wheel with isolated dependencies
+          python-version: "3.12"
+      - name: Install build driver
+        run: python -m pip install cibuildwheel==3.2.1
+      - name: Build, repair and test the publishable wheel
         env:
-          CFLAGS: ${{ runner.os == 'Linux' && '-Werror=incompatible-pointer-types' || '' }}
-        run: |
-          python -m build --wheel --outdir dist
-
-      - name: Test installed wheel in a fresh environment
-        env:
+          CIBW_BUILD: ${{ matrix.python }}-${{ matrix.target.tag }}
+          CIBW_ARCHS: ${{ matrix.target.arch }}
+          CIBW_TEST_EXTRAS: viz
+          CIBW_TEST_REQUIRES: pytest pytest-cov
+          CIBW_TEST_COMMAND: python "{project}/.github/scripts/test_wheel.py" --installed --report-dir "{project}/.cache/wheel-test"
+          CIBW_ENVIRONMENT: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1
+          CIBW_ENVIRONMENT_LINUX: OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 CFLAGS="-Werror=incompatible-pointer-types"
+          CIBW_ENVIRONMENT_PASS_LINUX: GITHUB_SHA
           PYTHONUTF8: "1"
-        run: |
-          python .github/scripts/test_wheel.py --wheel-dir dist --report-dir .cache/wheel-test
-
-      - name: Upload wheel and test reports
+        run: python -m cibuildwheel --output-dir wheelhouse --platform ${{ matrix.target.platform }}
+      - name: Retain only successfully tested wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: tested-${{ matrix.python }}-${{ matrix.target.id }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: true
+      - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: wheel-test-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: |
-            dist/*.whl
-            .cache/wheel-test/*.xml
-
-      - name: Upload coverage to Codecov
+          name: reports-${{ matrix.python }}-${{ matrix.target.id }}
+          path: .cache/wheel-test/*
+          overwrite: true
+      - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: .cache/wheel-test/coverage.xml
+          flags: ${{ matrix.target.id }}
+          name: wheel-${{ matrix.target.id }}-${{ matrix.python }}
           fail_ci_if_error: false
+
+  sdist:
+    needs: style
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install build twine
+      - run: python -m build --sdist --outdir dist
+      - run: python -m twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-distribution
+          path: dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: true
+
+  candidate:
+    needs: [style, tests, sdist]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install packaging twine
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tested-*
+          path: candidate/dist
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: source-distribution
+          path: candidate/dist
+      - name: Verify distribution metadata
+        run: python -m twine check --strict candidate/dist/*
+      - name: Record complete matrix, source and hashes
+        run: python .github/scripts/release_artifacts.py manifest --directory candidate
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-candidate
+          path: candidate/
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: true

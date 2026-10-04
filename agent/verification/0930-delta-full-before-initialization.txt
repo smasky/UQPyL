@@ -1,0 +1,125 @@
+.....................................................................FF. [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+.......................................                                  [100%]
+=================================== FAILURES ===================================
+______ testMarsRecoversInteractionInsteadOfRankingInactiveInput[False-3] _______
+
+seed = 3, mixed = False
+
+    @pytest.mark.parametrize("seed", [3, 17, 73])
+    @pytest.mark.parametrize("mixed", [False, True])
+    def testMarsRecoversInteractionInsteadOfRankingInactiveInput(seed, mixed):
+        p = makeProblem()
+        x = LHS("classic").sample(p, 512, seed=seed)
+        y = (x[:, 0] * x[:, 1] + (0.1 * x[:, 2] if mixed else 0))[:, None]
+>       result = MARS(verboseFlag=False).analyze(p, x, y)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_mars_reliability.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/mars.py:90: in _analyzeCore
+    model = fitModel(scaledX)
+            ^^^^^^^^^^^^^^^^^
+UQPyL/analysis/methods/mars.py:87: in fitModel
+    model.fit(inputs[trainRows], scaledY[trainRows])
+UQPyL/surrogate/base.py:310: in fit
+    self.fitHyper(xTrain, yTrain)
+UQPyL/surrogate/mars/mars.py:212: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/mars/mars.py:190: in fitModel
+    self.forward_pass(xTrain, yTrain, sample_weight, output_weight, missing, self.xlabels_, [], skip_scrub=True)
+UQPyL/surrogate/mars/mars.py:485: in forward_pass
+    forward_passer = ForwardPasser(X, missing, y, sample_weight, xlabels=self.xlabels_, linvars=linvars, **args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/mars/core/_forward.pyx:144: in UQPyL.surrogate.mars.core._forward.ForwardPasser.__init__
+    self.outcome = MultipleOutcomeDependentData.alloc(self.y, self.sample_weight, self.m,
+UQPyL/surrogate/mars/core/_knot_search.pyx:106: in UQPyL.surrogate.mars.core._knot_search.MultipleOutcomeDependentData.alloc
+    outcomes.append(SingleOutcomeDependentData.alloc(y[:, i], weights[i % n_weights], m, max_terms))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   theta = np.dot(weight.Q_t, wy)
+E   RuntimeWarning: invalid value encountered in dot
+
+UQPyL/surrogate/mars/core/_knot_search.pyx:160: RuntimeWarning
+______ testMarsRecoversInteractionInsteadOfRankingInactiveInput[False-17] ______
+
+seed = 17, mixed = False
+
+    @pytest.mark.parametrize("seed", [3, 17, 73])
+    @pytest.mark.parametrize("mixed", [False, True])
+    def testMarsRecoversInteractionInsteadOfRankingInactiveInput(seed, mixed):
+        p = makeProblem()
+        x = LHS("classic").sample(p, 512, seed=seed)
+        y = (x[:, 0] * x[:, 1] + (0.1 * x[:, 2] if mixed else 0))[:, None]
+>       result = MARS(verboseFlag=False).analyze(p, x, y)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_mars_reliability.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/mars.py:90: in _analyzeCore
+    model = fitModel(scaledX)
+            ^^^^^^^^^^^^^^^^^
+UQPyL/analysis/methods/mars.py:87: in fitModel
+    model.fit(inputs[trainRows], scaledY[trainRows])
+UQPyL/surrogate/base.py:310: in fit
+    self.fitHyper(xTrain, yTrain)
+UQPyL/surrogate/mars/mars.py:212: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/mars/mars.py:190: in fitModel
+    self.forward_pass(xTrain, yTrain, sample_weight, output_weight, missing, self.xlabels_, [], skip_scrub=True)
+UQPyL/surrogate/mars/mars.py:485: in forward_pass
+    forward_passer = ForwardPasser(X, missing, y, sample_weight, xlabels=self.xlabels_, linvars=linvars, **args)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/mars/core/_forward.pyx:144: in UQPyL.surrogate.mars.core._forward.ForwardPasser.__init__
+    self.outcome = MultipleOutcomeDependentData.alloc(self.y, self.sample_weight, self.m,
+UQPyL/surrogate/mars/core/_knot_search.pyx:106: in UQPyL.surrogate.mars.core._knot_search.MultipleOutcomeDependentData.alloc
+    outcomes.append(SingleOutcomeDependentData.alloc(y[:, i], weights[i % n_weights], m, max_terms))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   theta = np.dot(weight.Q_t, wy)
+E   RuntimeWarning: invalid value encountered in dot
+
+UQPyL/surrogate/mars/core/_knot_search.pyx:160: RuntimeWarning
+=========================== short test summary info ============================
+FAILED tests/test_analysis_mars_reliability.py::testMarsRecoversInteractionInsteadOfRankingInactiveInput[False-3]
+FAILED tests/test_analysis_mars_reliability.py::testMarsRecoversInteractionInsteadOfRankingInactiveInput[False-17]
+2 failed, 2053 passed in 39.36s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q -W error` failed. (See above for error)

@@ -14,6 +14,7 @@ from ...optimization import AlgorithmABC
 from ..scaler import Scaler
 from ..poly import PolyFeature
 
+
 class GPR(SurrogateABC):
     """
     Gaussian process regression surrogate model.
@@ -39,27 +40,29 @@ class GPR(SurrogateABC):
         [1] C. E. Rasmussen and C. K. I. Williams, Gaussian Processes for Machine Learning,
             MIT Press, 2006.
     """
-    
+
     name = "GPR"
     supportsUncertainty = True
     internalOptimizerFamilies = ("MP", "EA")
     internalMPOptimizer = "Boxmin"
-    
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                    polyFeature: PolyFeature = None,
-                        kernel: Optional[BaseKernel] = None,
-                            optimizer: AlgorithmABC = "Boxmin", nRestartTimes: Optional[int] = None,
-                                    C: float = 1e-9,
-                                    C_attr: dict = {'ub': 1e-6, 'lb':1e-12, 
-                                                        'type': 'float', 
-                                                        'log': 'True'}):
-        
+
+    def __init__(
+        self,
+        scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+        polyFeature: PolyFeature = None,
+        kernel: Optional[BaseKernel] = None,
+        optimizer: AlgorithmABC = "Boxmin",
+        nRestartTimes: Optional[int] = None,
+        C: float = 1e-9,
+        C_attr: dict = {"ub": 1.0, "lb": 1e-12, "type": "float", "log": True},
+    ):
+
         super().__init__(scalers=scalers, polyFeature=polyFeature)
-        
+
         self.kernel = None
-        
+
         self.setting.set("C", C, C_attr)
-        
+
         if optimizer == "Boxmin":
             optimizer = Boxmin()
         elif optimizer == "LBFGSB":
@@ -72,164 +75,191 @@ class GPR(SurrogateABC):
             optimizer.saveFlag = False
             optimizer.logFlag = False
             if alg_type not in self.internalOptimizerFamilies:
-                raise ValueError(
-                    "GPR internal optimizer only supports MP (currently Boxmin) or EA."
-                )
+                raise ValueError("GPR internal optimizer only supports MP (currently Boxmin) or EA.")
         else:
             raise ValueError(
                 "GPR optimizer must be 'Boxmin', 'LBFGSB', an MP optimizer, or an AlgorithmABC instance in MP/EA."
             )
-            
+
         self.optimizer = optimizer
 
         self.registerParameterApplier("kernel", self.setKernel)
-        
+
         self.setKernel(RBF() if kernel is None else kernel)
-        
+
         self.nRes = resolveRestarts(self.optimizer, nRestartTimes)
 
     def _prepare_training_components(self, xTrain: np.ndarray):
         self.kernel.initialize(xTrain.shape[1])
 
+    def _checkAndScale(self, xTrain, yTrain):
+        self._validateTrainingValues(xTrain, yTrain)
+        self._validateNoise(checkBounds=True)
+        return super()._checkAndScale(xTrain, yTrain)
+
+    def _validateTrainingValues(self, xTrain, yTrain):
+        self._checkSingleOutput(yTrain)
+        arrays = [np.asarray(values) for values in (xTrain, yTrain)]
+        if any(values.ndim not in {1, 2} or not values.size or not np.all(np.isfinite(values)) for values in arrays):
+            raise ValueError("GPR training inputs and targets must be nonempty finite sample arrays.")
+        if len(arrays[0]) != len(arrays[1]):
+            raise ValueError("GPR training inputs and targets must have matching sample counts.")
+
+    def _validateNoise(self, *, checkBounds=False):
+        noise = np.asarray(self.setting.get("C"), dtype=float)
+        if noise.ndim != 0 or not np.isfinite(noise) or noise < 0:
+            raise ValueError("GPR C must be a finite nonnegative scalar.")
+        if checkBounds and "C" in self.setting.parVal:
+            lower, upper = self.setting.parLB["C"], self.setting.parUB["C"]
+            if (
+                not np.all(np.isfinite(lower))
+                or not np.all(np.isfinite(upper))
+                or np.any(lower < 0)
+                or np.any(lower > upper)
+                or (self.setting.parLog["C"] and np.any(lower <= 0))
+            ):
+                raise ValueError(
+                    "GPR C search bounds must be finite, ordered, and nonnegative (positive for log search)."
+                )
+        return float(noise)
+
     def _invalidate_fit_after_structure_change(self):
         self.resetFitState()
         return self
-        
-###---------------------------------public function---------------------------------------###
+
+    ###---------------------------------public function---------------------------------------###
     def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         self.resetFitState()
+        self.xTrain = self.yTrain = None
+        self._validateTrainingValues(xTrain, yTrain)
+        self._validateNoise()
         self.storeTrainingData(xTrain, yTrain)
         self._objfunc(xTrain, yTrain, record=True)
         return self
 
     def fitHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
+        self.resetFitState()
+        self.xTrain = self.yTrain = None
+        self._validateTrainingValues(xTrain, yTrain)
+        self._validateNoise(checkBounds=True)
+        self.storeTrainingData(xTrain, yTrain)
         self._optimizeHyper(xTrain, yTrain)
         return self
-            
-    def predict(self, xPred: np.ndarray, returnStd: bool = False,
-                returnVar: bool = False):
+
+    def predict(self, xPred: np.ndarray, returnStd: bool = False, returnVar: bool = False):
         returnStd, returnVar = self._normalize_predict_flags(returnStd, returnVar)
         self.requireFitted("L", "alpha")
-        
-        xPred = self.__X_transform__(xPred)
-        
+
+        xPred = self._transformX(xPred)
+
         K_trans = self.kernel(xPred, self.xTrain)
         y_mean = K_trans @ self.fitState["alpha"]
         if not (returnStd or returnVar):
-            return self.__Y_inverse_transform__(y_mean)
-               
-        V = solve_triangular(
-            self.fitState["L"], K_trans.T, lower=True
-        )
-        
+            return self._inverseTransformY(y_mean)
+
+        V = solve_triangular(self.fitState["L"], K_trans.T, lower=True)
+
         y_var = self.kernel.diag(xPred)
         y_var -= np.einsum("ij, ji->i", V.T, V)
-        y_var[y_var<0] = 0.0
+        y_var[y_var < 0] = 0.0
 
         return self._format_uncertainty_output(
-            self.__Y_inverse_transform__(y_mean),
+            self._inverseTransformY(y_mean),
             y_var.reshape(-1, 1),
             returnStd=returnStd,
             returnVar=returnVar,
         )
-    
-###--------------------------private functions--------------------###    
+
+    ###--------------------------private functions--------------------###
     def _optimizeHyper(self, xTrain: np.ndarray, yTrain: np.ndarray):
         """
-            Internal hyper-parameter optimization.
+        Internal hyper-parameter optimization.
 
-            Current supported optimizer families:
-                - MP: currently implemented by Boxmin
-                - EA: evolutionary algorithms with alg_type == "EA"
+        Current supported optimizer families:
+            - MP: currently implemented by Boxmin
+            - EA: evolutionary algorithms with alg_type == "EA"
         """
         nameList = self.getParaList()
         if not nameList:
             return self.fitModel(xTrain, yTrain)
-        
+
         paraInfos, ub, lb = self.setting.getParaInfos(nameList)
-        
+
         nInput = ub.size
-        
+
         alg_type = getattr(self.optimizer, "alg_type", getattr(self.optimizer, "type", None))
         if alg_type == "MP":
-            
+
             def objFunc(varValue):
 
                 self.setting.setVals(paraInfos, varValue)
-                
-                return self._objfunc(xTrain, yTrain, record = False)
-                
-            problem = Problem(nInput = nInput, nObj = 1, ub = ub, lb = lb, 
-                                objFunc = objFunc)
-            
+
+                return self._objfunc(xTrain, yTrain, record=False)
+
+            problem = Problem(nInput=nInput, nObj=1, ub=ub, lb=lb, objFunc=objFunc)
+
             bestDecs, bestObj = runLocalRestarts(self, problem, paraInfos)
-        
+
         elif alg_type == "EA":
-            
+
             def objFunc(varValues):
-                
+
                 objs = np.zeros(varValues.shape[0])
-                
+
                 for i, value in enumerate(varValues):
-                    
                     self.setting.setVals(paraInfos, value)
-                    
+
                     objs[i] = self._objfunc(xTrain, yTrain, record=False)
-                    
-                return objs.reshape( (-1, 1) )
-            
-            problem = Problem(nInput, 1, ub, lb, objFunc = objFunc)
-            
+
+                return objs.reshape((-1, 1))
+
+            problem = Problem(nInput, 1, ub, lb, objFunc=objFunc)
+
             res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
             bestDecs = np.asarray(res.bestDecs).ravel()
             bestObj = float(np.asarray(res.bestObjs).reshape(-1)[0])
-            
+
             for _ in range(self.nRes):
-                
                 res = self.optimizer.run(problem, seed=spawn_seed(self.rng))
                 dec = np.asarray(res.bestDecs).ravel()
                 obj = float(np.asarray(res.bestObjs).reshape(-1)[0])
-                
+
                 if obj < bestObj:
                     bestDecs, bestObj = dec, obj
         else:
-            raise ValueError(
-                "GPR internal optimizer only supports MP (currently Boxmin) or EA."
-            )
-                    
+            raise ValueError("GPR internal optimizer only supports MP (currently Boxmin) or EA.")
+
         self.setting.setVals(paraInfos, np.asarray(bestDecs).ravel())
         self.resetFitState()
         self.storeTrainingData(xTrain, yTrain)
         self._objfunc(xTrain, yTrain, record=True)
-        
+
     def _objfunc(self, xTrain, yTrain, record=False):
         """Return negative log marginal likelihood for minimization."""
-        
+        C = self._validateNoise()
         K = self.kernel(xTrain)
-        
-        C = self.setting.get("C")
-        
+
         K[np.diag_indices_from(K)] += C
-        
+
         try:
-            L = cholesky(K, lower = True, check_finite = False)
+            L = cholesky(K, lower=True, check_finite=False)
         except np.linalg.LinAlgError as e:
             K[np.diag_indices_from(K)] += 1e-6
-            L = cholesky(K, lower = True, check_finite = False)
-        
+            L = cholesky(K, lower=True, check_finite=False)
+
         alpha = cho_solve((L, True), yTrain, check_finite=False)
-        log_likelihood_dims =  -0.5* np.einsum("ik,ik->k", yTrain, alpha)
+        log_likelihood_dims = -0.5 * np.einsum("ik,ik->k", yTrain, alpha)
         log_likelihood_dims -= np.log(np.diag(L)).sum()
-        log_likelihood_dims -= K.shape[0]/2 * np.log(2*np.pi)
+        log_likelihood_dims -= K.shape[0] / 2 * np.log(2 * np.pi)
         negativeLogLikelihood = -np.sum(log_likelihood_dims)
-        
+
         if record:
             self.fitState["L"] = L
             self.fitState["alpha"] = alpha
             self.fitState["objective"] = negativeLogLikelihood
 
         return negativeLogLikelihood
-    
+
     def setKernel(self, kernel: BaseKernel):
         return installKernel(self, kernel, BaseKernel)
 

@@ -1,0 +1,815 @@
+{
+  "case_count": 81,
+  "records": [
+    {
+      "name": "normal",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 1.1102230246251565e-16
+    },
+    {
+      "name": "positive",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 7.105427357601002e-15
+    },
+    {
+      "name": "positive",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 7.105427357601002e-15
+    },
+    {
+      "name": "negative",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.125,
+      "actual_score": 0.125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 1.7763568394002505e-15
+    },
+    {
+      "name": "negative",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 1.7763568394002505e-15
+    },
+    {
+      "name": "offset",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.125,
+      "actual_score": 0.125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.125,
+      "actual_score": 0.125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.125,
+      "actual_score": 0.125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 16,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.15625,
+      "actual_score": 0.15625,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 16,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.11250000000000004,
+      "actual_score": 0.11250000000000004,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 16,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 2.7755575615628914e-17
+    },
+    {
+      "name": "positive",
+      "sample_count": 16,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.046875,
+      "actual_score": 0.046875,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 16,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.09022435897435907,
+      "actual_score": 0.09022435897435907,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 16,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 16,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.34375,
+      "actual_score": 0.34375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 16,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.20817307692307702,
+      "actual_score": 0.20817307692307702,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 16,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 8.881784197001252e-16
+    },
+    {
+      "name": "offset",
+      "sample_count": 16,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 1.34375,
+      "actual_score": 1.34375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 16,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.5488782051282053,
+      "actual_score": 0.5488782051282053,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 16,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 16,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.03125,
+      "actual_score": 0.03125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 16,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.03125,
+      "actual_score": 0.03125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 16,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.03125,
+      "actual_score": 0.03125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.17170745920745922,
+      "actual_score": 0.17170745920745922,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.18994082840236662,
+      "actual_score": 0.18994082840236662,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1786080150239326,
+      "actual_score": 0.1786080150239326,
+      "max_quantile_absolute_error": 5.551115123125783e-17
+    },
+    {
+      "name": "positive",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.158479020979021,
+      "actual_score": 0.158479020979021,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.07810650887573925,
+      "actual_score": 0.07810650887573925,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.16075350174239658,
+      "actual_score": 0.16075350174239658,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.15270979020978892,
+      "actual_score": 0.15270979020978892,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.12307692307692282,
+      "actual_score": 0.12307692307692282,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.115453972257251,
+      "actual_score": 0.115453972257251,
+      "max_quantile_absolute_error": 1.7763568394002505e-15
+    },
+    {
+      "name": "offset",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 5.4179487179487165,
+      "actual_score": 5.4179487179487165,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 2.1692307692307686,
+      "actual_score": 2.1692307692307686,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.5447396574868814,
+      "actual_score": 0.5447396574868814,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.00512820512820511,
+      "actual_score": 0.00512820512820511,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.00512820512820511,
+      "actual_score": 0.00512820512820511,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.00512820512820511,
+      "actual_score": 0.00512820512820511,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 256,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.30670166015625,
+      "actual_score": 0.30670166015625,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 256,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.17798355992256276,
+      "actual_score": 0.17798355992256276,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "normal",
+      "sample_count": 256,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.12091110145794044,
+      "actual_score": 0.12091110145794044,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 256,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.2440185546875,
+      "actual_score": 0.2440185546875,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 256,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.0749765047318192,
+      "actual_score": 0.0749765047318192,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "positive",
+      "sample_count": 256,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1905894568934252,
+      "actual_score": 0.1905894568934252,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 256,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.16448974609375,
+      "actual_score": 0.16448974609375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 256,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.270390731339441,
+      "actual_score": 0.270390731339441,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "negative",
+      "sample_count": 256,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.15919525784870386,
+      "actual_score": 0.15919525784870386,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 256,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 21.333984375,
+      "actual_score": 21.333984375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 256,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 8.539004700203254,
+      "actual_score": 8.539004700203254,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "offset",
+      "sample_count": 256,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 2.1343252462389524,
+      "actual_score": 2.1343252462389524,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 256,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.001953125,
+      "actual_score": 0.001953125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 256,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.001953125,
+      "actual_score": 0.001953125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "binary",
+      "sample_count": 256,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.001953125,
+      "actual_score": 0.001953125,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e-200",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.13981643356643225,
+      "actual_score": 0.13981643356643225,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e-200",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1508875739644969,
+      "actual_score": 0.1508875739644969,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e-200",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.11784064868676195,
+      "actual_score": 0.11784064868676195,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_-1e-200",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1745920745920735,
+      "actual_score": 0.1745920745920735,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_-1e-200",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1508875739644969,
+      "actual_score": 0.1508875739644969,
+      "max_quantile_absolute_error": 5.665694374725699e-219
+    },
+    {
+      "name": "scale_-1e-200",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.13874157615696492,
+      "actual_score": 0.13874157615696492,
+      "max_quantile_absolute_error": 3.6260443998244473e-217
+    },
+    {
+      "name": "scale_1e+200",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.13981643356643225,
+      "actual_score": 0.13981643356643225,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e+200",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1508875739644969,
+      "actual_score": 0.1508875739644969,
+      "max_quantile_absolute_error": 6.639224910209589e+181
+    },
+    {
+      "name": "scale_1e+200",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.11784064868676195,
+      "actual_score": 0.11784064868676195,
+      "max_quantile_absolute_error": 4.249103942534137e+183
+    },
+    {
+      "name": "scale_1e+308",
+      "sample_count": 65,
+      "n_region": 2,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.13981643356643225,
+      "actual_score": 0.13981643356643225,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e+308",
+      "sample_count": 65,
+      "n_region": 5,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.1508875739644969,
+      "actual_score": 0.1508875739644969,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "scale_1e+308",
+      "sample_count": 65,
+      "n_region": 20,
+      "numpy_region_comparison": true,
+      "decimal_regions_match": true,
+      "expected_score": 0.11784064868676195,
+      "actual_score": 0.11784064868676195,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_0",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_0",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_0",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_1",
+      "sample_count": 4,
+      "n_region": 2,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.375,
+      "actual_score": 0.375,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_1",
+      "sample_count": 4,
+      "n_region": 5,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_1",
+      "sample_count": 4,
+      "n_region": 20,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 1.99584030953472e+292
+    },
+    {
+      "name": "extreme_2",
+      "sample_count": 7,
+      "n_region": 2,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.5952380952380951,
+      "actual_score": 0.5952380952380951,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_2",
+      "sample_count": 7,
+      "n_region": 5,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.3857142857142857,
+      "actual_score": 0.3857142857142857,
+      "max_quantile_absolute_error": 0.0
+    },
+    {
+      "name": "extreme_2",
+      "sample_count": 7,
+      "n_region": 20,
+      "numpy_region_comparison": false,
+      "decimal_regions_match": true,
+      "expected_score": 0.0,
+      "actual_score": 0.0,
+      "max_quantile_absolute_error": 1.99584030953472e+292
+    }
+  ]
+}

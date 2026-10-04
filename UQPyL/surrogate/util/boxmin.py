@@ -1,5 +1,7 @@
 import numpy as np
-class Boxmin():
+
+
+class Boxmin:
     """
     Internal MP optimizer used by surrogate models.
 
@@ -11,13 +13,14 @@ class Boxmin():
           Objective evaluations and returned decisions use the supplied bounds.
         - Stop when multiplicative step factors are within 0.001 of one.
     """
+
     type = "MP"
     name = "Boxmin"
-    
+
     def __init__(self) -> None:
-        
+
         pass
-        
+
     ###################################Interface Function#################################
     def run(self, problem, xInit=None, seed=None):
         lower = np.asarray(problem.lb, dtype=float).ravel().copy()
@@ -60,85 +63,85 @@ class Boxmin():
         self._start(position)
 
         while np.any(self.D[active] > 1.001):
-            pos_copy=self.pos.copy()
+            pos_copy = self.pos.copy()
             self._explore()
             self._move(pos_copy)
-        
-        self.bestDec=toParameters(self.pos)
-        self.bestObj=self.f
-        
+
+        self.bestDec = toParameters(self.pos)
+        self.bestObj = self.f
+
         return (self.bestDec, self.bestObj)
-    
+
     #######################################Private Function################################
     def _move(self, pos_old: np.ndarray):
-        
-        pos=self.pos.copy()
-        f=self.f
-        
-        v=pos/pos_old
-        
-        rept=True
+
+        pos = self.pos.copy()
+        f = self.f
+
+        v = pos / pos_old
+
+        rept = True
         while rept:
-            pos_c=np.minimum(self.ub, np.maximum(self.lb, pos*v))
+            pos_c = np.minimum(self.ub, np.maximum(self.lb, pos * v))
             if np.array_equal(pos_c, pos):
                 break
-            ff=self.func(pos_c)
-            
-            if ff<f:
-                pos=pos_c.copy()
-                f=ff
-                v=v**2
+            ff = self.func(pos_c)
+
+            if ff < f:
+                pos = pos_c.copy()
+                f = ff
+                v = v**2
             else:
-                rept=False
-                
-        self.D = self.D[np.r_[1:pos.size, 0]] ** 0.25
-        self.f=f
-        self.pos=pos.copy()
-            
+                rept = False
+
+        self.D = self.D[np.r_[1 : pos.size, 0]] ** 0.25
+        self.f = f
+        self.pos = pos.copy()
+
     def _explore(self):
-        
-        pos=self.pos.copy()
-        f=self.f
-        
-        for k in np.arange(0,pos.size):
+
+        pos = self.pos.copy()
+        f = self.f
+
+        for k in np.arange(0, pos.size):
             if self.lb[k] == self.ub[k]:
                 continue
-            pos_c=pos.copy()
+            pos_c = pos.copy()
             DD = float(np.asarray(self.D[k]).reshape(-1)[0])
-            
-            if pos[k]==self.ub[k]:
-                atbd=True
-                pos_c[k]=pos[k]/np.sqrt(DD)
-            elif pos[k]==self.lb[k]:
-                atbd=True
-                pos_c[k]=pos[k]*np.sqrt(DD)
+
+            if pos[k] == self.ub[k]:
+                atbd = True
+                pos_c[k] = pos[k] / np.sqrt(DD)
+            elif pos[k] == self.lb[k]:
+                atbd = True
+                pos_c[k] = pos[k] * np.sqrt(DD)
             else:
-                atbd=False
-                pos_c[k]=np.minimum(self.ub[k], pos[k]*DD)
-            
+                atbd = False
+                pos_c[k] = np.minimum(self.ub[k], pos[k] * DD)
+
             pos_c[k] = np.clip(pos_c[k], self.lb[k], self.ub[k])
-            ff=self.func(pos_c)
-            
-            if ff<f:
-                pos=pos_c.copy()
-                f=ff
+            ff = self.func(pos_c)
+
+            if ff < f:
+                pos = pos_c.copy()
+                f = ff
             else:
                 if not atbd:
                     pos_c[k] = np.maximum(self.lb[k], pos[k] / DD)
                     ff = self.func(pos_c)
-                    if ff<f:
-                        pos=pos_c.copy()
-                        f=ff
-        self.pos=pos
-        self.f=f
-        
+                    if ff < f:
+                        pos = pos_c.copy()
+                        f = ff
+        self.pos = pos
+        self.f = f
+
     def _start(self, xInit):
-        
-        self.initalPos=xInit
-        
+
+        self.initalPos = xInit
+
         p = xInit.size
         D = 2 ** (np.arange(1, p + 1, dtype=float) / (p + 2))
-        
-        self.D=D
-        self.f=self.func(xInit)
-        self.pos=self.initalPos
+
+        self.D = D
+        self.f = self.func(xInit)
+        self.pos = self.initalPos

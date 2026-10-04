@@ -20,8 +20,18 @@ def _coerce_inf_result(source):
     raise TypeError("source must be InfResult, InfReader, or sqlite path.")
 
 
-def plot_infer_trace(source, fontsize=20, burnIn: int = 0, colors=None, linewidth: float = 2.0,
-                     xLabel="Iterations", yLabel="Value", subtitle=None, idx: Optional[list] = None, gridOn=True):
+def plot_infer_trace(
+    source,
+    fontsize=20,
+    burnIn: int = 0,
+    colors=None,
+    linewidth: float = 2.0,
+    xLabel="Iterations",
+    yLabel="Value",
+    subtitle=None,
+    idx: Optional[list] = None,
+    gridOn=True,
+):
     import math
     import matplotlib.pyplot as plt
 
@@ -39,8 +49,13 @@ def plot_infer_trace(source, fontsize=20, burnIn: int = 0, colors=None, linewidt
     for i in range(nDim):
         ax = axes[i]
         for j in range(nChains):
-            ax.plot(np.arange(burnIn, nSamples), decs[j, burnIn:, i].ravel(), lw=linewidth, color=colors[j % len(colors)])
-        ax.set_title(subtitle[i] if subtitle is not None else f"Decision Variable {i+1}", fontsize=int(fontsize * 0.9))
+            ax.plot(
+                np.arange(burnIn, nSamples), decs[j, burnIn:, i].ravel(), lw=linewidth, color=colors[j % len(colors)]
+            )
+        ax.set_title(
+            subtitle[i] if subtitle is not None else f"Decision Variable {idx[i] + 1 if idx is not None else i + 1}",
+            fontsize=int(fontsize * 0.9),
+        )
         ax.set_xlabel(xLabel, fontsize=int(fontsize * 0.85))
         ax.set_ylabel(yLabel, fontsize=int(fontsize * 0.85))
         if gridOn:
@@ -50,7 +65,9 @@ def plot_infer_trace(source, fontsize=20, burnIn: int = 0, colors=None, linewidt
     return fig, axes
 
 
-def _plot_infer_core(decs, *, bins=30, hist=True, kde=True, mode="chains", fontsize=18, gridOn=True, idx=None, legendOn=True):
+def _plot_infer_core(
+    decs, *, bins=30, hist=True, kde=True, mode="chains", fontsize=18, gridOn=True, idx=None, legendOn=True
+):
     import math
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -75,46 +92,78 @@ def _plot_infer_core(decs, *, bins=30, hist=True, kde=True, mode="chains", fonts
             for j in range(nChains):
                 c = colors[j % len(colors)]
                 if hist:
-                    sns.histplot(decs[j, :, i], bins=bins, stat="density", alpha=0.28, color=c, ax=ax, edgecolor="black")
+                    sns.histplot(
+                        decs[j, :, i], bins=bins, stat="density", alpha=0.28, color=c, ax=ax, edgecolor="black"
+                    )
                 if kde:
                     sns.kdeplot(decs[j, :, i], ax=ax, lw=2.0, color=c, alpha=0.9)
                 if i == 0:
-                    handles.append(plt.Line2D([], [], color=c, lw=2.0, label=f"Chain {j+1}"))
-        ax.set_title(f"Decision Variable {idx[i]+1}" if idx is not None else f"Decision Variable {i+1}", fontsize=int(fontsize * 0.95))
+                    handles.append(plt.Line2D([], [], color=c, lw=2.0, label=f"Chain {j + 1}"))
+        ax.set_title(
+            f"Decision Variable {idx[i] + 1}" if idx is not None else f"Decision Variable {i + 1}",
+            fontsize=int(fontsize * 0.95),
+        )
         if gridOn:
             ax.grid(alpha=0.8, linestyle="--", linewidth=1.5)
     if legendOn and mode == "chains" and handles:
         plt.tight_layout(rect=[0, 0.10, 1, 1])
-        fig.legend(handles=handles, ncol=max(1, int(len(handles) / 2.0)), fontsize=int(fontsize * 0.8),
-                   frameon=True, loc="lower center", bbox_to_anchor=(0.5, 0.02), bbox_transform=fig.transFigure)
+        fig.legend(
+            handles=handles,
+            ncol=max(1, int(len(handles) / 2.0)),
+            fontsize=int(fontsize * 0.8),
+            frameon=True,
+            loc="lower center",
+            bbox_to_anchor=(0.5, 0.02),
+            bbox_transform=fig.transFigure,
+        )
     else:
         plt.tight_layout()
     return fig, axes
 
 
-def plot_infer_stat(source, fontsize=18, burnIn: int = 0, bins=30, hist=True, kde=True, idx: Optional[list] = None,
-                    legendOn=True, gridOn=True):
+def plot_infer_stat(
+    source,
+    fontsize=18,
+    burnIn: int = 0,
+    bins=30,
+    hist=True,
+    kde=True,
+    idx: Optional[list] = None,
+    legendOn=True,
+    gridOn=True,
+):
     import matplotlib.pyplot as plt
 
     result = _coerce_inf_result(source)
     decs = np.asarray(result.decs)[:, burnIn:, :]
     if idx is not None:
         decs = decs[:, :, idx]
-    fig, axes = _plot_infer_core(decs, bins=bins, hist=hist, kde=kde, mode="chains",
-                                 fontsize=fontsize, legendOn=legendOn, gridOn=gridOn, idx=idx)
+    fig, axes = _plot_infer_core(
+        decs, bins=bins, hist=hist, kde=kde, mode="chains", fontsize=fontsize, legendOn=legendOn, gridOn=gridOn, idx=idx
+    )
     plt.show()
     return fig, axes
 
 
-def plot_infer_stat_combined(source, fontsize=18, burnIn: int = 0, bins=30, hist=True, kde=True,
-                             showCI: bool = False, CI: float = 0.95, legendOn: bool = False):
+def plot_infer_stat_combined(
+    source,
+    fontsize=18,
+    burnIn: int = 0,
+    bins=30,
+    hist=True,
+    kde=True,
+    showCI: bool = False,
+    CI: float = 0.95,
+    legendOn: bool = False,
+):
     import matplotlib.pyplot as plt
     from matplotlib.patches import Patch
 
     result = _coerce_inf_result(source)
     decs = np.asarray(result.decs)[:, burnIn:, :]
-    fig, axes = _plot_infer_core(decs, bins=bins, hist=hist, kde=kde, mode="combined",
-                                 fontsize=fontsize, legendOn=legendOn)
+    fig, axes = _plot_infer_core(
+        decs, bins=bins, hist=hist, kde=kde, mode="combined", fontsize=fontsize, legendOn=legendOn
+    )
     if showCI:
         alpha_low = (1.0 - CI) / 2.0 * 100.0
         q_low, q_high = alpha_low, 100.0 - alpha_low
@@ -128,7 +177,7 @@ def plot_infer_stat_combined(source, fontsize=18, burnIn: int = 0, bins=30, hist
             ax.axvspan(ci_low, ci_high, color="red", alpha=0.15)
             handles = [
                 plt.Line2D([], [], color="red", lw=2.2, label="Median"),
-                Patch(facecolor="red", alpha=0.15, label=f"{int(CI*100)}% CI"),
+                Patch(facecolor="red", alpha=0.15, label=f"{int(CI * 100)}% CI"),
             ]
             ax.legend(handles=handles, fontsize=int(fontsize * 0.9), frameon=True, loc="best")
     plt.show()

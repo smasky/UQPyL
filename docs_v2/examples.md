@@ -165,7 +165,8 @@ GA | iter=0 eval=8 best=1.8884e-02 cv=0 time=0.0s
 Optimization finished
   algorithm        : GA
   status           : finished
-  iterations       : 3
+  stop reason      : max_fes
+  iterations       : 2
   evaluations      : 24
   best value       : 1.1468e-02
   best X           : [3.0409e-03, 1.0704e-01]
@@ -207,6 +208,7 @@ MH | iter=6 eval=18 curLogp=-1.1043e+00 accept=5.8333e-01 feasible=1.0000e+00 be
 Inference finished
   method          : MH
   status          : finished
+  stop reason     : max_iters
   iterations      : 7
   evaluations     : 20
   chains          : 2
@@ -256,7 +258,7 @@ Example output:
 ```text
 (8, 5)
 (8, 2)
-0.4890752707178604
+1.633495978082566
 ```
 
 ## MCMC Inference
@@ -317,7 +319,7 @@ X -> simFunc(X) -> sim -> GLUE score -> behavioral / best samples
 This example calibrates two parameters against two observed time steps:
 
 ```text
-obs = [[1.0], [2.0]]
+obs = [1.0, 2.0]
 sim(t1) = x1
 sim(t2) = x2
 ```
@@ -339,18 +341,18 @@ from UQPyL.calibration import GLUE
 from UQPyL.problem import ModelProblem
 
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))  # (n_samples, n_time, n_series)
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))  # (n_samples, n_obs)
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
-problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, ub=3.0, lb=0.0, simFunc=simFunc, obs=obs, name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)
@@ -397,7 +399,6 @@ from UQPyL.problem import Problem
 from UQPyL.surrogate import RandSelect, mse, r_square
 from UQPyL.surrogate.rbf import RBF
 
-np.random.seed(123)
 
 
 def objFunc(X):
@@ -410,7 +411,7 @@ problem = Problem(nInput=2, nObj=1, ub=1.0, lb=0.0, objFunc=objFunc, optType="mi
 # Generate training data, hold out 25%, then score the surrogate on unseen points.
 X = LHS("classic").sample(problem, nSamples=30, seed=123)
 Y = problem.evaluate(X).objs
-trainIdx, testIdx = RandSelect(pTest=25).split(X)
+trainIdx, testIdx = RandSelect(pTest=25).split(X, seed=123)
 
 model = RBF()
 model.fit(X[trainIdx], Y[trainIdx])
@@ -427,8 +428,8 @@ Example output:
 
 ```text
 (7, 1)
-0.9944563882440021
-[0.00043401]
+0.9973224507824447
+[0.00050296]
 ```
 
 ## Surrogate-Assisted Optimization Pattern

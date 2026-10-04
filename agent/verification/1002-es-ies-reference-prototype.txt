@@ -1,0 +1,4 @@
+records 85
+max upstream difference 3.552713678800501e-15
+max ES covariance error 3.1086244689504383e-15
+{'case': 'original_scalar_counterexample', 'corrected_mean': 0.5, 'corrected_variance': 0.4999999999999999, 'expected_mean': 0.5, 'expected_variance': 0.5}

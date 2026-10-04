@@ -1,0 +1,107 @@
+{
+  "cases": [
+    {
+      "input_factor": 0.001,
+      "num_levels": 4,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    },
+    {
+      "input_factor": 1,
+      "num_levels": 4,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    },
+    {
+      "input_factor": 1000,
+      "num_levels": 4,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    },
+    {
+      "input_factor": 0.001,
+      "num_levels": 6,
+      "effect_mode": "unit",
+      "effects": [
+        60.00000000000067,
+        -5.999999999999994
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909101,
+        0.0909090909090899
+      ]
+    },
+    {
+      "input_factor": 1,
+      "num_levels": 6,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -5.999999999999996
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909092,
+        0.09090909090909086
+      ]
+    },
+    {
+      "input_factor": 1000,
+      "num_levels": 6,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -5.999999999999996
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909092,
+        0.09090909090909086
+      ]
+    }
+  ],
+  "max_absolute_error": 6.679101716144942e-13
+}

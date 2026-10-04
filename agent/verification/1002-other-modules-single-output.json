@@ -1,0 +1,1459 @@
+{
+  "summary": {
+    "records": 169,
+    "discrepancies": 0,
+    "controls": 106
+  },
+  "records": [
+    {
+      "group": "OM01",
+      "case": "nse/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.0,
+        8.000000000000004
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.9908470001860921,
+        0.9999999999999998
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.947873410771797,
+        0.9199999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=1.0",
+      "discrepancy": false,
+      "max_error": 1.6653345369377348e-16,
+      "actual": 0.3577708763999665
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mse/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mae/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "calibration_controls",
+      "case": "rmse/scale=1.0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "OM01",
+      "case": "nse/scale=0.001",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=0.001",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=0.001",
+      "discrepancy": false,
+      "max_error": 1.7763568394002505e-15,
+      "actual": [
+        0.0,
+        8.000000000000005
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=0.001",
+      "discrepancy": false,
+      "max_error": 3.3306690738754696e-16,
+      "actual": [
+        0.9908470001860924,
+        0.9999999999999998
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=0.001",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.947873410771797,
+        0.9199999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=0.001",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": 0.35777087639996646
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mse/scale=0.001",
+      "discrepancy": false,
+      "max_error": 2.3161057151484775e-23
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mae/scale=0.001",
+      "discrepancy": false,
+      "max_error": 8.131516293641283e-20
+    },
+    {
+      "group": "calibration_controls",
+      "case": "rmse/scale=0.001",
+      "discrepancy": false,
+      "max_error": 8.131516293641283e-20
+    },
+    {
+      "group": "OM01",
+      "case": "nse/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 1.7763568394002505e-15,
+      "actual": [
+        0.0,
+        8.000000000000002
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16,
+      "actual": [
+        0.990847000186092,
+        1.0
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16,
+      "actual": [
+        0.947873410771797,
+        0.9200000000000002
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 1.6653345369377348e-16,
+      "actual": 0.3577708763999665
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mse/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 2.0194839173657902e-27
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mae/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 6.352747104407253e-22
+    },
+    {
+      "group": "calibration_controls",
+      "case": "rmse/scale=1e-05",
+      "discrepancy": false,
+      "max_error": 8.470329472543003e-22
+    },
+    {
+      "group": "OM01",
+      "case": "nse/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.0,
+        8.000000000000004
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": [
+        0.9908470001860921,
+        0.9999999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": [
+        0.9478734107717971,
+        0.9199999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": 0.35777087639996646
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mse/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 1.2037062152420224e-35
+    },
+    {
+      "group": "calibration_controls",
+      "case": "mae/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 5.169878828456423e-26
+    },
+    {
+      "group": "calibration_controls",
+      "case": "rmse/scale=1e-09",
+      "discrepancy": false,
+      "max_error": 5.169878828456423e-26
+    },
+    {
+      "group": "OM01",
+      "case": "nse/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": [
+        0.9799999999999999,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": [
+        0.9799999999999999,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 7.105427357601002e-15,
+      "actual": [
+        -1.450417759929779e-15,
+        8.00000000000001
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16,
+      "actual": [
+        0.9908470001860923,
+        0.9999999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": [
+        0.9478734107717971,
+        0.9199999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=1e-200",
+      "discrepancy": false,
+      "max_error": 3.885780586188048e-16,
+      "actual": 0.35777087639996674
+    },
+    {
+      "group": "OM01",
+      "case": "nse/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "r2/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 0.0,
+      "actual": [
+        0.98,
+        0.968
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pbias/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 3.3992831540273098e-15,
+      "actual": [
+        3.3992831540273098e-15,
+        8.000000000000004
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "pearson_r/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16,
+      "actual": [
+        0.9908470001860922,
+        1.0
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "kge/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16,
+      "actual": [
+        0.9478734107717972,
+        0.9199999999999999
+      ]
+    },
+    {
+      "group": "OM01",
+      "case": "rfactor/scale=1e+200",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16,
+      "actual": 0.35777087639996646
+    },
+    {
+      "group": "inference_controls",
+      "case": "MH/gauss/span=0.1",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432838
+    },
+    {
+      "group": "inference_controls",
+      "case": "MH/gauss/span=1.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "inference_controls",
+      "case": "MH/gauss/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "inference_controls",
+      "case": "run/MH/gauss/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 3.3306690738754696e-16,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "OM02",
+      "case": "MH/uniform/span=0.1",
+      "discrepancy": false,
+      "max_error": 4.163336342344337e-17,
+      "step_rms": 0.05821891419411843,
+      "expected_step_rms": 0.05821891419411843
+    },
+    {
+      "group": "OM02",
+      "case": "MH/uniform/span=1.0",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.05821891419411841,
+      "expected_step_rms": 0.058218914194118426
+    },
+    {
+      "group": "OM02",
+      "case": "MH/uniform/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.05821891419411842,
+      "expected_step_rms": 0.05821891419411842
+    },
+    {
+      "group": "OM02",
+      "case": "run/MH/uniform/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 4.440892098500626e-16,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "inference_controls",
+      "case": "AMH/gauss/span=0.1",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432838
+    },
+    {
+      "group": "inference_controls",
+      "case": "AMH/gauss/span=1.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "inference_controls",
+      "case": "AMH/gauss/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "inference_controls",
+      "case": "run/AMH/gauss/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 6.661338147750939e-16,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "OM02",
+      "case": "AMH/uniform/span=0.1",
+      "discrepancy": false,
+      "max_error": 4.163336342344337e-17,
+      "step_rms": 0.05821891419411843,
+      "expected_step_rms": 0.05821891419411843
+    },
+    {
+      "group": "OM02",
+      "case": "AMH/uniform/span=1.0",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.05821891419411841,
+      "expected_step_rms": 0.058218914194118426
+    },
+    {
+      "group": "OM02",
+      "case": "AMH/uniform/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.05821891419411842,
+      "expected_step_rms": 0.05821891419411842
+    },
+    {
+      "group": "OM02",
+      "case": "run/AMH/uniform/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 1.4432899320127035e-15,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/gauss/span=0.1",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432838
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/gauss/span=1.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/gauss/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.10885951073432837,
+      "expected_step_rms": 0.10885951073432837
+    },
+    {
+      "group": "OM02",
+      "case": "run/MH_Gibbs/gauss/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 3.3306690738754696e-16,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/uniform/span=0.1",
+      "discrepancy": false,
+      "max_error": 4.163336342344337e-17,
+      "step_rms": 0.05821891419411843,
+      "expected_step_rms": 0.05821891419411843
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/uniform/span=1.0",
+      "discrepancy": false,
+      "max_error": 8.326672684688674e-17,
+      "step_rms": 0.05821891419411841,
+      "expected_step_rms": 0.058218914194118426
+    },
+    {
+      "group": "OM02",
+      "case": "MH_Gibbs/uniform/span=10.0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17,
+      "step_rms": 0.05821891419411842,
+      "expected_step_rms": 0.05821891419411842
+    },
+    {
+      "group": "OM02",
+      "case": "run/MH_Gibbs/uniform/unit_change",
+      "discrepancy": false,
+      "max_unit_sample_difference": 4.440892098500626e-16,
+      "stored_draws": 12,
+      "proposal_updates": 11,
+      "warm_up": 3,
+      "target": "uniform"
+    },
+    {
+      "group": "OM03",
+      "case": "LinearRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 4.440892098500626e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/LinearRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/LinearRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "OM03",
+      "case": "LinearRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 4.440892098500626e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/LinearRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/LinearRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "OM03",
+      "case": "LinearRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 2.220446049250313e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/LinearRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/LinearRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "OM03",
+      "case": "LinearRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 8.881784197001252e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/LinearRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "max_error": 8.881784197001252e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/LinearRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "max_error": 8.881784197001252e-16
+    },
+    {
+      "group": "OM03",
+      "case": "PolynomialRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 2.6645352591003757e-15,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/PolynomialRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/PolynomialRegression/Origin/scaled=False",
+      "discrepancy": false,
+      "max_error": 2.6645352591003757e-15
+    },
+    {
+      "group": "OM03",
+      "case": "PolynomialRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 2.220446049250313e-15,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/PolynomialRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "max_error": 8.881784197001252e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/PolynomialRegression/Origin/scaled=True",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-15
+    },
+    {
+      "group": "OM03",
+      "case": "PolynomialRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 8.881784197001252e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/PolynomialRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "max_error": 8.881784197001252e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/PolynomialRegression/Ridge/scaled=False",
+      "discrepancy": false,
+      "max_error": 8.881784197001252e-16
+    },
+    {
+      "group": "OM03",
+      "case": "PolynomialRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "expected_shape": [
+        3,
+        2
+      ],
+      "actual_shape": [
+        3,
+        2
+      ],
+      "max_error": 4.440892098500626e-16,
+      "fit_accepted": false,
+      "prediction_scope": "MultiSurrogate"
+    },
+    {
+      "group": "regression_controls",
+      "case": "single/PolynomialRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "regression_controls",
+      "case": "container/PolynomialRegression/Ridge/scaled=True",
+      "discrepancy": false,
+      "max_error": 4.440892098500626e-16
+    },
+    {
+      "group": "gpr_controls",
+      "case": "outputs=1/scaled=False",
+      "discrepancy": false,
+      "mean_error": 3.3306690738754696e-16,
+      "variance_error": 2.220446049250313e-16,
+      "likelihood_error": 2.6645352591003757e-15
+    },
+    {
+      "group": "gpr_controls",
+      "case": "outputs=1/scaled=True",
+      "discrepancy": false,
+      "mean_error": 2.220446049250313e-16,
+      "variance_error": 7.979727989493313e-17,
+      "likelihood_error": 1.7763568394002505e-15
+    },
+    {
+      "group": "gpr_controls",
+      "case": "outputs=2/scaled=False",
+      "discrepancy": false,
+      "mean_error": 4.440892098500626e-16,
+      "variance_error": 2.220446049250313e-16,
+      "likelihood_error": 7.105427357601002e-15
+    },
+    {
+      "group": "gpr_controls",
+      "case": "outputs=2/scaled=True",
+      "discrepancy": false,
+      "mean_error": 4.440892098500626e-16,
+      "variance_error": 7.979727989493313e-17,
+      "likelihood_error": 3.552713678800501e-15
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=0/variant=0",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=0/variant=1",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=0/variant=2",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=0/variant=3",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=0/variant=4",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/2D/seed=0",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/2D/seed=0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=1/variant=0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=1/variant=1",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=1/variant=2",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=1/variant=3",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=1/variant=4",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/2D/seed=1",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/2D/seed=1",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=2/variant=0",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=2/variant=1",
+      "discrepancy": false,
+      "max_error": 2.220446049250313e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=2/variant=2",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=2/variant=3",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/2D/seed=2/variant=4",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/2D/seed=2",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/2D/seed=2",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=0/variant=0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=0/variant=1",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=0/variant=2",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=0/variant=3",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=0/variant=4",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/3D/seed=0",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/3D/seed=0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=1/variant=0",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=1/variant=1",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=1/variant=2",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=1/variant=3",
+      "discrepancy": false,
+      "max_error": 1.1102230246251565e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=1/variant=4",
+      "discrepancy": false,
+      "max_error": 5.551115123125783e-17
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/3D/seed=1",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/3D/seed=1",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=2/variant=0",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=2/variant=1",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=2/variant=2",
+      "discrepancy": false,
+      "max_error": 3.3306690738754696e-16
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=2/variant=3",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "HV/3D/seed=2/variant=4",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "GD_IGD/3D/seed=2",
+      "discrepancy": false,
+      "gd_error": 0.0,
+      "igd_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "NDSort/3D/seed=2",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/PSO/seed=42",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/PSO/seed=43",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/GA/seed=42",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/GA/seed=43",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/NSGAII/seed=42",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "optimization_controls",
+      "case": "run/NSGAII/seed=43",
+      "discrepancy": false,
+      "objective_error": 0.0,
+      "constraint_error": 0.0,
+      "fes": 80
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=3/scale=1.0/noise=0.0",
+      "discrepancy": false,
+      "gain_error": 1.4432899320127035e-15,
+      "anomaly_error": 2.4424906541753444e-15,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=3/scale=1.0/noise=0.2",
+      "discrepancy": false,
+      "gain_error": 1.6653345369377348e-16,
+      "anomaly_error": 4.440892098500626e-16,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=3/scale=1e-05/noise=0.0",
+      "discrepancy": false,
+      "gain_error": 2.6193447411060333e-10,
+      "anomaly_error": 2.6193447411060333e-10,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=3/scale=1e-05/noise=0.2",
+      "discrepancy": false,
+      "gain_error": 2.1827872842550278e-11,
+      "anomaly_error": 2.9103830456733704e-11,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=10/scale=1.0/noise=0.0",
+      "discrepancy": false,
+      "gain_error": 2.220446049250313e-15,
+      "anomaly_error": 3.774758283725532e-15,
+      "solver": "pinv",
+      "anomaly_solver": "svd"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=10/scale=1.0/noise=0.2",
+      "discrepancy": false,
+      "gain_error": 1.6084356069256955e-14,
+      "anomaly_error": 1.625088952295073e-14,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=10/scale=1e-05/noise=0.0",
+      "discrepancy": false,
+      "gain_error": 1.4551915228366852e-10,
+      "anomaly_error": 4.802132025361061e-10,
+      "solver": "pinv",
+      "anomaly_solver": "svd"
+    },
+    {
+      "group": "gain_controls",
+      "case": "nObs=10/scale=1e-05/noise=0.2",
+      "discrepancy": false,
+      "gain_error": 1.7316779121756554e-09,
+      "anomaly_error": 1.4297256711870432e-09,
+      "solver": "eigh",
+      "anomaly_solver": "eigh"
+    },
+    {
+      "group": "OM04",
+      "case": "map_discrete_vars/integer=True",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "problem_controls",
+      "case": "map_discrete_vars/integer=False",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "OM04",
+      "case": "apply_var_type/integer=True",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "problem_controls",
+      "case": "apply_var_type/integer=False",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "OM04",
+      "case": "transform/integer=True",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "problem_controls",
+      "case": "transform/integer=False",
+      "discrepancy": false,
+      "actual": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ],
+      "expected": [
+        [
+          0.25
+        ],
+        [
+          0.75
+        ],
+        [
+          0.75
+        ]
+      ]
+    },
+    {
+      "group": "problem_controls",
+      "case": "mixed_roundtrip",
+      "discrepancy": false,
+      "max_error": 0.0
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=False/target=None",
+      "discrepancy": false
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=False/target=objs",
+      "discrepancy": false
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=False/target=cons",
+      "discrepancy": false
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=True/target=None",
+      "discrepancy": false
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=True/target=objs",
+      "discrepancy": false
+    },
+    {
+      "group": "problem_controls",
+      "case": "evaluate/model=True/target=cons",
+      "discrepancy": false
+    }
+  ]
+}

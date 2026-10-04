@@ -1,5 +1,6 @@
 import abc
 import time
+from inspect import signature
 from typing import List, Union
 
 import numpy as np
@@ -12,6 +13,7 @@ from ..problem import ProblemABC as Problem
 from .runtime import AnaState, SqliteStorage, Verbose
 
 AnaIndex = Union[str, int, List[int]]
+
 
 class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
     """
@@ -35,14 +37,14 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         self.verboseFlag = verboseFlag
         self.logFlag = logFlag
         self.saveFlag = saveFlag
-        
+
         # Initialize settings and results
         self.params = Params()
         self.state = AnaState(self)
         self.storage = None
         self.session: RunSession | None = None
         self.runId = None
-        
+
     def set(self, key, value):
         """
         Set an analysis parameter.
@@ -51,9 +53,9 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
             key: Parameter name.
             value: Parameter value.
         """
-        
+
         self.params.set(key, value)
-    
+
     def get(self, *args):
         """
         Retrieve one or more analysis parameters.
@@ -64,9 +66,9 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         Returns:
             The requested parameter value or values.
         """
-        
+
         return self.params.get(*args)
-        
+
     def setProblem(self, problem: Problem):
         """
         Set the problem instance for the analysis.
@@ -74,7 +76,7 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         Args:
             problem: Problem instance defining the input and output space.
         """
-        
+
         self.problem = problem
 
     def setup(self, problem):
@@ -107,14 +109,29 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         `analyze(problem, X, Y=None, meta=None, target="objs", index="all")`.
         Here `target` is the semantic label of `Y`, and when `Y` is not
         provided it also selects which problem output block to evaluate.
+        Metadata with output="unit" decodes X before evaluation and analysis;
+        supplied Y must describe those same decoded samples. Results store
+        real X and output="real", retaining source_output="unit" as provenance.
         """
-        meta = kwargs.get("meta")
+        call = signature(self._analyzeCore).bind(problem, *args, **kwargs)
+        meta = call.arguments.get("meta")
         if meta is not None:
+            if not isinstance(meta, dict):
+                raise TypeError("Sampling metadata must be a dict.")
+            output = meta.get("output", "real")
+            if output not in ("real", "unit"):
+                raise ValueError("Sampling metadata output must be 'real' or 'unit'.")
+            meta = dict(meta)
+            if output == "unit":
+                call.arguments["X"] = problem.unit_to_space(call.arguments["X"])
+                meta["source_output"] = "unit"
+                meta["output"] = "real"
+            call.arguments["meta"] = meta
             self.checkMeta(meta)
         self.setup(problem)
         Verbose.printSettings(self)
         start = time.perf_counter()
-        self._analyzeCore(problem, *args, **kwargs)
+        self._analyzeCore(*call.args, **call.kwargs)
         self.state.runtime = time.perf_counter() - start
         return self.finalize()
 
@@ -124,7 +141,7 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         """
         return None
 
-    def check_Y(self, X, Y, target: str = 'objs', index: AnaIndex = 'all'):
+    def check_Y(self, X, Y, target: str = "objs", index: AnaIndex = "all"):
         """
         Resolve and slice analysis outputs.
 
@@ -135,14 +152,17 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         """
         if Y is None:
             Y = self.evaluate(X, target=target)
-        X, Y = self.__check_X_Y__(X, Y)
-        if target not in ('objs', 'cons'):
+        X, Y = self._checkXY(X, Y)
+        if target not in ("objs", "cons"):
             raise ValueError("Target must be 'objs' or 'cons'.")
-        labels = getattr(self.problem, 'objLabels' if target == 'objs' else 'conLabels', None)
-        prefix = 'obj' if target == 'objs' else 'con'
-        labels = list(labels) if labels is not None and len(labels) == Y.shape[1] else [
-            f'{prefix}{i + 1}' for i in range(Y.shape[1])]
-        if not (isinstance(index, str) and index == 'all'):
+        labels = getattr(self.problem, "objLabels" if target == "objs" else "conLabels", None)
+        prefix = "obj" if target == "objs" else "con"
+        labels = (
+            list(labels)
+            if labels is not None and len(labels) == Y.shape[1]
+            else [f"{prefix}{i + 1}" for i in range(Y.shape[1])]
+        )
+        if not (isinstance(index, str) and index == "all"):
             indices = self._normalize_index(index)
             try:
                 Y = Y[:, indices]
@@ -151,8 +171,8 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
                 raise ValueError("Please check the index you set!")
         self.outputLabels = labels
         return Y
-    
-    def recordResult(self, X, Y, res, target: str = 'objs', meta=None):
+
+    def recordResult(self, X, Y, res, target: str = "objs", meta=None):
         self.state.record(X, Y, res, target=target, meta=meta)
         for metric in self.state.metrics:
             for i, target in enumerate(metric.rowLabels):
@@ -168,17 +188,16 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
             labels: Input variable labels.
             values: Metric values.
         """
-                        
+
         self.state.verbose.setdefault(target, {})
         self.state.verbose[target].setdefault(indicator, {})
-        
+
         for label, v in zip(labels, values):
             self.state.verbose[target][indicator][label] = v
 
-        self.state.verbose[target][indicator]['array'] = np.array(values)
-        
+        self.state.verbose[target][indicator]["array"] = np.array(values)
 
-    def __check_X_Y__(self, X, Y):
+    def _checkXY(self, X, Y):
         """
         Check input and output arrays.
 
@@ -189,10 +208,10 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
         Returns:
             The validated `X` and `Y`.
         """
-        
+
         if not isinstance(X, np.ndarray) and X is not None:
             raise TypeError("X must be an instance of np.ndarray or None!")
-        
+
         if not isinstance(Y, np.ndarray) and Y is not None:
             raise TypeError("Y must be an instance of np.ndarray or None!")
 
@@ -202,10 +221,10 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
             raise ValueError("X must have shape (nSamples, nInput).")
         if Y.ndim != 2 or Y.shape[0] != X.shape[0] or Y.shape[1] == 0:
             raise ValueError("Y must have one row per X sample and at least one output column.")
-                  
+
         return X, Y
-    
-    def evaluate(self, X, target: str = 'objs'):
+
+    def evaluate(self, X, target: str = "objs"):
         """
         Evaluate the problem with the given input data.
 
@@ -217,11 +236,11 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
             The requested output matrix.
         """
 
-        if target not in ('objs', 'cons'):
+        if target not in ("objs", "cons"):
             raise ValueError("Target must be 'objs' or 'cons'!")
 
         evalRes = self.problem.evaluate(X, target=target)
-        Y = evalRes.objs if target == 'objs' else evalRes.cons
+        Y = evalRes.objs if target == "objs" else evalRes.cons
         if Y is None:
             raise ValueError(f"Problem does not provide target '{target}'.")
         return Y
@@ -234,10 +253,12 @@ class AnalysisABC(RunLifecycle, metaclass=abc.ABCMeta):
             return [index]
         if isinstance(index, (list, tuple, np.ndarray)):
             indices = list(index)
-            if indices and all(isinstance(i, (int, np.integer)) and not isinstance(i, (bool, np.bool_)) for i in indices):
+            if indices and all(
+                isinstance(i, (int, np.integer)) and not isinstance(i, (bool, np.bool_)) for i in indices
+            ):
                 return indices
         raise ValueError("Index must be 'all', an integer, or a list of integers!")
-    
+
     @abc.abstractmethod
     def _analyzeCore(self, problem, *args, **kwargs):
         pass

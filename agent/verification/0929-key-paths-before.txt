@@ -1,0 +1,126 @@
+.F.......F...FF                                                          [100%]
+=================================== FAILURES ===================================
+___ testAdvancedInfillingSelectsNovelPointsAndCountsEvaluations[short_front] ___
+
+case = 'short_front'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7bc5b4016750>
+
+    @pytest.mark.parametrize("case", ["spread", "short_front", "few", "duplicates"])
+    def testAdvancedInfillingSelectsNovelPointsAndCountsEvaluations(case, monkeypatch):
+        received = []
+    
+        def objective(X):
+            received.append(X.copy())
+            return np.column_stack((X[:, 0], 20 - X[:, 0]))
+    
+        problem = Problem(nInput=1, nObj=2, lb=10, ub=20, objFunc=objective)
+        candidates = np.array([[0.2], [0.5], [0.8], [0.9]])
+        scores = np.column_stack((candidates[:, 0], 1 - candidates[:, 0]))
+        if case == "short_front":
+            scores = np.array([[0, 0], [1, 1], [2, 2], [3, 3]])
+        elif case == "few":
+            candidates, scores = candidates[:1], scores[:1]
+        elif case == "duplicates":
+            candidates = np.array([[0.0], [0.0], [0.5], [0.5]])
+            scores = np.column_stack((candidates[:, 0], 1 - candidates[:, 0]))
+        inner = NSGAII(nPop=4, **QUIET)
+        monkeypatch.setattr(inner, "run", lambda *args, **kwargs: SimpleNamespace(bestDecs=candidates, bestObjs=scores))
+        method = MOASMO(nInit=4, pct=0.5, advance_infilling=True, maxIters=1, optimizer=inner, **QUIET)
+>       result = method.run(problem, initialPop=[[10], [11], [19.5], [20]], seed=7)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_moasmo_advanced_infilling.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/optimization/expensive/moasmo.py:207: in run
+    max_distance_index = np.argmax(np.min(distances, axis=1))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:1352: in argmax
+    return _wrapfunc(a, 'argmax', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = array([], dtype=float64), method = 'argmax', args = ()
+kwds = {'axis': None, 'out': None}
+
+    def _wrapfunc(obj, method, *args, **kwds):
+        bound = getattr(obj, method, None)
+        if bound is None:
+            return _wrapit(obj, method, *args, **kwds)
+    
+        try:
+>           return bound(*args, **kwds)
+                   ^^^^^^^^^^^^^^^^^^^^
+E           ValueError: attempt to get argmax of an empty sequence
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:54: ValueError
+____________________ testShortRunActuallyResetsStagnantBees ____________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7bc5b3c85be0>
+
+    def testShortRunActuallyResetsStagnantBees(monkeypatch):
+        evaluated = []
+        resets = []
+    
+        def objective(X):
+            evaluated.append(X.copy())
+            return np.ones((len(X), 1))
+    
+        method = ABC(nPop=8, employedRate=0.5, limit=0, maxIters=4, **QUIET)
+        originalUpdate = method.updateOnlookerBees
+    
+        def recordReset(pop, beeType, counts, rate):
+            abandoned = np.flatnonzero(beeType == 2)
+            previousFEs = method.FEs
+            result = originalUpdate(pop, beeType, counts, rate)
+            if len(abandoned):
+                resets.append(len(abandoned))
+                assert method.FEs - previousFEs == len(abandoned)
+                np.testing.assert_array_equal(result[2][abandoned], 0)
+            return result
+    
+        monkeypatch.setattr(method, "updateOnlookerBees", recordReset)
+        result = method.run(Problem(nInput=2, nObj=1, lb=-3, ub=7, objFunc=objective), seed=13)
+>       assert resets
+E       assert []
+
+tests/test_abc_abandonment.py:67: AssertionError
+____________ testQuadraticTrendRejectsUnidentifiableDesign[too_few] ____________
+
+case = 'too_few'
+
+    @pytest.mark.parametrize("case", ["too_few", "collinear"])
+    def testQuadraticTrendRejectsUnidentifiableDesign(case):
+        X = np.array([[0., 0.], [1., 0.], [0., 1.], [1., 1.]])
+        if case == "collinear":
+            x = np.linspace(-1, 1, 8)
+            X = np.column_stack((x, x))
+        model = KRG(regression="poly2", kernel=Guass(theta_attr=None))
+>       with pytest.raises(ValueError, match="(?i)(rank|regression|trend)"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_kriging_quadratic_trend.py:44: Failed
+___________ testQuadraticTrendRejectsUnidentifiableDesign[collinear] ___________
+
+case = 'collinear'
+
+    @pytest.mark.parametrize("case", ["too_few", "collinear"])
+    def testQuadraticTrendRejectsUnidentifiableDesign(case):
+        X = np.array([[0., 0.], [1., 0.], [0., 1.], [1., 1.]])
+        if case == "collinear":
+            x = np.linspace(-1, 1, 8)
+            X = np.column_stack((x, x))
+        model = KRG(regression="poly2", kernel=Guass(theta_attr=None))
+>       with pytest.raises(ValueError, match="(?i)(rank|regression|trend)"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_kriging_quadratic_trend.py:44: Failed
+=========================== short test summary info ============================
+FAILED tests/test_moasmo_advanced_infilling.py::testAdvancedInfillingSelectsNovelPointsAndCountsEvaluations[short_front]
+FAILED tests/test_abc_abandonment.py::testShortRunActuallyResetsStagnantBees
+FAILED tests/test_kriging_quadratic_trend.py::testQuadraticTrendRejectsUnidentifiableDesign[too_few]
+FAILED tests/test_kriging_quadratic_trend.py::testQuadraticTrendRejectsUnidentifiableDesign[collinear]
+4 failed, 11 passed in 0.97s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_moasmo_advanced_infilling.py tests/test_abc_abandonment.py tests/test_kriging_quadratic_trend.py` failed. (See above for error)

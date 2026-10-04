@@ -7,11 +7,16 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20, rng=None):
     if rng is None:
         rng = np.random.default_rng()
 
-    popDec = decs
     NN = decs.shape[0]
+    if NN == 0:
+        return np.asarray(decs, dtype=float).copy()
+    popDec = np.asarray(decs, dtype=float)
+    if NN % 2:
+        popDec = np.vstack((popDec, popDec[int(rng.integers(NN))]))
+    pairCount = len(popDec) // 2
 
-    parent1 = popDec[:math.floor(NN / 2)]
-    parent2 = popDec[math.floor(NN / 2):math.floor(NN / 2) * 2]
+    parent1 = popDec[:pairCount]
+    parent2 = popDec[pairCount:]
 
     N, D = parent1.shape
     beta = np.zeros(shape=(N, D))
@@ -29,7 +34,7 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20, rng=None):
 
     lower = np.repeat(lb, 2 * N, axis=0)
     upper = np.repeat(ub, 2 * N, axis=0)
-    sita = rng.random((2 * N, D)) < proM / D
+    sita = (rng.random((2 * N, D)) < proM / D) & (upper > lower)
     mu = rng.random((2 * N, D))
 
     np.clip(offspring, lower, upper, out=offspring)
@@ -39,20 +44,22 @@ def gaOperator(decs, ub, lb, proC=1, disC=20, proM=1, disM=20, rng=None):
         1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]),
         disM + 1,
     )
-    offspring[temp] = offspring[temp] + (
-        np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1
-    ) * (upper[temp] - lower[temp])
+    offspring[temp] = offspring[temp] + (np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1) * (upper[temp] - lower[temp])
 
     temp = sita & (mu > 0.5)
-    t2 = 2 * (mu[temp] - 0.5) * np.power(
-        1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]),
-        disM + 1,
+    t2 = (
+        2
+        * (mu[temp] - 0.5)
+        * np.power(
+            1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]),
+            disM + 1,
+        )
     )
     offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (
         1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (disM + 1))
     )
 
-    return offspring
+    return offspring[:NN]
 
 
 def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM, rng=None):
@@ -61,8 +68,8 @@ def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM, rng=None):
 
     NN = popDecs.shape[0]
 
-    parent1 = popDecs[:math.floor(NN / 2)]
-    parent2 = popDecs[math.floor(NN / 2):math.floor(NN / 2) * 2]
+    parent1 = popDecs[: math.floor(NN / 2)]
+    parent2 = popDecs[math.floor(NN / 2) : math.floor(NN / 2) * 2]
     N, D = parent1.shape
 
     beta = np.zeros(shape=(N, D))
@@ -79,7 +86,7 @@ def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM, rng=None):
 
     lower = np.repeat(lb, N, axis=0)
     upper = np.repeat(ub, N, axis=0)
-    sita = rng.random((N, D)) < proM / D
+    sita = (rng.random((N, D)) < proM / D) & (upper > lower)
     mu = rng.random((N, D))
 
     np.clip(offspring, lower, upper, out=offspring)
@@ -89,14 +96,16 @@ def gaOperatorHalf(popDecs, ub, lb, proC, disC, proM, disM, rng=None):
         1 - (offspring[temp] - lower[temp]) / (upper[temp] - lower[temp]),
         disM + 1,
     )
-    offspring[temp] = offspring[temp] + (
-        np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1
-    ) * (upper[temp] - lower[temp])
+    offspring[temp] = offspring[temp] + (np.power(2 * mu[temp] + t1, 1 / (disM + 1)) - 1) * (upper[temp] - lower[temp])
 
     temp = sita & (mu > 0.5)
-    t2 = 2 * (mu[temp] - 0.5) * np.power(
-        1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]),
-        disM + 1,
+    t2 = (
+        2
+        * (mu[temp] - 0.5)
+        * np.power(
+            1 - (upper[temp] - offspring[temp]) / (upper[temp] - lower[temp]),
+            disM + 1,
+        )
     )
     offspring[temp] = offspring[temp] + (upper[temp] - lower[temp]) * (
         1 - np.power(2 * (1 - mu[temp]) + t2, 1 / (disM + 1))

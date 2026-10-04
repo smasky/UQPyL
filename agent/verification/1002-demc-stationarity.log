@@ -1,0 +1,8 @@
+{"mode": "production_batch", "step": 0, "replicas": 6000, "second_moment": 0.9968150513203038, "independent_replica_se": 0.006347170119749473, "target_second_moment": 1.0}
+{"mode": "production_batch", "step": 1, "replicas": 6000, "second_moment": 1.0008296826987564, "independent_replica_se": 0.006347281396880317, "target_second_moment": 1.0}
+{"mode": "production_batch", "step": 5, "replicas": 6000, "second_moment": 1.0172924780261519, "independent_replica_se": 0.006540993141977203, "target_second_moment": 1.0}
+{"mode": "production_batch", "step": 10, "replicas": 6000, "second_moment": 1.0337778297856586, "independent_replica_se": 0.006610353108237564, "target_second_moment": 1.0}
+{"mode": "conditional_control", "step": 0, "replicas": 6000, "second_moment": 0.9968150513203038, "independent_replica_se": 0.006347170119749473, "target_second_moment": 1.0}
+{"mode": "conditional_control", "step": 1, "replicas": 6000, "second_moment": 1.0006320010838143, "independent_replica_se": 0.006451051763638013, "target_second_moment": 1.0}
+{"mode": "conditional_control", "step": 5, "replicas": 6000, "second_moment": 0.9977674576350346, "independent_replica_se": 0.006487771256568742, "target_second_moment": 1.0}
+{"mode": "conditional_control", "step": 10, "replicas": 6000, "second_moment": 1.000901296497702, "independent_replica_se": 0.006455376976855085, "target_second_moment": 1.0}

@@ -1,0 +1,5 @@
+records 28
+SUFI improvements 9 / 10
+cubic [(11, False, 878.5995404403654, 'iteration_budget'), (11, True, 878.5995404403694, 'step_tolerance'), (23, False, 878.8470863613179, 'iteration_budget'), (23, True, 878.8470863613304, 'step_tolerance'), (47, False, 878.6929286398921, 'iteration_budget'), (47, True, 878.6929286399007, 'step_tolerance')]
+exponential [(11, False, 340.30233951176126, 'iteration_budget'), (11, True, 340.30233343296976, 'line_search_stalled'), (23, False, 345.47410779573005, 'iteration_budget'), (23, True, 345.47410774961, 'step_tolerance'), (47, False, 343.1830010938768, 'iteration_budget'), (47, True, 343.18300109658946, 'step_tolerance')]
+sine [(11, False, 220.34582035551935, 'iteration_budget'), (11, True, 220.3292993443965, 'line_search_stalled'), (23, False, 216.21609694009035, 'iteration_budget'), (23, True, 216.21609694009035, 'iteration_budget'), (47, False, 217.7067756459992, 'iteration_budget'), (47, True, 217.69433177833915, 'line_search_stalled')]

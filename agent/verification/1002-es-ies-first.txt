@@ -1,0 +1,224 @@
+.........................................................F.............. [ 25%]
+........................................F.F.F........................... [ 50%]
+........................................................................ [ 75%]
+....................................................................F    [100%]
+=================================== FAILURES ===================================
+________________ testFixedNoiseValidatedOnceAcrossIesIterations ________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7268dcca95e0>
+
+    def testFixedNoiseValidatedOnceAcrossIesIterations(monkeypatch):
+        sizes = []
+        original = np.linalg.eigh
+    
+        def counted(a):
+            sizes.append(a.shape)
+            return original(a)
+    
+        monkeypatch.setattr(np.linalg, "eigh", counted)
+        problem = ModelProblem(
+            nInput=1, lb=-10, ub=10, obs=np.ones((5, 1)), simFunc=lambda x: np.repeat(x[:, None, :], 5, axis=1)
+        )
+        IES(maxIters=3).run(problem, np.array([[-1.0], [0.0], [2.0]]), r=np.eye(5))
+>       assert sizes == [(5, 5)] * 4  # One validation and one update decomposition per round.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert [(5, 5), (5, ...5, 5), (5, 5)] == [(5, 5), (5, ...5, 5), (5, 5)]
+E         
+E         Left contains one more item: (5, 5)
+E         Use -v to get more diff
+
+tests/test_calibration_gain_work.py:55: AssertionError
+_ test_best_member_follows_metric_direction_and_preserves_raw_scores[rmse-False-IES] _
+
+methodClass = <class 'UQPyL.calibration.methods.ies.IES'>, metric = 'rmse'
+higher = False
+
+    @pytest.mark.parametrize('methodClass', [ES, IES])
+    @pytest.mark.parametrize('metric,higher', [('rmse', False), ('nse', True), ('kge', True)])
+    def test_best_member_follows_metric_direction_and_preserves_raw_scores(methodClass, metric, higher):
+        obs = np.array([[1.], [2.], [4.]])
+        def simulate(X):
+            return np.column_stack((X[:, 0], X[:, 1]**2, X[:, 0]+X[:, 1]))[:, :, None]
+        problem = ModelProblem(nInput=2, lb=0, ub=4, obs=obs, simFunc=simulate)
+        ensemble = np.array([[.2, .5], [1., 1.5], [2., 2.], [3., .8]])
+        options = dict(maxIters=2, lam=1e-6) if methodClass is IES else {}
+        method = methodClass(metric=metric, verboseFlag=False, **options)
+        result = method.run(problem, ensemble, r=np.eye(3)*.5)
+        raw = getattr(util, metric)(obs.ravel(), result.posteriorSims)
+        assert np.all(np.isfinite(raw)) and np.ptp(raw) > 1e-4
+        expected = int(np.argmax(raw) if higher else np.argmin(raw))
+        assert result.extra['bestIdx'] == expected
+        np.testing.assert_allclose(result.bestDecs, result.posteriorDecs[expected:expected+1])
+        np.testing.assert_allclose(result.bestSim, result.posteriorSims[expected:expected+1])
+        np.testing.assert_allclose(result.diagnostics['scores'], raw)
+        np.testing.assert_allclose(method.normalizedScore(result.posteriorSims), -raw if higher else raw)
+        # Metric choice governs ranking, not the ensemble update equation.
+        baseline = methodClass(metric='rmse', verboseFlag=False, **options).run(
+            problem, ensemble, r=np.eye(3)*.5)
+>       np.testing.assert_allclose(result.posteriorDecs, baseline.posteriorDecs)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 8 / 8 (100%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: 1.3658793444895991 (ACTUAL), 1.2572879788379256 (DESIRED)
+E        [0, 1]: 1.2966293227571493 (ACTUAL), 1.0900194246951456 (DESIRED)
+E        [1, 0]: 2.143907714820738 (ACTUAL), 1.4056816333723305 (DESIRED)
+E        [1, 1]: 1.582910561754001 (ACTUAL), 1.3867692269652199 (DESIRED)
+E        [2, 0]: 2.0159680872490644 (ACTUAL), 2.4000609111475217 (DESIRED)
+E       Max absolute difference among violations: 0.73977813
+E       Max relative difference among violations: 0.52517303
+E        ACTUAL: array([[1.365879, 1.296629],
+E              [2.143908, 1.582911],
+E              [2.015968, 1.756916],
+E              [2.194459, 0.799619]])
+E        DESIRED: array([[1.257288, 1.090019],
+E              [1.405682, 1.386769],
+E              [2.400061, 1.566766],
+E              [2.934237, 1.388055]])
+
+tests/test_calibration_metric_direction.py:31: AssertionError
+_ test_best_member_follows_metric_direction_and_preserves_raw_scores[nse-True-IES] _
+
+methodClass = <class 'UQPyL.calibration.methods.ies.IES'>, metric = 'nse'
+higher = True
+
+    @pytest.mark.parametrize('methodClass', [ES, IES])
+    @pytest.mark.parametrize('metric,higher', [('rmse', False), ('nse', True), ('kge', True)])
+    def test_best_member_follows_metric_direction_and_preserves_raw_scores(methodClass, metric, higher):
+        obs = np.array([[1.], [2.], [4.]])
+        def simulate(X):
+            return np.column_stack((X[:, 0], X[:, 1]**2, X[:, 0]+X[:, 1]))[:, :, None]
+        problem = ModelProblem(nInput=2, lb=0, ub=4, obs=obs, simFunc=simulate)
+        ensemble = np.array([[.2, .5], [1., 1.5], [2., 2.], [3., .8]])
+        options = dict(maxIters=2, lam=1e-6) if methodClass is IES else {}
+        method = methodClass(metric=metric, verboseFlag=False, **options)
+        result = method.run(problem, ensemble, r=np.eye(3)*.5)
+        raw = getattr(util, metric)(obs.ravel(), result.posteriorSims)
+        assert np.all(np.isfinite(raw)) and np.ptp(raw) > 1e-4
+        expected = int(np.argmax(raw) if higher else np.argmin(raw))
+        assert result.extra['bestIdx'] == expected
+        np.testing.assert_allclose(result.bestDecs, result.posteriorDecs[expected:expected+1])
+        np.testing.assert_allclose(result.bestSim, result.posteriorSims[expected:expected+1])
+        np.testing.assert_allclose(result.diagnostics['scores'], raw)
+        np.testing.assert_allclose(method.normalizedScore(result.posteriorSims), -raw if higher else raw)
+        # Metric choice governs ranking, not the ensemble update equation.
+        baseline = methodClass(metric='rmse', verboseFlag=False, **options).run(
+            problem, ensemble, r=np.eye(3)*.5)
+>       np.testing.assert_allclose(result.posteriorDecs, baseline.posteriorDecs)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 8 / 8 (100%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: 1.8777364339710194 (ACTUAL), 1.8092027105574717 (DESIRED)
+E        [0, 1]: 1.8799806906733607 (ACTUAL), 1.4908492565716918 (DESIRED)
+E        [1, 0]: 2.1317203085768694 (ACTUAL), 1.3941371906073794 (DESIRED)
+E        [1, 1]: 1.2991601173355922 (ACTUAL), 1.8499315403274177 (DESIRED)
+E        [2, 0]: 2.1160736230118986 (ACTUAL), 2.0707212578413663 (DESIRED)
+E       Max absolute difference among violations: 0.73758312
+E       Max relative difference among violations: 0.52906064
+E        ACTUAL: array([[1.877736, 1.879981],
+E              [2.13172 , 1.29916 ],
+E              [2.116074, 1.114056],
+E              [1.975768, 1.360217]])
+E        DESIRED: array([[1.809203, 1.490849],
+E              [1.394137, 1.849932],
+E              [2.070721, 1.21131 ],
+E              [1.481982, 1.704689]])
+
+tests/test_calibration_metric_direction.py:31: AssertionError
+_ test_best_member_follows_metric_direction_and_preserves_raw_scores[kge-True-IES] _
+
+methodClass = <class 'UQPyL.calibration.methods.ies.IES'>, metric = 'kge'
+higher = True
+
+    @pytest.mark.parametrize('methodClass', [ES, IES])
+    @pytest.mark.parametrize('metric,higher', [('rmse', False), ('nse', True), ('kge', True)])
+    def test_best_member_follows_metric_direction_and_preserves_raw_scores(methodClass, metric, higher):
+        obs = np.array([[1.], [2.], [4.]])
+        def simulate(X):
+            return np.column_stack((X[:, 0], X[:, 1]**2, X[:, 0]+X[:, 1]))[:, :, None]
+        problem = ModelProblem(nInput=2, lb=0, ub=4, obs=obs, simFunc=simulate)
+        ensemble = np.array([[.2, .5], [1., 1.5], [2., 2.], [3., .8]])
+        options = dict(maxIters=2, lam=1e-6) if methodClass is IES else {}
+        method = methodClass(metric=metric, verboseFlag=False, **options)
+        result = method.run(problem, ensemble, r=np.eye(3)*.5)
+        raw = getattr(util, metric)(obs.ravel(), result.posteriorSims)
+        assert np.all(np.isfinite(raw)) and np.ptp(raw) > 1e-4
+        expected = int(np.argmax(raw) if higher else np.argmin(raw))
+        assert result.extra['bestIdx'] == expected
+        np.testing.assert_allclose(result.bestDecs, result.posteriorDecs[expected:expected+1])
+        np.testing.assert_allclose(result.bestSim, result.posteriorSims[expected:expected+1])
+        np.testing.assert_allclose(result.diagnostics['scores'], raw)
+        np.testing.assert_allclose(method.normalizedScore(result.posteriorSims), -raw if higher else raw)
+        # Metric choice governs ranking, not the ensemble update equation.
+        baseline = methodClass(metric='rmse', verboseFlag=False, **options).run(
+            problem, ensemble, r=np.eye(3)*.5)
+>       np.testing.assert_allclose(result.posteriorDecs, baseline.posteriorDecs)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 8 / 8 (100%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: 1.6677711178159984 (ACTUAL), 1.3765192177805412 (DESIRED)
+E        [0, 1]: 1.086456589142664 (ACTUAL), 1.696591885739023 (DESIRED)
+E        [1, 0]: 1.9779136124055385 (ACTUAL), 2.105618614780175 (DESIRED)
+E        [1, 1]: 1.711632621784724 (ACTUAL), 1.4044452916308734 (DESIRED)
+E        [2, 0]: 1.2606698383873232 (ACTUAL), 1.5654063932055071 (DESIRED)
+E       Max absolute difference among violations: 0.6101353
+E       Max relative difference among violations: 0.35962408
+E        ACTUAL: array([[1.667771, 1.086457],
+E              [1.977914, 1.711633],
+E              [1.26067 , 1.397061],
+E              [1.822319, 1.45188 ]])
+E        DESIRED: array([[1.376519, 1.696592],
+E              [2.105619, 1.404445],
+E              [1.565406, 1.6093  ],
+E              [2.217599, 1.274339]])
+
+tests/test_calibration_metric_direction.py:31: AssertionError
+________________ testDefaultRunNeverBuildsDenseCovariance[IES] _________________
+
+methodClass = <class 'UQPyL.calibration.methods.ies.IES'>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7268dab52360>
+
+    @pytest.mark.parametrize("methodClass", [ES, IES])
+    def testDefaultRunNeverBuildsDenseCovariance(methodClass, monkeypatch):
+        def forbidden(*args, **kwargs):
+            pytest.fail("Default zero noise must not construct or factor a dense covariance.")
+    
+        monkeypatch.setattr(_ensemble, "ensembleGain", forbidden)
+        monkeypatch.setattr(np.linalg, "eigh", forbidden)
+        import UQPyL.calibration.methods.es as esModule
+    
+        monkeypatch.setattr(esModule, "validateCovariance", forbidden)
+        svd = np.linalg.svd
+        shapes = []
+    
+        def tracked(a, **kwargs):
+            shapes.append(a.shape)
+            assert kwargs["full_matrices"] is False
+            return svd(a, **kwargs)
+    
+        monkeypatch.setattr(np.linalg, "svd", tracked)
+        problem = ModelProblem(
+            nInput=1, lb=-10.0, ub=10.0, obs=np.ones((400, 1)), simFunc=lambda x: np.repeat(x[:, None, :], 400, axis=1)
+        )
+        options = {"maxIters": 1, "lam": 0.1} if methodClass is IES else {}
+        result = methodClass(**options).run(problem, [[-1.0], [0.0], [2.0]])
+>       assert shapes == [(3, 400)]
+E       assert [(3, 1), (3, 400)] == [(3, 400)]
+E         
+E         At index 0 diff: (3, 1) != (3, 400)
+E         Left contains one more item: (3, 400)
+E         Use -v to get more diff
+
+tests/test_calibration_zero_noise.py:101: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_calibration_gain_work.py::testFixedNoiseValidatedOnceAcrossIesIterations
+FAILED tests/test_calibration_metric_direction.py::test_best_member_follows_metric_direction_and_preserves_raw_scores[rmse-False-IES]
+FAILED tests/test_calibration_metric_direction.py::test_best_member_follows_metric_direction_and_preserves_raw_scores[nse-True-IES]
+FAILED tests/test_calibration_metric_direction.py::test_best_member_follows_metric_direction_and_preserves_raw_scores[kge-True-IES]
+FAILED tests/test_calibration_zero_noise.py::testDefaultRunNeverBuildsDenseCovariance[IES]
+5 failed, 280 passed in 2.69s

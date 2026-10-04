@@ -1,0 +1,157 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 15%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+.........................................................F.............. [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 87%]
+........................................................................ [ 90%]
+........................................................................ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 97%]
+......................................................................   [100%]
+=================================== FAILURES ===================================
+_______ test_failure_closes_marks_failed_and_allows_reuse[save-analysis] _______
+
+kind = 'analysis', stage = 'save'
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/test_failure_closes_marks_fail10')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7976f25be630>
+sessions = []
+
+    @pytest.mark.parametrize("kind", ["optimization", "inference", "analysis", "calibration"])
+    @pytest.mark.parametrize("stage", ["model", "setup", "save", "after_finalize"])
+    def test_failure_closes_marks_failed_and_allows_reuse(kind, stage, tmp_path, monkeypatch, sessions):
+        method, run, control = makeRun(kind, tmp_path)
+        error = RuntimeError(f"injected {stage} failure")
+        with monkeypatch.context() as patch:
+            if stage == "model":
+                control["error"] = error
+            elif stage == "setup":
+                setup = method.setup
+    
+                def failSetup(*args, **kwargs):
+                    setup(*args, **kwargs)
+                    raise error
+    
+                patch.setattr(method, "setup", failSetup)
+            elif stage == "save":
+                baseModule = __import__(f"UQPyL.{kind}.base", fromlist=["SqliteStorage"])
+    
+                def failSave(self, session, *args, **kwargs):
+                    session.conn.execute("INSERT INTO runParam VALUES (?, ?, ?)", (session.run_id, "partial_write", "1"))
+                    raise error
+    
+                patch.setattr(baseModule.SqliteStorage, "saveSnapshot" if kind in ("optimization", "inference") else "saveResult", failSave)
+            else:
+                finalize = method.finalize
+    
+                def failFinalize():
+                    finalize()
+                    raise error
+    
+                patch.setattr(method, "finalize", failFinalize)
+            with pytest.raises(RuntimeError) as raised:
+>               run()
+
+tests/test_runtime_failures.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_runtime_failures.py:41: in <lambda>
+    run = lambda: method.analyze(problem, samples)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:131: in analyze
+    self.setup(problem)
+UQPyL/analysis/base.py:91: in setup
+    self.session = self.storage.create_run(self)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_runtime_failures.py:56: in trackSession
+    session = createRun(self, obj)
+              ^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_storage.py:32: in create_run
+    self._create_schema(conn)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.runtime.storage.SqliteStorage object at 0x7976f224c4d0>
+conn = <sqlite3.Connection object at 0x7976f22223e0>
+
+    def _create_schema(self, conn):
+>       conn.executescript(
+            """
+            CREATE TABLE IF NOT EXISTS run (
+                runId TEXT PRIMARY KEY,
+                method TEXT NOT NULL,
+                problem TEXT NOT NULL,
+                target TEXT,
+                nInput INTEGER NOT NULL,
+                nOutput INTEGER NOT NULL,
+                nCon INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                runtime REAL,
+                createdAt TEXT NOT NULL,
+                finishedAt TEXT,
+                problemPayload BLOB
+            );
+    
+            CREATE TABLE IF NOT EXISTS runParam (
+                runId TEXT NOT NULL,
+                name TEXT NOT NULL,
+                value TEXT,
+                FOREIGN KEY(runId) REFERENCES run(runId)
+            );
+    
+            CREATE TABLE IF NOT EXISTS metric (
+                metricId INTEGER PRIMARY KEY AUTOINCREMENT,
+                runId TEXT NOT NULL,
+                name TEXT NOT NULL,
+                rowLabels TEXT,
+                colLabels TEXT,
+                valueJson TEXT,
+                colDim TEXT NOT NULL,
+                FOREIGN KEY(runId) REFERENCES run(runId)
+            );
+    
+            CREATE TABLE IF NOT EXISTS artifact (
+                artifactId INTEGER PRIMARY KEY AUTOINCREMENT,
+                runId TEXT NOT NULL,
+                name TEXT NOT NULL,
+                payload BLOB,
+                FOREIGN KEY(runId) REFERENCES run(runId)
+            );
+            """
+        )
+E       sqlite3.OperationalError: disk I/O error
+
+UQPyL/analysis/runtime/storage.py:89: OperationalError
+=========================== short test summary info ============================
+FAILED tests/test_runtime_failures.py::test_failure_closes_marks_failed_and_allows_reuse[save-analysis]
+1 failed, 2877 passed in 89.55s (0:01:29)

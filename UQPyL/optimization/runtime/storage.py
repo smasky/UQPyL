@@ -9,16 +9,16 @@ from ...core.runtime_storage import BaseSqliteStorage
 
 
 class SqliteStorage(BaseSqliteStorage):
-    domain = 'optimization'
+    domain = "optimization"
     """
     Persist optimization runs and snapshots into sqlite files.
     """
+
     def _save_params(self, conn, run_id, obj):
         super()._save_params(conn, run_id, obj)
         for name, value in obj.exportConfig().items():
             conn.execute("DELETE FROM runParam WHERE runId = ? AND name = ?", (run_id, name))
-            conn.execute("INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)",
-                         (run_id, name, repr(value)))
+            conn.execute("INSERT INTO runParam (runId, name, value) VALUES (?, ?, ?)", (run_id, name, repr(value)))
 
     def _makeRunId(self, algorithmName, problemName):
         _, runId = self._db_path(algorithmName, problemName)
@@ -51,7 +51,7 @@ class SqliteStorage(BaseSqliteStorage):
                 0,
                 0,
                 0.0,
-                now,
+                obj.state.createdAt,
                 None,
                 self._problem_blob(problem),
             ),
@@ -82,18 +82,30 @@ class SqliteStorage(BaseSqliteStorage):
         if currentPop is not None and currentPop.objs is not None:
             currentPop.objs = currentPop.objs * problem.opt
         weights = None if problem.conWgt is None else np.asarray(problem.conWgt).tolist()
-        populationPayload = array_to_json({
-            "constraint_weights": weights,
-        })
-        bestPayload = array_to_json({
-            "constraint_weights": weights,
-            "best_feasible": result.bestFeasible,
-            "appear_fes": result.appearFEs,
-            "appear_iters": result.appearIters,
-            "improved": obj.state.history.improvedHistory[-1] if obj.state.history.improvedHistory else False,
-            "min_violation": result.minViolation,
-            "hv_reference_point": None if result.extra.get("hv_reference_point") is None else np.asarray(result.extra["hv_reference_point"]).tolist(),
-        })
+        populationPayload = array_to_json(
+            {
+                "constraint_weights": weights,
+            }
+        )
+        bestPayload = array_to_json(
+            {
+                "stop_reason": result.stopReason,
+                **{
+                    key: result.extra[key]
+                    for key in ("hv_normalized", "hv_enabled", "hv_freq", "hv_samples", "delta_selection")
+                    if key in result.extra
+                },
+                "constraint_weights": weights,
+                "best_feasible": result.bestFeasible,
+                "appear_fes": result.appearFEs,
+                "appear_iters": result.appearIters,
+                "improved": obj.state.history.improvedHistory[-1] if obj.state.history.improvedHistory else False,
+                "min_violation": result.minViolation,
+                "hv_reference_point": None
+                if result.extra.get("hv_reference_point") is None
+                else np.asarray(result.extra["hv_reference_point"]).tolist(),
+            }
+        )
 
         cur = conn.execute(
             """
@@ -126,8 +138,8 @@ class SqliteStorage(BaseSqliteStorage):
 
         if result.candidateDecs is not None:
             from ..population import Population
-            candidates = Population(result.candidateDecs, result.candidateObjs,
-                                    result.candidateCons, problem.conWgt)
+
+            candidates = Population(result.candidateDecs, result.candidateObjs, result.candidateCons, problem.conWgt)
             self._insertMembers(conn, snapshotId, "candidate", candidates)
 
         if isFinal:

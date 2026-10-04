@@ -8,7 +8,7 @@ from UQPyL.problem.evaluator import Evaluator
 def makeProblem(problemClass=Problem, **kwargs):
     config = dict(nInput=2, nObj=1, lb=0, ub=1)
     if issubclass(problemClass, ModelProblem):
-        config["simFunc"] = lambda X: X[:, :, None]
+        config["simFunc"] = lambda X: X.copy()
     else:
         config["objFunc"] = lambda X: X.sum(axis=1)
     return problemClass(**(config | kwargs))
@@ -92,7 +92,7 @@ def test_unconstrained_cons_request_can_be_empty(baseClass):
 @pytest.mark.parametrize("target", [None, "sims"])
 def test_simulation_only_model_remains_supported(target):
     result = makeProblem(ModelProblem).evaluate([0.2, 0.3], target=target)
-    np.testing.assert_allclose(result.sims, [[[0.2], [0.3]]])
+    np.testing.assert_allclose(result.sims, [[0.2, 0.3]])
     assert result.objs is None and result.cons is None
 
 
@@ -127,7 +127,7 @@ def test_problem_normalizes_input_once(monkeypatch):
 
 def test_scalar_simulation_has_clear_shape_error():
     problem = makeProblem(ModelProblem, simFunc=lambda X: np.array(1.0))
-    with pytest.raises(ValueError, match="first dimension"):
+    with pytest.raises(ValueError, match="2D"):
         problem.evaluate([0.2, 0.3])
 
 

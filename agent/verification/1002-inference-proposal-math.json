@@ -1,0 +1,60 @@
+{
+  "reflection_correlated": [
+    {
+      "extent": 3,
+      "forward": 2.1259511306386543,
+      "reverse": 3.4353060490435796
+    },
+    {
+      "extent": 6,
+      "forward": 2.1259511306386543,
+      "reverse": 3.4353060490435796
+    }
+  ],
+  "reflection_diagonal_control": [
+    {
+      "extent": 3,
+      "forward": 1.7341884074433902,
+      "reverse": 1.7341884074433904
+    },
+    {
+      "extent": 6,
+      "forward": 1.7341884074433902,
+      "reverse": 1.7341884074433904
+    }
+  ],
+  "snooker": {
+    "actual_proposal": [
+      2.2054054054054055,
+      0.3675675675675676
+    ],
+    "reference_proposal": [
+      1.3599999999999999,
+      2.7199999999999998
+    ],
+    "actual_ratio": 0.49477477477477505,
+    "reference_ratio": 0.3599999999999999,
+    "off_axis_cross_product": -4.043243243243244
+  },
+  "snooker_one_dimension": {
+    "actual_ratio": 1.0313825672368133,
+    "reference_ratio": 1.0
+  },
+  "demc_transverse_motion": {
+    "maximum_axis_difference": 0.0
+  },
+  "dream_acceptance_adaptation": {
+    "true_interval_rate": 0.5,
+    "actual_used_rate": 0.025,
+    "actual_scale": 0.9777512371933363,
+    "reference_scale": 1.0253151205244289
+  },
+  "dream_jump_score": {
+    "jump": [
+      1.0,
+      -1.0
+    ],
+    "actual": 0.0,
+    "squared_euclidean": 2.0
+  }
+}

@@ -197,7 +197,7 @@ def test_amh_update_covs_keeps_nontrivial_proposal_scale_after_reinit():
         return Eval(objs=0.5 * np.sum(X**2, axis=1, keepdims=True))
 
     problem = _EvalOnlyProblem(nInput=2, nObj=1, ub=4.0, lb=-4.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)), evalFunc=_eval_gaussian)
-    amh = AMH(nChains=3, warmUp=5, maxIterTimes=12, verboseFlag=False, saveFlag=False)
+    amh = AMH(nChains=3, warmUp=5, maxIters=12, verboseFlag=False, saveFlag=False)
     amh.setup(problem, seed=2024)
 
     nChains = amh.get("nChains")

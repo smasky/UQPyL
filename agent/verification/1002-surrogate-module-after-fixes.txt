@@ -1,0 +1,8 @@
+{
+  "total": 215,
+  "statuses": {
+    "control": 215
+  },
+  "issues_by_group": {}
+}
+Evidence: /home/wmtsky/projects/UQPyL/agent/verification/1002-surrogate-module-after-fixes.json

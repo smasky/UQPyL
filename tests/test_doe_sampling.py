@@ -1,3 +1,5 @@
+from itertools import product
+
 import numpy as np
 import pytest
 
@@ -16,20 +18,40 @@ def _make_problem(n_input=3):
     )
 
 
+def assertLatinStrata(points, problem, centered=False):
+    unit = (points - problem.lb) / (problem.ub - problem.lb)
+    count, dimension = unit.shape
+    np.testing.assert_array_equal(
+        np.sort(np.floor(unit * count).astype(int), axis=0),
+        np.broadcast_to(np.arange(count)[:, None], (count, dimension)),
+    )
+    if centered:
+        np.testing.assert_allclose(
+            np.sort(unit, axis=0),
+            np.broadcast_to((np.arange(count)[:, None] + 0.5) / count, (count, dimension)),
+            atol=1e-14,
+            rtol=0,
+        )
+
+
+@pytest.mark.numerical
 def test_lhs_classic_sample_shape_and_bounds():
     problem = _make_problem(3)
     X = LHS("classic").sample(problem, nt=10, seed=123)
+    assertLatinStrata(X, problem)
     assert X.shape == (10, 3)
     assert np.all(X >= problem.lb - 1e-12)
     assert np.all(X <= problem.ub + 1e-12)
 
 
+@pytest.mark.numerical
 @pytest.mark.parametrize("criterion", ["center", "maximin", "center_maximin", "correlation"])
 def test_lhs_other_criteria_smoke(criterion):
     problem = _make_problem(3)
     # keep iterations small so CI stays fast; "correlation" criterion can be expensive otherwise
     lhs = LHS(criterion=criterion, iterations=1 if criterion == "correlation" else 3)
     X = lhs.sample(problem, nt=8, seed=123)
+    assertLatinStrata(X, problem, centered=criterion in {"center", "center_maximin"})
     assert X.shape == (8, 3)
     assert np.all(X >= problem.lb - 1e-12)
     assert np.all(X <= problem.ub + 1e-12)
@@ -66,9 +88,11 @@ def test_random_reproducible_given_seed():
     assert np.allclose(X1, X2)
 
 
+@pytest.mark.numerical
 def test_ffd_levels_int_produces_cartesian_grid():
     problem = _make_problem(3)
     X = FFD().sample(problem, levels=2, seed=123)
+    np.testing.assert_array_equal(X, np.array(list(product([-1.0, 2.0], repeat=3))))
     assert X.shape == (2**3, 3)
     assert np.all(X >= problem.lb - 1e-12)
     assert np.all(X <= problem.ub + 1e-12)
@@ -110,4 +134,3 @@ def test_sampler_invalid_generate_shape_raises():
     problem = _make_problem(3)
     with pytest.raises(ValueError):
         BadShapeSampler().sample(problem, nt=4, seed=123)
-

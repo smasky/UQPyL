@@ -11,6 +11,7 @@ from ...core import config
 from ..core.constraint import calcConstraintViolation
 from ...core.runtime import ensure_result_dir
 
+
 @dataclass
 class VerboseConfig:
     level: int = 2
@@ -69,11 +70,18 @@ class SingleObjectiveRenderer:
         pairs = [
             ("algorithm", algorithmName),
             ("status", "finished"),
+            ("stop reason", getattr(result, "stopReason", None) or "unknown"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("best value", _fmt(bestValue, self.config.precision)),
             ("best X", _fmt_vector(result.bestDecs, self.config.precision, 8)),
-            ("constraint viol.", _fmt(_constraint_violation(result.bestCons, result.extra.get("constraint_weights")), self.config.precision)),
+            (
+                "constraint viol.",
+                _fmt(
+                    _constraint_violation(result.bestCons, result.extra.get("constraint_weights")),
+                    self.config.precision,
+                ),
+            ),
             ("elapsed", f"{result.runtime:.1f}s"),
         ]
         return _renderBlock("Optimization finished", pairs)
@@ -131,6 +139,7 @@ class MultiObjectiveRenderer:
         pairs = [
             ("algorithm", algorithmName),
             ("status", "finished" if result.bestFeasible else "finished: no feasible solution found"),
+            ("stop reason", getattr(result, "stopReason", None) or "unknown"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("pareto size", result.bestObjs.shape[0] if result.bestObjs is not None else 0),
@@ -139,13 +148,16 @@ class MultiObjectiveRenderer:
             ("elapsed", f"{result.runtime:.1f}s"),
         ]
         lines = [_renderBlock("Multi-objective optimization finished", pairs), "", "  Pareto preview:"]
-        lines.extend(_fmt_pareto_preview(result.bestObjs, self.config.precision, self.config.maxParetoPreview, indent="    "))
+        lines.extend(
+            _fmt_pareto_preview(result.bestObjs, self.config.precision, self.config.maxParetoPreview, indent="    ")
+        )
         return "\n".join(lines)
 
     def renderFinalFull(self, result: Any, algorithmName: str) -> str:
         pairs = [
             ("algorithm", algorithmName),
             ("status", "finished" if result.bestFeasible else "finished: no feasible solution found"),
+            ("stop reason", getattr(result, "stopReason", None) or "unknown"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("pareto size", result.bestObjs.shape[0] if result.bestObjs is not None else 0),
@@ -271,7 +283,7 @@ class Verbose:
             f"maxIters: {obj.maxIter}",
         ]
         if obj.reporter.config.showParams:
-            lines.append(f"params: {obj.params.asDict()}")
+            lines.append(f"params: {obj.exportConfig()}")
         for line in lines:
             obj.reporter._writeLine(line, obj.problem)
 
@@ -287,8 +299,11 @@ class Verbose:
             paretoSize=None if obj.problem.nObj == 1 or obj.state.bestObjs is None else obj.state.bestObjs.shape[0],
             paretoPreview=None if obj.problem.nObj == 1 else realObjs,
             hypervolume=obj.state.bestMetric,
-            constraintViolation=(obj.state.minViolation if obj.problem.nObj > 1 else
-                                 _constraint_violation(obj.state.bestCons, obj.problem.conWgt)),
+            constraintViolation=(
+                obj.state.minViolation
+                if obj.problem.nObj > 1
+                else _constraint_violation(obj.state.bestCons, obj.problem.conWgt)
+            ),
             bestFeasible=obj.state.bestFeasible,
         )
         if obj.verboseFlag:

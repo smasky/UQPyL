@@ -1,0 +1,447 @@
+...............FFFFFFFFFFFFFFFFFFFFF....F.                               [100%]
+=================================== FAILURES ===================================
+_ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialMissing-False] _
+
+secondOrder = False, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Sobol.*rows'
+E         Actual message: 'The number of samples must be divisible by 4!'
+
+tests/test_analysis_design_validation.py:114: AssertionError
+_ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialMissing-True] _
+
+secondOrder = True, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Sobol.*rows'
+E         Actual message: 'The number of samples must be divisible by 6!'
+
+tests/test_analysis_design_validation.py:114: AssertionError
+_ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockMissing-False] __
+
+secondOrder = False, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:114: Failed
+__ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockMissing-True] __
+
+secondOrder = True, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:114: Failed
+_ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialExtra-False] __
+
+secondOrder = False, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Sobol.*rows'
+E         Actual message: 'The number of samples must be divisible by 4!'
+
+tests/test_analysis_design_validation.py:114: AssertionError
+__ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialExtra-True] __
+
+secondOrder = True, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Sobol.*rows'
+E         Actual message: 'The number of samples must be divisible by 6!'
+
+tests/test_analysis_design_validation.py:114: AssertionError
+__ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockExtra-False] ___
+
+secondOrder = False, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:114: Failed
+___ testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockExtra-True] ___
+
+secondOrder = True, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:114: Failed
+__________ testSobolRejectsContradictoryMetadataBeforeEvaluation[N-1] __________
+
+key = 'N', value = 1
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolRejectsContradictoryMetadataBeforeEvaluation(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.raises(ValueError, match="Sobol"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:132: Failed
+______ testSobolRejectsContradictoryMetadataBeforeEvaluation[blockSize-4] ______
+
+key = 'blockSize', value = 4
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolRejectsContradictoryMetadataBeforeEvaluation(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.raises(ValueError, match="Sobol"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:132: Failed
+___ testSobolRejectsContradictoryMetadataBeforeEvaluation[secondOrder-False] ___
+
+key = 'secondOrder', value = False
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolRejectsContradictoryMetadataBeforeEvaluation(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.raises(ValueError, match="Sobol"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:132: Failed
+________________ testSobolRejectsInvalidMetadataFieldTypes[N-0] ________________
+
+key = 'N', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+______________ testSobolRejectsInvalidMetadataFieldTypes[N-True] _______________
+
+key = 'N', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+_______________ testSobolRejectsInvalidMetadataFieldTypes[N-2.5] _______________
+
+key = 'N', value = 2.5
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+__________ testSobolRejectsInvalidMetadataFieldTypes[blockSize-True] ___________
+
+key = 'blockSize', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+___________ testSobolRejectsInvalidMetadataFieldTypes[blockSize-6.0] ___________
+
+key = 'blockSize', value = 6.0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+___________ testSobolRejectsInvalidMetadataFieldTypes[secondOrder-0] ___________
+
+key = 'secondOrder', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+_________ testSobolRejectsInvalidMetadataFieldTypes[secondOrder-False] _________
+
+key = 'secondOrder', value = 'False'
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [("N", 0), ("N", True), ("N", 2.5), ("blockSize", True), ("blockSize", 6.0), ("secondOrder", 0), ("secondOrder", "False")],
+    )
+    def testSobolRejectsInvalidMetadataFieldTypes(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.raises(ValueError, match=f"Sobol.*{key}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:145: Failed
+_____________ testSobolRequiresExplicitBaseSizeAndOrderMetadata[N] _____________
+
+missingKey = 'N'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolRequiresExplicitBaseSizeAndOrderMetadata(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+>       with pytest.raises(ValueError, match=f"Sobol.*{missingKey}"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:154: Failed
+________ testSobolRequiresExplicitBaseSizeAndOrderMetadata[secondOrder] ________
+
+missingKey = 'secondOrder'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolRequiresExplicitBaseSizeAndOrderMetadata(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+        with pytest.raises(ValueError, match=f"Sobol.*{missingKey}"):
+>           Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+
+tests/test_analysis_design_validation.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74c46b63f1a0>
+meta = {'designType': 'saltelli', 'N': 8, 'skipValue': 0, 'scramble': True, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+>       self.set("secondOrder", meta["secondOrder"])
+                                ^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'secondOrder'
+
+UQPyL/analysis/methods/sobol.py:50: KeyError
+__________ testSobolRejectsWrongDesignMetadataEvenForConstantOutputs ___________
+
+    def testSobolRejectsWrongDesignMetadataEvenForConstantOutputs():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+>       with pytest.raises(ValueError, match="Sobol.*blockSize"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_analysis_design_validation.py:161: Failed
+_____________ test_sobol_analyze_divisibility_validation_branches ______________
+
+    def test_sobol_analyze_divisibility_validation_branches():
+        problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
+        sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    
+        # secondOrder=True requires divisible by (2*nInput+2)=8
+        X_bad = np.zeros((7, 3))
+>       with pytest.raises(ValueError, match="Sobol.*rows"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Sobol.*rows'
+E         Actual message: 'The number of samples must be divisible by 8!'
+
+tests/test_analysis_sobol_more.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialMissing-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialMissing-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockMissing-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockMissing-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialExtra-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[partialExtra-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockExtra-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsIncompleteOrExtraDesignBeforeEvaluation[blockExtra-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsContradictoryMetadataBeforeEvaluation[N-1]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsContradictoryMetadataBeforeEvaluation[blockSize-4]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsContradictoryMetadataBeforeEvaluation[secondOrder-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[N-0]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[N-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[N-2.5]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[blockSize-True]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[blockSize-6.0]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[secondOrder-0]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsInvalidMetadataFieldTypes[secondOrder-False]
+FAILED tests/test_analysis_design_validation.py::testSobolRequiresExplicitBaseSizeAndOrderMetadata[N]
+FAILED tests/test_analysis_design_validation.py::testSobolRequiresExplicitBaseSizeAndOrderMetadata[secondOrder]
+FAILED tests/test_analysis_design_validation.py::testSobolRejectsWrongDesignMetadataEvenForConstantOutputs
+FAILED tests/test_analysis_sobol_more.py::test_sobol_analyze_divisibility_validation_branches
+22 failed, 20 passed in 1.09s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_analysis_design_validation.py tests/test_analysis_sobol_more.py` failed. (See above for error)

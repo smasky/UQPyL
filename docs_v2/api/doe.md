@@ -1,5 +1,9 @@
 # Design of Experiment API
 
+For `nSamples=1`, LHS `maximin` / `center_maximin` issue a `RuntimeWarning` and use classic / center respectively. Metadata retains the requested `criterion` and records the actual `effective_criterion`. All three optimized criteria require positive integer `iterations`; booleans and invalid counts raise a parameter error.
+
+Sobol and Saltelli require a nonnegative integer `skipValue`, which may exceed the requested base sample count. A non-power-of-two base count, or a power-of-two count with a skip not divisible by that count, produces one `UserWarning` while still returning the requested design. Samples are neither padded nor trimmed. The default is `skipValue=0`. Alignment suppresses this quality warning but does not establish convergence for a particular model. Sobol uses fast_forward without materializing skipped points. FFD returns an independent copy of the `levels` metadata.
+
 ## `UQPyL.doe`
 
 The `doe` module generates design samples from a `Problem` input space. Samplers first generate samples in unit space, then map them to the problem bounds through `problem.unit_to_space()`.
@@ -272,6 +276,12 @@ For a problem with `D` inputs and base sample size `N`, output shape is:
 ```text
 N > 4 * M^2
 ```
+
+This lower bound permits sampling but may still require auxiliary frequency reuse.
+To allocate distinct auxiliary frequencies for `D` inputs, also require
+`N >= 4 * M^2 * (D - 1) + 1`. With `M=4` and `D=3`, use at least `N=129`
+(387 total samples). Smaller valid designs emit a warning about frequency reuse.
+This condition avoids reuse; it does not guarantee converged sensitivity estimates.
 
 Metadata:
 

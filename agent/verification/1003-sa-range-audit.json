@@ -1,0 +1,529 @@
+{
+  "delta": [
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.5883788324340038,
+              -0.01962352337367127
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.967724593192401,
+              -0.032275406807599
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 0,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.5883788324340038,
+              -0.01962352337367127
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.967724593192401,
+              -0.032275406807599
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.5883788324340038,
+              -0.01962352337367127
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.967724593192401,
+              -0.032275406807599
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 0,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6621423433777736,
+              -0.02452558909879895
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9642831885124682,
+              -0.03571681148753179
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 3,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6621423433777736,
+              -0.02452558909879895
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9642831885124682,
+              -0.03571681148753179
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6621423433777736,
+              -0.02452558909879895
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9642831885124682,
+              -0.03571681148753179
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 3,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.7344149201009049,
+              -0.025171851242341097
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9668611247694223,
+              -0.03313887523057759
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 17,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.7344149201009049,
+              -0.025171851242341097
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9668611247694223,
+              -0.03313887523057759
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.7344149201009049,
+              -0.025171851242341097
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9668611247694223,
+              -0.03313887523057759
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 17,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6699034826102858,
+              -0.02191462605018959
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9683231390218716,
+              -0.03167686097812838
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 41,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6699034826102858,
+              -0.02191462605018959
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9683231390218716,
+              -0.03167686097812838
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6699034826102858,
+              -0.02191462605018959
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9683231390218716,
+              -0.03167686097812838
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 41,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    }
+  ],
+  "morris": [
+    {
+      "output_scale": 1.0,
+      "analytic_sigma": "2.121320343559642573202533086314547117855",
+      "sigma_representable": true,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688674e-17
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5
+            ]
+          ],
+          "sigma": [
+            [
+              2.121320343559643
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "output_scale": 1e+307,
+      "analytic_sigma": "2.121320343559642543569935977777660225401E+307",
+      "sigma_representable": true,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688675e+290
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5000000000000002e+307
+            ]
+          ],
+          "sigma": [
+            [
+              2.121320343559643e+307
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "output_scale": 1e+308,
+      "analytic_sigma": "2.121320343559642596492644116682350322915E+308",
+      "sigma_representable": false,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688674e+291
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5e+308
+            ]
+          ],
+          "sigma": [
+            [
+              "inf"
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "Morris sigma overflow in output units for output 0, input indices [0]; see extra['morris_statistic_status']. S1_norm remains available."
+          }
+        ]
+      }
+    }
+  ]
+}

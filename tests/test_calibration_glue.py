@@ -12,15 +12,14 @@ def test_glue_filters_behavioral_samples_by_rmse_threshold():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=3.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 
@@ -51,15 +50,14 @@ def test_glue_supports_named_metric_configuration():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=3.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 

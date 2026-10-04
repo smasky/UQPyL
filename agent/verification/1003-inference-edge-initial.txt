@@ -1,0 +1,268 @@
+.....F.F................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+......F.F.F.F                                                            [100%]
+=================================== FAILURES ===================================
+_____________________ test_dream_zs_run_smoke_small_iters ______________________
+
+    def test_dream_zs_run_smoke_small_iters():
+        # cover the main `run` loop with very small settings
+        problem = _make_problem(2)
+        alg = DREAM_ZS(
+            nChains=3,
+            warmUp=0,
+            maxIters=2,
+            ps=1.0,           # always snooker update
+            k=1,
+            jitter=0.0,
+            adpInterval=1,
+            archSize=1,
+            acTarget=0.25,
+            nCR=3,
+            verboseFlag=False,
+            logFlag=False,
+            saveFlag=False,
+        )
+>       res = alg.run(problem, gamma=0.05, seed=123)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_inference_algorithms_more.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.inference.methods.dream_zs.DREAM_ZS object at 0x73ba52051a00>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba52051910>, gamma = 0.05
+seed = 123
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+____________ test_dream_zs_run_does_not_mutate_global_random_state _____________
+
+    def test_dream_zs_run_does_not_mutate_global_random_state():
+        problem = _make_problem(2)
+        np.random.seed(24680)
+        expected_next = np.random.RandomState(24680).rand()
+    
+        alg = DREAM_ZS(
+            nChains=3,
+            warmUp=0,
+            maxIters=2,
+            ps=1.0,
+            k=1,
+            jitter=0.0,
+            adpInterval=1,
+            archSize=1,
+            acTarget=0.25,
+            nCR=3,
+            verboseFlag=False,
+            logFlag=False,
+            saveFlag=False,
+        )
+>       alg.run(problem, gamma=0.05, seed=123)
+
+tests/test_inference_algorithms_more.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.inference.methods.dream_zs.DREAM_ZS object at 0x73ba453d48f0>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba520238c0>, gamma = 0.05
+seed = 123
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+____ test_real_de_and_snooker_runs_preserve_history_and_reproduce[3-0-1.0] _____
+
+ps = 1.0, warmUp = 0, seed = 3
+
+    @pytest.mark.parametrize("ps", [0., 1.])
+    @pytest.mark.parametrize("warmUp", [0, 2])
+    @pytest.mark.parametrize("seed", [3, 7])
+    def test_real_de_and_snooker_runs_preserve_history_and_reproduce(ps, warmUp, seed):
+        method = ArchiveProbe(warmUp=warmUp, archSize=2, maxIters=8, ps=ps, adpInterval=2)
+        problem = flatProblem()
+        before = np.random.get_state()
+>       first = method.run(problem, gamma=0.1, seed=seed)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dream_archive_isolation.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_dream_archive_isolation.ArchiveProbe object at 0x73ba42952f90>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba429529f0>, gamma = 0.1
+seed = 3
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+____ test_real_de_and_snooker_runs_preserve_history_and_reproduce[3-2-1.0] _____
+
+ps = 1.0, warmUp = 2, seed = 3
+
+    @pytest.mark.parametrize("ps", [0., 1.])
+    @pytest.mark.parametrize("warmUp", [0, 2])
+    @pytest.mark.parametrize("seed", [3, 7])
+    def test_real_de_and_snooker_runs_preserve_history_and_reproduce(ps, warmUp, seed):
+        method = ArchiveProbe(warmUp=warmUp, archSize=2, maxIters=8, ps=ps, adpInterval=2)
+        problem = flatProblem()
+        before = np.random.get_state()
+>       first = method.run(problem, gamma=0.1, seed=seed)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dream_archive_isolation.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_dream_archive_isolation.ArchiveProbe object at 0x73ba51e69b80>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba51e695b0>, gamma = 0.1
+seed = 3
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+____ test_real_de_and_snooker_runs_preserve_history_and_reproduce[7-0-1.0] _____
+
+ps = 1.0, warmUp = 0, seed = 7
+
+    @pytest.mark.parametrize("ps", [0., 1.])
+    @pytest.mark.parametrize("warmUp", [0, 2])
+    @pytest.mark.parametrize("seed", [3, 7])
+    def test_real_de_and_snooker_runs_preserve_history_and_reproduce(ps, warmUp, seed):
+        method = ArchiveProbe(warmUp=warmUp, archSize=2, maxIters=8, ps=ps, adpInterval=2)
+        problem = flatProblem()
+        before = np.random.get_state()
+>       first = method.run(problem, gamma=0.1, seed=seed)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dream_archive_isolation.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_dream_archive_isolation.ArchiveProbe object at 0x73ba429505f0>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba429517f0>, gamma = 0.1
+seed = 7
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+____ test_real_de_and_snooker_runs_preserve_history_and_reproduce[7-2-1.0] _____
+
+ps = 1.0, warmUp = 2, seed = 7
+
+    @pytest.mark.parametrize("ps", [0., 1.])
+    @pytest.mark.parametrize("warmUp", [0, 2])
+    @pytest.mark.parametrize("seed", [3, 7])
+    def test_real_de_and_snooker_runs_preserve_history_and_reproduce(ps, warmUp, seed):
+        method = ArchiveProbe(warmUp=warmUp, archSize=2, maxIters=8, ps=ps, adpInterval=2)
+        problem = flatProblem()
+        before = np.random.get_state()
+>       first = method.run(problem, gamma=0.1, seed=seed)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_dream_archive_isolation.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_dream_archive_isolation.ArchiveProbe object at 0x73ba42953cb0>
+problem = <UQPyL.problem.problem.Problem object at 0x73ba429515b0>, gamma = 0.1
+seed = 7
+
+    def run(self, problem: ProblemABC, gamma: Union[float, np.ndarray] = None, seed: int = None):
+        self.setup(problem, seed)
+        nChains, warmUp = self.get("nChains", "warmUp")
+        ps, k, jitter = self.get("ps", "k", "jitter")
+        refreshProbability = self.get("snookerRefreshProb") if ps == 1 and np.any(problem.ub > problem.lb) else 0.
+        if refreshProbability:
+>           warnings.warn(
+                f"DREAM_ZS: ps=1 uses a {refreshProbability:.0%} full-dimensional Gaussian refresh "
+                "to avoid confinement to the archive subspace; this policy is recorded in diagnostics.",
+                RuntimeWarning, stacklevel=2,
+            )
+E           RuntimeWarning: DREAM_ZS: ps=1 uses a 10% full-dimensional Gaussian refresh to avoid confinement to the archive subspace; this policy is recorded in diagnostics.
+
+UQPyL/inference/methods/dream_zs.py:111: RuntimeWarning
+=========================== short test summary info ============================
+FAILED tests/test_inference_algorithms_more.py::test_dream_zs_run_smoke_small_iters
+FAILED tests/test_inference_algorithms_more.py::test_dream_zs_run_does_not_mutate_global_random_state
+FAILED tests/test_dream_archive_isolation.py::test_real_de_and_snooker_runs_preserve_history_and_reproduce[3-0-1.0]
+FAILED tests/test_dream_archive_isolation.py::test_real_de_and_snooker_runs_preserve_history_and_reproduce[3-2-1.0]
+FAILED tests/test_dream_archive_isolation.py::test_real_de_and_snooker_runs_preserve_history_and_reproduce[7-0-1.0]
+FAILED tests/test_dream_archive_isolation.py::test_real_de_and_snooker_runs_preserve_history_and_reproduce[7-2-1.0]
+6 failed, 295 passed in 22.78s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_inference_algorithms_more.py tests/test_inference_base_and_chain.py tests/test_inference_benchmarks.py tests/test_inference_common_structure.py tests/test_inference_demc_configuration.py tests/test_inference_diagnostics.py tests/test_inference_diagnostics_and_partial_results.py tests/test_inference_incremental_history.py tests/test_inference_mh.py tests/test_inference_mixed_coordinates.py tests/test_inference_more_branches.py tests/test_inference_proposal_scales.py tests/test_inference_result_isolation_and_directions.py tests/test_inference_stop_reason_persistence.py tests/test_inference_transition_correctness.py tests/test_dream_archive_isolation.py -W error --basetemp=.cache/pytest/inference-edge` failed. (See above for error)

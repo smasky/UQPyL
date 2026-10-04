@@ -1,0 +1,870 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFF...F                                          [100%]
+=================================== FAILURES ===================================
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape0-False] _________
+
+model = False, shape = (2,), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape0-True] _________
+
+model = True, shape = (2,), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape1-False] _________
+
+model = False, shape = (1, 2), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape1-True] _________
+
+model = True, shape = (1, 2), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape2-False] _________
+
+model = False, shape = (2, 1), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape2-True] _________
+
+model = True, shape = (2, 1), rows = 1
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape0-False] _________
+
+model = False, shape = (2,), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape0-True] _________
+
+model = True, shape = (2,), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape1-False] _________
+
+model = False, shape = (1, 2), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape1-True] _________
+
+model = True, shape = (1, 2), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape2-False] _________
+
+model = False, shape = (2, 1), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape2-True] _________
+
+model = True, shape = (2, 1), rows = 2
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape0-False] _________
+
+model = False, shape = (2,), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape0-True] _________
+
+model = True, shape = (2,), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape1-False] _________
+
+model = False, shape = (1, 2), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape1-True] _________
+
+model = True, shape = (1, 2), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+        assert p.lb.shape==p.ub.shape==(1,2)
+        real=p.unit_to_space(np.full((rows,2),.5))
+        np.testing.assert_array_equal(real,np.tile([.5,15.],(rows,1)))
+        np.testing.assert_array_equal(p.space_to_unit(real),np.full((rows,2),.5))
+        sample=LHS().sample(p,rows,seed=17)
+        assert sample.shape==(rows,2)
+        assert np.all(sample>=p.lb) and np.all(sample<=p.ub)
+        lower.flat[0]=-99
+        upper.flat[0]=99
+>       np.testing.assert_array_equal(p.lb,[[0,10]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: -99.0 (ACTUAL), 0 (DESIRED)
+E       Max absolute difference among violations: 99.
+E       Max relative difference among violations: inf
+E        ACTUAL: array([[-99.,  10.]])
+E        DESIRED: array([[ 0, 10]])
+
+tests/test_problem_conversion_regressions.py:33: AssertionError
+________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape2-False] _________
+
+model = False, shape = (2, 1), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+_________ testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape2-True] _________
+
+model = True, shape = (2, 1), rows = 3
+
+    @pytest.mark.parametrize('model',[False,True])
+    @pytest.mark.parametrize('shape',[(2,),(1,2),(2,1)])
+    @pytest.mark.parametrize('rows',[1,2,3])
+    def testBoundsHaveCanonicalShapeAndKeepSampleRows(model,shape,rows):
+        lower=np.array([0.,10.]).reshape(shape)
+        upper=np.array([1.,20.]).reshape(shape)
+        p=makeProblem(lower,upper,model)
+>       assert p.lb.shape==p.ub.shape==(1,2)
+E       assert (2, 1) == (1, 2)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+tests/test_problem_conversion_regressions.py:24: AssertionError
+_________________ testAmbiguousBoundLayoutsAreRejected[bound0] _________________
+
+bound = array([[0., 0.],
+       [0., 0.]])
+
+    @pytest.mark.parametrize('bound',[np.zeros((2,2)),np.zeros((1,1,4))])
+    def testAmbiguousBoundLayoutsAreRejected(bound):
+>       with pytest.raises(ValueError,match='bound'):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_problem_conversion_regressions.py:39: Failed
+_________________ testAmbiguousBoundLayoutsAreRejected[bound1] _________________
+
+bound = array([[[0., 0., 0., 0.]]])
+
+    @pytest.mark.parametrize('bound',[np.zeros((2,2)),np.zeros((1,1,4))])
+    def testAmbiguousBoundLayoutsAreRejected(bound):
+>       with pytest.raises(ValueError,match='bound'):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_problem_conversion_regressions.py:39: Failed
+_________________ testSingleFuncSnapshotsReusedBuffers[scalar] _________________
+
+mode = 'scalar'
+
+    @pytest.mark.parametrize('mode',['scalar','vector','view'])
+    def testSingleFuncSnapshotsReusedBuffers(mode):
+        buffer=np.zeros(4)
+        @singleFunc
+        def objective(x):
+            buffer[:]=[x[0],2*x[0],-x[0],4*x[0]]
+            if mode=='scalar':
+                return buffer[:1].reshape(())
+            return buffer if mode=='vector' else buffer[::2]
+        columns={'scalar':1,'vector':4,'view':2}[mode]
+        p=Problem(nInput=1,nObj=columns,lb=0.,ub=5.,objFunc=objective)
+        result=p.evaluate([[1.],[2.],[3.]])
+        weights={'scalar':[1],'vector':[1,2,-1,4],'view':[1,-1]}[mode]
+>       np.testing.assert_array_equal(result.objs,np.arange(1,4)[:,None]*weights)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 2 / 3 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 3.0 (ACTUAL), 1 (DESIRED)
+E        [1, 0]: 3.0 (ACTUAL), 2 (DESIRED)
+E       Max absolute difference among violations: 2.
+E       Max relative difference among violations: 2.
+E        ACTUAL: array([[3.],
+E              [3.],
+E              [3.]])
+E        DESIRED: array([[1],
+E              [2],
+E              [3]])
+
+tests/test_problem_conversion_regressions.py:56: AssertionError
+_________________ testSingleFuncSnapshotsReusedBuffers[vector] _________________
+
+mode = 'vector'
+
+    @pytest.mark.parametrize('mode',['scalar','vector','view'])
+    def testSingleFuncSnapshotsReusedBuffers(mode):
+        buffer=np.zeros(4)
+        @singleFunc
+        def objective(x):
+            buffer[:]=[x[0],2*x[0],-x[0],4*x[0]]
+            if mode=='scalar':
+                return buffer[:1].reshape(())
+            return buffer if mode=='vector' else buffer[::2]
+        columns={'scalar':1,'vector':4,'view':2}[mode]
+        p=Problem(nInput=1,nObj=columns,lb=0.,ub=5.,objFunc=objective)
+        result=p.evaluate([[1.],[2.],[3.]])
+        weights={'scalar':[1],'vector':[1,2,-1,4],'view':[1,-1]}[mode]
+>       np.testing.assert_array_equal(result.objs,np.arange(1,4)[:,None]*weights)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 8 / 12 (66.7%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: 3.0 (ACTUAL), 1 (DESIRED)
+E        [0, 1]: 6.0 (ACTUAL), 2 (DESIRED)
+E        [0, 2]: -3.0 (ACTUAL), -1 (DESIRED)
+E        [0, 3]: 12.0 (ACTUAL), 4 (DESIRED)
+E        [1, 0]: 3.0 (ACTUAL), 2 (DESIRED)
+E       Max absolute difference among violations: 8.
+E       Max relative difference among violations: 2.
+E        ACTUAL: array([[ 3.,  6., -3., 12.],
+E              [ 3.,  6., -3., 12.],
+E              [ 3.,  6., -3., 12.]])
+E        DESIRED: array([[ 1,  2, -1,  4],
+E              [ 2,  4, -2,  8],
+E              [ 3,  6, -3, 12]])
+
+tests/test_problem_conversion_regressions.py:56: AssertionError
+__________________ testSingleFuncSnapshotsReusedBuffers[view] __________________
+
+mode = 'view'
+
+    @pytest.mark.parametrize('mode',['scalar','vector','view'])
+    def testSingleFuncSnapshotsReusedBuffers(mode):
+        buffer=np.zeros(4)
+        @singleFunc
+        def objective(x):
+            buffer[:]=[x[0],2*x[0],-x[0],4*x[0]]
+            if mode=='scalar':
+                return buffer[:1].reshape(())
+            return buffer if mode=='vector' else buffer[::2]
+        columns={'scalar':1,'vector':4,'view':2}[mode]
+        p=Problem(nInput=1,nObj=columns,lb=0.,ub=5.,objFunc=objective)
+        result=p.evaluate([[1.],[2.],[3.]])
+        weights={'scalar':[1],'vector':[1,2,-1,4],'view':[1,-1]}[mode]
+>       np.testing.assert_array_equal(result.objs,np.arange(1,4)[:,None]*weights)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 4 / 6 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 3.0 (ACTUAL), 1 (DESIRED)
+E        [0, 1]: -3.0 (ACTUAL), -1 (DESIRED)
+E        [1, 0]: 3.0 (ACTUAL), 2 (DESIRED)
+E        [1, 1]: -3.0 (ACTUAL), -2 (DESIRED)
+E       Max absolute difference among violations: 2.
+E       Max relative difference among violations: 2.
+E        ACTUAL: array([[ 3., -3.],
+E              [ 3., -3.],
+E              [ 3., -3.]])
+E        DESIRED: array([[ 1, -1],
+E              [ 2, -2],
+E              [ 3, -3]])
+
+tests/test_problem_conversion_regressions.py:56: AssertionError
+____________ testContinuousConversionMatchesDecimal[-1e+308-1e+308] ____________
+
+lower = -1e+308, upper = 1e+308
+
+    @pytest.mark.parametrize('lower,upper',[(-1e308,1e308),(-1.7e308,1e308),(-1e308,1.7e308),
+                                           (-9e307,9e307),(1e308,1.7e308),(-1e-310,1e-310),(-3.,11.)])
+    def testContinuousConversionMatchesDecimal(lower,upper):
+        p=makeProblem([lower],[upper])
+        unit=np.array([0.,.125,.25,.5,.75,.875,1.])[:,None]
+        original=unit.copy()
+        with localcontext() as ctx:
+            ctx.prec=100
+            lo,hi=Decimal.from_float(lower),Decimal.from_float(upper)
+            expected=np.array([float(lo+(hi-lo)*Decimal.from_float(u)) for u in unit[:,0]])[:,None]
+        with np.errstate(over='raise',invalid='raise',divide='raise'):
+>           real=p.unit_to_space(unit)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_problem_conversion_regressions.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/problem/base.py:224: in unit_to_space
+    return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.problem.space.Space object at 0x79109f753f80>
+X = array([[0.   ],
+       [0.125],
+       [0.25 ],
+       [0.5  ],
+       [0.75 ],
+       [0.875],
+       [1.   ]])
+IFlag = True, DFlag = True
+
+    def unit_to_space(self, X, IFlag=True, DFlag=True):
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+>       decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+                               ^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in subtract
+
+UQPyL/problem/space.py:135: FloatingPointError
+___________ testContinuousConversionMatchesDecimal[-1.7e+308-1e+308] ___________
+
+lower = -1.7e+308, upper = 1e+308
+
+    @pytest.mark.parametrize('lower,upper',[(-1e308,1e308),(-1.7e308,1e308),(-1e308,1.7e308),
+                                           (-9e307,9e307),(1e308,1.7e308),(-1e-310,1e-310),(-3.,11.)])
+    def testContinuousConversionMatchesDecimal(lower,upper):
+        p=makeProblem([lower],[upper])
+        unit=np.array([0.,.125,.25,.5,.75,.875,1.])[:,None]
+        original=unit.copy()
+        with localcontext() as ctx:
+            ctx.prec=100
+            lo,hi=Decimal.from_float(lower),Decimal.from_float(upper)
+            expected=np.array([float(lo+(hi-lo)*Decimal.from_float(u)) for u in unit[:,0]])[:,None]
+        with np.errstate(over='raise',invalid='raise',divide='raise'):
+>           real=p.unit_to_space(unit)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_problem_conversion_regressions.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/problem/base.py:224: in unit_to_space
+    return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.problem.space.Space object at 0x79109f7ada30>
+X = array([[0.   ],
+       [0.125],
+       [0.25 ],
+       [0.5  ],
+       [0.75 ],
+       [0.875],
+       [1.   ]])
+IFlag = True, DFlag = True
+
+    def unit_to_space(self, X, IFlag=True, DFlag=True):
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+>       decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+                               ^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in subtract
+
+UQPyL/problem/space.py:135: FloatingPointError
+___________ testContinuousConversionMatchesDecimal[-1e+308-1.7e+308] ___________
+
+lower = -1e+308, upper = 1.7e+308
+
+    @pytest.mark.parametrize('lower,upper',[(-1e308,1e308),(-1.7e308,1e308),(-1e308,1.7e308),
+                                           (-9e307,9e307),(1e308,1.7e308),(-1e-310,1e-310),(-3.,11.)])
+    def testContinuousConversionMatchesDecimal(lower,upper):
+        p=makeProblem([lower],[upper])
+        unit=np.array([0.,.125,.25,.5,.75,.875,1.])[:,None]
+        original=unit.copy()
+        with localcontext() as ctx:
+            ctx.prec=100
+            lo,hi=Decimal.from_float(lower),Decimal.from_float(upper)
+            expected=np.array([float(lo+(hi-lo)*Decimal.from_float(u)) for u in unit[:,0]])[:,None]
+        with np.errstate(over='raise',invalid='raise',divide='raise'):
+>           real=p.unit_to_space(unit)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_problem_conversion_regressions.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/problem/base.py:224: in unit_to_space
+    return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.problem.space.Space object at 0x79109f751a90>
+X = array([[0.   ],
+       [0.125],
+       [0.25 ],
+       [0.5  ],
+       [0.75 ],
+       [0.875],
+       [1.   ]])
+IFlag = True, DFlag = True
+
+    def unit_to_space(self, X, IFlag=True, DFlag=True):
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+>       decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+                               ^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in subtract
+
+UQPyL/problem/space.py:135: FloatingPointError
+____________ testContinuousConversionMatchesDecimal[-9e+307-9e+307] ____________
+
+lower = -9e+307, upper = 9e+307
+
+    @pytest.mark.parametrize('lower,upper',[(-1e308,1e308),(-1.7e308,1e308),(-1e308,1.7e308),
+                                           (-9e307,9e307),(1e308,1.7e308),(-1e-310,1e-310),(-3.,11.)])
+    def testContinuousConversionMatchesDecimal(lower,upper):
+        p=makeProblem([lower],[upper])
+        unit=np.array([0.,.125,.25,.5,.75,.875,1.])[:,None]
+        original=unit.copy()
+        with localcontext() as ctx:
+            ctx.prec=100
+            lo,hi=Decimal.from_float(lower),Decimal.from_float(upper)
+            expected=np.array([float(lo+(hi-lo)*Decimal.from_float(u)) for u in unit[:,0]])[:,None]
+        with np.errstate(over='raise',invalid='raise',divide='raise'):
+>           real=p.unit_to_space(unit)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_problem_conversion_regressions.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/problem/base.py:224: in unit_to_space
+    return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.problem.space.Space object at 0x79109f752d50>
+X = array([[0.   ],
+       [0.125],
+       [0.25 ],
+       [0.5  ],
+       [0.75 ],
+       [0.875],
+       [1.   ]])
+IFlag = True, DFlag = True
+
+    def unit_to_space(self, X, IFlag=True, DFlag=True):
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+>       decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+                               ^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in subtract
+
+UQPyL/problem/space.py:135: FloatingPointError
+____________ testExtremeContinuousCoordinatesWithMixedAndFixedAxes _____________
+
+    def testExtremeContinuousCoordinatesWithMixedAndFixedAxes():
+        p=Problem(nInput=4,nObj=1,lb=[-1e308,-2,0,7],ub=[1e308,3,1,7],
+                  varType=[0,1,2,0],varSet={2:[.25,2.5,8.]},objFunc=lambda x:x[:,1:2])
+        u=np.array([[0,0,0,0],[.5,.5,.5,.5],[1,1,1,1]])
+>       x=p.unit_to_space(u)
+          ^^^^^^^^^^^^^^^^^^
+
+tests/test_problem_conversion_regressions.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/problem/base.py:224: in unit_to_space
+    return self.space.unit_to_space(X, IFlag=IFlag, DFlag=DFlag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.problem.space.Space object at 0x79109f7e8ef0>
+X = array([[0. , 0. , 0. , 0. ],
+       [0.5, 0.5, 0.5, 0.5],
+       [1. , 1. , 1. , 1. ]])
+IFlag = True, DFlag = True
+
+    def unit_to_space(self, X, IFlag=True, DFlag=True):
+        """Decode a unit-cube copy; integer and discrete values use equal bins."""
+        U = self._validate_unit(X)
+>       decoded = np.clip(U * (self.ub - self.lb) + self.lb, self.lb, self.ub)
+                               ^^^^^^^^^^^^^^^^^
+E       RuntimeWarning: overflow encountered in subtract
+
+UQPyL/problem/space.py:135: RuntimeWarning
+=========================== short test summary info ============================
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape0-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape0-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape1-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape1-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape2-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[1-shape2-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape0-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape0-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape1-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape1-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape2-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[2-shape2-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape0-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape0-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape1-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape1-True]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape2-False]
+FAILED tests/test_problem_conversion_regressions.py::testBoundsHaveCanonicalShapeAndKeepSampleRows[3-shape2-True]
+FAILED tests/test_problem_conversion_regressions.py::testAmbiguousBoundLayoutsAreRejected[bound0]
+FAILED tests/test_problem_conversion_regressions.py::testAmbiguousBoundLayoutsAreRejected[bound1]
+FAILED tests/test_problem_conversion_regressions.py::testSingleFuncSnapshotsReusedBuffers[scalar]
+FAILED tests/test_problem_conversion_regressions.py::testSingleFuncSnapshotsReusedBuffers[vector]
+FAILED tests/test_problem_conversion_regressions.py::testSingleFuncSnapshotsReusedBuffers[view]
+FAILED tests/test_problem_conversion_regressions.py::testContinuousConversionMatchesDecimal[-1e+308-1e+308]
+FAILED tests/test_problem_conversion_regressions.py::testContinuousConversionMatchesDecimal[-1.7e+308-1e+308]
+FAILED tests/test_problem_conversion_regressions.py::testContinuousConversionMatchesDecimal[-1e+308-1.7e+308]
+FAILED tests/test_problem_conversion_regressions.py::testContinuousConversionMatchesDecimal[-9e+307-9e+307]
+FAILED tests/test_problem_conversion_regressions.py::testExtremeContinuousCoordinatesWithMixedAndFixedAxes
+28 failed, 3 passed in 0.92s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_problem_conversion_regressions.py -W error --basetemp=.cache/pytest/problem-before` failed. (See above for error)

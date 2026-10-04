@@ -1,6 +1,7 @@
 import json
 from copy import deepcopy
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import numpy as np
 
@@ -8,6 +9,7 @@ from ...core.runtime import export_runtime_meta
 
 from ..metric import HV
 from ..core.constraint import compareSolutions, calcConstraintViolation
+from ..core.numerical import automaticReference
 
 
 @dataclass
@@ -15,6 +17,7 @@ class OptHistory:
     """
     Optimization history container.
     """
+
     populations: list = field(default_factory=list)
     bests: list = field(default_factory=list)
     metrics: list = field(default_factory=list)
@@ -55,6 +58,7 @@ class OptResult:
     """
     Final optimization result.
     """
+
     bestDecs: np.ndarray | None
     bestObjs: np.ndarray | None
     bestCons: np.ndarray | None
@@ -71,23 +75,32 @@ class OptResult:
     candidateObjs: np.ndarray | None = None
     candidateCons: np.ndarray | None = None
     minViolation: float | None = None
+    runId: str | None = None
+    method: str | None = None
+    problemName: str | None = None
+    nInput: int | None = None
+    nOutput: int | None = None
+    nCon: int | None = None
+    createdAt: str | None = None
+    stopReason: str | None = None
 
     def summary(self) -> dict:
         return export_runtime_meta(
-            run_id=None,
-            method=None,
-            problem_name=None,
-            n_input=None,
-            n_output=None,
-            n_con=None,
+            run_id=self.runId,
+            method=self.method,
+            problem_name=self.problemName,
+            n_input=self.nInput,
+            n_output=self.nOutput,
+            n_con=self.nCon,
             runtime=float(self.runtime),
-            created_at=None,
+            created_at=self.createdAt,
             extra={
                 "best_feasible": bool(self.bestFeasible),
                 "appear_fes": self.appearFEs,
                 "appear_iters": self.appearIters,
                 "fes": int(self.FEs),
                 "iters": int(self.iters),
+                "stop_reason": self.stopReason,
             },
         )
 
@@ -111,6 +124,7 @@ class OptState:
     """
     Mutable optimization state used during a run.
     """
+
     def __init__(self, algorithm):
         self.algorithm = algorithm
         self.history = OptHistory()
@@ -135,6 +149,12 @@ class OptState:
 
     def _updateSingle(self, pop, FEs, iters):
         bestPop = pop.getBest(k=1)
+        pending = getattr(self, "_singlePending", None)
+        if pending is not None:
+            candidate, candidateFEs = pending
+            if compareSolutions(candidate.objs, candidate.cons, bestPop.objs, bestPop.cons, pop.conWgt) <= 0:
+                bestPop, FEs = candidate, candidateFEs
+            self._singlePending = None
         localBestDecs = bestPop.decs
         localBestObjs = bestPop.objs
         localBestCons = bestPop.cons
@@ -143,9 +163,10 @@ class OptState:
 
         # Reuse the same feasibility-first comparison as single-objective
         # search operators. Equal violations retain the historical incumbent.
-        improved = self.bestObjs is None or compareSolutions(
-            localBestObjs, localBestCons, self.bestObjs, self.bestCons, pop.conWgt
-        ) < 0
+        improved = (
+            self.bestObjs is None
+            or compareSolutions(localBestObjs, localBestCons, self.bestObjs, self.bestCons, pop.conWgt) < 0
+        )
 
         if improved:
             self.bestDecs = localBestDecs.copy()
@@ -157,6 +178,18 @@ class OptState:
 
         self.bestMetric = None
         return improved
+
+    def observeSingle(self, pop, FEs):
+        """Retain evaluated candidates until the iteration commits its history."""
+        if not len(pop):
+            return
+        candidate = pop.getBest(k=1)
+        pending = getattr(self, "_singlePending", None)
+        if (
+            pending is None
+            or compareSolutions(candidate.objs, candidate.cons, pending[0].objs, pending[0].cons, pop.conWgt) < 0
+        ):
+            self._singlePending = (candidate, FEs)
 
     def observeMulti(self, pop, FEs, iters):
         """Archive evaluated real decisions before environmental selection."""
@@ -184,6 +217,7 @@ class OptState:
                     self.minViolation = minimum
                     self.candidates = candidates[violation == minimum][:10]
         if changed:
+            self._hvDirty = True
             self.appearFEs = FEs
             self.appearIters = iters
             self._archiveImproved = True
@@ -202,15 +236,33 @@ class OptState:
         self.bestFeasible = bool(len(front))
         if self.bestFeasible:
             refPoint = self._getHvRefPoint(front.objs)
-            if improved or self.bestMetric is None:
-                self.bestMetric = float(HV(front.objs, refPoint=refPoint, normalize=False,
-                                           rng=np.random.default_rng(0)))
             direction = np.asarray(getattr(getattr(self.algorithm, "problem", None), "opt", 1))
             self.extra["hv_reference_point"] = refPoint * direction
             self.extra["hv_normalized"] = False
-        else:
-            self.bestMetric = None
+        self._updateHV(iters)
         return improved
+
+    def _updateHV(self, iters, *, final=False):
+        """Compute only scheduled diagnostics, without consuming the search RNG."""
+        enabled = getattr(self.algorithm, "hvFlag", True)
+        frequency = getattr(self.algorithm, "hvFreq", 10)
+        samples = getattr(self.algorithm, "hvSamples", 10_000)
+        self.extra.update(hv_enabled=enabled, hv_freq=frequency, hv_samples=samples)
+        self.bestMetric = None
+        if not enabled or not self.bestFeasible or (not final and iters % frequency):
+            return
+        if self._hvDirty or self._hvValue is None:
+            self._hvValue = float(
+                HV(
+                    self.bestObjs,
+                    refPoint=self.hvRefPoint,
+                    normalize=False,
+                    nSamples=samples,
+                    rng=np.random.default_rng(0),
+                )
+            )
+            self._hvDirty = False
+        self.bestMetric = self._hvValue
 
     def _updateHistory(self, pop, FEs, iters, improved):
         historyFreq = getattr(self.algorithm, "historyFreq", 1)
@@ -229,6 +281,10 @@ class OptState:
     def recordFinalSnapshot(self):
         if self.currentPop is not None and self.history.iterToFEs:
             iters, FEs = self.history.iterToFEs[-1]
+            if self.bestObjs is not None and self.bestObjs.shape[1] > 1:
+                self._updateHV(iters, final=True)
+                self.history.metrics[-1] = self.bestMetric
+                self.history.bestMetricHistory[-1] = self.bestMetric
             self._recordSnapshot(self.currentPop, FEs, iters)
 
     def _recordSnapshot(self, pop, FEs, iters):
@@ -258,6 +314,7 @@ class OptState:
                 "bestFeasible": self.bestFeasible,
             }
         )
+
     def buildResult(self, *, includeHistory=True):
         direction = np.asarray(getattr(self.algorithm.problem, "opt", 1))
         history = deepcopy(self.history) if includeHistory else OptHistory()
@@ -270,8 +327,7 @@ class OptState:
             if best.get("candidateObjs") is not None:
                 best["candidateObjs"] *= direction
         if direction.size == 1:
-            history.bestObjHistory = [value * float(direction.ravel()[0])
-                                      for value in history.bestObjHistory]
+            history.bestObjHistory = [value * float(direction.ravel()[0]) for value in history.bestObjHistory]
         return OptResult(
             bestDecs=None if self.bestDecs is None else self.bestDecs.copy(),
             bestObjs=None if self.bestObjs is None else self.bestObjs * direction,
@@ -289,12 +345,21 @@ class OptState:
             candidateObjs=None if self.candidates is None else self.candidates.objs * direction,
             candidateCons=None if self.candidates is None else self.candidates.cons.copy(),
             minViolation=self.minViolation,
+            runId=getattr(self.algorithm, "runId", None),
+            method=getattr(self.algorithm, "name", type(self.algorithm).__name__),
+            problemName=getattr(self.algorithm.problem, "name", type(self.algorithm.problem).__name__),
+            nInput=getattr(self.algorithm.problem, "nInput", None),
+            nOutput=getattr(self.algorithm.problem, "nObj", None),
+            nCon=getattr(self.algorithm.problem, "nCon", None),
+            createdAt=self.createdAt,
+            stopReason=self.stopReason,
         )
 
     def toNpzPayload(self):
         result = self.buildResult()
         problem = self.algorithm.problem
         summary = {
+            "stop_reason": result.stopReason,
             "algorithm": self.algorithm.name,
             "problem": getattr(problem, "name", problem.__class__.__name__),
             "nInput": int(problem.nInput),
@@ -317,8 +382,12 @@ class OptState:
         }
         if result.bestCons is not None:
             payload["bestCons"] = result.bestCons
-        for name, key in (("candidateDecs", "candidate_decs"), ("candidateObjs", "candidate_objs"),
-                          ("candidateCons", "candidate_cons"), ("minViolation", "min_violation")):
+        for name, key in (
+            ("candidateDecs", "candidate_decs"),
+            ("candidateObjs", "candidate_objs"),
+            ("candidateCons", "candidate_cons"),
+            ("minViolation", "min_violation"),
+        ):
             value = getattr(result, name)
             if value is not None:
                 payload[key] = np.asarray(value)
@@ -336,6 +405,9 @@ class OptState:
         return payload
 
     def reset(self):
+        self.createdAt = datetime.now().isoformat(timespec="seconds")
+        self._singlePending = None
+        self.stopReason = None
         self.archive = None
         self.candidates = None
         self.minViolation = None
@@ -349,6 +421,8 @@ class OptState:
         self.appearIters = None
         self.currentPop = None
         self.hvRefPoint = None
+        self._hvDirty = True
+        self._hvValue = None
         self.runtime = 0.0
         self.extra = {}
         self.history.reset()
@@ -367,7 +441,7 @@ class OptState:
             return self.hvRefPoint
 
         worst = np.max(np.asarray(bestObjs, dtype=float), axis=0)
-        self.hvRefPoint = worst + np.where(worst == 0.0, 0.2, np.abs(worst) * 0.2)
+        self.hvRefPoint = automaticReference(worst, 0.2)
         return self.hvRefPoint
 
 

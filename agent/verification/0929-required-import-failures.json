@@ -1,0 +1,20 @@
+[
+  {
+    "module": "UQPyL.surrogate.mars.core._types",
+    "test_file": "tests/test_surrogate_mars_smoke.py",
+    "exit_code": 2,
+    "skipped": false
+  },
+  {
+    "module": "UQPyL.surrogate.svr.core.libsvm_interface",
+    "test_file": "tests/test_surrogate_svr_smoke.py",
+    "exit_code": 2,
+    "skipped": false
+  },
+  {
+    "module": "UQPyL.surrogate.regression.lasso.lasso",
+    "test_file": "tests/test_lasso_input_isolation.py",
+    "exit_code": 2,
+    "skipped": false
+  }
+]

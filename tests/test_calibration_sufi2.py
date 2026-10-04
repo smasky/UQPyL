@@ -12,15 +12,14 @@ def test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=[3.0, 3.0],
         lb=[0.0, 0.0],
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 
@@ -42,10 +41,12 @@ def test_sufi2_selects_elite_samples_and_updates_bounds_with_95ppu_metrics():
     assert np.array_equal(res.diagnostics["eliteMask"], np.array([True, True, False]))
     assert np.allclose(res.diagnostics["updatedLb"], [1.0, 2.0])
     assert np.allclose(res.diagnostics["updatedUb"], [1.2, 2.2])
-    assert np.allclose(res.diagnostics["pfactor"], 0.0)
-    assert np.allclose(res.diagnostics["rfactor"], 0.38)
-    assert np.allclose(res.diagnostics["ppuLower"], [1.005, 2.005])
-    assert np.allclose(res.diagnostics["ppuUpper"], [1.195, 2.195])
+    assert np.allclose(res.diagnostics["pfactor"], 1.0)
+    assert np.allclose(res.diagnostics["rfactor"], 3.23)
+    assert np.allclose(res.diagnostics["ppuLower"], [0.05, 0.1])
+    assert np.allclose(res.diagnostics["ppuUpper"], [1.19, 2.19])
+    assert np.allclose(res.diagnostics["elitePpuLower"], [1.005, 2.005])
+    assert np.allclose(res.diagnostics["elitePpuUpper"], [1.195, 2.195])
 
 
 def test_sufi2_supports_named_metric_configuration():
@@ -56,15 +57,14 @@ def test_sufi2_supports_named_metric_configuration():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=[3.0, 3.0],
         lb=[0.0, 0.0],
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 
@@ -89,15 +89,14 @@ def test_sufi2_iterative_mode_samples_and_updates_bounds_history():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=[3.0, 3.0],
         lb=[0.0, 0.0],
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 

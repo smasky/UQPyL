@@ -5,37 +5,54 @@ from .linear_regression import LinearRegression
 from ..scaler import Scaler
 from ..poly import PolyFeature
 
+
 class PolynomialRegression(LinearRegression):
-    
     """
     Polynomial regression surrogate model.
 
     This model augments the input space with polynomial features, then fits
     an underlying linear, ridge, or lasso regression model.
+    Each model fits one output; use MultiSurrogate for multiple outputs.
 
     Examples:
         >>> model = PolynomialRegression(degree=2, lossType='Origin')
         >>> model.fit(xTrain, yTrain)
         >>> yPred = model.predict(xPred)
     """
-    
+
     name = "PR"
     defaultTuneParameters = ("degree",)
     advancedTuneParameters = ("lossType", "C", "onlyInteraction")
-    
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                degree: int = 2, degree_attr: Union[dict, None] = {'ub': 3, 'lb': 1, 'type': 'int', 'log': False},
-                onlyInteraction: bool = False,
-                lossType: Literal['Origin', 'Ridge', 'Lasso'] = 'Origin',
-                fitIntercept: bool = True,
-                C: float=0.1, C_attr: Union[dict, None] = {'ub': 100, 'lb': 1e-5, 'type': 'float', 'log': True},
-                maxIter: int = 100, maxEpoch: int = 5e5, tolerance: float = 1e-3, p0: int = 10):
-        
-        super().__init__(scalers = scalers, polyFeature = None,
-                         lossType = lossType, fitIntercept = fitIntercept, 
-                         C = C, C_attr = C_attr, maxIter = maxIter, 
-                         maxEpoch = maxEpoch, tolerance = tolerance, p0 = p0)
-        
+
+    def __init__(
+        self,
+        scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+        degree: int = 2,
+        degree_attr: Union[dict, None] = {"ub": 3, "lb": 1, "type": "int", "log": False},
+        onlyInteraction: bool = False,
+        lossType: Literal["Origin", "Ridge", "Lasso"] = "Origin",
+        fitIntercept: bool = True,
+        C: float = 0.1,
+        C_attr: Union[dict, None] = {"ub": 100, "lb": 1e-5, "type": "float", "log": True},
+        maxIter: int = 100,
+        maxEpoch: int = 5e5,
+        tolerance: float = 1e-3,
+        p0: int = 10,
+    ):
+
+        super().__init__(
+            scalers=scalers,
+            polyFeature=None,
+            lossType=lossType,
+            fitIntercept=fitIntercept,
+            C=C,
+            C_attr=C_attr,
+            maxIter=maxIter,
+            maxEpoch=maxEpoch,
+            tolerance=tolerance,
+            p0=p0,
+        )
+
         self.degree = degree
         self.fitIntercept = fitIntercept
         self.onlyInteraction = onlyInteraction
@@ -58,38 +75,35 @@ class PolynomialRegression(LinearRegression):
         self.setting.set("p0", p0)
         self.setLossType(lossType)
         self.setOnlyInteraction(onlyInteraction)
-        
-###------------------------public functions-----------------------------###
+
+    ###------------------------public functions-----------------------------###
     def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         self.resetFitState()
         self.storeTrainingData(xTrain, yTrain)
 
         xTrain = self.polynomialFeatures(xTrain)
-        
-        if self.lossType == 'Origin':
+
+        if self.lossType == "Origin":
             self.fitOrigin(xTrain, yTrain)
-        elif self.lossType == 'Ridge':
+        elif self.lossType == "Ridge":
             self.fitRidge(xTrain, yTrain)
-        elif self.lossType == 'Lasso':
+        elif self.lossType == "Lasso":
             self.fitLasso(xTrain, yTrain)
         else:
-            raise ValueError('Using wrong model type!')
+            raise ValueError("Using wrong model type!")
 
         return self
-        
-    def predict(self, xPred: np.ndarray, returnStd: bool = False,
-                returnVar: bool = False) -> np.ndarray:
+
+    def predict(self, xPred: np.ndarray, returnStd: bool = False, returnVar: bool = False) -> np.ndarray:
         self._normalize_predict_flags(returnStd, returnVar)
         self.requireFitted("coef", "intercept")
-        
-        xPred = self.__X_transform__(xPred)
+
+        xPred = self._transformX(xPred)
         xPred = self.polynomialFeatures(xPred)
-        
+
         yPred = xPred @ self.fitState["coef"] + self.fitState["intercept"]
-            
-        yPred = yPred.reshape(-1,1)
-        
-        return self.__Y_inverse_transform__(yPred)
+
+        return self._inverseTransformY(yPred)
 
     def isParameterActive(self, name: str):
         if name == "C":
@@ -130,6 +144,8 @@ class PolynomialRegression(LinearRegression):
         self.polyFeatureBuilder.onlyInteraction = self.onlyInteraction
         if "onlyInteraction" in self.setting.parVal:
             choiceInfo = self.setting.parSet["onlyInteraction"]
-            self.setting.parVal["onlyInteraction"][:] = self.setting._normalize_choice_array(self.onlyInteraction, choiceInfo)
+            self.setting.parVal["onlyInteraction"][:] = self.setting._normalize_choice_array(
+                self.onlyInteraction, choiceInfo
+            )
         self.resetFitState()
         return self

@@ -4,10 +4,7 @@ import pytest
 from UQPyL.problem.sop.single_simple_problem import Sphere
 from UQPyL.surrogate.scaler import StandardScaler
 
-SVR = pytest.importorskip(
-    "UQPyL.surrogate.svr.support_vector_machine",
-    reason="SVR extension module is not available in this environment.",
-).SVR
+from UQPyL.surrogate.svr.support_vector_machine import SVR
 
 
 def test_svr_invalid_params_raise():
@@ -50,4 +47,3 @@ def test_svr_fit_predict_smoke():
     pred = model.predict(x[:5])
     assert pred.shape == (5, 1)
     assert np.isfinite(pred).all()
-

@@ -1,0 +1,266 @@
+[
+  {
+    "case": "sufi_single_elite",
+    "seed": 0,
+    "old_error": 0.030091049484569084,
+    "guarded_error": 0.0010918374795351245
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 1,
+    "old_error": 0.029304604706329816,
+    "guarded_error": 0.0012470473258045286
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 2,
+    "old_error": 0.06548953601208778,
+    "guarded_error": 0.000571402202902106
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 3,
+    "old_error": 0.004930893253271086,
+    "guarded_error": 0.004555635722454241
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 4,
+    "old_error": 0.01312810007201581,
+    "guarded_error": 0.0029639604379916953
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 5,
+    "old_error": 0.0952955389273547,
+    "guarded_error": 0.004420887017533567
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 6,
+    "old_error": 0.012132913458211176,
+    "guarded_error": 0.00226388487437726
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 7,
+    "old_error": 0.003303187270657426,
+    "guarded_error": 0.005631695206124137
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 8,
+    "old_error": 0.08762755770206135,
+    "guarded_error": 0.0016623266081609966
+  },
+  {
+    "case": "sufi_single_elite",
+    "seed": 9,
+    "old_error": 0.08765412038671816,
+    "guarded_error": 0.004517871389333862
+  },
+  {
+    "case": "cubic",
+    "seed": 11,
+    "adaptive": false,
+    "initial_cost": 99651.83237228972,
+    "final_cost": 878.5995404403654,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "cubic",
+    "seed": 11,
+    "adaptive": true,
+    "initial_cost": 99651.83237228972,
+    "final_cost": 878.5995404403694,
+    "stop_reason": "step_tolerance",
+    "iterations": 7,
+    "trial_count": 9,
+    "warnings": []
+  },
+  {
+    "case": "cubic",
+    "seed": 23,
+    "adaptive": false,
+    "initial_cost": 99738.89956476979,
+    "final_cost": 878.8470863613179,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "cubic",
+    "seed": 23,
+    "adaptive": true,
+    "initial_cost": 99738.89956476979,
+    "final_cost": 878.8470863613304,
+    "stop_reason": "step_tolerance",
+    "iterations": 7,
+    "trial_count": 9,
+    "warnings": []
+  },
+  {
+    "case": "cubic",
+    "seed": 47,
+    "adaptive": false,
+    "initial_cost": 99696.86354681042,
+    "final_cost": 878.6929286398921,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "cubic",
+    "seed": 47,
+    "adaptive": true,
+    "initial_cost": 99696.86354681042,
+    "final_cost": 878.6929286399007,
+    "stop_reason": "step_tolerance",
+    "iterations": 7,
+    "trial_count": 9,
+    "warnings": []
+  },
+  {
+    "case": "exponential",
+    "seed": 11,
+    "adaptive": false,
+    "initial_cost": 342.8333230920013,
+    "final_cost": 340.30233951176126,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "exponential",
+    "seed": 11,
+    "adaptive": true,
+    "initial_cost": 342.8333230920013,
+    "final_cost": 340.30233343296976,
+    "stop_reason": "line_search_stalled",
+    "iterations": 3,
+    "trial_count": 12,
+    "warnings": [
+      "IES line search found no improving step; retaining the last accepted ensemble."
+    ]
+  },
+  {
+    "case": "exponential",
+    "seed": 23,
+    "adaptive": false,
+    "initial_cost": 348.0655895358644,
+    "final_cost": 345.47410779573005,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "exponential",
+    "seed": 23,
+    "adaptive": true,
+    "initial_cost": 348.0655895358644,
+    "final_cost": 345.47410774961,
+    "stop_reason": "step_tolerance",
+    "iterations": 15,
+    "trial_count": 82,
+    "warnings": []
+  },
+  {
+    "case": "exponential",
+    "seed": 47,
+    "adaptive": false,
+    "initial_cost": 345.7644718685472,
+    "final_cost": 343.1830010938768,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "exponential",
+    "seed": 47,
+    "adaptive": true,
+    "initial_cost": 345.7644718685472,
+    "final_cost": 343.18300109658946,
+    "stop_reason": "step_tolerance",
+    "iterations": 7,
+    "trial_count": 7,
+    "warnings": []
+  },
+  {
+    "case": "sine",
+    "seed": 11,
+    "adaptive": false,
+    "initial_cost": 229.11806751668627,
+    "final_cost": 220.34582035551935,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "sine",
+    "seed": 11,
+    "adaptive": true,
+    "initial_cost": 229.11806751668627,
+    "final_cost": 220.3292993443965,
+    "stop_reason": "line_search_stalled",
+    "iterations": 15,
+    "trial_count": 25,
+    "warnings": [
+      "IES line search found no improving step; retaining the last accepted ensemble."
+    ]
+  },
+  {
+    "case": "sine",
+    "seed": 23,
+    "adaptive": false,
+    "initial_cost": 225.15379838028963,
+    "final_cost": 216.21609694009035,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "sine",
+    "seed": 23,
+    "adaptive": true,
+    "initial_cost": 225.15379838028963,
+    "final_cost": 216.21609694009035,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 20,
+    "warnings": []
+  },
+  {
+    "case": "sine",
+    "seed": 47,
+    "adaptive": false,
+    "initial_cost": 227.32635024972208,
+    "final_cost": 217.7067756459992,
+    "stop_reason": "iteration_budget",
+    "iterations": 20,
+    "trial_count": 0,
+    "warnings": []
+  },
+  {
+    "case": "sine",
+    "seed": 47,
+    "adaptive": true,
+    "initial_cost": 227.32635024972208,
+    "final_cost": 217.69433177833915,
+    "stop_reason": "line_search_stalled",
+    "iterations": 15,
+    "trial_count": 27,
+    "warnings": [
+      "IES line search found no improving step; retaining the last accepted ensemble."
+    ]
+  }
+]

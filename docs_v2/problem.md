@@ -1,5 +1,7 @@
 # Problem Module
 
+> 2.1.7 development interface: `obs` / `mask` are `(nObs,)`; `simFunc(X)` returns `(nSamples,nObs)`. No automatic flattening or legacy grid layout. Observations align by array position; observation labels are not required. CalResult/SQLite summaries use `nObs` / `n_obs` and `n_output=n_obs`; `nTime/nSeries/seriesLabels` are removed. Old calibration databases are incompatible; rerun with the new interface.
+
 The `problem` module abstracts real-world tasks into unified problem objects that UQPyL can consume. Each problem is described through three standardized components: **Space** (input space), **Evaluation** (evaluation process), and **Eval** (result container). Once defined, a problem object can be used consistently across sampling, optimization, calibration, and analysis workflows.
 
 ## Unit and real coordinate conversion
@@ -199,17 +201,17 @@ Use `ModelProblem` when a simulation model must run first and objectives or cons
 | Item | Contract |
 |------|------|
 | Input | `X`, shape `(nSamples, nInput)` |
-| Output | `sims`, a 3D numeric array of shape `(nSamples, nTime, nSeries)` |
+| Output | `sims`, a 2D numeric array of shape `(nSamples, nObs)` |
 | NaN | Simulation output must not contain NaN values, except at positions marked by `mask` when a mask matching `obs.shape` is provided. |
 
 ```python
 def simFunc(X):
     X = np.atleast_2d(X)
     nSamples = X.shape[0]
-    sims = np.zeros((nSamples, 3, 1))            # (nSamples, nTime=3, nSeries=1)
-    sims[:, 0, 0] = X[:, 0]                      # t=0: first parameter
-    sims[:, 1, 0] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1: mean of two parameters
-    sims[:, 2, 0] = X[:, 1]                      # t=2: second parameter
+    sims = np.zeros((nSamples, 3))            # (nSamples, nObs=3)
+    sims[:, 0] = X[:, 0]                      # t=0: first parameter
+    sims[:, 1] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1: mean of two parameters
+    sims[:, 2] = X[:, 1]                      # t=2: second parameter
     return sims
 ```
 
@@ -241,8 +243,8 @@ Similar to `Problem`'s `conFunc`, but also receives `simContext`:
 ```python
 @dataclass(frozen=True)
 class SimContext:
-    sims: np.ndarray           # simulation output, shape (nSamples, nTime, nSeries)
-    obs: np.ndarray | None     # observation data, shape (nTime, nSeries)
+    sims: np.ndarray           # simulation output, shape (nSamples, nObs)
+    obs: np.ndarray | None     # observation data, shape (nObs,)
     mask: np.ndarray | None    # missing data mask, same shape as obs; True = missing
 ```
 
@@ -250,16 +252,18 @@ A typical use case is to compute mean squared error between simulations and obse
 
 ```python
 def objFunc(X, simContext):
-    err = simContext.sims - simContext.obs          # element-wise error
+    err = simContext.sims - simContext.obs
     if simContext.mask is not None:
-        err = err[:, ~simContext.mask]              # exclude missing positions
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series dimensions
+        err = err[:, ~simContext.mask]
+    if err.shape[1] == 0:
+        raise ValueError("No valid observations remain after applying mask.")
+    return np.mean(err**2, axis=1, keepdims=True)
 ```
 
 #### obs and mask
 
-- **`obs`**: observation matrix, must be 2D `(nTime, nSeries)`. In a hydrological model, for example, `nTime` is the number of time steps and `nSeries` is the number of observation stations.
-- **`mask`**: missing data mask, a boolean 2D array with exactly the same shape as `obs`. `True` indicates missing data at that position. When a `mask` is provided, NaN values are permitted in the simulation output at masked positions.
+- **`obs`**: observation vector, must be 1D `(nObs,)`. Choose the order explicitly (for example time first, then station) and use the same order for simulation columns.
+- **`mask`**: missing data mask, a boolean 1D array with exactly the same shape as `obs`. `True` indicates missing data at that position. When a `mask` is provided, NaN values are permitted in the simulation output at masked positions.
 
 #### Example
 
@@ -267,23 +271,25 @@ def objFunc(X, simContext):
 import numpy as np
 from UQPyL.problem import ModelProblem
 
-obs = np.array([[1.0], [0.8], [2.0]])            # observations (nTime=3, nSeries=1)
-mask = np.array([[False], [True], [False]])       # second time step is missing
+obs = np.array([1.0, 0.8, 2.0])            # observations (nObs=3,)
+mask = np.array([False, True, False])       # second time step is missing
 
 def simFunc(X):
     X = np.atleast_2d(X)
     nSamples = X.shape[0]
-    sims = np.zeros((nSamples, 3, 1))            # (nSamples, nTime=3, nSeries=1)
-    sims[:, 0, 0] = X[:, 0]                      # t=0
-    sims[:, 1, 0] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1
-    sims[:, 2, 0] = X[:, 1]                      # t=2
+    sims = np.zeros((nSamples, 3))            # (nSamples, nObs=3)
+    sims[:, 0] = X[:, 0]                      # t=0
+    sims[:, 1] = 0.5 * X[:, 0] + 0.5 * X[:, 1]  # t=1
+    sims[:, 2] = X[:, 1]                      # t=2
     return sims
 
 def objFunc(X, simContext):
-    err = simContext.sims - simContext.obs        # element-wise error
+    err = simContext.sims - simContext.obs
     if simContext.mask is not None:
-        err = err[:, ~simContext.mask]            # exclude missing positions
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series
+        err = err[:, ~simContext.mask]
+    if err.shape[1] == 0:
+        raise ValueError("No valid observations remain after applying mask.")
+    return np.mean(err**2, axis=1, keepdims=True)
 
 problem = ModelProblem(
     nInput=2, nObj=1,
@@ -292,7 +298,7 @@ problem = ModelProblem(
     objFunc=objFunc,             # objective function
     obs=obs,                     # observation data
     mask=mask,                   # missing data mask
-    seriesLabels=['Q'],          # series label
+
     name='MyModel',
 )
 
@@ -324,10 +330,12 @@ from UQPyL.problem import Eval, ModelEvaluator, ModelProblem
 
 class MyModelEvaluator(ModelEvaluator):
     def evaluate(self, X, simContext, target=None):
-        err = simContext.sims - simContext.obs          # element-wise error
+        err = simContext.sims - simContext.obs
         if simContext.mask is not None:
-            err = err[:, ~simContext.mask]              # exclude missing positions
-        objs = np.mean(err**2, axis=(1, 2)).reshape(-1, 1)  # average over time and series
+            err = err[:, ~simContext.mask]
+        if err.shape[1] == 0:
+            raise ValueError("No valid observations remain after applying mask.")
+        objs = np.mean(err**2, axis=1, keepdims=True)
         return Eval(objs=objs, sims=simContext.sims, target=target)
 
 problem = ModelProblem(
@@ -364,7 +372,7 @@ For `Problem`, `evaluate()` directly calls `objFunc` / `conFunc`. For `ModelProb
 class Eval:
     objs: np.ndarray | None = None   # objective values (nSamples, nObj)
     cons: np.ndarray | None = None   # constraint values (nSamples, nCon)
-    sims: np.ndarray | None = None   # simulation output (nSamples, nTime, nSeries)
+    sims: np.ndarray | None = None   # simulation output (nSamples, nObs)
 ```
 
 **Shape Rules**:
@@ -373,7 +381,7 @@ class Eval:
 |------|------|------|
 | `objs` | `(nSamples, nObj)` | 2D numeric array |
 | `cons` | `(nSamples, nCon)` | 2D numeric array |
-| `sims` | `(nSamples, nTime, nSeries)` | 3D numeric array, no NaN (except at masked positions) |
+| `sims` | `(nSamples, nObs)` | 2D numeric array, no NaN (except at masked positions) |
 
 **Null rule**: output blocks that are not provided must be `None`. Empty arrays are not a substitute for missing outputs.
 
@@ -447,7 +455,7 @@ For `ModelProblem`:
 ```python
 # target="sims": return simulation output only, skipping objFunc / conFunc
 res = problem.evaluate(X, target="sims")
-print(res.sims)   # (nSamples, nTime, nSeries)
+print(res.sims)   # (nSamples, nObs)
 print(res.objs)   # None
 print(res.cons)   # None
 ```
@@ -537,9 +545,8 @@ def objFunc(X):
 | Parameter | Type | Default | Description |
 |------|------|--------|------|
 | `simFunc` | `callable` | — | Simulation function (required) |
-| `obs` | `np.ndarray` | `None` | Observation matrix `(nTime, nSeries)` |
+| `obs` | `np.ndarray` | `None` | Observation vector `(nObs,)` |
 | `mask` | `np.ndarray` | `None` | Missing data mask, same shape as obs |
-| `seriesLabels` | `list` | Auto-generated when omitted | Series labels |
 | `evaluator` | `ModelEvaluatorBase` | Auto-generated when omitted | Custom simulation evaluator |
 
 ### ProblemBase Instance Properties
@@ -567,11 +574,9 @@ def objFunc(X):
 
 | Property | Type | Description |
 |------|------|------|
-| `obs` | `np.ndarray` | Observation matrix |
+| `obs` | `np.ndarray` | Observation vector |
 | `mask` | `np.ndarray` | Missing data mask |
-| `obsShape` | `tuple` | `obs.shape` |
 | `nObs` | `int` | Total flattened observation length |
-| `seriesLabels` | `list` | Series labels |
 
 ### Constraint weights
 
@@ -580,3 +585,9 @@ def objFunc(X):
 ```python
 CV = np.sum(np.maximum(0, cons * conWgt), axis=1)
 ```
+
+## Input and Observation Ordering
+
+Use `problem.evaluate(X, target=...)` as the external evaluation entry point. A 1D X means one sample; the framework passes a 2D X to objFunc/conFunc. Calling an original callback directly bypasses these checks. Multiple one-input samples must use shape `(N, 1)`.
+
+Pass obs/mask as `(nObs,)` and simulations as `(nSamples, nObs)`, including singleton dimensions. Flatten any source grid explicitly before passing it to ModelProblem; the framework does not infer its ordering. Do not independently transpose or reorder one array. ES/IES covariance R follows the remaining valid observation order and count.

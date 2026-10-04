@@ -107,7 +107,7 @@ with Reader("Result/example.sqlite3") as reader:
 | `objs` | 目标矩阵，通常 shape 为 `(n_samples, n_obj)`。 |
 | `cons` | 约束矩阵，值 `<= 0` 表示可行。 |
 | `decs` | 决策/输入矩阵，或推断结果中的链样本。 |
-| `sims` | `ModelProblem` 的仿真输出，通常 shape 为 `(n_samples, n_time, n_series)`。 |
+| `sims` | `ModelProblem` 的仿真输出，通常 shape 为 `(n_samples, n_obs)`。 |
 | `bestDecs` | 最优决策行，或多目标方法中的 Pareto 决策矩阵。 |
 | `bestObjs` | `bestDecs` 对应的目标值。 |
 

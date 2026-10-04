@@ -1,4 +1,4 @@
-#single objective algorithms
+# single objective algorithms
 from .ga import GA
 from .pso import PSO
 from .de import DE

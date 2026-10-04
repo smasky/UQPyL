@@ -10,18 +10,14 @@ from .result import AnaMetric, AnaResult
 
 
 class AnaReader(BaseReader):
-    domain = 'analysis'
+    domain = "analysis"
+
     @classmethod
     def list_runs(cls, result_dir):
         return super().list_runs(
             result_dir,
             run_columns="runId, method, problem, target, status, runtime, createdAt, finishedAt",
         )
-
-
-
-
-
 
     def get_run_summary(self):
         run = self.get_run()
@@ -47,7 +43,6 @@ class AnaReader(BaseReader):
                 "artifact_names": artifactNames,
             },
         )
-
 
     def get_metrics(self):
         rows = self.conn.execute(
@@ -81,7 +76,7 @@ class AnaReader(BaseReader):
             ORDER BY artifactId
             """
         ).fetchall()
-        return {row["name"]: pickle.loads(row["payload"]) for row in rows}
+        return {row["name"]: None if row["payload"] is None else pickle.loads(row["payload"]) for row in rows}
 
     def load_problem(self):
         row = self.conn.execute("SELECT problemPayload FROM run LIMIT 1").fetchone()

@@ -626,6 +626,12 @@ with AnaReader(dbPath) as reader:
 | 混淆 `S1` 和 `ST` | 可能漏掉交互影响。 | 如果 `ST` 明显大于 `S1`，说明交互或非线性可能重要。 |
 | 保存交互式定义的 `objFunc` | `saveFlag=True` 时 pickle 可能失败。 | 保存 sqlite 运行时，使用可导入的问题类或函数。 |
 
+## 绘图中的指标与数值
+
+`UQPyL.viz.plot_sa({"结果": result}, metric="S1", outputIndex=0)` 直接绘制保存的指标值，不再自动除以总和。需要归一化结果时显式选择 `metric="S1_norm"`；Morris 可选择 `"mu"` 或 `"mu_star"`。`outputIndex` 从 0 开始，选择输出行。
+
+负值及大于 1 的值会正常显示。比较多个结果时按第一个结果的参数名称对齐，参数集合必须一致；非有限值发出 `RuntimeWarning` 并跳过对应柱，不修改原结果。
+
 ## 下一步
 
 | 目标 | 阅读 |

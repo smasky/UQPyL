@@ -138,17 +138,17 @@ import numpy as np
 from UQPyL.calibration import GLUE
 from UQPyL.problem import ModelProblem
 
-obs = np.array([[1.0], [2.0], [3.0]])
+obs = np.array([1.0, 2.0, 3.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
     # 这里假设每组参数都会返回 1 条模拟序列，
-    # 一共有 3 个时刻，因此返回尺寸是 (n_samples, 3, 1)。
-    sim = np.zeros((X.shape[0], 3, 1))
-    sim[:, 0, 0] = X[:, 0] * 1.0
-    sim[:, 1, 0] = X[:, 0] * 2.0
-    sim[:, 2, 0] = X[:, 0] * 3.0
+    # 一共有 3 个时刻，因此返回尺寸是 (n_samples, 3)。
+    sim = np.zeros((X.shape[0], 3))
+    sim[:, 0] = X[:, 0] * 1.0
+    sim[:, 1] = X[:, 0] * 2.0
+    sim[:, 2] = X[:, 0] * 3.0
     return sim
 
 
@@ -255,6 +255,8 @@ result = Sobol(verboseFlag=False).analyze(problem, X, Y, meta=meta, target="objs
 ## 安装
 
 UQPyL 需要 Python 3.10 或更高版本。
+
+开发分支的兼容目标为 CPython 3.10–3.14；CI 在 Linux、Windows 和 macOS 上构建并测试安装后的 wheel。Python 3.14 支持范围不包含自由线程构建。
 
 ```bash
 pip install -U UQPyL

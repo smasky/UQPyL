@@ -1,0 +1,734 @@
+[
+  {
+    "seed": 3,
+    "size": 512,
+    "model": "additive",
+    "scores": [
+      0.06021191319651941,
+      0.9397880868034806,
+      4.864349519931105e-32
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 3,
+    "size": 512,
+    "model": "product",
+    "scores": [
+      0.5051403839467977,
+      0.4948596160532023,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 3,
+    "size": 512,
+    "model": "mixed",
+    "status": "rejected",
+    "reason": "MARS output 0 validation R2=0.0304175 is below minValidationR2=0.9; importance is unreliable. Provide more representative samples or adjust maxDegree/maxTerms."
+  },
+  {
+    "seed": 3,
+    "size": 2048,
+    "model": "additive",
+    "scores": [
+      0.06240036825845716,
+      0.9375996317415428,
+      1.1818347515967442e-31
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 3,
+    "size": 2048,
+    "model": "product",
+    "scores": [
+      0.5040753198371946,
+      0.4959246801628055,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 0.9999999495873849,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 3,
+    "size": 2048,
+    "model": "mixed",
+    "scores": [
+      0.4982892833921944,
+      0.4864119697349677,
+      0.01529874687283805
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 0.9999999437043,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 512,
+    "model": "additive",
+    "scores": [
+      0.06256548825402906,
+      0.9374345117459709,
+      2.0179867946930147e-32
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 512,
+    "model": "product",
+    "scores": [
+      0.5069298874122352,
+      0.49307011258776473,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 512,
+    "model": "mixed",
+    "scores": [
+      0.4857858768416295,
+      0.4949020018985854,
+      0.01931212125978509
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 2048,
+    "model": "additive",
+    "scores": [
+      0.06256808250551708,
+      0.937431917494483,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 2048,
+    "model": "product",
+    "scores": [
+      0.4967444330737743,
+      0.5032555669262258,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 0.9999955345532668,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 17,
+    "size": 2048,
+    "model": "mixed",
+    "scores": [
+      0.4962182712362895,
+      0.48795438301084476,
+      0.015827345752865846
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 512,
+    "model": "additive",
+    "scores": [
+      0.06341780371677624,
+      0.9365821962832238,
+      1.0774909302471821e-31
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 512,
+    "model": "product",
+    "scores": [
+      0.5,
+      0.5,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 512,
+    "model": "mixed",
+    "scores": [
+      0.4908572751915007,
+      0.49437306862687785,
+      0.014769656181621495
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 2048,
+    "model": "additive",
+    "scores": [
+      0.06314210576396034,
+      0.9368578942360396,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 2048,
+    "model": "product",
+    "scores": [
+      0.495577758984751,
+      0.5044222410152491,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 0.9999999978568902,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 41,
+    "size": 2048,
+    "model": "mixed",
+    "scores": [
+      0.48666882637992986,
+      0.49842276356782167,
+      0.014908410052248576
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 512,
+    "model": "additive",
+    "scores": [
+      0.06011803231396228,
+      0.9398819676860378,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 512,
+    "model": "product",
+    "scores": [
+      0.5,
+      0.5,
+      2.4160285941205743e-31
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 512,
+    "model": "mixed",
+    "scores": [
+      0.49028945982216887,
+      0.4946798407979223,
+      0.015030699379908889
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 2048,
+    "model": "additive",
+    "scores": [
+      0.06320935234350379,
+      0.9367906476564963,
+      2.4862836826958288e-30
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 2048,
+    "model": "product",
+    "scores": [
+      0.4988688160814518,
+      0.5011311839185483,
+      2.134587493472038e-30
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 73,
+    "size": 2048,
+    "model": "mixed",
+    "scores": [
+      0.49089014773637374,
+      0.49371586645309024,
+      0.015393985810535976
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 512,
+    "model": "additive",
+    "scores": [
+      0.05507128195062561,
+      0.9449287180493744,
+      3.28467489681253e-32
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 512,
+    "model": "product",
+    "scores": [
+      0.478114107899114,
+      0.521885892100886,
+      3.1457294503742574e-31
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 512,
+    "model": "mixed",
+    "scores": [
+      0.4879085132949605,
+      0.49488705830575414,
+      0.017204428399285356
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 410,
+        "validation_samples": 102,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 2048,
+    "model": "additive",
+    "scores": [
+      0.061668638168386095,
+      0.9383313618316138,
+      0.0
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 0.9999999993469746,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 2048,
+    "model": "product",
+    "scores": [
+      0.5020581403925641,
+      0.4979418596074359,
+      2.2352883397787545e-30
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  },
+  {
+    "seed": 101,
+    "size": 2048,
+    "model": "mixed",
+    "scores": [
+      0.4948210719024149,
+      0.4895716978631475,
+      0.015607230234437507
+    ],
+    "diagnostics": {
+      "mars_validation": {
+        "training_samples": 1639,
+        "validation_samples": 409,
+        "split_seed": 0,
+        "max_terms": 40,
+        "outputs": [
+          {
+            "validation_r2": 1.0,
+            "constant_output": false
+          }
+        ]
+      }
+    },
+    "status": "accepted"
+  }
+]

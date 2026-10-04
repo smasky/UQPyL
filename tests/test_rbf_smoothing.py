@@ -7,18 +7,22 @@ from scipy.interpolate import RBFInterpolator
 from UQPyL.surrogate.rbf import RBF
 from UQPyL.surrogate.rbf.kernel import Cubic, Gaussian, Linear, Multiquadric, ThinPlateSpline
 from UQPyL.surrogate.scaler import StandardScaler
+from UQPyL.surrogate import MultiSurrogate
 
 
-KERNELS = [(Cubic, "cubic", 1), (ThinPlateSpline, "thin_plate_spline", 1),
-           (Linear, "linear", 0), (Multiquadric, "multiquadric", 0),
-           (Gaussian, "gaussian", -1)]
+KERNELS = [
+    (Cubic, "cubic", 1),
+    (ThinPlateSpline, "thin_plate_spline", 1),
+    (Linear, "linear", 0),
+    (Multiquadric, "multiquadric", 0),
+    (Gaussian, "gaussian", -1),
+]
 
 
 def referenceModel(kernelClass, scipyName, degree, epsilon, smooth, X, Y):
     # UQPyL Gaussian uses exp(-epsilon*r**2); SciPy uses exp(-(epsilon*r)**2).
     scipyEpsilon = np.sqrt(epsilon) if kernelClass is Gaussian else epsilon
-    return RBFInterpolator(X, Y, kernel=scipyName, degree=degree,
-                           epsilon=scipyEpsilon, smoothing=smooth)
+    return RBFInterpolator(X, Y, kernel=scipyName, degree=degree, epsilon=scipyEpsilon, smoothing=smooth)
 
 
 @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
@@ -26,7 +30,8 @@ def referenceModel(kernelClass, scipyName, degree, epsilon, smooth, X, Y):
 @pytest.mark.parametrize("epsilon", [0.7, 1.8])
 @pytest.mark.parametrize("nInputs", [1, 2])
 def test_predictions_match_scipy_with_matching_kernel_conventions(
-        kernelClass, scipyName, degree, smooth, epsilon, nInputs):
+    kernelClass, scipyName, degree, smooth, epsilon, nInputs
+):
     rng = np.random.default_rng(42)
     X = np.linspace(-1, 1, 7).reshape(-1, 1) if nInputs == 1 else rng.uniform(-1, 1, (10, 2))
     Y = (np.sin(3 * X[:, 0]) + 0.2 * np.sum(X**2, axis=1)).reshape(-1, 1)
@@ -71,8 +76,8 @@ def test_large_smoothing_approaches_unpenalized_trend(kernelClass, scipyName, de
 
 @pytest.mark.parametrize("kernelClass,scipyName,degree", KERNELS)
 def test_positive_smoothing_handles_duplicate_points(kernelClass, scipyName, degree):
-    X = np.array([[0.], [0.], [0.3], [0.7], [1.]])
-    Y = np.array([[1.], [2.], [0.5], [-1.], [0.]])
+    X = np.array([[0.0], [0.0], [0.3], [0.7], [1.0]])
+    Y = np.array([[1.0], [2.0], [0.5], [-1.0], [0.0]])
     model = RBF(kernel=kernelClass(), C_smooth=0.1).fit(X, Y)
     expected = referenceModel(kernelClass, scipyName, degree, 1.0, 0.1, X, Y)(X)
     np.testing.assert_allclose(model.predict(X), expected, rtol=1e-8, atol=1e-9)
@@ -84,8 +89,9 @@ def test_smoothing_supports_multiple_outputs_and_scaling(kernelClass, scipyName,
     X = np.linspace(-2, 3, 12).reshape(-1, 1)
     Y = np.column_stack([10 + np.sin(X[:, 0]), 100 * np.cos(X[:, 0])])
     originalX, originalY = X.copy(), Y.copy()
-    model = RBF(kernel=kernelClass(), C_smooth=smooth,
-                scalers=(StandardScaler(), StandardScaler())).fit(X, Y)
+    model = MultiSurrogate(
+        2, [RBF(kernel=kernelClass(), C_smooth=smooth, scalers=(StandardScaler(), StandardScaler())) for _ in range(2)]
+    ).fit(X, Y)
     # StandardScaler in this package uses the sample standard deviation.
     scaledX = (X - X.mean(axis=0)) / X.std(axis=0, ddof=1)
     scaledY = (Y - Y.mean(axis=0)) / Y.std(axis=0, ddof=1)

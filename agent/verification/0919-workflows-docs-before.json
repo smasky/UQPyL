@@ -1,0 +1,218 @@
+[
+  {
+    "page": "examples.md",
+    "block": 1,
+    "status": "passed",
+    "stdout": "['S1']\n[[0.95097836 0.04752271]]\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 2,
+    "status": "passed",
+    "stdout": "[[0.00304088 0.10493151]]\n[[0.01101987]]\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 3,
+    "status": "passed",
+    "stdout": "Algorithm: GA\nProblem: Sphere2D\nnInput: 2\nnObj: 1\nmaxFEs: 24\nmaxIters: 3\nGA | iter=0 eval=8 best=1.8884e-02 cv=0 time=0.0s\nOptimization finished\n  algorithm        : GA\n  status           : finished\n  stop reason      : max_fes\n  iterations       : 2\n  evaluations      : 24\n  best value       : 1.1468e-02\n  best X           : [3.0409e-03, 1.0704e-01]\n  constraint viol. : 0\n  elapsed          : 0.0s\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 4,
+    "status": "passed",
+    "stdout": "Inference: MH\nProblem: SpherePosterior\nnInput: 2\nnOutput: 1\nmaxIters: 8\nMH | iter=0 eval=6 curLogp=-2.0645e+00 accept=1.0000e+00 feasible=1.0000e+00 best=1.2846e-01 time=0.0s\nMH | iter=2 eval=10 curLogp=-1.3276e+00 accept=7.5000e-01 feasible=1.0000e+00 best=1.2846e-01 time=0.0s\nMH | iter=4 eval=14 curLogp=-1.1271e-01 accept=6.2500e-01 feasible=1.0000e+00 best=5.1974e-02 time=0.0s\nMH | iter=6 eval=18 curLogp=-1.1043e+00 accept=5.8333e-01 feasible=1.0000e+00 best=5.1974e-02 time=0.0s\nInference finished\n  method          : MH\n  status          : finished\n  stop reason     : max_iters\n  iterations      : 7\n  evaluations     : 20\n  chains          : 2\n  draws           : 8\n  mean logProb    : -1.0207e+00\n  acceptance mean : 6.4286e-01\n  acceptance min  : 5.7143e-01\n  acceptance max  : 7.1429e-01\n  feasible rate   : 1.0000e+00\n  best value      : 5.1974e-02\n  bestX           : [3.8025e-03, 2.2795e-01]\n  meanX           : [6.8361e-02, -4.4492e-01]\n  stdX            : [5.4821e-01, 7.1938e-01]\n  elapsed         : 0.0s\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 5,
+    "status": "passed",
+    "stdout": "(8, 5)\n(8, 2)\n1.633495978082566\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 6,
+    "status": "passed",
+    "stdout": "(3, 30, 2)\n(3, 30)\n[0.5862069  0.55172414 0.5862069 ]\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 7,
+    "status": "passed",
+    "stdout": "[[1. 2.]]\n[[1. 2.]]\n[[1.  2. ]\n [1.  2.4]]\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 8,
+    "status": "passed",
+    "stdout": "(7, 1)\n0.998747067400375\n[0.00031641]\n"
+  },
+  {
+    "page": "examples.md",
+    "block": 9,
+    "status": "passed",
+    "stdout": "[[0.96350312 0.06192555]]\n[[0.13448425]]\n[[0.11824205]]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 1,
+    "status": "passed",
+    "stdout": "['S1']\n[[0.95097836 0.04752271]]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 2,
+    "status": "passed",
+    "stdout": "[[0.00304088 0.10493151]]\n[[0.01101987]]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 3,
+    "status": "passed",
+    "stdout": "(8, 5)\n(8, 2)\n1.633495978082566\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 4,
+    "status": "passed",
+    "stdout": "(3, 30, 2)\n(3, 30)\n[0.5862069  0.55172414 0.5862069 ]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 5,
+    "status": "passed",
+    "stdout": "[[1. 2.]]\n[[1. 2.]]\n[[1.  2. ]\n [1.  2.4]]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 6,
+    "status": "passed",
+    "stdout": "(7, 1)\n0.9981521036013973\n[0.00039362]\n"
+  },
+  {
+    "page": "cn/examples.md",
+    "block": 7,
+    "status": "passed",
+    "stdout": "[[0.96350312 0.06192555]]\n[[0.13448425]]\n[[0.11824205]]\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 1,
+    "status": "passed",
+    "stdout": "UQPyL is ready\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 2,
+    "status": "passed",
+    "stdout": "[[0.058]]\nNone\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 3,
+    "status": "AttributeError: 'SimContext' object has no attribute 'sim'",
+    "stdout": ""
+  },
+  {
+    "page": "quick_start.md",
+    "block": 4,
+    "status": "passed",
+    "stdout": "(10, 2)\n(10, 1)\n[[ 0.9598  0.6464]\n [-0.2153 -0.9892]\n [ 0.3648  0.9036]]\n[[1.0048]\n [0.2421]\n [0.2964]]\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 5,
+    "status": "passed",
+    "stdout": "['S1']\n[[0.951  0.0475]]\n['x1', 'x2']\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 6,
+    "status": "passed",
+    "stdout": "[[-0.0233 -0.0817]]\n[[0.0019]]\n40 4\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 7,
+    "status": "passed",
+    "stdout": ""
+  },
+  {
+    "page": "quick_start.md",
+    "block": 8,
+    "status": "passed",
+    "stdout": "(3, 30, 2)\n[0.8966 0.7586 0.9655]\n[[-0.0296  0.1336]]\n[[0.0044]]\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 9,
+    "status": "passed",
+    "stdout": "(20, 2) (20, 1)\n[[0.0004]\n [0.3024]]\n"
+  },
+  {
+    "page": "quick_start.md",
+    "block": 10,
+    "status": "passed",
+    "stdout": "[[1. 2.]]\n[[1. 2.]]\n[[1.  2. ]\n [1.  2.4]]\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 1,
+    "status": "passed",
+    "stdout": "UQPyL is ready\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 2,
+    "status": "passed",
+    "stdout": "[[0.058]]\nNone\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 3,
+    "status": "AttributeError: 'SimContext' object has no attribute 'sim'",
+    "stdout": ""
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 4,
+    "status": "passed",
+    "stdout": "(10, 2)\n(10, 1)\n[[ 0.9598  0.6464]\n [-0.2153 -0.9892]\n [ 0.3648  0.9036]]\n[[1.0048]\n [0.2421]\n [0.2964]]\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 5,
+    "status": "passed",
+    "stdout": "['S1']\n[[0.951  0.0475]]\n['x1', 'x2']\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 6,
+    "status": "passed",
+    "stdout": "[[-0.0233 -0.0817]]\n[[0.0019]]\n40 4\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 7,
+    "status": "passed",
+    "stdout": ""
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 8,
+    "status": "passed",
+    "stdout": "(3, 30, 2)\n[0.8966 0.7586 0.9655]\n[[-0.0296  0.1336]]\n[[0.0044]]\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 9,
+    "status": "passed",
+    "stdout": "(20, 2) (20, 1)\n[[0.0004]\n [0.3024]]\n"
+  },
+  {
+    "page": "cn/quick_start.md",
+    "block": 10,
+    "status": "passed",
+    "stdout": "[[1. 2.]]\n[[1. 2.]]\n[[1.  2. ]\n [1.  2.4]]\n"
+  }
+]

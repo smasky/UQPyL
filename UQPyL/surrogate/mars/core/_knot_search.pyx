@@ -157,7 +157,9 @@ cdef class SingleOutcomeDependentData:
             wy[i] = weight.w[i] * y[i]
         cdef FLOAT_t omega = np.dot(wy, wy)
         cdef FLOAT_t sse_ = omega
-        theta = np.dot(weight.Q_t, wy)
+        # No basis rows exist at k=0. Q_t is uninitialized workspace; projecting
+        # onto inactive rows can read stale NaN/inf values from earlier fits.
+        theta = np.zeros(shape=max_terms, dtype=np.float64)
         return cls(y, weight, theta, omega, m, 0, max_terms, sse_)
     
     cpdef FLOAT_t sse(SingleOutcomeDependentData self):
@@ -673,5 +675,4 @@ cpdef tuple knot_search(KnotSearchData data, FLOAT_t[:] candidates, FLOAT_t[:] p
     
     # Return
     return best_knot, best_knot_index, loss
-
 

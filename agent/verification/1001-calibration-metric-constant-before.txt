@@ -1,0 +1,189 @@
+FFFFFFFFFFFF                                                             [100%]
+=================================== FAILURES ===================================
+___________ testTrueConstantSimulationRowStillRaises[0.1-pearson_r] ____________
+
+name = 'pearson_r', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testTrueConstantSimulationRowStillRaises(name, constant):
+        obs = np.arange(1., 8.) * 1e-12
+        sim = np.vstack((obs * 1.1, np.full(7, constant)))
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:110: Failed
+______________ testTrueConstantSimulationRowStillRaises[0.1-kge] _______________
+
+name = 'kge', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testTrueConstantSimulationRowStillRaises(name, constant):
+        obs = np.arange(1., 8.) * 1e-12
+        sim = np.vstack((obs * 1.1, np.full(7, constant)))
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:110: Failed
+__________ testTrueConstantSimulationRowStillRaises[3e-12-pearson_r] ___________
+
+name = 'pearson_r', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testTrueConstantSimulationRowStillRaises(name, constant):
+        obs = np.arange(1., 8.) * 1e-12
+        sim = np.vstack((obs * 1.1, np.full(7, constant)))
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:110: Failed
+_____________ testTrueConstantSimulationRowStillRaises[3e-12-kge] ______________
+
+name = 'kge', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testTrueConstantSimulationRowStillRaises(name, constant):
+        obs = np.arange(1., 8.) * 1e-12
+        sim = np.vstack((obs * 1.1, np.full(7, constant)))
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:110: Failed
+__________ testConstantDetectionDoesNotDependOnMeanRounding[0.1-nse] ___________
+
+name = 'nse', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+_______ testConstantDetectionDoesNotDependOnMeanRounding[0.1-pearson_r] ________
+
+name = 'pearson_r', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+__________ testConstantDetectionDoesNotDependOnMeanRounding[0.1-kge] ___________
+
+name = 'kge', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+________ testConstantDetectionDoesNotDependOnMeanRounding[0.1-rfactor] _________
+
+name = 'rfactor', constant = 0.1
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+_________ testConstantDetectionDoesNotDependOnMeanRounding[3e-12-nse] __________
+
+name = 'nse', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+______ testConstantDetectionDoesNotDependOnMeanRounding[3e-12-pearson_r] _______
+
+name = 'pearson_r', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+_________ testConstantDetectionDoesNotDependOnMeanRounding[3e-12-kge] __________
+
+name = 'kge', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+_______ testConstantDetectionDoesNotDependOnMeanRounding[3e-12-rfactor] ________
+
+name = 'rfactor', constant = 3e-12
+
+    @pytest.mark.parametrize("name", ["nse", "pearson_r", "kge", "rfactor"])
+    @pytest.mark.parametrize("constant", [0.1, 3e-12])
+    def testConstantDetectionDoesNotDependOnMeanRounding(name, constant):
+        # 多个相同浮点数的 mean 可能与单个输入相差一个 ulp。
+        obs = np.full(7, constant)
+        sim = np.arange(1., 8.) * constant
+        args = (obs, sim - constant * 0.1, sim + constant * 0.1) if name == "rfactor" else (obs, sim)
+>       with pytest.raises(ValueError, match="variance|standard deviation"):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_scaling.py:121: Failed
+=========================== short test summary info ============================
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[0.1-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[0.1-kge]
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[3e-12-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[3e-12-kge]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[0.1-nse]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[0.1-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[0.1-kge]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[0.1-rfactor]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[3e-12-nse]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[3e-12-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[3e-12-kge]
+FAILED tests/test_calibration_metric_scaling.py::testConstantDetectionDoesNotDependOnMeanRounding[3e-12-rfactor]
+12 failed, 53 deselected in 0.90s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_calibration_metric_scaling.py -k ConstantDetection or ConstantSimulationRow` failed. (See above for error)

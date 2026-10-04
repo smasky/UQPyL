@@ -599,6 +599,12 @@ Saved runs include a serialized problem payload. If you define `objFunc` interac
 | Using expensive optimization for cheap functions | Surrogate overhead may dominate. | Use ordinary `GA`, `DE`, or `NSGAII` for cheap objectives. |
 | Passing an oversized `initialPop` | The algorithm cannot infer whether to truncate or select the best rows. | Pass at most the algorithm's initial population size. |
 
+## Aligning Runs in Plots
+
+`plot_op_curve_stat` compares runs at matching evaluation or iteration coordinates. Different histories trigger a `RuntimeWarning` and use only shared observed coordinates, without interpolation or extrapolation. A statistical curve cannot be constructed when no coordinates are shared. Linear y-axes preserve negative interval bounds.
+
+Reference points in `plot_op_pareto(..., optima=...)` use shape `(nPoints, nObjectives)`, with one point per row; both two- and three-dimensional references are displayed.
+
 ## Next Steps
 
 | Goal | Read |
@@ -642,3 +648,14 @@ MOASMO shares this result protocol but still searches objective surrogates witho
 ### History Frequency
 
 The default `historyFreq=10` retains initial, every-ten-iteration and final full snapshots, while convergence statistics remain available for every update. Set it to `1` for every-update snapshots or `None` for only the final snapshot; SQLite uses its independent `saveFreq`. Locate sparse snapshots through `history.snapshotIterToFEs`. See [Optimization API](api/optimization.md) for details.
+
+
+## Search state and numerical boundaries
+
+- Single-objective incumbents retain every evaluated candidate, even if survivor selection discards it. `appearFEs` records the completed evaluation batch where it appeared (possibly zero for pre-evaluated initial members); history still commits only at initialization and completed iterations.
+- `SCE_UA` and `ML_SCE_UA` resolve `npg=None`, `nps=None`, and `nspl=None` to `2*nInput+1`, `nInput+1`, and `npg`. Explicit integers are honored: `npg>=2`, `2<=nps<=npg`, `nspl>=1`. Initialization uses `ngs*npg` points. Complexes are re-ranked after each replacement; reflection excludes the worst member from the centroid, and contraction moves toward that centroid before the ML variant's best-member blend.
+- ABC resets failure counts on success and accumulates repeated source failures separately. A positive `employedRate` that rounds to zero uses one employed bee with `RuntimeWarning`; a rate of one is supported. Invalid rates or fewer than two bees are rejected.
+- GA preserves offspring counts for odd and singleton populations and handles fixed coordinates. DE binomial crossover always selects at least one donor coordinate, including when `cr=0`; identical donors can still yield zero displacement.
+- Crowding, reference-direction geometry, GD/IGD, and HV with extreme axis scales use stable calculations. GD/IGD remain arithmetic means of nearest Euclidean distances, preserving relative objective units. A final metric outside floating-point range emits `RuntimeWarning` and returns zero or infinity. An unrepresentable automatic HV reference margin is clipped to finite range with a warning; an explicit reference is preferable for interpreting HV.
+- Missing objectives/required constraints, NaNs, and complex values are rejected. Scalar objectives may use worst-direction infinity as an exclusion penalty (`+inf` for minimization, `-inf` for maximization), without an arbitrary finite replacement. Multi-objective geometry and constraints require finite real values. Surrogate training retains the surrogate's own data requirements.
+- `RVEA(maxFEs=None, maxIters=...)` uses iteration progress for its angle schedule; it requires at least one of these budgets. Corrected search steps may change historical seeded trajectories, while repeated runs of the corrected implementation remain reproducible.

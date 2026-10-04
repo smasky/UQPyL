@@ -1,5 +1,24 @@
 # Surrogate API
 
+SVR returns an approximate model with a Python `RuntimeWarning` on reaching `maxIter`; it no longer prints the C++ terminal message. `fitState["solver"]` records `iterations`, `maxIterations`, and `iterationLimitReached`. Reaching the limit does not establish convergence; stopping below it does not guarantee predictive accuracy. AutoTuner records `iterations`, `max_iterations`, and `iteration_limit_reached` separately in each `candidates[i]["fit"]["solver"]` and `final_refit["solver"]`. A `finished` status means the call completed. Approximate candidates still participate in validation-based selection, and warnings do not automatically increase the budget. Promoting warnings to errors preserves the usual fit invalidation behavior.
+
+
+GPR `C` is the observation noise variance / regularization added to the kernel diagonal, not a standard deviation. Its initial value remains `1e-9`; the default `C_attr` searches `[1e-12, 1]` in log coordinates to allow nearly noiseless and noisy fits. `C_attr=None` fixes C; explicit bounds take precedence. C uses the variance units of the preprocessed target, including any output scaler. The default upper bound cannot cover arbitrary raw output units; configure an output scaler or custom bounds for other scales. A wider search does not force higher noise or guarantee accuracy or uncertainty calibration.
+
+
+GPR RBF, Matern and RationalQuadratic kernels search length scales over `[0.01, 1e5]` by default in log coordinates. Lengths use the preprocessed input units; configure an input scaler or explicit `length_attr` for other scales. `length_attr=None` still fixes the length. No search range guarantees accuracy on every problem. Standalone MARS now defaults to `max_degree=2` to allow pairwise interactions; explicit `max_degree=1` retains an additive model. Degree two can increase fitting cost.
+
+SVR `fit()` uses the current parameters without automatic hyperparameter search. Use `AutoTuner.gridTune`/`optTune` to select parameters on an internal validation split and refit all training rows, then evaluate on separate test data. C, epsilon and gamma are log parameters by default, so explicit grids use encoded values, for example `{"C": np.log([1, 100]), "epsilon": np.log([0.001, 0.01]), "gamma": np.log([1, 10, 100])}`. This is a starting grid, not a universal optimum. Consider scalers and parameter ranges when input or target units change.
+
+GPR/KRG standard deviations describe uncertainty under the fitted model assumptions, not guaranteed actual prediction errors. Misspecification, sparse data and extrapolation can produce overconfidence. The wider search resolves the reproduced short-scale GPR failure; it does not establish calibration on arbitrary data.
+
+
+MARS can be fitted repeatedly with different input dimensions. Each fit clears the previous learned basis, coefficients and traces; failed fitting invalidates the model until a later successful fit. `plot_surrogate` pads default axes using the combined true/predicted data span, including negative and constant data; explicit `ylim` takes precedence.
+
+MARS transform accepts already preprocessed inputs. Transform, prediction, scoring, and summary methods require valid fitted state; forward_trace/pruning_trace return None when invalid. predict accepts keyword-only missing, which score/score_samples preserve. Missing values are disabled by default; enable them with model.setting.set("allow_missing", True). Without input preprocessing, NaNs or an input-shaped boolean mask are supported; missing predictors combined with an input scaler or PolyFeature raise NotImplementedError. score_samples retains the per-sample, per-output definition 1-(y-prediction)²/y², including NumPy division semantics at zero targets. gridTune rejects unknown or non-tunable names while accepting parameters activated by selected structural configurations; validation performs no additional model fits.
+
+AutoTuner gridTune/optTune invalidate the model on any exception or interruption, including preprocessing, parameter application, search, and final full-data refitting. The original exception propagates; refit successfully before prediction. Parameters and scalers are not rolled back. MultiSurrogate retains supplied model references but requires distinct instances per output, checked on construction, append, fit, and predict. MARS.predict_deriv accepts raw inputs and returns derivatives in original input/output units with shape (n_samples, n_selected_variables, 1). It supports StandardScaler/MinMaxScaler and no preprocessing; PolyFeature and other non-affine scalers raise NotImplementedError.
+
 `rank_score` averages per-output Kendall tau-b, assigns zero to constant columns, and requires at least two samples. `MultiSurrogate.rng` seeds independent child streams. AutoTuner records numerical linear-algebra/arithmetic failures and nonfinite predictions/scores in `candidateFailures` (candidate_index, error_type, message), reset per tuning call; programming errors propagate without being printed and swallowed.
 
 Surrogate models copy supplied input/output scalers, so fitting one model does not refit another model’s scaler. A failed public `fit()` invalidates fitted state: prediction raises until a subsequent successful fit. MSE/R²/NSE accept `(n,)` as single-output `(n, 1)`, require matching finite nonempty arrays, and reject implicit broadcasting. AutoTuner requires at least two validation samples and finite nonzero total validation variation for its aggregate R² score; increase `ratio` when necessary. If every candidate fails or scores non-finitely, tuning raises instead of returning an arbitrary candidate. Direct R²/NSE calls retain their non-finite result for constant targets.
@@ -59,7 +78,14 @@ model.fit(xTrain, yTrain)
 yPred = model.predict(xPred)
 ```
 
-Input and output arrays are normalized to 2D internally. `yTrain` may be 1D or 2D.
+Each surrogate fits one output: `yTrain` must have shape `(nTrain,)` or
+`(nTrain,1)`, normalized to two dimensions internally. Mean, standard-deviation,
+and variance predictions have shape `(nPred,1)`. Multiple output columns are
+rejected before preprocessing, prepared fitting, and AutoTuner search. Use
+MultiSurrogate for multiple outputs and tune its child models individually.
+Scalers and standalone scoring utilities may still process multiple columns.
+Raw `fit`/`prepareTrainingData` accept vectors; prepared `fitModel`/`fitHyper`
+consume the resulting `(nTrain,1)` matrix.
 
 Example:
 
@@ -120,16 +146,60 @@ Common methods:
 Container for multi-output surrogate prediction.
 
 ```python
-MultiSurrogate(n_surrogates, models_list=[])
+MultiSurrogate(n_surrogates, models_list=None)
 ```
 
 | Method | Returns | Meaning |
 |---|---|---|
 | `append(model)` | `None` | Append one `SurrogateABC` model. |
-| `fit(trainX, trainY)` | `None` | Fit one model per output column. |
-| `predict(testX)` | `np.ndarray` | Horizontally stack predictions from all models. |
+| `fit(trainX, trainY)` | container | Fit one model per output column. |
+| `predict(testX, returnStd=False, returnVar=False)` | array or tuple | Stack means and optional marginal uncertainty by output. |
+| `predict_deriv(testX, variables=None, missing=None)` | array | Stack supported derivatives on the last axis. |
 
 `trainY.shape[1]` and `len(models_list)` must match `n_surrogates`.
+Each child receives a `(nTrain,1)` target. Inputs and outputs must have matching
+sample counts. Failed or interrupted fitting invalidates all children; refit
+successfully before predicting. Every child prediction must retain one output
+column and the correct sample count.
+
+Means and uncertainties have shape `(nPred,n_surrogates)`; derivatives have
+shape `(nPred,nVariables,n_surrogates)`. `supportsUncertainty` is true only when
+all children support it. Derivative aggregation likewise requires every child
+to provide `predict_deriv`. Each output uses its own scaling and model; returned
+variances are marginal variances, with no cross-output covariance.
+
+Standard deviations are restored directly, without first forming original-unit
+variances. An unrepresentable variance emits `RuntimeWarning` and returns zero
+on underflow or infinity on overflow; request `returnStd=True` when the standard
+deviation remains representable. Custom output scalers must implement the
+corresponding `inverse_transform_std` or `inverse_transform_var` method.
+
+Numerical and input contracts:
+
+- RBF normally solves the complete LU system without truncating polynomial
+  constraints. Singular systems emit `RuntimeWarning` and use a constrained
+  least-squares approximation. `fitState["linearSolve"]` records the method
+  (`lu` or `constrained_lstsq`), degeneracy flags, rank, relative training
+  residual in prepared target units, and constraint residual. Conflicting
+  repeated observations cannot be interpolated exactly; deficient trends do
+  not determine unique extrapolation. If the fallback fails or produces
+  nonfinite results, fitting stops and previous fitted state is invalidated.
+- Lasso copies integer or mixed-dtype inputs to a common floating working dtype
+  and preserves the supplied arrays.
+- nu-SVR searches nu in `[1e-5,1]` by default. Parameters and custom search
+  bounds must satisfy `0 < nu <= 1`.
+- GPR requires nonempty finite training data with matching sample counts and a
+  finite nonnegative scalar C. Logarithmic C search bounds must be positive.
+  Invalid inputs are rejected before backend fitting/search; failed refits
+  invalidate previous fitted state.
+- StandardScaler computes sample standard deviations (`ddof=1`) in binary
+  scaled units, and keeps source and target origins separate for constant
+  columns and nondefault target centers.
+- R²/NSE use safely scaled squared sums while retaining relative output weights.
+  Scores for constant targets remain undefined: NaN for exact predictions,
+  otherwise negative infinity, with NumPy warnings controlled by `np.errstate`. AutoTuner
+  checks constancy directly, rather than rejecting valid targets because their
+  original-unit squared variation underflows or overflows.
 
 ## Models
 
@@ -289,6 +359,9 @@ Lasso centers private working arrays, leaving supplied and stored training data
 unchanged during fitting. This also applies to `PolynomialRegression` with
 `lossType="Lasso"`, allowing prepared data to be reused across tuning candidates.
 
+Origin, Ridge, and Lasso all follow the shared single-output contract. Use
+MultiSurrogate with one independent regression instance per output column.
+
 ### `PolynomialRegression`
 
 Polynomial regression surrogate.
@@ -325,7 +398,7 @@ MARS(
     scalers=(None, None),
     polyFeature=None,
     max_terms=400,
-    max_degree=1,
+    max_degree=2,
     penalty=3.0,
     endspan_alpha=0.05,
     endspan=-1,
@@ -491,3 +564,19 @@ is its validation score from the search split.
 
 
 GPR/KRG mean-only prediction skips uncertainty solves. GPR obtains self-kernel diagonals directly for built-in kernels, without allocating a prediction-by-prediction matrix; custom GP kernels can override `diag(X)` or use the bounded-block fallback. GPR/KRG/RBF share template installation and parameter merging while retaining their own mathematical kernel families. Unimplemented surrogate ensemble placeholders have been removed.
+
+## Tuning reports and explicit validation splits
+
+`gridTune` and `optTune` accept mutually exclusive keyword-only `splitIndices=(trainIdx, validationIdx)` and `splitter`.
+Index arrays must be nonempty, one-dimensional, integral, unique, in bounds, and disjoint. Unused rows are allowed, for example a temporal gap.
+A splitter is a callable or an object exposing `split(X)` that returns one index pair. It receives a copy of X and an independent `seed` or `rng` when its signature supports that argument.
+Without either option, `ratio` remains the random **validation percentage**. Explicit splits ignore ratio. Actual indices and seeds are recorded in `lastSplit` and the report.
+One tuning call uses one split: after `trainFolds, validationFolds = KFold(...).split(X)`, a selected `(trainFolds[0], validationFolds[0])` pair is supported; automatic multi-fold aggregation is not.
+Preprocessing is fitted on training rows during selection. Final refitting uses **all supplied rows**, including unused rows. Keep external test data outside the tuning input.
+
+`joint` calls `fitModel` on each exact candidate; default `separate` calls `fitHyper`, allowing internal optimization to change the proposed parameters.
+The returned parameters belong to the final full-data refit; the returned score belongs to validation during selection, not an external test of the final model.
+`getReport()` returns an independent report with encoded candidates, actual parameters before/after fitting, validation scores, final refit parameters, fit counts, tracked objective calls, timings, and failure details.
+`candidate_encoded` follows Setting coordinates, including log encoding; fitted parameter snapshots contain actual values.
+Only instrumentable `_objfunc` calls contribute to `tracked_objective_evaluations`; unsupported per-fit counts are `None`, not zero-cost claims.
+Reporting adds no fits or objective calls and resets on every tuning call. Default Boxmin and four additional restarts are unchanged.

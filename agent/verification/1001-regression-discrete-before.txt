@@ -1,0 +1,2476 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF..FFFFFFFFFFFF..FF....FFFF.          [100%]
+=================================== FAILURES ===================================
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = None, intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = None, intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = None, intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = None, intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = 'standard', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933be0c0>
+values = array([[-1.88700655],
+       [-0.56431221],
+       [-0.09372696],
+       [ 1.13028161],
+       [-0.96119916],
+       [...470691],
+       [ 2.85101826],
+       [ 0.25347845],
+       [ 3.05775527],
+       [ 5.05543319],
+       [ 0.44995365]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = 'standard', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933be6f0>
+values = array([[-1.59299207],
+       [-0.65910458],
+       [ 0.20257437],
+       [ 1.08403912],
+       [-0.8907349 ],
+       [...587675],
+       [ 2.68318405],
+       [ 0.32863974],
+       [ 3.86840503],
+       [ 4.60145386],
+       [ 1.20378201]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = 'standard', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d7293e9d880>
+values = array([[-1.88527099],
+       [-0.56388896],
+       [-0.09364765],
+       [ 1.12917571],
+       [-0.96032736],
+       [...32492 ],
+       [ 2.8486084 ],
+       [ 0.25326396],
+       [ 3.05515434],
+       [ 5.05116061],
+       [ 0.4495729 ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = 'standard', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933be360>
+values = array([[-1.58994028],
+       [-0.65821441],
+       [ 0.20247511],
+       [ 1.08244839],
+       [-0.8892093 ],
+       [...499801],
+       [ 2.68149481],
+       [ 0.3287052 ],
+       [ 3.8682828 ],
+       [ 4.60128438],
+       [ 1.20370701]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = 'minmax', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72933bfc80>
+values = array([[-1.28931624],
+       [-0.33333333],
+       [ 0.39316239],
+       [ 0.83888889],
+       [-0.58333333],
+       [...623932],
+       [ 2.        ],
+       [-1.16239316],
+       [ 2.3034188 ],
+       [ 3.5       ],
+       [-2.03418803]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = 'minmax', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d7293cfb980>
+values = array([[-1.02788338],
+       [-0.39293703],
+       [-0.75745703],
+       [ 0.85282827],
+       [-0.55747918],
+       [...346606],
+       [ 1.89519675],
+       [-1.33915416],
+       [ 3.09976658],
+       [ 3.20088057],
+       [-4.83601637]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = 'minmax', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72933bf3b0>
+values = array([[-1.28768973],
+       [-0.33298491],
+       [ 0.39269946],
+       [ 0.83777555],
+       [-0.5827122 ],
+       [...469303],
+       [ 1.99788583],
+       [-1.16113554],
+       [ 2.3007128 ],
+       [ 3.49630021],
+       [-2.0319872 ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = 'minmax', intercept = False
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72933f8950>
+values = array([[-1.0248157 ],
+       [-0.3919881 ],
+       [-0.75670416],
+       [ 0.85116236],
+       [-0.55629773],
+       [...260087],
+       [ 1.89372784],
+       [-1.33953472],
+       [ 3.09993286],
+       [ 3.20134613],
+       [-4.83530044]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = None, intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = None, intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = None, intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = None, intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+            actual = model.predict(probes[:count])
+>           assert actual.shape == (count, 3)
+E           assert (12, 1) == (4, 3)
+E             
+E             At index 0 diff: 12 != 4
+E             Use -v to get more diff
+
+tests/test_surrogate_regression_multioutput.py:89: AssertionError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = 'standard', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a08315e0>
+values = array([[-1.71499676],
+       [-0.76079752],
+       [ 0.5       ],
+       [ 1.28596659],
+       [-1.13903678],
+       [...612715],
+       [ 2.76943554],
+       [ 0.5       ],
+       [ 3.0722543 ],
+       [ 5.03887108],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = 'standard', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a0832450>
+values = array([[-1.605878  ],
+       [-0.92012945],
+       [ 0.5       ],
+       [ 1.06909394],
+       [-1.19347295],
+       [...845259],
+       [ 2.53279591],
+       [ 0.5       ],
+       [ 3.8988963 ],
+       [ 5.21910272],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = 'standard', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a0831040>
+values = array([[-1.7128815 ],
+       [-0.7595935 ],
+       [ 0.5       ],
+       [ 1.28521602],
+       [-1.13747155],
+       [...489894],
+       [ 2.7672683 ],
+       [ 0.5       ],
+       [ 3.06979787],
+       [ 5.03453659],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = 'standard', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a08326c0>
+values = array([[-1.60304226],
+       [-0.91980215],
+       [ 0.5       ],
+       [ 1.06725506],
+       [-1.19255203],
+       [...745477],
+       [ 2.5308902 ],
+       [ 0.5       ],
+       [ 3.89927165],
+       [ 5.2199927 ],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin', kind = 'minmax', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72a08319d0>
+values = array([[-1.05      ],
+       [-0.33333333],
+       [-2.        ],
+       [ 1.05      ],
+       [-0.58333333],
+       [...      ],
+       [ 2.        ],
+       [-2.        ],
+       [ 2.3       ],
+       [ 3.5       ],
+       [-2.        ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin', kind = 'minmax', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72a08318b0>
+values = array([[-0.95507812],
+       [-0.58658009],
+       [-2.        ],
+       [ 0.93457031],
+       [-0.77489177],
+       [...21875 ],
+       [ 1.79220779],
+       [-2.        ],
+       [ 2.93359375],
+       [ 3.64285714],
+       [-2.        ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge', kind = 'minmax', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72a08310a0>
+values = array([[-1.04792279],
+       [-0.33224524],
+       [-2.        ],
+       [ 1.04931742],
+       [-0.58205959],
+       [...875372],
+       [ 1.99814516],
+       [-2.        ],
+       [ 2.29750744],
+       [ 3.49629032],
+       [-2.        ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge', kind = 'minmax', intercept = True
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    @pytest.mark.parametrize("kind", [None, "standard", "minmax"])
+    @pytest.mark.parametrize("intercept", [False, True])
+    def testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution(modelClass, loss, kind, intercept):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        originalX, originalY = inputs.copy(), outputs.copy()
+        inputs.flags.writeable = outputs.flags.writeable = False
+        model = modelClass(lossType=loss, C=0.13, fitIntercept=intercept, scalers=(newScaler(kind), newScaler(kind)))
+        model.fit(inputs, outputs)
+        for count in [4, 1, 0]:
+            expected = independentPrediction(inputs, outputs, probes[:count], polynomial, loss, kind, intercept)
+>           actual = model.predict(probes[:count])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.MinMaxScaler object at 0x7d72a08334a0>
+values = array([[-0.95221565],
+       [-0.5862148 ],
+       [-2.        ],
+       [ 0.93263963],
+       [-0.77427365],
+       [...116756],
+       [ 1.79055047],
+       [-2.        ],
+       [ 2.93437054],
+       [ 3.64427455],
+       [-2.        ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testPreparedFitModelPreservesMultipleOutputsAndOutputScaler(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        preparedX, preparedY = model.prepareTrainingData(inputs, outputs)
+        model.fitModel(preparedX, preparedY)
+>       actual = model.predict(probes)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a0654830>
+values = array([[-1.71499676],
+       [-0.76079752],
+       [ 0.5       ],
+       [ 1.28596659],
+       [-1.13903678],
+       [...612715],
+       [ 2.76943554],
+       [ 0.5       ],
+       [ 3.0722543 ],
+       [ 5.03887108],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testPreparedFitModelPreservesMultipleOutputsAndOutputScaler(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        preparedX, preparedY = model.prepareTrainingData(inputs, outputs)
+        model.fitModel(preparedX, preparedY)
+>       actual = model.predict(probes)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a0830a10>
+values = array([[-1.605878  ],
+       [-0.92012945],
+       [ 0.5       ],
+       [ 1.06909394],
+       [-1.19347295],
+       [...845259],
+       [ 2.53279591],
+       [ 0.5       ],
+       [ 3.8988963 ],
+       [ 5.21910272],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testPreparedFitModelPreservesMultipleOutputsAndOutputScaler(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        preparedX, preparedY = model.prepareTrainingData(inputs, outputs)
+        model.fitModel(preparedX, preparedY)
+>       actual = model.predict(probes)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933bd8b0>
+values = array([[-1.7128815 ],
+       [-0.7595935 ],
+       [ 0.5       ],
+       [ 1.28521602],
+       [-1.13747155],
+       [...489894],
+       [ 2.7672683 ],
+       [ 0.5       ],
+       [ 3.06979787],
+       [ 5.03453659],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testPreparedFitModelPreservesMultipleOutputsAndOutputScaler(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        preparedX, preparedY = model.prepareTrainingData(inputs, outputs)
+        model.fitModel(preparedX, preparedY)
+>       actual = model.predict(probes)
+                 ^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933bfa10>
+values = array([[-1.60304226],
+       [-0.91980215],
+       [ 0.5       ],
+       [ 1.06725506],
+       [-1.19255203],
+       [...745477],
+       [ 2.5308902 ],
+       [ 0.5       ],
+       [ 3.89927165],
+       [ 5.2199927 ],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Origin-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Origin'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testRefitCanChangeOutputCountAndAcceptSingleOutputVector(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        for count in [1, 3, 2, 1]:
+            target = outputs[:, 0] if count == 1 else outputs[:, :count]
+            model.fit(inputs, target)
+>           actual = model.predict(probes[0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72a0831160>
+values = array([[-1.71499676],
+       [-0.76079752],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Origin-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Origin'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testRefitCanChangeOutputCountAndAcceptSingleOutputVector(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        for count in [1, 3, 2, 1]:
+            target = outputs[:, 0] if count == 1 else outputs[:, :count]
+            model.fit(inputs, target)
+>           actual = model.predict(probes[0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933f8980>
+values = array([[-1.605878  ],
+       [-0.92012945],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Ridge-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+loss = 'Ridge'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testRefitCanChangeOutputCountAndAcceptSingleOutputVector(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        for count in [1, 3, 2, 1]:
+            target = outputs[:, 0] if count == 1 else outputs[:, :count]
+            model.fit(inputs, target)
+>           actual = model.predict(probes[0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:111: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933f8680>
+values = array([[-1.7128815],
+       [-0.7595935],
+       [ 0.5      ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Ridge-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+loss = 'Ridge'
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("loss", ["Origin", "Ridge"])
+    def testRefitCanChangeOutputCountAndAcceptSingleOutputVector(modelClass, loss):
+        polynomial = modelClass is PolynomialRegression
+        inputs, outputs, probes = trainingCase(polynomial)
+        model = modelClass(lossType=loss, C=0.13, scalers=(newScaler("standard"), newScaler("standard")))
+        for count in [1, 3, 2, 1]:
+            target = outputs[:, 0] if count == 1 else outputs[:, :count]
+            model.fit(inputs, target)
+>           actual = model.predict(probes[0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_surrogate_regression_multioutput.py:118: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:107: in predict
+    return self._inverseTransformY(yPred)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/base.py:113: in _inverseTransformY
+    Y = self.yScaler.inverse_transform(Y) if self.yScaler else Y
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/scaler.py:66: in inverse_transform
+    values = self._checkArray(trainX)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.surrogate.scaler.StandardScaler object at 0x7d72933fbe00>
+values = array([[-1.60304226],
+       [-0.91980215],
+       [ 0.5       ]])
+fitting = False
+
+    def _checkArray(self, values, fitting=False):
+        values = np.asarray(values, dtype=float)
+        if values.ndim == 1:
+            values = values.reshape(1, -1)
+        if values.ndim != 2 or values.shape[1] == 0 or (fitting and not len(values)):
+            raise ValueError("Scaler expects a nonempty feature matrix (n_samples, n_features).")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("Scaler values must be finite.")
+        if not fitting:
+            if not self.fitted:
+                raise RuntimeError("Scaler must be fitted before transforming values.")
+            if values.shape[1] != self.nFeatures:
+>               raise ValueError("Scaler feature count does not match fitted data.")
+E               ValueError: Scaler feature count does not match fitted data.
+
+UQPyL/surrogate/scaler.py:23: ValueError
+_ testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fit-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d72933fb530>
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("entry", ["fit", "fitModel"])
+    def testLassoRejectsMultipleOutputsBeforeCallingNativeSolver(modelClass, entry, monkeypatch):
+        inputs, outputs, probes = trainingCase(modelClass is PolynomialRegression)
+        model = modelClass(lossType="Lasso", C=0.03, tolerance=1e-9)
+        model.fit(inputs, outputs[:, :1])
+    
+        def unexpectedNativeCall(*args, **kwargs):
+            raise AssertionError("Multiple outputs reached the single-output native solver")
+    
+        monkeypatch.setattr("UQPyL.surrogate.regression.lasso.compute_norms_X_col", unexpectedNativeCall)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_regression_multioutput.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:310: in fit
+    self.fitHyper(xTrain, yTrain)
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/linear_regression.py:73: in fitModel
+    self.fitLasso(xTrain, yTrain)
+UQPyL/surrogate/regression/linear_regression.py:195: in fitLasso
+    compute_norms_X_col(False, norms_X_col, nSamples, xDense, xData, xIndices, xIndptr, xSparseScaling)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (False, array([0., 0.]), 35, array([[-1.00000000e+00, -1.00000000e+00],
+       [-6.66666667e-01, -1.00000000e+00],
+   ...,  1.00000000e+00],
+       [ 1.00000000e+00,  1.00000000e+00]]), array([0.03]), array([-1572844736], dtype=int32), ...)
+kwargs = {}
+
+    def unexpectedNativeCall(*args, **kwargs):
+>       raise AssertionError("Multiple outputs reached the single-output native solver")
+E       AssertionError: Multiple outputs reached the single-output native solver
+
+tests/test_surrogate_regression_multioutput.py:132: AssertionError
+_ testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fit-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+entry = 'fit'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d72933f8590>
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("entry", ["fit", "fitModel"])
+    def testLassoRejectsMultipleOutputsBeforeCallingNativeSolver(modelClass, entry, monkeypatch):
+        inputs, outputs, probes = trainingCase(modelClass is PolynomialRegression)
+        model = modelClass(lossType="Lasso", C=0.03, tolerance=1e-9)
+        model.fit(inputs, outputs[:, :1])
+    
+        def unexpectedNativeCall(*args, **kwargs):
+            raise AssertionError("Multiple outputs reached the single-output native solver")
+    
+        monkeypatch.setattr("UQPyL.surrogate.regression.lasso.compute_norms_X_col", unexpectedNativeCall)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_regression_multioutput.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/base.py:310: in fit
+    self.fitHyper(xTrain, yTrain)
+UQPyL/surrogate/base.py:255: in fitHyper
+    return self.fitModel(xTrain, yTrain)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/surrogate/regression/polynomial_regression.py:90: in fitModel
+    self.fitLasso(xTrain, yTrain)
+UQPyL/surrogate/regression/linear_regression.py:195: in fitLasso
+    compute_norms_X_col(False, norms_X_col, nSamples, xDense, xData, xIndices, xIndptr, xSparseScaling)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (False, array([0., 0., 0., 0., 0.]), 35, array([[-1.00000000e+00, -1.00000000e+00,  5.55555556e-01,
+         7.0000000...000e+00,  5.55555556e-01,
+         1.30000000e+00,  1.10000000e+00]]), array([0.03]), array([14108], dtype=int32), ...)
+kwargs = {}
+
+    def unexpectedNativeCall(*args, **kwargs):
+>       raise AssertionError("Multiple outputs reached the single-output native solver")
+E       AssertionError: Multiple outputs reached the single-output native solver
+
+tests/test_surrogate_regression_multioutput.py:132: AssertionError
+_ testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fitModel-LinearRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.linear_regression.LinearRegression'>
+entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d72933f8b60>
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("entry", ["fit", "fitModel"])
+    def testLassoRejectsMultipleOutputsBeforeCallingNativeSolver(modelClass, entry, monkeypatch):
+        inputs, outputs, probes = trainingCase(modelClass is PolynomialRegression)
+        model = modelClass(lossType="Lasso", C=0.03, tolerance=1e-9)
+        model.fit(inputs, outputs[:, :1])
+    
+        def unexpectedNativeCall(*args, **kwargs):
+            raise AssertionError("Multiple outputs reached the single-output native solver")
+    
+        monkeypatch.setattr("UQPyL.surrogate.regression.lasso.compute_norms_X_col", unexpectedNativeCall)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_regression_multioutput.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/linear_regression.py:73: in fitModel
+    self.fitLasso(xTrain, yTrain)
+UQPyL/surrogate/regression/linear_regression.py:195: in fitLasso
+    compute_norms_X_col(False, norms_X_col, nSamples, xDense, xData, xIndices, xIndptr, xSparseScaling)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (False, array([0., 0.]), 35, array([[-1.00000000e+00, -1.00000000e+00],
+       [-6.66666667e-01, -1.00000000e+00],
+   ...,  1.00000000e+00],
+       [ 1.00000000e+00,  1.00000000e+00]]), array([0.03]), array([-1572844736], dtype=int32), ...)
+kwargs = {}
+
+    def unexpectedNativeCall(*args, **kwargs):
+>       raise AssertionError("Multiple outputs reached the single-output native solver")
+E       AssertionError: Multiple outputs reached the single-output native solver
+
+tests/test_surrogate_regression_multioutput.py:132: AssertionError
+_ testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fitModel-PolynomialRegression] _
+
+modelClass = <class 'UQPyL.surrogate.regression.polynomial_regression.PolynomialRegression'>
+entry = 'fitModel'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d72933fb860>
+
+    @pytest.mark.parametrize("modelClass", modelClasses)
+    @pytest.mark.parametrize("entry", ["fit", "fitModel"])
+    def testLassoRejectsMultipleOutputsBeforeCallingNativeSolver(modelClass, entry, monkeypatch):
+        inputs, outputs, probes = trainingCase(modelClass is PolynomialRegression)
+        model = modelClass(lossType="Lasso", C=0.03, tolerance=1e-9)
+        model.fit(inputs, outputs[:, :1])
+    
+        def unexpectedNativeCall(*args, **kwargs):
+            raise AssertionError("Multiple outputs reached the single-output native solver")
+    
+        monkeypatch.setattr("UQPyL.surrogate.regression.lasso.compute_norms_X_col", unexpectedNativeCall)
+        with pytest.raises(ValueError, match="single output.*MultiSurrogate"):
+>           getattr(model, entry)(inputs, outputs)
+
+tests/test_surrogate_regression_multioutput.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/surrogate/regression/polynomial_regression.py:90: in fitModel
+    self.fitLasso(xTrain, yTrain)
+UQPyL/surrogate/regression/linear_regression.py:195: in fitLasso
+    compute_norms_X_col(False, norms_X_col, nSamples, xDense, xData, xIndices, xIndptr, xSparseScaling)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (False, array([0., 0., 0., 0., 0.]), 35, array([[-1.00000000e+00, -1.00000000e+00,  5.55555556e-01,
+         7.0000000...000e+00,  5.55555556e-01,
+         1.30000000e+00,  1.10000000e+00]]), array([0.03]), array([13539], dtype=int32), ...)
+kwargs = {}
+
+    def unexpectedNativeCall(*args, **kwargs):
+>       raise AssertionError("Multiple outputs reached the single-output native solver")
+E       AssertionError: Multiple outputs reached the single-output native solver
+
+tests/test_surrogate_regression_multioutput.py:132: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-map_discrete_vars] _
+
+helper = 'map_discrete_vars', dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]])
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-apply_var_type] _
+
+helper = 'apply_var_type', dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]])
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-transform] _
+
+helper = 'transform', dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]])
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-map_discrete_vars] _
+
+helper = 'map_discrete_vars', dtype = <class 'numpy.uint8'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]], dtype=uint8)
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-apply_var_type] _
+
+helper = 'apply_var_type', dtype = <class 'numpy.uint8'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]], dtype=uint8)
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-transform] _
+
+helper = 'transform', dtype = <class 'numpy.uint8'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: 0 (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E            [2, 0]: 0 (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 1.
+E            ACTUAL: array([[0],
+E                  [0],
+E                  [0]], dtype=uint8)
+E            DESIRED: array([[0.25],
+E                  [0.75],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-map_discrete_vars] _
+
+helper = 'map_discrete_vars', dtype = <class 'bool'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0, 0]: True (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: True (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 3.
+E            ACTUAL: array([[ True],
+E                  [ True]])
+E            DESIRED: array([[0.25],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-apply_var_type] _
+
+helper = 'apply_var_type', dtype = <class 'bool'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0, 0]: True (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: True (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 3.
+E            ACTUAL: array([[ True],
+E                  [ True]])
+E            DESIRED: array([[0.25],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-transform] _
+
+helper = 'transform', dtype = <class 'bool'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0, 0]: True (ACTUAL), 0.25 (DESIRED)
+E            [1, 0]: True (ACTUAL), 0.75 (DESIRED)
+E           Max absolute difference among violations: 0.75
+E           Max relative difference among violations: 3.
+E            ACTUAL: array([[ True],
+E                  [ True]])
+E            DESIRED: array([[0.25],
+E                  [0.75]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-map_discrete_vars] _
+
+helper = 'map_discrete_vars', dtype = <class 'numpy.float32'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: -0.10000000149011612 (ACTUAL), -0.1 (DESIRED)
+E            [1, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E            [2, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E           Max absolute difference among violations: 1.1920929e-08
+E           Max relative difference among violations: 3.97364299e-08
+E            ACTUAL: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]], dtype=float32)
+E            DESIRED: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-apply_var_type] _
+
+helper = 'apply_var_type', dtype = <class 'numpy.float32'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: -0.10000000149011612 (ACTUAL), -0.1 (DESIRED)
+E            [1, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E            [2, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E           Max absolute difference among violations: 1.1920929e-08
+E           Max relative difference among violations: 3.97364299e-08
+E            ACTUAL: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]], dtype=float32)
+E            DESIRED: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+_ testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-transform] _
+
+helper = 'transform', dtype = <class 'numpy.float32'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type", "transform"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.uint8, bool, np.float32])
+    def testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs(helper, dtype):
+        inputs = np.array([[0], [1]] if dtype is bool else [[0], [1], [2]], dtype=dtype)
+        original = inputs.copy()
+        inputs.flags.writeable = False
+        for choices in [[0.25, 0.75], [-0.1, 0.3]]:
+            space = Space(nInput=1, lb=0, ub=2, varType=[2], varSet={0: choices})
+            actual = getattr(space, helper)(inputs)
+            expected = np.array([choices[0], *[choices[1]] * (len(inputs) - 1)]).reshape(-1, 1)
+>           np.testing.assert_array_equal(actual, expected)
+E           AssertionError: 
+E           Arrays are not equal
+E           
+E           Mismatched elements: 3 / 3 (100%)
+E           Mismatch at indices:
+E            [0, 0]: -0.10000000149011612 (ACTUAL), -0.1 (DESIRED)
+E            [1, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E            [2, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E           Max absolute difference among violations: 1.1920929e-08
+E           Max relative difference among violations: 3.97364299e-08
+E            ACTUAL: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]], dtype=float32)
+E            DESIRED: array([[-0.1],
+E                  [ 0.3],
+E                  [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:20: AssertionError
+__ testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns[int64-True-False] ___
+
+integerFlag = False, discreteFlag = True, dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("integerFlag", [False, True])
+    @pytest.mark.parametrize("discreteFlag", [False, True])
+    @pytest.mark.parametrize("dtype", [np.int64, float])
+    def testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns(integerFlag, discreteFlag, dtype):
+        inputs = np.array([[0, 1, 0], [2, 2, 1], [4, 3, 2]], dtype=dtype)
+        if dtype is float:
+            inputs[:, 0] += 0.125
+            inputs[:, 1] = [1.6, 2.4, 3.5]
+        original = inputs.copy()
+        space = Space(nInput=3, lb=[0, 0, 0], ub=[5, 4, 2], varType=[0, 1, 2], varSet={2: [-0.1, 0.3]})
+        expected = inputs.astype(float)
+        if integerFlag:
+            expected[:, 1] = [2, 2, 4] if dtype is float else [1, 2, 3]
+        if discreteFlag:
+            expected[:, 2] = [-0.1, 0.3, 0.3]
+        actual = space.apply_var_type(inputs, IFlag=integerFlag, DFlag=discreteFlag)
+>       np.testing.assert_array_equal(actual, expected)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 9 (33.3%)
+E       Mismatch at indices:
+E        [0, 2]: 0 (ACTUAL), -0.1 (DESIRED)
+E        [1, 2]: 0 (ACTUAL), 0.3 (DESIRED)
+E        [2, 2]: 0 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 0.3
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0, 1, 0],
+E              [2, 2, 0],
+E              [4, 3, 0]])
+E        DESIRED: array([[ 0. ,  1. , -0.1],
+E              [ 2. ,  2. ,  0.3],
+E              [ 4. ,  3. ,  0.3]])
+
+tests/test_problem_discrete_mapping.py:42: AssertionError
+___ testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns[int64-True-True] ___
+
+integerFlag = True, discreteFlag = True, dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("integerFlag", [False, True])
+    @pytest.mark.parametrize("discreteFlag", [False, True])
+    @pytest.mark.parametrize("dtype", [np.int64, float])
+    def testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns(integerFlag, discreteFlag, dtype):
+        inputs = np.array([[0, 1, 0], [2, 2, 1], [4, 3, 2]], dtype=dtype)
+        if dtype is float:
+            inputs[:, 0] += 0.125
+            inputs[:, 1] = [1.6, 2.4, 3.5]
+        original = inputs.copy()
+        space = Space(nInput=3, lb=[0, 0, 0], ub=[5, 4, 2], varType=[0, 1, 2], varSet={2: [-0.1, 0.3]})
+        expected = inputs.astype(float)
+        if integerFlag:
+            expected[:, 1] = [2, 2, 4] if dtype is float else [1, 2, 3]
+        if discreteFlag:
+            expected[:, 2] = [-0.1, 0.3, 0.3]
+        actual = space.apply_var_type(inputs, IFlag=integerFlag, DFlag=discreteFlag)
+>       np.testing.assert_array_equal(actual, expected)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 9 (33.3%)
+E       Mismatch at indices:
+E        [0, 2]: 0 (ACTUAL), -0.1 (DESIRED)
+E        [1, 2]: 0 (ACTUAL), 0.3 (DESIRED)
+E        [2, 2]: 0 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 0.3
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0, 1, 0],
+E              [2, 2, 0],
+E              [4, 3, 0]])
+E        DESIRED: array([[ 0. ,  1. , -0.1],
+E              [ 2. ,  2. ,  0.3],
+E              [ 4. ,  3. ,  0.3]])
+
+tests/test_problem_discrete_mapping.py:42: AssertionError
+____ testProblemDelegatesKeepDecimalDiscreteValues[int64-map_discrete_vars] ____
+
+helper = 'map_discrete_vars', dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.float32])
+    def testProblemDelegatesKeepDecimalDiscreteValues(helper, dtype):
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=2, varType=[2], varSet={0: [-0.1, 0.3]}, objFunc=lambda values: values)
+        inputs = np.array([[0], [1], [2]], dtype=dtype)
+>       np.testing.assert_array_equal(getattr(problem, helper)(inputs), [[-0.1], [0.3], [0.3]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0 (ACTUAL), -0.1 (DESIRED)
+E        [1, 0]: 0 (ACTUAL), 0.3 (DESIRED)
+E        [2, 0]: 0 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 0.3
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0],
+E              [0],
+E              [0]])
+E        DESIRED: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:52: AssertionError
+_____ testProblemDelegatesKeepDecimalDiscreteValues[int64-apply_var_type] ______
+
+helper = 'apply_var_type', dtype = <class 'numpy.int64'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.float32])
+    def testProblemDelegatesKeepDecimalDiscreteValues(helper, dtype):
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=2, varType=[2], varSet={0: [-0.1, 0.3]}, objFunc=lambda values: values)
+        inputs = np.array([[0], [1], [2]], dtype=dtype)
+>       np.testing.assert_array_equal(getattr(problem, helper)(inputs), [[-0.1], [0.3], [0.3]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0 (ACTUAL), -0.1 (DESIRED)
+E        [1, 0]: 0 (ACTUAL), 0.3 (DESIRED)
+E        [2, 0]: 0 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 0.3
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0],
+E              [0],
+E              [0]])
+E        DESIRED: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:52: AssertionError
+___ testProblemDelegatesKeepDecimalDiscreteValues[float32-map_discrete_vars] ___
+
+helper = 'map_discrete_vars', dtype = <class 'numpy.float32'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.float32])
+    def testProblemDelegatesKeepDecimalDiscreteValues(helper, dtype):
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=2, varType=[2], varSet={0: [-0.1, 0.3]}, objFunc=lambda values: values)
+        inputs = np.array([[0], [1], [2]], dtype=dtype)
+>       np.testing.assert_array_equal(getattr(problem, helper)(inputs), [[-0.1], [0.3], [0.3]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: -0.10000000149011612 (ACTUAL), -0.1 (DESIRED)
+E        [1, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E        [2, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 1.1920929e-08
+E       Max relative difference among violations: 3.97364299e-08
+E        ACTUAL: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]], dtype=float32)
+E        DESIRED: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:52: AssertionError
+____ testProblemDelegatesKeepDecimalDiscreteValues[float32-apply_var_type] _____
+
+helper = 'apply_var_type', dtype = <class 'numpy.float32'>
+
+    @pytest.mark.parametrize("helper", ["map_discrete_vars", "apply_var_type"])
+    @pytest.mark.parametrize("dtype", [np.int64, np.float32])
+    def testProblemDelegatesKeepDecimalDiscreteValues(helper, dtype):
+        problem = Problem(nInput=1, nObj=1, lb=0, ub=2, varType=[2], varSet={0: [-0.1, 0.3]}, objFunc=lambda values: values)
+        inputs = np.array([[0], [1], [2]], dtype=dtype)
+>       np.testing.assert_array_equal(getattr(problem, helper)(inputs), [[-0.1], [0.3], [0.3]])
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: -0.10000000149011612 (ACTUAL), -0.1 (DESIRED)
+E        [1, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E        [2, 0]: 0.30000001192092896 (ACTUAL), 0.3 (DESIRED)
+E       Max absolute difference among violations: 1.1920929e-08
+E       Max relative difference among violations: 3.97364299e-08
+E        ACTUAL: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]], dtype=float32)
+E        DESIRED: array([[-0.1],
+E              [ 0.3],
+E              [ 0.3]])
+
+tests/test_problem_discrete_mapping.py:52: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-None-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-standard-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[False-minmax-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-None-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-standard-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testMultipleOutputsKeepAxesAndMatchIndependentMatrixSolution[True-minmax-Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testPreparedFitModelPreservesMultipleOutputsAndOutputScaler[Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Origin-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Origin-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Ridge-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testRefitCanChangeOutputCountAndAcceptSingleOutputVector[Ridge-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fit-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fit-PolynomialRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fitModel-LinearRegression]
+FAILED tests/test_surrogate_regression_multioutput.py::testLassoRejectsMultipleOutputsBeforeCallingNativeSolver[fitModel-PolynomialRegression]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-apply_var_type]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[int64-transform]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-apply_var_type]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[uint8-transform]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-apply_var_type]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[bool-transform]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-apply_var_type]
+FAILED tests/test_problem_discrete_mapping.py::testDiscreteHelpersPreserveFractionalChoicesAndReadonlyInputs[float32-transform]
+FAILED tests/test_problem_discrete_mapping.py::testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns[int64-True-False]
+FAILED tests/test_problem_discrete_mapping.py::testMixedHelpersRespectFlagsAndPreserveUnrelatedColumns[int64-True-True]
+FAILED tests/test_problem_discrete_mapping.py::testProblemDelegatesKeepDecimalDiscreteValues[int64-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testProblemDelegatesKeepDecimalDiscreteValues[int64-apply_var_type]
+FAILED tests/test_problem_discrete_mapping.py::testProblemDelegatesKeepDecimalDiscreteValues[float32-map_discrete_vars]
+FAILED tests/test_problem_discrete_mapping.py::testProblemDelegatesKeepDecimalDiscreteValues[float32-apply_var_type]
+54 failed, 9 passed in 1.34s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_surrogate_regression_multioutput.py tests/test_problem_discrete_mapping.py` failed. (See above for error)

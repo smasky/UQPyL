@@ -7,6 +7,7 @@ from ..base import AlgorithmABC
 from ..population import Population
 from ..core.constraint import compareSolutions
 
+
 class SCE_UA(AlgorithmABC):
     """
     Single-objective shuffled complex evolution algorithm.
@@ -21,93 +22,122 @@ class SCE_UA(AlgorithmABC):
             for conceptual rainfall-runoff models, Water Resources Research, vol. 28, no. 4,
             pp. 1015-1031, 1992.
     """
-    
+
     name = "SCE-UA"
     alg_type = "EA"
-    
-    def __init__(self, ngs: int = 3, npg: int = 7, nps: int = 4, nspl: int = 7,
-                 alpha: float = 1.0, beta: float = 0.5,
-                 maxFEs: int = 50000, 
-                 maxIters: int = 1000, 
-                 maxTolerates: int = 1000, tolerate: float = 1e-6,
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100, historyFreq: int = 10):
+
+    def __init__(
+        self,
+        ngs: int = 3,
+        npg: Optional[int] = None,
+        nps: Optional[int] = None,
+        nspl: Optional[int] = None,
+        alpha: float = 1.0,
+        beta: float = 0.5,
+        maxFEs: int = 50000,
+        maxIters: int = 1000,
+        maxTolerates: int = 1000,
+        tolerate: float = 1e-6,
+        verboseFlag: bool = True,
+        verboseFreq: int = 10,
+        logFlag: bool = False,
+        saveFlag: bool = True,
+        saveFreq: int = 100,
+        historyFreq: int = 10,
+    ):
         """
         Initialize the algorithm.
 
-        :param ngs: Number of complexes.
-        :param npg: Number of points in each complex.
-        :param nps: Number of points in each simplex.
-        :param nspl: Number of evolution steps in each complex.
-        :param alpha: Reflection coefficient.
-        :param beta: Contraction coefficient.
-        :param maxFEs: Maximum number of function evaluations.
-        :param maxIters: Maximum number of iterations.
-        :param maxTolerates: Maximum tolerated non-improving iterations.
-        :param tolerate: Improvement tolerance.
-        :param verboseFlag: Whether to print terminal output.
-        :param verboseFreq: Summary output frequency.
-        :param logFlag: Whether to save full text logs.
-        :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: SQLite snapshot save frequency.
-        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
+        Args:
+            ngs: Number of complexes.
+            npg: Points per complex; None uses 2 * nInput + 1.
+            nps: Points per simplex; None uses nInput + 1.
+            nspl: Evolution steps per complex; None uses npg.
+            alpha: Reflection coefficient.
+            beta: Contraction coefficient.
+            maxFEs: Maximum number of function evaluations.
+            maxIters: Maximum number of iterations.
+            maxTolerates: Maximum tolerated non-improving iterations.
+            tolerate: Improvement tolerance.
+            verboseFlag: Whether to print terminal output.
+            verboseFreq: Summary output frequency.
+            logFlag: Whether to save full text logs.
+            saveFlag: Whether to save sqlite results.
+            saveFreq: SQLite snapshot save frequency.
+            historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
-        
-        super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
-                         maxTolerates = maxTolerates, tolerate = tolerate, 
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq, historyFreq=historyFreq)
-        
+
+        super().__init__(
+            maxFEs=maxFEs,
+            maxIters=maxIters,
+            maxTolerates=maxTolerates,
+            tolerate=tolerate,
+            verboseFlag=verboseFlag,
+            verboseFreq=verboseFreq,
+            logFlag=logFlag,
+            saveFlag=saveFlag,
+            saveFreq=saveFreq,
+            historyFreq=historyFreq,
+        )
+
         # Set algorithm parameters
-        self.set('ngs', ngs)
-        self.set('npg', npg)
-        self.set('nps', nps)
-        self.set('nspl', nspl)
-        self.set('alpha', alpha)
-        self.set('beta', beta)
-        
+        self.set("ngs", ngs)
+        self.set("npg", npg)
+        self.set("nps", nps)
+        self.set("nspl", nspl)
+        self.set("alpha", alpha)
+        self.set("beta", beta)
+
     def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
-        :param problem: Problem instance.
-        :param seed: Random seed.
-        :param initialPop: Optional initial population or decision matrix.
-        :return OptResult: Final optimization result.
+        Args:
+            problem: Problem instance.
+            seed: Random seed.
+            initialPop: Optional initial population or decision matrix.
+
+        Returns:
+            OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
-        
+
         # Retrieve parameter values
-        ngs, npg, nps, nspl = self.get('ngs', 'npg', 'nps', 'nspl')
-        alpha, beta = self.get('alpha', 'beta')
-                    
+        ngs, npg, nps, nspl = self.get("ngs", "npg", "nps", "nspl")
+        alpha, beta = self.get("alpha", "beta")
+
         # Adjust ngs if necessary
         if ngs == 0:
-            ngs = problem.nInput 
+            ngs = problem.nInput
             if ngs > 15:
                 ngs = 15
-        
+
         # Initialize SCE parameters
-        npg = 2 * ngs + 1
-        nps = ngs + 1
-        nspl = npg
+        npg = 2 * problem.nInput + 1 if npg is None else npg
+        nps = problem.nInput + 1 if nps is None else nps
+        nspl = npg if nspl is None else nspl
+        for label, value, minimum in [("ngs", ngs, 1), ("npg", npg, 2), ("nps", nps, 2), ("nspl", nspl, 1)]:
+            if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
+                raise ValueError(f"{label} must be an integer >= {minimum}.")
+        if nps > npg:
+            raise ValueError("nps must not exceed npg.")
         nInit = npg * ngs
-        
+
         # Generate initial population
         pop = self.initPop(nInit, initialPop=initialPop)
         self.update(pop)
-        
+
         # Sort the population by increasing function values
         pop = pop[pop.argsort()]
-                
+
         # Iterative process
         while self.checkTermination(pop):
             for igs in range(ngs):
                 # Partition the population into complexes (sub-populations)
-                outerIdx = np.linspace(0, npg-1, npg, dtype=np.int64) * ngs + igs
+                outerIdx = np.linspace(0, npg - 1, npg, dtype=np.int64) * ngs + igs
                 igsPop = pop[outerIdx]
-                
+
                 # Evolve sub-population igs for nspl steps
                 for _ in range(nspl):
                     # Select simplex by sampling the complex according to a linear probability distribution
@@ -115,56 +145,59 @@ class SCE_UA(AlgorithmABC):
                     innerIdx = self.rng.choice(npg, nps, p=p, replace=False)
                     innerIdx = np.sort(innerIdx)
                     sPop = igsPop[innerIdx]
-                    
+
                     # Execute CCE for simplex
                     sNew = self._cce(sPop, alpha, beta)
                     igsPop.replace(innerIdx[-1], sNew)
-                
+                    igsPop = igsPop[igsPop.argsort()]
+
                 # Replace the complex with the evolved sub-population
                 pop.replace(outerIdx, igsPop)
-                
+
             # Sort the population by increasing function values
             idx = pop.argsort()
             pop = pop[idx]
             self.update(pop, completed=True)
-                   
+
         # Return the final result
         return self.finalize()
-                     
+
     def _cce(self, sPop, alpha, beta):
-        '''
+        """
         Perform the Competitive Complex Evolution (CCE) on a simplex.
 
-        :param sPop: The simplex population to evolve.
-        :param alpha: Reflection coefficient.
-        :param beta: Contraction coefficient.
-        
-        :return: The new evolved population.
-        '''
-        
+        Args:
+            sPop: The simplex population to evolve.
+            alpha: Reflection coefficient.
+            beta: Contraction coefficient.
+
+        Returns:
+            The new evolved population.
+        """
+
         N, D = sPop.size()
 
         sPopDecs = sPop.decs
-        
+
         sWorstDecs = sPop.decs[-1:]
         sWorstObjs = sPop.objs[-1:]
         sWorstCons = sPop.cons[-1:] if sPop.cons is not None else None
-        
+
         # Calculate the centroid of the best N-1 points
-        ce = np.mean(sPopDecs[:N], axis=0).reshape(1, -1)
-        
+        ce = np.mean(sPopDecs[:-1], axis=0).reshape(1, -1)
+
         # Reflect the worst point
         sNewDecs = (sWorstDecs - ce) * alpha * -1 + ce
         np.clip(sNewDecs, self.searchLb, self.searchUb, out=sNewDecs)
-        
+
         sNew = Population(sNewDecs)
         self.evaluate(sNew)
-        
+
         if compareSolutions(sNew.objs, sNew.cons, sWorstObjs, sWorstCons, self.problem.conWgt) >= 0:
             # Contract the worst point
-            sNewDecs = sWorstDecs + (sNewDecs - sWorstDecs) * beta
+            sNewDecs = sWorstDecs + (ce - sWorstDecs) * beta
             np.clip(sNewDecs, self.searchLb, self.searchUb, out=sNewDecs)
-            
+
             sNew = Population(sNewDecs)
             self.evaluate(sNew)
             # If both reflection and contraction fail, generate a random point
@@ -172,20 +205,6 @@ class SCE_UA(AlgorithmABC):
                 sNewDecs = self.searchLb + self.rng.random(D) * (self.searchUb - self.searchLb)
                 sNew = Population(sNewDecs)
                 self.evaluate(sNew)
-                
+
         # Return the new evolved population
         return sNew
-            
-        
-                
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

@@ -1,0 +1,9 @@
+{
+  "reference": "ArviZ 0.22.0",
+  "cases": 32,
+  "metrics_compared": 126,
+  "max_absolute_difference": 1.8189894035458565e-11,
+  "rtol": 2e-10,
+  "atol": 2e-10,
+  "reference_is_runtime_dependency": false
+}

@@ -25,7 +25,7 @@ def _sqlite_simf(X):
     sim = np.zeros((X.shape[0], 2, 1))
     sim[:, 0, 0] = X[:, 0]
     sim[:, 1, 0] = X[:, 1]
-    return sim
+    return (sim).reshape(len(X), -1)
 
 
 def test_calibration_base_runs_on_model_problem():
@@ -39,16 +39,15 @@ def test_calibration_base_runs_on_model_problem():
         sim[:, 0, 1] = X[:, 0] + 10.0
         sim[:, 1, 0] = X[:, 1]
         sim[:, 1, 1] = X[:, 1] + 10.0
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=1.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        mask=mask,
-        seriesLabels=["A", "B"],
+        obs=(obs).reshape(-1),
+        mask=None if mask is None else mask.reshape(-1),
         name="HBV",
     )
 
@@ -58,12 +57,11 @@ def test_calibration_base_runs_on_model_problem():
 
     assert res.method == "DummyCalibration"
     assert res.problemName == "HBV"
-    assert res.nTime == 2
-    assert res.nSeries == 2
+    assert not hasattr(res, "nTime")
+    assert not hasattr(res, "nSeries")
     assert res.nObs == 4
-    assert np.array_equal(res.obs, obs)
-    assert np.array_equal(res.mask, mask)
-    assert res.seriesLabels == ["A", "B"]
+    assert np.array_equal(res.obs, obs.reshape(-1))
+    assert np.array_equal(res.mask, mask.reshape(-1))
     assert res.bestDecs.shape == (1, 2)
     assert res.bestSim.shape == (1, 4)
     assert res.posteriorDecs is None
@@ -94,7 +92,7 @@ def test_calibration_result_summary_and_log_file():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     work_dir = Path(".cache") / "calibration_tests" / uuid.uuid4().hex
     work_dir.mkdir(parents=True, exist_ok=False)
@@ -104,8 +102,7 @@ def test_calibration_result_summary_and_log_file():
             ub=1.0,
             lb=0.0,
             simFunc=simf,
-            obs=obs,
-            seriesLabels=["Q"],
+            obs=(obs).reshape(-1),
             name="HBV",
         )
         problem.workDir = str(work_dir)
@@ -138,8 +135,7 @@ def test_calibration_save_flag_writes_sqlite_result():
             ub=1.0,
             lb=0.0,
             simFunc=_sqlite_simf,
-            obs=np.array([[1.0], [2.0]]),
-            seriesLabels=["Q"],
+            obs=np.array([1.0, 2.0]),
             name="HBV",
         )
         problem.workDir = str(work_dir)
@@ -163,8 +159,6 @@ def test_calibration_save_flag_writes_sqlite_result():
             assert run["problem"] == "HBV"
             assert run["status"] == "finished"
             assert run["nInput"] == 2
-            assert run["nTime"] == 2
-            assert run["nSeries"] == 1
             assert run["nObs"] == 2
             assert run["runtime"] >= 0.0
 
@@ -191,8 +185,6 @@ def test_calibration_save_flag_writes_sqlite_result():
         with CalReader(dbFiles[0]) as reader:
             summary = reader.get_run_summary()
             assert summary["run_id"] == method.runId
-            assert summary["n_time"] == 2
-            assert summary["n_series"] == 1
             assert summary["n_obs"] == 2
             assert "result" in summary["artifact_names"]
             loaded = reader.load_result()

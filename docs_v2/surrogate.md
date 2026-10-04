@@ -1,5 +1,15 @@
 # Surrogate Modeling
 
+GPR `C` is the observation noise variance / regularization added to the kernel diagonal, not a standard deviation. Its initial value remains `1e-9`; the default `C_attr` searches `[1e-12, 1]` in log coordinates to allow nearly noiseless and noisy fits. `C_attr=None` fixes C; explicit bounds take precedence. C uses the variance units of the preprocessed target, including any output scaler. The default upper bound cannot cover arbitrary raw output units; configure an output scaler or custom bounds for other scales. A wider search does not force higher noise or guarantee accuracy or uncertainty calibration.
+
+
+GPR RBF, Matern and RationalQuadratic kernels search length scales over `[0.01, 1e5]` by default in log coordinates. Lengths use the preprocessed input units; configure an input scaler or explicit `length_attr` for other scales. `length_attr=None` still fixes the length. No search range guarantees accuracy on every problem. Standalone MARS now defaults to `max_degree=2` to allow pairwise interactions; explicit `max_degree=1` retains an additive model. Degree two can increase fitting cost.
+
+SVR `fit()` uses the current parameters without automatic hyperparameter search. Use `AutoTuner.gridTune`/`optTune` to select parameters on an internal validation split and refit all training rows, then evaluate on separate test data. C, epsilon and gamma are log parameters by default, so explicit grids use encoded values, for example `{"C": np.log([1, 100]), "epsilon": np.log([0.001, 0.01]), "gamma": np.log([1, 10, 100])}`. This is a starting grid, not a universal optimum. Consider scalers and parameter ranges when input or target units change.
+
+GPR/KRG standard deviations describe uncertainty under the fitted model assumptions, not guaranteed actual prediction errors. Misspecification, sparse data and extrapolation can produce overconfidence. The wider search resolves the reproduced short-scale GPR failure; it does not establish calibration on arbitrary data.
+
+
 For GPR/KRG, `nRestartTimes` counts additional searches: `0` means one search. The default `None` resolves to 4 restarts (5 searches total) for local optimizers (Boxmin/LBFGSB/MP), and retains 1 restart for EA. Local optimization starts from the current configured parameters (including fitted values on a repeated fit), then samples uniformly within optimization-coordinate bounds, hence in log space for log parameters. Set `model.rng = np.random.default_rng(42)` for reproducibility with identical data, initial parameters and RNG state. Selection uses finite objectives recomputed at returned points; all-invalid candidates raise an error. More restarts do not guarantee lower prediction error.
 
 The `surrogate` module trains cheap predictive models from evaluated input-output data.
@@ -118,12 +128,11 @@ from UQPyL.surrogate import RandSelect, mse, r_square
 from UQPyL.surrogate.rbf import RBF
 
 np.set_printoptions(precision=4, suppress=True)
-np.random.seed(123)
 
 X = np.linspace(0.0, 1.0, 24).reshape(-1, 1)
 Y = np.sin(2 * np.pi * X) + 0.2 * X
 
-trainIdx, testIdx = RandSelect(pTest=25).split(X)
+trainIdx, testIdx = RandSelect(pTest=25).split(X, seed=123)
 
 model = RBF()
 model.fit(X[trainIdx], Y[trainIdx])
@@ -252,7 +261,9 @@ model.predict(Xnew, returnVar=True) -> mean, variance
 
 ## Multi-Output Surrogates
 
-For multiple outputs, use `MultiSurrogate` to train one model per output column.
+Every surrogate fits one output, with targets shaped `(nSamples,)` or
+`(nSamples,1)`. Use `MultiSurrogate` to train one independent model per output
+column when multiple outputs are needed.
 
 ```python
 import numpy as np
@@ -286,6 +297,14 @@ Example output:
 
 `n_surrogates` must match `Y.shape[1]`, and the number of models in `models_list` must match `n_surrogates`.
 
+`fit` returns the container itself and passes one target column to each child.
+When all children support uncertainty, `predict(X, returnStd=True)` or
+`returnVar=True` returns stacked means and marginal uncertainties. Supported
+derivatives can be combined with `predict_deriv`, yielding
+`(nPred,nVariables,nOutputs)`. Children train, scale, and tune independently;
+cross-output covariance is not provided. Refit successfully after a fitting
+failure or interruption.
+
 ## Tune Hyper-Parameters
 
 `AutoTuner` searches parameter values with a validation split. `gridTune()` is a good starting point because it is explicit and easy to understand.
@@ -297,7 +316,6 @@ from UQPyL.surrogate import AutoTuner, StandardScaler
 from UQPyL.surrogate.rbf import RBF
 
 np.set_printoptions(precision=4, suppress=True)
-np.random.seed(123)
 
 X = np.linspace(0.0, 1.0, 16).reshape(-1, 1)
 Y = X**2 + 0.1
@@ -308,7 +326,7 @@ model = RBF(
 )
 tuner = AutoTuner(model=model)
 
-bestParams, bestScore = tuner.gridTune(X, Y, paraGrid={"C_smooth": [0.0, 1e-6, 1e-4]}, ratio=25)
+bestParams, bestScore = tuner.gridTune(X, Y, paraGrid={"C_smooth": [0.0, 1e-6, 1e-4]}, ratio=25, seed=123)
 
 print(bestParams)
 print(round(float(bestScore), 4))
@@ -319,15 +337,15 @@ print(model.getParameterValues("C_smooth"))
 Example output:
 
 ```text
-0.0
-0.9996
+0.0001
+1.0
 [[0.35]]
-0.0
+0.0001
 ```
 
 After tuning, `AutoTuner` applies the best parameter values to `model` and refits it on the full dataset.
 
-Here `bestScore` is an `r_square` validation score. The exact split depends on NumPy's random state, so set `np.random.seed(...)` when you need reproducible tuning examples.
+Here `bestScore` is an `r_square` validation score. Pass `seed` or `rng` directly to the tuner for a reproducible split; global NumPy seeding does not control it.
 
 ## Use Data From a `Problem`
 
@@ -487,7 +505,7 @@ Parameter validation is typically O(d) in the feature count. Shape checks do not
 
 `scalers=(xScaler, yScaler)` remains optional; model defaults are unchanged. Optimization already supplies unit inputs, so additional input scaling is normally unnecessary there. Standalone surrogates can still preprocess real inputs and outputs.
 
-Built-in scalers expose `inverse_transform_std()` and `inverse_transform_var()`. For the inverse affine map `y = b + a*z`, means use that map, standard deviations multiply by `abs(a)`, and variances multiply by `a**2` without any offset. GPR/KRG retain training-unit variance internally and restore it once at prediction. Multi-output mean/std/variance arrays all have shape `(n_predictions, n_outputs)`.
+Built-in scalers expose `inverse_transform_std()` and `inverse_transform_var()`. For the inverse affine map `y = b + a*z`, means use that map, standard deviations multiply by `abs(a)`, and variances multiply by `a**2` without any offset. GPR/KRG retain training-unit variance internally and restore it once at prediction. Single-model mean/std/variance arrays have shape `(n_predictions,1)`; MultiSurrogate combines columns into `(n_predictions,n_outputs)`.
 
 StandardScaler retains sample standard deviation (`ddof=1`) for ordinary data and supports a custom target mean and positive target standard deviation. Constant columns and single observations use a unit source scale; MinMaxScaler likewise uses unit source span for constant columns. These fallbacks retain invertibility without asserting zero predictive uncertainty.
 
@@ -506,3 +524,9 @@ Both `optTune()` and `gridTune()` split raw data before fitting preprocessing. S
 AutoTuner derives separate seeds for splitting, model fitting, and the optimizer. Each candidate fit and final fit starts from the same model seed. Reproducibility assumes fixed data/configuration/implementation and custom components that consume the supplied model rng. `tuner.lastSplit` stores `train_indices`, `test_indices`, and `seed/split_seed/model_seed/optimizer_seed` for the latest call. The return tuple is unchanged; metadata is held in memory for optional caller export.
 
 KFold distributes remainder samples across folds: full mode validates every sample exactly once, with fold sizes differing by at most one. With the same seed, single mode returns the first full-mode fold. Fold counts must be integers between 2 and the sample count. RandSelect pTest is a validation percentage strictly between 0 and 100; it uses floor(n*pTest/100), retaining at least one training and validation member for n>=2. Singleton inputs retain the empty-validation behavior and cannot provide a meaningful validation score.
+
+## One-Dimensional Inputs
+
+Prefer explicit 2D X arrays `(n_samples, n_inputs)` for both fit and predict. The existing fit convenience rule treats a 1D xTrain as multiple one-input samples; predict treats a 1D X as one multi-input sample. These meanings differ, so do not reuse a 1D array at both entry points without specifying its shape.
+
+Use `xTrain.reshape(-1, 1)` for one-input training samples and `xPred.reshape(-1, 1)` for multiple one-input prediction samples. Prediction validates the input column count before scaling and matrix operations, with a message explaining the sample axis. Explicit 2D inputs retain their behavior.

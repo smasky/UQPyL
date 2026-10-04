@@ -113,7 +113,7 @@ None
 
 ## 3. Define a `ModelProblem`
 
-`ModelProblem` places simulation output `sim` in the middle of the evaluation chain. The recommended pattern is to define `simFunc(X)` first, then derive objectives or constraints from `context.sim`, `context.obs`, and `context.mask`.
+`ModelProblem` places simulation output `sim` in the middle of the evaluation chain. The recommended pattern is to define `simFunc(X)` first, then derive objectives or constraints from `context.sims`, `context.obs`, and `context.mask`.
 
 ```python
 import numpy as np
@@ -122,20 +122,20 @@ from UQPyL.problem import ModelProblem
 
 np.set_printoptions(precision=4, suppress=True)
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
 def objFunc(X, context):
-    err = context.sim - context.obs
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+    err = context.sims - context.obs
+    return np.mean(err**2, axis=1).reshape(-1, 1)
 
 
 problem = ModelProblem(
@@ -146,28 +146,26 @@ problem = ModelProblem(
     simFunc=simFunc,
     objFunc=objFunc,
     obs=obs,
-    seriesLabels=["Q"],
     name="ToyModel",
 )
 
 res = problem.evaluate([[1.0, 2.2]])
 
 print(res.objs)
-print(res.sim)
+print(res.sims)
 ```
 
 Example output:
 
 ```text
 [[0.02]]
-[[[1. ]
-  [2.2]]]
+[[1.  2.2]]
 ```
 
 The important contract here is the full chain:
 
 ```text
-X -> simFunc(X) -> context.sim -> objFunc/conFunc -> Eval
+X -> simFunc(X) -> context.sims -> objFunc/conFunc -> Eval
 ```
 
 ## 4. Generate Samples
@@ -289,7 +287,7 @@ Example output:
 ```text
 [[-0.0233 -0.0817]]
 [[0.0019]]
-40 5
+40 4
 ```
 
 `bestDecs` is the best decision row found. `bestObjs` is the objective value at that row.
@@ -356,7 +354,7 @@ Example output:
 
 `decs.shape` is `(n_chains, draws, n_input)`. `acceptanceRate` reports one value per chain.
 
-## 6. Train a Surrogate
+## 8. Train a Surrogate
 
 A surrogate learns a cheap prediction model from evaluated `X` and `Y`.
 
@@ -400,14 +398,14 @@ Example output:
 
 The prediction at `[0.5, 0.5]` is close to the true value `0.5^2 + 0.2*0.5^2 = 0.3`.
 
-## 7. Calibrate a Simulation Model
+## 9. Calibrate a Simulation Model
 
 Calibration uses `ModelProblem`, because it compares simulations with observations.
 
 This toy model has two parameters and two observed time steps:
 
 ```text
-obs = [[1.0], [2.0]]
+obs = [1.0, 2.0]
 sim(t1) = x1
 sim(t2) = x2
 ```
@@ -420,18 +418,18 @@ from UQPyL.problem import ModelProblem
 
 np.set_printoptions(precision=4, suppress=True)
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
-problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)

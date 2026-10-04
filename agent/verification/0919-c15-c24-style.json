@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "command": "ruff format --check UQPyL",
+      "output": "168 files already formatted",
+      "passed": true
+    },
+    {
+      "command": "ruff check UQPyL",
+      "output": "All checks passed!",
+      "passed": true
+    }
+  ],
+  "python_files": 170,
+  "non_protocol_dunder": [],
+  "trailing_whitespace_lines": 0,
+  "sphinx_param_docstrings": 0
+}

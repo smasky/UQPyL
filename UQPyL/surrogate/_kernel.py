@@ -57,16 +57,19 @@ class KernelTemplate:
             raise ValueError(f"{name} lower bound must not exceed its upper bound.")
 
     def validateParameters(self, nInput=None, checkBounds=False):
-        if nInput is not None and (isinstance(nInput, (bool, np.bool_))
-                                   or not isinstance(nInput, (int, np.integer)) or nInput <= 0):
+        if nInput is not None and (
+            isinstance(nInput, (bool, np.bool_)) or not isinstance(nInput, (int, np.integer)) or nInput <= 0
+        ):
             raise ValueError("nInput must be a positive integer.")
         for name in self._parameterRules:
             if self.setting.hasPara(name):
                 if self.setting.isChoicePara(name):
                     encoded = self.setting.parVal[name]
-                    if (not np.all(np.isfinite(encoded))
-                            or np.any(encoded < self.setting.parLB[name])
-                            or np.any(encoded > self.setting.parUB[name])):
+                    if (
+                        not np.all(np.isfinite(encoded))
+                        or np.any(encoded < self.setting.parLB[name])
+                        or np.any(encoded > self.setting.parUB[name])
+                    ):
                         raise ValueError(f"{name} choice coordinates must be finite and within bounds.")
                 self._validateParameter(name, self.setting.get(name), nInput)
                 if checkBounds:
@@ -100,11 +103,9 @@ class KernelTemplate:
         names = set(self.getActiveParameters()) - {"kernel"}
         setting = Setting()
         setting.defaultOwner = "kernel"
-        for field in ("parVal", "parCon", "parUB", "parLB", "parType",
-                      "parSet", "parLog", "parOwner"):
+        for field in ("parVal", "parCon", "parUB", "parLB", "parType", "parSet", "parLog", "parOwner"):
             source = getattr(self.setting, field)
-            setattr(setting, field, {name: value for name, value in source.items()
-                                     if name in names})
+            setattr(setting, field, {name: value for name, value in source.items() if name in names})
         setting = deepcopy(setting)
         result = deepcopy(self, {id(self.setting): setting})
         result.__dict__.pop("_templateSetting", None)
@@ -119,8 +120,7 @@ def installKernel(model, kernel, kernelFamily):
     oldKernelNames = []
     if model.kernel is not None:
         oldKernelNames = [
-            name for name in model.kernel.setting.getParaList(owner="kernel", tunableOnly=False)
-            if name != "kernel"
+            name for name in model.kernel.setting.getParaList(owner="kernel", tunableOnly=False) if name != "kernel"
         ]
 
     kernelChoiceValue = model.setting.parVal.get("kernel", None)

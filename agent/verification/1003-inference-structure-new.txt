@@ -1,0 +1,65 @@
+.....FF.F...................                                             [100%]
+=================================== FAILURES ===================================
+________________ testInvalidGammaStopsBeforeModelEvaluation[MH] ________________
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    def testInvalidGammaStopsBeforeModelEvaluation(methodClass):
+        for gamma in [True, "0.2", -.1, np.nan, np.inf, 1j, [.2], [.1, .2, .3],
+                      np.zeros((3, 2)), np.zeros((4, 2, 1))]:
+            calls = []
+            method = methodClass(nChains=4, warmUp=0, maxIters=4, **quiet)
+            with pytest.raises(ValueError, match="gamma"):
+                method.run(makeProblem(calls), gamma=gamma, seed=17)
+>           assert calls == []
+E           assert [array([[ 0.7...0.31596003]])] == []
+E             
+E             Left contains one more item: array([[ 0.71408225, -0.91951345],\n       [-0.5774626 ,  0.19291202],\n       [ 0.10747098,  0.80567155],\n       [-0.22112773, -0.31596003]])
+E             Use -v to get more diff
+
+tests/test_inference_common_structure.py:47: AssertionError
+_____________ testInvalidGammaStopsBeforeModelEvaluation[MH_Gibbs] _____________
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    def testInvalidGammaStopsBeforeModelEvaluation(methodClass):
+        for gamma in [True, "0.2", -.1, np.nan, np.inf, 1j, [.2], [.1, .2, .3],
+                      np.zeros((3, 2)), np.zeros((4, 2, 1))]:
+            calls = []
+            method = methodClass(nChains=4, warmUp=0, maxIters=4, **quiet)
+            with pytest.raises(ValueError, match="gamma"):
+                method.run(makeProblem(calls), gamma=gamma, seed=17)
+>           assert calls == []
+E           assert [array([[ 0.7...0.31596003]])] == []
+E             
+E             Left contains one more item: array([[ 0.71408225, -0.91951345],\n       [-0.5774626 ,  0.19291202],\n       [ 0.10747098,  0.80567155],\n       [-0.22112773, -0.31596003]])
+E             Use -v to get more diff
+
+tests/test_inference_common_structure.py:47: AssertionError
+_______________ testInvalidGammaStopsBeforeModelEvaluation[DEMC] _______________
+
+methodClass = <class 'UQPyL.inference.methods.demc.DEMC'>
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    def testInvalidGammaStopsBeforeModelEvaluation(methodClass):
+        for gamma in [True, "0.2", -.1, np.nan, np.inf, 1j, [.2], [.1, .2, .3],
+                      np.zeros((3, 2)), np.zeros((4, 2, 1))]:
+            calls = []
+            method = methodClass(nChains=4, warmUp=0, maxIters=4, **quiet)
+            with pytest.raises(ValueError, match="gamma"):
+                method.run(makeProblem(calls), gamma=gamma, seed=17)
+>           assert calls == []
+E           assert [array([[-0.0...0.80251734]])] == []
+E             
+E             Left contains one more item: array([[-0.06666464, -0.07293809],\n       [ 0.67633584, -0.53329907],\n       [ 0.46965836,  0.09540544],\n       [-0.64627001,  0.80251734]])
+E             Use -v to get more diff
+
+tests/test_inference_common_structure.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_inference_common_structure.py::testInvalidGammaStopsBeforeModelEvaluation[MH]
+FAILED tests/test_inference_common_structure.py::testInvalidGammaStopsBeforeModelEvaluation[MH_Gibbs]
+FAILED tests/test_inference_common_structure.py::testInvalidGammaStopsBeforeModelEvaluation[DEMC]
+3 failed, 25 passed in 2.01s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_inference_common_structure.py -W error --basetemp=.cache/pytest/inference-structure-new` failed. (See above for error)

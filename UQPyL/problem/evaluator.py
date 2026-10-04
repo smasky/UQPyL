@@ -9,11 +9,11 @@ class Evaluator(EvaluatorBase):
 
     def evaluate(self, X, target=None):
         objs = None
-        if target in (None, 'objs') and self.objFunc is not None:
+        if target in (None, "objs") and self.objFunc is not None:
             objs = self.objFunc(X)
 
         cons = None
-        if target in (None, 'cons') and self.conFunc is not None:
+        if target in (None, "cons") and self.conFunc is not None:
             cons = self.conFunc(X)
 
         return Eval(objs=objs, cons=cons, target=target)

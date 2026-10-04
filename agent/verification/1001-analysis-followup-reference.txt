@@ -1,0 +1,4 @@
+Checking MARS additive, degree=2, 3 holdouts
+Checking MARS weak_third_order, degree=2, 3 holdouts
+Checking MARS weak_third_order, degree=3, 3 holdouts
+Saved /home/wmtsky/projects/UQPyL/agent/verification/1001-analysis-followup.json

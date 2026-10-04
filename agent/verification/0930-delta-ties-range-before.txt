@@ -1,0 +1,941 @@
+FFFFFFFFFFF..FF..F.FF..FFFFFF                                            [100%]
+=================================== FAILURES ===================================
+________________ testDeltaDuplicateCutoffMatchesHandAverage[1] _________________
+
+k = 1
+
+    @pytest.mark.parametrize("k", [1, 2])
+    def testDeltaDuplicateCutoffMatchesHandAverage(k):
+        x = np.array([[0.0], [0.0], [0.0], [1.0]])
+        y = np.array([[0.0], [1.0], [4.0], [7.0]])
+        # Per-row averages: 17/2, 5, 25/2, 94/3. Self is excluded.
+        expected = 43 / 6
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+>           assert DeltaTest(**QUIET)._cal_delta(x[order], y[order], k) == pytest.approx(expected)
+E           assert 10.25 == 7.166666666666667 ± 7.2e-06
+E             
+E             comparison failed
+E             Obtained: 10.25
+E             Expected: 7.166666666666667 ± 7.2e-06
+
+tests/test_analysis_delta_ties.py:36: AssertionError
+________________ testDeltaDuplicateCutoffMatchesHandAverage[2] _________________
+
+k = 2
+
+    @pytest.mark.parametrize("k", [1, 2])
+    def testDeltaDuplicateCutoffMatchesHandAverage(k):
+        x = np.array([[0.0], [0.0], [0.0], [1.0]])
+        y = np.array([[0.0], [1.0], [4.0], [7.0]])
+        # Per-row averages: 17/2, 5, 25/2, 94/3. Self is excluded.
+        expected = 43 / 6
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+>           assert DeltaTest(**QUIET)._cal_delta(x[order], y[order], k) == pytest.approx(expected)
+E           assert 8.5625 == 7.166666666666667 ± 7.2e-06
+E             
+E             comparison failed
+E             Obtained: 8.5625
+E             Expected: 7.166666666666667 ± 7.2e-06
+
+tests/test_analysis_delta_ties.py:36: AssertionError
+_________ testDeltaCutoffWeightDoesNotReweightStrictlyCloserNeighbors __________
+
+    def testDeltaCutoffWeightDoesNotReweightStrictlyCloserNeighbors():
+        x = np.array([[0.0], [0.25], [1.0], [-1.0]])
+        y = np.array([[0.0], [2.0], [5.0], [9.0]])
+        # At x=0, one guaranteed neighbor has error 4; the second is chosen
+        # uniformly between errors 25 and 81. The row mean is (4+53)/2.
+        # Other row means are 6.5, 17, 65. Delta is half their overall mean.
+>       assert DeltaTest(**QUIET)._cal_delta(x, y, 2) == pytest.approx(117 / 8)
+E       assert 12.875 == 14.625 ± 1.5e-05
+E         
+E         comparison failed
+E         Obtained: 12.875
+E         Expected: 14.625 ± 1.5e-05
+
+tests/test_analysis_delta_ties.py:45: AssertionError
+____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-1] _____
+
+k = 1, duplicates = False
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.1479166666666667 (ACTUAL), 0.11740740740740742 (DESIRED)
+E            [1]: 0.17916666666666667 (ACTUAL), 0.19888888888888895 (DESIRED)
+E           Max absolute difference among violations: 0.03050926
+E           Max relative difference among violations: 0.25985804
+E            ACTUAL: array([0.147917, 0.179167])
+E            DESIRED: array([0.117407, 0.198889])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-2] _____
+
+k = 2, duplicates = False
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.1276388888888889 (ACTUAL), 0.11740740740740742 (DESIRED)
+E            [1]: 0.19395833333333334 (ACTUAL), 0.19888888888888895 (DESIRED)
+E           Max absolute difference among violations: 0.01023148
+E           Max relative difference among violations: 0.08714511
+E            ACTUAL: array([0.127639, 0.193958])
+E            DESIRED: array([0.117407, 0.198889])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-5] _____
+
+k = 5, duplicates = False
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.0791111111111111 (ACTUAL), 0.0902222222222222 (DESIRED)
+E            [1]: 0.14844444444444443 (ACTUAL), 0.1537777777777778 (DESIRED)
+E           Max absolute difference among violations: 0.01111111
+E           Max relative difference among violations: 0.12315271
+E            ACTUAL: array([0.079111, 0.148444])
+E            DESIRED: array([0.090222, 0.153778])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+_____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-1] _____
+
+k = 1, duplicates = True
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.15625000000000003 (ACTUAL), 0.15151515151515152 (DESIRED)
+E            [1]: 0.1666666666666667 (ACTUAL), 0.21818181818181817 (DESIRED)
+E           Max absolute difference among violations: 0.05151515
+E           Max relative difference among violations: 0.23611111
+E            ACTUAL: array([0.15625 , 0.166667])
+E            DESIRED: array([0.151515, 0.218182])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+_____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-2] _____
+
+k = 2, duplicates = True
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.15914351851851852 (ACTUAL), 0.15151515151515152 (DESIRED)
+E            [1]: 0.19833333333333336 (ACTUAL), 0.21818181818181817 (DESIRED)
+E           Max absolute difference among violations: 0.01984848
+E           Max relative difference among violations: 0.09097222
+E            ACTUAL: array([0.159144, 0.198333])
+E            DESIRED: array([0.151515, 0.218182])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+_____ testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-5] _____
+
+k = 5, duplicates = True
+
+    @pytest.mark.parametrize("k", [1, 2, 5])
+    @pytest.mark.parametrize("duplicates", [False, True])
+    def testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation(k, duplicates):
+        x = np.array(list(product(np.arange(4) / 3, repeat=2)))
+        if duplicates:
+            x = np.repeat(x, 3, axis=0)
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        base = averagedDelta(x, y, k)
+        expected = np.array([averagedDelta(np.delete(x, j, axis=1), y, k) - base for j in range(2)])
+        for seed in range(5):
+            order = np.random.default_rng(seed).permutation(len(x))
+            result = DeltaTest(nNeighbors=k, **QUIET).analyze(p, x[order], y[order])
+>           np.testing.assert_allclose(result["S1"].values[0], expected, rtol=1e-13, atol=1e-14)
+E           AssertionError: 
+E           Not equal to tolerance rtol=1e-13, atol=1e-14
+E           
+E           Mismatched elements: 2 / 2 (100%)
+E           Mismatch at indices:
+E            [0]: 0.10078703703703705 (ACTUAL), 0.11084848484848484 (DESIRED)
+E            [1]: 0.15616666666666668 (ACTUAL), 0.1775151515151515 (DESIRED)
+E           Max absolute difference among violations: 0.02134848
+E           Max relative difference among violations: 0.12026289
+E            ACTUAL: array([0.100787, 0.156167])
+E            DESIRED: array([0.110848, 0.177515])
+
+tests/test_analysis_delta_ties.py:61: AssertionError
+________________ testDeltaAllDuplicateRowsUseAllOtherOutputs[1] ________________
+
+k = 1
+
+    @pytest.mark.parametrize("k", [1, 2, 6])
+    def testDeltaAllDuplicateRowsUseAllOtherOutputs(k):
+        x = np.zeros((7, 2))
+        y = np.column_stack((np.arange(7.0), np.arange(7.0) ** 2))
+        expected = 7 / 6 * np.mean(np.var(y, axis=0))
+>       assert DeltaTest(**QUIET)._cal_delta(x, y, k) == pytest.approx(expected)
+E       assert 77.07142857142857 == 93.33333333333334 ± 9.3e-05
+E         
+E         comparison failed
+E         Obtained: 77.07142857142857
+E         Expected: 93.33333333333334 ± 9.3e-05
+
+tests/test_analysis_delta_ties.py:71: AssertionError
+________________ testDeltaAllDuplicateRowsUseAllOtherOutputs[2] ________________
+
+k = 2
+
+    @pytest.mark.parametrize("k", [1, 2, 6])
+    def testDeltaAllDuplicateRowsUseAllOtherOutputs(k):
+        x = np.zeros((7, 2))
+        y = np.column_stack((np.arange(7.0), np.arange(7.0) ** 2))
+        expected = 7 / 6 * np.mean(np.var(y, axis=0))
+>       assert DeltaTest(**QUIET)._cal_delta(x, y, k) == pytest.approx(expected)
+E       assert 69.14285714285714 == 93.33333333333334 ± 9.3e-05
+E         
+E         comparison failed
+E         Obtained: 69.14285714285714
+E         Expected: 93.33333333333334 ± 9.3e-05
+
+tests/test_analysis_delta_ties.py:71: AssertionError
+_________ testDeltaSubsetSearchUsesSamePermutationInvariantTieRule[ea] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7b2d6f988350>
+entry = 'ea'
+
+    @pytest.mark.parametrize("entry", ["ea", "vio"])
+    def testDeltaSubsetSearchUsesSamePermutationInvariantTieRule(monkeypatch, entry):
+        x = np.array(list(product(np.arange(3) / 2, repeat=2)))
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        masks = np.array(list(product([0, 1], repeat=2)))
+        expected = np.array([averagedDelta(x[:, mask.astype(bool)], y, 1) if np.any(mask) else np.inf for mask in masks])
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        if entry == "ea":
+            import UQPyL.optimization.soea as optimization
+    
+            class ExhaustiveGA:
+                def __init__(self, **kwargs):
+                    pass
+    
+                def run(self, selectionProblem):
+                    values = selectionProblem.evaluate(masks).objs[:, 0]
+                    np.testing.assert_allclose(values, expected, atol=1e-14)
+                    return int(np.argmin(values))
+    
+            monkeypatch.setattr(optimization, "GA", ExhaustiveGA)
+        for seed in range(3):
+            order = np.random.default_rng(seed).permutation(len(x))
+            method = DeltaTest(nNeighbors=1, **QUIET)
+            if entry == "ea":
+>               assert method.findCombEA(p, x[order], y[order], FEs=4, verboseFlag=False, saveFlag=False) == np.argmin(expected)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_delta_ties.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/analysis/methods/delta.py:195: in findCombEA
+    res = ga.run(problem)
+          ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_analysis_delta_ties.testDeltaSubsetSearchUsesSamePermutationInvariantTieRule.<locals>.ExhaustiveGA object at 0x7b2d6f988c80>
+selectionProblem = <UQPyL.problem.problem.Problem object at 0x7b2d6f988b00>
+
+    def run(self, selectionProblem):
+        values = selectionProblem.evaluate(masks).objs[:, 0]
+>       np.testing.assert_allclose(values, expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 3 / 4 (75%)
+E       Mismatch at indices:
+E        [1]: 0.20833333333333337 (ACTUAL), 0.25 (DESIRED)
+E        [2]: 0.48000000000000004 (ACTUAL), 0.36000000000000004 (DESIRED)
+E        [3]: 0.14944444444444444 (ACTUAL), 0.15250000000000002 (DESIRED)
+E       Max absolute difference among violations: 0.12
+E       Max relative difference among violations: 0.33333333
+E        ACTUAL: array([     inf, 0.208333, 0.48    , 0.149444])
+E        DESIRED: array([   inf, 0.25  , 0.36  , 0.1525])
+
+tests/test_analysis_delta_ties.py:96: AssertionError
+________ testDeltaSubsetSearchUsesSamePermutationInvariantTieRule[vio] _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7b2d6f988470>
+entry = 'vio'
+
+    @pytest.mark.parametrize("entry", ["ea", "vio"])
+    def testDeltaSubsetSearchUsesSamePermutationInvariantTieRule(monkeypatch, entry):
+        x = np.array(list(product(np.arange(3) / 2, repeat=2)))
+        y = (x[:, 0] + 1.2 * x[:, 1])[:, None]
+        masks = np.array(list(product([0, 1], repeat=2)))
+        expected = np.array([averagedDelta(x[:, mask.astype(bool)], y, 1) if np.any(mask) else np.inf for mask in masks])
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        if entry == "ea":
+            import UQPyL.optimization.soea as optimization
+    
+            class ExhaustiveGA:
+                def __init__(self, **kwargs):
+                    pass
+    
+                def run(self, selectionProblem):
+                    values = selectionProblem.evaluate(masks).objs[:, 0]
+                    np.testing.assert_allclose(values, expected, atol=1e-14)
+                    return int(np.argmin(values))
+    
+            monkeypatch.setattr(optimization, "GA", ExhaustiveGA)
+        for seed in range(3):
+            order = np.random.default_rng(seed).permutation(len(x))
+            method = DeltaTest(nNeighbors=1, **QUIET)
+            if entry == "ea":
+                assert method.findCombEA(p, x[order], y[order], FEs=4, verboseFlag=False, saveFlag=False) == np.argmin(expected)
+            else:
+                labels = method.findCombVio(p, x[order], y[order])
+>               assert labels == [p.xLabels[j] for j in np.flatnonzero(masks[np.argmin(expected)])]
+E               AssertionError: assert ['x_2'] == ['x_1', 'x_2']
+E                 
+E                 At index 0 diff: 'x_2' != 'x_1'
+E                 Right contains one more item: 'x_2'
+E                 Use -v to get more diff
+
+tests/test_analysis_delta_ties.py:107: AssertionError
+_____ testNormalizedImportanceSurvivesExtremeOutputUnits[1e-160-DeltaTest] _____
+
+methodClass = <class 'UQPyL.analysis.methods.delta.DeltaTest'>, factor = 1e-160
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e-6, 1e-160, 1e-200, 1e150])
+    def testNormalizedImportanceSurvivesExtremeOutputUnits(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None]
+        savedY = y.copy() * factor
+        method = methodClass(**QUIET)
+        baseline = method.analyze(p, x, y)
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            scaled = method.analyze(p, x, savedY)
+>       np.testing.assert_allclose(scaled["S1_norm"].values, baseline["S1_norm"].values, rtol=1e-11, atol=1e-11)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-11, atol=1e-11
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0.9869960988296489 (ACTUAL), 0.9874927444096114 (DESIRED)
+E        [0, 1]: -0.013003901170351105 (ACTUAL), -0.012507255590388669 (DESIRED)
+E       Max absolute difference among violations: 0.00049665
+E       Max relative difference among violations: 0.0397086
+E        ACTUAL: array([[ 0.986996, -0.013004]])
+E        DESIRED: array([[ 0.987493, -0.012507]])
+
+tests/test_analysis_output_range.py:28: AssertionError
+_____ testNormalizedImportanceSurvivesExtremeOutputUnits[1e-200-DeltaTest] _____
+
+methodClass = <class 'UQPyL.analysis.methods.delta.DeltaTest'>, factor = 1e-200
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e-6, 1e-160, 1e-200, 1e150])
+    def testNormalizedImportanceSurvivesExtremeOutputUnits(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None]
+        savedY = y.copy() * factor
+        method = methodClass(**QUIET)
+        baseline = method.analyze(p, x, y)
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            scaled = method.analyze(p, x, savedY)
+>       np.testing.assert_allclose(scaled["S1_norm"].values, baseline["S1_norm"].values, rtol=1e-11, atol=1e-11)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-11, atol=1e-11
+E       
+E       Mismatched elements: 2 / 2 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0.0 (ACTUAL), 0.9874927444096114 (DESIRED)
+E        [0, 1]: 0.0 (ACTUAL), -0.012507255590388669 (DESIRED)
+E       Max absolute difference among violations: 0.98749274
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0., 0.]])
+E        DESIRED: array([[ 0.987493, -0.012507]])
+
+tests/test_analysis_output_range.py:28: AssertionError
+_______ testNormalizedImportanceSurvivesExtremeOutputUnits[1e-200-MARS] ________
+
+methodClass = <class 'UQPyL.analysis.methods.mars.MARS'>, factor = 1e-200
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e-6, 1e-160, 1e-200, 1e150])
+    def testNormalizedImportanceSurvivesExtremeOutputUnits(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None]
+        savedY = y.copy() * factor
+        method = methodClass(**QUIET)
+        baseline = method.analyze(p, x, y)
+        with warnings.catch_warnings(record=True) as emitted:
+            warnings.simplefilter("always", RuntimeWarning)
+            scaled = method.analyze(p, x, savedY)
+>       np.testing.assert_allclose(scaled["S1_norm"].values, baseline["S1_norm"].values, rtol=1e-11, atol=1e-11)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-11, atol=1e-11
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [0, 0]: 0.0 (ACTUAL), 1.0 (DESIRED)
+E       Max absolute difference among violations: 1.
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[0., 0.]])
+E        DESIRED: array([[1., 0.]])
+
+tests/test_analysis_output_range.py:28: AssertionError
+__ testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+155-DeltaTest] __
+
+methodClass = <class 'UQPyL.analysis.methods.delta.DeltaTest'>, factor = 1e+155
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e155, 1e200])
+    def testUnrepresentableRawImportanceRaisesExplicitRangeError(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with np.errstate(over="raise", invalid="raise"):
+            with pytest.raises(ValueError, match="finite.*range"):
+>               methodClass(**QUIET).analyze(p, x, y)
+
+tests/test_analysis_output_range.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/delta.py:92: in _analyzeCore
+    base = self._cal_delta(scaledX, Y_i, nNeighbors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.delta.DeltaTest object at 0x7b2d6f8f9b20>
+X = array([[0.11991262, 0.54649876],
+       [0.00660215, 0.55854169],
+       [0.18102628, 0.20584336],
+       [0.74844307,...00453, 0.83875435],
+       [0.4105671 , 0.30477431],
+       [0.28588498, 0.52248142],
+       [0.07036661, 0.41347071]])
+Y = array([[1.35973786e+155],
+       [1.01980644e+155],
+       [1.54307883e+155],
+       [3.24532920e+155],
+       [2.8576...7947320e+155],
+       [3.13901359e+155],
+       [2.23170129e+155],
+       [1.85765494e+155],
+       [1.21109984e+155]])
+nNeighbors = 2
+
+    def _cal_delta(self, X: np.ndarray, Y: np.ndarray, nNeighbors: int):
+        """
+        Calculate the Delta value using KDTree for nearest neighbor search.
+    
+        Args:
+            X: Input data array.
+            Y: Output data array.
+            nNeighbors: Number of nearest neighbors to consider.
+    
+        Returns:
+            The calculated delta value.
+        """
+        N, nInput = X.shape
+        if nInput == 0:
+            raise ValueError("DeltaTest requires at least one input column for neighbor search.")
+        if (
+            isinstance(nNeighbors, (bool, np.bool_))
+            or not isinstance(nNeighbors, (int, np.integer))
+            or not 1 <= nNeighbors < N
+        ):
+            raise ValueError("nNeighbors must be a positive integer smaller than the sample count.")
+    
+        # Build a KDTree for fast nearest neighbor search
+        tree = KDTree(X)
+    
+        # Query the nearest neighbors for each point
+        _, neighbors_indices = tree.query(X, k=nNeighbors + 1)  # +1 to include the point itself
+    
+        # With duplicate coordinates, the query row need not be the first hit.
+        # Exclude by identity rather than dropping an arbitrary zero-distance hit.
+        neighborRows = np.empty((N, nNeighbors), dtype=int)
+        for i, row in enumerate(neighbors_indices):
+            neighborRows[i] = row[row != i][:nNeighbors]
+    
+        # Delta is half the mean squared leave-one-out neighbor difference.
+        # The neighbor average already divides by k; do not divide by k again.
+>       return 0.5 * float(np.mean((Y[:, None, :] - Y[neighborRows]) ** 2))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in square
+
+UQPyL/analysis/methods/delta.py:322: FloatingPointError
+____ testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+155-MARS] _____
+
+methodClass = <class 'UQPyL.analysis.methods.mars.MARS'>, factor = 1e+155
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e155, 1e200])
+    def testUnrepresentableRawImportanceRaisesExplicitRangeError(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with np.errstate(over="raise", invalid="raise"):
+            with pytest.raises(ValueError, match="finite.*range"):
+>               methodClass(**QUIET).analyze(p, x, y)
+
+tests/test_analysis_output_range.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.mars.MARS object at 0x7b2d6f8f99d0>
+problem = <UQPyL.problem.problem.Problem object at 0x7b2d6f8fb590>
+X = array([[0.11991262, 0.54649876],
+       [0.00660215, 0.55854169],
+       [0.18102628, 0.20584336],
+       [0.74844307,...00453, 0.83875435],
+       [0.4105671 , 0.30477431],
+       [0.28588498, 0.52248142],
+       [0.07036661, 0.41347071]])
+Y = array([[1.35973786e+155],
+       [1.01980644e+155],
+       [1.54307883e+155],
+       [3.24532920e+155],
+       [2.8576...7947320e+155],
+       [3.13901359e+155],
+       [2.23170129e+155],
+       [1.85765494e+155],
+       [1.21109984e+155]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        Y = self.check_Y(X, Y, target, index)
+        if len(X) < 20:
+            raise ValueError("MARS analysis requires at least 20 samples for training and validation.")
+        # A fixed local split makes repeat runs comparable without changing global RNG.
+        order = np.random.default_rng(0).permutation(len(X))
+        validationRows, trainRows = order[: max(5, len(X) // 5)], order[max(5, len(X) // 5) :]
+        # Fit preprocessing on training rows only; constant columns remain zero.
+        origin = np.min(X[trainRows], axis=0)
+        spread = np.ptp(X[trainRows], axis=0)
+        scaledX = (X - origin) / np.where(spread > 0, spread, 1.0)
+        # Forward search can add two terms past max_terms. Keep GCV effective
+        # parameter count (2.5 * basis_size - 1.5 at penalty=3) below training N.
+        termLimit = min(self.get("maxTerms"), max(1, int((len(trainRows) - 1) / 2.5) - 2))
+        scores = np.zeros((Y.shape[1], problem.nInput))
+        diagnostics = []
+        for outputIndex in range(Y.shape[1]):
+            values = Y[:, outputIndex : outputIndex + 1]
+            offset = float(np.mean(values[trainRows]))
+            outputScale = float(np.max(np.abs(values[trainRows] - offset)))
+            if outputScale == 0:
+                if not np.all(values == values[0]):
+                    raise ValueError("MARS training output is constant but validation output is not.")
+                diagnostics.append(dict(validation_r2=None, constant_output=True))
+                continue
+            scaledY = (values - offset) / outputScale
+    
+            def fitModel(inputs):
+                # Paired hinge terms give the forward search interaction parents;
+                # a knotless additive term can otherwise stop that search early.
+                model = MARSModel(
+                    max_degree=self.get("maxDegree"),
+                    max_terms=termLimit,
+                    thresh=1e-6,
+                    allow_linear=False,
+                )
+                model.fit(inputs[trainRows], scaledY[trainRows])
+                return model
+    
+            model = fitModel(scaledX)
+            actual = scaledY[validationRows]
+            residual = actual - model.predict(scaledX[validationRows])
+            total = float(np.sum((actual - np.mean(actual)) ** 2))
+            r2 = 1 - float(np.sum(residual**2)) / total if total > 0 else -np.inf
+            if not np.isfinite(r2) or r2 < self.get("minValidationR2"):
+                warnings.warn(
+                    f"MARS output {outputIndex} validation R2={r2:.6g} is below "
+                    f"minValidationR2={self.get('minValidationR2')}; importance is unreliable. "
+                    "Provide more representative samples or adjust maxDegree/maxTerms.",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+            baseGcv = model.gcv_
+            reducedGcvs = []
+            for variable in range(problem.nInput):
+                reducedX = np.delete(scaledX, variable, axis=1)
+                if reducedX.shape[1] == 0:
+                    # Intercept-only model, with the same GCV correction as MARS.
+                    reducedGcv = float(np.mean(scaledY[trainRows] ** 2)) / (1 - 1 / len(trainRows)) ** 2
+                else:
+                    reducedGcv = fitModel(reducedX).gcv_
+                if not np.all(np.isfinite([baseGcv, reducedGcv])):
+                    raise ValueError("MARS produced non-finite GCV; importance is unreliable.")
+>               reducedGcvs.append(float(reducedGcv * outputScale**2))
+                                                      ^^^^^^^^^^^^^^
+E               OverflowError: (34, 'Numerical result out of range')
+
+UQPyL/analysis/methods/mars.py:114: OverflowError
+__ testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+200-DeltaTest] __
+
+methodClass = <class 'UQPyL.analysis.methods.delta.DeltaTest'>, factor = 1e+200
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e155, 1e200])
+    def testUnrepresentableRawImportanceRaisesExplicitRangeError(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with np.errstate(over="raise", invalid="raise"):
+            with pytest.raises(ValueError, match="finite.*range"):
+>               methodClass(**QUIET).analyze(p, x, y)
+
+tests/test_analysis_output_range.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/delta.py:92: in _analyzeCore
+    base = self._cal_delta(scaledX, Y_i, nNeighbors)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.delta.DeltaTest object at 0x7b2d6f98b800>
+X = array([[0.11991262, 0.54649876],
+       [0.00660215, 0.55854169],
+       [0.18102628, 0.20584336],
+       [0.74844307,...00453, 0.83875435],
+       [0.4105671 , 0.30477431],
+       [0.28588498, 0.52248142],
+       [0.07036661, 0.41347071]])
+Y = array([[1.35973786e+200],
+       [1.01980644e+200],
+       [1.54307883e+200],
+       [3.24532920e+200],
+       [2.8576...7947320e+200],
+       [3.13901359e+200],
+       [2.23170129e+200],
+       [1.85765494e+200],
+       [1.21109984e+200]])
+nNeighbors = 2
+
+    def _cal_delta(self, X: np.ndarray, Y: np.ndarray, nNeighbors: int):
+        """
+        Calculate the Delta value using KDTree for nearest neighbor search.
+    
+        Args:
+            X: Input data array.
+            Y: Output data array.
+            nNeighbors: Number of nearest neighbors to consider.
+    
+        Returns:
+            The calculated delta value.
+        """
+        N, nInput = X.shape
+        if nInput == 0:
+            raise ValueError("DeltaTest requires at least one input column for neighbor search.")
+        if (
+            isinstance(nNeighbors, (bool, np.bool_))
+            or not isinstance(nNeighbors, (int, np.integer))
+            or not 1 <= nNeighbors < N
+        ):
+            raise ValueError("nNeighbors must be a positive integer smaller than the sample count.")
+    
+        # Build a KDTree for fast nearest neighbor search
+        tree = KDTree(X)
+    
+        # Query the nearest neighbors for each point
+        _, neighbors_indices = tree.query(X, k=nNeighbors + 1)  # +1 to include the point itself
+    
+        # With duplicate coordinates, the query row need not be the first hit.
+        # Exclude by identity rather than dropping an arbitrary zero-distance hit.
+        neighborRows = np.empty((N, nNeighbors), dtype=int)
+        for i, row in enumerate(neighbors_indices):
+            neighborRows[i] = row[row != i][:nNeighbors]
+    
+        # Delta is half the mean squared leave-one-out neighbor difference.
+        # The neighbor average already divides by k; do not divide by k again.
+>       return 0.5 * float(np.mean((Y[:, None, :] - Y[neighborRows]) ** 2))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FloatingPointError: overflow encountered in square
+
+UQPyL/analysis/methods/delta.py:322: FloatingPointError
+____ testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+200-MARS] _____
+
+methodClass = <class 'UQPyL.analysis.methods.mars.MARS'>, factor = 1e+200
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    @pytest.mark.parametrize("factor", [1e155, 1e200])
+    def testUnrepresentableRawImportanceRaisesExplicitRangeError(methodClass, factor):
+        p = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = (3 * x[:, 0] + 1)[:, None] * factor
+        with np.errstate(over="raise", invalid="raise"):
+            with pytest.raises(ValueError, match="finite.*range"):
+>               methodClass(**QUIET).analyze(p, x, y)
+
+tests/test_analysis_output_range.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.mars.MARS object at 0x7b2d6f8f9700>
+problem = <UQPyL.problem.problem.Problem object at 0x7b2d704509b0>
+X = array([[0.11991262, 0.54649876],
+       [0.00660215, 0.55854169],
+       [0.18102628, 0.20584336],
+       [0.74844307,...00453, 0.83875435],
+       [0.4105671 , 0.30477431],
+       [0.28588498, 0.52248142],
+       [0.07036661, 0.41347071]])
+Y = array([[1.35973786e+200],
+       [1.01980644e+200],
+       [1.54307883e+200],
+       [3.24532920e+200],
+       [2.8576...7947320e+200],
+       [3.13901359e+200],
+       [2.23170129e+200],
+       [1.85765494e+200],
+       [1.21109984e+200]])
+meta = None, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        Y = self.check_Y(X, Y, target, index)
+        if len(X) < 20:
+            raise ValueError("MARS analysis requires at least 20 samples for training and validation.")
+        # A fixed local split makes repeat runs comparable without changing global RNG.
+        order = np.random.default_rng(0).permutation(len(X))
+        validationRows, trainRows = order[: max(5, len(X) // 5)], order[max(5, len(X) // 5) :]
+        # Fit preprocessing on training rows only; constant columns remain zero.
+        origin = np.min(X[trainRows], axis=0)
+        spread = np.ptp(X[trainRows], axis=0)
+        scaledX = (X - origin) / np.where(spread > 0, spread, 1.0)
+        # Forward search can add two terms past max_terms. Keep GCV effective
+        # parameter count (2.5 * basis_size - 1.5 at penalty=3) below training N.
+        termLimit = min(self.get("maxTerms"), max(1, int((len(trainRows) - 1) / 2.5) - 2))
+        scores = np.zeros((Y.shape[1], problem.nInput))
+        diagnostics = []
+        for outputIndex in range(Y.shape[1]):
+            values = Y[:, outputIndex : outputIndex + 1]
+            offset = float(np.mean(values[trainRows]))
+            outputScale = float(np.max(np.abs(values[trainRows] - offset)))
+            if outputScale == 0:
+                if not np.all(values == values[0]):
+                    raise ValueError("MARS training output is constant but validation output is not.")
+                diagnostics.append(dict(validation_r2=None, constant_output=True))
+                continue
+            scaledY = (values - offset) / outputScale
+    
+            def fitModel(inputs):
+                # Paired hinge terms give the forward search interaction parents;
+                # a knotless additive term can otherwise stop that search early.
+                model = MARSModel(
+                    max_degree=self.get("maxDegree"),
+                    max_terms=termLimit,
+                    thresh=1e-6,
+                    allow_linear=False,
+                )
+                model.fit(inputs[trainRows], scaledY[trainRows])
+                return model
+    
+            model = fitModel(scaledX)
+            actual = scaledY[validationRows]
+            residual = actual - model.predict(scaledX[validationRows])
+            total = float(np.sum((actual - np.mean(actual)) ** 2))
+            r2 = 1 - float(np.sum(residual**2)) / total if total > 0 else -np.inf
+            if not np.isfinite(r2) or r2 < self.get("minValidationR2"):
+                warnings.warn(
+                    f"MARS output {outputIndex} validation R2={r2:.6g} is below "
+                    f"minValidationR2={self.get('minValidationR2')}; importance is unreliable. "
+                    "Provide more representative samples or adjust maxDegree/maxTerms.",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+            baseGcv = model.gcv_
+            reducedGcvs = []
+            for variable in range(problem.nInput):
+                reducedX = np.delete(scaledX, variable, axis=1)
+                if reducedX.shape[1] == 0:
+                    # Intercept-only model, with the same GCV correction as MARS.
+                    reducedGcv = float(np.mean(scaledY[trainRows] ** 2)) / (1 - 1 / len(trainRows)) ** 2
+                else:
+                    reducedGcv = fitModel(reducedX).gcv_
+                if not np.all(np.isfinite([baseGcv, reducedGcv])):
+                    raise ValueError("MARS produced non-finite GCV; importance is unreliable.")
+>               reducedGcvs.append(float(reducedGcv * outputScale**2))
+                                                      ^^^^^^^^^^^^^^
+E               OverflowError: (34, 'Numerical result out of range')
+
+UQPyL/analysis/methods/mars.py:114: OverflowError
+________ testEachOutputKeepsItsOwnScaleAndConstantDefinition[DeltaTest] ________
+
+E   Failed: Regex pattern did not match any of the 1 warnings emitted.
+     Regex: 'underflow'
+     Emitted warnings: [ RuntimeWarning('DeltaTest output obj_2 has no positive sensitivity scores; the current samples provide no positive variable-importance evidence.')].
+All traceback entries are hidden. Pass `--full-trace` to see hidden and internal frames.
+
+During handling of the above exception, another exception occurred:
+
+methodClass = <class 'UQPyL.analysis.methods.delta.DeltaTest'>
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    def testEachOutputKeepsItsOwnScaleAndConstantDefinition(methodClass):
+        p = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=lambda x: np.column_stack((x[:, 0], x[:, 1], x[:, 0])))
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = np.column_stack((3 * x[:, 0] + 1, (2 * x[:, 1] + 1) * 1e-200, np.full(len(x), 1e-200)))
+>       with pytest.warns(RuntimeWarning, match="underflow"):
+E       RuntimeWarning: DeltaTest output obj_2 has no positive sensitivity scores; the current samples provide no positive variable-importance evidence.
+
+tests/test_analysis_output_range.py:55: RuntimeWarning
+__________ testEachOutputKeepsItsOwnScaleAndConstantDefinition[MARS] ___________
+
+E   Failed: Regex pattern did not match any of the 1 warnings emitted.
+     Regex: 'underflow'
+     Emitted warnings: [ RuntimeWarning('MARS output 2 validation R2=-inf is below minValidationR2=0.8; importance is unreliable. Provide more representative samples or adjust maxDegree/maxTerms.')].
+All traceback entries are hidden. Pass `--full-trace` to see hidden and internal frames.
+
+During handling of the above exception, another exception occurred:
+
+methodClass = <class 'UQPyL.analysis.methods.mars.MARS'>
+
+    @pytest.mark.parametrize("methodClass", [DeltaTest, MARS])
+    def testEachOutputKeepsItsOwnScaleAndConstantDefinition(methodClass):
+        p = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=lambda x: np.column_stack((x[:, 0], x[:, 1], x[:, 0])))
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = np.column_stack((3 * x[:, 0] + 1, (2 * x[:, 1] + 1) * 1e-200, np.full(len(x), 1e-200)))
+>       with pytest.warns(RuntimeWarning, match="underflow"):
+E       RuntimeWarning: MARS output 2 validation R2=-inf is below minValidationR2=0.8; importance is unreliable. Provide more representative samples or adjust maxDegree/maxTerms.
+
+tests/test_analysis_output_range.py:55: RuntimeWarning
+=========================== short test summary info ============================
+FAILED tests/test_analysis_delta_ties.py::testDeltaDuplicateCutoffMatchesHandAverage[1]
+FAILED tests/test_analysis_delta_ties.py::testDeltaDuplicateCutoffMatchesHandAverage[2]
+FAILED tests/test_analysis_delta_ties.py::testDeltaCutoffWeightDoesNotReweightStrictlyCloserNeighbors
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-1]
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-2]
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[False-5]
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-1]
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-2]
+FAILED tests/test_analysis_delta_ties.py::testDeltaGridAndProjectionTiesMatchReferenceUnderPermutation[True-5]
+FAILED tests/test_analysis_delta_ties.py::testDeltaAllDuplicateRowsUseAllOtherOutputs[1]
+FAILED tests/test_analysis_delta_ties.py::testDeltaAllDuplicateRowsUseAllOtherOutputs[2]
+FAILED tests/test_analysis_delta_ties.py::testDeltaSubsetSearchUsesSamePermutationInvariantTieRule[ea]
+FAILED tests/test_analysis_delta_ties.py::testDeltaSubsetSearchUsesSamePermutationInvariantTieRule[vio]
+FAILED tests/test_analysis_output_range.py::testNormalizedImportanceSurvivesExtremeOutputUnits[1e-160-DeltaTest]
+FAILED tests/test_analysis_output_range.py::testNormalizedImportanceSurvivesExtremeOutputUnits[1e-200-DeltaTest]
+FAILED tests/test_analysis_output_range.py::testNormalizedImportanceSurvivesExtremeOutputUnits[1e-200-MARS]
+FAILED tests/test_analysis_output_range.py::testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+155-DeltaTest]
+FAILED tests/test_analysis_output_range.py::testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+155-MARS]
+FAILED tests/test_analysis_output_range.py::testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+200-DeltaTest]
+FAILED tests/test_analysis_output_range.py::testUnrepresentableRawImportanceRaisesExplicitRangeError[1e+200-MARS]
+FAILED tests/test_analysis_output_range.py::testEachOutputKeepsItsOwnScaleAndConstantDefinition[DeltaTest]
+FAILED tests/test_analysis_output_range.py::testEachOutputKeepsItsOwnScaleAndConstantDefinition[MARS]
+22 failed, 7 passed in 2.76s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest tests/test_analysis_delta_ties.py tests/test_analysis_output_range.py -q -W error` failed. (See above for error)

@@ -34,7 +34,7 @@ def test_mixed_chains_match_actual_evaluations_and_custom_log_probability(method
         logCalls.append(decs.copy())
         return -expected
     method = methodClass(nChains=4, warmUp=2, logProbFunc=logProbability,
-                         **{("maxIterTimes" if methodClass in (AMH, DEMC) else "maxIters"): 12}, **QUIET)
+                         **{("maxIters"): 12}, **QUIET)
     result = method.run(problem, seed=17)
     recorded = result.decs.reshape(-1, 3)
     assert logCalls
@@ -68,7 +68,7 @@ def test_fixed_continuous_dimension_survives_reflection(methodClass):
                       objFunc=lambda X: X[:, [0]]/20)
     with np.errstate(divide='raise', invalid='raise'):
         result = methodClass(nChains=4, warmUp=1,
-                             **{("maxIterTimes" if methodClass in (AMH, DEMC) else "maxIters"): 5}, **QUIET).run(problem, seed=3)
+                             **{("maxIters"): 5}, **QUIET).run(problem, seed=3)
     assert np.all(result.decs[..., 1] == 5)
     assert np.all(np.isin(result.decs[..., 0], [10, 20]))
 

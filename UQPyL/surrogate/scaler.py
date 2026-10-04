@@ -1,9 +1,12 @@
 import abc
 import numpy as np
+import warnings
+from ._numeric import centeredColumns
 
 
 class Scaler(metaclass=abc.ABCMeta):
     """Column-wise scaling. One-dimensional inputs represent a single row."""
+
     def __init__(self):
         self.fitted = False
 
@@ -46,35 +49,79 @@ class Scaler(metaclass=abc.ABCMeta):
 
 
 class _AffineScaler(Scaler):
-    """Represent inverse scaling as y = offset + inverseScale * z."""
-    def _storeAffine(self, values, offset, inverseScale):
-        if not np.all(np.isfinite(offset)) or not np.all(np.isfinite(inverseScale)) or np.any(inverseScale <= 0):
+    """Keep source and target origins separate to preserve constant columns."""
+
+    def _storeAffine(self, values, sourceOrigin, inverseScale, targetOrigin=0.0):
+        if not np.all(np.isfinite(sourceOrigin)) or not np.all(np.isfinite(inverseScale)) or np.any(inverseScale <= 0):
             raise ValueError("Scaler fitted offsets and scales must be finite, with positive scales.")
         self.nFeatures = values.shape[1]
-        self.offset = np.asarray(offset)
+        self.sourceOrigin = np.asarray(sourceOrigin)
+        self.targetOrigin = targetOrigin
         self.inverseScale = np.asarray(inverseScale)
         self.fitted = True
         return self
 
     def transform(self, trainX):
         values = self._checkArray(trainX)
-        return (values - self.offset) / self.inverseScale
+        with np.errstate(over="ignore"):
+            difference = values - self.sourceOrigin
+            result = difference / self.inverseScale
+        # Opposite finite extremes can overflow subtraction even when the
+        # standardized difference is representable.
+        overflow = ~np.isfinite(difference)
+        if np.any(overflow):
+            with np.errstate(over="ignore", invalid="ignore"):
+                alternate = values / self.inverseScale - self.sourceOrigin / self.inverseScale
+            result = np.where(overflow, alternate, result)
+        return result + self.targetOrigin
 
     def inverse_transform(self, trainX):
         values = self._checkArray(trainX)
-        return values * self.inverseScale + self.offset
+        shifted = values - self.targetOrigin
+        with np.errstate(over="ignore", invalid="ignore"):
+            result = shifted * self.inverseScale + self.sourceOrigin
+        if np.any(~np.isfinite(result)):
+            fractions, powers = np.frexp(shifted)
+            scaleFractions, scalePowers = np.frexp(self.inverseScale)
+            originFractions, originPowers = np.frexp(self.sourceOrigin)
+            powers = powers + scalePowers
+            commonPower = np.maximum(powers, originPowers)
+            with np.errstate(over="ignore", under="ignore"):
+                alternate = np.ldexp(
+                    np.ldexp(fractions * scaleFractions, powers - commonPower)
+                    + np.ldexp(originFractions, originPowers - commonPower),
+                    commonPower,
+                )
+            result = np.where(np.isfinite(result), result, alternate)
+        return result
 
     def inverse_transform_std(self, values):
         values = self._checkArray(values)
         if np.any(values < 0):
             raise ValueError("Standard deviations must be nonnegative.")
-        return values * np.abs(self.inverseScale)
+        return self._restoreUncertainty(values, squared=False)
 
     def inverse_transform_var(self, values):
         values = self._checkArray(values)
         if np.any(values < 0):
             raise ValueError("Variances must be nonnegative.")
-        return values * self.inverseScale**2
+        return self._restoreUncertainty(values, squared=True)
+
+    def _restoreUncertainty(self, values, *, squared):
+        fractions, powers = np.frexp(values)
+        scaleFraction, scalePower = np.frexp(self.inverseScale)
+        degree = 2 if squared else 1
+        with np.errstate(over="ignore", under="ignore"):
+            result = np.ldexp(fractions * scaleFraction**degree, powers + degree * scalePower)
+        if np.any(~np.isfinite(result)) or np.any((values > 0) & (result == 0)):
+            quantity = "variance" if squared else "standard deviation"
+            warnings.warn(
+                f"Restored {quantity} exceeds floating-point range; underflow is returned as zero "
+                "and overflow as infinity. Request returnStd=True when the variance is unrepresentable.",
+                RuntimeWarning,
+                stacklevel=3,
+            )
+        return result
 
 
 def _finiteScalar(value, name):
@@ -89,7 +136,7 @@ class MinMaxScaler(_AffineScaler):
         super().__init__()
         self.min_scale = _finiteScalar(min_, "min_")
         self.max_scale = _finiteScalar(max_, "max_")
-        if self.max_scale <= self.min_scale or not np.isfinite(self.max_scale-self.min_scale):
+        if self.max_scale <= self.min_scale or not np.isfinite(self.max_scale - self.min_scale):
             raise ValueError("MinMaxScaler requires a finite positive target range.")
 
     def fit(self, trainX):
@@ -100,8 +147,8 @@ class MinMaxScaler(_AffineScaler):
         span = self.max_ - self.min_
         # A constant training column uses unit source span, retaining invertibility.
         span = np.where(span == 0, 1.0, span)
-        inverseScale = span / (self.max_scale-self.min_scale)
-        return self._storeAffine(values, self.min_-self.min_scale*inverseScale, inverseScale)
+        inverseScale = span / (self.max_scale - self.min_scale)
+        return self._storeAffine(values, self.min_, inverseScale, self.min_scale)
 
 
 class StandardScaler(_AffineScaler):
@@ -115,9 +162,17 @@ class StandardScaler(_AffineScaler):
     def fit(self, trainX):
         self.fitted = False
         values = self._checkArray(trainX, fitting=True)
-        self.mu = np.mean(values, axis=0)
-        # Preserve sample-standard-deviation semantics for ordinary datasets.
-        self.sita = np.std(values, axis=0, ddof=1) if len(values) > 1 else np.zeros(values.shape[1])
+        centered, powers, mean = centeredColumns(values)
+        self.mu = np.ldexp(mean, powers)
+        # Compute sample deviations in bounded units before restoring their
+        # scale; never form the original-unit variance as an intermediate.
+        scaledStd = (
+            np.sqrt(np.sum(centered**2, axis=0) / (len(values) - 1)) if len(values) > 1 else np.zeros(values.shape[1])
+        )
+        with np.errstate(over="ignore", under="ignore"):
+            self.sita = np.ldexp(scaledStd, powers)
+        if np.any((self.sita == 0) & np.any(values != values[0], axis=0)) or not np.all(np.isfinite(self.sita)):
+            raise ValueError("StandardScaler standard deviation is outside floating-point range.")
         scale = np.where(self.sita == 0, 1.0, self.sita)
         inverseScale = scale / self.sitaX
-        return self._storeAffine(values, self.mu-self.muX*inverseScale, inverseScale)
+        return self._storeAffine(values, self.mu, inverseScale, self.muX)

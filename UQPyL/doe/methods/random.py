@@ -2,6 +2,7 @@ import numpy as np
 
 from ..base import Sampler
 
+
 class Random(Sampler):
     """
     Uniform random sampler.
@@ -26,17 +27,20 @@ class Random(Sampler):
 
     def sampleWithMeta(self, problem, nSamples: int = None, seed=None, nt: int = None, *, output="real"):
         return super().sampleWithMeta(problem, nSamples, seed=seed, nt=nt, output=output)
-    
+
     def _generate(self, nSamples: int, nInput: int):
         """
         Generate unit-space random samples.
 
-        :param nSamples: Number of samples.
-        :param nInput: Number of input variables.
-        :return np.ndarray: Unit-space random samples.
+        Args:
+            nSamples: Number of samples.
+            nInput: Number of input variables.
+
+        Returns:
+            np.ndarray: Unit-space random samples.
         """
         H = self.rng.random((nSamples, nInput))
-        
+
         return H
 
     def _build_meta(self, problem, nSamples: int, seed=None):

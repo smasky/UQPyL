@@ -1,8 +1,9 @@
 import numpy as np
+import warnings
+from ..core.numerical import automaticReference
 
 
-def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=None,
-       *, batchSize: int = 4096):
+def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=None, *, batchSize: int = 4096):
     """Compute exact HV below four objectives, otherwise estimate by sampling.
 
     ``batchSize`` limits samples held at once in the Monte Carlo branch.
@@ -17,13 +18,47 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=No
 
     if refPoint is None:
         worst = np.max(popObjs, axis=0)
-        refPoint = worst + 0.1 * np.where(worst == 0, 1.0, np.abs(worst))
+        refPoint = automaticReference(worst, 0.1)
     else:
-        refPoint = np.asarray(refPoint, dtype=float)
+        refPoint = np.asarray(refPoint, dtype=float).reshape(-1)
+
+    if refPoint.shape != (m,) or not np.all(np.isfinite(refPoint)):
+        raise ValueError("refPoint must contain one finite value per objective.")
+    if not np.all(np.isfinite(popObjs)):
+        raise ValueError("popObjs must contain finite objective values.")
+
+    # Keep the ordinary path (including its sampling stream) unchanged. Extreme
+    # axes need separate binary scales so intermediate volumes do not overflow
+    # before multiplication by a very small width in a later dimension.
+    magnitude = np.maximum(np.max(np.abs(popObjs), axis=0), np.abs(refPoint))
+    powers = np.frexp(magnitude)[1]
+    extreme = (
+        np.any(np.abs(powers) > 400) or np.sum(np.maximum(powers, 0)) > 900 or np.sum(np.minimum(powers, 0)) < -900
+    )
+    if extreme and not normalize:
+        with np.errstate(under="ignore"):
+            scaled = np.ldexp(popObjs, -powers)
+            reference = np.ldexp(refPoint, -powers)
+        value = HV(scaled, reference, normalize=False, nSamples=nSamples, rng=rng, batchSize=batchSize)
+        with np.errstate(over="ignore", under="ignore"):
+            result = np.ldexp(value, int(np.sum(powers)))
+        if value > 0 and (result == 0 or np.isinf(result)):
+            warnings.warn(
+                "Hypervolume exceeds floating-point range; returning zero or infinity.", RuntimeWarning, stacklevel=2
+            )
+        return float(result)
 
     if normalize:
+        if extreme:
+            # Include zero/one normalization anchors in the same coordinate map.
+            powers = np.maximum(powers, 1)
+            popObjs = np.ldexp(popObjs, -powers)
+            refPoint = np.ldexp(refPoint, -powers)
+            upperAnchor = np.ldexp(np.ones((1, m)), -powers)
+        else:
+            upperAnchor = np.ones((1, m))
         fmin = np.min(np.vstack((popObjs, np.zeros((1, m)))), axis=0)
-        fmax = np.max(np.vstack((popObjs, np.ones((1, m)))), axis=0)
+        fmax = np.max(np.vstack((popObjs, upperAnchor)), axis=0)
 
         denom = fmax - fmin
         popObjs = (popObjs - fmin) / denom
@@ -75,7 +110,7 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=No
             samples = rng.uniform(lowerBounds, upperBounds, (size, m))
             dominated = np.zeros(size, dtype=bool)
             for pointStart in range(0, len(popObjs), 256):
-                points = popObjs[pointStart:pointStart + 256]
+                points = popObjs[pointStart : pointStart + 256]
                 dominated |= np.any(np.all(points <= samples[:, None], axis=2), axis=1)
                 if np.all(dominated):
                     break
@@ -83,6 +118,7 @@ def HV(popObjs, refPoint=None, normalize=True, nSamples: int = 1_000_000, rng=No
         hyperVolume = dominatedCount / nSamples * totalHyperVolume
 
     return hyperVolume
+
 
 def slice(pl, k, refPoint):
     p = head(pl)
@@ -133,17 +169,20 @@ def insert(p, k, pl):
 
     return ql
 
+
 def head(pl):
     if len(pl) == 0:
         return []
     else:
         return pl[0]
 
+
 def tail(pl):
     if len(pl) < 2:
         return []
     else:
         return pl[1:]
+
 
 def add(cell_, S):
     n = len(S)

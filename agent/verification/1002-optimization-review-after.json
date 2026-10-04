@@ -1,0 +1,3313 @@
+[
+  {
+    "kind": "nondominated_reference",
+    "seed": 0,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 0,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 0,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 1,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 1,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 1,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 2,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 2,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 2,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 3,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 3,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 3,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 4,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 4,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 4,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 5,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 5,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 5,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 6,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 6,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 6,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 7,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 7,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 7,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 8,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 8,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 8,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 9,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 9,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 9,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 10,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 10,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 10,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 11,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 11,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 11,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 12,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 12,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 12,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 13,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 13,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 13,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 14,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 14,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 14,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 15,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 15,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 15,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 16,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 16,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 16,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 17,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 17,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 17,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 18,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 18,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 18,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 19,
+    "dimension": 2,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 19,
+    "dimension": 3,
+    "passed": true
+  },
+  {
+    "kind": "nondominated_reference",
+    "seed": 19,
+    "dimension": 5,
+    "passed": true
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.001599878496074438,
+    "returned": [
+      [
+        0.001599878496074438
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.001599878496074438,
+    "returned": [
+      [
+        -0.001599878496074438
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002737772114457789,
+    "returned": [
+      [
+        0.002737772114457789
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002737772114457789,
+    "returned": [
+      [
+        -0.002737772114457789
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00035228285881343333,
+    "returned": [
+      [
+        0.00035228285881343333
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "GA",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00035228285881343333,
+    "returned": [
+      [
+        -0.00035228285881343333
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.014638913160893063,
+    "returned": [
+      [
+        0.014638913160893063
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.014638913160893063,
+    "returned": [
+      [
+        -0.014638913160893063
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0011972131238926018,
+    "returned": [
+      [
+        0.0011972131238926018
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0011972131238926018,
+    "returned": [
+      [
+        -0.0011972131238926018
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0012993113500531248,
+    "returned": [
+      [
+        0.0012993113500531248
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "DE",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0012993113500531248,
+    "returned": [
+      [
+        -0.0012993113500531248
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00027271322715193534,
+    "returned": [
+      [
+        0.00027271322715193534
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00027271322715193534,
+    "returned": [
+      [
+        -0.00027271322715193534
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002876691475434005,
+    "returned": [
+      [
+        0.002876691475434005
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002876691475434005,
+    "returned": [
+      [
+        -0.002876691475434005
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0012993113500531248,
+    "returned": [
+      [
+        0.0012993113500531248
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "PSO",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0012993113500531248,
+    "returned": [
+      [
+        -0.0012993113500531248
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002242358073584304,
+    "returned": [
+      [
+        0.002242358073584304
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002242358073584304,
+    "returned": [
+      [
+        -0.002242358073584304
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010303537600357489,
+    "returned": [
+      [
+        0.00010303537600357489
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010303537600357489,
+    "returned": [
+      [
+        -0.00010303537600357489
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0001619087386463356,
+    "returned": [
+      [
+        0.0001619087386463356
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ABC",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0001619087386463356,
+    "returned": [
+      [
+        -0.0001619087386463356
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0025775871205534003,
+    "returned": [
+      [
+        0.0025775871205534003
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0025775871205534003,
+    "returned": [
+      [
+        -0.0025775871205534003
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002072501066992344,
+    "returned": [
+      [
+        0.002072501066992344
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.002072501066992344,
+    "returned": [
+      [
+        -0.002072501066992344
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0010220453479496637,
+    "returned": [
+      [
+        0.0010220453479496637
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "CSA",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 84,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0010220453479496637,
+    "returned": [
+      [
+        -0.0010220453479496637
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 55,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00019608200309701669,
+    "returned": [
+      [
+        0.00019608200309701669
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 55,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00019608200309701669,
+    "returned": [
+      [
+        -0.00019608200309701669
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 59,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0006966633383160045,
+    "returned": [
+      [
+        0.0006966633383160045
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 59,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0006966633383160045,
+    "returned": [
+      [
+        -0.0006966633383160045
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 56,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0006198596996469891,
+    "returned": [
+      [
+        0.0006198596996469891
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "SCE_UA",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 56,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0006198596996469891,
+    "returned": [
+      [
+        -0.0006198596996469891
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 49,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.000507030186550819,
+    "returned": [
+      [
+        0.000507030186550819
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 49,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.000507030186550819,
+    "returned": [
+      [
+        -0.000507030186550819
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 53,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00012414335173724082,
+    "returned": [
+      [
+        0.00012414335173724082
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 53,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00012414335173724082,
+    "returned": [
+      [
+        -0.00012414335173724082
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0001232992253092829,
+    "returned": [
+      [
+        0.0001232992253092829
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ML_SCE_UA",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0001232992253092829,
+    "returned": [
+      [
+        -0.0001232992253092829
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0176704171175128,
+        0.3435015271716963
+      ],
+      [
+        0.019153330534012632,
+        0.19068406590220896
+      ],
+      [
+        0.021576835301992277,
+        0.18205602659635284
+      ],
+      [
+        0.027565922406420675,
+        0.16923112395571982
+      ],
+      [
+        0.03165148075264729,
+        0.16081751461823568
+      ],
+      [
+        0.054951647634874395,
+        0.13965778022317188
+      ],
+      [
+        0.0562454600463208,
+        0.11601297928752305
+      ],
+      [
+        0.07521450483203065,
+        0.09639190656076559
+      ],
+      [
+        0.08150668085986228,
+        0.08537053640484979
+      ],
+      [
+        0.0825688885142073,
+        0.08374144814748882
+      ],
+      [
+        0.0992096201013693,
+        0.08065705226493557
+      ],
+      [
+        0.11873063155671561,
+        0.04890939079377216
+      ],
+      [
+        0.12996163086160115,
+        0.044723800721602626
+      ],
+      [
+        0.17041683695072699,
+        0.028292581547452778
+      ],
+      [
+        0.2584350541525821,
+        0.026851146024551444
+      ],
+      [
+        0.3602256381882305,
+        0.001439000734837579
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0176704171175128,
+        -0.3435015271716963
+      ],
+      [
+        -0.019153330534012632,
+        -0.19068406590220896
+      ],
+      [
+        -0.021576835301992277,
+        -0.18205602659635284
+      ],
+      [
+        -0.027565922406420675,
+        -0.16923112395571982
+      ],
+      [
+        -0.03165148075264729,
+        -0.16081751461823568
+      ],
+      [
+        -0.054951647634874395,
+        -0.13965778022317188
+      ],
+      [
+        -0.0562454600463208,
+        -0.11601297928752305
+      ],
+      [
+        -0.07521450483203065,
+        -0.09639190656076559
+      ],
+      [
+        -0.08150668085986228,
+        -0.08537053640484979
+      ],
+      [
+        -0.0825688885142073,
+        -0.08374144814748882
+      ],
+      [
+        -0.0992096201013693,
+        -0.08065705226493557
+      ],
+      [
+        -0.11873063155671561,
+        -0.04890939079377216
+      ],
+      [
+        -0.12996163086160115,
+        -0.044723800721602626
+      ],
+      [
+        -0.17041683695072699,
+        -0.028292581547452778
+      ],
+      [
+        -0.2584350541525821,
+        -0.026851146024551444
+      ],
+      [
+        -0.3602256381882305,
+        -0.001439000734837579
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.019172118835952684,
+        0.43624026538647287
+      ],
+      [
+        0.034756051250350854,
+        0.15230352953118573
+      ],
+      [
+        0.12522537425054805,
+        0.1493542657225039
+      ],
+      [
+        0.16593117620442052,
+        0.03077631155248484
+      ],
+      [
+        0.18915592934037873,
+        0.027183753089780244
+      ],
+      [
+        0.20590290516750642,
+        0.017761248690824512
+      ],
+      [
+        0.2059363890979895,
+        0.017477707357836436
+      ],
+      [
+        0.2379248793540915,
+        0.006899374090945508
+      ],
+      [
+        0.31315079684740965,
+        0.003276622333251342
+      ],
+      [
+        0.3240155107559529,
+        0.0023089393499628203
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.019172118835952684,
+        -0.43624026538647287
+      ],
+      [
+        -0.034756051250350854,
+        -0.15230352953118573
+      ],
+      [
+        -0.12522537425054805,
+        -0.1493542657225039
+      ],
+      [
+        -0.16593117620442052,
+        -0.03077631155248484
+      ],
+      [
+        -0.18915592934037873,
+        -0.027183753089780244
+      ],
+      [
+        -0.20590290516750642,
+        -0.017761248690824512
+      ],
+      [
+        -0.2059363890979895,
+        -0.017477707357836436
+      ],
+      [
+        -0.2379248793540915,
+        -0.006899374090945508
+      ],
+      [
+        -0.31315079684740965,
+        -0.003276622333251342
+      ],
+      [
+        -0.3240155107559529,
+        -0.0023089393499628203
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0012993113500531248,
+        0.3390878075644993
+      ],
+      [
+        0.007616930597673991,
+        0.29996262075187086
+      ],
+      [
+        0.01053259166189358,
+        0.23396757776460875
+      ],
+      [
+        0.013133330847628492,
+        0.21155278243523246
+      ],
+      [
+        0.013222203251523106,
+        0.20597402576179413
+      ],
+      [
+        0.014662780329258773,
+        0.1989305449207684
+      ],
+      [
+        0.015379477977482476,
+        0.19585479344249346
+      ],
+      [
+        0.01843021593376034,
+        0.18535303028639133
+      ],
+      [
+        0.01903861168633866,
+        0.18294175479705685
+      ],
+      [
+        0.019973901268300176,
+        0.18017266311206975
+      ],
+      [
+        0.02198938741143297,
+        0.17472163054302547
+      ],
+      [
+        0.022522714245835636,
+        0.1733805553277374
+      ],
+      [
+        0.024577791140897205,
+        0.16826232647039008
+      ],
+      [
+        0.027379856733215843,
+        0.1626599803772583
+      ],
+      [
+        0.027379856733215854,
+        0.16265998037725826
+      ],
+      [
+        0.041472881281576605,
+        0.1408266809841928
+      ],
+      [
+        0.05426929260160823,
+        0.13946480894957594
+      ],
+      [
+        0.09153370630695246,
+        0.07789381954124985
+      ],
+      [
+        0.21759180487101487,
+        0.01677989530635593
+      ],
+      [
+        0.3534947752247002,
+        0.005513729486466041
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAII",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0012993113500531248,
+        -0.3390878075644993
+      ],
+      [
+        -0.007616930597673991,
+        -0.29996262075187086
+      ],
+      [
+        -0.01053259166189358,
+        -0.23396757776460875
+      ],
+      [
+        -0.013133330847628492,
+        -0.21155278243523246
+      ],
+      [
+        -0.013222203251523106,
+        -0.20597402576179413
+      ],
+      [
+        -0.014662780329258773,
+        -0.1989305449207684
+      ],
+      [
+        -0.015379477977482476,
+        -0.19585479344249346
+      ],
+      [
+        -0.01843021593376034,
+        -0.18535303028639133
+      ],
+      [
+        -0.01903861168633866,
+        -0.18294175479705685
+      ],
+      [
+        -0.019973901268300176,
+        -0.18017266311206975
+      ],
+      [
+        -0.02198938741143297,
+        -0.17472163054302547
+      ],
+      [
+        -0.022522714245835636,
+        -0.1733805553277374
+      ],
+      [
+        -0.024577791140897205,
+        -0.16826232647039008
+      ],
+      [
+        -0.027379856733215843,
+        -0.1626599803772583
+      ],
+      [
+        -0.027379856733215854,
+        -0.16265998037725826
+      ],
+      [
+        -0.041472881281576605,
+        -0.1408266809841928
+      ],
+      [
+        -0.05426929260160823,
+        -0.13946480894957594
+      ],
+      [
+        -0.09153370630695246,
+        -0.07789381954124985
+      ],
+      [
+        -0.21759180487101487,
+        -0.01677989530635593
+      ],
+      [
+        -0.3534947752247002,
+        -0.005513729486466041
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.006934168247585531,
+        0.23363577855554937
+      ],
+      [
+        0.024720911495780686,
+        0.16785702116135723
+      ],
+      [
+        0.05175858364301066,
+        0.16201336136116568
+      ],
+      [
+        0.054951647634874395,
+        0.13965778022317188
+      ],
+      [
+        0.057123049633682636,
+        0.13063263853097742
+      ],
+      [
+        0.0825688885142073,
+        0.08374144814748882
+      ],
+      [
+        0.11077408936682187,
+        0.05423388522493165
+      ],
+      [
+        0.1260569893499763,
+        0.04755484360428286
+      ],
+      [
+        0.1482643735098188,
+        0.03490278033651985
+      ],
+      [
+        0.19604734375038624,
+        0.018553668360083396
+      ],
+      [
+        0.2736074168006284,
+        0.013508669663287209
+      ],
+      [
+        0.35957087126988263,
+        0.0014193711742823733
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.006934168247585531,
+        -0.23363577855554937
+      ],
+      [
+        -0.024720911495780686,
+        -0.16785702116135723
+      ],
+      [
+        -0.05175858364301066,
+        -0.16201336136116568
+      ],
+      [
+        -0.054951647634874395,
+        -0.13965778022317188
+      ],
+      [
+        -0.057123049633682636,
+        -0.13063263853097742
+      ],
+      [
+        -0.0825688885142073,
+        -0.08374144814748882
+      ],
+      [
+        -0.11077408936682187,
+        -0.05423388522493165
+      ],
+      [
+        -0.1260569893499763,
+        -0.04755484360428286
+      ],
+      [
+        -0.1482643735098188,
+        -0.03490278033651985
+      ],
+      [
+        -0.19604734375038624,
+        -0.018553668360083396
+      ],
+      [
+        -0.2736074168006284,
+        -0.013508669663287209
+      ],
+      [
+        -0.35957087126988263,
+        -0.0014193711742823733
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.017155675156988324,
+        0.43920357090644147
+      ],
+      [
+        0.04634309435858404,
+        0.1635776063012767
+      ],
+      [
+        0.06060817263526588,
+        0.13473001274921648
+      ],
+      [
+        0.06174791745727012,
+        0.1339433795962072
+      ],
+      [
+        0.12658473346614446,
+        0.04457268280326721
+      ],
+      [
+        0.2018039347744604,
+        0.013783265529884218
+      ],
+      [
+        0.2181013852987299,
+        0.013001098954154092
+      ],
+      [
+        0.23635182287838766,
+        0.00710839960248828
+      ],
+      [
+        0.2379248793540915,
+        0.006899374090945508
+      ],
+      [
+        0.27535715526275095,
+        0.002297301954255409
+      ],
+      [
+        0.27711080968835833,
+        0.002074608781076787
+      ],
+      [
+        0.2809409325843205,
+        0.0016283962251854999
+      ],
+      [
+        0.2910658972643786,
+        0.0013486584962633709
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.017155675156988324,
+        -0.43920357090644147
+      ],
+      [
+        -0.04634309435858404,
+        -0.1635776063012767
+      ],
+      [
+        -0.06060817263526588,
+        -0.13473001274921648
+      ],
+      [
+        -0.06174791745727012,
+        -0.1339433795962072
+      ],
+      [
+        -0.12658473346614446,
+        -0.04457268280326721
+      ],
+      [
+        -0.2018039347744604,
+        -0.013783265529884218
+      ],
+      [
+        -0.2181013852987299,
+        -0.013001098954154092
+      ],
+      [
+        -0.23635182287838766,
+        -0.00710839960248828
+      ],
+      [
+        -0.2379248793540915,
+        -0.006899374090945508
+      ],
+      [
+        -0.27535715526275095,
+        -0.002297301954255409
+      ],
+      [
+        -0.27711080968835833,
+        -0.002074608781076787
+      ],
+      [
+        -0.2809409325843205,
+        -0.0016283962251854999
+      ],
+      [
+        -0.2910658972643786,
+        -0.0013486584962633709
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0012993113500531248,
+        0.3390878075644993
+      ],
+      [
+        0.002150681460879058,
+        0.3242089925900792
+      ],
+      [
+        0.003577867382565673,
+        0.2657091323298366
+      ],
+      [
+        0.011017974142200382,
+        0.23659207263904292
+      ],
+      [
+        0.018160549588116946,
+        0.21420182122148346
+      ],
+      [
+        0.022522714245835636,
+        0.1733805553277374
+      ],
+      [
+        0.023261547624489426,
+        0.17195899879686216
+      ],
+      [
+        0.030850376963853433,
+        0.15261380299463628
+      ],
+      [
+        0.06371980643724963,
+        0.10834948498768021
+      ],
+      [
+        0.0837138573994533,
+        0.1065497462572835
+      ],
+      [
+        0.09709919611957202,
+        0.09959525729237641
+      ],
+      [
+        0.1341312748347307,
+        0.08886671968956432
+      ],
+      [
+        0.13933583702623745,
+        0.038327411746861044
+      ],
+      [
+        0.1765477684283814,
+        0.025141542770879384
+      ],
+      [
+        0.21727909261004646,
+        0.0178131116750232
+      ],
+      [
+        0.21759180487101487,
+        0.01677989530635593
+      ],
+      [
+        0.21983530101132853,
+        0.01658495498812155
+      ],
+      [
+        0.39468024586018746,
+        0.010687431506754766
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "NSGAIII",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0012993113500531248,
+        -0.3390878075644993
+      ],
+      [
+        -0.002150681460879058,
+        -0.3242089925900792
+      ],
+      [
+        -0.003577867382565673,
+        -0.2657091323298366
+      ],
+      [
+        -0.011017974142200382,
+        -0.23659207263904292
+      ],
+      [
+        -0.018160549588116946,
+        -0.21420182122148346
+      ],
+      [
+        -0.022522714245835636,
+        -0.1733805553277374
+      ],
+      [
+        -0.023261547624489426,
+        -0.17195899879686216
+      ],
+      [
+        -0.030850376963853433,
+        -0.15261380299463628
+      ],
+      [
+        -0.06371980643724963,
+        -0.10834948498768021
+      ],
+      [
+        -0.0837138573994533,
+        -0.1065497462572835
+      ],
+      [
+        -0.09709919611957202,
+        -0.09959525729237641
+      ],
+      [
+        -0.1341312748347307,
+        -0.08886671968956432
+      ],
+      [
+        -0.13933583702623745,
+        -0.038327411746861044
+      ],
+      [
+        -0.1765477684283814,
+        -0.025141542770879384
+      ],
+      [
+        -0.21727909261004646,
+        -0.0178131116750232
+      ],
+      [
+        -0.21759180487101487,
+        -0.01677989530635593
+      ],
+      [
+        -0.21983530101132853,
+        -0.01658495498812155
+      ],
+      [
+        -0.39468024586018746,
+        -0.010687431506754766
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        3.055566368255509e-05,
+        0.3158625211737196
+      ],
+      [
+        0.00044897546463473737,
+        0.2992479291304737
+      ],
+      [
+        0.0015017257161744307,
+        0.28590105963796203
+      ],
+      [
+        0.00239791183845552,
+        0.2673363826464211
+      ],
+      [
+        0.007144163294940982,
+        0.23485041027764356
+      ],
+      [
+        0.009452805845472916,
+        0.22568697246942998
+      ],
+      [
+        0.01210483994431715,
+        0.2171335629706509
+      ],
+      [
+        0.058493033027679435,
+        0.18462933049523733
+      ],
+      [
+        0.0825688885142073,
+        0.08374144814748882
+      ],
+      [
+        0.08525855232680522,
+        0.07985747323142886
+      ],
+      [
+        0.24105870119686085,
+        0.07220954334670064
+      ],
+      [
+        0.4995037247102559,
+        0.023154889280905984
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -3.055566368255509e-05,
+        -0.3158625211737196
+      ],
+      [
+        -0.00044897546463473737,
+        -0.2992479291304737
+      ],
+      [
+        -0.0015017257161744307,
+        -0.28590105963796203
+      ],
+      [
+        -0.00239791183845552,
+        -0.2673363826464211
+      ],
+      [
+        -0.007144163294940982,
+        -0.23485041027764356
+      ],
+      [
+        -0.009452805845472916,
+        -0.22568697246942998
+      ],
+      [
+        -0.01210483994431715,
+        -0.2171335629706509
+      ],
+      [
+        -0.058493033027679435,
+        -0.18462933049523733
+      ],
+      [
+        -0.0825688885142073,
+        -0.08374144814748882
+      ],
+      [
+        -0.08525855232680522,
+        -0.07985747323142886
+      ],
+      [
+        -0.24105870119686085,
+        -0.07220954334670064
+      ],
+      [
+        -0.4995037247102559,
+        -0.023154889280905984
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.017157030243014022,
+        0.4236892646304667
+      ],
+      [
+        0.04634309435858404,
+        0.1635776063012767
+      ],
+      [
+        0.13861796160187326,
+        0.15141044417728106
+      ],
+      [
+        0.1466705679684821,
+        0.08664721684971184
+      ],
+      [
+        0.16582423914495534,
+        0.04926058029989
+      ],
+      [
+        0.16621118929819304,
+        0.04878704721241001
+      ],
+      [
+        0.17293437276556878,
+        0.04802719360987918
+      ],
+      [
+        0.17496242424226263,
+        0.042176419309283925
+      ],
+      [
+        0.19029297791581887,
+        0.041331563278269146
+      ],
+      [
+        0.19389293495006882,
+        0.02647231766645176
+      ],
+      [
+        0.20615871302684388,
+        0.024748620739042892
+      ],
+      [
+        0.2077388616812295,
+        0.02468366254682567
+      ],
+      [
+        0.21835685554107018,
+        0.024467120736508974
+      ],
+      [
+        0.2872512190455695,
+        0.005741544737649866
+      ],
+      [
+        0.31315079684740965,
+        0.003276622333251342
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.017157030243014022,
+        -0.4236892646304667
+      ],
+      [
+        -0.04634309435858404,
+        -0.1635776063012767
+      ],
+      [
+        -0.13861796160187326,
+        -0.15141044417728106
+      ],
+      [
+        -0.1466705679684821,
+        -0.08664721684971184
+      ],
+      [
+        -0.16582423914495534,
+        -0.04926058029989
+      ],
+      [
+        -0.16621118929819304,
+        -0.04878704721241001
+      ],
+      [
+        -0.17293437276556878,
+        -0.04802719360987918
+      ],
+      [
+        -0.17496242424226263,
+        -0.042176419309283925
+      ],
+      [
+        -0.19029297791581887,
+        -0.041331563278269146
+      ],
+      [
+        -0.19389293495006882,
+        -0.02647231766645176
+      ],
+      [
+        -0.20615871302684388,
+        -0.024748620739042892
+      ],
+      [
+        -0.2077388616812295,
+        -0.02468366254682567
+      ],
+      [
+        -0.21835685554107018,
+        -0.024467120736508974
+      ],
+      [
+        -0.2872512190455695,
+        -0.005741544737649866
+      ],
+      [
+        -0.31315079684740965,
+        -0.003276622333251342
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0012993113500531248,
+        0.3390878075644993
+      ],
+      [
+        0.011501233244320466,
+        0.21754989359500268
+      ],
+      [
+        0.016501988836360983,
+        0.1911662948893409
+      ],
+      [
+        0.022522714245835636,
+        0.1733805553277374
+      ],
+      [
+        0.026870166170343796,
+        0.1635014562025086
+      ],
+      [
+        0.03204584049804729,
+        0.14970522056694768
+      ],
+      [
+        0.032081253344904956,
+        0.14962361786366962
+      ],
+      [
+        0.03208125334490497,
+        0.1496236178636696
+      ],
+      [
+        0.05099135761336755,
+        0.11558815340804623
+      ],
+      [
+        0.05223660928691822,
+        0.1137366906289411
+      ],
+      [
+        0.07254426571511496,
+        0.10291045272351079
+      ],
+      [
+        0.07262900271677306,
+        0.10285413741733936
+      ],
+      [
+        0.07380925555046372,
+        0.10208040134754384
+      ],
+      [
+        0.1755609828188799,
+        0.08874646586070517
+      ],
+      [
+        0.18561980889247856,
+        0.026773036904968916
+      ],
+      [
+        0.19912893721484604,
+        0.026105132860255537
+      ],
+      [
+        0.21759180487101487,
+        0.01677989530635593
+      ],
+      [
+        0.23110751522453488,
+        0.013391086425022439
+      ],
+      [
+        0.2540765665528509,
+        0.010399327320118463
+      ],
+      [
+        0.3436201705778553,
+        0.009983449668557715
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOEAD",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0012993113500531248,
+        -0.3390878075644993
+      ],
+      [
+        -0.011501233244320466,
+        -0.21754989359500268
+      ],
+      [
+        -0.016501988836360983,
+        -0.1911662948893409
+      ],
+      [
+        -0.022522714245835636,
+        -0.1733805553277374
+      ],
+      [
+        -0.026870166170343796,
+        -0.1635014562025086
+      ],
+      [
+        -0.03204584049804729,
+        -0.14970522056694768
+      ],
+      [
+        -0.032081253344904956,
+        -0.14962361786366962
+      ],
+      [
+        -0.03208125334490497,
+        -0.1496236178636696
+      ],
+      [
+        -0.05099135761336755,
+        -0.11558815340804623
+      ],
+      [
+        -0.05223660928691822,
+        -0.1137366906289411
+      ],
+      [
+        -0.07254426571511496,
+        -0.10291045272351079
+      ],
+      [
+        -0.07262900271677306,
+        -0.10285413741733936
+      ],
+      [
+        -0.07380925555046372,
+        -0.10208040134754384
+      ],
+      [
+        -0.1755609828188799,
+        -0.08874646586070517
+      ],
+      [
+        -0.18561980889247856,
+        -0.026773036904968916
+      ],
+      [
+        -0.19912893721484604,
+        -0.026105132860255537
+      ],
+      [
+        -0.21759180487101487,
+        -0.01677989530635593
+      ],
+      [
+        -0.23110751522453488,
+        -0.013391086425022439
+      ],
+      [
+        -0.2540765665528509,
+        -0.010399327320118463
+      ],
+      [
+        -0.3436201705778553,
+        -0.009983449668557715
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.015423072524101774,
+        0.2506584152212455
+      ],
+      [
+        0.03969729861100278,
+        0.13590088248887608
+      ],
+      [
+        0.055940290429474335,
+        0.11937319058893409
+      ],
+      [
+        0.08185250935082428,
+        0.08484752499462027
+      ],
+      [
+        0.0825688885142073,
+        0.08374144814748882
+      ],
+      [
+        0.08460967651915113,
+        0.0803093953318408
+      ],
+      [
+        0.08945410139893616,
+        0.07943014717593044
+      ],
+      [
+        0.09639947064739054,
+        0.06541115842428681
+      ],
+      [
+        0.09744556561470563,
+        0.06463479738108727
+      ],
+      [
+        0.11434349686040188,
+        0.05184017201512231
+      ],
+      [
+        0.22368622870128693,
+        0.04447159429640611
+      ],
+      [
+        0.25123934886344446,
+        0.022506477938030383
+      ],
+      [
+        0.4239301348754535,
+        0.012712638840883923
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.015423072524101774,
+        -0.2506584152212455
+      ],
+      [
+        -0.03969729861100278,
+        -0.13590088248887608
+      ],
+      [
+        -0.055940290429474335,
+        -0.11937319058893409
+      ],
+      [
+        -0.08185250935082428,
+        -0.08484752499462027
+      ],
+      [
+        -0.0825688885142073,
+        -0.08374144814748882
+      ],
+      [
+        -0.08460967651915113,
+        -0.0803093953318408
+      ],
+      [
+        -0.08945410139893616,
+        -0.07943014717593044
+      ],
+      [
+        -0.09639947064739054,
+        -0.06541115842428681
+      ],
+      [
+        -0.09744556561470563,
+        -0.06463479738108727
+      ],
+      [
+        -0.11434349686040188,
+        -0.05184017201512231
+      ],
+      [
+        -0.22368622870128693,
+        -0.04447159429640611
+      ],
+      [
+        -0.25123934886344446,
+        -0.022506477938030383
+      ],
+      [
+        -0.4239301348754535,
+        -0.012712638840883923
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.00853675239369718,
+        0.3140542068242199
+      ],
+      [
+        0.03785884112513294,
+        0.16030591185601323
+      ],
+      [
+        0.07272925317113287,
+        0.08794008395149643
+      ],
+      [
+        0.09197877985018885,
+        0.0688577349314115
+      ],
+      [
+        0.10757693672345403,
+        0.05969760272057868
+      ],
+      [
+        0.1082106106930617,
+        0.057159209235561795
+      ],
+      [
+        0.11351189524583141,
+        0.05414843669393864
+      ],
+      [
+        0.13947764728109413,
+        0.04400420393824424
+      ],
+      [
+        0.17681903527840084,
+        0.03810588288016828
+      ],
+      [
+        0.3050011451625978,
+        0.0014015156797882904
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.00853675239369718,
+        -0.3140542068242199
+      ],
+      [
+        -0.03785884112513294,
+        -0.16030591185601323
+      ],
+      [
+        -0.07272925317113287,
+        -0.08794008395149643
+      ],
+      [
+        -0.09197877985018885,
+        -0.0688577349314115
+      ],
+      [
+        -0.10757693672345403,
+        -0.05969760272057868
+      ],
+      [
+        -0.1082106106930617,
+        -0.057159209235561795
+      ],
+      [
+        -0.11351189524583141,
+        -0.05414843669393864
+      ],
+      [
+        -0.13947764728109413,
+        -0.04400420393824424
+      ],
+      [
+        -0.17681903527840084,
+        -0.03810588288016828
+      ],
+      [
+        -0.3050011451625978,
+        -0.0014015156797882904
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0012993113500531248,
+        0.3390878075644993
+      ],
+      [
+        0.0021692756900841027,
+        0.3239924228065799
+      ],
+      [
+        0.013707320844545415,
+        0.2119853526776085
+      ],
+      [
+        0.01764242173505728,
+        0.1874369604852062
+      ],
+      [
+        0.022522714245835636,
+        0.1733805553277374
+      ],
+      [
+        0.037953307743275544,
+        0.13863386016491683
+      ],
+      [
+        0.20113936923617737,
+        0.07095922997308389
+      ],
+      [
+        0.21759180487101487,
+        0.01677989530635593
+      ],
+      [
+        0.23330486826401897,
+        0.010512497149987516
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "RVEA",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 48,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0012993113500531248,
+        -0.3390878075644993
+      ],
+      [
+        -0.0021692756900841027,
+        -0.3239924228065799
+      ],
+      [
+        -0.013707320844545415,
+        -0.2119853526776085
+      ],
+      [
+        -0.01764242173505728,
+        -0.1874369604852062
+      ],
+      [
+        -0.022522714245835636,
+        -0.1733805553277374
+      ],
+      [
+        -0.037953307743275544,
+        -0.13863386016491683
+      ],
+      [
+        -0.20113936923617737,
+        -0.07095922997308389
+      ],
+      [
+        -0.21759180487101487,
+        -0.01677989530635593
+      ],
+      [
+        -0.23330486826401897,
+        -0.010512497149987516
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010897928718504594,
+    "returned": [
+      [
+        0.00010897928718504594
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010897928718504594,
+    "returned": [
+      [
+        -0.00010897928718504594
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.005883381049985937,
+    "returned": [
+      [
+        0.005883381049985937
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.005883381049985937,
+    "returned": [
+      [
+        -0.005883381049985937
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0026589802985811854,
+    "returned": [
+      [
+        0.0026589802985811854
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "EGO",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0026589802985811854,
+    "returned": [
+      [
+        -0.0026589802985811854
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010897928718504594,
+    "returned": [
+      [
+        0.00010897928718504594
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.00010897928718504594,
+    "returned": [
+      [
+        -0.00010897928718504594
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.005883381049985937,
+    "returned": [
+      [
+        0.005883381049985937
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.005883381049985937,
+    "returned": [
+      [
+        -0.005883381049985937
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0026589802985811854,
+    "returned": [
+      [
+        0.0026589802985811854
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "ASMO",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 9,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": 0.0026589802985811854,
+    "returned": [
+      [
+        -0.0026589802985811854
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 7,
+    "direction": "min",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.00504468385639518,
+        0.3951603028271289
+      ],
+      [
+        0.0254223237883895,
+        0.21447516895758245
+      ],
+      [
+        0.0981687370915722,
+        0.08386435430003537
+      ],
+      [
+        0.21626991584145816,
+        0.013290463759200514
+      ],
+      [
+        0.4210949074612349,
+        0.010412331822713311
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 7,
+    "direction": "max",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.00504468385639518,
+        -0.3951603028271289
+      ],
+      [
+        -0.0254223237883895,
+        -0.21447516895758245
+      ],
+      [
+        -0.0981687370915722,
+        -0.08386435430003537
+      ],
+      [
+        -0.21626991584145816,
+        -0.013290463759200514
+      ],
+      [
+        -0.4210949074612349,
+        -0.010412331822713311
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 19,
+    "direction": "min",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.0009240294214021829,
+        0.33000484936578023
+      ],
+      [
+        0.046203849290450155,
+        0.21458375417025377
+      ],
+      [
+        0.061022116253383586,
+        0.10177660596513842
+      ],
+      [
+        0.32556629768548595,
+        0.0002760600829647566
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 19,
+    "direction": "max",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.0009240294214021829,
+        -0.33000484936578023
+      ],
+      [
+        -0.046203849290450155,
+        -0.21458375417025377
+      ],
+      [
+        -0.061022116253383586,
+        -0.10177660596513842
+      ],
+      [
+        -0.32556629768548595,
+        -0.0002760600829647566
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 31,
+    "direction": "min",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        0.015258942614044733,
+        0.2045505956699143
+      ],
+      [
+        0.019671250224815102,
+        0.19738888231447355
+      ],
+      [
+        0.05513497567917661,
+        0.11634945729200691
+      ],
+      [
+        0.1389012881891784,
+        0.05846395981136215
+      ],
+      [
+        0.26017481055192015,
+        0.02723859711579977
+      ],
+      [
+        0.43641080874234306,
+        0.022275869406698144
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "public_run",
+    "method": "MOASMO",
+    "seed": 31,
+    "direction": "max",
+    "evaluations": 14,
+    "iterations": 3,
+    "passed": true,
+    "best_seen": null,
+    "returned": [
+      [
+        -0.015258942614044733,
+        -0.2045505956699143
+      ],
+      [
+        -0.019671250224815102,
+        -0.19738888231447355
+      ],
+      [
+        -0.05513497567917661,
+        -0.11634945729200691
+      ],
+      [
+        -0.1389012881891784,
+        -0.05846395981136215
+      ],
+      [
+        -0.26017481055192015,
+        -0.02723859711579977
+      ],
+      [
+        -0.43641080874234306,
+        -0.022275869406698144
+      ]
+    ],
+    "warnings": []
+  },
+  {
+    "kind": "sce_simplex_order",
+    "method": "SCE_UA",
+    "seed": 19,
+    "calls": 30,
+    "wrong_worst_count": 0,
+    "examples": [],
+    "passed": true
+  },
+  {
+    "kind": "sce_simplex_order",
+    "method": "ML_SCE_UA",
+    "seed": 19,
+    "calls": 30,
+    "wrong_worst_count": 0,
+    "examples": [],
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 0,
+    "before": 0.6,
+    "after": 0.4163894095744778,
+    "improved": true,
+    "failure_count": 0.0,
+    "abandoned_after_next_failure": false,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 1,
+    "before": 0.6,
+    "after": 0.5623662904020971,
+    "improved": true,
+    "failure_count": 0.0,
+    "abandoned_after_next_failure": false,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 2,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 3,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 4,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 5,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 6,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 7,
+    "before": 0.6,
+    "after": 0.5450414379981183,
+    "improved": true,
+    "failure_count": 0.0,
+    "abandoned_after_next_failure": false,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 8,
+    "before": 0.6,
+    "after": 0.5637421676971033,
+    "improved": true,
+    "failure_count": 0.0,
+    "abandoned_after_next_failure": false,
+    "passed": true
+  },
+  {
+    "kind": "abc_counter",
+    "seed": 9,
+    "before": 0.6,
+    "after": 0.6,
+    "improved": false,
+    "failure_count": 7.0,
+    "abandoned_after_next_failure": true,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "GD",
+    "scale": 1.0,
+    "actual": "1.4142135623730951",
+    "expected": 1.4142135623730951,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "IGD",
+    "scale": 1.0,
+    "actual": "1.4142135623730951",
+    "expected": 1.4142135623730951,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "GD",
+    "scale": 1e-200,
+    "actual": "1.414213562373095e-200",
+    "expected": 1.414213562373095e-200,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "IGD",
+    "scale": 1e-200,
+    "actual": "1.414213562373095e-200",
+    "expected": 1.414213562373095e-200,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "GD",
+    "scale": 1e+200,
+    "actual": "1.414213562373095e+200",
+    "expected": 1.414213562373095e+200,
+    "passed": true
+  },
+  {
+    "kind": "distance_scale",
+    "metric": "IGD",
+    "scale": 1e+200,
+    "actual": "1.414213562373095e+200",
+    "expected": 1.414213562373095e+200,
+    "passed": true
+  },
+  {
+    "kind": "rvea_common_scale",
+    "scale": 1.0,
+    "baseline": [
+      4,
+      2,
+      0
+    ],
+    "actual": [
+      4,
+      2,
+      0
+    ],
+    "passed": true,
+    "warnings": []
+  },
+  {
+    "kind": "rvea_common_scale",
+    "scale": 1e-200,
+    "baseline": [
+      4,
+      2,
+      0
+    ],
+    "actual": [
+      4,
+      2,
+      0
+    ],
+    "passed": true,
+    "warnings": []
+  },
+  {
+    "kind": "rvea_common_scale",
+    "scale": 1e+200,
+    "baseline": [
+      4,
+      2,
+      0
+    ],
+    "actual": [
+      4,
+      2,
+      0
+    ],
+    "passed": true,
+    "warnings": []
+  },
+  {
+    "kind": "crowding_scale",
+    "baseline": [
+      Infinity,
+      1.0,
+      1.0,
+      1.0,
+      Infinity
+    ],
+    "actual": [
+      Infinity,
+      1.0,
+      1.0,
+      1.0,
+      Infinity
+    ],
+    "passed": true,
+    "warnings": []
+  }
+]

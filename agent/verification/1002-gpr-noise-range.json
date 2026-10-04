@@ -1,0 +1,482 @@
+[
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9999999999999953,
+    "rmse": 4.8465696731398015e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9999999999999953,
+    "rmse": 4.8465696731398015e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9999999999999987,
+    "rmse": 2.5996520989265125e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9999999999999981,
+    "rmse": 3.093208993473779e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.9999999999999946,
+    "rmse": 5.209823280070997e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9999999999999946,
+    "rmse": 5.209823280070997e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9927781102608534,
+    "rmse": 0.06008380223684269,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.322265625
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9997646733660397,
+    "rmse": 0.010845948118278943,
+    "fitted_noise_variance": 0.0010261295710223821,
+    "latent_coverage_95": 0.962158203125
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9947837082271863,
+    "rmse": 0.05106377514481302,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.322998046875
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9999362243952161,
+    "rmse": 0.005646239215966319,
+    "fitted_noise_variance": 0.0007642591782566051,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.9941356283021613,
+    "rmse": 0.05414305110753896,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.134033203125
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.03,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9998100507998502,
+    "rmse": 0.009744301561256571,
+    "fitted_noise_variance": 0.0008705058879852118,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9507340280112235,
+    "rmse": 0.15692983171402425,
+    "fitted_noise_variance": 1.004687614224826e-12,
+    "latent_coverage_95": 0.41259765625
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9978049672015429,
+    "rmse": 0.03312474076711986,
+    "fitted_noise_variance": 0.011688722313415485,
+    "latent_coverage_95": 0.974853515625
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9481587125530369,
+    "rmse": 0.16097923916245388,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.424560546875
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9995055245561816,
+    "rmse": 0.015721875242390035,
+    "fitted_noise_variance": 0.008437912674860134,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.9484004347904892,
+    "rmse": 0.16060349880904026,
+    "fitted_noise_variance": 1.009398800142233e-12,
+    "latent_coverage_95": 0.240966796875
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.1,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9977179461990283,
+    "rmse": 0.033774966017232566,
+    "fitted_noise_variance": 0.00984475160707085,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.6946018223889712,
+    "rmse": 0.3907196037499738,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.573974609375
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9826084511459829,
+    "rmse": 0.09323975244071107,
+    "fitted_noise_variance": 0.1031842847013668,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.6321250945175638,
+    "rmse": 0.4288269419434196,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.60986328125
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9961530730182228,
+    "rmse": 0.04385195429293669,
+    "fitted_noise_variance": 0.07888462866466991,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.6268423682750124,
+    "rmse": 0.43189496916933096,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.42333984375
+  },
+  {
+    "n_train": 64,
+    "noise_std": 0.3,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9804212038538026,
+    "rmse": 0.09892930851539776,
+    "fitted_noise_variance": 0.0894099881970201,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9999999999999998,
+    "rmse": 1.1557877874995042e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9999999999999998,
+    "rmse": 1.1557877874995042e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9999999999999997,
+    "rmse": 1.2204566731896971e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9999999999999997,
+    "rmse": 1.2204566731896971e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.9999999999999998,
+    "rmse": 1.1318961338011918e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9999999999999998,
+    "rmse": 1.1318961338011918e-08,
+    "fitted_noise_variance": 1.000000000000001e-12,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9972912534916992,
+    "rmse": 0.03679731779107894,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.06103515625
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9999797693455416,
+    "rmse": 0.0031800719593897864,
+    "fitted_noise_variance": 0.0009974806260818483,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9917497308267943,
+    "rmse": 0.06421936992579927,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.052734375
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9999611433708364,
+    "rmse": 0.004407218095459585,
+    "fitted_noise_variance": 0.0008602528782729613,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.997269114312264,
+    "rmse": 0.036947388051101905,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.0517578125
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.03,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9999660590673807,
+    "rmse": 0.004119019680628863,
+    "fitted_noise_variance": 0.0009653728665659361,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.9698906258652648,
+    "rmse": 0.12268256439550727,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.017578125
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9997363009847633,
+    "rmse": 0.011481172318067535,
+    "fitted_noise_variance": 0.010912188104556157,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.9082727116083009,
+    "rmse": 0.21413184493925883,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.015869140625
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9995415869954614,
+    "rmse": 0.015137719235427128,
+    "fitted_noise_variance": 0.009675715285487269,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.9696343090172863,
+    "rmse": 0.12320364743776574,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.017333984375
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.1,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9997470971916448,
+    "rmse": 0.01124368855192846,
+    "fitted_noise_variance": 0.010543854273497142,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 11,
+    "configuration": "old",
+    "r2": 0.7289842200127974,
+    "rmse": 0.36806902479378223,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.005615234375
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 11,
+    "configuration": "default",
+    "r2": 0.9971289859076526,
+    "rmse": 0.037883460514929815,
+    "fitted_noise_variance": 0.09954991155637395,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 23,
+    "configuration": "old",
+    "r2": 0.1743059353230545,
+    "rmse": 0.6424532976068908,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.00537109375
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 23,
+    "configuration": "default",
+    "r2": 0.9959879584793943,
+    "rmse": 0.044783155417419104,
+    "fitted_noise_variance": 0.08665647553758068,
+    "latent_coverage_95": 1.0
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 47,
+    "configuration": "old",
+    "r2": 0.7266507808353403,
+    "rmse": 0.3696501613116445,
+    "fitted_noise_variance": 1.0000000000000004e-06,
+    "latent_coverage_95": 0.005126953125
+  },
+  {
+    "n_train": 192,
+    "noise_std": 0.3,
+    "seed": 47,
+    "configuration": "default",
+    "r2": 0.9984709879163505,
+    "rmse": 0.027646326968367444,
+    "fitted_noise_variance": 0.09604587927829401,
+    "latent_coverage_95": 1.0
+  }
+]

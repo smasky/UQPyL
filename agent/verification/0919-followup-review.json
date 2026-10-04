@@ -1,0 +1,37 @@
+{
+  "autotuner_empty_grid_corrupts_previous_fit": {
+    "error": "paraGrid must contain at least one candidate per parameter.",
+    "prediction_delta": 0.9738476301530106,
+    "state_keys": [
+      "L",
+      "alpha",
+      "objective"
+    ]
+  },
+  "duplicate_multisurrogate_instance": {
+    "outputs_identical": true,
+    "first_output_max_error": 1.3821529995791906
+  },
+  "mars_derivative_after_failed_fit": {
+    "fit_error": "The shapes of x and y are not consistent. Please check them!",
+    "predict_after_failure": "rejected",
+    "derivative_still_returns_old_values": true
+  },
+  "mars_derivative_scaling": {
+    "derivative_api": [
+      1.0,
+      1.0
+    ],
+    "finite_difference_of_predict": [
+      2.9999999999930083,
+      2.9999999999930083
+    ]
+  },
+  "mars_score_samples_call": {
+    "error": "MARS.predict() got an unexpected keyword argument 'missing'"
+  },
+  "unrecognized_grid_key": {
+    "returned_parameter": null,
+    "score": 0.8846846176383327
+  }
+}

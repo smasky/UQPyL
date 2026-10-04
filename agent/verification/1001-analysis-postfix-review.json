@@ -1,0 +1,1015 @@
+{
+  "rsa": [
+    {
+      "case": "region_budget",
+      "samples": 3,
+      "n_region": 2,
+      "region_counts": [
+        2,
+        1
+      ],
+      "usable_regions": 0,
+      "output_is_constant": false,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_budget",
+      "samples": 20,
+      "n_region": 20,
+      "region_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "usable_regions": 0,
+      "output_is_constant": false,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_budget",
+      "samples": 20,
+      "n_region": 2,
+      "region_counts": [
+        10,
+        10
+      ],
+      "usable_regions": 2,
+      "output_is_constant": false,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              1.6749999999999998
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_budget",
+      "samples": 40,
+      "n_region": 20,
+      "region_counts": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "usable_regions": 20,
+      "output_is_constant": false,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.3375000000000001
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_budget",
+      "samples": 80,
+      "n_region": 20,
+      "region_counts": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "usable_regions": 20,
+      "output_is_constant": false,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6687500000000002
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_configuration",
+      "n_region": 0,
+      "observed": {
+        "status": "error",
+        "exception_type": "IndexError",
+        "exception_message": "index 1 is out of bounds for axis 0 with size 1",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_configuration",
+      "n_region": 1,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_configuration",
+      "n_region": -1,
+      "observed": {
+        "status": "error",
+        "exception_type": "ValueError",
+        "exception_message": "negative dimensions are not allowed",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_configuration",
+      "n_region": 2.5,
+      "observed": {
+        "status": "error",
+        "exception_type": "TypeError",
+        "exception_message": "'float' object cannot be interpreted as an integer",
+        "warnings": []
+      }
+    },
+    {
+      "case": "region_configuration",
+      "n_region": true,
+      "observed": {
+        "status": "error",
+        "exception_type": "TypeError",
+        "exception_message": "an integer is required",
+        "warnings": []
+      }
+    }
+  ],
+  "sobol": [
+    {
+      "case": "complete_design",
+      "actual_base_samples": 128,
+      "meta": {
+        "designType": "saltelli",
+        "N": 128,
+        "secondOrder": true,
+        "skipValue": 0,
+        "scramble": true,
+        "blockSize": 6,
+        "seed": 17,
+        "output": "real"
+      },
+      "population_s1": [
+        0.2,
+        0.8
+      ],
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.20721715869518526,
+              0.8018215386176553
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.2053609631097627,
+              0.7946390368902373
+            ]
+          ],
+          "ST": [
+            [
+              0.19826353364708743,
+              0.7925430254369639
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.20010317032052316,
+              0.7998968296794767
+            ]
+          ],
+          "S2": [
+            [
+              -0.01790725009619587
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "one_complete_block_removed",
+      "actual_base_samples": 127,
+      "metadata_base_samples": 128,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.20329251111691765,
+              0.8056306522937031
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.20149454238883382,
+              0.7985054576111661
+            ]
+          ],
+          "ST": [
+            [
+              0.20081839941705296,
+              0.8047746785536337
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.19970145361611852,
+              0.8002985463838814
+            ]
+          ],
+          "S2": [
+            [
+              -0.004948223399729557
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "inconsistent_base_size",
+      "actual_base_samples": 128,
+      "metadata_base_samples": 1,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.20721715869518526,
+              0.8018215386176553
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.2053609631097627,
+              0.7946390368902373
+            ]
+          ],
+          "ST": [
+            [
+              0.19826353364708743,
+              0.7925430254369639
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.20010317032052316,
+              0.7998968296794767
+            ]
+          ],
+          "S2": [
+            [
+              -0.01790725009619587
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "inconsistent_order",
+      "actual_second_order": true,
+      "metadata_second_order": false,
+      "metadata_block_size": 6,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.06728840985851653,
+              0.506804099204643
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.11720830492688716,
+              0.882791695073113
+            ]
+          ],
+          "ST": [
+            [
+              0.337966990145487,
+              1.0778173351524452
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.23871361202870114,
+              0.7612863879712989
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    }
+  ],
+  "morris": [
+    {
+      "output_scale": 1.0,
+      "analytic_sigma": "2.121320343559642573202533086314547117855",
+      "sigma_representable": true,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688674e-17
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5
+            ]
+          ],
+          "sigma": [
+            [
+              2.121320343559643
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "output_scale": 1e+307,
+      "analytic_sigma": "2.121320343559642543569935977777660225401E+307",
+      "sigma_representable": true,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688675e+290
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5000000000000002e+307
+            ]
+          ],
+          "sigma": [
+            [
+              2.121320343559643e+307
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "output_scale": 1e+308,
+      "analytic_sigma": "2.121320343559642596492644116682350322915E+308",
+      "sigma_representable": false,
+      "expected": "Finite sigma or explicit range diagnosis.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              8.326672684688674e+291
+            ]
+          ],
+          "mu_star": [
+            [
+              1.5e+308
+            ]
+          ],
+          "sigma": [
+            [
+              "inf"
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in multiply"
+          }
+        ]
+      }
+    }
+  ],
+  "delta": [
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.5883788324340038,
+              -0.01962352337367127
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.967724593192401,
+              -0.032275406807599
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 0,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.5883788324340038,
+              -0.01962352337367127
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.967724593192401,
+              -0.032275406807599
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 0,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0,
+              0.14740444956957366
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 0,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_2"
+        ],
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6621423433777736,
+              -0.02452558909879895
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9642831885124682,
+              -0.03571681148753179
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 3,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6621423433777736,
+              -0.02452558909879895
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9642831885124682,
+              -0.03571681148753179
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 3,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0,
+              0.06881908742113718
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 3,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_2"
+        ],
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.7344149201009049,
+              -0.025171851242341097
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9668611247694223,
+              -0.03313887523057759
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 17,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.7344149201009049,
+              -0.025171851242341097
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9668611247694223,
+              -0.03313887523057759
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 17,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0,
+              -0.004012811648109403
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0,
+              -1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "DeltaTest output obj_1 has no positive sensitivity scores; the current samples provide no positive variable-importance evidence."
+          }
+        ]
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 17,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1.0,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6699034826102858,
+              -0.02191462605018959
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9683231390218716,
+              -0.03167686097812838
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 41,
+      "input_scale": 1.0,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_1"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1e+100,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.6699034826102858,
+              -0.02191462605018959
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.9683231390218716,
+              -0.03167686097812838
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "input_units",
+      "sampling_seed": 41,
+      "input_scale": 1e+308,
+      "active_input": 0,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.0,
+              0.06204145683202317
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    },
+    {
+      "case": "subset_selection",
+      "sampling_seed": 41,
+      "input_scale": 1e+308,
+      "expected_label": "x_1",
+      "observed": {
+        "status": "returned",
+        "selection": [
+          "x_2"
+        ],
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "overflow encountered in subtract"
+          }
+        ]
+      }
+    }
+  ]
+}

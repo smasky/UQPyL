@@ -15,10 +15,11 @@ from .result import OptHistory, OptResult
 
 
 class OptReader(BaseReader):
-    domain = 'optimization'
+    domain = "optimization"
     """
     Read optimization results from sqlite files.
     """
+
     @classmethod
     def list_runs(cls, result_dir):
         return super().list_runs(
@@ -26,14 +27,12 @@ class OptReader(BaseReader):
             run_columns="runId, algorithm, problem, status, finalFEs, finalIters, runtime, createdAt, finishedAt",
         )
 
-
-
-
-
     def get_run_summary(self):
         run = self.get_run()
         if run is None:
             raise ValueError("No run record found in sqlite database.")
+        snapshot = self.conn.execute("SELECT bestPayload FROM snapshot ORDER BY snapshotId DESC LIMIT 1").fetchone()
+        stopReason = None if snapshot is None else json.loads(snapshot[0]).get("stop_reason")
         return export_reader_summary(
             run_id=run["runId"],
             method=run["algorithm"],
@@ -48,6 +47,7 @@ class OptReader(BaseReader):
                 "status": run["status"],
                 "final_fes": run["finalFEs"],
                 "final_iters": run["finalIters"],
+                "stop_reason": stopReason,
             },
         )
 
@@ -59,18 +59,22 @@ class OptReader(BaseReader):
         cls = self._resolveAlgorithmClass(run["algorithm"])
         params = self.get_run_params()
         kwargs = self._parseAlgorithmParams(params)
-        missing = kwargs.pop('_unrestored_components', [])
-        for key in ('maxFEs', 'maxIters', 'verboseFreq', 'saveFreq'):
+        missing = kwargs.pop("_unrestored_components", [])
+        for key in ("maxFEs", "maxIters", "verboseFreq", "saveFreq"):
             kwargs.setdefault(key, run[key])
         accepted = inspect.signature(cls).parameters
         algorithm = cls(**{key: value for key, value in kwargs.items() if key in accepted})
-        for key in ('tolerate', 'maxTolerates', 'hvRefPoint'):
+        for key in algorithm._configAttributes:
             if key in kwargs and key not in accepted:
-                setattr(algorithm, key, kwargs[key])
-        unknown = set(kwargs) - set(accepted) - {'tolerate', 'maxTolerates', 'hvRefPoint'}
+                algorithm.set(key, kwargs[key])
+        unknown = set(kwargs) - set(accepted) - set(algorithm._configAttributes)
         if missing or unknown:
-            warnings.warn(f"Configuration restored; restore components/settings manually: {sorted(set(missing) | unknown)}. "
-                          "This does not resume optimizer state.", UserWarning, stacklevel=2)
+            warnings.warn(
+                f"Configuration restored; restore components/settings manually: {sorted(set(missing) | unknown)}. "
+                "This does not resume optimizer state.",
+                UserWarning,
+                stacklevel=2,
+            )
         return algorithm
 
     def load_problem(self):
@@ -125,40 +129,82 @@ class OptReader(BaseReader):
         if not snapshots:
             raise ValueError("No snapshot found in sqlite database.")
         # Final saves may repeat the last completed iteration.
-        snapshots = list({(row['iter'], row['fe']): row for row in snapshots}.values())
+        snapshots = list({(row["iter"], row["fe"]): row for row in snapshots}.values())
         history = OptHistory()
         for row in snapshots:
-            history.iterToFEs.append([row['iter'], row['fe']])
-            history.metrics.append(row['hypervolume'])
-            history.bestObjHistory.append(row['bestObj'])
-            history.bestMetricHistory.append(row['hypervolume'])
-            history.numBestHistory.append(row['paretoSize'])
-            population = self.load_population(row['snapshotId'])
-            best = self.load_best(row['snapshotId'])
-            candidates = self.load_candidates(row['snapshotId'])
-            payload = json.loads(self.conn.execute('SELECT bestPayload FROM snapshot WHERE snapshotId=?',
-                                                  (row['snapshotId'],)).fetchone()[0])
-            history.snapshotIterToFEs.append([row['iter'], row['fe']])
-            history.populations.append(dict(decs=population.decs, objs=population.objs,
-                                            cons=population.cons, constraint_weights=population.conWgt))
-            history.bests.append(dict(bestDecs=best.decs, bestObjs=best.objs, bestCons=best.cons,
-                                      bestFeasible=bool(payload['best_feasible']),
-                                      candidateDecs=candidates.decs if len(candidates) else None,
-                                      candidateObjs=candidates.objs if len(candidates) else None,
-                                      candidateCons=candidates.cons if len(candidates) else None,
-                                      minViolation=payload.get('min_violation')))
-            history.improvedHistory.append(payload.get('improved'))
+            history.iterToFEs.append([row["iter"], row["fe"]])
+            history.metrics.append(row["hypervolume"])
+            history.bestObjHistory.append(row["bestObj"])
+            history.bestMetricHistory.append(row["hypervolume"])
+            history.numBestHistory.append(row["paretoSize"])
+            population = self.load_population(row["snapshotId"])
+            best = self.load_best(row["snapshotId"])
+            candidates = self.load_candidates(row["snapshotId"])
+            payload = json.loads(
+                self.conn.execute(
+                    "SELECT bestPayload FROM snapshot WHERE snapshotId=?", (row["snapshotId"],)
+                ).fetchone()[0]
+            )
+            history.snapshotIterToFEs.append([row["iter"], row["fe"]])
+            history.populations.append(
+                dict(
+                    decs=population.decs,
+                    objs=population.objs,
+                    cons=population.cons,
+                    constraint_weights=population.conWgt,
+                )
+            )
+            history.bests.append(
+                dict(
+                    bestDecs=best.decs,
+                    bestObjs=best.objs,
+                    bestCons=best.cons,
+                    bestFeasible=bool(payload["best_feasible"]),
+                    candidateDecs=candidates.decs if len(candidates) else None,
+                    candidateObjs=candidates.objs if len(candidates) else None,
+                    candidateCons=candidates.cons if len(candidates) else None,
+                    minViolation=payload.get("min_violation"),
+                )
+            )
+            history.improvedHistory.append(payload.get("improved"))
         last = snapshots[-1]
+        run = self.get_run()
         return OptResult(
-            bestDecs=best.decs, bestObjs=best.objs, bestCons=best.cons,
-            bestMetric=last['hypervolume'], bestFeasible=bool(payload['best_feasible']),
-            appearFEs=payload.get('appear_fes'), appearIters=payload.get('appear_iters'),
-            FEs=last['fe'], iters=last['iter'], runtime=last['elapsed'], history=history,
+            stopReason=payload.get("stop_reason"),
+            runId=run["runId"],
+            method=run["algorithm"],
+            problemName=run["problem"],
+            nInput=run["nInput"],
+            nOutput=run["nObj"],
+            nCon=run["nCon"],
+            createdAt=run["createdAt"],
+            bestDecs=best.decs,
+            bestObjs=best.objs,
+            bestCons=best.cons,
+            bestMetric=last["hypervolume"],
+            bestFeasible=bool(payload["best_feasible"]),
+            appearFEs=payload.get("appear_fes"),
+            appearIters=payload.get("appear_iters"),
+            FEs=last["fe"],
+            iters=last["iter"],
+            runtime=last["elapsed"],
+            history=history,
             candidateDecs=candidates.decs if len(candidates) else None,
             candidateObjs=candidates.objs if len(candidates) else None,
             candidateCons=candidates.cons if len(candidates) else None,
-            minViolation=payload.get('min_violation'),
-            extra={key: payload.get(key) for key in ('constraint_weights', 'hv_reference_point')},
+            minViolation=payload.get("min_violation"),
+            extra={
+                key: payload.get(key)
+                for key in (
+                    "constraint_weights",
+                    "hv_reference_point",
+                    "hv_normalized",
+                    "hv_enabled",
+                    "hv_freq",
+                    "hv_samples",
+                    "delta_selection",
+                )
+            },
         )
 
     def _getLastSnapshotId(self):
@@ -178,15 +224,19 @@ class OptReader(BaseReader):
             (snapshotId, role),
         ).fetchall()
         if not rows:
-            snapshot = self.conn.execute("SELECT bestPayload FROM snapshot WHERE snapshotId = ?",
-                                         (snapshotId,)).fetchone()
+            snapshot = self.conn.execute(
+                "SELECT bestPayload FROM snapshot WHERE snapshotId = ?", (snapshotId,)
+            ).fetchone()
             if snapshot is None or role not in ("pareto", "candidate"):
                 raise ValueError(f"No role={role!r} rows found for snapshotId={snapshotId}")
             payload = json.loads(snapshot[0]) if snapshot[0] else {}
             run = self.get_run()
-            return Population(np.empty((0, run["nInput"])), np.empty((0, run["nObj"])),
-                              np.empty((0, run["nCon"])) if run["nCon"] else None,
-                              payload.get("constraint_weights"))
+            return Population(
+                np.empty((0, run["nInput"])),
+                np.empty((0, run["nObj"])),
+                np.empty((0, run["nCon"])) if run["nCon"] else None,
+                payload.get("constraint_weights"),
+            )
 
         decs = []
         objs = []

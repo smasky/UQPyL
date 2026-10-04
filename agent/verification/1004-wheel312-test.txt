@@ -1,0 +1,286 @@
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Processing /home/wmtsky/projects/UQPyL/.cache/1004-wheel312/uqpyl-2.1.6-cp312-cp312-linux_x86_64.whl
+Collecting pytest
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/24/25/1de2678b631f5a49215c6c96fff41ba892b0a34df68d6d80292b1b48aa7f/pytest-9.1.1-py3-none-any.whl (386 kB)
+Collecting pytest-cov
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/9d/7a/d968e294073affff457b041c2be9868a40c1c71f4a35fcc1e45e5493067b/pytest_cov-7.1.0-py3-none-any.whl (22 kB)
+Collecting numpy>=1.26 (from uqpyl==2.1.6)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/65/af/aa78d1a88805456e212b65461354cd943197fb9acecc4c90fd12295123a3/numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+Collecting scipy (from uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/df/64/ff35eb9e54894cf471ff4716abd3c81eb0a0626869217ce3e6ba4ccf17d7/scipy-1.18.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.3/35.3 MB 9.7 MB/s eta 0:00:00
+Collecting matplotlib (from uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/b8/90/2b3fd67ee273163faeda6d514be70b5596eaa0fd77b60ffc294ad0b34f5f/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (9.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 8.8 MB/s eta 0:00:00
+Collecting seaborn (from uqpyl==2.1.6)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/83/11/00d3c3dfc25ad54e731d91449895a79e4bf2384dc3ac01809010ba88f6d5/seaborn-0.13.2-py3-none-any.whl (294 kB)
+Collecting iniconfig>=1.0.1 (from pytest)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/cb/b1/3846dd7f199d53cb17f49cba7e651e9ce294d8497c8c150530ed11865bb8/iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Collecting packaging>=22 (from pytest)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/63/34/ba1c580383c9eada3711951fef0795c80b829a078d72188184bcab9dd527/packaging-26.3-py3-none-any.whl (129 kB)
+Collecting pluggy<2,>=1.5 (from pytest)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl (20 kB)
+Collecting pygments>=2.7.2 (from pytest)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl (1.3 MB)
+Collecting coverage[toml]>=7.10.6 (from pytest-cov)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/d1/36/6c45f15be4eca4ac1062c6a55a323286494c99726a7e58951fe85967ac08/coverage-7.16.2-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (258 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 258.6/258.6 kB 5.5 MB/s eta 0:00:00
+Collecting contourpy>=1.0.1 (from matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/78/f9/b6831508960d559581c448532ba4df312217072975486dbf2b24fcc5b76f/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (383 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 383.2/383.2 kB 6.2 MB/s eta 0:00:00
+Collecting cycler>=0.10 (from matplotlib->uqpyl==2.1.6)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Collecting fonttools>=4.28.2 (from matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/a6/6e/babde908b879a3b51ffc230919d06a804912559dd4cf8c94f3fa2af69fec/fonttools-4.66.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.4/5.4 MB 10.6 MB/s eta 0:00:00
+Collecting kiwisolver>=1.3.1 (from matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/fc/f4/dadfec469313c7f428efa7e84b4aba9732f813c13ea7131a24b7b008ef57/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 9.6 MB/s eta 0:00:00
+Collecting pillow>=9 (from matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/84/21/a35af28dcc61f37ed850a2d64c65c701321dfbf25085e469d5559360cbbf/pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.9/6.9 MB 7.4 MB/s eta 0:00:00
+Collecting pyparsing>=3 (from matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/38/bb/d215ee7c73b61497b28a5503f9f53523f294fcc936762b7caf90e0c1c2b5/pyparsing-3.3.3-py3-none-any.whl (126 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.4/126.4 kB 4.1 MB/s eta 0:00:00
+Collecting python-dateutil>=2.7 (from matplotlib->uqpyl==2.1.6)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Collecting pandas>=1.2 (from seaborn->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/cb/67/0c0f18e38d7f2d2af8c24b3315bc4046e73bbdd4a5540405506671ad0c0d/pandas-3.0.6-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (10.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.8/10.8 MB 10.8 MB/s eta 0:00:00
+Collecting six>=1.5 (from python-dateutil>=2.7->matplotlib->uqpyl==2.1.6)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: six, pyparsing, pygments, pluggy, pillow, packaging, numpy, kiwisolver, iniconfig, fonttools, cycler, coverage, scipy, python-dateutil, pytest, contourpy, uqpyl, pytest-cov, pandas, matplotlib, seaborn
+Successfully installed contourpy-1.4.0 coverage-7.16.2 cycler-0.12.1 fonttools-4.66.1 iniconfig-2.3.0 kiwisolver-1.5.1 matplotlib-3.11.2 numpy-2.5.3 packaging-26.3 pandas-3.0.6 pillow-12.3.0 pluggy-1.6.0 pygments-2.21.0 pyparsing-3.3.3 pytest-9.1.1 pytest-cov-7.1.0 python-dateutil-2.9.0.post0 scipy-1.18.1 seaborn-0.13.2 six-1.17.0 uqpyl-2.1.6
+
+[notice] A new release of pip is available: 23.2.1 -> 26.2.1
+[notice] To update, run: /tmp/uqpyl-wheel-test-5q_htr73/venv/bin/python -m pip install --upgrade pip
+No broken requirements found.
+Installed package: /tmp/uqpyl-wheel-test-5q_htr73/venv/lib/python3.12/site-packages/UQPyL/__init__.py
+All 10 native extensions imported successfully.
+........................................................................ [  2%]
+........................................................................ [  4%]
+........................................................................ [  7%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 16%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 23%]
+........................................................................ [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 46%]
+........................................................................ [ 49%]
+........................................................................ [ 51%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 77%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+............................................................             [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.0-final-0 ________________
+
+Name                                                                                       Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------------------------------------------------------------------------
+venv/lib/python3.12/site-packages/UQPyL/__init__.py                                           16      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/analysis/__init__.py                                   8      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/analysis/base.py                                     133      6     46      6    93%   120, 157, 221, 245, 260, 264
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/__init__.py                          13      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/_variance.py                         55      2     16      2    94%   70, 79
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/delta.py                            201     10     66     11    92%   111, 172, 176, 259, 263, 339, 341, 357, 374, 380, 423->428
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/fast.py                              68      2     24      2    96%   46, 101
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/mars.py                             106      3     38      3    96%   146, 185, 228
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/morris.py                            97      8     36      8    88%   61, 86, 100, 107, 138, 144, 148, 156
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/rbd_fast.py                          62      0     20      0   100%
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/rsa.py                               82      1     22      1    98%   80
+venv/lib/python3.12/site-packages/UQPyL/analysis/methods/sobol.py                            170     11     80     11    91%   49, 79, 126, 128, 155, 160, 205, 211, 213, 264, 270
+venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/__init__.py                           5      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/reader.py                            44      6      8      2    81%   25, 82-85, 90
+venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/result.py                            74      1      2      1    97%   59
+venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/storage.py                           28      2      4      0    94%   20-21
+venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/verbose.py                          117     12     40     11    83%   26-29, 39-41, 64->66, 66->69, 82->84, 105, 121, 122->exit, 128, 132->exit, 139, 150
+venv/lib/python3.12/site-packages/UQPyL/calibration/__init__.py                                5      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/calibration/base.py                                  118      4     20      3    95%   84, 105, 205, 210
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/__init__.py                        5      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/_ensemble.py                      89      8     32      8    87%   8, 24, 44, 48, 72, 78, 88, 109
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/_uncertainty.py                   23      0      8      0   100%
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/es.py                             71      4     20      4    91%   54, 108, 114, 124
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/glue.py                           46      2     12      2    93%   65, 67
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/ies.py                           172     11     46      7    91%   95, 97, 99, 105, 189-192, 197, 246, 287
+venv/lib/python3.12/site-packages/UQPyL/calibration/methods/sufi2.py                         159      4     52      5    96%   104, 114, 134, 154->156, 275
+venv/lib/python3.12/site-packages/UQPyL/calibration/reader.py                                 32      8      6      2    68%   21, 58-65, 68-71, 79
+venv/lib/python3.12/site-packages/UQPyL/calibration/runtime.py                               161      7     32      4    93%   157->159, 242-244, 255, 260, 269-270
+venv/lib/python3.12/site-packages/UQPyL/calibration/util.py                                  152      5     48      5    95%   132, 165, 170, 189, 237
+venv/lib/python3.12/site-packages/UQPyL/core/__init__.py                                       4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/core/config.py                                        40      3     14      3    89%   24, 27, 33
+venv/lib/python3.12/site-packages/UQPyL/core/parameter_store.py                               16      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/core/params.py                                        11      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/core/runtime.py                                       52      0      8      1    98%   75->77
+venv/lib/python3.12/site-packages/UQPyL/core/runtime_lifecycle.py                             51      5     16      1    91%   13-17
+venv/lib/python3.12/site-packages/UQPyL/core/runtime_reader.py                                62      2     20      3    94%   32->exit, 49, 54
+venv/lib/python3.12/site-packages/UQPyL/core/runtime_session.py                               17      2      0      0    88%   18, 22
+venv/lib/python3.12/site-packages/UQPyL/core/runtime_storage.py                               85      5     20      5    90%   24, 33->38, 37, 87->exit, 94, 106, 109
+venv/lib/python3.12/site-packages/UQPyL/doe/__init__.py                                        3      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/doe/base.py                                           58      5     18      5    87%   89, 92, 138, 142, 145
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/__init__.py                                8      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/_sobol.py                                 11      0      8      0   100%
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/fast.py                                   46      5     14      5    83%   60, 63, 85, 90, 101
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/full_fact.py                              36      2     10      2    91%   43, 103
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/lhs.py                                    89      1     30      1    98%   145
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/morris.py                                 42      3      8      3    88%   57, 60, 63
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/random.py                                 12      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/saltelli.py                               56      0     12      0   100%
+venv/lib/python3.12/site-packages/UQPyL/doe/methods/sobol.py                                  28      0      4      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/__init__.py                                  7      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/base.py                                    260     10     90      8    95%   91, 173, 205, 255, 315, 323, 324->326, 379, 382, 464-465
+venv/lib/python3.12/site-packages/UQPyL/inference/chain.py                                    23      0      4      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/diagnostics.py                             106      3     44      3    96%   42, 68, 109
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/__init__.py                          6      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/amh.py                             100      0     36      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/demc.py                             56      0     16      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/dream_zs.py                        178      6     68      6    95%   132, 251->258, 307-309, 329, 336, 355->359
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/mh.py                               57      1     22      1    97%   172
+venv/lib/python3.12/site-packages/UQPyL/inference/methods/mh_gibbs.py                         63      1     22      1    98%   181
+venv/lib/python3.12/site-packages/UQPyL/inference/runtime/__init__.py                          5      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/inference/runtime/reader.py                           45      6     10      2    82%   24, 46-49, 88
+venv/lib/python3.12/site-packages/UQPyL/inference/runtime/result.py                          204      5     36      6    95%   157->159, 209, 215, 221, 227, 305
+venv/lib/python3.12/site-packages/UQPyL/inference/runtime/storage.py                          41      3      6      1    91%   14-15, 111
+venv/lib/python3.12/site-packages/UQPyL/inference/runtime/verbose.py                         186     20     48     16    84%   161-163, 169, 185-186, 189->exit, 201-203, 270, 282, 284, 290, 296, 302, 310, 322, 327, 333, 339
+venv/lib/python3.12/site-packages/UQPyL/optimization/__init__.py                               7      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/base.py                                 266      3    112      3    98%   256, 355, 367->370, 374
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/__init__.py                          6      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/constraint.py                       83      9     40      5    87%   9, 14, 35-38, 85, 87, 115
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/crowding_distance.py                46      3     20      3    91%   22, 44, 48
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/ga_operator.py                      65      1      8      1    97%   12
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/non_dominated_sort.py               49      2     26      2    95%   13, 65
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/numerical.py                        31      2      6      2    89%   16, 34
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/tournament.py                       17      0      6      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/core/uniform_point.py                    43      2     18      2    93%   27, 64
+venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/__init__.py                     4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/_base.py                       57      5     34      7    87%   18, 23, 50, 59, 61, 71->74, 72->71
+venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/asmo.py                        48      0     10      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/ego.py                         46      0      4      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/moasmo.py                      90      1     26      1    98%   114
+venv/lib/python3.12/site-packages/UQPyL/optimization/metric/__init__.py                        3      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/metric/_distance.py                      43      2     14      2    93%   13, 15
+venv/lib/python3.12/site-packages/UQPyL/optimization/metric/gd.py                              3      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/metric/hv.py                            146      4     72      8    94%   17, 26, 28, 91->88, 98, 132->135, 140->143, 163->160
+venv/lib/python3.12/site-packages/UQPyL/optimization/metric/igd.py                             3      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/moea/__init__.py                          4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/moea/moea_d.py                           78      1     16      1    98%   122
+venv/lib/python3.12/site-packages/UQPyL/optimization/moea/nsga_ii.py                          53      1      6      2    95%   181, 184->190
+venv/lib/python3.12/site-packages/UQPyL/optimization/moea/nsga_iii.py                         93      1     14      1    98%   262
+venv/lib/python3.12/site-packages/UQPyL/optimization/moea/rvea.py                             89      4     18      3    93%   112, 181-183, 231->228
+venv/lib/python3.12/site-packages/UQPyL/optimization/population.py                           171      7     52     14    91%   38, 42, 44, 48, 50, 64, 68->73, 110->112, 113->115, 123->125, 129->131, 132->134, 155, 177->183
+venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/__init__.py                       4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/reader.py                       158      8     46      8    92%   33, 57, 83, 130, 213, 231, 254, 303
+venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/result.py                       271      3     80      8    97%   136, 185, 197, 212->219, 277->exit, 282->exit, 322->321, 325->327
+venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/storage.py                       69      2     24      4    94%   24-25, 70->74, 82->84, 132->135, 135->139
+venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/verbose.py                      243     42     56     16    81%   98, 108-122, 125-136, 157-170, 183, 199-201, 205, 212-215, 225-226, 229->exit, 242->244, 247, 286, 326, 334-339, 344, 358, 366, 370, 376, 380, 392
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/__init__.py                          7      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/abc.py                             119      1     18      1    99%   103
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/csa.py                              72      4      4      0    92%   230-234
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/de.py                               41      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/ga.py                               36      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/ml_sce_ua.py                        78      3     20      3    94%   117, 125, 127
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/pso.py                              51      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/optimization/soea/sce_ua.py                           74      2     20      2    96%   114, 122
+venv/lib/python3.12/site-packages/UQPyL/problem/__init__.py                                   17      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/base.py                                      136     13     58      9    88%   68, 121, 133, 147, 155, 158-160, 163, 165, 170, 208, 213
+venv/lib/python3.12/site-packages/UQPyL/problem/decorators.py                                 10      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/eval.py                                       30      4      8      1    87%   16, 30, 34, 38
+venv/lib/python3.12/site-packages/UQPyL/problem/evaluator.py                                  14      0      4      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/evaluator_base.py                             21      2      8      0    93%   7, 13
+venv/lib/python3.12/site-packages/UQPyL/problem/model_evaluator.py                            15      0      4      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/model_problem.py                             161     21     84     16    83%   69->72, 116, 118, 130, 136-141, 146, 160, 181, 186, 197, 204, 208, 213, 240, 243, 245, 250
+venv/lib/python3.12/site-packages/UQPyL/problem/mop/DTLZ.py                                  213      1     32      8    96%   110->exit, 202->exit, 252, 301->exit, 396->exit, 497->exit, 597->exit, 707->exit
+venv/lib/python3.12/site-packages/UQPyL/problem/mop/ZDT.py                                   117      0     10      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/mop/__init__.py                                2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/problem.py                                    65      8     34      4    86%   110, 128-132, 142, 144, 146
+venv/lib/python3.12/site-packages/UQPyL/problem/simulator_base.py                              5      1      0      0    80%   7
+venv/lib/python3.12/site-packages/UQPyL/problem/sop/__init__.py                                2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/sop/single_constraint_problem.py              17      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/sop/single_simple_problem.py                 144      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/problem/space.py                                     171     10     78     11    92%   21, 60, 64, 71->73, 81->91, 112, 123, 129, 160, 206, 209, 220
+venv/lib/python3.12/site-packages/UQPyL/surrogate/__init__.py                                 22      8      4      0    54%   14-17, 21-24
+venv/lib/python3.12/site-packages/UQPyL/surrogate/_kernel.py                                 111      6     52      4    94%   49, 54-55, 63, 91, 118
+venv/lib/python3.12/site-packages/UQPyL/surrogate/_numeric.py                                 15      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/_restart.py                                 32      1     16      1    96%   33
+venv/lib/python3.12/site-packages/UQPyL/surrogate/auto_tuner.py                              318     11    108     10    95%   132, 160, 165-166, 182, 190, 204, 220->222, 289, 317->319, 331-332, 375
+venv/lib/python3.12/site-packages/UQPyL/surrogate/base.py                                    304     30    134     20    88%   69, 71, 76, 104-110, 123-125, 137, 163, 165, 179->181, 211, 262, 276, 293, 296, 300, 305-306, 313, 337, 352, 371, 387, 389, 412, 452, 454
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/__init__.py                               2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/gaussian_process.py                     154      4     36      2    97%   78, 127-128, 230
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/__init__.py                        4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/base_kernel.py                    40     13     12      0    60%   11-16, 47-55
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/c_kernel_.py                      16      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/dot_kernel_.py                    17      1      2      1    89%   27
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/matern_kernel.py                  98      3     28      3    95%   136, 146, 159
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/rbf_kernel.py                     23      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/rq_kernel.py                      27      0      2      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/__init__.py                          2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/__init__.py                   4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/base_kernel.py               21      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/cubic_kernel.py              14      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/exp_kernel.py                14      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/guass_kernel.py              14      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kriging.py                         185      9     44      5    94%   112, 129, 139->exit, 146-147, 264-267, 313-314
+venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/__init__.py                             1      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/core/__init__.py                        4      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/mars.py                               415     85    168     45    76%   240, 265-280, 283, 293->290, 305->302, 313, 332-337, 346, 359, 362, 367, 371, 373, 380, 389, 399, 403, 409, 417, 427, 437, 440, 445, 447, 449, 451, 474, 478, 498, 511-512, 522-523, 536, 543-544, 546, 551, 562->557, 579->600, 584-590, 612, 621, 656, 660, 719, 721->725, 726, 728, 730, 748, 752, 775, 782-783, 786, 793-804
+venv/lib/python3.12/site-packages/UQPyL/surrogate/metric.py                                   44      0     16      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/poly.py                                     42      3     18      2    92%   17, 32-33
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/__init__.py                              2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/__init__.py                       7      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/base_kernel.py                   45      8      8      0    74%   29-38, 41
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/cubic_kernel.py                  18      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/gaussian_kernel.py               11      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/linear_kernel.py                 16      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/multiquadric_kernel.py           16      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/thin_plate_spline_kernel.py      22      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/radial_basis_function.py               103      2     22      5    94%   60->exit, 143->145, 154, 157, 194->197
+venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/__init__.py                       2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/lasso/__init__.py                 2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/linear_regression.py            138      1     28      2    98%   78, 99->102
+venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/polynomial_regression.py         84      2     20      5    93%   93, 127->129, 134, 136->139, 145->150
+venv/lib/python3.12/site-packages/UQPyL/surrogate/scaler.py                                  134      9     32      4    92%   16, 30, 34, 42, 45, 48, 56, 101, 175
+venv/lib/python3.12/site-packages/UQPyL/surrogate/setting.py                                 222     33     90     16    82%   45->48, 79, 87, 107-117, 131, 155, 162, 170-171, 180, 198, 202, 205, 209->212, 212->215, 259, 279, 284, 319, 335-336, 347-348, 372-375
+venv/lib/python3.12/site-packages/UQPyL/surrogate/split.py                                    46      2     20      2    94%   10, 18
+venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/__init__.py                              1      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/core/__init__.py                         2      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/support_vector_machine.py              117      4     34      5    94%   187, 192, 201, 212->222, 221
+venv/lib/python3.12/site-packages/UQPyL/surrogate/util/__init__.py                             0      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/util/boxmin.py                              99      0     32      0   100%
+venv/lib/python3.12/site-packages/UQPyL/surrogate/util/lbfgsb.py                              39      0     14      1    98%   62->64
+venv/lib/python3.12/site-packages/UQPyL/viz/__init__.py                                        5      0      0      0   100%
+venv/lib/python3.12/site-packages/UQPyL/viz/analysis.py                                       58     12     24      7    74%   15-21, 44, 46, 54, 56, 60, 89
+venv/lib/python3.12/site-packages/UQPyL/viz/common.py                                         23      2     10      2    88%   20, 22
+venv/lib/python3.12/site-packages/UQPyL/viz/inference.py                                     106     19     40      9    78%   14-20, 61->49, 87->89, 89->102, 94->98, 98->100, 106->83, 140, 168-182
+venv/lib/python3.12/site-packages/UQPyL/viz/optimization.py                                  194     40    108     43    73%   23, 33, 40, 72, 88, 102, 107, 109, 111, 113, 114->116, 116->118, 118->120, 120->122, 149, 156, 158, 164, 168, 175, 185-186, 192-194, 198, 203-204, 210, 212, 214, 216, 217->219, 220, 221->223, 223->225, 254, 272, 277, 279, 281, 283, 299->304, 302, 305-307, 313->315, 316
+venv/lib/python3.12/site-packages/UQPyL/viz/surrogate.py                                      34      3      6      2    88%   41-42, 46
+--------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                      11772    689   3498    515    92%
+Coverage XML written to file /home/wmtsky/projects/UQPyL/.cache/1004-wheel312-test/coverage.xml
+3084 passed in 134.52s (0:02:14)

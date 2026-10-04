@@ -1,0 +1,274 @@
+........................................................................ [ 32%]
+.....................................................F....F.....F....... [ 64%]
+......................F..F..F..F........................................ [ 97%]
+......                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_mixed_chains_match_actual_evaluations_and_custom_log_probability[False-DREAM_ZS] _
+
+methodClass = <class 'UQPyL.inference.methods.dream_zs.DREAM_ZS'>
+constrained = False
+
+    @pytest.mark.parametrize('methodClass', METHODS)
+    @pytest.mark.parametrize('constrained', [False, True])
+    def test_mixed_chains_match_actual_evaluations_and_custom_log_probability(methodClass, constrained):
+        seen = []
+        problem = mixedProblem(constrained, seen)
+        logCalls = []
+        def logProbability(y, decs, cons):
+            decs = np.atleast_2d(decs)
+            assert np.all(np.isin(decs[:, 0], [10, 20, 30]))
+            assert np.all(np.isin(decs[:, 1], [1, 2, 3]))
+            expected = decs[:, 0]/30 + decs[:, 1]*.05 + decs[:, 2]*.01
+            np.testing.assert_allclose(np.ravel(y), expected)
+            logCalls.append(decs.copy())
+            return -expected
+        method = methodClass(nChains=4, warmUp=2, logProbFunc=logProbability,
+                             **{("maxIters"): 12}, **QUIET)
+>       result = method.run(problem, seed=17)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_inference_mixed_coordinates.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/inference/methods/dream_zs.py:153: in run
+    advance()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+chains = None
+
+    def advance(chains=None):
+        proposed, logRatios, crIndices = self.f_prop_ratio(
+            current, archive, ps, k, jitter, gamma, gammaScale, crSet, pCR, tries,
+            problem.ub, problem.lb, logRatio=True,
+        )
+        objs, cons, valid = self.evaluateProposal(proposed, currentObjs, currentCons)
+        # Scale jump gains by the pre-update population variance in unit axes.
+        unit = np.divide(current - problem.lb, span, out=np.zeros_like(current), where=span > 0)
+        variance = np.maximum(np.var(unit, axis=0, ddof=1), 1e-12)
+        for index in range(nChains):
+            accepted = valid[index] and self.accept(
+                objs[index], currentObjs[index], cons[index] if problem.nCons else None,
+                decStar=proposed[index], decCur=current[index],
+                consCur=currentCons[index] if problem.nCons else None, logQRatio=logRatios[index],
+            )
+            if accepted:
+                if chains is None:
+                    if crIndices[index] >= 0:
+>                       jump = np.divide(proposed[index] - current[index], span,
+                                         out=np.zeros_like(span), where=span > 0)
+E                       numpy._core._exceptions._UFuncOutputCastingError: Cannot cast ufunc 'divide' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'
+
+UQPyL/inference/methods/dream_zs.py:136: UFuncTypeError
+_ test_mixed_chains_match_actual_evaluations_and_custom_log_probability[True-DREAM_ZS] _
+
+methodClass = <class 'UQPyL.inference.methods.dream_zs.DREAM_ZS'>
+constrained = True
+
+    @pytest.mark.parametrize('methodClass', METHODS)
+    @pytest.mark.parametrize('constrained', [False, True])
+    def test_mixed_chains_match_actual_evaluations_and_custom_log_probability(methodClass, constrained):
+        seen = []
+        problem = mixedProblem(constrained, seen)
+        logCalls = []
+        def logProbability(y, decs, cons):
+            decs = np.atleast_2d(decs)
+            assert np.all(np.isin(decs[:, 0], [10, 20, 30]))
+            assert np.all(np.isin(decs[:, 1], [1, 2, 3]))
+            expected = decs[:, 0]/30 + decs[:, 1]*.05 + decs[:, 2]*.01
+            np.testing.assert_allclose(np.ravel(y), expected)
+            logCalls.append(decs.copy())
+            return -expected
+        method = methodClass(nChains=4, warmUp=2, logProbFunc=logProbability,
+                             **{("maxIters"): 12}, **QUIET)
+>       result = method.run(problem, seed=17)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_inference_mixed_coordinates.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/inference/methods/dream_zs.py:153: in run
+    advance()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+chains = None
+
+    def advance(chains=None):
+        proposed, logRatios, crIndices = self.f_prop_ratio(
+            current, archive, ps, k, jitter, gamma, gammaScale, crSet, pCR, tries,
+            problem.ub, problem.lb, logRatio=True,
+        )
+        objs, cons, valid = self.evaluateProposal(proposed, currentObjs, currentCons)
+        # Scale jump gains by the pre-update population variance in unit axes.
+        unit = np.divide(current - problem.lb, span, out=np.zeros_like(current), where=span > 0)
+        variance = np.maximum(np.var(unit, axis=0, ddof=1), 1e-12)
+        for index in range(nChains):
+            accepted = valid[index] and self.accept(
+                objs[index], currentObjs[index], cons[index] if problem.nCons else None,
+                decStar=proposed[index], decCur=current[index],
+                consCur=currentCons[index] if problem.nCons else None, logQRatio=logRatios[index],
+            )
+            if accepted:
+                if chains is None:
+                    if crIndices[index] >= 0:
+>                       jump = np.divide(proposed[index] - current[index], span,
+                                         out=np.zeros_like(span), where=span > 0)
+E                       numpy._core._exceptions._UFuncOutputCastingError: Cannot cast ufunc 'divide' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'
+
+UQPyL/inference/methods/dream_zs.py:136: UFuncTypeError
+________ test_fixed_continuous_dimension_survives_reflection[DREAM_ZS] _________
+
+methodClass = <class 'UQPyL.inference.methods.dream_zs.DREAM_ZS'>
+
+    @pytest.mark.parametrize('methodClass', METHODS)
+    def test_fixed_continuous_dimension_survives_reflection(methodClass):
+        problem = Problem(nInput=2, nObj=1, lb=[0, 5], ub=[1, 5], varType=[2, 0], varSet={0: [10, 20]},
+                          objFunc=lambda X: X[:, [0]]/20)
+        with np.errstate(divide='raise', invalid='raise'):
+            result = methodClass(nChains=4, warmUp=1,
+>                                **{("maxIters"): 5}, **QUIET).run(problem, seed=3)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+
+tests/test_inference_mixed_coordinates.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/inference/methods/dream_zs.py:153: in run
+    advance()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+chains = None
+
+    def advance(chains=None):
+        proposed, logRatios, crIndices = self.f_prop_ratio(
+            current, archive, ps, k, jitter, gamma, gammaScale, crSet, pCR, tries,
+            problem.ub, problem.lb, logRatio=True,
+        )
+        objs, cons, valid = self.evaluateProposal(proposed, currentObjs, currentCons)
+        # Scale jump gains by the pre-update population variance in unit axes.
+        unit = np.divide(current - problem.lb, span, out=np.zeros_like(current), where=span > 0)
+        variance = np.maximum(np.var(unit, axis=0, ddof=1), 1e-12)
+        for index in range(nChains):
+            accepted = valid[index] and self.accept(
+                objs[index], currentObjs[index], cons[index] if problem.nCons else None,
+                decStar=proposed[index], decCur=current[index],
+                consCur=currentCons[index] if problem.nCons else None, logQRatio=logRatios[index],
+            )
+            if accepted:
+                if chains is None:
+                    if crIndices[index] >= 0:
+>                       jump = np.divide(proposed[index] - current[index], span,
+                                         out=np.zeros_like(span), where=span > 0)
+E                       numpy._core._exceptions._UFuncOutputCastingError: Cannot cast ufunc 'divide' output from dtype('float64') to dtype('int64') with casting rule 'same_kind'
+
+UQPyL/inference/methods/dream_zs.py:136: UFuncTypeError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>, distribution = 'gauss'
+warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1.0, 10.0]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+>           assert result.FEs == count[0] == 4 * (warmUp + 12)
+E           assert 36 == (4 * (0 + 12))
+
+tests/test_inference_proposal_scales.py:104: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1.0, 10.0]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+>           assert result.FEs == count[0] == 4 * (warmUp + 12)
+E           assert 41 == (4 * (0 + 12))
+
+tests/test_inference_proposal_scales.py:104: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>, distribution = 'gauss'
+warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1.0, 10.0]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+>           assert result.FEs == count[0] == 4 * (warmUp + 12)
+E           assert 52 == (4 * (3 + 12))
+
+tests/test_inference_proposal_scales.py:104: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1.0, 10.0]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+>           assert result.FEs == count[0] == 4 * (warmUp + 12)
+E           assert 54 == (4 * (3 + 12))
+
+tests/test_inference_proposal_scales.py:104: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_inference_mixed_coordinates.py::test_mixed_chains_match_actual_evaluations_and_custom_log_probability[False-DREAM_ZS]
+FAILED tests/test_inference_mixed_coordinates.py::test_mixed_chains_match_actual_evaluations_and_custom_log_probability[True-DREAM_ZS]
+FAILED tests/test_inference_mixed_coordinates.py::test_fixed_continuous_dimension_survives_reflection[DREAM_ZS]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-AMH]
+7 failed, 215 passed in 5.32s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_inference_algorithms_more.py tests/test_inference_base_and_chain.py tests/test_inference_benchmarks.py tests/test_inference_demc_configuration.py tests/test_inference_diagnostics.py tests/test_inference_diagnostics_and_partial_results.py tests/test_inference_incremental_history.py tests/test_inference_mh.py tests/test_inference_mixed_coordinates.py tests/test_inference_more_branches.py tests/test_inference_proposal_scales.py tests/test_inference_result_isolation_and_directions.py tests/test_inference_stop_reason_persistence.py -W error --basetemp=.cache/pytest/inference-fix` failed. (See above for error)

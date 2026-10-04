@@ -140,6 +140,8 @@ PYBIND11_MODULE(libsvm_interface, m)
         .def_readwrite("p", &Parameter::p)
         .def_readwrite("eps", &Parameter::eps);
 
-    py::class_<SvmHandle>(m, "svm_model");
+    py::class_<SvmHandle>(m, "svm_model")
+        .def_property_readonly("iterations", [](const SvmHandle& h) { return h.model->iterations; })
+        .def_property_readonly("iterationLimitReached", [](const SvmHandle& h) { return h.model->iterationLimitReached != 0; });
 
 }       

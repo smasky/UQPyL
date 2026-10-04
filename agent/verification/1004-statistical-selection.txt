@@ -1,0 +1,10 @@
+tests/test_calibration_posterior_moments.py::testStochasticIesRecoversScalarPosteriorMomentsAtLargeSample
+tests/test_inference_transition_correctness.py::testDemcNoiseIsCenteredIndependentAndEscapesCollapsedPopulation
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[False-AMH]
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[False-DEMC]
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[False-DREAM_ZS]
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[True-AMH]
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[True-DEMC]
+tests/test_inference_transition_correctness.py::testKnownGaussianMoments[True-DREAM_ZS]
+
+8/3094 tests collected (3086 deselected) in 1.46s

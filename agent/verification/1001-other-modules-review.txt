@@ -1,0 +1,32 @@
+{"records": 157, "discrepancies": 31, "controls": 106}
+{"group": "OM01", "case": "nse/scale=1e-05", "discrepancy": true, "error": "NSE is undefined when observation variance is zero.", "expected": [0.98, 0.968]}
+{"group": "OM01", "case": "r2/scale=1e-05", "discrepancy": true, "error": "NSE is undefined when observation variance is zero.", "expected": [0.98, 0.968]}
+{"group": "OM01", "case": "nse/scale=1e-09", "discrepancy": true, "error": "NSE is undefined when observation variance is zero.", "expected": [0.98, 0.968]}
+{"group": "OM01", "case": "r2/scale=1e-09", "discrepancy": true, "error": "NSE is undefined when observation variance is zero.", "expected": [0.98, 0.968]}
+{"group": "OM01", "case": "pbias/scale=1e-09", "discrepancy": true, "error": "PBIAS is undefined when observation sum is zero.", "expected": [0.0, 8.000000000000004]}
+{"group": "OM01", "case": "pearson_r/scale=1e-09", "discrepancy": true, "error": "PearsonR is undefined when observation variance is zero.", "expected": [0.9908470001860921, 0.9999999999999998]}
+{"group": "OM01", "case": "kge/scale=1e-09", "discrepancy": true, "error": "PearsonR is undefined when observation variance is zero.", "expected": [0.947873410771797, 0.9199999999999999]}
+{"group": "OM01", "case": "rfactor/scale=1e-09", "discrepancy": true, "error": "RFactor is undefined when observation standard deviation is zero.", "expected": 0.35777087639996635}
+{"group": "OM02", "case": "MH/uniform/span=0.1", "discrepancy": true, "max_error": 0.09787295536505747, "step_rms": 0.000582189141941201, "expected_step_rms": 0.05821891419411843}
+{"group": "OM02", "case": "MH/uniform/span=1.0", "discrepancy": true, "max_error": 0.08897541396823408, "step_rms": 0.005821891419411849, "expected_step_rms": 0.058218914194118426}
+{"group": "OM02", "case": "run/MH/uniform/unit_change", "discrepancy": true, "max_unit_sample_difference": 0.08245148309034633, "stored_draws": 2, "proposal_updates": 1, "target": "uniform"}
+{"group": "OM02", "case": "AMH/uniform/span=0.1", "discrepancy": true, "max_error": 0.09787295536505747, "step_rms": 0.000582189141941201, "expected_step_rms": 0.05821891419411843}
+{"group": "OM02", "case": "AMH/uniform/span=1.0", "discrepancy": true, "max_error": 0.08897541396823408, "step_rms": 0.005821891419411849, "expected_step_rms": 0.058218914194118426}
+{"group": "OM02", "case": "run/AMH/uniform/unit_change", "discrepancy": true, "max_unit_sample_difference": 0.08245148309034633, "stored_draws": 2, "proposal_updates": 1, "target": "uniform"}
+{"group": "OM02", "case": "MH_Gibbs/gauss/span=0.1", "discrepancy": true, "max_error": 0.32178894538389047, "step_rms": 0.001088595107343285, "expected_step_rms": 0.10885951073432838}
+{"group": "OM02", "case": "MH_Gibbs/gauss/span=1.0", "discrepancy": true, "max_error": 0.29253540489444585, "step_rms": 0.010885951073432838, "expected_step_rms": 0.10885951073432837}
+{"group": "OM02", "case": "run/MH_Gibbs/gauss/unit_change", "discrepancy": true, "max_unit_sample_difference": 0.13402326036786094, "stored_draws": 2, "proposal_updates": 1, "target": "uniform"}
+{"group": "OM02", "case": "MH_Gibbs/uniform/span=0.1", "discrepancy": true, "max_error": 0.09787295536505747, "step_rms": 0.000582189141941201, "expected_step_rms": 0.05821891419411843}
+{"group": "OM02", "case": "MH_Gibbs/uniform/span=1.0", "discrepancy": true, "max_error": 0.08897541396823408, "step_rms": 0.005821891419411849, "expected_step_rms": 0.058218914194118426}
+{"group": "OM02", "case": "run/MH_Gibbs/uniform/unit_change", "discrepancy": true, "max_unit_sample_difference": 0.08245148309034633, "stored_draws": 2, "proposal_updates": 1, "target": "uniform"}
+{"group": "OM03", "case": "LinearRegression/Origin/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Origin/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Ridge/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Ridge/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Origin/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Origin/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Ridge/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Ridge/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM04", "case": "map_discrete_vars/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}
+{"group": "OM04", "case": "apply_var_type/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}
+{"group": "OM04", "case": "transform/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}

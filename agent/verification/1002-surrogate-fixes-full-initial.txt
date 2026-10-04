@@ -1,0 +1,215 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 13%]
+........................................................................ [ 16%]
+........................................................................ [ 19%]
+........................................................................ [ 22%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 36%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 55%]
+........................................................................ [ 58%]
+........................................................................ [ 61%]
+........................................................................ [ 64%]
+........................................................................ [ 67%]
+........................................................................ [ 69%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+......................................F................FFF.              [100%]
+=================================== FAILURES ===================================
+___________________ test_metric_r2_warns_on_constant_target ____________________
+
+    def test_metric_r2_warns_on_constant_target():
+        y = np.array([[1.0], [1.0], [1.0]])
+        yhat = np.array([[1.0], [2.0], [3.0]])
+        with pytest.warns(RuntimeWarning):
+>           v = r_square(y, yhat)
+                ^^^^^^^^^^^^^^^^^
+
+tests/test_util_metric.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+true_Y = array([[1.],
+       [1.],
+       [1.]])
+pre_Y = array([[1.],
+       [2.],
+       [3.]])
+
+    def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> float:
+        """
+        R2-score
+        """
+        true_Y, pre_Y = _pairedOutputs(true_Y, pre_Y)
+        centered, powers, _ = centeredColumns(true_Y)
+        denominator, denominatorPower = squaredSum(centered, powers)
+        if denominator == 0:
+>           raise ValueError("R2/NSE is undefined for constant outputs.")
+E           ValueError: R2/NSE is undefined for constant outputs.
+
+UQPyL/surrogate/metric.py:28: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_metric_r2_warns_on_constant_target():
+        y = np.array([[1.0], [1.0], [1.0]])
+        yhat = np.array([[1.0], [2.0], [3.0]])
+>       with pytest.warns(RuntimeWarning):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_util_metric.py:18: Failed
+__________________ testSurrogatePlotIncludesAllData[values3] ___________________
+
+values = [-3, -3]
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x73b917261070>
+
+    @pytest.mark.parametrize("values", [[1, 5], [-10, -5], [-2, 4], [-3, -3], [0, 0], [4, 4]])
+    def testSurrogatePlotIncludesAllData(values, monkeypatch):
+        import matplotlib
+    
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        from UQPyL.viz.surrogate import plot_surrogate
+    
+        monkeypatch.setattr(plt, "show", lambda: None)
+        yTrue = np.array(values, dtype=float)
+        yPred = yTrue * 1.1
+        with np.errstate(divide="ignore", invalid="ignore"):
+>           figure, axes = plot_surrogate("test", yPred, yTrue)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_viz_surrogate_limits.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/viz/surrogate.py:28: in plot_surrogate
+    r2 = r_square(yTrue, yPred)
+         ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+true_Y = array([[-3.],
+       [-3.]]), pre_Y = array([[-3.3],
+       [-3.3]])
+
+    def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> float:
+        """
+        R2-score
+        """
+        true_Y, pre_Y = _pairedOutputs(true_Y, pre_Y)
+        centered, powers, _ = centeredColumns(true_Y)
+        denominator, denominatorPower = squaredSum(centered, powers)
+        if denominator == 0:
+>           raise ValueError("R2/NSE is undefined for constant outputs.")
+E           ValueError: R2/NSE is undefined for constant outputs.
+
+UQPyL/surrogate/metric.py:28: ValueError
+__________________ testSurrogatePlotIncludesAllData[values4] ___________________
+
+values = [0, 0]
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x73b917262390>
+
+    @pytest.mark.parametrize("values", [[1, 5], [-10, -5], [-2, 4], [-3, -3], [0, 0], [4, 4]])
+    def testSurrogatePlotIncludesAllData(values, monkeypatch):
+        import matplotlib
+    
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        from UQPyL.viz.surrogate import plot_surrogate
+    
+        monkeypatch.setattr(plt, "show", lambda: None)
+        yTrue = np.array(values, dtype=float)
+        yPred = yTrue * 1.1
+        with np.errstate(divide="ignore", invalid="ignore"):
+>           figure, axes = plot_surrogate("test", yPred, yTrue)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_viz_surrogate_limits.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/viz/surrogate.py:28: in plot_surrogate
+    r2 = r_square(yTrue, yPred)
+         ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+true_Y = array([[0.],
+       [0.]]), pre_Y = array([[0.],
+       [0.]])
+
+    def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> float:
+        """
+        R2-score
+        """
+        true_Y, pre_Y = _pairedOutputs(true_Y, pre_Y)
+        centered, powers, _ = centeredColumns(true_Y)
+        denominator, denominatorPower = squaredSum(centered, powers)
+        if denominator == 0:
+>           raise ValueError("R2/NSE is undefined for constant outputs.")
+E           ValueError: R2/NSE is undefined for constant outputs.
+
+UQPyL/surrogate/metric.py:28: ValueError
+__________________ testSurrogatePlotIncludesAllData[values5] ___________________
+
+values = [4, 4]
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x73b9171540e0>
+
+    @pytest.mark.parametrize("values", [[1, 5], [-10, -5], [-2, 4], [-3, -3], [0, 0], [4, 4]])
+    def testSurrogatePlotIncludesAllData(values, monkeypatch):
+        import matplotlib
+    
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        from UQPyL.viz.surrogate import plot_surrogate
+    
+        monkeypatch.setattr(plt, "show", lambda: None)
+        yTrue = np.array(values, dtype=float)
+        yPred = yTrue * 1.1
+        with np.errstate(divide="ignore", invalid="ignore"):
+>           figure, axes = plot_surrogate("test", yPred, yTrue)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_viz_surrogate_limits.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/viz/surrogate.py:28: in plot_surrogate
+    r2 = r_square(yTrue, yPred)
+         ^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+true_Y = array([[4.],
+       [4.]]), pre_Y = array([[4.4],
+       [4.4]])
+
+    def r_square(true_Y: np.ndarray, pre_Y: np.ndarray) -> float:
+        """
+        R2-score
+        """
+        true_Y, pre_Y = _pairedOutputs(true_Y, pre_Y)
+        centered, powers, _ = centeredColumns(true_Y)
+        denominator, denominatorPower = squaredSum(centered, powers)
+        if denominator == 0:
+>           raise ValueError("R2/NSE is undefined for constant outputs.")
+E           ValueError: R2/NSE is undefined for constant outputs.
+
+UQPyL/surrogate/metric.py:28: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_util_metric.py::test_metric_r2_warns_on_constant_target - F...
+FAILED tests/test_viz_surrogate_limits.py::testSurrogatePlotIncludesAllData[values3]
+FAILED tests/test_viz_surrogate_limits.py::testSurrogatePlotIncludesAllData[values4]
+FAILED tests/test_viz_surrogate_limits.py::testSurrogatePlotIncludesAllData[values5]
+4 failed, 2575 passed in 53.30s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q -W error` failed. (See above for error)

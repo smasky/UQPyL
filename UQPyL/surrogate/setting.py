@@ -4,17 +4,16 @@ from ..core.parameter_store import ParameterStore
 
 
 class Setting(ParameterStore):
-    
     def __init__(self):
         super().__init__()
         self.defaultOwner = None
-        
+
         self.parVal = {}
         self.parCon = {}
-        
+
         self.parUB = {}
         self.parLB = {}
-        
+
         self.parType = {}
         self.parSet = {}
         self.parLog = {}
@@ -26,16 +25,18 @@ class Setting(ParameterStore):
 
     def _mapping(self):
         return self._materialize_mapping()
-    
-    #---------------Public Functions---------------#
-    def set(self, name, value, attr = None, owner = None):
-        '''
+
+    # ---------------Public Functions---------------#
+    def set(self, name, value, attr=None, owner=None):
+        """
         Set the parameter value and its attribute
-        :param name: str, the name of the parameter
-        :param value: float, int, list, array, the value of the parameter
-        :param attr: dict, the attribute of the parameter, including `lb`, `ub`, `type`, `set`, `log`
-        :param owner: str, optional owner label such as `model` or `kernel`
-        '''
+
+        Args:
+            name: str, the name of the parameter
+            value: float, int, list, array, the value of the parameter
+            attr: dict, the attribute of the parameter, including `lb`, `ub`, `type`, `set`, `log`
+            owner: str, optional owner label such as `model` or `kernel`
+        """
         if owner is None:
             owner = self.defaultOwner
 
@@ -43,9 +44,9 @@ class Setting(ParameterStore):
             self.parOwner[name] = owner
         elif name not in self.parOwner:
             self.parOwner[name] = None
-        
+
         if attr is not None:
-            lb, ub, T, S, log = self._check_attr__(attr)
+            lb, ub, T, S, log = self._checkAttr(attr)
 
             if T == 2 and S is not None:
                 value = self._normalize_choice_array(value, S)
@@ -53,47 +54,56 @@ class Setting(ParameterStore):
                 value = self._normalize_param_array(value, T)
             lb = self._normalize_param_array(lb, T)
             ub = self._normalize_param_array(ub, T)
-            
+
             self.parVal[name] = value
-            self.parUB[name] = ub; self.parLB[name] = lb
-            self.parType[name] = T; self.parSet[name] = S; self.parLog[name] = log
-            
+            self.parUB[name] = ub
+            self.parLB[name] = lb
+            self.parType[name] = T
+            self.parSet[name] = S
+            self.parLog[name] = log
+
         else:
             self.parCon[name] = value
 
     def getParaInfos(self, nameList):
-        '''
+        """
         Get the parameter information
-        :param nameList: list, the name of the parameter
-        :return: tuple, the parameter information, the upper bound and the lower bound
-        '''
+
+        Args:
+            nameList: list, the name of the parameter
+
+        Returns:
+            tuple, the parameter information, the upper bound and the lower bound
+        """
         if len(nameList) != len(set(nameList)):
             raise ValueError("Parameter names must be unique.")
         paraInfos = {}
-        I = 0
+        index = 0
         ub = []
         lb = []
-        
+
         for name in nameList:
             if name not in self.parVal:
                 raise KeyError(f"Parameter '{name}' is not a tunable parameter.")
-            
+
             length = self.parVal[name].size
-            paraInfos[name] = np.arange(I, I+length)
-            I += length
+            paraInfos[name] = np.arange(index, index + length)
+            index += length
 
             upper = np.broadcast_to(self.parUB[name], (length,))
             lower = np.broadcast_to(self.parLB[name], (length,))
             ub.append(np.log(upper) if self.parLog[name] else upper)
             lb.append(np.log(lower) if self.parLog[name] else lower)
-            
+
         return paraInfos, np.concatenate(ub), np.concatenate(lb)
-    
+
     def removeSetting(self, setting):
-        '''
+        """
         Remove the parameter setting
-        :param setting: Setting, the setting to be removed
-        '''
+
+        Args:
+            setting: Setting, the setting to be removed
+        """
         for k in list(setting.parVal.keys()):
             self.parVal.pop(k, None)
             self.parUB.pop(k, None)
@@ -119,18 +129,20 @@ class Setting(ParameterStore):
 
     def removeByOwner(self, owner):
         self.removeParas(self.getParaList(owner=owner, tunableOnly=False))
-        
+
     def mergeSetting(self, setting):
-        '''
+        """
         Merge the parameter setting
-        :param setting: Setting, the setting to be merged
-        '''
+
+        Args:
+            setting: Setting, the setting to be merged
+        """
         self.parVal.update(setting.parVal)
         self.parCon.update(setting.parCon)
-        
+
         self.parUB.update(setting.parUB)
         self.parLB.update(setting.parLB)
-        
+
         self.parSet.update(setting.parSet)
         self.parType.update(setting.parType)
         self.parLog.update(setting.parLog)
@@ -167,7 +179,7 @@ class Setting(ParameterStore):
 
         return decoded
 
-    def getParaList(self, owner = None, tunableOnly = True):
+    def getParaList(self, owner=None, tunableOnly=True):
         if tunableOnly:
             names = list(self.parVal.keys())
         else:
@@ -178,10 +190,10 @@ class Setting(ParameterStore):
 
         return [name for name in names if self.parOwner.get(name) == owner]
 
-    def expandParam(self, name, size = None):
-        '''
+    def expandParam(self, name, size=None):
+        """
         Materialize a parameter into parVal and expand scalar values to vector form if needed.
-        '''
+        """
         if name in self.parCon:
             value = self.parCon[name]
         elif name in self.parVal:
@@ -201,13 +213,15 @@ class Setting(ParameterStore):
             self.parLB[name] = self._normalize_param_array(self.parLB[name], self.parType[name], size=size)
 
         return self.parVal[name]
-    
+
     def setVals(self, paraInfos, values):
-        '''
+        """
         Set the parameter value
-        :param paraInfos: dict, the parameter information
-        :param values: list, the value of the parameter
-        '''
+
+        Args:
+            paraInfos: dict, the parameter information
+            values: list, the value of the parameter
+        """
         for name, idx in paraInfos.items():
             value = values[idx]
 
@@ -216,79 +230,86 @@ class Setting(ParameterStore):
             else:
                 value = np.asarray(value, dtype=float)
                 self.parVal[name][:] = np.exp(value) if self.parLog[name] else value
-                
+
     def get(self, *args):
-        '''
+        """
         Get the parameter value
-        :param args: list, the name of the parameter
-        :return: list, the value of the parameter
-        '''
+
+        Args:
+            args: list, the name of the parameter
+
+        Returns:
+            list, the value of the parameter
+        """
         values = []
-        
+
         for arg in args:
-            
             if arg in self.parCon.keys():
                 values.append(self.parCon[arg])
             else:
                 if self.parType[arg] != 2:
-                    values.append(self._check_value(self.parVal[arg], self.parType[arg]))
+                    values.append(self._checkValue(self.parVal[arg], self.parType[arg]))
                 else:
                     S, bins = self.parSet[arg]
                     value = self.parVal[arg]
-                    I = np.digitize(value, bins, right=True)[0] - 1
-                    values.append(S[I])
-                
+                    index = np.digitize(value, bins, right=True)[0] - 1
+                    values.append(S[index])
+
         if len(args) > 1:
             return tuple(values)
         else:
             return values[0]
-        
-    #---------------Private Functions---------------#
-    def _check_attr__(self, attr):
-        '''
+
+    # ---------------Private Functions---------------#
+    def _checkAttr(self, attr):
+        """
         Check the attribute of the parameter
-        :param attr: dict, the attribute of the parameter
-        :return: tuple, the lower bound, the upper bound, the type and the set
-        '''
-        namelist = [ v.lower() for v in attr.keys()]
-        
-        if 'lb' in namelist:
-            lb = attr['lb']
+
+        Args:
+            attr: dict, the attribute of the parameter
+
+        Returns:
+            tuple, the lower bound, the upper bound, the type and the set
+        """
+        namelist = [v.lower() for v in attr.keys()]
+
+        if "lb" in namelist:
+            lb = attr["lb"]
         else:
             lb = 0.0
-            
-        if 'ub' in namelist:
-            ub = attr['ub']
+
+        if "ub" in namelist:
+            ub = attr["ub"]
         else:
             ub = 1.0
-            
-        if 'type' in namelist:
-            T = attr['type']
-            if T == 'int':
+
+        if "type" in namelist:
+            T = attr["type"]
+            if T == "int":
                 T = 1
-            elif T == 'float':
+            elif T == "float":
                 T = 0
             else:
                 T = 2
         else:
             T = 0
 
-        if 'log' in namelist:
-            log = attr['log']
+        if "log" in namelist:
+            log = attr["log"]
         else:
             log = False
-            
-        if 'set' in namelist:
-            items = attr['set']
+
+        if "set" in namelist:
+            items = attr["set"]
             interval = len(items)
-            bins = np.linspace(lb, ub, interval+1)
+            bins = np.linspace(lb, ub, interval + 1)
             S = (items, bins)
         else:
             S = None
-        
-        return lb, ub, T, S, log            
 
-    def _normalize_param_array(self, value, T, size = None):
+        return lb, ub, T, S, log
+
+    def _normalize_param_array(self, value, T, size=None):
         value = np.asarray([value] if np.isscalar(value) else value).ravel()
 
         if size is not None:
@@ -329,20 +350,24 @@ class Setting(ParameterStore):
             encoded[i] = 0.5 * (bins[idx] + bins[idx + 1])
 
         return encoded
-            
-    def _check_value(self, value, T):
-        '''
+
+    def _checkValue(self, value, T):
+        """
         Check the value of the parameter
-        :param value: float, int, list, array, the value of the parameter
-        :param T: int, the type of the parameter
-        :return: the value of the parameter
-        '''
+
+        Args:
+            value: float, int, list, array, the value of the parameter
+            T: int, the type of the parameter
+
+        Returns:
+            the value of the parameter
+        """
         if isinstance(value, np.ndarray):
             if T != 1:
                 value = value.astype(np.float64)
             else:
                 value = value.astype(np.int32)
-            value = value.item() if value.size == 1 else value.ravel() #TODO
+            value = value.item() if value.size == 1 else value.ravel()  # TODO
         else:
             if T != 1:
                 value = float(value)

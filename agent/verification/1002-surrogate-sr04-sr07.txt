@@ -1,0 +1,70 @@
+.................FF........................................              [100%]
+=================================== FAILURES ===================================
+__ test_standard_scaler_extreme_columns_match_sample_moments[3.0-2.0-1e-200] ___
+
+factor = 1e-200, mu = 3.0, sigma = 2.0
+
+    @pytest.mark.parametrize("factor", [1e-200,1e160])
+    @pytest.mark.parametrize("mu,sigma", [(0.,1.),(3.,2.)])
+    def test_standard_scaler_extreme_columns_match_sample_moments(factor,mu,sigma):
+        base = np.arange(1.,5.)[:,None]
+        values = np.hstack([base*factor, np.full_like(base,.1*factor)])
+        scaler = StandardScaler(mu,sigma).fit(values)
+        transformed = scaler.transform(values)
+        np.testing.assert_allclose(transformed[:,0],mu+sigma*(base[:,0]-2.5)/np.sqrt(5/3),atol=1e-14)
+        np.testing.assert_allclose(transformed[:,1],mu,atol=1e-14)
+>       np.testing.assert_allclose(scaler.inverse_transform(transformed)/factor,values/factor,atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 4 / 8 (50%)
+E       Mismatch at indices:
+E        [0, 1]: 0.0 (ACTUAL), 0.10000000000000002 (DESIRED)
+E        [1, 1]: 0.0 (ACTUAL), 0.10000000000000002 (DESIRED)
+E        [2, 1]: 0.0 (ACTUAL), 0.10000000000000002 (DESIRED)
+E        [3, 1]: 0.0 (ACTUAL), 0.10000000000000002 (DESIRED)
+E       Max absolute difference among violations: 0.1
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([[1., 0.],
+E              [2., 0.],
+E              [3., 0.],
+E              [4., 0.]])
+E        DESIRED: array([[1. , 0.1],
+E              [2. , 0.1],
+E              [3. , 0.1],
+E              [4. , 0.1]])
+
+tests/test_surrogate_numeric_ranges.py:52: AssertionError
+__ test_standard_scaler_extreme_columns_match_sample_moments[3.0-2.0-1e+160] ___
+
+factor = 1e+160, mu = 3.0, sigma = 2.0
+
+    @pytest.mark.parametrize("factor", [1e-200,1e160])
+    @pytest.mark.parametrize("mu,sigma", [(0.,1.),(3.,2.)])
+    def test_standard_scaler_extreme_columns_match_sample_moments(factor,mu,sigma):
+        base = np.arange(1.,5.)[:,None]
+        values = np.hstack([base*factor, np.full_like(base,.1*factor)])
+        scaler = StandardScaler(mu,sigma).fit(values)
+        transformed = scaler.transform(values)
+        np.testing.assert_allclose(transformed[:,0],mu+sigma*(base[:,0]-2.5)/np.sqrt(5/3),atol=1e-14)
+>       np.testing.assert_allclose(transformed[:,1],mu,atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 4 / 4 (100%)
+E       Mismatch at indices:
+E        [0]: 0.0 (ACTUAL), 3.0 (DESIRED)
+E        [1]: 0.0 (ACTUAL), 3.0 (DESIRED)
+E        [2]: 0.0 (ACTUAL), 3.0 (DESIRED)
+E        [3]: 0.0 (ACTUAL), 3.0 (DESIRED)
+E       Max absolute difference among violations: 3.
+E       Max relative difference among violations: 1.
+E        ACTUAL: array([0., 0., 0., 0.])
+E        DESIRED: array(3.)
+
+tests/test_surrogate_numeric_ranges.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_surrogate_numeric_ranges.py::test_standard_scaler_extreme_columns_match_sample_moments[3.0-2.0-1e-200]
+FAILED tests/test_surrogate_numeric_ranges.py::test_standard_scaler_extreme_columns_match_sample_moments[3.0-2.0-1e+160]
+2 failed, 57 passed in 0.86s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q -W error tests/test_surrogate_numeric_ranges.py` failed. (See above for error)

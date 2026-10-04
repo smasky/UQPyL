@@ -28,12 +28,23 @@ class CalibrationABC(RunLifecycle, metaclass=abc.ABCMeta):
 
     Notes:
         - Calibration methods only accept `ModelProblem`.
-        - `problem.simFunc(X)` must return a simulation tensor with shape
-          `(n_samples, n_time, n_series)`.
-        - Internally, simulations and observations are flattened into the
-          shared observation space `(n_samples, n_obs)` for scoring, masking,
-          and update formulas.
+        - `problem.simFunc(X)` must return a simulation matrix with shape
+          `(nSamples, nObs)`.
+        - Observations and masks have shape `(nObs,)`; their order matches
+          simulation columns for scoring, masking, and update formulas.
     """
+
+    continuousOnly = False
+
+    @classmethod
+    def getCapabilities(cls):
+        return {
+            "problem_type": "ModelProblem",
+            "requires_observations": True,
+            "variable_types": ["continuous"] if cls.continuousOnly else ["continuous", "integer", "discrete"],
+            "constraint_handling": "unsupported" if cls.continuousOnly else "not_used",
+            "requires_declared_bounds": cls.continuousOnly,
+        }
 
     def __init__(
         self,
@@ -138,13 +149,15 @@ class CalibrationABC(RunLifecycle, metaclass=abc.ABCMeta):
         self.state.bestDecs = np.asarray(decs).copy()
         self.state.bestSim = np.asarray(sim).copy()
 
-    def recordPosterior(self, decs: np.ndarray, sim: np.ndarray):
+    def recordPosterior(self, decs: np.ndarray, sim: np.ndarray, kind: str = "updated_ensemble"):
         self.state.posteriorDecs = np.asarray(decs).copy()
         self.state.posteriorSims = np.asarray(sim).copy()
+        self.state.sampleKind = kind
 
     def recordBehavioral(self, decs: np.ndarray, sim: np.ndarray):
         self.state.behavioralDecs = np.asarray(decs).copy()
         self.state.behavioralSims = np.asarray(sim).copy()
+        self.state.sampleKind = "behavioral"
 
     def recordElite(self, decs: np.ndarray, sim: np.ndarray):
         self.state.eliteDecs = np.asarray(decs).copy()

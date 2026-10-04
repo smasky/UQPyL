@@ -9,7 +9,8 @@ from UQPyL.surrogate.regression.linear_regression import LinearRegression
 from UQPyL.surrogate.regression.polynomial_regression import PolynomialRegression
 from UQPyL.surrogate.scaler import StandardScaler
 
-pytest.importorskip("UQPyL.surrogate.regression.lasso")
+# Lasso is required by the complete test suite; broken native imports must fail.
+from UQPyL.surrogate.regression import lasso
 
 
 @pytest.mark.parametrize("layout", ["C", "F", "view", "readonly"])
@@ -17,7 +18,7 @@ pytest.importorskip("UQPyL.surrogate.regression.lasso")
 @pytest.mark.parametrize("dtype", [np.float32, np.float64])
 def test_prepared_inputs_and_parent_arrays_survive_repeated_fits(layout, fitIntercept, dtype):
     X = np.random.default_rng(8).uniform(1, 3, (40, 3)).astype(dtype)
-    Y = (X @ np.array([2., -0.8, 0.3], dtype=dtype) + 10).reshape(-1, 1)
+    Y = (X @ np.array([2.0, -0.8, 0.3], dtype=dtype) + 10).reshape(-1, 1)
     if layout == "F":
         X, Y = np.asfortranarray(X), np.asfortranarray(Y)
     parentX, parentY = X, Y
@@ -27,8 +28,7 @@ def test_prepared_inputs_and_parent_arrays_survive_repeated_fits(layout, fitInte
     elif layout == "readonly":
         X.flags.writeable = Y.flags.writeable = False
     expectedX, expectedY = X.copy(), Y.copy()
-    model = LinearRegression(lossType="Lasso", fitIntercept=fitIntercept, C=0.01,
-                             maxEpoch=10000, tolerance=1e-5)
+    model = LinearRegression(lossType="Lasso", fitIntercept=fitIntercept, C=0.01, maxEpoch=10000, tolerance=1e-5)
     predictions = []
     for _ in range(2):
         model.fitModel(X, Y)
@@ -44,8 +44,8 @@ def test_prepared_inputs_and_parent_arrays_survive_repeated_fits(layout, fitInte
     assert model.coef.dtype == dtype
 
 
-@pytest.mark.parametrize("slope", [-2., 2.])
-@pytest.mark.parametrize("penalty", [0.01, 2.])
+@pytest.mark.parametrize("slope", [-2.0, 2.0])
+@pytest.mark.parametrize("penalty", [0.01, 2.0])
 def test_one_feature_solution_matches_closed_form(slope, penalty):
     X = np.linspace(0, 1, 20).reshape(-1, 1)
     Y = 10 + slope * X
@@ -58,8 +58,7 @@ def test_one_feature_solution_matches_closed_form(slope, penalty):
     for _ in range(2):
         model.fitModel(X, Y)
         np.testing.assert_allclose(model.coef, [coefficient], atol=1e-10, rtol=1e-10)
-        np.testing.assert_allclose(model.predict(probes), intercept + coefficient * probes,
-                                   atol=1e-10, rtol=1e-10)
+        np.testing.assert_allclose(model.predict(probes), intercept + coefficient * probes, atol=1e-10, rtol=1e-10)
 
 
 @pytest.mark.parametrize("modelClass", [LinearRegression, PolynomialRegression])
@@ -116,8 +115,9 @@ def test_grid_candidate_order_does_not_change_selected_model(modelClass):
     results = []
     for penalties in [[0.01, 0.1, 0.3], [0.3, 0.1, 0.01]]:
         model = modelClass(lossType="Lasso", tolerance=1e-8)
-        best, score = AutoTuner(model).gridTune(X, Y, paraGrid={"C": np.log(penalties)},
-                                               ratio=25, tuneMode="joint", seed=3)
+        best, score = AutoTuner(model).gridTune(
+            X, Y, paraGrid={"C": np.log(penalties)}, ratio=25, tuneMode="joint", seed=3
+        )
         results.append((best, score, model.predict(X)))
     assert results[0][0] == results[1][0]
     assert results[0][1] == results[1][1]

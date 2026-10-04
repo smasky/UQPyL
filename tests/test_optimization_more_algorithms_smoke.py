@@ -1,18 +1,13 @@
+import pytest
+
 import numpy as np
 
 from UQPyL.optimization.expensive import ASMO, EGO, MOASMO
 from UQPyL.optimization.moea import MOEAD, NSGAIII, RVEA
-from UQPyL.optimization.runtime import OptResult
+from optimization_test_support import assertBenchmarkResult
 from UQPyL.optimization.soea import ABC, CSA
 from UQPyL.problem.mop.ZDT import ZDT1
 from UQPyL.problem.sop.single_simple_problem import Sphere
-
-
-def _assert_opt_result(result):
-    assert isinstance(result, OptResult)
-    assert result.bestDecs is not None
-    assert result.bestObjs is not None
-    assert result.history is not None
 
 
 class _DummySurrogate:
@@ -59,20 +54,23 @@ class _SeedRecordingOptimizer:
         return _Res()
 
 
+@pytest.mark.numerical
 def test_abc_runs_on_sphere_small_budget():
     problem = Sphere(nInput=3, ub=1.0, lb=-1.0)
     alg = ABC(nPop=10, maxFEs=40, maxIters=5, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_csa_runs_on_sphere_small_budget():
     problem = Sphere(nInput=3, ub=1.0, lb=-1.0)
     alg = CSA(nPop=10, maxFEs=40, maxIters=5, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_ego_runs_on_sphere_with_dummy_surrogate_and_small_inner_ga():
     problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
     alg = EGO(nInit=6, maxFEs=20, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
@@ -80,40 +78,46 @@ def test_ego_runs_on_sphere_with_dummy_surrogate_and_small_inner_ga():
     alg.surrogate = _DummySurrogate()
     # shrink inner GA budget
     from UQPyL.optimization.soea import GA as _GA
+
     alg.optimizer = _GA(nPop=6, maxFEs=18, maxIters=3, tolerate=None, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_asmo_one_step_runs_on_sphere_with_dummy_surrogate():
     problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
     alg = ASMO(nInit=6, maxFEs=20, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.surrogate = _DummySurrogate()
     result = alg.run(problem, seed=123, oneStep=True)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_moead_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = MOEAD(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_nsgaiii_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = NSGAIII(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_rvea_runs_on_zdt1_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = RVEA(nPop=12, maxFEs=40, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
+@pytest.mark.numerical
 def test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget():
     problem = ZDT1(nInput=6, ub=1.0, lb=0.0)
     alg = MOASMO(
@@ -128,7 +132,7 @@ def test_moasmo_runs_on_zdt1_with_dummy_multisurrogate_small_budget():
         saveFlag=False,
     )
     result = alg.run(problem, seed=123)
-    _assert_opt_result(result)
+    assertBenchmarkResult(result, problem)
 
 
 def test_expensive_algorithms_spawn_deterministic_distinct_child_seeds():
@@ -148,4 +152,3 @@ def test_expensive_algorithms_spawn_deterministic_distinct_child_seeds():
     ego2.optimizer = ego_opt_2
     ego2.run(problem, seed=123)
     assert ego_opt.seeds == ego_opt_2.seeds
-

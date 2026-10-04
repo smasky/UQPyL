@@ -1,0 +1,4 @@
+Three recorded metadata/row inconsistencies now raise ValueError without warnings.
+Complete-design metrics exactly match the saved baseline.
+Explicitly updated N=127 accepts complete remaining blocks with unchanged metrics.
+Saved /home/wmtsky/projects/UQPyL/agent/verification/1001-sobol-metadata-reference.json

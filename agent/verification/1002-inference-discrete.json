@@ -1,0 +1,1712 @@
+[
+  {
+    "case": "discrete",
+    "method": "MH",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      24.760833333333334,
+      0.020616549324351495
+    ],
+    "variance": [
+      48.70946597222221,
+      0.9882327813059113
+    ],
+    "covariance": -0.13774556527223783,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.632438739789965,
+      0.6371061843640606,
+      0.6209368228038006,
+      0.6244374062343724
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.029735825110402,
+          1.0014422600502269
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0298124504959765,
+          1.0014392271775507
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          214.9265417614798,
+          1684.647583957006
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2429.2425132110657
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.799571553943679,
+    "quantiles": [
+      [
+        10.0,
+        -1.9413640021230498
+      ],
+      [
+        30.0,
+        0.016891846909835806
+      ],
+      [
+        30.0,
+        1.9710784258741632
+      ]
+    ],
+    "category_mass": [
+      0.11883333333333333,
+      0.28625,
+      0.5949166666666666
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "MH",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.466666666666665,
+      -0.03434769401596294
+    ],
+    "variance": [
+      41.798888888888875,
+      1.0348574363747676
+    ],
+    "covariance": 0.14518477290809217,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.6232705450908484,
+      0.6299383230538423,
+      0.6379396566094349,
+      0.6214369061510252
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0259672603869745,
+          1.0037743167101791
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0258835399218853,
+          1.003851824187477
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          214.1130395183819,
+          1537.2120423511874
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          1931.7549952100915
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.304956548847258,
+    "quantiles": [
+      [
+        10.0,
+        -2.078049708637724
+      ],
+      [
+        30.0,
+        -0.023664637629850382
+      ],
+      [
+        30.0,
+        1.9160760639865697
+      ]
+    ],
+    "category_mass": [
+      0.08508333333333333,
+      0.2831666666666667,
+      0.63175
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "MH",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.015833333333333,
+      -0.02241985249416429
+    ],
+    "variance": [
+      45.033082638888814,
+      0.9674545745611409
+    ],
+    "covariance": -0.11108035589075452,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.6307717952992166,
+      0.6176029338223037,
+      0.630271711951992,
+      0.6319386564427405
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0281256518803386,
+          1.0008427678691958
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0279841870836255,
+          1.0012144462859753
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          141.51583288821314,
+          1713.7300785394582
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2490.9346664651716
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.597143680090085,
+    "quantiles": [
+      [
+        10.0,
+        -1.974258520289794
+      ],
+      [
+        30.0,
+        -0.006990361108390797
+      ],
+      [
+        30.0,
+        1.8146002879407281
+      ]
+    ],
+    "category_mass": [
+      0.10016666666666667,
+      0.2980833333333333,
+      0.60175
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "MH_Gibbs",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.451666666666668,
+      0.06526107691596537
+    ],
+    "variance": [
+      39.66266388888885,
+      0.9488053969021902
+    ],
+    "covariance": 0.048460289196797283,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.7982997166194366,
+      0.8119686614435739,
+      0.7912985497582931,
+      0.7901316886147691
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0368163076059262,
+          1.0034806165121841
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0368984052361572,
+          1.0034333306592207
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          215.3385363106674,
+          960.9849550462523
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          1096.4122108896934
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 2.812319935997948,
+    "quantiles": [
+      [
+        10.0,
+        -1.7928066439199855
+      ],
+      [
+        30.0,
+        0.05448211889635557
+      ],
+      [
+        30.0,
+        1.8787775850036141
+      ]
+    ],
+    "category_mass": [
+      0.07433333333333333,
+      0.30616666666666664,
+      0.6195
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "MH_Gibbs",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      24.63,
+      0.005726551369570605
+    ],
+    "variance": [
+      50.296433333333276,
+      1.0200664637702679
+    ],
+    "covariance": 0.1257782072464597,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.8023003833972329,
+      0.8039673278879813,
+      0.8071345224204034,
+      0.7931321886981163
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.023195656610651,
+          1.0050661117173443
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.023965983364841,
+          1.0051406569929848
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          152.80831780558657,
+          856.5814131317068
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          1046.9683790795652
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 2.78395440406166,
+    "quantiles": [
+      [
+        10.0,
+        -1.9473866476315744
+      ],
+      [
+        30.0,
+        0.010617924654094502
+      ],
+      [
+        30.0,
+        1.9796452351019962
+      ]
+    ],
+    "category_mass": [
+      0.12716666666666668,
+      0.2826666666666667,
+      0.5901666666666666
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "MH_Gibbs",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      24.636666666666667,
+      -0.021557761145676785
+    ],
+    "variance": [
+      46.5013222222221,
+      1.0206975742548974
+    ],
+    "covariance": -0.20000214274128816,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.8023003833972329,
+      0.8003000500083347,
+      0.8038006334389065,
+      0.7911318553092183
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0443489482641624,
+          1.0021454639759302
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0431150600825443,
+          1.0025173884094798
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          146.71135678364314,
+          952.0099206190362
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          973.1192951799477
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 2.7980780790094286,
+    "quantiles": [
+      [
+        10.0,
+        -2.061516277276204
+      ],
+      [
+        30.0,
+        0.0017417092851905736
+      ],
+      [
+        30.0,
+        1.9178187777349285
+      ]
+    ],
+    "category_mass": [
+      0.10816666666666666,
+      0.32,
+      0.5718333333333333
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "AMH",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.058333333333334,
+      0.03770990496605737
+    ],
+    "variance": [
+      44.71326388888883,
+      0.9823437696344837
+    ],
+    "covariance": 0.10376445921465809,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.45040840140023336,
+      0.4684114019003167,
+      0.4675779296549425,
+      0.4665777629604934
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0022478872191534,
+          1.0013522015339407
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.002269793235572,
+          1.0013553177746957
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1860.4966238670645,
+          2283.3598991127624
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2812.2278054702633
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 8.20308105298318,
+    "quantiles": [
+      [
+        10.0,
+        -1.9199149492812053
+      ],
+      [
+        30.0,
+        0.04043444583733624
+      ],
+      [
+        30.0,
+        1.9905622529716924
+      ]
+    ],
+    "category_mass": [
+      0.09858333333333333,
+      0.297,
+      0.6044166666666667
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "AMH",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.096666666666668,
+      -0.042771559266736744
+    ],
+    "variance": [
+      45.340655555555486,
+      1.0422274502441171
+    ],
+    "covariance": -0.11233498496911064,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.45140856809468244,
+      0.47724620770128356,
+      0.47474579096516084,
+      0.45940990165027507
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0035457645021852,
+          1.0004535383709012
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.003525045198721,
+          1.0006349013026556
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1753.0815876598465,
+          2293.162524620341
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2994.1576216349044
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 8.630074439104646,
+    "quantiles": [
+      [
+        10.0,
+        -2.062685681328893
+      ],
+      [
+        30.0,
+        -0.05954764082312636
+      ],
+      [
+        30.0,
+        1.9071131796557532
+      ]
+    ],
+    "category_mass": [
+      0.10175,
+      0.28683333333333333,
+      0.6114166666666667
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "AMH",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      24.638333333333332,
+      -0.029414365475630967
+    ],
+    "variance": [
+      46.369197222222176,
+      1.0223293017775157
+    ],
+    "covariance": 0.18717154076045464,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.4657442907151192,
+      0.4567427904650775,
+      0.47041173528921487,
+      0.47791298549758293
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0050935925680486,
+          1.0015914721027583
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0051048781438148,
+          1.0015913325631638
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1497.659118837882,
+          2028.5778222065014
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2530.870460718576
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 8.129906968213618,
+    "quantiles": [
+      [
+        10.0,
+        -2.0225726582064345
+      ],
+      [
+        30.0,
+        -0.030319731523597238
+      ],
+      [
+        30.0,
+        1.943157967667581
+      ]
+    ],
+    "category_mass": [
+      0.1075,
+      0.32116666666666666,
+      0.5713333333333334
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DEMC",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      24.7225,
+      0.046520981267554724
+    ],
+    "variance": [
+      48.589660416666554,
+      0.9436444292708808
+    ],
+    "covariance": 0.208682461971303,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.4862477079513252,
+      0.4894149024837473,
+      0.46674445740956827,
+      0.4850808468078013
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0018594172006337,
+          1.0002584622396415
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0017511125570437,
+          1.0012058965199135
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1438.850384859806,
+          1662.5781099539677
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2169.632181230634
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 3.251983598107472,
+    "quantiles": [
+      [
+        10.0,
+        -1.8672956554091074
+      ],
+      [
+        30.0,
+        0.04917803439733337
+      ],
+      [
+        30.0,
+        1.956344927456499
+      ]
+    ],
+    "category_mass": [
+      0.11833333333333333,
+      0.29108333333333336,
+      0.5905833333333333
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DEMC",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.323333333333334,
+      0.005096759053339442
+    ],
+    "variance": [
+      42.22878888888885,
+      1.0333763907691884
+    ],
+    "covariance": 0.12646477788301788,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.4794132355392565,
+      0.4844140690115019,
+      0.4804134022337056,
+      0.4785797632938823
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0011288675250376,
+          1.0025792880699285
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0013164679414868,
+          1.0025314864762962
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1554.6468671867037,
+          1735.6106335665686
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          2473.194212391619
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 3.106125383870676,
+    "quantiles": [
+      [
+        10.0,
+        -1.9354665485115774
+      ],
+      [
+        30.0,
+        -0.013835308497408327
+      ],
+      [
+        30.0,
+        2.075646964611064
+      ]
+    ],
+    "category_mass": [
+      0.08666666666666667,
+      0.29433333333333334,
+      0.619
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DEMC",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      25.876666666666665,
+      -0.038670956745170265
+    ],
+    "variance": [
+      40.2814555555557,
+      1.0256883213194148
+    ],
+    "covariance": -0.017184453482669185,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.4885814302383731,
+      0.468078013002167,
+      0.47824637439573264,
+      0.47474579096516084
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.00057839571618,
+          1.002687218329075
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0004517018914083,
+          1.0026384026058563
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          1375.0974778516036,
+          1519.0806028558243
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          1911.436200191807
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 3.1450127898715436,
+    "quantiles": [
+      [
+        10.0,
+        -2.092920747146252
+      ],
+      [
+        30.0,
+        -0.05362191538218131
+      ],
+      [
+        30.0,
+        1.8634241077044813
+      ]
+    ],
+    "category_mass": [
+      0.08025,
+      0.25183333333333335,
+      0.6679166666666667
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DREAM_ZS",
+    "seed": 5,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      28.250833333333333,
+      0.03254806091459687
+    ],
+    "variance": [
+      18.082082638888924,
+      0.6739612995411813
+    ],
+    "covariance": 0.06757442014917689,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.8468078013002167,
+      0.8536422737122854,
+      0.8541423570595099,
+      0.8488081346891149
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0090961385269228,
+          1.0077529280065296
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.007616398773971,
+          1.0148894550082879
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          249.6187097818627,
+          175.80915591255035
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          362.6825047349272
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.800451062852517,
+    "quantiles": [
+      [
+        20.0,
+        -1.667029043116206
+      ],
+      [
+        30.0,
+        0.0919402702455141
+      ],
+      [
+        30.0,
+        1.570836589401588
+      ]
+    ],
+    "category_mass": [
+      0.01825,
+      0.13841666666666666,
+      0.8433333333333334
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DREAM_ZS",
+    "seed": 17,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      27.379166666666666,
+      -0.05727186157533118
+    ],
+    "variance": [
+      24.706232638888935,
+      0.5356148067866119
+    ],
+    "covariance": 0.08203799471462546,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.8379729954992499,
+      0.8494749124854143,
+      0.8373062177029504,
+      0.8538089681613602
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.015025878187532,
+          1.0149782202934816
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0145513813521492,
+          1.0149001381111313
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          247.0920706243633,
+          242.75638870900363
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          600.5129185625311
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.4896227868739516,
+    "quantiles": [
+      [
+        10.0,
+        -1.5383761853641111
+      ],
+      [
+        30.0,
+        -0.05303055977017346
+      ],
+      [
+        30.0,
+        1.3794885238439962
+      ]
+    ],
+    "category_mass": [
+      0.026833333333333334,
+      0.20841666666666667,
+      0.76475
+    ]
+  },
+  {
+    "case": "discrete",
+    "method": "DREAM_ZS",
+    "seed": 41,
+    "draws": 6000,
+    "warmup": 1000,
+    "reference": {
+      "mean": [
+        25.0,
+        0.0
+      ],
+      "variance": [
+        45.0,
+        1.0
+      ],
+      "covariance": 0.0,
+      "category_mass": [
+        0.1,
+        0.3,
+        0.6
+      ]
+    },
+    "mean": [
+      26.643333333333334,
+      -0.1785256714693138
+    ],
+    "variance": [
+      31.04945555555554,
+      0.4701848018293095
+    ],
+    "covariance": -0.19636465912640827,
+    "positive_mass": 1.0,
+    "acceptance": [
+      0.8509751625270878,
+      0.8528088014669112,
+      0.8569761626937823,
+      0.8504750791798633
+    ],
+    "diagnostics": {
+      "sample_scope": "formal_draws",
+      "n_chains": 4,
+      "n_draws": 3000,
+      "split_rhat": {
+        "method": "classical_split",
+        "draws_per_half": 1500,
+        "values": [
+          1.0043532570568234,
+          1.025998020616126
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "rhat": {
+        "method": "rank_normalized_folded_split",
+        "values": [
+          1.0043178047738095,
+          1.025494632749983
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_bulk": {
+        "method": "rank_normalized_split",
+        "values": [
+          250.07378718399087,
+          194.86051726447656
+        ],
+        "status": [
+          "available",
+          "available"
+        ]
+      },
+      "ess_tail": {
+        "method": "quantile_split",
+        "probabilities": [
+          0.05,
+          0.95
+        ],
+        "values": [
+          null,
+          540.1225539024325
+        ],
+        "status": [
+          "constant_tail",
+          "available"
+        ]
+      }
+    },
+    "warnings": [],
+    "seconds": 4.176570623880252,
+    "quantiles": [
+      [
+        10.0,
+        -1.446241384238694
+      ],
+      [
+        30.0,
+        -0.26801184197528416
+      ],
+      [
+        30.0,
+        1.3213283145605061
+      ]
+    ],
+    "category_mass": [
+      0.04375,
+      0.24816666666666667,
+      0.7080833333333333
+    ]
+  }
+]

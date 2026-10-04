@@ -32,10 +32,10 @@ def test_mh_gibbs_run_smoke():
 def test_amh_multi_output_rejected_and_run_smoke():
     p_bad = Problem(nInput=2, nObj=2, ub=1.0, lb=0.0, objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 2)))
     with pytest.raises(ValueError):
-        AMH(nChains=2, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False).run(p_bad, seed=1)
+        AMH(nChains=2, warmUp=0, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False).run(p_bad, seed=1)
 
     problem = _make_problem(2)
-    alg = AMH(nChains=2, warmUp=0, maxIterTimes=3, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = AMH(nChains=2, warmUp=0, maxIters=3, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(problem, gamma=0.05, seed=123)
     assert res.decs.shape == (2, 3, 2)
 
@@ -43,11 +43,11 @@ def test_amh_multi_output_rejected_and_run_smoke():
 def test_demc_run_smoke_gamma_none_and_float():
     problem = _make_problem(2)
     # DEMC proposal needs >=3 chains (choose j,k != i)
-    alg = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = DEMC(nChains=3, warmUp=0, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(problem, gamma=None, seed=123)
     assert res.decs.shape == (3, 3, 2)
 
-    alg2 = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg2 = DEMC(nChains=3, warmUp=0, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res2 = alg2.run(problem, gamma=0.05, seed=123)
     assert res2.decs.shape == (3, 3, 2)
 
@@ -82,7 +82,7 @@ def test_dream_zs_run_smoke_small_iters():
         nChains=3,
         warmUp=0,
         maxIters=2,
-        ps=1.0,           # always snooker update
+        ps=1.0,           # snooker with documented full-support refresh
         k=1,
         jitter=0.0,
         adpInterval=1,
@@ -93,7 +93,8 @@ def test_dream_zs_run_smoke_small_iters():
         logFlag=False,
         saveFlag=False,
     )
-    res = alg.run(problem, gamma=0.05, seed=123)
+    with pytest.warns(RuntimeWarning, match="full-dimensional Gaussian refresh"):
+        res = alg.run(problem, gamma=0.05, seed=123)
     assert res.decs.shape == (3, 2, 2)
 
 
@@ -131,7 +132,8 @@ def test_dream_zs_run_does_not_mutate_global_random_state():
         logFlag=False,
         saveFlag=False,
     )
-    alg.run(problem, gamma=0.05, seed=123)
+    with pytest.warns(RuntimeWarning, match="full-dimensional Gaussian refresh"):
+        alg.run(problem, gamma=0.05, seed=123)
 
     got_next = np.random.rand()
     assert np.isclose(got_next, expected_next)
@@ -142,7 +144,7 @@ def test_amh_helpers_update_covs_and_check_gamma_():
     from UQPyL.inference.chain import Chain
 
     problem = _make_problem(3)
-    alg = AMH(nChains=2, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = AMH(nChains=2, warmUp=0, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(problem, seed=123)
     alg.set("nChains", 2)
 
@@ -165,7 +167,7 @@ def test_demc_helpers_check_gamma__and_f_prop():
     from UQPyL.inference import DEMC
 
     problem = _make_problem(2)
-    alg = DEMC(nChains=3, warmUp=0, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = DEMC(nChains=3, warmUp=0, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(problem, seed=123)
     alg.set("nChains", 3)
 

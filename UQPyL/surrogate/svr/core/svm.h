@@ -52,6 +52,8 @@ struct svm_parameter
 //
 struct svm_model
 {
+	int iterations;
+	int iterationLimitReached;
 	struct svm_parameter param;	/* parameter */
 	int nr_class;		/* number of classes, = 2 in regression/one class svm */
 	int l;			/* total #SV */

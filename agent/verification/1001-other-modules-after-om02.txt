@@ -1,0 +1,12 @@
+{"records": 169, "discrepancies": 11, "controls": 106}
+{"group": "OM03", "case": "LinearRegression/Origin/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Origin/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Ridge/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "LinearRegression/Ridge/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Origin/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Origin/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Ridge/scaled=False", "discrepancy": true, "expected_shape": [3, 2], "actual_shape": [6, 1], "fit_accepted": true}
+{"group": "OM03", "case": "PolynomialRegression/Ridge/scaled=True", "discrepancy": true, "expected_shape": [3, 2], "error": "Scaler feature count does not match fitted data.", "fit_accepted": true}
+{"group": "OM04", "case": "map_discrete_vars/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}
+{"group": "OM04", "case": "apply_var_type/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}
+{"group": "OM04", "case": "transform/integer=True", "discrepancy": true, "actual": [[0], [0], [0]], "expected": [[0.25], [0.75], [0.75]]}

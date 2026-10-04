@@ -1,0 +1,1 @@
+CI YAML parsed: 15 combinations; Linux/Windows/macOS x Python 3.10-3.14. XML/JSON/Markdown artifact paths verified. This is a configuration check, not remote execution.

@@ -1,0 +1,947 @@
+{
+  "delta": [
+    {
+      "factor": 1,
+      "constant_column": false,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.6565195291246715,
+        "scale_exponent": 2,
+        "raw_underflow": false,
+        "raw_overflow": false
+      },
+      "physical_objective_decimal": "0.00030219947165717632510904817517719477748551351006135038175677402454149048021981964",
+      "reference_decimal": "0.00030219947165717638004611700353052583523094654083251953125",
+      "relative_error": 1.8179075074848408e-16,
+      "warnings": []
+    },
+    {
+      "factor": 1e-200,
+      "constant_column": false,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.5025332131796048,
+        "scale_exponent": -662,
+        "raw_underflow": true,
+        "raw_overflow": false
+      },
+      "physical_objective_decimal": "3.0219947165717650805651783823223371898405356236362001778458627289792994528849886E-404",
+      "reference_decimal": "3.0219947165717636922753451193195808165915632667410303223528842367654280343280623E-404",
+      "relative_error": 4.59395188763903e-16,
+      "warnings": [
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives.",
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives."
+      ]
+    },
+    {
+      "factor": -1e-200,
+      "constant_column": false,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.5025332131796048,
+        "scale_exponent": -662,
+        "raw_underflow": true,
+        "raw_overflow": false
+      },
+      "physical_objective_decimal": "3.0219947165717650805651783823223371898405356236362001778458627289792994528849886E-404",
+      "reference_decimal": "3.0219947165717636922753451193195808165915632667410303223528842367654280343280623E-404",
+      "relative_error": 4.59395188763903e-16,
+      "warnings": [
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives.",
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives."
+      ]
+    },
+    {
+      "factor": 1e+200,
+      "constant_column": false,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.8576903592002687,
+        "scale_exponent": 666,
+        "raw_underflow": false,
+        "raw_overflow": true
+      },
+      "physical_objective_decimal": "3.0219947165717661432806172067681004362484080564467507327868154961130130732259015E+396",
+      "reference_decimal": "3.0219947165717636175284805134713350373343340736094501574781568123734016895613747E+396",
+      "relative_error": 8.357897261840952e-16,
+      "warnings": [
+        "DeltaTest subset raw objective has overflow in physical squared units; selection and EA results use finite scaled objectives.",
+        "DeltaTest subset raw objective has overflow in physical squared units; selection and EA results use finite scaled objectives."
+      ]
+    },
+    {
+      "factor": 1e-200,
+      "constant_column": true,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.5025332131796048,
+        "scale_exponent": -662,
+        "raw_underflow": true,
+        "raw_overflow": false
+      },
+      "physical_objective_decimal": "1.5109973582858825402825891911611685949202678118181000889229313644896497264424943E-404",
+      "reference_decimal": "1.5109973582858815750871294382836916098997783333566059695777931495555313949142793E-404",
+      "relative_error": 6.387803753990826e-16,
+      "warnings": [
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives.",
+        "DeltaTest subset raw objective has underflow in physical squared units; selection and EA results use finite scaled objectives."
+      ]
+    },
+    {
+      "factor": 1e+200,
+      "constant_column": true,
+      "selected_labels": [
+        "x_1"
+      ],
+      "ea_mask": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "objective_metadata": {
+        "objective_units": "scaled_output_squared",
+        "output_aggregation": "half_mean_squared_difference",
+        "scale_mantissa": 0.8576903592002687,
+        "scale_exponent": 666,
+        "raw_underflow": false,
+        "raw_overflow": true
+      },
+      "physical_objective_decimal": "1.5109973582858819033639710561782019226144635870876872235158269256032431090109225E+396",
+      "reference_decimal": "1.5109973582858815377136971353595754245112925940808917573182281531604564308154809E+396",
+      "relative_error": 2.4199266260506417e-16,
+      "warnings": [
+        "DeltaTest subset raw objective has overflow in physical squared units; selection and EA results use finite scaled objectives.",
+        "DeltaTest subset raw objective has overflow in physical squared units; selection and EA results use finite scaled objectives."
+      ]
+    }
+  ],
+  "morris": [
+    {
+      "input_factor": 0.001,
+      "effect_mode": "physical",
+      "effects": [
+        2999.999999999931,
+        -1.9999999999999998
+      ],
+      "analytic_effects": [
+        3000.0,
+        -2
+      ],
+      "normalized": [
+        0.999333777481679,
+        0.0006662225183211346
+      ]
+    },
+    {
+      "input_factor": 0.001,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    },
+    {
+      "input_factor": 1,
+      "effect_mode": "physical",
+      "effects": [
+        3.0000000000000004,
+        -1.9999999999999996
+      ],
+      "analytic_effects": [
+        3.0,
+        -2
+      ],
+      "normalized": [
+        0.6000000000000001,
+        0.39999999999999986
+      ]
+    },
+    {
+      "input_factor": 1,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    },
+    {
+      "input_factor": 1000,
+      "effect_mode": "physical",
+      "effects": [
+        0.0030000000000000005,
+        -2.0
+      ],
+      "analytic_effects": [
+        0.003,
+        -2
+      ],
+      "normalized": [
+        0.0014977533699450825,
+        0.9985022466300548
+      ]
+    },
+    {
+      "input_factor": 1000,
+      "effect_mode": "unit",
+      "effects": [
+        60.0,
+        -6.000000000000001
+      ],
+      "analytic_effects": [
+        60,
+        -6
+      ],
+      "normalized": [
+        0.9090909090909091,
+        0.09090909090909093
+      ]
+    }
+  ],
+  "mars": [
+    {
+      "model": "additive",
+      "degree": 2,
+      "samples": 512,
+      "sample_seed": 41,
+      "analytic_normalized_deletion_loss": [
+        0.9712230215827338,
+        0.02877697841726619,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "primary_weights": [
+        0.9707685560413345,
+        0.029231443958665407,
+        3.3501897486829013e-32,
+        3.3501897486829013e-32,
+        3.3501897486829013e-32
+      ],
+      "primary_max_error": 0.00045446554139927375,
+      "primary_mean_error": 0.0001817862165596984,
+      "validation": {
+        "validation_r2": 0.9999999779000073,
+        "constant_output": false,
+        "base_gcv": 1.0776688717049931e-31,
+        "removed_gcv": [
+          2.990017742397145,
+          0.09003437073478499,
+          2.1095447731873634e-31,
+          2.1095447731873634e-31,
+          2.1095447731873634e-31
+        ],
+        "scaled_base_gcv": 8.820736790896086e-33,
+        "scaled_removed_gcv": [
+          0.24473342599260264,
+          0.00736932751086176,
+          1.7266657394916476e-32,
+          1.7266657394916476e-32,
+          1.7266657394916476e-32
+        ],
+        "scale_mantissa": 0.8738366313206923,
+        "scale_exponent": 2,
+        "raw_underflow": false,
+        "gcv_improvement_fraction": 0.0,
+        "gcv_improvement_variable": null,
+        "gcv_search_unstable": false
+      },
+      "stability": {
+        "n_validation_repeats": 3,
+        "split_seeds": [
+          0,
+          1,
+          2
+        ],
+        "stability_tolerance": 0.05,
+        "assessed": true,
+        "outputs": [
+          {
+            "constant_output": false,
+            "stable": true,
+            "max_normalized_range": 0.0016994766926514693,
+            "normalized_min": [
+              0.9706620336681003,
+              0.027638489639248302,
+              3.3501897486829013e-32,
+              3.3501897486829013e-32,
+              3.3501897486829013e-32
+            ],
+            "normalized_max": [
+              0.9723615103607518,
+              0.029337966331899626,
+              5.13036493341765e-32,
+              5.13036493341765e-32,
+              5.13036493341765e-32
+            ],
+            "normalized_mean": [
+              0.971264033356729,
+              0.028735966643271115,
+              4.055014954009609e-32,
+              4.055014954009609e-32,
+              4.055014954009609e-32
+            ],
+            "normalized_std": [
+              0.000777250961088378,
+              0.0007772509610882977,
+              7.725379724183429e-33,
+              7.725379724183429e-33,
+              7.725379724183429e-33
+            ]
+          }
+        ],
+        "splits": [
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 0,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9999999779000073,
+                "constant_output": false,
+                "base_gcv": 1.0776688717049931e-31,
+                "removed_gcv": [
+                  2.990017742397145,
+                  0.09003437073478499,
+                  2.1095447731873634e-31,
+                  2.1095447731873634e-31,
+                  2.1095447731873634e-31
+                ],
+                "scaled_base_gcv": 8.820736790896086e-33,
+                "scaled_removed_gcv": [
+                  0.24473342599260264,
+                  0.00736932751086176,
+                  1.7266657394916476e-32,
+                  1.7266657394916476e-32,
+                  1.7266657394916476e-32
+                ],
+                "scale_mantissa": 0.8738366313206923,
+                "scale_exponent": 2,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0,
+                "gcv_improvement_variable": null,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9707685560413345,
+                0.029231443958665407,
+                3.3501897486829013e-32,
+                3.3501897486829013e-32,
+                3.3501897486829013e-32
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 1,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9999997248945071,
+                "constant_output": false,
+                "base_gcv": 3.1234534261030226e-31,
+                "removed_gcv": [
+                  3.078747502803824,
+                  0.09305421191796948,
+                  4.292100653160234e-31,
+                  4.292100653160234e-31,
+                  4.292100653160234e-31
+                ],
+                "scaled_base_gcv": 2.5787605519569146e-32,
+                "scaled_removed_gcv": [
+                  0.25418508063275,
+                  0.007682667168400538,
+                  3.543609697170188e-32,
+                  3.543609697170188e-32,
+                  3.543609697170188e-32
+                ],
+                "scale_mantissa": 0.8700656375266538,
+                "scale_exponent": 2,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0,
+                "gcv_improvement_variable": null,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9706620336681003,
+                0.029337966331899626,
+                3.6844901799282757e-32,
+                3.6844901799282757e-32,
+                3.6844901799282757e-32
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 2,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9999999736548445,
+                "constant_output": false,
+                "base_gcv": 2.1715321906617224e-31,
+                "removed_gcv": [
+                  3.036715435731226,
+                  0.08631586834063831,
+                  3.773761219499311e-31,
+                  3.773761219499311e-31,
+                  3.773761219499311e-31
+                ],
+                "scaled_base_gcv": 1.8614113969428767e-32,
+                "scaled_removed_gcv": [
+                  0.2603036116917967,
+                  0.007398892899548721,
+                  3.2348229390863926e-32,
+                  3.2348229390863926e-32,
+                  3.2348229390863926e-32
+                ],
+                "scale_mantissa": 0.8538900642493216,
+                "scale_exponent": 2,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0,
+                "gcv_improvement_variable": null,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9723615103607518,
+                0.027638489639248302,
+                5.13036493341765e-32,
+                5.13036493341765e-32,
+                5.13036493341765e-32
+              ]
+            ]
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "model": "weak_third_order",
+      "degree": 2,
+      "samples": 512,
+      "sample_seed": 41,
+      "analytic_normalized_deletion_loss": [
+        0.870967741935484,
+        0.043010752688172046,
+        0.043010752688172046,
+        0.043010752688172046,
+        0.0
+      ],
+      "primary_weights": [
+        0.999836535335942,
+        0.00016346466405801744,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "primary_max_error": 0.12886879340045798,
+      "primary_mean_error": 0.051547517360183225,
+      "validation": {
+        "validation_r2": 0.9600934145614441,
+        "constant_output": false,
+        "base_gcv": 0.1399772600270353,
+        "removed_gcv": [
+          3.0310695512095056,
+          0.1404499287218036,
+          0.13464367517663117,
+          0.1351323165348528,
+          0.1325042739071287
+        ],
+        "scaled_base_gcv": 0.006589019433615537,
+        "scaled_removed_gcv": [
+          0.1426787191984069,
+          0.006611268927675417,
+          0.0063379565522349275,
+          0.006360957912632814,
+          0.006237250505136057
+        ],
+        "scale_mantissa": 0.5761404438803206,
+        "scale_exponent": 3,
+        "raw_underflow": false,
+        "gcv_improvement_fraction": 0.0024579226631497564,
+        "gcv_improvement_variable": 4,
+        "gcv_search_unstable": false
+      },
+      "stability": {
+        "n_validation_repeats": 3,
+        "split_seeds": [
+          0,
+          1,
+          2
+        ],
+        "stability_tolerance": 0.05,
+        "assessed": true,
+        "outputs": [
+          {
+            "constant_output": false,
+            "stable": true,
+            "max_normalized_range": 0.002174761194007502,
+            "normalized_min": [
+              0.9978199270096765,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "normalized_max": [
+              0.999994688203684,
+              0.0017104510766530446,
+              0.00046962191367025846,
+              5.311796316023845e-06,
+              0.0
+            ],
+            "normalized_mean": [
+              0.9992170501831007,
+              0.0006246385802370207,
+              0.00015654063789008615,
+              1.7705987720079484e-06,
+              0.0
+            ],
+            "normalized_std": [
+              0.000990022879763631,
+              0.000770680113981064,
+              0.00022138189316669546,
+              2.504004796894788e-06,
+              0.0
+            ]
+          }
+        ],
+        "splits": [
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 0,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9600934145614441,
+                "constant_output": false,
+                "base_gcv": 0.1399772600270353,
+                "removed_gcv": [
+                  3.0310695512095056,
+                  0.1404499287218036,
+                  0.13464367517663117,
+                  0.1351323165348528,
+                  0.1325042739071287
+                ],
+                "scaled_base_gcv": 0.006589019433615537,
+                "scaled_removed_gcv": [
+                  0.1426787191984069,
+                  0.006611268927675417,
+                  0.0063379565522349275,
+                  0.006360957912632814,
+                  0.006237250505136057
+                ],
+                "scale_mantissa": 0.5761404438803206,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0024579226631497564,
+                "gcv_improvement_variable": 4,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.999836535335942,
+                0.00016346466405801744,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 1,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.946186042926426,
+                "constant_output": false,
+                "base_gcv": 0.12481780413238257,
+                "removed_gcv": [
+                  3.182593249568826,
+                  0.13005940651096412,
+                  0.12625693990967984,
+                  0.12296294540116835,
+                  0.12178786577194319
+                ],
+                "scaled_base_gcv": 0.00589217579044449,
+                "scaled_removed_gcv": [
+                  0.15023817336229195,
+                  0.006139611986369378,
+                  0.0059601119398191415,
+                  0.005804614934950161,
+                  0.005749143876223462
+                ],
+                "scale_mantissa": 0.5753212750859521,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0009484286213539846,
+                "gcv_improvement_variable": 4,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9978199270096765,
+                0.0017104510766530446,
+                0.00046962191367025846,
+                0.0,
+                0.0
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 2,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9355883489819423,
+                "constant_output": false,
+                "base_gcv": 0.12959234014556023,
+                "removed_gcv": [
+                  3.2538031751942884,
+                  0.11790432250346908,
+                  0.12929006740178686,
+                  0.12960893540531496,
+                  0.1286237820808709
+                ],
+                "scaled_base_gcv": 0.006285608198152195,
+                "scaled_removed_gcv": [
+                  0.15781898752814166,
+                  0.005718705097021704,
+                  0.006270947084430461,
+                  0.006286413116873839,
+                  0.006238630294172999
+                ],
+                "scale_mantissa": 0.5675786175585604,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0036096964077896284,
+                "gcv_improvement_variable": 1,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.999994688203684,
+                0.0,
+                0.0,
+                5.311796316023845e-06,
+                0.0
+              ]
+            ]
+          }
+        ]
+      },
+      "warnings": []
+    },
+    {
+      "model": "weak_third_order",
+      "degree": 3,
+      "samples": 512,
+      "sample_seed": 41,
+      "analytic_normalized_deletion_loss": [
+        0.870967741935484,
+        0.043010752688172046,
+        0.043010752688172046,
+        0.043010752688172046,
+        0.0
+      ],
+      "primary_weights": [
+        0.9911848709210925,
+        0.002161247219327047,
+        0.003621522433543654,
+        0.00303235942603663,
+        0.0
+      ],
+      "primary_max_error": 0.12021712898560855,
+      "primary_mean_error": 0.048086851594243474,
+      "validation": {
+        "validation_r2": 0.9656259288337727,
+        "constant_output": false,
+        "base_gcv": 0.12621831228167776,
+        "removed_gcv": [
+          3.0552521546577784,
+          0.1326049778098425,
+          0.13692021268388646,
+          0.1351791869294674,
+          5.689993766389288e-06
+        ],
+        "scaled_base_gcv": 0.005941357277185615,
+        "scaled_removed_gcv": [
+          0.14381704440955415,
+          0.006241990846330719,
+          0.006445117885967011,
+          0.006363164199146189,
+          2.67839786952889e-07
+        ],
+        "scale_mantissa": 0.5761404438803206,
+        "scale_exponent": 3,
+        "raw_underflow": false,
+        "gcv_improvement_fraction": 0.04151230307663066,
+        "gcv_improvement_variable": 4,
+        "gcv_search_unstable": true
+      },
+      "stability": {
+        "n_validation_repeats": 3,
+        "split_seeds": [
+          0,
+          1,
+          2
+        ],
+        "stability_tolerance": 0.05,
+        "assessed": true,
+        "outputs": [
+          {
+            "constant_output": false,
+            "stable": false,
+            "max_normalized_range": 0.10936987235530071,
+            "normalized_min": [
+              0.8818149985657918,
+              0.002161247219327047,
+              0.003621522433543654,
+              0.00303235942603663,
+              0.0
+            ],
+            "normalized_max": [
+              0.9911848709210925,
+              0.03366444922503235,
+              0.034406837685260074,
+              0.033023848121677545,
+              0.017089866402238335
+            ],
+            "normalized_mean": [
+              0.933924646942475,
+              0.01958132600728275,
+              0.020914890371045564,
+              0.01988251454511719,
+              0.005696622134079445
+            ],
+            "normalized_std": [
+              0.044798352399220545,
+              0.013075789039575288,
+              0.012852289234561989,
+              0.012521684297539892,
+              0.008056240281729915
+            ]
+          }
+        ],
+        "splits": [
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 0,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9656259288337727,
+                "constant_output": false,
+                "base_gcv": 0.12621831228167776,
+                "removed_gcv": [
+                  3.0552521546577784,
+                  0.1326049778098425,
+                  0.13692021268388646,
+                  0.1351791869294674,
+                  5.689993766389288e-06
+                ],
+                "scaled_base_gcv": 0.005941357277185615,
+                "scaled_removed_gcv": [
+                  0.14381704440955415,
+                  0.006241990846330719,
+                  0.006445117885967011,
+                  0.006363164199146189,
+                  2.67839786952889e-07
+                ],
+                "scale_mantissa": 0.5761404438803206,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.04151230307663066,
+                "gcv_improvement_variable": 4,
+                "gcv_search_unstable": true
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9911848709210925,
+                0.002161247219327047,
+                0.003621522433543654,
+                0.00303235942603663,
+                0.0
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 1,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9990916108539453,
+                "constant_output": false,
+                "base_gcv": 0.0024250723880880607,
+                "removed_gcv": [
+                  3.1904424438283696,
+                  0.1241318352623024,
+                  0.12681578519671283,
+                  0.12181587619041032,
+                  0.06420990373541346
+                ],
+                "scaled_base_gcv": 0.00011447848257299031,
+                "scaled_removed_gcv": [
+                  0.15060870409476285,
+                  0.005859793798168787,
+                  0.00598649290921488,
+                  0.0057504661419909096,
+                  0.0030311063628014863
+                ],
+                "scale_mantissa": 0.5753212750859521,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.0,
+                "gcv_improvement_variable": null,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.8818149985657918,
+                0.03366444922503235,
+                0.034406837685260074,
+                0.033023848121677545,
+                0.017089866402238335
+              ]
+            ]
+          },
+          {
+            "training_samples": 410,
+            "validation_samples": 102,
+            "split_seed": 2,
+            "max_terms": 40,
+            "outputs": [
+              {
+                "validation_r2": 0.9621617943203234,
+                "constant_output": false,
+                "base_gcv": 0.041368067048117574,
+                "removed_gcv": [
+                  3.2211624124991225,
+                  0.11983216764727478,
+                  0.1259879852449639,
+                  0.12213646854411356,
+                  3.827548933821368e-06
+                ],
+                "scaled_base_gcv": 0.0020064724588451364,
+                "scaled_removed_gcv": [
+                  0.15623581490111582,
+                  0.005812211235016142,
+                  0.006110786424837576,
+                  0.005923976580035075,
+                  1.8564733787686389e-07
+                ],
+                "scale_mantissa": 0.5675786175585604,
+                "scale_exponent": 3,
+                "raw_underflow": false,
+                "gcv_improvement_fraction": 0.012774822155764616,
+                "gcv_improvement_variable": 4,
+                "gcv_search_unstable": false
+              }
+            ],
+            "normalized_weights": [
+              [
+                0.9287740713405407,
+                0.022918281577488854,
+                0.02471631099433297,
+                0.0235913360876374,
+                0.0
+              ]
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "MARS output 0 split 0 GCV improves substantially when removing input x_5; surrogate search is unstable and importance may be unreliable even with high validation R2.",
+        "MARS output 0 normalized importance range=0.10937 across holdouts exceeds stabilityTolerance=0.05; screening weights are unstable."
+      ]
+    }
+  ]
+}

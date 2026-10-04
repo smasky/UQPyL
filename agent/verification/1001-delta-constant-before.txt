@@ -1,0 +1,24 @@
+.F.                                                                      [100%]
+=================================== FAILURES ===================================
+___ testDeltaConstantLargeOutputColumnDoesNotEraseSmallActiveOutput[1e-200] ____
+
+factor = 1e-200
+
+    @pytest.mark.parametrize("factor", [1.0, 1e-200, 1e200])
+    def testDeltaConstantLargeOutputColumnDoesNotEraseSmallActiveOutput(factor):
+        p = Problem(nInput=2, nObj=2, lb=0, ub=1, objFunc=lambda x: x)
+        x = LHS("classic").sample(p, 128, seed=17)
+        y = np.column_stack(((3 * x[:, 0] + 1)*factor, np.full(len(x), 1e300)))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+>           assert DeltaTest(verboseFlag=False).findCombVio(p, x, y) == [p.xLabels[0]]
+E           AssertionError: assert ['x_2'] == ['x_1']
+E             
+E             At index 0 diff: 'x_2' != 'x_1'
+E             Use -v to get more diff
+
+tests/test_analysis_delta_subset_range.py:69: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_delta_subset_range.py::testDeltaConstantLargeOutputColumnDoesNotEraseSmallActiveOutput[1e-200]
+1 failed, 2 passed, 11 deselected in 0.79s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_analysis_delta_subset_range.py -k ConstantLarge -W error` failed. (See above for error)

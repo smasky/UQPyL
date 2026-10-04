@@ -1,0 +1,83 @@
+..............FF...........................                              [100%]
+=================================== FAILURES ===================================
+_________ testDeltaNumericDiscreteChoicesUsePhysicalValueRange[0.001] __________
+
+factor = 0.001
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    def testDeltaNumericDiscreteChoicesUsePhysicalValueRange(factor):
+        rng = np.random.default_rng(14)
+        choices = np.array([10.0, 15.0, 30.0])
+        selected = rng.choice(choices, 40)
+        continuous = rng.uniform(-1, 1, 40)
+        x = np.column_stack((selected * factor + 7, continuous))
+        y = (selected / 20 + continuous)[:, None]
+        p = Problem(
+            nInput=2,
+            nObj=1,
+            lb=[0, -1],
+            ub=[1, 1],
+            varType=[2, 0],
+            varSet={0: (choices * factor + 7).tolist()},
+            objFunc=lambda x: x[:, :1],
+        )
+        distanceX = np.column_stack(((selected - 10) / 20, (continuous + 1) / 2))
+        base = pairwiseDelta(distanceX, y)
+        expected = [pairwiseDelta(distanceX[:, 1:2], y) - base, pairwiseDelta(distanceX[:, :1], y) - base]
+        result = DeltaTest(**QUIET).analyze(p, x, y)
+>       np.testing.assert_allclose(result["S1"].values[0], expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [1]: 0.45538036505505053 (ACTUAL), 0.38844726912411626 (DESIRED)
+E       Max absolute difference among violations: 0.0669331
+E       Max relative difference among violations: 0.17230935
+E        ACTUAL: array([0.206117, 0.45538 ])
+E        DESIRED: array([0.206117, 0.388447])
+
+tests/test_analysis_delta_scaling.py:165: AssertionError
+__________ testDeltaNumericDiscreteChoicesUsePhysicalValueRange[1000] __________
+
+factor = 1000
+
+    @pytest.mark.parametrize("factor", [0.001, 1000])
+    def testDeltaNumericDiscreteChoicesUsePhysicalValueRange(factor):
+        rng = np.random.default_rng(14)
+        choices = np.array([10.0, 15.0, 30.0])
+        selected = rng.choice(choices, 40)
+        continuous = rng.uniform(-1, 1, 40)
+        x = np.column_stack((selected * factor + 7, continuous))
+        y = (selected / 20 + continuous)[:, None]
+        p = Problem(
+            nInput=2,
+            nObj=1,
+            lb=[0, -1],
+            ub=[1, 1],
+            varType=[2, 0],
+            varSet={0: (choices * factor + 7).tolist()},
+            objFunc=lambda x: x[:, :1],
+        )
+        distanceX = np.column_stack(((selected - 10) / 20, (continuous + 1) / 2))
+        base = pairwiseDelta(distanceX, y)
+        expected = [pairwiseDelta(distanceX[:, 1:2], y) - base, pairwiseDelta(distanceX[:, :1], y) - base]
+        result = DeltaTest(**QUIET).analyze(p, x, y)
+>       np.testing.assert_allclose(result["S1"].values[0], expected, atol=1e-14)
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=1e-14
+E       
+E       Mismatched elements: 1 / 2 (50%)
+E       Mismatch at index:
+E        [1]: 0.45538036505505053 (ACTUAL), 0.38844726912411626 (DESIRED)
+E       Max absolute difference among violations: 0.0669331
+E       Max relative difference among violations: 0.17230935
+E        ACTUAL: array([0.206117, 0.45538 ])
+E        DESIRED: array([0.206117, 0.388447])
+
+tests/test_analysis_delta_scaling.py:165: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_analysis_delta_scaling.py::testDeltaNumericDiscreteChoicesUsePhysicalValueRange[0.001]
+FAILED tests/test_analysis_delta_scaling.py::testDeltaNumericDiscreteChoicesUsePhysicalValueRange[1000]
+2 failed, 41 passed in 2.57s
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q tests/test_analysis_delta_scaling.py tests/test_analysis_delta.py tests/test_analysis_delta_more.py tests/test_analysis_delta_validation.py tests/test_analysis_scientific_references.py -W error` failed. (See above for error)

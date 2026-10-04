@@ -1,0 +1,110 @@
+name: Build and publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build_wheels:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: [["cp310", "3.10"], ["cp311", "3.11"], ["cp312", "3.12"], ["cp313", "3.13"]]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+
+    - name: Build wheels (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        CIBW_BUILD: ${{ matrix.python[0] }}-manylinux*
+        CIBW_ARCHS: x86_64
+        CIBW_ENVIRONMENT_LINUX: 'CFLAGS="-Werror=incompatible-pointer-types"'
+        CIBW_BEFORE_BUILD: pip install numpy scipy cython pybind11
+        CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair -w {dest_dir} {wheel}
+      run: cibuildwheel --output-dir wheelhouse --platform linux
+
+    - name: Build wheels (Windows)
+      if: matrix.os == 'windows-latest'
+      env:
+        CIBW_BUILD: ${{ matrix.python[0] }}-win*
+        CIBW_ARCHS: AMD64
+      run: cibuildwheel --output-dir wheelhouse --platform windows
+
+    - name: Build wheels (macOS)
+      if: matrix.os == 'macos-latest'
+      env:
+        CIBW_BUILD: ${{ matrix.python[0] }}-macosx*
+        CIBW_ARCHS: x86_64 arm64
+      run: cibuildwheel --output-dir wheelhouse --platform macos
+
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{ matrix.python[1] }}-${{ matrix.os }}
+        path: wheelhouse/*.whl
+
+  build_sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install build deps
+        run: pip install cython numpy scipy pybind11 build
+
+      - name: Build sdist
+        run: python -m build --sdist
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-distribution
+          path: dist/*.tar.gz
+
+  publish:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/uqpyl
+    permissions:
+      id-token: write
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        pattern: wheels-*
+        path: wheelhouse
+        merge-multiple: true
+
+    - name: Download sdist
+      uses: actions/download-artifact@v4
+      with:
+        name: source-distribution
+        path: wheelhouse
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: wheelhouse/

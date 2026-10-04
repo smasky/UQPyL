@@ -11,10 +11,10 @@ from UQPyL.problem import ModelProblem
 def test_best_member_follows_metric_direction_and_preserves_raw_scores(methodClass, metric, higher):
     obs = np.array([[1.], [2.], [4.]])
     def simulate(X):
-        return np.column_stack((X[:, 0], X[:, 1]**2, X[:, 0]+X[:, 1]))[:, :, None]
-    problem = ModelProblem(nInput=2, lb=0, ub=4, obs=obs, simFunc=simulate)
+        return np.column_stack((X[:, 0], X[:, 1] ** 2, X[:, 0] + X[:, 1]))
+    problem = ModelProblem(nInput=2, lb=0, ub=4, obs=(obs).reshape(-1), simFunc=simulate)
     ensemble = np.array([[.2, .5], [1., 1.5], [2., 2.], [3., .8]])
-    options = dict(maxIters=2, lam=1e-6) if methodClass is IES else {}
+    options = dict(maxIters=2, lam=1e-6, seed=12) if methodClass is IES else {}
     method = methodClass(metric=metric, verboseFlag=False, **options)
     result = method.run(problem, ensemble, r=np.eye(3)*.5)
     raw = getattr(util, metric)(obs.ravel(), result.posteriorSims)

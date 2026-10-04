@@ -1,0 +1,38 @@
+{
+  "files": 169,
+  "module_file_counts": {
+    "__init__.py": 1,
+    "analysis": 16,
+    "calibration": 11,
+    "core": 9,
+    "doe": 10,
+    "inference": 14,
+    "optimization": 37,
+    "problem": 17,
+    "surrogate": 48,
+    "viz": 6
+  },
+  "style_counts": {
+    "trailing_whitespace_lines": 1971,
+    "lines_over_120_chars": 61,
+    "semicolon_tokens": 33,
+    "functions": 1000,
+    "google_args_docstrings": 55,
+    "sphinx_param_docstrings": 99
+  },
+  "examples": {
+    "custom_dunder": [
+      "UQPyL/analysis/base.py:181 __check_X_Y__",
+      "UQPyL/surrogate/base.py:52 __check_and_scale__",
+      "UQPyL/surrogate/base.py:88 __X_transform__",
+      "UQPyL/surrogate/base.py:99 __Y_transform__",
+      "UQPyL/surrogate/base.py:108 __Y_inverse_transform__",
+      "UQPyL/surrogate/base.py:117 __X_inverse_transform__",
+      "UQPyL/surrogate/gp/kernel/base_kernel.py:40 __check_array__",
+      "UQPyL/surrogate/rbf/kernel/base_kernel.py:26 __check_array__"
+    ]
+  },
+  "unused_constructor_argument_signals": [
+    "UQPyL/optimization/expensive/moasmo.py:35 nPop"
+  ]
+}

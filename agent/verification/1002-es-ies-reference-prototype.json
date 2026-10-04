@@ -1,0 +1,801 @@
+[
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 1,
+    "reference_max_error": 2.220446049250313e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 2.7755575615628914e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 2,
+    "reference_max_error": 1.1102230246251565e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 2.7755575615628914e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 3,
+    "reference_max_error": 2.220446049250313e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 2.7755575615628914e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 4,
+    "reference_max_error": 2.220446049250313e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 2.7755575615628914e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 5,
+    "reference_max_error": 6.661338147750939e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 2.7755575615628914e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 1,
+    "reference_max_error": 1.1102230246251565e-15,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 5.551115123125783e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 2,
+    "reference_max_error": 6.661338147750939e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 5.551115123125783e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 3,
+    "reference_max_error": 6.661338147750939e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 5.551115123125783e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 4,
+    "reference_max_error": 7.771561172376096e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 5.551115123125783e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 5,
+    "reference_max_error": 6.661338147750939e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 5.551115123125783e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 1,
+    "reference_max_error": 2.6645352591003757e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 9.992007221626409e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 2,
+    "reference_max_error": 1.4432899320127035e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 9.992007221626409e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 3,
+    "reference_max_error": 1.9984014443252818e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 9.992007221626409e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 4,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 9.992007221626409e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 5,
+    "reference_max_error": 1.9984014443252818e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 9.992007221626409e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 1,
+    "reference_max_error": 2.220446049250313e-15,
+    "es_mean_error": 4.623038063478191e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 2,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 4.623038063478191e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 3,
+    "reference_max_error": 7.771561172376096e-16,
+    "es_mean_error": 4.623038063478191e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 4,
+    "reference_max_error": 9.992007221626409e-16,
+    "es_mean_error": 4.623038063478191e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 11,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 5,
+    "reference_max_error": 1.1102230246251565e-15,
+    "es_mean_error": 4.623038063478191e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 1,
+    "reference_max_error": 1.1102230246251565e-16,
+    "es_mean_error": 1.0408340855860843e-17,
+    "es_covariance_error": 2.7755575615628914e-17
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 2,
+    "reference_max_error": 5.551115123125783e-17,
+    "es_mean_error": 1.0408340855860843e-17,
+    "es_covariance_error": 2.7755575615628914e-17
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 3,
+    "reference_max_error": 2.220446049250313e-16,
+    "es_mean_error": 1.0408340855860843e-17,
+    "es_covariance_error": 2.7755575615628914e-17
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 4,
+    "reference_max_error": 3.3306690738754696e-16,
+    "es_mean_error": 1.0408340855860843e-17,
+    "es_covariance_error": 2.7755575615628914e-17
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 5,
+    "reference_max_error": 3.3306690738754696e-16,
+    "es_mean_error": 1.0408340855860843e-17,
+    "es_covariance_error": 2.7755575615628914e-17
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 1,
+    "reference_max_error": 1.7763568394002505e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 1.4432899320127035e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 2,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 1.4432899320127035e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 3,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 1.4432899320127035e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 4,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 1.4432899320127035e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 5,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 1.4432899320127035e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 1,
+    "reference_max_error": 3.552713678800501e-15,
+    "es_mean_error": 3.0531133177191805e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 2,
+    "reference_max_error": 2.4424906541753444e-15,
+    "es_mean_error": 3.0531133177191805e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 3,
+    "reference_max_error": 1.9984014443252818e-15,
+    "es_mean_error": 3.0531133177191805e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 4,
+    "reference_max_error": 2.220446049250313e-15,
+    "es_mean_error": 3.0531133177191805e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 5,
+    "reference_max_error": 1.7763568394002505e-15,
+    "es_mean_error": 3.0531133177191805e-16,
+    "es_covariance_error": 7.771561172376096e-16
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 1,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 3.608224830031759e-16,
+    "es_covariance_error": 3.1086244689504383e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 2,
+    "reference_max_error": 1.5543122344752192e-15,
+    "es_mean_error": 3.608224830031759e-16,
+    "es_covariance_error": 3.1086244689504383e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 3,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 3.608224830031759e-16,
+    "es_covariance_error": 3.1086244689504383e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 4,
+    "reference_max_error": 1.1102230246251565e-15,
+    "es_mean_error": 3.608224830031759e-16,
+    "es_covariance_error": 3.1086244689504383e-15
+  },
+  {
+    "case": "linear",
+    "seed": 23,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 5,
+    "reference_max_error": 1.7763568394002505e-15,
+    "es_mean_error": 3.608224830031759e-16,
+    "es_covariance_error": 3.1086244689504383e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 1,
+    "reference_max_error": 1.2212453270876722e-15,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 1.3877787807814457e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 2,
+    "reference_max_error": 1.4988010832439613e-15,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 1.3877787807814457e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 3,
+    "reference_max_error": 4.440892098500626e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 1.3877787807814457e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 4,
+    "reference_max_error": 3.885780586188048e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 1.3877787807814457e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 1,
+    "n_ensemble": 3,
+    "iteration": 5,
+    "reference_max_error": 8.881784197001252e-16,
+    "es_mean_error": 5.551115123125783e-17,
+    "es_covariance_error": 1.3877787807814457e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 1,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 6.661338147750939e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 2,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 6.661338147750939e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 3,
+    "reference_max_error": 1.5543122344752192e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 6.661338147750939e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 4,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 6.661338147750939e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 2,
+    "n_ensemble": 24,
+    "iteration": 5,
+    "reference_max_error": 1.7763568394002505e-15,
+    "es_mean_error": 1.1102230246251565e-16,
+    "es_covariance_error": 6.661338147750939e-16
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 1,
+    "reference_max_error": 2.3314683517128287e-15,
+    "es_mean_error": 2.498001805406602e-16,
+    "es_covariance_error": 1.3322676295501878e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 2,
+    "reference_max_error": 1.9984014443252818e-15,
+    "es_mean_error": 2.498001805406602e-16,
+    "es_covariance_error": 1.3322676295501878e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 3,
+    "reference_max_error": 1.2212453270876722e-15,
+    "es_mean_error": 2.498001805406602e-16,
+    "es_covariance_error": 1.3322676295501878e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 4,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 2.498001805406602e-16,
+    "es_covariance_error": 1.3322676295501878e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 8,
+    "n_ensemble": 48,
+    "iteration": 5,
+    "reference_max_error": 2.6645352591003757e-15,
+    "es_mean_error": 2.498001805406602e-16,
+    "es_covariance_error": 1.3322676295501878e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 1,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 2.4424906541753444e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 2,
+    "reference_max_error": 1.3322676295501878e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 2.4424906541753444e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 3,
+    "reference_max_error": 1.2212453270876722e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 2.4424906541753444e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 4,
+    "reference_max_error": 1.9984014443252818e-15,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 2.4424906541753444e-15
+  },
+  {
+    "case": "linear",
+    "seed": 47,
+    "dimension": 20,
+    "n_ensemble": 12,
+    "iteration": 5,
+    "reference_max_error": 6.661338147750939e-16,
+    "es_mean_error": 3.3306690738754696e-16,
+    "es_covariance_error": 2.4424906541753444e-15
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 1,
+    "reference_max_error": 2.220446049250313e-16,
+    "mean": 0.23598205200906547,
+    "variance": 0.36842792277638425
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 2,
+    "reference_max_error": 2.7755575615628914e-16,
+    "mean": 0.4174572417917236,
+    "variance": 0.2685776155284702
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 3,
+    "reference_max_error": 2.220446049250313e-16,
+    "mean": 0.5132214004634389,
+    "variance": 0.2217360866708399
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 4,
+    "reference_max_error": 4.996003610813204e-16,
+    "mean": 0.5648050891956959,
+    "variance": 0.19636616690765007
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 5,
+    "reference_max_error": 3.3306690738754696e-16,
+    "mean": 0.5929617056741325,
+    "variance": 0.18197081282942243
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 6,
+    "reference_max_error": 3.3306690738754696e-16,
+    "mean": 0.6084661612662459,
+    "variance": 0.17361384522490256
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 7,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.6170793497595362,
+    "variance": 0.16869575518030197
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 11,
+    "iteration": 8,
+    "reference_max_error": 5.551115123125783e-16,
+    "mean": 0.6219102734559658,
+    "variance": 0.16577540387093495
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 1,
+    "reference_max_error": 1.1102230246251565e-15,
+    "mean": 0.15338399874870484,
+    "variance": 0.5093900870607245
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 2,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.3835055232165555,
+    "variance": 0.3481619582046554
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 3,
+    "reference_max_error": 5.551115123125783e-16,
+    "mean": 0.5086712530701354,
+    "variance": 0.27991747665409283
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 4,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.5780275017561818,
+    "variance": 0.24350799353522726
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 5,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.6170443269828578,
+    "variance": 0.22280801978590475
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 6,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.639124964554312,
+    "variance": 0.21058759336623922
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 7,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.6517141357446616,
+    "variance": 0.203226382987661
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 23,
+    "iteration": 8,
+    "reference_max_error": 4.440892098500626e-16,
+    "mean": 0.6589552243312482,
+    "variance": 0.1987329903197562
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 1,
+    "reference_max_error": 3.3306690738754696e-16,
+    "mean": 0.17256741579696402,
+    "variance": 0.5133385202551746
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 2,
+    "reference_max_error": 3.3306690738754696e-16,
+    "mean": 0.3716637184319608,
+    "variance": 0.356622239218017
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 3,
+    "reference_max_error": 4.163336342344337e-16,
+    "mean": 0.4802762615261093,
+    "variance": 0.28779952885941545
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 4,
+    "reference_max_error": 3.885780586188048e-16,
+    "mean": 0.5406767611271676,
+    "variance": 0.25107292397209474
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 5,
+    "reference_max_error": 3.885780586188048e-16,
+    "mean": 0.5749516438150492,
+    "variance": 0.23015502516425457
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 6,
+    "reference_max_error": 6.661338147750939e-16,
+    "mean": 0.5946277041096232,
+    "variance": 0.21786690624277436
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 7,
+    "reference_max_error": 4.996003610813204e-16,
+    "mean": 0.6060184123773846,
+    "variance": 0.21051640237556696
+  },
+  {
+    "case": "nonlinear_cubic",
+    "seed": 47,
+    "iteration": 8,
+    "reference_max_error": 4.996003610813204e-16,
+    "mean": 0.6126630040556668,
+    "variance": 0.20606759013197587
+  },
+  {
+    "case": "original_scalar_counterexample",
+    "corrected_mean": 0.5,
+    "corrected_variance": 0.4999999999999999,
+    "expected_mean": 0.5,
+    "expected_variance": 0.5
+  }
+]

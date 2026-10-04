@@ -1,0 +1,414 @@
+............FFF.FFF...FF.FFFFFFF..FFFFFFFFFFFFF.FFFFFFFFFF.FF..          [100%]
+=================================== FAILURES ===================================
+_____ testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes[uint8] ______
+tests/test_analysis_morris_unit_effects.py:113: in testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes
+    np.testing.assert_allclose(result["mu"].values, [[1.5]])
+E   AssertionError: 
+E   Not equal to tolerance rtol=1e-07, atol=0
+E   
+E   Mismatched elements: 1 / 1 (100%)
+E   Mismatch at index:
+E    [0, 0]: -190.5 (ACTUAL), 1.5 (DESIRED)
+E   Max absolute difference among violations: 192.
+E   Max relative difference among violations: 128.
+E    ACTUAL: array([[-190.5]])
+E    DESIRED: array([[1.5]])
+______ testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes[bool] ______
+tests/test_analysis_morris_unit_effects.py:113: in testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes
+    np.testing.assert_allclose(result["mu"].values, [[1.5]])
+E   AssertionError: 
+E   Not equal to tolerance rtol=1e-07, atol=0
+E   
+E   Mismatched elements: 1 / 1 (100%)
+E   Mismatch at index:
+E    [0, 0]: 0.0 (ACTUAL), 1.5 (DESIRED)
+E   Max absolute difference among violations: 1.5
+E   Max relative difference among violations: 1.
+E    ACTUAL: array([[0.]])
+E    DESIRED: array([[1.5]])
+__________ testMorrisEvaluatedUnsignedOutputMatchesAnalyticalEffects ___________
+tests/test_analysis_morris_unit_effects.py:125: in testMorrisEvaluatedUnsignedOutputMatchesAnalyticalEffects
+    np.testing.assert_allclose(result["mu"].values, [[1.5]])
+E   AssertionError: 
+E   Not equal to tolerance rtol=1e-07, atol=0
+E   
+E   Mismatched elements: 1 / 1 (100%)
+E   Mismatch at index:
+E    [0, 0]: -190.5 (ACTUAL), 1.5 (DESIRED)
+E   Max absolute difference among violations: 192.
+E   Max relative difference among violations: 128.
+E    ACTUAL: array([[-190.5]])
+E    DESIRED: array([[1.5]])
+__________ testMorrisIntegerInputUsesSignedRangeRelativeSteps[uint8] ___________
+tests/test_analysis_morris_unit_effects.py:137: in testMorrisIntegerInputUsesSignedRangeRelativeSteps
+    np.testing.assert_allclose(result["mu"].values, [[2.0]])
+E   AssertionError: 
+E   Not equal to tolerance rtol=1e-07, atol=0
+E   
+E   Mismatched elements: 1 / 1 (100%)
+E   Mismatch at index:
+E    [0, 0]: 0.9931140960321136 (ACTUAL), 2.0 (DESIRED)
+E   Max absolute difference among violations: 1.0068859
+E   Max relative difference among violations: 0.50344295
+E    ACTUAL: array([[0.993114]])
+E    DESIRED: array([[2.]])
+____________ testMorrisRequiresEnoughTrajectoriesForSampleSigma[0] _____________
+tests/test_analysis_morris_unit_effects.py:149: in testMorrisRequiresEnoughTrajectoriesForSampleSigma
+    with pytest.raises(ValueError, match="at least two trajectories"):
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'at least two trajectories'
+E     Actual message: 'zero-size array to reduction operation maximum which has no identity'
+____________ testMorrisRequiresEnoughTrajectoriesForSampleSigma[1] _____________
+tests/test_analysis_morris_unit_effects.py:150: in testMorrisRequiresEnoughTrajectoriesForSampleSigma
+    Morris(verboseFlag=False).analyze(problem, x, x, meta)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/morris.py:154: in _analyzeCore
+    sigma[i] = np.std(scaledEffects, axis=1, ddof=1) * effectScale
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:4066: in std
+    return _methods._std(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:219: in _std
+    ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:155: in _var
+    warnings.warn("Degrees of freedom <= 0 for slice", RuntimeWarning,
+E   RuntimeWarning: Degrees of freedom <= 0 for slice
+__________ testRsaOutputUnitsPreserveHandDerivedRankStatistic[1e+308] __________
+tests/test_analysis_rsa_statistics.py:38: in testRsaOutputUnitsPreserveHandDerivedRankStatistic
+    result = RSA(nRegion=2, verboseFlag=False).analyze(problem, x, y)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:96: in _analyzeCore
+    quants = np.quantile(trr, seq)
+             ^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4508: in quantile
+    return _quantile_unchecked(
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4522: in _quantile_unchecked
+    return _ureduce(a,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:3892: in _ureduce
+    r = func(a, **kwargs)
+        ^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4681: in _quantile_ureduce_func
+    result = _quantile(arr,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4819: in _quantile
+    result = _lerp(previous,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4608: in _lerp
+    diff_b_a = b - a
+               ^^^^^
+E   RuntimeWarning: overflow encountered in subtract
+_________ testRsaOutputUnitsPreserveHandDerivedRankStatistic[-1e+308] __________
+tests/test_analysis_rsa_statistics.py:38: in testRsaOutputUnitsPreserveHandDerivedRankStatistic
+    result = RSA(nRegion=2, verboseFlag=False).analyze(problem, x, y)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:96: in _analyzeCore
+    quants = np.quantile(trr, seq)
+             ^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4508: in quantile
+    return _quantile_unchecked(
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4522: in _quantile_unchecked
+    return _ureduce(a,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:3892: in _ureduce
+    r = func(a, **kwargs)
+        ^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4681: in _quantile_ureduce_func
+    result = _quantile(arr,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4819: in _quantile
+    result = _lerp(previous,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4608: in _lerp
+    diff_b_a = b - a
+               ^^^^^
+E   RuntimeWarning: overflow encountered in subtract
+___________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[nan-X] ___________
+tests/test_analysis_rsa_statistics.py:61: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    with pytest.raises(ValueError, match="finite"):
+E   Failed: DID NOT RAISE ValueError
+___________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[nan-Y] ___________
+tests/test_analysis_rsa_statistics.py:61: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    with pytest.raises(ValueError, match="finite"):
+E   Failed: DID NOT RAISE ValueError
+___________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[inf-X] ___________
+tests/test_analysis_rsa_statistics.py:61: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    with pytest.raises(ValueError, match="finite"):
+E   Failed: DID NOT RAISE ValueError
+___________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[inf-Y] ___________
+tests/test_analysis_rsa_statistics.py:62: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    RSA(nRegion=2, verboseFlag=False).analyze(problem, x, y)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:96: in _analyzeCore
+    quants = np.quantile(trr, seq)
+             ^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4508: in quantile
+    return _quantile_unchecked(
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4522: in _quantile_unchecked
+    return _ureduce(a,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:3892: in _ureduce
+    r = func(a, **kwargs)
+        ^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4681: in _quantile_ureduce_func
+    result = _quantile(arr,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4819: in _quantile
+    result = _lerp(previous,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4608: in _lerp
+    diff_b_a = b - a
+               ^^^^^
+E   RuntimeWarning: invalid value encountered in subtract
+__________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[-inf-X] ___________
+tests/test_analysis_rsa_statistics.py:61: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    with pytest.raises(ValueError, match="finite"):
+E   Failed: DID NOT RAISE ValueError
+__________ testRsaRejectsNonfiniteDataInsteadOfReturningZero[-inf-Y] ___________
+tests/test_analysis_rsa_statistics.py:62: in testRsaRejectsNonfiniteDataInsteadOfReturningZero
+    RSA(nRegion=2, verboseFlag=False).analyze(problem, x, y)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rsa.py:96: in _analyzeCore
+    quants = np.quantile(trr, seq)
+             ^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4508: in quantile
+    return _quantile_unchecked(
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4522: in _quantile_unchecked
+    return _ureduce(a,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:3892: in _ureduce
+    r = func(a, **kwargs)
+        ^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4681: in _quantile_ureduce_func
+    result = _quantile(arr,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4819: in _quantile
+    result = _lerp(previous,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4609: in _lerp
+    lerp_interpolation = add(a, diff_b_a * t, out=... if out is None else out)
+                                ^^^^^^^^^^^^
+E   RuntimeWarning: invalid value encountered in multiply
+_________ testRbdFastFixedInputHasZeroEffectUnderRowPermutations[None] _________
+tests/test_analysis_rbd_fast_validation.py:18: in testRbdFastFixedInputHasZeroEffectUnderRowPermutations
+    np.testing.assert_allclose(result["S1"].values, [[0.0, 1.0]], atol=0.003, rtol=0)
+E   AssertionError: 
+E   Not equal to tolerance rtol=0, atol=0.003
+E   
+E   Mismatched elements: 1 / 2 (50%)
+E   Mismatch at index:
+E    [0, 0]: 0.9976287664041714 (ACTUAL), 0.0 (DESIRED)
+E   Max absolute difference among violations: 0.99762877
+E   Max relative difference among violations: inf
+E    ACTUAL: array([[0.997629, 0.997629]])
+E    DESIRED: array([[0., 1.]])
+__________ testRbdFastFixedInputHasZeroEffectUnderRowPermutations[41] __________
+tests/test_analysis_rbd_fast_validation.py:18: in testRbdFastFixedInputHasZeroEffectUnderRowPermutations
+    np.testing.assert_allclose(result["S1"].values, [[0.0, 1.0]], atol=0.003, rtol=0)
+E   AssertionError: 
+E   Not equal to tolerance rtol=0, atol=0.003
+E   
+E   Mismatched elements: 1 / 2 (50%)
+E   Mismatch at index:
+E    [0, 0]: 0.03605776197935252 (ACTUAL), 0.0 (DESIRED)
+E   Max absolute difference among violations: 0.03605776
+E   Max relative difference among violations: inf
+E    ACTUAL: array([[0.036058, 0.997629]])
+E    DESIRED: array([[0., 1.]])
+____________ testRbdFastRejectsNonconstantRepeatedInputValues[None] ____________
+tests/test_analysis_rbd_fast_validation.py:28: in testRbdFastRejectsNonconstantRepeatedInputValues
+    with pytest.raises(ValueError, match="nonconstant.*repeated values"):
+E   Failed: DID NOT RAISE ValueError
+_____________ testRbdFastRejectsNonconstantRepeatedInputValues[17] _____________
+tests/test_analysis_rbd_fast_validation.py:28: in testRbdFastRejectsNonconstantRepeatedInputValues
+    with pytest.raises(ValueError, match="nonconstant.*repeated values"):
+E   Failed: DID NOT RAISE ValueError
+______________ testRbdFastRejectsInvalidHarmonicSampleBudget[8-4] ______________
+tests/test_analysis_rbd_fast_validation.py:36: in testRbdFastRejectsInvalidHarmonicSampleBudget
+    with pytest.raises(ValueError, match=r"N > 2\*M"):
+E   Failed: DID NOT RAISE ValueError
+______________ testRbdFastRejectsInvalidHarmonicSampleBudget[8-5] ______________
+tests/test_analysis_rbd_fast_validation.py:36: in testRbdFastRejectsInvalidHarmonicSampleBudget
+    with pytest.raises(ValueError, match=r"N > 2\*M"):
+E   Failed: DID NOT RAISE ValueError
+_____________ testRbdFastRejectsInvalidHarmonicSampleBudget[16-12] _____________
+tests/test_analysis_rbd_fast_validation.py:36: in testRbdFastRejectsInvalidHarmonicSampleBudget
+    with pytest.raises(ValueError, match=r"N > 2\*M"):
+E   Failed: DID NOT RAISE ValueError
+________________ testRbdFastRequiresPositiveIntegerHarmonics[0] ________________
+tests/test_analysis_rbd_fast_validation.py:44: in testRbdFastRequiresPositiveIntegerHarmonics
+    with pytest.raises(ValueError, match="positive integer"):
+E   Failed: DID NOT RAISE ValueError
+_______________ testRbdFastRequiresPositiveIntegerHarmonics[-1] ________________
+tests/test_analysis_rbd_fast_validation.py:44: in testRbdFastRequiresPositiveIntegerHarmonics
+    with pytest.raises(ValueError, match="positive integer"):
+E   Failed: DID NOT RAISE ValueError
+______________ testRbdFastRequiresPositiveIntegerHarmonics[True] _______________
+tests/test_analysis_rbd_fast_validation.py:44: in testRbdFastRequiresPositiveIntegerHarmonics
+    with pytest.raises(ValueError, match="positive integer"):
+E   Failed: DID NOT RAISE ValueError
+_______________ testRbdFastRequiresPositiveIntegerHarmonics[2.5] _______________
+tests/test_analysis_rbd_fast_validation.py:45: in testRbdFastRequiresPositiveIntegerHarmonics
+    RBDFAST(M=harmonics, verboseFlag=False).analyze(problem, x, x[:, 1:2])
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/rbd_fast.py:106: in _analyzeCore
+    D1 = np.sum(Pxx[1 : M + 1])
+                ^^^^^^^^^^^^^^
+E   TypeError: slice indices must be integers or None or have an __index__ method
+____________________ testRbdFastRejectsNonfiniteInputs[nan] ____________________
+tests/test_analysis_rbd_fast_validation.py:53: in testRbdFastRejectsNonfiniteInputs
+    with pytest.raises(ValueError, match="finite input"):
+E   Failed: DID NOT RAISE ValueError
+____________________ testRbdFastRejectsNonfiniteInputs[inf] ____________________
+tests/test_analysis_rbd_fast_validation.py:53: in testRbdFastRejectsNonfiniteInputs
+    with pytest.raises(ValueError, match="finite input"):
+E   Failed: DID NOT RAISE ValueError
+___________________ testRbdFastRejectsNonfiniteInputs[-inf] ____________________
+tests/test_analysis_rbd_fast_validation.py:53: in testRbdFastRejectsNonfiniteInputs
+    with pytest.raises(ValueError, match="finite input"):
+E   Failed: DID NOT RAISE ValueError
+____________________ testFastRejectsMissingOrExtraRows[-2] _____________________
+tests/test_analysis_design_validation.py:20: in testFastRejectsMissingOrExtraRows
+    with pytest.raises(ValueError, match="FAST.*rows"):
+E   Failed: DID NOT RAISE ValueError
+____________________ testFastRejectsMissingOrExtraRows[-1] _____________________
+tests/test_analysis_design_validation.py:20: in testFastRejectsMissingOrExtraRows
+    with pytest.raises(ValueError, match="FAST.*rows"):
+E   Failed: DID NOT RAISE ValueError
+_____________________ testFastRejectsMissingOrExtraRows[1] _____________________
+tests/test_analysis_design_validation.py:20: in testFastRejectsMissingOrExtraRows
+    with pytest.raises(ValueError, match="FAST.*rows"):
+E   Failed: DID NOT RAISE ValueError
+____________ testFastRejectsInvalidMetadataBeforeEvaluation[N-128] _____________
+tests/test_analysis_design_validation.py:35: in testFastRejectsInvalidMetadataBeforeEvaluation
+    with pytest.raises(ValueError, match="FAST"):
+E   Failed: DID NOT RAISE ValueError
+________ testFastRejectsInvalidMetadataBeforeEvaluation[blockSize-128] _________
+tests/test_analysis_design_validation.py:35: in testFastRejectsInvalidMetadataBeforeEvaluation
+    with pytest.raises(ValueError, match="FAST"):
+E   Failed: DID NOT RAISE ValueError
+_____________ testFastRejectsInvalidMetadataBeforeEvaluation[M-0] ______________
+tests/test_analysis_design_validation.py:36: in testFastRejectsInvalidMetadataBeforeEvaluation
+    FAST(verboseFlag=False).analyze(problem, x, meta=meta)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/fast.py:109: in _analyzeCore
+    omega0 = math.floor((n - 1) / (2 * M))
+                        ^^^^^^^^^^^^^^^^^
+E   ZeroDivisionError: division by zero
+____________ testFastRejectsInvalidMetadataBeforeEvaluation[M-2.5] _____________
+tests/test_analysis_design_validation.py:36: in testFastRejectsInvalidMetadataBeforeEvaluation
+    FAST(verboseFlag=False).analyze(problem, x, meta=meta)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/fast.py:125: in _analyzeCore
+    S1[i, j], ST[i, j] = self._computeOrders(Y_sub.ravel(), n, M, omega0)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/methods/fast.py:64: in _computeOrders
+    D1 = 2.0 * np.sum(Sp[np.arange(1, M + 1, dtype=np.int32) * omega - 1])
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   IndexError: index 74 is out of bounds for axis 0 with size 64
+____________ testFastRejectsInvalidMetadataBeforeEvaluation[N-True] ____________
+tests/test_analysis_design_validation.py:35: in testFastRejectsInvalidMetadataBeforeEvaluation
+    with pytest.raises(ValueError, match="FAST"):
+E   Failed: DID NOT RAISE ValueError
+______________________ testFastRequiresBaseSizeInMetadata ______________________
+tests/test_analysis_design_validation.py:44: in testFastRequiresBaseSizeInMetadata
+    with pytest.raises(ValueError, match="FAST.*N"):
+E   Failed: DID NOT RAISE ValueError
+__________________ testFastRejectsInsufficientSpectralBudget ___________________
+tests/test_analysis_design_validation.py:52: in testFastRejectsInsufficientSpectralBudget
+    with pytest.raises(ValueError, match=r"N > 4\*M\^2"):
+E   Failed: DID NOT RAISE ValueError
+_________ testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids[False] __________
+tests/test_analysis_design_validation.py:79: in testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids
+    Sobol(verboseFlag=False).analyze(problem, x, y, meta)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/sobol.py:127: in _analyzeCore
+    S1[i, j] = self._firstOrder(A, AB[:, j : j + 1], B)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/methods/sobol.py:199: in _firstOrder
+    return float(np.mean(B * (AB - A), axis=0).item() / np.var(Y, axis=0).item())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ZeroDivisionError: float division by zero
+__________ testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids[True] __________
+tests/test_analysis_design_validation.py:79: in testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids
+    Sobol(verboseFlag=False).analyze(problem, x, y, meta)
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+UQPyL/analysis/methods/sobol.py:127: in _analyzeCore
+    S1[i, j] = self._firstOrder(A, AB[:, j : j + 1], B)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/methods/sobol.py:199: in _firstOrder
+    return float(np.mean(B * (AB - A), axis=0).item() / np.var(Y, axis=0).item())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ZeroDivisionError: float division by zero
+=========================== short test summary info ============================
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes[uint8]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisThresholdEffectsPreserveDirectionAcrossOutputTypes[bool]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisEvaluatedUnsignedOutputMatchesAnalyticalEffects
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisIntegerInputUsesSignedRangeRelativeSteps[uint8]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisRequiresEnoughTrajectoriesForSampleSigma[0]
+FAILED tests/test_analysis_morris_unit_effects.py::testMorrisRequiresEnoughTrajectoriesForSampleSigma[1]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaOutputUnitsPreserveHandDerivedRankStatistic[1e+308]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaOutputUnitsPreserveHandDerivedRankStatistic[-1e+308]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[nan-X]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[nan-Y]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[inf-X]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[inf-Y]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[-inf-X]
+FAILED tests/test_analysis_rsa_statistics.py::testRsaRejectsNonfiniteDataInsteadOfReturningZero[-inf-Y]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastFixedInputHasZeroEffectUnderRowPermutations[None]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastFixedInputHasZeroEffectUnderRowPermutations[41]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsNonconstantRepeatedInputValues[None]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsNonconstantRepeatedInputValues[17]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsInvalidHarmonicSampleBudget[8-4]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsInvalidHarmonicSampleBudget[8-5]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsInvalidHarmonicSampleBudget[16-12]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRequiresPositiveIntegerHarmonics[0]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRequiresPositiveIntegerHarmonics[-1]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRequiresPositiveIntegerHarmonics[True]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRequiresPositiveIntegerHarmonics[2.5]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsNonfiniteInputs[nan]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsNonfiniteInputs[inf]
+FAILED tests/test_analysis_rbd_fast_validation.py::testRbdFastRejectsNonfiniteInputs[-inf]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsMissingOrExtraRows[-2]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsMissingOrExtraRows[-1]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsMissingOrExtraRows[1]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInvalidMetadataBeforeEvaluation[N-128]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInvalidMetadataBeforeEvaluation[blockSize-128]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInvalidMetadataBeforeEvaluation[M-0]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInvalidMetadataBeforeEvaluation[M-2.5]
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInvalidMetadataBeforeEvaluation[N-True]
+FAILED tests/test_analysis_design_validation.py::testFastRequiresBaseSizeInMetadata
+FAILED tests/test_analysis_design_validation.py::testFastRejectsInsufficientSpectralBudget
+FAILED tests/test_analysis_design_validation.py::testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids[False]
+FAILED tests/test_analysis_design_validation.py::testSobolDiagnosesZeroBaseVarianceWithVaryingHybrids[True]
+40 failed, 23 passed in 1.83s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q tests/test_analysis_morris_unit_effects.py tests/test_analysis_rsa_statistics.py tests/test_analysis_rbd_fast_validation.py tests/test_analysis_design_validation.py -W error --tb=short` failed. (See above for error)

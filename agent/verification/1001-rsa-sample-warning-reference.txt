@@ -1,0 +1,4 @@
+81 RSA cases match Decimal regions and independent CvM scores.
+72 ordinary cases preserve NumPy regions.
+15 insufficient-region warnings verified.
+Saved agent/verification/1001-rsa-sample-warning-reference.json

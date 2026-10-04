@@ -1,0 +1,1284 @@
+..FFFF..FFFFFFFF.FFFFF.FFFFFFFFFFFF........                              [100%]
+=================================== FAILURES ===================================
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-gauss-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'gauss', nInput = 1
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: 0.008815921044007524 (ACTUAL), 0.08815921044007352 (DESIRED)
+E        [1, 0]: 0.10393839152272477 (ACTUAL), 0.13281992935603762 (DESIRED)
+E        [2, 0]: 0.19889032004114782 (ACTUAL), 0.19207371457962094 (DESIRED)
+E       Max absolute difference among violations: 0.07934329
+E       Max relative difference among violations: 0.9
+E        ACTUAL: array([[0.008816],
+E              [0.103938],
+E              [0.19889 ]])
+E        DESIRED: array([[0.088159],
+E              [0.13282 ],
+E              [0.192074]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+__ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-MH] __
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>, distribution = 'uniform'
+nInput = 1
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: -0.008589502704513308 (ACTUAL), -0.08589502704512442 (DESIRED)
+E        [1, 0]: 0.11146164299131556 (ACTUAL), 0.19551369159429605 (DESIRED)
+E        [2, 0]: 0.210085868162599 (ACTUAL), 0.2720419154471372 (DESIRED)
+E       Max absolute difference among violations: 0.08405205
+E       Max relative difference among violations: 0.9
+E        ACTUAL: array([[-0.00859 ],
+E              [ 0.111462],
+E              [ 0.210086]])
+E        DESIRED: array([[-0.085895],
+E              [ 0.195514],
+E              [ 0.272042]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-AMH] __
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', nInput = 1
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: -0.008589502704513308 (ACTUAL), -0.08589502704512442 (DESIRED)
+E        [1, 0]: 0.11146164299131556 (ACTUAL), 0.19551369159429605 (DESIRED)
+E        [2, 0]: 0.210085868162599 (ACTUAL), 0.2720419154471372 (DESIRED)
+E       Max absolute difference among violations: 0.08405205
+E       Max relative difference among violations: 0.9
+E        ACTUAL: array([[-0.00859 ],
+E              [ 0.111462],
+E              [ 0.210086]])
+E        DESIRED: array([[-0.085895],
+E              [ 0.195514],
+E              [ 0.272042]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'uniform', nInput = 1
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 3 (100%)
+E       Mismatch at indices:
+E        [0, 0]: -0.008589502704513308 (ACTUAL), -0.08589502704512442 (DESIRED)
+E        [1, 0]: 0.11146164299131556 (ACTUAL), 0.19551369159429605 (DESIRED)
+E        [2, 0]: 0.210085868162599 (ACTUAL), 0.2720419154471372 (DESIRED)
+E       Max absolute difference among violations: 0.08405205
+E       Max relative difference among violations: 0.9
+E        ACTUAL: array([[-0.00859 ],
+E              [ 0.111462],
+E              [ 0.210086]])
+E        DESIRED: array([[-0.085895],
+E              [ 0.195514],
+E              [ 0.272042]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-gauss-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'gauss', nInput = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 9 (33.3%)
+E       Mismatch at indices:
+E        [0, 2]: 0.279343289396067 (ACTUAL), 0.46447763132022063 (DESIRED)
+E        [1, 2]: 0.5354455237045208 (ACTUAL), 0.5984597880681128 (DESIRED)
+E        [2, 2]: 0.7900128803703232 (ACTUAL), 0.7762211437388629 (DESIRED)
+E       Max absolute difference among violations: 0.18513434
+E       Max relative difference among violations: 0.39858613
+E        ACTUAL: array([[0.      , 0.1     , 0.279343],
+E              [0.3     , 0.4     , 0.535446],
+E              [0.6     , 0.7     , 0.790013]])
+E        DESIRED: array([[0.      , 0.1     , 0.464478],
+E              [0.3     , 0.4     , 0.59846 ],
+E              [0.6     , 0.7     , 0.776221]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+__ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-MH] __
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>, distribution = 'uniform'
+nInput = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 9 / 9 (100%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: -0.008589502704513308 (ACTUAL), -0.08589502704512442 (DESIRED)
+E        [0, 1]: 0.13183789719809802 (ACTUAL), 0.2591894859904934 (DESIRED)
+E        [0, 2]: 0.24631265993030205 (ACTUAL), 0.3543755331010083 (DESIRED)
+E        [1, 0]: 0.3060104356946116 (ACTUAL), 0.3500869641217706 (DESIRED)
+E        [1, 1]: 0.35173259509640076 (ACTUAL), 0.19888581290167226 (DESIRED)
+E       Max absolute difference among violations: 0.2110758
+E       Max relative difference among violations: 1.24020655
+E        ACTUAL: array([[-0.00859 ,  0.131838,  0.246313],
+E              [ 0.30601 ,  0.351733,  0.38127 ],
+E              [ 0.586166,  0.756018,  0.883962]])
+E        DESIRED: array([[-0.085895,  0.259189,  0.354376],
+E              [ 0.350087,  0.198886,  0.170194],
+E              [ 0.501185,  0.900064,  0.99991 ]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-AMH] __
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', nInput = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 9 / 9 (100%)
+E       First 5 mismatches are at indices:
+E        [0, 0]: -0.008589502704513308 (ACTUAL), -0.08589502704512442 (DESIRED)
+E        [0, 1]: 0.13183789719809802 (ACTUAL), 0.2591894859904934 (DESIRED)
+E        [0, 2]: 0.24631265993030205 (ACTUAL), 0.3543755331010083 (DESIRED)
+E        [1, 0]: 0.3060104356946116 (ACTUAL), 0.3500869641217706 (DESIRED)
+E        [1, 1]: 0.35173259509640076 (ACTUAL), 0.19888581290167226 (DESIRED)
+E       Max absolute difference among violations: 0.2110758
+E       Max relative difference among violations: 1.24020655
+E        ACTUAL: array([[-0.00859 ,  0.131838,  0.246313],
+E              [ 0.30601 ,  0.351733,  0.38127 ],
+E              [ 0.586166,  0.756018,  0.883962]])
+E        DESIRED: array([[-0.085895,  0.259189,  0.354376],
+E              [ 0.350087,  0.198886,  0.170194],
+E              [ 0.501185,  0.900064,  0.99991 ]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+_ testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'uniform', nInput = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("nInput", [1, 3])
+    def testProposalMatchesIndependentRandomGeneratorAtDeclaredScale(methodClass, distribution, nInput):
+        nChains, seed = 3, 641
+        lower, upper = np.full((1, nInput), -10.), np.full((1, nInput), 10.)
+        current = np.arange(nChains * nInput, dtype=float).reshape(nChains, nInput) / 10
+        scales = np.array([np.arange(1, nInput + 1) * (0.1 + 0.02 * chain) for chain in range(nChains)])
+        covariance = [np.diag(row ** 2) for row in scales]
+        originals = [current.copy(), *[value.copy() for value in covariance]]
+        algorithm = newAlgorithm(methodClass, distribution, nChains)
+        algorithm.rng = np.random.default_rng(seed)
+        referenceRng = np.random.default_rng(seed)
+        expected = current.copy()
+        dimension = nInput - 1
+        for chain in range(nChains):
+            if methodClass is MH_Gibbs:
+                if distribution == "gauss":
+                    expected[chain, dimension] = referenceRng.normal(current[chain, dimension], scales[chain, dimension])
+                else:
+                    expected[chain, dimension] += referenceRng.uniform(-scales[chain, dimension], scales[chain, dimension])
+            elif distribution == "gauss":
+                expected[chain] = referenceRng.multivariate_normal(current[chain], np.diag(scales[chain] ** 2))
+            else:
+                expected[chain] += referenceRng.uniform(-scales[chain], scales[chain])
+        assert np.all((expected > lower) & (expected < upper))
+        actual = propose(algorithm, current, covariance, lower, upper, distribution, dimension)
+>       np.testing.assert_allclose(actual, expected, rtol=0, atol=2e-15)
+E       AssertionError: 
+E       Not equal to tolerance rtol=0, atol=2e-15
+E       
+E       Mismatched elements: 3 / 9 (33.3%)
+E       Mismatch at indices:
+E        [0, 2]: 0.1226944756593884 (ACTUAL), -0.057685081135373295 (DESIRED)
+E        [1, 2]: 0.6031547869218397 (ACTUAL), 0.7865410747828883 (DESIRED)
+E        [2, 2]: 0.8907728134633928 (ACTUAL), 1.0161257463414115 (DESIRED)
+E       Max absolute difference among violations: 0.18338629
+E       Max relative difference among violations: 3.12697067
+E        ACTUAL: array([[0.      , 0.1     , 0.122694],
+E              [0.3     , 0.4     , 0.603155],
+E              [0.6     , 0.7     , 0.890773]])
+E        DESIRED: array([[ 0.      ,  0.1     , -0.057685],
+E              [ 0.3     ,  0.4     ,  0.786541],
+E              [ 0.6     ,  0.7     ,  1.016126]])
+
+tests/test_inference_proposal_scales.py:53: AssertionError
+______ testProposalVarianceMatchesDistributionDefinition[MH_Gibbs-gauss] _______
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'gauss'
+
+    @pytest.mark.parametrize("methodClass,distribution", [
+        (MH_Gibbs, "gauss"), (MH, "uniform"), (AMH, "uniform"), (MH_Gibbs, "uniform"),
+    ])
+    def testProposalVarianceMatchesDistributionDefinition(methodClass, distribution):
+        count, scale = 4096, 0.1
+        algorithm = newAlgorithm(methodClass, distribution, count)
+        algorithm.rng = np.random.default_rng(643)
+        current = np.zeros((count, 1))
+        covariance = [np.array([[scale ** 2]]) for _ in range(count)]
+        samples = propose(algorithm, current, covariance, np.array([[-10.]]), np.array([[10.]]), distribution)
+        expectedVariance = scale ** 2 if distribution == "gauss" else scale ** 2 / 3
+        assert np.mean(samples) == pytest.approx(0., abs=scale * 0.1)
+>       assert np.var(samples) == pytest.approx(expectedVariance, rel=0.06)
+E       assert np.float64(0....2038677502397) == 0.010000000000000002 ± 6.0e-04
+E         
+E         comparison failed
+E         Obtained: 0.00010132038677502397
+E         Expected: 0.010000000000000002 ± 6.0e-04
+
+tests/test_inference_proposal_scales.py:71: AssertionError
+________ testProposalVarianceMatchesDistributionDefinition[MH-uniform] _________
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>, distribution = 'uniform'
+
+    @pytest.mark.parametrize("methodClass,distribution", [
+        (MH_Gibbs, "gauss"), (MH, "uniform"), (AMH, "uniform"), (MH_Gibbs, "uniform"),
+    ])
+    def testProposalVarianceMatchesDistributionDefinition(methodClass, distribution):
+        count, scale = 4096, 0.1
+        algorithm = newAlgorithm(methodClass, distribution, count)
+        algorithm.rng = np.random.default_rng(643)
+        current = np.zeros((count, 1))
+        covariance = [np.array([[scale ** 2]]) for _ in range(count)]
+        samples = propose(algorithm, current, covariance, np.array([[-10.]]), np.array([[10.]]), distribution)
+        expectedVariance = scale ** 2 if distribution == "gauss" else scale ** 2 / 3
+        assert np.mean(samples) == pytest.approx(0., abs=scale * 0.1)
+>       assert np.var(samples) == pytest.approx(expectedVariance, rel=0.06)
+E       assert np.float64(3....501286456e-05) == 0.003333333333333334 ± 2.0e-04
+E         
+E         comparison failed
+E         Obtained: 3.2496793501286456e-05
+E         Expected: 0.003333333333333334 ± 2.0e-04
+
+tests/test_inference_proposal_scales.py:71: AssertionError
+________ testProposalVarianceMatchesDistributionDefinition[AMH-uniform] ________
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform'
+
+    @pytest.mark.parametrize("methodClass,distribution", [
+        (MH_Gibbs, "gauss"), (MH, "uniform"), (AMH, "uniform"), (MH_Gibbs, "uniform"),
+    ])
+    def testProposalVarianceMatchesDistributionDefinition(methodClass, distribution):
+        count, scale = 4096, 0.1
+        algorithm = newAlgorithm(methodClass, distribution, count)
+        algorithm.rng = np.random.default_rng(643)
+        current = np.zeros((count, 1))
+        covariance = [np.array([[scale ** 2]]) for _ in range(count)]
+        samples = propose(algorithm, current, covariance, np.array([[-10.]]), np.array([[10.]]), distribution)
+        expectedVariance = scale ** 2 if distribution == "gauss" else scale ** 2 / 3
+        assert np.mean(samples) == pytest.approx(0., abs=scale * 0.1)
+>       assert np.var(samples) == pytest.approx(expectedVariance, rel=0.06)
+E       assert np.float64(3....501286456e-05) == 0.003333333333333334 ± 2.0e-04
+E         
+E         comparison failed
+E         Obtained: 3.2496793501286456e-05
+E         Expected: 0.003333333333333334 ± 2.0e-04
+
+tests/test_inference_proposal_scales.py:71: AssertionError
+_____ testProposalVarianceMatchesDistributionDefinition[MH_Gibbs-uniform] ______
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'uniform'
+
+    @pytest.mark.parametrize("methodClass,distribution", [
+        (MH_Gibbs, "gauss"), (MH, "uniform"), (AMH, "uniform"), (MH_Gibbs, "uniform"),
+    ])
+    def testProposalVarianceMatchesDistributionDefinition(methodClass, distribution):
+        count, scale = 4096, 0.1
+        algorithm = newAlgorithm(methodClass, distribution, count)
+        algorithm.rng = np.random.default_rng(643)
+        current = np.zeros((count, 1))
+        covariance = [np.array([[scale ** 2]]) for _ in range(count)]
+        samples = propose(algorithm, current, covariance, np.array([[-10.]]), np.array([[10.]]), distribution)
+        expectedVariance = scale ** 2 if distribution == "gauss" else scale ** 2 / 3
+        assert np.mean(samples) == pytest.approx(0., abs=scale * 0.1)
+>       assert np.var(samples) == pytest.approx(expectedVariance, rel=0.06)
+E       assert np.float64(3....501286456e-05) == 0.003333333333333334 ± 2.0e-04
+E         
+E         comparison failed
+E         Obtained: 3.2496793501286456e-05
+E         Expected: 0.003333333333333334 ± 2.0e-04
+
+tests/test_inference_proposal_scales.py:71: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>, distribution = 'gauss'
+warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 36 / 48 (75%)
+E           First 5 mismatches are at indices:
+E            [0, 3, 0]: 0.9390505969036396 (ACTUAL), 0.8034040392530206 (DESIRED)
+E            [0, 4, 0]: 0.8113542361431962 (ACTUAL), 0.03512700281897485 (DESIRED)
+E            [0, 5, 0]: 0.6331744551694022 (ACTUAL), 0.9634048363782702 (DESIRED)
+E            [0, 6, 0]: 0.3969185315394015 (ACTUAL), 0.28353795274702914 (DESIRED)
+E            [0, 7, 0]: 0.9100280632200388 (ACTUAL), 0.7659202068499394 (DESIRED)
+E           Max absolute difference among violations: 0.77622723
+E           Max relative difference among violations: 476.3927861
+E            ACTUAL: array([[[0.96045 ],
+E                   [0.9878  ],
+E                   [0.963059],...
+E            DESIRED: array([[[9.604503e-01],
+E                   [9.878003e-01],
+E                   [9.630590e-01],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'gauss', warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 44 / 48 (91.7%)
+E           First 5 mismatches are at indices:
+E            [0, 1, 0]: 0.026447137237601833 (ACTUAL), 0.018512808297995214 (DESIRED)
+E            [0, 2, 0]: 0.003907530057383573 (ACTUAL), 0.016258847579973385 (DESIRED)
+E            [0, 3, 0]: 0.010830928701145732 (ACTUAL), 0.016951187444349602 (DESIRED)
+E            [0, 4, 0]: 0.011318629106579386 (ACTUAL), 0.01699995748489297 (DESIRED)
+E            [0, 5, 0]: 0.0045641363326886205 (ACTUAL), 0.01632450820750389 (DESIRED)
+E           Max absolute difference among violations: 0.04611483
+E           Max relative difference among violations: 0.93704614
+E            ACTUAL: array([[[0.017631],
+E                   [0.026447],
+E                   [0.003908],...
+E            DESIRED: array([[[0.017631],
+E                   [0.018513],
+E                   [0.016259],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-MH] _
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>, distribution = 'uniform'
+warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 44 / 48 (91.7%)
+E           First 5 mismatches are at indices:
+E            [0, 1, 0]: 0.009041713489082035 (ACTUAL), 0.016772265923143233 (DESIRED)
+E            [0, 2, 0]: 0.013801474524424297 (ACTUAL), 0.01724824202667746 (DESIRED)
+E            [0, 3, 0]: 0.005255816640869033 (ACTUAL), 0.016393676238321934 (DESIRED)
+E            [0, 4, 0]: 0.005332500065393495 (ACTUAL), 0.016401344580774378 (DESIRED)
+E            [0, 5, 0]: 0.00018873738864400372 (ACTUAL), 0.01588696831309943 (DESIRED)
+E           Max absolute difference among violations: 0.03678196
+E           Max relative difference among violations: 0.98811999
+E            ACTUAL: array([[[1.763122e-02],
+E                   [9.041713e-03],
+E                   [1.380147e-02],...
+E            DESIRED: array([[[0.017631],
+E                   [0.016772],
+E                   [0.017248],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 44 / 48 (91.7%)
+E           First 5 mismatches are at indices:
+E            [0, 1, 0]: 0.9684098129122001 (ACTUAL), 0.961246286042628 (DESIRED)
+E            [0, 2, 0]: 0.9739321494675056 (ACTUAL), 0.9617985196981584 (DESIRED)
+E            [0, 3, 0]: 0.9751402150120608 (ACTUAL), 0.9713851229411133 (DESIRED)
+E            [0, 4, 0]: 0.9745119092555455 (ACTUAL), 0.9663673280418829 (DESIRED)
+E            [0, 5, 0]: 0.9750325906274506 (ACTUAL), 0.9706432436758409 (DESIRED)
+E           Max absolute difference among violations: 0.02827351
+E           Max relative difference among violations: 0.33268353
+E            ACTUAL: array([[[0.96045 ],
+E                   [0.96841 ],
+E                   [0.973932],...
+E            DESIRED: array([[[0.96045 ],
+E                   [0.961246],
+E                   [0.961799],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'uniform', warmUp = 0
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 44 / 48 (91.7%)
+E           First 5 mismatches are at indices:
+E            [0, 1, 0]: 0.009041713489082035 (ACTUAL), 0.016772265923143233 (DESIRED)
+E            [0, 2, 0]: 0.013801474524424297 (ACTUAL), 0.01724824202667746 (DESIRED)
+E            [0, 3, 0]: 0.005255816640869033 (ACTUAL), 0.016393676238321934 (DESIRED)
+E            [0, 4, 0]: 0.005332500065393495 (ACTUAL), 0.016401344580774378 (DESIRED)
+E            [0, 5, 0]: 0.00018873738864400372 (ACTUAL), 0.01588696831309943 (DESIRED)
+E           Max absolute difference among violations: 0.03678196
+E           Max relative difference among violations: 0.98811999
+E            ACTUAL: array([[[1.763122e-02],
+E                   [9.041713e-03],
+E                   [1.380147e-02],...
+E            DESIRED: array([[[0.017631],
+E                   [0.016772],
+E                   [0.017248],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>, distribution = 'gauss'
+warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 36 / 48 (75%)
+E           First 5 mismatches are at indices:
+E            [0, 3, 0]: 0.2946515120927355 (ACTUAL), 0.2163979707914356 (DESIRED)
+E            [0, 4, 0]: 0.8872972647135982 (ACTUAL), 0.9529355641385792 (DESIRED)
+E            [0, 5, 0]: 0.0336119541902391 (ACTUAL), 0.23218110198897107 (DESIRED)
+E            [0, 6, 0]: 0.6349498872777581 (ACTUAL), 0.4388261719806391 (DESIRED)
+E            [0, 7, 0]: 0.558933150527221 (ACTUAL), 0.7289527532697226 (DESIRED)
+E           Max absolute difference among violations: 0.82827638
+E           Max relative difference among violations: 87.90532594
+E            ACTUAL: array([[[0.912894],
+E                   [0.689082],
+E                   [0.583728],...
+E            DESIRED: array([[[0.912894],
+E                   [0.689082],
+E                   [0.583728],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'gauss', warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 48 / 48 (100%)
+E           First 5 mismatches are at indices:
+E            [0, 0, 0]: 0.010830928701145732 (ACTUAL), 0.016951187444349602 (DESIRED)
+E            [0, 1, 0]: 0.011318629106579386 (ACTUAL), 0.01699995748489297 (DESIRED)
+E            [0, 2, 0]: 0.0045641363326886205 (ACTUAL), 0.01632450820750389 (DESIRED)
+E            [0, 3, 0]: 0.010548204874867285 (ACTUAL), 0.016922915061721756 (DESIRED)
+E            [0, 4, 0]: 0.000992708289411448 (ACTUAL), 0.01576882374529389 (DESIRED)
+E           Max absolute difference among violations: 0.05591606
+E           Max relative difference among violations: 0.93704614
+E            ACTUAL: array([[[0.010831],
+E                   [0.011319],
+E                   [0.004564],...
+E            DESIRED: array([[[0.016951],
+E                   [0.017   ],
+E                   [0.016325],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-MH] _
+
+methodClass = <class 'UQPyL.inference.methods.mh.MH'>, distribution = 'uniform'
+warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 48 / 48 (100%)
+E           First 5 mismatches are at indices:
+E            [0, 0, 0]: 0.005255816640869033 (ACTUAL), 0.016393676238321934 (DESIRED)
+E            [0, 1, 0]: 0.005332500065393495 (ACTUAL), 0.016401344580774378 (DESIRED)
+E            [0, 2, 0]: 0.00018873738864400372 (ACTUAL), 0.01588696831309943 (DESIRED)
+E            [0, 3, 0]: 0.0024523602027561875 (ACTUAL), 0.015622858553959404 (DESIRED)
+E            [0, 4, 0]: 0.007802624150217586 (ACTUAL), 0.016157884948705546 (DESIRED)
+E           Max absolute difference among violations: 0.05608776
+E           Max relative difference among violations: 0.98811999
+E            ACTUAL: array([[[5.255817e-03],
+E                   [5.332500e-03],
+E                   [1.887374e-04],...
+E            DESIRED: array([[[0.016394],
+E                   [0.016401],
+E                   [0.015887],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-AMH] _
+
+methodClass = <class 'UQPyL.inference.methods.amh.AMH'>
+distribution = 'uniform', warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 48 / 48 (100%)
+E           First 5 mismatches are at indices:
+E            [0, 0, 0]: 0.9835185032802972 (ACTUAL), 0.9627571550794376 (DESIRED)
+E            [0, 1, 0]: 0.9785082060986366 (ACTUAL), 0.9622561253612716 (DESIRED)
+E            [0, 2, 0]: 0.9827789893684516 (ACTUAL), 0.962683203688253 (DESIRED)
+E            [0, 3, 0]: 0.9822978724158623 (ACTUAL), 0.9580634328594901 (DESIRED)
+E            [0, 4, 0]: 0.9828251763949442 (ACTUAL), 0.9631927934547476 (DESIRED)
+E           Max absolute difference among violations: 0.02444469
+E           Max relative difference among violations: 0.43176136
+E            ACTUAL: array([[[0.983519],
+E                   [0.978508],
+E                   [0.982779],...
+E            DESIRED: array([[[0.962757],
+E                   [0.962256],
+E                   [0.962683],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_ testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-MH_Gibbs] _
+
+methodClass = <class 'UQPyL.inference.methods.mh_gibbs.MH_Gibbs'>
+distribution = 'uniform', warmUp = 3
+
+    @pytest.mark.parametrize("methodClass", methodClasses)
+    @pytest.mark.parametrize("distribution", distributions)
+    @pytest.mark.parametrize("warmUp", [0, 3])
+    def testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates(methodClass, distribution, warmUp):
+        normalized = []
+        for span in [0.1, 1., 10.]:
+            count = [0]
+    
+            def objective(x):
+                count[0] += len(x)
+                return np.zeros((len(x), 1))
+    
+            problem = Problem(nInput=1, nObj=1, lb=0, ub=span, objFunc=objective)
+            result = newAlgorithm(methodClass, distribution, nChains=4, warmUp=warmUp).run(problem, gamma=0.1, seed=641)
+            assert result.decs.shape == (4, 12, 1)
+            assert result.FEs == count[0] == 4 * (warmUp + 12)
+            assert result.iters == 11
+            assert np.all(result.accepted) and np.all(result.feasibleMask)
+            assert np.all((result.decs >= 0) & (result.decs <= span))
+            np.testing.assert_array_equal(result.objs, np.zeros((4, 12, 1)))
+            np.testing.assert_array_equal(result.logProb, np.zeros((4, 12)))
+            normalized.append(result.decs / span)
+        for values in normalized[1:]:
+>           np.testing.assert_allclose(values, normalized[0], rtol=0, atol=3e-12)
+E           AssertionError: 
+E           Not equal to tolerance rtol=0, atol=3e-12
+E           
+E           Mismatched elements: 48 / 48 (100%)
+E           First 5 mismatches are at indices:
+E            [0, 0, 0]: 0.005255816640869033 (ACTUAL), 0.016393676238321934 (DESIRED)
+E            [0, 1, 0]: 0.005332500065393495 (ACTUAL), 0.016401344580774378 (DESIRED)
+E            [0, 2, 0]: 0.00018873738864400372 (ACTUAL), 0.01588696831309943 (DESIRED)
+E            [0, 3, 0]: 0.0024523602027561875 (ACTUAL), 0.015622858553959404 (DESIRED)
+E            [0, 4, 0]: 0.007802624150217586 (ACTUAL), 0.016157884948705546 (DESIRED)
+E           Max absolute difference among violations: 0.05608776
+E           Max relative difference among violations: 0.98811999
+E            ACTUAL: array([[[5.255817e-03],
+E                   [5.332500e-03],
+E                   [1.887374e-04],...
+E            DESIRED: array([[[0.016394],
+E                   [0.016401],
+E                   [0.015887],...
+
+tests/test_inference_proposal_scales.py:99: AssertionError
+_________ testAdaptiveCovarianceAndFloorUseParameterUnits[False-0.001] _________
+
+unitScale = 0.001, constantHistory = False
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 2 / 4 (50%)
+E       Mismatch at indices:
+E        [0, 0]: 0.0010000306821666667 (ACTUAL), 3.168216666666667e-08 (DESIRED)
+E        [1, 1]: 0.001000594762 (ACTUAL), 6.037619999999997e-07 (DESIRED)
+E       Max absolute difference among violations: 0.001
+E       Max relative difference among violations: 31563.46630334
+E        ACTUAL: array([[1.000031e-03, 1.345295e-07],
+E              [1.345295e-07, 1.000595e-03]])
+E        DESIRED: array([[3.168217e-08, 1.345295e-07],
+E              [1.345295e-07, 6.037620e-07]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+__________ testAdaptiveCovarianceAndFloorUseParameterUnits[False-1.0] __________
+
+unitScale = 1.0, constantHistory = False
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 1 / 4 (25%)
+E       Mismatch at index:
+E        [1, 1]: 0.5957619999999993 (ACTUAL), 0.6037619999999992 (DESIRED)
+E       Max absolute difference among violations: 0.008
+E       Max relative difference among violations: 0.01325025
+E        ACTUAL: array([[0.031682, 0.134529],
+E              [0.134529, 0.595762]])
+E        DESIRED: array([[0.031682, 0.134529],
+E              [0.134529, 0.603762]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+________ testAdaptiveCovarianceAndFloorUseParameterUnits[False-1000.0] _________
+
+unitScale = 1000.0, constantHistory = False
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 2 / 4 (50%)
+E       Mismatch at indices:
+E        [0, 0]: 30682.167666666668 (ACTUAL), 31682.16666666666 (DESIRED)
+E        [1, 1]: 594762.001 (ACTUAL), 603762.0 (DESIRED)
+E       Max absolute difference among violations: 8999.999
+E       Max relative difference among violations: 0.03156347
+E        ACTUAL: array([[ 30682.167667, 134529.5     ],
+E              [134529.5     , 594762.001   ]])
+E        DESIRED: array([[ 31682.166667, 134529.5     ],
+E              [134529.5     , 603762.      ]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+_________ testAdaptiveCovarianceAndFloorUseParameterUnits[True-0.001] __________
+
+unitScale = 0.001, constantHistory = True
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 2 / 4 (50%)
+E       Mismatch at indices:
+E        [0, 0]: 0.001 (ACTUAL), 1e-09 (DESIRED)
+E        [1, 1]: 0.001 (ACTUAL), 9.000000000000001e-09 (DESIRED)
+E       Max absolute difference among violations: 0.001
+E       Max relative difference among violations: 999999.
+E        ACTUAL: array([[0.001, 0.   ],
+E              [0.   , 0.001]])
+E        DESIRED: array([[1.e-09, 0.e+00],
+E              [0.e+00, 9.e-09]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+__________ testAdaptiveCovarianceAndFloorUseParameterUnits[True-1.0] ___________
+
+unitScale = 1.0, constantHistory = True
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 1 / 4 (25%)
+E       Mismatch at index:
+E        [1, 1]: 0.001 (ACTUAL), 0.009000000000000001 (DESIRED)
+E       Max absolute difference among violations: 0.008
+E       Max relative difference among violations: 0.88888889
+E        ACTUAL: array([[0.001, 0.   ],
+E              [0.   , 0.001]])
+E        DESIRED: array([[0.001, 0.   ],
+E              [0.   , 0.009]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+_________ testAdaptiveCovarianceAndFloorUseParameterUnits[True-1000.0] _________
+
+unitScale = 1000.0, constantHistory = True
+
+    @pytest.mark.parametrize("unitScale", [1e-3, 1., 1e3])
+    @pytest.mark.parametrize("constantHistory", [False, True])
+    def testAdaptiveCovarianceAndFloorUseParameterUnits(unitScale, constantHistory):
+        baseSpan = np.array([1., 3.])
+        span = baseSpan * unitScale
+        unitHistory = np.array([[0.2, 0.4], [0.25, 0.5], [0.4, 0.7]])
+        if constantHistory:
+            unitHistory[:] = [0.25, 0.5]
+        history = unitHistory * span
+        chain = Chain(2, 1, 0, 3)
+        for values in history:
+            chain.add(values, np.zeros(1))
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        algorithm.setProblem(Problem(nInput=2, nObj=1, lb=0, ub=span, objFunc=lambda x: np.zeros((len(x), 1))))
+        multiplier = 2.38 ** 2 / 2
+        centered = history - history.mean(axis=0)
+        expected = sum(np.outer(row, row) for row in centered) / 2 * multiplier + np.diag(1e-3 * span ** 2)
+        actual = algorithm.updateCovs([chain], multiplier)[0]
+>       np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0)
+E       AssertionError: 
+E       Not equal to tolerance rtol=3e-14, atol=0
+E       
+E       Mismatched elements: 2 / 4 (50%)
+E       Mismatch at indices:
+E        [0, 0]: 0.001 (ACTUAL), 1000.0 (DESIRED)
+E        [1, 1]: 0.001 (ACTUAL), 9000.0 (DESIRED)
+E       Max absolute difference among violations: 8999.999
+E       Max relative difference among violations: 0.99999989
+E        ACTUAL: array([[0.001, 0.   ],
+E              [0.   , 0.001]])
+E        DESIRED: array([[1000.,    0.],
+E              [   0., 9000.]])
+
+tests/test_inference_proposal_scales.py:120: AssertionError
+______ testAdaptiveFallbackRespectsBoundsAndRetainsProvidedCovarianceCopy ______
+
+    def testAdaptiveFallbackRespectsBoundsAndRetainsProvidedCovarianceCopy():
+        algorithm = newAlgorithm(AMH, "gauss", 1)
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=[1., 3.], objFunc=lambda x: np.zeros((len(x), 1)))
+        algorithm.setProblem(problem)
+        chain = Chain(2, 1, 0, 3)
+        chain.add(np.array([0.5, 1.5]), np.zeros(1))
+>       np.testing.assert_allclose(algorithm.updateCovs([chain], 2.)[0], np.diag([2., 18.]))
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 1 / 4 (25%)
+E       Mismatch at index:
+E        [1, 1]: 2.0 (ACTUAL), 18.0 (DESIRED)
+E       Max absolute difference among violations: 16.
+E       Max relative difference among violations: 0.88888889
+E        ACTUAL: array([[2., 0.],
+E              [0., 2.]])
+E        DESIRED: array([[ 2.,  0.],
+E              [ 0., 18.]])
+
+tests/test_inference_proposal_scales.py:130: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-gauss-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-MH]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-AMH]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[1-uniform-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-gauss-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-MH]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-AMH]
+FAILED tests/test_inference_proposal_scales.py::testProposalMatchesIndependentRandomGeneratorAtDeclaredScale[3-uniform-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testProposalVarianceMatchesDistributionDefinition[MH_Gibbs-gauss]
+FAILED tests/test_inference_proposal_scales.py::testProposalVarianceMatchesDistributionDefinition[MH-uniform]
+FAILED tests/test_inference_proposal_scales.py::testProposalVarianceMatchesDistributionDefinition[AMH-uniform]
+FAILED tests/test_inference_proposal_scales.py::testProposalVarianceMatchesDistributionDefinition[MH_Gibbs-uniform]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-gauss-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-MH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[0-uniform-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-gauss-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-MH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-AMH]
+FAILED tests/test_inference_proposal_scales.py::testPublicSamplingTraceIsInvariantToInputUnitsThroughAdaptiveUpdates[3-uniform-MH_Gibbs]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[False-0.001]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[False-1.0]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[False-1000.0]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[True-0.001]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[True-1.0]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveCovarianceAndFloorUseParameterUnits[True-1000.0]
+FAILED tests/test_inference_proposal_scales.py::testAdaptiveFallbackRespectsBoundsAndRetainsProvidedCovarianceCopy
+29 failed, 14 passed in 1.24s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_inference_proposal_scales.py` failed. (See above for error)

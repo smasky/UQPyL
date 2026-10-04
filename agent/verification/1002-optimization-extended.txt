@@ -1,0 +1,9 @@
+records 231 all invariant checks passed
+GA {'sphere': 2.2014101896903105e-07, 'rosenbrock': 0.0015401767362822538, 'rastrigin': 2.964233150848372e-05}
+DE {'sphere': 1.3359227172694924e-07, 'rosenbrock': 0.00014833368884029, 'rastrigin': 0.008539099204092793}
+PSO {'sphere': 5.191407147146205e-14, 'rosenbrock': 0.04376689756161366, 'rastrigin': 8.246048111004711e-08}
+ABC {'sphere': 9.90730138588249e-15, 'rosenbrock': 0.0018846453435137844, 'rastrigin': 6.7794019287248375e-09}
+CSA {'sphere': 0.0, 'rosenbrock': 0.06870300671270733, 'rastrigin': 0.0}
+SCE_UA {'sphere': 0.0, 'rosenbrock': 0.0, 'rastrigin': 7.105427357601002e-15}
+ML_SCE_UA {'sphere': 0.0, 'rosenbrock': 0.0, 'rastrigin': 0.9949590570932898}
+warnings []

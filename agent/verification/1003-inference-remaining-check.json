@@ -1,0 +1,66 @@
+[
+  {
+    "case": "nan_log_probability",
+    "method": "MH",
+    "nonfinite_log_prob": 16,
+    "draw_count": 16,
+    "stop_reason": "max_iters",
+    "warnings": []
+  },
+  {
+    "case": "nan_log_probability",
+    "method": "MH_Gibbs",
+    "nonfinite_log_prob": 16,
+    "draw_count": 16,
+    "stop_reason": "max_iters",
+    "warnings": []
+  },
+  {
+    "case": "nan_log_probability",
+    "method": "AMH",
+    "nonfinite_log_prob": 16,
+    "draw_count": 16,
+    "stop_reason": "max_iters",
+    "warnings": []
+  },
+  {
+    "case": "nan_log_probability",
+    "method": "DEMC",
+    "nonfinite_log_prob": 16,
+    "draw_count": 16,
+    "stop_reason": "max_iters",
+    "warnings": []
+  },
+  {
+    "case": "nan_log_probability",
+    "method": "DREAM_ZS",
+    "nonfinite_log_prob": 16,
+    "draw_count": 16,
+    "stop_reason": "max_iters",
+    "warnings": []
+  },
+  {
+    "case": "small_archive",
+    "ps": 1.0,
+    "singular_values": [
+      16.01174680453351,
+      9.686570635640326,
+      1.3515223789274649e-14,
+      8.451422775354861e-15
+    ],
+    "sample_rank": 2,
+    "warnings": []
+  },
+  {
+    "case": "small_archive",
+    "ps": 0.1,
+    "singular_values": [
+      13.91079977291256,
+      11.86305052609393,
+      7.600521764919099,
+      6.120453442878755
+    ],
+    "sample_rank": 4,
+    "warnings": []
+  }
+]

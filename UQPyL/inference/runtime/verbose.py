@@ -11,6 +11,7 @@ import numpy as np
 from ...core import config
 from ...core.runtime import ensure_result_dir
 
+
 @dataclass
 class VerboseConfig:
     level: int = 2
@@ -78,15 +79,28 @@ class InferenceRenderer:
         pairs = [
             ("method", methodName),
             ("status", "finished"),
+            ("stop reason", getattr(result, "stopReason", None) or "unknown"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("chains", result.decs.shape[0] if result.decs.ndim == 3 else 0),
             ("draws", result.decs.shape[1] if result.decs.ndim == 3 else 0),
             ("mean logProb", _fmt(np.nanmean(result.logProb) if result.logProb.size else None, self.config.precision)),
-            ("acceptance mean", _fmt(np.mean(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("acceptance min", _fmt(np.min(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("acceptance max", _fmt(np.max(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("feasible rate", _fmt(np.mean(result.feasibleMask) if result.feasibleMask.size else 0.0, self.config.precision)),
+            (
+                "acceptance mean",
+                _fmt(np.mean(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "acceptance min",
+                _fmt(np.min(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "acceptance max",
+                _fmt(np.max(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "feasible rate",
+                _fmt(np.mean(result.feasibleMask) if result.feasibleMask.size else 0.0, self.config.precision),
+            ),
             ("best value", _fmt(_best_value(result.bestObjs), self.config.precision)),
             ("bestX", _fmt_vector(bestX, self.config.precision, fullVectors=False)),
             ("meanX", _fmt_vector(meanX, self.config.precision, fullVectors=False)),
@@ -100,15 +114,28 @@ class InferenceRenderer:
         pairs = [
             ("method", methodName),
             ("status", "finished"),
+            ("stop reason", getattr(result, "stopReason", None) or "unknown"),
             ("iterations", result.iters),
             ("evaluations", result.FEs),
             ("chains", result.decs.shape[0] if result.decs.ndim == 3 else 0),
             ("draws", result.decs.shape[1] if result.decs.ndim == 3 else 0),
             ("mean logProb", _fmt(np.nanmean(result.logProb) if result.logProb.size else None, self.config.precision)),
-            ("acceptance mean", _fmt(np.mean(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("acceptance min", _fmt(np.min(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("acceptance max", _fmt(np.max(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision)),
-            ("feasible rate", _fmt(np.mean(result.feasibleMask) if result.feasibleMask.size else 0.0, self.config.precision)),
+            (
+                "acceptance mean",
+                _fmt(np.mean(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "acceptance min",
+                _fmt(np.min(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "acceptance max",
+                _fmt(np.max(result.acceptanceRate) if result.acceptanceRate.size else 0.0, self.config.precision),
+            ),
+            (
+                "feasible rate",
+                _fmt(np.mean(result.feasibleMask) if result.feasibleMask.size else 0.0, self.config.precision),
+            ),
             ("best value", _fmt(_best_value(result.bestObjs), self.config.precision)),
             ("bestX", _fmt_vector(bestX, self.config.precision, fullVectors=True)),
             ("meanX", _fmt_vector(meanX, self.config.precision, fullVectors=True)),
@@ -273,18 +300,18 @@ def _current_log_prob(logProb):
 def _state_vectors(state):
     if state.decs is None or state.decs.size == 0:
         return None, None, None
-    flatDecs = state.decs.reshape(-1, state.decs.shape[-1])
-    flatFeasible = state.feasibleMask.reshape(-1) if state.feasibleMask is not None else np.ones(flatDecs.shape[0], dtype=bool)
-    sample = flatDecs[flatFeasible] if np.any(flatFeasible) else flatDecs
     bestX = None if state.bestDecs is None else np.asarray(state.bestDecs).reshape(-1)
-    return bestX, np.mean(sample, axis=0), np.std(sample, axis=0)
+    meanX, stdX = state.decisionMoments()
+    return bestX, meanX, stdX
 
 
 def _result_vectors(result):
     if result.decs.size == 0:
         return None, None, None
     flatDecs = result.decs.reshape(-1, result.decs.shape[-1])
-    flatFeasible = result.feasibleMask.reshape(-1) if result.feasibleMask is not None else np.ones(flatDecs.shape[0], dtype=bool)
+    flatFeasible = (
+        result.feasibleMask.reshape(-1) if result.feasibleMask is not None else np.ones(flatDecs.shape[0], dtype=bool)
+    )
     sample = flatDecs[flatFeasible] if np.any(flatFeasible) else flatDecs
     bestX = None if result.bestDecs is None else np.asarray(result.bestDecs).reshape(-1)
     return bestX, np.mean(sample, axis=0), np.std(sample, axis=0)

@@ -24,7 +24,8 @@ class ModelProblem(ProblemBase):
 
     `ModelProblem` is the simulation-backed problem mode in UQPyL.
     `simFunc` maps batched parameter samples to simulation outputs whose
-    first dimension must match the number of input samples.
+    shape must be (nSamples, nObs). Observations and masks have shape (nObs,).
+    Users explicitly choose the observation ordering before constructing the problem.
     """
 
     _evalTargets = (None, "objs", "cons", "sims")
@@ -52,14 +53,13 @@ class ModelProblem(ProblemBase):
         nCon: int = 0,
         varType: list = None,
         varSet: list = None,
-        optType: Union[list, str] = 'min',
+        optType: Union[list, str] = "min",
         xLabels: list = None,
         name: str = None,
         space: Optional[SpaceBase] = None,
         objLabels: list = None,
         conLabels: list = None,
         evaluator: Optional[ModelEvaluatorBase] = None,
-        seriesLabels: list = None,
     ):
         self._sim_fn = None
 
@@ -98,10 +98,10 @@ class ModelProblem(ProblemBase):
         )
 
         self.obs = None if obs is None else self._validate_obs(obs)
-        self.mask = self._validate_mask(mask, self.obs.shape) if self.obs is not None else self._validate_mask_without_obs(mask)
-        self.obsShape = None if self.obs is None else self.obs.shape
-        self.nObs = None if self.obsShape is None else int(np.prod(self.obsShape))
-        self.seriesLabels = self._validate_series_labels(seriesLabels)
+        self.mask = (
+            self._validate_mask(mask, self.obs.shape) if self.obs is not None else self._validate_mask_without_obs(mask)
+        )
+        self.nObs = None if self.obs is None else self.obs.size
 
     @staticmethod
     def _validate_model_config(simFunc):
@@ -151,17 +151,22 @@ class ModelProblem(ProblemBase):
         if not isinstance(sims, np.ndarray):
             raise TypeError("Simulation output must be an instance of np.ndarray.")
 
-        if sims.ndim == 0 or sims.shape[0] != n_samples:
+        if sims.ndim != 2:
+            raise ValueError("Simulation output must be a 2D array with shape (nSamples, nObs).")
+        if sims.shape[0] != n_samples:
             raise ValueError("Simulation output first dimension must equal n_samples.")
+
+        if sims.shape[1] == 0:
+            raise ValueError("Simulation output must contain at least one observation column.")
+        if self.nObs is not None and sims.shape[1] != self.nObs:
+            raise ValueError("Simulation output column count must equal nObs.")
 
         if not np.issubdtype(sims.dtype, np.number):
             raise TypeError("Simulation output must be numeric.")
 
         nan_mask = np.isnan(sims)
         if nan_mask.any():
-            # Masked observation positions are allowed to be NaN when the
-            # simulation output aligns with the observation grid.
-            if self.mask is not None and self.obs is not None and sims.shape[1:] == self.obs.shape:
+            if self.mask is not None:
                 allowed = np.broadcast_to(self.mask, sims.shape)
                 if np.any(nan_mask & ~allowed):
                     raise ValueError("Simulation output must not contain NaN values outside masked positions.")
@@ -171,26 +176,32 @@ class ModelProblem(ProblemBase):
         return sims
 
     def flattenSim(self, sims: np.ndarray) -> np.ndarray:
-        sims = self._validate_sim(sims, sims.shape[0])
-        return sims.reshape(sims.shape[0], -1)
+        """Validate and return canonical simulation rows without changing their order."""
+        if not isinstance(sims, np.ndarray):
+            raise TypeError("Simulation output must be an instance of np.ndarray.")
+        return self._validate_sim(sims, sims.shape[0] if sims.ndim else 0)
 
     def flattenObs(self) -> np.ndarray:
         if self.obs is None:
             raise ValueError("Observation `obs` is not defined.")
-        return self.obs.reshape(-1)
+        return self.obs
 
     def flattenMask(self) -> np.ndarray:
         if self.nObs is None:
             raise ValueError("Observation `obs` is not defined.")
         if self.mask is None:
             return np.zeros(self.nObs, dtype=bool)
-        return self.mask.reshape(-1)
+        return self.mask
 
     def _validate_obs(self, obs):
         if not isinstance(obs, np.ndarray):
             raise TypeError("Observation `obs` must be an instance of np.ndarray.")
-        if obs.ndim != 2:
-            raise ValueError("Observation `obs` must be a 2D array with shape (n_time, n_series).")
+        if obs.ndim != 1:
+            raise ValueError(
+                "Observation `obs` must be a 1D array with shape (nObs,); flatten it explicitly in simulation column order."
+            )
+        if obs.size == 0:
+            raise ValueError("Observation `obs` must contain at least one value.")
         if not np.issubdtype(obs.dtype, np.number):
             raise TypeError("Observation `obs` must be numeric.")
         return obs
@@ -210,13 +221,6 @@ class ModelProblem(ProblemBase):
         if mask is not None:
             raise ValueError("Mask requires observation `obs`.")
         return None
-
-    def _validate_series_labels(self, seriesLabels):
-        if seriesLabels is None:
-            if self.obs is not None:
-                return [f"series_{i}" for i in range(1, self.obs.shape[1] + 1)]
-            return None
-        return list(seriesLabels)
 
     def _validate_eval_result(self, evalRes, X, target):
         objs, cons = self._validate_common_eval_result(evalRes, X)

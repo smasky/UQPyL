@@ -1,0 +1,391 @@
+{
+  "inference_result_history_shared": {
+    "first_draws": 8,
+    "original_history": 8,
+    "history_after_second_run": 3,
+    "history_shared": true
+  },
+  "inference_objective_units": {
+    "returned": [
+      -1.1653426135443703,
+      -1.2343445549742968,
+      -1.0606429439168714,
+      -1.1309078619792075,
+      -1.148219321746531,
+      -1.0637064799048521
+    ],
+    "actual": [
+      1.1653426135443703,
+      1.2343445549742968,
+      1.0606429439168714,
+      1.1309078619792075,
+      1.148219321746531,
+      1.0637064799048521
+    ],
+    "best": [
+      1.2343445549742968
+    ]
+  },
+  "inference_repeated_history_processing": [
+    {
+      "draws": 40,
+      "history_rows": 1638
+    },
+    {
+      "draws": 80,
+      "history_rows": 6478
+    },
+    {
+      "draws": 160,
+      "history_rows": 25758
+    }
+  ],
+  "doe_analysis_unit_metadata": {
+    "real": [
+      [
+        0.9998943452153851,
+        0.00010028294647946639
+      ]
+    ],
+    "unit": [
+      [
+        0.49999836831599337,
+        0.501466100515435
+      ]
+    ]
+  },
+  "morris_normalized_scale": {
+    "1.0": [
+      [
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    ],
+    "1e-10": [
+      [
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "moasmo_npop_unused": {
+    "8": {
+      "inner_npop": 50
+    },
+    "24": {
+      "inner_npop": 50
+    },
+    "100": {
+      "inner_npop": 50
+    }
+  },
+  "moasmo_reuse_output_count": {
+    "second_run_error": "The number of outputs in trainY must match n_surrogates.",
+    "type": "ValueError",
+    "fes_before_failure": 8,
+    "retained_model_count": 2
+  },
+  "single_objective_algorithm_multi_objective_problem": {
+    "status": "accepted",
+    "best_shape": [
+      1,
+      2
+    ],
+    "evals": 16
+  },
+  "budget_setter_split_state": {
+    "get_value": 0,
+    "actual_attribute": 1,
+    "actual_iterations": 1
+  },
+  "calibration_bounds_not_applied": {
+    "posterior": [
+      [
+        10.0
+      ],
+      [
+        10.0
+      ]
+    ],
+    "callback_inputs": [
+      [
+        [
+          0.2
+        ],
+        [
+          0.8
+        ]
+      ],
+      [
+        [
+          10.0
+        ],
+        [
+          10.0
+        ]
+      ]
+    ],
+    "lower": [
+      [
+        0.0
+      ]
+    ],
+    "upper": [
+      [
+        1.0
+      ]
+    ]
+  },
+  "optimization_result_metadata_missing": {
+    "algorithm_run_id": "ga_Problem_20260919_113052_e9ddb90cb27d45f0a6e37b46cf3b6f4d",
+    "result_summary": {
+      "run_id": null,
+      "method": null,
+      "problem_name": null,
+      "n_input": null,
+      "n_output": null,
+      "n_con": null,
+      "runtime": 0.00028383700555423275,
+      "created_at": null,
+      "best_feasible": true,
+      "appear_fes": 8,
+      "appear_iters": 0,
+      "fes": 8,
+      "iters": 0
+    },
+    "extra_keys": [
+      "history_freq",
+      "constraint_weights"
+    ]
+  },
+  "mars_refit_changed_input_dimension": {
+    "type": "ValueError",
+    "message": "Wrong number of columns in X. Reshape your data.",
+    "fresh_model_succeeds": true
+  },
+  "multi_surrogate_partial_refit": {
+    "old": [
+      [
+        -1.081851472999742e-15,
+        -2.163702945999484e-15
+      ],
+      [
+        0.9999999999999986,
+        1.9999999999999971
+      ],
+      [
+        1.9999999999999982,
+        3.9999999999999964
+      ]
+    ],
+    "after_failure": [
+      [
+        -3.916866247176502e-15,
+        -2.163702945999484e-15
+      ],
+      [
+        2.9999999999999947,
+        1.9999999999999971
+      ],
+      [
+        5.999999999999994,
+        3.9999999999999964
+      ]
+    ]
+  },
+  "calibration_invalid_ensemble_late_validation": {
+    "message": "ES requires at least two ensemble members.",
+    "evaluated_rows": 1
+  },
+  "ensemble_full_rank_double_decomposition": {
+    "calls": {
+      "eigh": 1,
+      "solve": 1
+    },
+    "info": {
+      "solver": "solve",
+      "rank": 30,
+      "dimension": 30,
+      "cutoff": 1.3322676295501878e-14
+    }
+  },
+  "countercheck_multi_surrogate_natural_failure": {
+    "fit_error": "ValueError",
+    "prediction_error": "RuntimeError",
+    "conclusion": "prediction rejected; artificial override probe is not a built-in defect"
+  },
+  "failed_inference_partial_result_availability": {
+    "status": "failed",
+    "snapshot_iterations": [
+      0,
+      2,
+      4
+    ],
+    "load_result_error": "No result artifact found in sqlite database.",
+    "observations_in_last_snapshot": 1
+  },
+  "automatic_hv_runtime_cost": {
+    "fes": 36,
+    "total_seconds": 1.757931735002785,
+    "hv_calls": [
+      {
+        "points": 12,
+        "n_samples": 1000000,
+        "seconds": 0.3490977989931707
+      },
+      {
+        "points": 23,
+        "n_samples": 1000000,
+        "seconds": 0.5737706940053613
+      },
+      {
+        "points": 34,
+        "n_samples": 1000000,
+        "seconds": 0.8222718609977164
+      }
+    ],
+    "hv_time_fraction": 0.9927236190394411
+  },
+  "negative_surrogate_plot_clipping": {
+    "data_min": -10.0,
+    "data_max": -5.0,
+    "axis_limits": [
+      -9.0,
+      -5.5
+    ],
+    "both_extreme_points_outside": true
+  },
+  "public_config_capabilities": {
+    "opt_tune_signature": "(self, xData: numpy.ndarray, yData: numpy.ndarray, paraList: list = None, ratio: int = 10, owner: str = None, tuneMode: str = 'separate', *, seed=None, rng=None)",
+    "grid_tune_signature": "(self, xData: numpy.ndarray, yData: numpy.ndarray, paraGrid: dict = None, ratio: int = 10, owner: str = None, tuneMode: str = 'separate', *, seed=None, rng=None)",
+    "mh_signature": "(nChains: int = 1, warmUp: int = 1000, propDist: Literal['gauss', 'uniform'] = 'gauss', maxIters: int = 10000, verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True, saveFreq: int = 100, logProbFunc=None, maxInitAttempts: int = 1000)",
+    "amh_signature": "(nChains: int = 1, warmUp: int = 1000, maxIterTimes: int = 1000, propDist: Literal['gauss', 'uniform'] = 'gauss', verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True, saveFreq: int = 100, logProbFunc=None, maxInitAttempts: int = 1000)",
+    "ego_signature": "(nInit: int = 50, maxFEs: int = 1000, maxIters: int = 1000, maxTolerates: int = None, verboseFlag: bool = True, verboseFreq: int = 1, logFlag: bool = False, saveFlag=False, saveFreq: int = 100, historyFreq: int = 10)"
+  },
+  "ies_repeated_constant_covariance_validation": {
+    "iterations": 3,
+    "eigh_shapes": [
+      [
+        20,
+        20
+      ],
+      [
+        20,
+        20
+      ],
+      [
+        20,
+        20
+      ],
+      [
+        20,
+        20
+      ],
+      [
+        20,
+        20
+      ],
+      [
+        20,
+        20
+      ]
+    ],
+    "one_dense_matrix_bytes_at_10000_obs": 800000000
+  },
+  "tuning_mode_compute_and_parameter_semantics": {
+    "joint": {
+      "returned_parameter": 0.10000000000000002,
+      "score": 0.9999987547336648,
+      "likelihood_calls": 3
+    },
+    "separate": {
+      "returned_parameter": 1.0,
+      "score": 0.9999882559259683,
+      "likelihood_calls": 21
+    }
+  },
+  "ego_constraint_blind_acquisition": {
+    "new_evaluation": [
+      [
+        0.0003545205016314071
+      ]
+    ],
+    "new_violation": [
+      [
+        0.8996454794983686
+      ]
+    ],
+    "surrogate_targets": "objectives only"
+  },
+  "inference_objective_sign_persists_to_sqlite": {
+    "live_last_obj": -1.1309078619792075,
+    "loaded_last_obj": -1.1309078619792075,
+    "snapshot_last_obj": -1.1309078619792075,
+    "actual_last_obj": 1.1309078619792075
+  },
+  "repeat_numeric_findings_across_seeds": [
+    {
+      "real": [
+        [
+          0.9997199156649272,
+          0.00010002634698180583
+        ]
+      ],
+      "unit": [
+        [
+          0.5000285833888467,
+          0.5001201502114984
+        ]
+      ],
+      "morris_small": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "seed": 1
+    },
+    {
+      "real": [
+        [
+          1.0000067007999196,
+          9.815359507771465e-05
+        ]
+      ],
+      "unit": [
+        [
+          0.5008230682530876,
+          0.4999068367375743
+        ]
+      ],
+      "morris_small": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "seed": 3
+    },
+    {
+      "real": [
+        [
+          0.9996838798991318,
+          0.00010001638315337224
+        ]
+      ],
+      "unit": [
+        [
+          0.5012398555158851,
+          0.5015603755952092
+        ]
+      ],
+      "morris_small": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "seed": 7
+    }
+  ]
+}

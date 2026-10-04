@@ -7,8 +7,8 @@ from UQPyL.calibration.methods._ensemble import ensembleGain, validateCovariance
 
 def problemWithRepeatedObservations():
     def simulate(X):
-        return np.repeat(X[:, None, :], 5, axis=1)
-    return ModelProblem(nInput=1, lb=-10, ub=10, simFunc=simulate, obs=np.ones((5, 1)))
+        return (np.repeat(X[:, None, :], 5, axis=1)).reshape(len(X), -1)
+    return ModelProblem(nInput=1, lb=-10, ub=10, simFunc=simulate, obs=np.ones(5))
 
 
 @pytest.mark.parametrize('methodClass', [ES, IES])
@@ -22,7 +22,7 @@ def test_default_rank_deficient_update_matches_independent_pseudoinverse(methodC
     result = methodClass(**opts).run(problem, X)
     np.testing.assert_allclose(result.posteriorDecs, expected, atol=1e-12)
     info = result.diagnostics['covarianceSolves'][0] if methodClass is IES else result.diagnostics['covarianceSolve']
-    assert info['solver'] == 'pinv' and info['rank'] == 1 and info['dimension'] == 5
+    assert info['solver'] == 'svd' and info['rank'] == 1 and info['dimension'] == 5
 
 
 @pytest.mark.parametrize('methodClass', [ES, IES])
@@ -40,7 +40,7 @@ def test_explicit_observation_noise_uses_full_rank_solve(methodClass):
     opts = {'maxIters': 1, 'lam': .2} if methodClass is IES else {}
     result = methodClass(**opts).run(problemWithRepeatedObservations(), [[-1], [0], [2]], r=np.eye(5)*.5)
     info = result.diagnostics['covarianceSolves'][0] if methodClass is IES else result.diagnostics['covarianceSolve']
-    assert info['solver'] == 'solve' and info['rank'] == 5
+    assert info['solver'] == 'eigh' and info['rank'] == 5
 
 
 @pytest.mark.parametrize('r,match', [(np.eye(2), 'shape'), (np.full((5, 5), np.nan), 'finite'),
@@ -65,7 +65,7 @@ def test_full_rank_gain_matches_solve_and_does_not_mutate_covariance():
     gain, info = ensembleGain(cxy, cyy, validateCovariance(r, 3), .4)
     np.testing.assert_allclose(gain, np.linalg.solve(cyy+r+.4*np.eye(3), cxy.T).T)
     np.testing.assert_array_equal(r, saved)
-    assert info['solver'] == 'solve'
+    assert info['solver'] == 'eigh'
 
 
 def test_numerically_unresolved_direction_is_discarded():

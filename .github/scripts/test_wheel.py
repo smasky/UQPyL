@@ -1,49 +1,112 @@
-"""Install one wheel in a fresh environment and test it outside the checkout."""
+"""Test an installed wheel outside the checkout, with optional fresh installation."""
 
 import argparse
+import ast
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import venv
 import xml.etree.ElementTree as ET
 
 
+def writeCoverageSummary(coveragePath, reportDir, repoRoot):
+    tree = ET.parse(coveragePath)
+    root = tree.getroot()
+    # Point coverage consumers at the checkout, not the deleted venv.
+    for entry in tree.findall(".//class"):
+        filename = entry.get("filename", "").replace("\\", "/")
+        if "/UQPyL/" in filename:
+            filename = "UQPyL/" + filename.split("/UQPyL/", 1)[1]
+        elif not filename.startswith("UQPyL/"):
+            filename = "UQPyL/" + filename
+        entry.set("filename", filename)
+    for source in tree.findall("./sources/source"):
+        source.text = str(repoRoot)
+    tree.write(coveragePath, encoding="utf-8", xml_declaration=True)
+    summary = {
+        "python_version": sys.version.split()[0],
+        "platform": sys.platform,
+        "commit_sha": os.environ.get("GITHUB_SHA"),
+        "lines_covered": int(root.get("lines-covered", "0")),
+        "lines_total": int(root.get("lines-valid", "0")),
+        "branches_covered": int(root.get("branches-covered", "0")),
+        "branches_total": int(root.get("branches-valid", "0")),
+    }
+    if not summary["lines_total"] or not summary["branches_total"]:
+        raise ValueError("Expected nonempty line and branch coverage; check pytest coverage options.")
+    summary["line_rate"] = summary["lines_covered"] / summary["lines_total"]
+    summary["branch_rate"] = summary["branches_covered"] / summary["branches_total"]
+    (reportDir / "coverage-summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    markdown = (
+        f"### Wheel coverage — Python {summary['python_version']} / {summary['platform']}\n\n"
+        "| Metric | Covered / Total | Rate |\n|---|---:|---:|\n"
+        f"| Lines | {summary['lines_covered']} / {summary['lines_total']} | {summary['line_rate']:.2%} |\n"
+        f"| Branches | {summary['branches_covered']} / {summary['branches_total']} | {summary['branch_rate']:.2%} |\n\n"
+        "Coverage records execution, not proof of numerical correctness. No percentage threshold is enforced.\n"
+    )
+    (reportDir / "coverage-summary.md").write_text(markdown, encoding="utf-8")
+    if os.environ.get("GITHUB_STEP_SUMMARY"):
+        with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as output:
+            output.write(markdown)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--wheel-dir', default='dist')
-    parser.add_argument('--report-dir', default='.cache/wheel-test')
+    parser.add_argument("--wheel-dir", default="dist")
+    parser.add_argument("--installed", action="store_true", help="Test the wheel already installed by cibuildwheel.")
+    parser.add_argument("--report-dir", default=".cache/wheel-test")
     args = parser.parse_args()
     repoRoot = Path(__file__).resolve().parents[2]
-    wheelPaths = list(Path(args.wheel_dir).resolve().glob('*.whl'))
-    if len(wheelPaths) != 1:
-        parser.error('Expected exactly one wheel in --wheel-dir.')
+    versionTree = ast.parse((repoRoot / "UQPyL/__init__.py").read_text(encoding="utf-8"))
+    expectedVersion = next(
+        ast.literal_eval(node.value)
+        for node in versionTree.body
+        if isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == "__version__" for target in node.targets)
+    )
+    wheelPaths = [] if args.installed else list(Path(args.wheel_dir).resolve().glob("*.whl"))
+    if not args.installed and len(wheelPaths) != 1:
+        parser.error("Expected exactly one wheel in --wheel-dir.")
     reportDir = Path(args.report_dir).resolve()
     reportDir.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix='uqpyl-wheel-test-') as tmpDir:
+    # A failed installation must not upload reports from an earlier invocation.
+    for name in ("coverage.xml", "junit.xml", "coverage-summary.json", "coverage-summary.md"):
+        (reportDir / name).unlink(missing_ok=True)
+    with tempfile.TemporaryDirectory(prefix="uqpyl-wheel-test-") as tmpDir:
         testRoot = Path(tmpDir)
-        envDir = testRoot / 'venv'
-        venv.EnvBuilder(with_pip=True).create(envDir)
-        python = envDir / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+        envDir = testRoot / "venv"
+        if args.installed:
+            python = Path(sys.executable)
+        else:
+            venv.EnvBuilder(with_pip=True).create(envDir)
+            python = envDir / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
         env = os.environ.copy()
-        env.pop('PYTHONPATH', None)
-        env.pop('PYTHONHOME', None)
-        env.update(PYTHONNOUSERSITE='1', PYTHONUTF8='1', MPLBACKEND='Agg',
-                   MPLCONFIGDIR=str(testRoot / 'matplotlib'))
+        env.pop("PYTHONPATH", None)
+        env.pop("PYTHONHOME", None)
+        env.update(PYTHONNOUSERSITE="1", PYTHONUTF8="1", MPLBACKEND="Agg", MPLCONFIGDIR=str(testRoot / "matplotlib"))
 
         def run(*arguments):
             subprocess.run([str(python), *map(str, arguments)], cwd=testRoot, env=env, check=True)
 
-        run('-m', 'pip', 'install', f'{wheelPaths[0]}[viz]', 'pytest', 'pytest-cov')
-        run('-m', 'pip', 'check')
+        if not args.installed:
+            run("-m", "pip", "install", f"{wheelPaths[0]}[viz]", "pytest", "pytest-cov")
+        run("-m", "pip", "check")
         # Native imports must fail rather than disappearing behind importorskip.
-        run('-I', '-c', '''
+        run(
+            "-I",
+            "-c",
+            """
 import importlib
 import importlib.machinery
+import importlib.metadata
 from pathlib import Path
 import sys
 import UQPyL
+assert UQPyL.__version__ == importlib.metadata.version("UQPyL") == sys.argv[1]
 packagePath = Path(UQPyL.__file__).resolve()
 assert packagePath.is_relative_to(Path(sys.prefix).resolve()), packagePath
 modules = [
@@ -59,30 +122,31 @@ for name in modules:
     assert any(str(path).endswith(suffix) for suffix in importlib.machinery.EXTENSION_SUFFIXES), path
 print('Installed package:', packagePath)
 print('All 10 native extensions imported successfully.')
-''')
-        shutil.copytree(repoRoot / 'tests', testRoot / 'tests',
-                        ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
-        shutil.copy2(repoRoot / 'pyproject.toml', testRoot / 'pyproject.toml')
+""",
+            expectedVersion,
+        )
+        shutil.copytree(repoRoot / "tests", testRoot / "tests", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+        # Execute maintained documentation workflows against the installed wheel.
+        shutil.copytree(repoRoot / "docs_v2", testRoot / "docs_v2")
+        shutil.copy2(repoRoot / "pyproject.toml", testRoot / "pyproject.toml")
         try:
-            run('-m', 'pytest', '-q', '--cov=UQPyL', '--cov-report=term-missing',
-                f'--cov-report=xml:{reportDir / "coverage.xml"}',
-                f'--junitxml={reportDir / "junit.xml"}')
+            run(
+                "-m",
+                "pytest",
+                "-q",
+                "-W",
+                "error",
+                "--cov=UQPyL",
+                "--cov-branch",
+                "--cov-report=term-missing",
+                f"--cov-report=xml:{reportDir / 'coverage.xml'}",
+                f"--junitxml={reportDir / 'junit.xml'}",
+            )
         finally:
-            coveragePath = reportDir / 'coverage.xml'
+            coveragePath = reportDir / "coverage.xml"
             if coveragePath.exists():
-                tree = ET.parse(coveragePath)
-                # Point coverage consumers at the checkout, not the deleted venv.
-                for entry in tree.findall('.//class'):
-                    filename = entry.get('filename', '').replace('\\', '/')
-                    if '/UQPyL/' in filename:
-                        filename = 'UQPyL/' + filename.split('/UQPyL/', 1)[1]
-                    elif not filename.startswith('UQPyL/'):
-                        filename = 'UQPyL/' + filename
-                    entry.set('filename', filename)
-                for source in tree.findall('./sources/source'):
-                    source.text = str(repoRoot)
-                tree.write(coveragePath, encoding='utf-8', xml_declaration=True)
+                writeCoverageSummary(coveragePath, reportDir, repoRoot)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

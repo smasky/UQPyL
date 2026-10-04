@@ -113,7 +113,7 @@ None
 
 ## 3. 定义一个 `ModelProblem`
 
-`ModelProblem` 把仿真输出 `sim` 放在中间层。推荐写法是先定义 `simFunc(X)`，再从 `context.sim`、`context.obs`、`context.mask` 派生目标或约束。
+`ModelProblem` 把仿真输出 `sim` 放在中间层。推荐写法是先定义 `simFunc(X)`，再从 `context.sims`、`context.obs`、`context.mask` 派生目标或约束。
 
 ```python
 import numpy as np
@@ -122,20 +122,20 @@ from UQPyL.problem import ModelProblem
 
 np.set_printoptions(precision=4, suppress=True)
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
 def objFunc(X, context):
-    err = context.sim - context.obs
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+    err = context.sims - context.obs
+    return np.mean(err**2, axis=1).reshape(-1, 1)
 
 
 problem = ModelProblem(
@@ -146,28 +146,26 @@ problem = ModelProblem(
     simFunc=simFunc,
     objFunc=objFunc,
     obs=obs,
-    seriesLabels=["Q"],
     name="ToyModel",
 )
 
 res = problem.evaluate([[1.0, 2.2]])
 
 print(res.objs)
-print(res.sim)
+print(res.sims)
 ```
 
 Example output:
 
 ```text
 [[0.02]]
-[[[1. ]
-  [2.2]]]
+[[1.  2.2]]
 ```
 
 这里最重要的不是 `objFunc(X)`，而是整条评估链：
 
 ```text
-X -> simFunc(X) -> context.sim -> objFunc/conFunc -> Eval
+X -> simFunc(X) -> context.sims -> objFunc/conFunc -> Eval
 ```
 
 ## 4. 生成样本
@@ -289,7 +287,7 @@ Example output:
 ```text
 [[-0.0233 -0.0817]]
 [[0.0019]]
-40 5
+40 4
 ```
 
 `bestDecs` 是找到的最好输入行，`bestObjs` 是该行对应的目标值。
@@ -356,7 +354,7 @@ Example output:
 
 `decs.shape` 的含义是 `(n_chains, draws, n_input)`，`acceptanceRate` 是每条链对应一个接受率。
 
-## 6. 训练代理模型
+## 8. 训练代理模型
 
 代理模型会从已经评估好的 `X` 和 `Y` 里学习一个廉价预测器。
 
@@ -400,14 +398,14 @@ Example output:
 
 在 `[0.5, 0.5]` 处，预测值接近真实值 `0.5^2 + 0.2*0.5^2 = 0.3`。
 
-## 7. 校准一个仿真模型
+## 9. 校准一个仿真模型
 
 校准使用的是 `ModelProblem`，因为它需要把仿真结果和观测数据进行比较。
 
 这个 toy model 有两个参数、两个观测时刻：
 
 ```text
-obs = [[1.0], [2.0]]
+obs = [1.0, 2.0]
 sim(t1) = x1
 sim(t2) = x2
 ```
@@ -420,18 +418,18 @@ from UQPyL.problem import ModelProblem
 
 np.set_printoptions(precision=4, suppress=True)
 
-obs = np.array([[1.0], [2.0]])
+obs = np.array([1.0, 2.0])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
-    sim = np.zeros((X.shape[0], 2, 1))
-    sim[:, 0, 0] = X[:, 0]
-    sim[:, 1, 0] = X[:, 1]
+    sim = np.zeros((X.shape[0], 2))
+    sim[:, 0] = X[:, 0]
+    sim[:, 1] = X[:, 1]
     return sim
 
 
-problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, seriesLabels=["Q"], name="ToyModel")
+problem = ModelProblem(nInput=2, lb=0.0, ub=3.0, simFunc=simFunc, obs=obs, name="ToyModel")
 X = np.array([[1.0, 2.0], [1.0, 2.4], [0.0, 0.0]])
 
 result = GLUE(metric="rmse", verboseFlag=False, logFlag=False, saveFlag=False).run(problem, X, threshold=0.3)

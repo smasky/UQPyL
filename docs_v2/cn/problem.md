@@ -1,5 +1,7 @@
 # Problem 模块
 
+> 2.1.7 开发接口：`obs` / `mask` 为 `(nObs,)`，`simFunc(X)` 返回 `(nSamples,nObs)`。不自动展平、不接受旧网格协议；观测按数组位置对应，不需要观测标签。`CalResult` 与 SQLite 汇总以 `nObs` / `n_obs` 表示观测数，`n_output=n_obs`；移除 `nTime/nSeries/seriesLabels`。旧校准数据库不兼容，需使用新接口重新运行。
+
 `Problem` 模块用于将实际问题抽象为UQPyL各功能模块可以统一调用的问题对象，从而为采样、优化、分析、推断、校准和代理建模等任务提供一致的接入方式，进而构建通用的工作流。
 
 ## 单位区间与真实值转换
@@ -307,7 +309,7 @@ class Eval:
 |---|---|
 | `objs` | `(nSamples, nObj)` |
 | `cons` | `(nSamples, nCon)` |
-| `sims` | `(nSamples, nTime, nSeries)` |
+| `sims` | `(nSamples, nObs)` |
 
 `Eval` 还提供以下便捷属性：
 
@@ -441,14 +443,13 @@ problem = Problem(
 从结果结构上看，`simFunc(X)` 的标准返回形状为：
 
 ```text
-(nSamples, nTime, nSeries)
+(nSamples, nObs)
 ```
 
 其中：
 
 - 第 1 维对应样本
-- 第 2 维对应时间步或过程步
-- 第 3 维对应输出序列
+- 第 2 维对应用户指定顺序的观测点，逐列与一维 `obs` 对齐
 
 ```python
 import numpy as np
@@ -456,17 +457,17 @@ import numpy as np
 from UQPyL.problem import ModelProblem
 
 
-obs = np.array([[1.0], [0.8], [2.0]])
-mask = np.array([[False], [True], [False]])
+obs = np.array([1.0, 0.8, 2.0])
+mask = np.array([False, True, False])
 
 
 def simFunc(X):
     X = np.atleast_2d(X)
     nSamples = X.shape[0]
-    sims = np.zeros((nSamples, 3, 1))
-    sims[:, 0, 0] = X[:, 0]
-    sims[:, 1, 0] = 0.5 * X[:, 0] + 0.5 * X[:, 1]
-    sims[:, 2, 0] = X[:, 1]
+    sims = np.zeros((nSamples, 3))
+    sims[:, 0] = X[:, 0]
+    sims[:, 1] = 0.5 * X[:, 0] + 0.5 * X[:, 1]
+    sims[:, 2] = X[:, 1]
     return sims
 
 
@@ -474,7 +475,9 @@ def objFunc(X, simContext):
     err = simContext.sims - simContext.obs
     if simContext.mask is not None:
         err = err[:, ~simContext.mask]
-    return np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+    if err.shape[1] == 0:
+        raise ValueError("No valid observations remain after applying mask.")
+    return np.mean(err**2, axis=1, keepdims=True)
 
 
 problem = ModelProblem(
@@ -486,7 +489,6 @@ problem = ModelProblem(
     objFunc=objFunc,
     obs=obs,
     mask=mask,
-    seriesLabels=["Q"],
 )
 ```
 
@@ -505,7 +507,7 @@ class SimContext:
 其中：
 
 - `sims` 为仿真输出
-- `obs` 为观测数据，形状通常为 `(nTime, nSeries)`
+- `obs` 为观测数据，形状通常为 `(nObs,)`
 - `mask` 为缺测掩码，形状与 `obs` 一致
 
 如果提供了 `obs`，那么 `objFunc(X, simContext)` 或 `conFunc(X, simContext)` 就可以基于仿真输出与观测数据之间的偏差构造目标值或约束值。这也是 `ModelProblem` 与 `Problem` 在评估结构上的核心差异之一。
@@ -537,7 +539,9 @@ class MSEEvaluator(ModelEvaluator):
         err = simContext.sims - simContext.obs
         if simContext.mask is not None:
             err = err[:, ~simContext.mask]
-        objs = np.mean(err**2, axis=(1, 2)).reshape(-1, 1)
+        if err.shape[1] == 0:
+            raise ValueError("No valid observations remain after applying mask.")
+        objs = np.mean(err**2, axis=1, keepdims=True)
         return Eval(objs=objs, sims=simContext.sims, target=target)
 
 
@@ -597,7 +601,7 @@ problem = Problem(
 | 把 `X[0]` 当作第 1 个变量 | `X[0]` 实际是第 1 个样本 | 使用 `X[:, 0]` |
 | 忘记写 `np.atleast_2d(X)` | 单样本与批量输入的行为可能不一致 | 在函数开头统一转为二维 |
 | 约束符号写反 | 可行与不可行会被颠倒 | 统一按 `cons <= 0` 表示可行 |
-| `simFunc(X)` 返回 `(nTime, nSeries)` | 无法与 batched 输入对齐 | 返回 `(nSamples, nTime, nSeries)` |
+| `simFunc(X)` 返回 `(nObs,)` | 无法与 batched 输入对齐 | 返回 `(nSamples, nObs)` |
 | 仍然使用 `res["objs"]` 访问结果 | `evaluate()` 返回的是 `Eval` 而不是字典 | 使用 `res.objs`、`res.cons`、`res.sims` |
 
 ## 构造参数总览
@@ -645,7 +649,7 @@ problem = Problem(
 | `simFunc` | `callable` | 是 | `None` | 仿真函数，返回 `sims` |
 | `objFunc` | `callable` | 否 | `None` | 目标函数，签名为 `objFunc(X, simContext)`；与 `evaluator` 互斥 |
 | `conFunc` | `callable` | 否 | `None` | 约束函数，签名为 `conFunc(X, simContext)` |
-| `obs` | `np.ndarray` | 否 | `None` | 观测数据，标准形状为 `(nTime, nSeries)` |
+| `obs` | `np.ndarray` | 否 | `None` | 观测数据，标准形状为 `(nObs,)` |
 | `mask` | `np.ndarray` | 否 | `None` | 缺测掩码，形状需与 `obs` 一致 |
 | `conWgt` | `list` | 否 | `None` | 约束权重 |
 | `nCon` | `int` | 否 | `0` | 约束个数 |
@@ -658,7 +662,6 @@ problem = Problem(
 | `objLabels` | `list` | 否 | `None` | 目标标签 |
 | `conLabels` | `list` | 否 | `None` | 约束标签 |
 | `evaluator` | `ModelEvaluatorBase` | 否 | `None` | 自定义仿真评估器；与 `objFunc` / `conFunc` 互斥 |
-| `seriesLabels` | `list` | 否 | `None` | 仿真输出序列标签 |
 
 `ModelProblem` 还需要额外注意以下规则：
 
@@ -666,7 +669,6 @@ problem = Problem(
 2. `conFunc` 不能单独出现，必须与 `objFunc` 一起使用
 3. `evaluator` 与 `objFunc` / `conFunc` 互斥，不能同时传入
 4. `mask` 不能脱离 `obs` 单独使用
-5. 当未显式提供 `seriesLabels` 且 `obs` 存在时，会按观测序列数自动生成
 
 ### 内置测试问题
 
@@ -690,3 +692,9 @@ problem = DTLZ2(nInput=12, nObj=3)
 ```python
 CV = np.sum(np.maximum(0, cons * conWgt), axis=1)
 ```
+
+## 输入与观测的排列约定
+
+外部评价统一使用 `problem.evaluate(X, target=...)`；框架把一维 X 解释为一个样本，再将二维 X 交给用户的 objFunc/conFunc。直接调用原始回调不经过该检查。单参数多样本请显式使用 `(N, 1)`。
+
+obs/mask 统一为 `(nObs,)`，模拟统一为 `(nSamples, nObs)`，单观测和单样本也不省略维度。原始网格须由用户按约定顺序显式展平，再传入 ModelProblem；框架不猜测排列顺序。不要单独转置或重排其中一个数组。ES/IES 的 R 对应有效观测的顺序和数量。

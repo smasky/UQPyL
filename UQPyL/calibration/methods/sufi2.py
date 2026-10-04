@@ -1,8 +1,10 @@
 import numpy as np
+import warnings
 
 from ..base import CalibrationABC
 from ..util import pfactor, rfactor
 from ...doe import LHS
+from ._uncertainty import likelihoodWeights, weightedQuantiles
 
 
 class SUFI2(CalibrationABC):
@@ -25,9 +27,13 @@ class SUFI2(CalibrationABC):
             uncertainty fitting procedure, Vadose Zone Journal, 3(4):1340-1352, 2004.
 
     Notes:
-        - `pfactor` and `rfactor` are computed from the elite sample set.
+        - `pfactor` and `rfactor` describe the full current sampling ensemble,
+          not a posterior credible interval. Elite ranges guide local search.
         - In iterative mode, the current parameter bounds are updated by the
           elite min/max values and used to generate the next LHS sample set.
+          By default, local widths have a 5% original-range floor and 10% of
+          later batches explore the original legal domain. These guards do
+          not guarantee global convergence or calibrated interval coverage.
     """
 
     name = "SUFI2"
@@ -41,6 +47,8 @@ class SUFI2(CalibrationABC):
         maxIters: int = 1,
         nSamples: int | None = None,
         metric="rmse",
+        explorationFraction: float = 0.1,
+        minRangeFraction: float = 0.05,
     ):
         super().__init__(
             verboseFlag=verboseFlag,
@@ -51,8 +59,20 @@ class SUFI2(CalibrationABC):
         )
         self.set("maxIters", maxIters)
         self.set("nSamples", nSamples)
+        self.set("explorationFraction", explorationFraction)
+        self.set("minRangeFraction", minRangeFraction)
 
-    def _runCore(self, problem, X=None, eliteSize: int = 5, seed: int | None = None):
+    def _runCore(
+        self,
+        problem,
+        X=None,
+        eliteSize: int = 5,
+        seed: int | None = None,
+        logLikelihood=None,
+        uncertaintyX=None,
+        uncertaintySamples: int = 2048,
+        interval: float = 0.95,
+    ):
         """
         Run SUFI2 in one-shot or iterative mode.
 
@@ -66,25 +86,95 @@ class SUFI2(CalibrationABC):
         """
         maxIters = self.get("maxIters")
         nSamples = self.get("nSamples")
+        if isinstance(maxIters, (bool, np.bool_)) or not isinstance(maxIters, (int, np.integer)) or maxIters < 0:
+            raise ValueError("maxIters must be a nonnegative integer.")
+        if maxIters == 0:
+            warnings.warn("SUFI2 maxIters=0; performing one screening iteration.", RuntimeWarning, stacklevel=2)
+            maxIters = 1
+        exploration = self.get("explorationFraction")
+        minRange = self.get("minRangeFraction")
+        for name, value in [("explorationFraction", exploration), ("minRangeFraction", minRange)]:
+            if np.ndim(value) or not np.isfinite(value) or not 0 <= value <= 1:
+                raise ValueError(f"{name} must be a finite scalar in [0, 1].")
+        count = len(np.atleast_2d(X)) if X is not None else nSamples
+        for name, value in [("nSamples", count), ("eliteSize", eliteSize)]:
+            if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < 1:
+                raise ValueError(f"{name} must be a positive integer.")
+        if eliteSize > count:
+            raise ValueError("eliteSize must be between 1 and n_samples.")
+        if np.ndim(interval) or not np.isfinite(interval) or not 0 < interval < 1:
+            raise ValueError("interval must be a finite scalar between 0 and 1.")
+        if logLikelihood is not None and not callable(logLikelihood):
+            raise ValueError("logLikelihood must be callable or None.")
+        if uncertaintyX is not None:
+            if logLikelihood is None:
+                raise ValueError("uncertaintyX requires an explicit logLikelihood.")
+            uncertaintyX = np.atleast_2d(np.asarray(uncertaintyX, dtype=float)).copy()
+            if len(uncertaintyX) < 2:
+                raise ValueError("uncertaintyX requires at least two prior samples.")
+            problem.space_to_unit(uncertaintyX)
+        elif logLikelihood is not None:
+            if (
+                isinstance(uncertaintySamples, (bool, np.bool_))
+                or not isinstance(uncertaintySamples, (int, np.integer))
+                or uncertaintySamples < 2
+            ):
+                raise ValueError("uncertaintySamples must be an integer of at least two.")
 
         lb_cur = np.asarray(problem.lb).reshape(-1)
         ub_cur = np.asarray(problem.ub).reshape(-1)
+        choicesCur = {int(index): list(problem.varSet[index]) for index in problem.idxD}
+        originalLb, originalUb = lb_cur.copy(), ub_cur.copy()
+        originalChoices = {index: values.copy() for index, values in choicesCur.items()}
         last = None
 
         for iterIdx in range(maxIters):
             if X is None:
                 if nSamples is None:
                     raise ValueError("nSamples must be provided when SUFI2 samples internally.")
-                work_problem = self._makeSamplingProblem(problem, lb_cur, ub_cur)
+                samplingLb, samplingUb = lb_cur.copy(), ub_cur.copy()
+                if iterIdx and minRange:
+                    active = np.asarray(problem.varType).reshape(-1) != 2
+                    width = np.maximum(ub_cur - lb_cur, minRange * (originalUb - originalLb))
+                    center = lb_cur * 0.5 + ub_cur * 0.5
+                    samplingLb[active] = np.maximum(originalLb, np.minimum(center - width / 2, originalUb - width))[
+                        active
+                    ]
+                    samplingUb[active] = np.minimum(originalUb, samplingLb + width)[active]
+                work_problem = self._makeSamplingProblem(problem, samplingLb, samplingUb, choicesCur)
                 sampler = LHS()
                 iter_seed = None if seed is None else int(seed + iterIdx)
-                X_cur = sampler.sample(work_problem, nSamples, seed=iter_seed)
+                explorationCount = min(nSamples, int(np.ceil(nSamples * exploration))) if iterIdx else 0
+                retainedCount = int(iterIdx > 0)
+                explorationCount = min(explorationCount, nSamples - retainedCount)
+                localCount = nSamples - explorationCount - retainedCount
+                batches = []
+                if retainedCount:
+                    batches.append(last["bestDecs"].copy())
+                if localCount:
+                    batches.append(sampler.sample(work_problem, localCount, seed=iter_seed))
+                if explorationCount:
+                    globalProblem = self._makeSamplingProblem(problem, originalLb, originalUb, originalChoices)
+                    globalSeed = (
+                        None if iter_seed is None else int(np.random.SeedSequence([iter_seed, 1]).generate_state(1)[0])
+                    )
+                    batches.append(sampler.sample(globalProblem, explorationCount, seed=globalSeed))
+                X_cur = np.vstack(batches)
             else:
                 X_cur = np.atleast_2d(X).astype(float, copy=False)
+                explorationCount = 0
+                retainedCount = 0
+                samplingLb, samplingUb = lb_cur.copy(), ub_cur.copy()
 
             last = self._runOneIteration(X_cur, eliteSize=eliteSize)
             lb_cur = last["updatedLb"]
             ub_cur = last["updatedUb"]
+            # Discrete bounds describe actual elite values, not encoding bins.
+            # Retain original choices inside the elite numeric envelope.
+            choicesCur = {
+                index: [value for value in choices if lb_cur[index] <= value <= ub_cur[index]]
+                for index, choices in originalChoices.items()
+            }
 
             self.state.history.metricsHistory.append(
                 {
@@ -93,6 +183,12 @@ class SUFI2(CalibrationABC):
                     "rfactor": float(last["rfactor"]),
                     "updatedLb": last["updatedLb"].copy(),
                     "updatedUb": last["updatedUb"].copy(),
+                    "updatedVarSet": {index: values.copy() for index, values in choicesCur.items()},
+                    "samplingLb": samplingLb.copy(),
+                    "samplingUb": samplingUb.copy(),
+                    "explorationCount": explorationCount,
+                    "retainedCount": retainedCount,
+                    "bestScore": float(last["scores"][np.argmin(self.normalizedScore(last["simFull"]))]),
                 }
             )
 
@@ -100,17 +196,59 @@ class SUFI2(CalibrationABC):
                 break
 
         self.recordBest(last["bestDecs"], last["bestSim"])
-        self.recordPosterior(last["X"], last["simFull"])
+        self.recordPosterior(last["X"], last["simFull"], kind="sampling_ensemble")
         self.recordElite(last["eliteDecs"], last["eliteSims"])
         self.state.diagnostics["scores"] = last["scores"].copy()
+        self.state.extra["bestIdx"] = last["bestIdx"]
         self.state.diagnostics["eliteMask"] = last["eliteMask"].copy()
         self.state.diagnostics["updatedLb"] = last["updatedLb"].copy()
         self.state.diagnostics["updatedUb"] = last["updatedUb"].copy()
+        self.state.diagnostics["updatedVarSet"] = {index: values.copy() for index, values in choicesCur.items()}
         self.state.diagnostics["pfactor"] = float(last["pfactor"])
         self.state.diagnostics["rfactor"] = float(last["rfactor"])
         self.state.diagnostics["eliteScores"] = last["eliteScores"].copy()
         self.state.diagnostics["ppuLower"] = last["ppuLower"].copy()
         self.state.diagnostics["ppuUpper"] = last["ppuUpper"].copy()
+        self.state.diagnostics["intervalKind"] = "sampling_envelope"
+        self.state.diagnostics["elitePpuLower"] = last["elitePpuLower"].copy()
+        self.state.diagnostics["elitePpuUpper"] = last["elitePpuUpper"].copy()
+        self.state.diagnostics["uncertaintyStatus"] = "not_estimated"
+        if logLikelihood is not None:
+            if uncertaintyX is None:
+                priorProblem = self._makeSamplingProblem(problem, originalLb, originalUb, originalChoices)
+                priorSeed = None if seed is None else int(np.random.SeedSequence([seed, 90210]).generate_state(1)[0])
+                uncertaintyX = LHS().sample(priorProblem, uncertaintySamples, seed=priorSeed)
+                source = "original_domain_uniform"
+            else:
+                source = "supplied_prior_samples"
+            priorSim = self.evaluate(uncertaintyX, validOnly=False)
+            weights = likelihoodWeights(self.getFlattenedObs(), priorSim, self.getFlattenedMask(), logLikelihood)
+            parameterBounds = weightedQuantiles(uncertaintyX, weights, interval)
+            simulationBounds = weightedQuantiles(priorSim[:, self.getValidMask()], weights, interval)
+            mean = weights @ uncertaintyX
+            ess = float(1.0 / np.sum(weights**2))
+            self.state.extra["uncertainty"] = {
+                "method": "prior_importance_weighting",
+                "prior_source": source,
+                "interval": float(interval),
+                "effective_sample_size": ess,
+                "samples": uncertaintyX.copy(),
+                "weights": weights.copy(),
+                "parameter_mean": mean,
+                "parameter_variance": weights @ (uncertaintyX - mean) ** 2,
+                "parameter_lower": parameterBounds[0],
+                "parameter_upper": parameterBounds[1],
+                "simulation_lower": simulationBounds[0],
+                "simulation_upper": simulationBounds[1],
+            }
+            self.state.diagnostics["uncertaintyStatus"] = "estimated"
+            if ess < 20 * (1 - 64 * np.finfo(float).eps):
+                warnings.warn(
+                    "SUFI2 uncertainty effective sample size is below 20; weighted intervals may be unreliable.",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+                self.state.diagnostics["uncertaintyStatus"] = "low_effective_sample_size"
 
     def _runOneIteration(self, X, eliteSize: int = 5):
         """
@@ -124,6 +262,8 @@ class SUFI2(CalibrationABC):
             dict: Iteration diagnostics and updated bounds.
         """
         X = np.atleast_2d(X).astype(float, copy=False)
+        # Validate real values without rounding or re-decoding supplied choices.
+        self.problem.space_to_unit(X)
         sim_full = self.evaluate(X, validOnly=False)
         scores = self.score(sim_full)
         normalized = self.normalizedScore(sim_full)
@@ -144,14 +284,14 @@ class SUFI2(CalibrationABC):
         scores_elite = scores[eliteIdx]
 
         bestIdx = int(order[0])
-        bestDecs = X[bestIdx:bestIdx + 1].copy()
-        bestSim = sim_full[bestIdx:bestIdx + 1].copy()
+        bestDecs = X[bestIdx : bestIdx + 1].copy()
+        bestSim = sim_full[bestIdx : bestIdx + 1].copy()
 
         updatedLb = np.min(X_elite, axis=0)
         updatedUb = np.max(X_elite, axis=0)
 
-        ppuLower = np.quantile(sim_elite_valid, 0.025, axis=0)
-        ppuUpper = np.quantile(sim_elite_valid, 0.975, axis=0)
+        ppuLower = np.quantile(sim_full[:, self.getValidMask()], 0.025, axis=0)
+        ppuUpper = np.quantile(sim_full[:, self.getValidMask()], 0.975, axis=0)
         pfactorValue = pfactor(obs_valid, ppuLower, ppuUpper)
         rfactorValue = rfactor(obs_valid, ppuLower, ppuUpper)
 
@@ -169,11 +309,14 @@ class SUFI2(CalibrationABC):
             "eliteScores": scores_elite.copy(),
             "ppuLower": ppuLower.copy(),
             "ppuUpper": ppuUpper.copy(),
+            "elitePpuLower": np.quantile(sim_elite_valid, 0.025, axis=0),
+            "elitePpuUpper": np.quantile(sim_elite_valid, 0.975, axis=0),
             "bestDecs": bestDecs,
             "bestSim": bestSim,
+            "bestIdx": bestIdx,
         }
 
-    def _makeSamplingProblem(self, problem, lb, ub):
+    def _makeSamplingProblem(self, problem, lb, ub, varSet=None):
         from ...problem import Problem
 
         return Problem(
@@ -181,5 +324,7 @@ class SUFI2(CalibrationABC):
             nObj=1,
             lb=list(np.asarray(lb).reshape(-1)),
             ub=list(np.asarray(ub).reshape(-1)),
+            varType=np.asarray(problem.varType).copy(),
+            varSet={int(index): list((problem.varSet if varSet is None else varSet)[index]) for index in problem.idxD},
             objFunc=lambda X: np.zeros((np.atleast_2d(X).shape[0], 1)),
         )

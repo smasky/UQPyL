@@ -20,6 +20,22 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
     Shared workflow and utilities for MCMC-style sampling methods.
     """
 
+    minChains = 1
+    boundaryPolicy = "reflect"
+    updateMode = "independent"
+    adaptationPhase = "none"
+    proposalFamily = "random_walk"
+
+    @classmethod
+    def getCapabilities(cls):
+        return {
+            "min_objectives": 1,
+            "max_objectives": 1,
+            "constraint_handling": "hard_rejection",
+            "variable_types": ["continuous", "integer", "discrete"],
+            "requires_finite_bounds": True,
+        }
+
     def __init__(
         self,
         maxIters: int = 1000,
@@ -42,10 +58,12 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
             saveFlag: Whether to persist snapshots and final result to sqlite.
             saveFreq: Iteration interval for sqlite snapshots.
             logProbFunc: Optional custom log-probability function.
-            maxInitAttempts: Maximum LHS batches used to find feasible initial chains.
+            maxInitAttempts: Maximum LHS batches used to find feasible initial chains with positive probability.
         """
         # Initialize settings and results
         self.params = Params()
+        self.set("nChains", 1)
+        self.set("warmUp", 0)
         self.state = Result(self)
 
         # Set runtime flags and hooks
@@ -83,6 +101,7 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         self.setProblem(problem)
         self._startRun()
         self.reset()
+        self.validateParameters()
         self.validateProblem()
         Verbose.setupContext(self, problem)
 
@@ -104,13 +123,51 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
 
         Verbose.printSettings(self)
 
+    @staticmethod
+    def validateInteger(name, value, minimum):
+        if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value < minimum:
+            raise ValueError(f"{name} must be an integer >= {minimum}.")
+
+    def validateParameters(self):
+        """Validate shared settings before opening storage or evaluating a model."""
+        for name, value, minimum in [
+            ("nChains", self.get("nChains"), self.minChains),
+            ("warmUp", self.get("warmUp"), 0),
+            ("maxIters", self.maxIters, 1),
+            ("maxInitAttempts", self.get("maxInitAttempts"), 1),
+            ("verboseFreq", self.verboseFreq, 1),
+            ("saveFreq", self.saveFreq, 1),
+        ]:
+            self.validateInteger(name, value, minimum)
+        distribution = self.params.data.get("propDist")
+        if "propDist" in self.params.data and distribution not in ("gauss", "uniform"):
+            raise ValueError("propDist must be 'gauss' or 'uniform'.")
+        if self.logProbFunc is not None and not callable(self.logProbFunc):
+            raise ValueError("logProbFunc must be callable or None.")
+
+    def setSamplerDiagnostics(self, gamma, proposalSettings=None, **details):
+        """Publish shared policy fields without changing sampling or RNG state."""
+        settings = {
+            "gamma": None if gamma is None else np.asarray(gamma).tolist(),
+            "distribution": self.params.data.get("propDist"),
+        }
+        settings.update(proposalSettings or {})
+        self.state.diagnostics["sampler"] = {
+            "boundary_policy": self.boundaryPolicy,
+            "update_mode": self.updateMode,
+            "adaptation_phase": self.adaptationPhase,
+            "proposal_family": self.proposalFamily,
+            "proposal_settings": settings,
+            **details,
+        }
+
     def validateProblem(self):
         """
         Validate problem-level assumptions shared by inference algorithms.
         """
         if self.problem.nOutput != 1:
             raise ValueError("Inference currently supports scalar objectives only.")
-        self.problem.unit_to_space(np.full((1, self.problem.nInput), .5))
+        self.problem.unit_to_space(np.full((1, self.problem.nInput), 0.5))
         for idx in self.problem.space.idxD:
             if self.problem.ub[0, idx] == self.problem.lb[0, idx] and len(self.problem.space.varSet[idx]) > 1:
                 raise ValueError("Discrete inference with multiple choices requires a positive latent interval.")
@@ -129,47 +186,44 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         """
         Generate internal latent samples for all chains.
 
-        Evaluate decoded real values, retaining only feasible initial states
-        for constrained problems. Do not use returned latent decisions as
+        Evaluate decoded real values, retaining feasible initial states with
+        finite log probability. Do not use returned latent decisions as
         standalone model inputs; public results contain decoded decisions.
         """
         sampler = LHS()
-        if problem.nCons == 0:
-            sampleSeed = int(self.rng.integers(0, 1000000)) if seed is None else seed
-            X0 = self._sampleLatent(sampler, nChains, sampleSeed)
-            objs0, cons0 = self.evaluate(X0)
-            return X0, objs0, cons0
-
-        xs = []
-        objs = []
-        cons = []
-        attempts = 0
+        xs, objectives, constraints = [], [], []
         maxAttempts = self.get("maxInitAttempts")
-        while len(xs) < nChains and attempts < maxAttempts:
-            sampleSeed = int(self.rng.integers(0, 1000000))
-            XBatch = self._sampleLatent(sampler, nChains, sampleSeed)
-            objsBatch, consBatch = self.evaluate(XBatch)
-            if consBatch is None:
-                raise ValueError("Constrained inference problem must return constraint values.")
-            feasible = (consBatch <= 0).all(axis=1)
-            for x, obj, con in zip(XBatch[feasible], objsBatch[feasible], consBatch[feasible]):
-                xs.append(x)
-                objs.append(obj)
-                cons.append(con)
-                if len(xs) == nChains:
-                    break
-            attempts += 1
-
-        if len(xs) < nChains:
-            raise ValueError(
-                f"Unable to initialize {nChains} feasible chains after {maxAttempts} LHS batches."
+        for attempt in range(maxAttempts):
+            sampleSeed = (
+                seed if attempt == 0 and problem.nCons == 0 and seed is not None else int(self.rng.integers(0, 1000000))
             )
-
-        return np.asarray(xs), np.asarray(objs), np.asarray(cons)
+            batch = self._sampleLatent(sampler, nChains, sampleSeed)
+            objs, cons = self.evaluate(batch)
+            valid = np.isfinite(self.log_prob(objs, decs=batch, cons=cons))
+            if problem.nCons > 0:
+                if cons is None:
+                    raise ValueError("Constrained inference problem must return constraint values.")
+                valid &= (cons <= 0).all(axis=1)
+            if attempt == 0 and valid.all():
+                return batch, objs, cons
+            for index in np.flatnonzero(valid):
+                xs.append(batch[index])
+                objectives.append(objs[index])
+                if problem.nCons > 0:
+                    constraints.append(cons[index])
+                if len(xs) == nChains:
+                    return (
+                        np.asarray(xs),
+                        np.asarray(objectives),
+                        np.asarray(constraints) if problem.nCons > 0 else None,
+                    )
+        raise ValueError(
+            f"Unable to initialize {nChains} feasible positive-probability chains after {maxAttempts} LHS batches."
+        )
 
     def _sampleLatent(self, sampler, nSamples, seed):
         unit = sampler.sample(self.problem, nSamples, seed, output="unit")
-        return self.problem.lb + unit * (self.problem.ub-self.problem.lb)
+        return self.problem.lb + unit * (self.problem.ub - self.problem.lb)
 
     def _decodeDecs(self, decs):
         """Decode latent bounded coordinates without modifying the Markov state.
@@ -180,8 +234,8 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         original = np.asarray(decs)
         values = np.asarray(self.problem.validate(decs), dtype=float).copy()
         if getattr(self.problem.space, "encoding", "real") == "mix":
-            span = self.problem.ub-self.problem.lb
-            unit = np.divide(values-self.problem.lb, span, out=np.full_like(values, .5), where=span > 0)
+            span = self.problem.ub - self.problem.lb
+            unit = np.divide(values - self.problem.lb, span, out=np.full_like(values, 0.5), where=span > 0)
             decoded = self.problem.unit_to_space(unit)
             # Avoid even a round-trip change to continuous coordinates.
             decoded[:, self.problem.space.idxF] = values[:, self.problem.space.idxF]
@@ -197,6 +251,8 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         nCons = self.problem.nCons
         chains = [Chain(nInput, nOutput, nCons, self.maxIters) for _ in range(nChains)]
         logProb = self.log_prob(objs, decs=X, cons=cons)
+        if not np.all(np.isfinite(logProb)):
+            raise ValueError("Initial chain states must have finite log probability.")
 
         for i, chain in enumerate(chains):
             chain.add(
@@ -209,6 +265,24 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
 
         return chains
 
+    def updateChainState(self, index, current, currentObjs, currentCons, decision, objective, constraints):
+        """Commit one accepted row; callers retain control of transition ordering."""
+        current[index] = decision
+        currentObjs[index] = objective
+        if self.problem.nCons > 0:
+            currentCons[index] = constraints
+
+    def recordChainState(self, chain, index, current, currentObjs, currentCons, accepted):
+        """Append the occupied state, including rejected repeats, in caller order."""
+        constraints = currentCons[index] if self.problem.nCons > 0 else None
+        chain.add(
+            current[index],
+            currentObjs[index],
+            constraints,
+            logProb=self.log_prob(currentObjs[index], decs=current[index], cons=constraints),
+            accepted=accepted,
+        )
+
     def update(self, chains):
         """
         Update runtime state from chains and handle progress output.
@@ -218,7 +292,7 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         if self.verboseFlag or self.logFlag:
             Verbose.printIteration(self)
         if self.saveFlag and self.session is not None and self.iters % self.saveFreq == 0:
-            self.storage.saveSnapshot(self.session, self, self.buildResult(), isFinal=False)
+            self.storage.saveSnapshot(self.session, self, isFinal=False)
         return self.state
 
     def checkTermination(self, chains=None):
@@ -226,6 +300,7 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         Advance the sampling iteration counter.
         """
         if self.iters >= self.maxIters - 1:
+            self.state.stopReason = "max_iters"
             return False
         self.iters += 1
         self.iter = self.iters
@@ -244,6 +319,10 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         """
         Finalize the inference run and return the final result.
         """
+        if self.state.stopReason is None:
+            self.state.stopReason = "completed"
+        if self.state.history.snapshots:
+            self.state.history.snapshots[-1]["stop_reason"] = self.state.stopReason
         self.state.runtime = time.perf_counter() - self.startTime
         result = self.buildResult()
         Verbose.printConclusion(self, result)
@@ -270,21 +349,50 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         self.FEs += realDecs.shape[0]
         return res.objs * self.problem.opt, res.cons
 
-    def accept(self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None):
+    def evaluateProposal(self, proposed, currentObjs, currentCons):
+        """Reject raw out-of-box proposals without evaluating the user model.
+
+        Reflection is not symmetric for general correlated/directional kernels.
+        Cached values are retained for rejected rows; callers must also use the
+        returned admissibility mask when recording acceptance.
+        """
+        admissible = np.all(
+            np.isfinite(proposed) & (proposed >= self.problem.lb) & (proposed <= self.problem.ub), axis=1
+        )
+        objs = currentObjs.copy()
+        cons = None if currentCons is None else currentCons.copy()
+        if np.any(admissible):
+            evaluatedObjs, evaluatedCons = self.evaluate(proposed[admissible])
+            objs[admissible] = evaluatedObjs
+            if self.problem.nCons > 0:
+                cons[admissible] = evaluatedCons
+        return objs, cons, admissible
+
+    def accept(
+        self, objStar, objCur, consStar=None, qRatio=1.0, decStar=None, decCur=None, consCur=None, logQRatio=None
+    ):
         """
         Apply Metropolis acceptance with hard-constraint rejection.
         """
-        if qRatio <= 0 or not np.isfinite(qRatio):
+        if logQRatio is None:
+            if qRatio <= 0 or not np.isfinite(qRatio):
+                return False
+            logQRatio = np.log(qRatio)
+        elif np.isnan(logQRatio):
             return False
-        logRatio = (
-            self.log_prob(objStar, decs=decStar, cons=consStar)
-            - self.log_prob(objCur, decs=decCur, cons=consCur)
-            + np.log(qRatio)
-        )
+        proposedLog = float(self.log_prob(objStar, decs=decStar, cons=consStar)[0])
+        currentLog = float(self.log_prob(objCur, decs=decCur, cons=consCur)[0])
+        # A zero-density proposal is always rejected, including -inf -> -inf.
+        # Initial states are in support, but allow recovery in direct helper use.
+        if proposedLog == -np.inf or logQRatio == -np.inf:
+            return False
+        logRatio = proposedLog - currentLog + logQRatio
         feasible = True
         if self.problem.nCons > 0:
             feasible = np.all(np.asarray(consStar) <= 0)
-        return bool(np.log(self.rng.random()) < float(np.ravel(logRatio)[0]) and feasible)
+        uniform = self.rng.random()
+        logUniform = -np.inf if uniform == 0 else np.log(uniform)
+        return bool(logUniform < logRatio and feasible)
 
     def setProblem(self, problem: ProblemABC):
         """
@@ -324,13 +432,22 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
         The default convention is `log_prob = -oriented_obj`. Users can provide
         `logProbFunc` to override this behavior.
         """
+        objectives = np.asarray(y)
+        count = objectives.shape[0] if objectives.ndim > 1 else 1
         if self.logProbFunc is not None:
             realDecs = None if decs is None else self._decodeDecs(decs)
-            return np.asarray(self.logProbFunc(y, decs=realDecs, cons=cons))
-        arr = np.asarray(y)
-        if arr.ndim == 1:
-            return -arr
-        return -arr[..., 0]
+            values = np.asarray(self.logProbFunc(y, decs=realDecs, cons=cons))
+        else:
+            values = -objectives if objectives.ndim <= 1 else -objectives[..., 0]
+        validShape = values.shape in [(count,), (count, 1)] or (count == 1 and values.ndim == 0)
+        if not validShape:
+            raise ValueError(f"log probability must return one value per row: expected ({count},) or ({count}, 1).")
+        if values.dtype.kind not in "iuf":
+            raise ValueError("log probability must contain real numeric values.")
+        values = values.reshape(count).astype(float, copy=False)
+        if np.any(np.isnan(values)) or np.any(np.isposinf(values)):
+            raise ValueError("log probability contains NaN or +inf; use finite values or -inf for zero probability.")
+        return values
 
     def _check_bound_(self, X, ub, lb):
         span = ub - lb
@@ -342,21 +459,17 @@ class InferenceABC(RunLifecycle, metaclass=abc.ABCMeta):
     def _check_gamma_(self, gamma):
         nChains = self.get("nChains")
         nInput = self.problem.nInput
-
-        if isinstance(gamma, (float, int)):
-            gamma = np.full((nChains, nInput), float(gamma))
-        elif isinstance(gamma, list):
-            gamma = np.asarray(gamma)
-
-        if isinstance(gamma, np.ndarray):
-            gamma = np.atleast_2d(gamma)
-            n, _ = gamma.shape
-            if n == 1:
-                gamma = np.tile(gamma, (nChains, 1))
-            elif n != nChains:
-                raise ValueError("The shape of gamma must be (nChains, nInput) or (1, nInput)")
-        else:
-            raise ValueError("gamma must be a float, list, or numpy array")
-
-        return gamma
-
+        try:
+            values = np.asarray(gamma)
+        except (TypeError, ValueError) as error:
+            raise ValueError("gamma must be a real scalar, vector or matrix.") from error
+        if values.dtype.kind not in "iuf" or not np.all(np.isfinite(values)) or np.any(values < 0):
+            raise ValueError("gamma must contain finite nonnegative real values.")
+        if values.ndim == 0:
+            return np.full((nChains, nInput), float(values))
+        values = np.atleast_2d(values)
+        if values.shape == (1, nInput):
+            return np.tile(values, (nChains, 1))
+        if values.shape == (nChains, nInput):
+            return values.copy()
+        raise ValueError("gamma must have shape (nInput,), (1, nInput) or (nChains, nInput).")

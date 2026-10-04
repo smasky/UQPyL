@@ -7,11 +7,11 @@ from .core._pruning import PruningPasser
 from .core._util import ascii_table, apply_weights_2d, gcv
 from .core._types import BOOL
 from ..base import SurrogateABC
-from ..scaler import Scaler
+from ..scaler import Scaler, _AffineScaler
 from ..poly import PolyFeature
 
-class MARS(SurrogateABC):
 
+class MARS(SurrogateABC):
     """
     Multivariate Adaptive Regression Splines (MARS) surrogate model.
 
@@ -40,47 +40,56 @@ class MARS(SurrogateABC):
     """
 
     forward_pass_arg_names = [
-        'max_terms', 'max_degree', 'allow_missing', 'penalty',
-        'endspan_alpha', 'endspan',
-        'minspan_alpha', 'minspan',
-        'thresh', 'zero_tol', 'min_search_points',
-        'check_every', 'allow_linear',
-        'use_fast', 'fast_K', 'fast_h',
-        'feature_importance_type',
-        'verbose'
+        "max_terms",
+        "max_degree",
+        "allow_missing",
+        "penalty",
+        "endspan_alpha",
+        "endspan",
+        "minspan_alpha",
+        "minspan",
+        "thresh",
+        "zero_tol",
+        "min_search_points",
+        "check_every",
+        "allow_linear",
+        "use_fast",
+        "fast_K",
+        "fast_h",
+        "feature_importance_type",
+        "verbose",
     ]
-    
-    pruning_pass_arg_names = set([
-        'penalty',
-        'feature_importance_type',
-        'verbose'
-    ])
+
+    pruning_pass_arg_names = set(["penalty", "feature_importance_type", "verbose"])
     defaultTuneParameters = ("max_terms", "max_degree", "penalty")
     advancedTuneParameters = ("endspan", "minspan", "thresh")
 
-    def __init__(self, scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
-                 polyFeature: PolyFeature = None, 
-                 max_terms: Union[int] = 400, 
-                 max_terms_attr: Union[dict, None] = {'ub': 400, 'lb': 10, 'type': 'int', 'log': False},
-                 max_degree: int = 1, 
-                 max_degree_attr: Union[dict, None] = {'ub': 10, 'lb': 1, 'type': 'int', 'log': False},
-                 penalty: float = 3.0,
-                 penalty_attr: Union[dict, None] = {'ub': 10, 'lb': 1, 'type': 'float', 'log': False},
-                 endspan_alpha: float = 0.05,
-                 endspan: int = -1,
-                 minspan_alpha: float = 0.05,
-                 minspan: int = -1,
-                 thresh: float = 0.001,
-                 zero_tol: float = 1e-12,
-                 min_search_points: int = 100,
-                 check_every: int = -1,
-                 allow_linear: bool = True,
-                 use_fast: bool = False,
-                 fast_K: int = 5,
-                 fast_h: int = 1,
-                 smooth: bool = False,
-                 enable_pruning: bool = True,
-                 feature_importance_type: str = 'gcv'):
+    def __init__(
+        self,
+        scalers: Tuple[Optional[Scaler], Optional[Scaler]] = (None, None),
+        polyFeature: PolyFeature = None,
+        max_terms: Union[int] = 400,
+        max_terms_attr: Union[dict, None] = {"ub": 400, "lb": 10, "type": "int", "log": False},
+        max_degree: int = 2,
+        max_degree_attr: Union[dict, None] = {"ub": 10, "lb": 1, "type": "int", "log": False},
+        penalty: float = 3.0,
+        penalty_attr: Union[dict, None] = {"ub": 10, "lb": 1, "type": "float", "log": False},
+        endspan_alpha: float = 0.05,
+        endspan: int = -1,
+        minspan_alpha: float = 0.05,
+        minspan: int = -1,
+        thresh: float = 0.001,
+        zero_tol: float = 1e-12,
+        min_search_points: int = 100,
+        check_every: int = -1,
+        allow_linear: bool = True,
+        use_fast: bool = False,
+        fast_K: int = 5,
+        fast_h: int = 1,
+        smooth: bool = False,
+        enable_pruning: bool = True,
+        feature_importance_type: str = "gcv",
+    ):
         """
         Initialize the MARS surrogate model.
 
@@ -112,17 +121,16 @@ class MARS(SurrogateABC):
             enable_pruning: Whether to run the pruning pass after forward fitting.
             feature_importance_type: Feature-importance criterion name.
         """
-        
+
         super().__init__(scalers, polyFeature)
-        
-        
+
         allow_missing = False
         verbose = 0
-        
+
         self.setting.set("max_terms", max_terms, max_terms_attr)
         self.setting.set("max_degree", max_degree, max_degree_attr)
         self.setting.set("penalty", penalty, penalty_attr)
-        
+
         self.setting.set("endspan_alpha", endspan_alpha)
         self.setting.set("endspan", endspan)
         self.setting.set("minspan_alpha", minspan_alpha)
@@ -140,8 +148,27 @@ class MARS(SurrogateABC):
         self.setting.set("feature_importance_type", feature_importance_type)
         self.setting.set("verbose", verbose)
         self.setting.set("allow_missing", allow_missing)
-        
-#-------------------------Public Function---------------------------#
+
+    # -------------------------Public Function---------------------------#
+    def resetFitState(self):
+        super().resetFitState()
+        # Learned basis dimensions and traces belong only to the current fit.
+        for name in (
+            "basis_",
+            "coef_",
+            "xlabels_",
+            "forward_pass_record_",
+            "pruning_pass_record_",
+            "_feature_importances_dict",
+            "feature_importances_",
+            "mse_",
+            "gcv_",
+            "rsq_",
+            "grsq_",
+        ):
+            self.__dict__.pop(name, None)
+        return self
+
     def fitModel(self, xTrain: np.ndarray, yTrain: np.ndarray):
         """
         Fit the MARS model on prepared training data.
@@ -156,23 +183,17 @@ class MARS(SurrogateABC):
         self.resetFitState()
         self.storeTrainingData(xTrain, yTrain)
 
-        #indicate label for each dimension
+        # indicate label for each dimension
         self.xlabels_ = self._scrape_labels(xTrain)
-        xTrain, yTrain, sample_weight, output_weight, missing = self._scrub(
-            xTrain, yTrain, None, None, None)
-        #forward
-        self.forward_pass(xTrain, yTrain,
-                          sample_weight, output_weight, missing,
-                          self.xlabels_, [], skip_scrub=True)
-        #pruning
+        xTrain, yTrain, sample_weight, output_weight, missing = self._scrub(xTrain, yTrain, None, None, None)
+        # forward
+        self.forward_pass(xTrain, yTrain, sample_weight, output_weight, missing, self.xlabels_, [], skip_scrub=True)
+        # pruning
         if self.setting.get("enable_pruning") is True:
-            self.pruning_pass(xTrain, yTrain,
-                              sample_weight, output_weight, missing,
-                              skip_scrub=True)
+            self.pruning_pass(xTrain, yTrain, sample_weight, output_weight, missing, skip_scrub=True)
         if self.setting.get("smooth"):
             self.basis_ = self.basis_.smooth(xTrain)
-        self.linear_fit(xTrain, yTrain, sample_weight, output_weight, missing,
-                        skip_scrub=True)
+        self.linear_fit(xTrain, yTrain, sample_weight, output_weight, missing, skip_scrub=True)
         self.fitState["basis"] = self.basis_
         self.fitState["coef"] = self.coef_
         self.fitState["mse"] = self.mse_
@@ -189,9 +210,8 @@ class MARS(SurrogateABC):
         `fitHyper` delegates directly to `fitModel`.
         """
         return self.fitModel(xTrain, yTrain)
-    
-    def predict(self, xPredict: np.ndarray, returnStd: bool = False,
-                returnVar: bool = False):
+
+    def predict(self, xPredict: np.ndarray, returnStd: bool = False, returnVar: bool = False, *, missing=None):
         """
         Predict outputs for new samples.
 
@@ -199,20 +219,34 @@ class MARS(SurrogateABC):
             xPredict: Input samples to evaluate.
             returnStd: Unsupported for MARS; kept for base-class consistency.
             returnVar: Unsupported for MARS; kept for base-class consistency.
+            missing: Optional input-shaped mask; requires allow_missing=True.
+                Missing predictors with input preprocessing are unsupported.
 
         Returns:
             Predicted outputs in the original target scale.
         """
         self._normalize_predict_flags(returnStd, returnVar)
         self.requireFitted("basis", "coef")
-        
-        xPredict = self.__X_transform__(xPredict)
-        
-        X, missing = self._scrub_x(xPredict, None)
+
+        X, missing = self._preparePredictInput(xPredict, missing)
         B = self.transform(X, missing)
         y = np.dot(B, self.coef_.T)
-        
-        return self.__Y_inverse_transform__(y)
+
+        return self._inverseTransformY(y)
+
+    def _preparePredictInput(self, X, missing):
+        X = np.asarray(X, dtype=float)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        mask = np.isnan(X) if missing is None else np.asarray(missing, dtype=bool)
+        if mask.shape != X.shape:
+            raise ValueError("Missing mask must have the same shape as X.")
+        if np.any(mask) and (self.xScaler is not None or self.polyFeature is not None):
+            raise NotImplementedError("Missing predictors with input preprocessing are not supported.")
+        X = self._transformX(X)
+        # Polynomial expansion changes the feature count; no missing values
+        # are allowed through that path, so infer its all-false mask anew.
+        return self._scrub_x(X, None if self.polyFeature is not None else mask)
 
     def getDefaultTuneParameters(self, advanced: bool = False):
         """
@@ -226,7 +260,7 @@ class MARS(SurrogateABC):
             params.extend(self.advancedTuneParameters)
         return params
 
-#------------------------------Private Function-------------------------#
+    # ------------------------------Private Function-------------------------#
     def __eq__(self, other):
         if self.__class__ is not other.__class__:
             return False
@@ -249,9 +283,9 @@ class MARS(SurrogateABC):
         return not self.__eq__(other)
 
     def _pull_forward_args(self, setting):
-        '''
+        """
         Pull named arguments relevant to the forward pass.
-        '''
+        """
         result = {}
         for name in self.forward_pass_arg_names:
             if name in setting.parVal.keys():
@@ -261,9 +295,9 @@ class MARS(SurrogateABC):
         return result
 
     def _pull_pruning_args(self, setting):
-        '''
+        """
         Pull named arguments relevant to the pruning pass.
-        '''
+        """
         result = {}
         for name in self.pruning_pass_arg_names:
             if name in setting.parVal.keys():
@@ -280,10 +314,10 @@ class MARS(SurrogateABC):
         return value
 
     def _scrape_labels(self, X):
-        '''
+        """
         Try to get labels from input data (for example, if X is a
         pandas DataFrame).  Return None if no labels can be extracted.
-        '''
+        """
         try:
             labels = list(X.columns)
         except AttributeError:
@@ -294,74 +328,89 @@ class MARS(SurrogateABC):
                     labels = list(X.dtype.names)
                 except TypeError:
                     try:
-                        labels = ['x%d' % i for i in range(X.shape[1])]
+                        labels = ["x%d" % i for i in range(X.shape[1])]
                     except IndexError:
-                        labels = ['x%d' % i for i in range(1)]
+                        labels = ["x%d" % i for i in range(1)]
                 # handle case where X is not np.array (e.g list)
                 except AttributeError:
                     X = np.array(X)
-                    labels = ['x%d' % i for i in range(X.shape[1])]
+                    labels = ["x%d" % i for i in range(X.shape[1])]
         return labels
 
     def _scrub_x(self, X, missing, **kwargs):
-        '''
+        """
         Sanitize input predictors and extract column names if appropriate.
-        '''
+        """
         # Check for sparseness
         if sparse.issparse(X):
-            raise TypeError('A sparse matrix was passed, but dense data '
-                            'is required. Use X.toarray() to convert to '
-                            'dense.')
-        X = np.asarray(X, dtype=np.float64, order='F')
-        
+            raise TypeError(
+                "A sparse matrix was passed, but dense data is required. Use X.toarray() to convert to dense."
+            )
+        X = np.asarray(X, dtype=np.float64, order="F")
+
         # Figure out missingness
         missing_is_nan = False
         if missing is None:
             # Infer missingness
             missing = np.isnan(X)
             missing_is_nan = True
-            
+
         if X.ndim == 1:
             X = X[:, np.newaxis]
 
+        if X.ndim != 2:
+            raise ValueError("Predictors must be a two-dimensional matrix.")
+
         # Ensure correct number of columns
-        if hasattr(self, 'basis_') and self.basis_ is not None:
+        if kwargs.get("checkColumns", True) and hasattr(self, "basis_") and self.basis_ is not None:
             if X.shape[1] != self.basis_.num_variables:
-                raise ValueError('Wrong number of columns in X. Reshape your data.')
-        
+                raise ValueError("Wrong number of columns in X. Reshape your data.")
+
+        missing = np.asarray(missing, dtype=bool)
+        if missing.ndim == 1:
+            missing = missing[:, np.newaxis]
+        if X.ndim != 2 or missing.shape != X.shape:
+            raise ValueError("Missing mask must have the same shape as the input matrix.")
+        if np.any(np.isnan(X) & ~missing) or np.any(np.isinf(X)):
+            raise ValueError("Nonfinite predictors must be NaN values marked as missing.")
+
         # Zero-out any missing spots in X
         if np.any(missing):
             if not self.setting.get("allow_missing"):
-                raise ValueError('Missing data requires allow_missing=True.')
+                raise ValueError("Missing data requires allow_missing=True.")
             if missing_is_nan or np.any(np.isnan(X)):
                 X = X.copy()
-                X[missing] = 0.
-        
+                X[missing] = 0.0
+
         # Convert to internally used data type
-        missing = np.asarray(missing, dtype=BOOL, order='F')
+        missing = np.asarray(missing, dtype=BOOL, order="F")
         # assert_all_finite(missing)
         if missing.ndim == 1:
             missing = missing[:, np.newaxis]
-        
+
         return X, missing
 
     def _scrub(self, X, y, sample_weight, output_weight, missing, **kwargs):
-        '''
+        """
         Sanitize input data.
-        '''
+        """
         # Check for sparseness
         if sparse.issparse(y):
-            raise TypeError('A sparse matrix was passed, but dense data '
-                            'is required. Use y.toarray() to convert to '
-                            'dense.')
+            raise TypeError(
+                "A sparse matrix was passed, but dense data is required. Use y.toarray() to convert to dense."
+            )
         if sparse.issparse(sample_weight):
-            raise TypeError('A sparse matrix was passed, but dense data '
-                            'is required. Use sample_weight.toarray()'
-                            'to convert to dense.')
+            raise TypeError(
+                "A sparse matrix was passed, but dense data "
+                "is required. Use sample_weight.toarray()"
+                "to convert to dense."
+            )
         if sparse.issparse(output_weight):
-            raise TypeError('A sparse matrix was passed, but dense data '
-                            'is required. Use output_weight.toarray()'
-                            'to convert to dense.')
+            raise TypeError(
+                "A sparse matrix was passed, but dense data "
+                "is required. Use output_weight.toarray()"
+                "to convert to dense."
+            )
 
         # Check whether X is the output of patsy.dmatrices
         if y is None and isinstance(X, tuple):
@@ -376,6 +425,7 @@ class MARS(SurrogateABC):
 
         if len(y.shape) == 1:
             y = y[:, np.newaxis]
+        self._checkSingleOutput(y)
 
         # Deal with sample_weight
         if sample_weight is None:
@@ -392,52 +442,50 @@ class MARS(SurrogateABC):
 
         # Make sure dimensions match
         if y.shape[0] != X.shape[0]:
-            raise ValueError('X and y do not have compatible dimensions.')
+            raise ValueError("X and y do not have compatible dimensions.")
         if y.shape[0] != sample_weight.shape[0]:
-            raise ValueError(
-                'y and sample_weight do not have compatible dimensions.')
+            raise ValueError("y and sample_weight do not have compatible dimensions.")
         if output_weight is not None and y.shape[1] != output_weight.shape[0]:
-            raise ValueError(
-                'y and output_weight do not have compatible dimensions.')
-        if y.shape[1] > 1:
-            if sample_weight.shape[1] == 1 and output_weight is not None:
-                sample_weight = np.repeat(sample_weight, y.shape[1], axis=1)
+            raise ValueError("y and output_weight do not have compatible dimensions.")
         if output_weight is not None:
             sample_weight *= output_weight
 
         return X, y, sample_weight, None, missing
-    
-    def forward_pass(self, X, y=None,
-                     sample_weight=None, output_weight=None,
-                     missing=None,
-                     xlabels=None, linvars=[], skip_scrub=False):
+
+    def forward_pass(
+        self,
+        X,
+        y=None,
+        sample_weight=None,
+        output_weight=None,
+        missing=None,
+        xlabels=None,
+        linvars=[],
+        skip_scrub=False,
+    ):
         """
         Run the forward basis-construction stage.
 
         This stage greedily grows candidate basis functions before pruning.
         """
-        
+
         # Label and format data
         if xlabels is None:
             self.xlabels_ = self._scrape_labels(X)
         else:
             self.xlabels_ = xlabels
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing)
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         # Do the actual work
         args = self._pull_forward_args(self.setting)
-        
-        forward_passer = ForwardPasser(
-            X, missing, y, sample_weight,
-            xlabels=self.xlabels_, linvars=linvars, **args)
+
+        forward_passer = ForwardPasser(X, missing, y, sample_weight, xlabels=self.xlabels_, linvars=linvars, **args)
         forward_passer.run()
         self.forward_pass_record_ = forward_passer.trace()
         self.basis_ = forward_passer.get_basis()
 
-    def pruning_pass(self, X, y=None, sample_weight=None, output_weight=None,
-                     missing=None, skip_scrub=False):
+    def pruning_pass(self, X, y=None, sample_weight=None, output_weight=None, missing=None, skip_scrub=False):
         """
         Run the pruning stage on an existing forward-pass basis.
 
@@ -447,21 +495,18 @@ class MARS(SurrogateABC):
 
         # Format data
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing)
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         # Pull arguments from self
         args = self._pull_pruning_args(self.setting)
 
         # Do the actual work
-        pruning_passer = PruningPasser(
-            self.basis_, X, missing, y, sample_weight,
-            **args)
+        pruning_passer = PruningPasser(self.basis_, X, missing, y, sample_weight, **args)
         pruning_passer.run()
 
         imp = pruning_passer.feature_importance
         self._feature_importances_dict = imp
-        if len(imp) == 1: # if only one criterion then return it only
+        if len(imp) == 1:  # if only one criterion then return it only
             imp = imp[list(imp.keys())[0]]
         elif len(imp) == 0:
             imp = None
@@ -470,6 +515,8 @@ class MARS(SurrogateABC):
 
     def forward_trace(self):
         """Return the stored forward-pass trace, or `None` if unavailable."""
+        if not self.fitState:
+            return None
         try:
             return self.forward_pass_record_
         except AttributeError:
@@ -477,6 +524,8 @@ class MARS(SurrogateABC):
 
     def pruning_trace(self):
         """Return the stored pruning-pass trace, or `None` if unavailable."""
+        if not self.fitState:
+            return None
         try:
             return self.pruning_pass_record_
         except AttributeError:
@@ -488,33 +537,33 @@ class MARS(SurrogateABC):
 
     def summary(self):
         """Return a human-readable summary of the fitted model."""
-        result = ''
+        self.requireFitted("basis", "coef")
+        result = ""
         if self.forward_trace() is None:
-            result += 'Untrained Earth Model'
+            result += "Untrained Earth Model"
             return result
         elif self.pruning_trace() is None:
-            result += 'Unpruned Earth Model\n'
+            result += "Unpruned Earth Model\n"
         else:
-            result += 'Earth Model\n'
-        header = ['Basis Function', 'Pruned']
+            result += "Earth Model\n"
+        header = ["Basis Function", "Pruned"]
         if self.coef_.shape[0] > 1:
-            header += ['Coefficient %d' %
-                       i for i in range(self.coef_.shape[0])]
+            header += ["Coefficient %d" % i for i in range(self.coef_.shape[0])]
         else:
-            header += ['Coefficient']
+            header += ["Coefficient"]
         data = []
 
         i = 0
         for bf in self.basis_:
-            data.append([str(bf), 'Yes' if bf.is_pruned() else 'No'] + [
-                          '%g' % self.coef_[c, i] if not bf.is_pruned() else
-                          'None' for c in range(self.coef_.shape[0])])
+            data.append(
+                [str(bf), "Yes" if bf.is_pruned() else "No"]
+                + ["%g" % self.coef_[c, i] if not bf.is_pruned() else "None" for c in range(self.coef_.shape[0])]
+            )
             if not bf.is_pruned():
                 i += 1
         result += ascii_table(header, data)
-        result += '\n'
-        result += 'MSE: %.4f, GCV: %.4f, RSQ: %.4f, GRSQ: %.4f' % (
-            self.mse_, self.gcv_, self.rsq_, self.grsq_)
+        result += "\n"
+        result += "MSE: %.4f, GCV: %.4f, RSQ: %.4f, GRSQ: %.4f" % (self.mse_, self.gcv_, self.rsq_, self.grsq_)
         return result
 
     def summary_feature_importances(self, sort_by=None):
@@ -524,52 +573,49 @@ class MARS(SurrogateABC):
         Args:
             sort_by: Optional criterion name used to sort features.
         """
-       
-        result = ''
+        self.requireFitted("basis", "coef")
+
+        result = ""
         if self._feature_importances_dict:
             max_label_length = max(map(len, self.xlabels_)) + 5
-            result += (max_label_length * ' ' +
-                       '    '.join(self._feature_importances_dict.keys()) + '\n')
+            result += max_label_length * " " + "    ".join(self._feature_importances_dict.keys()) + "\n"
             labels = np.array(self.xlabels_)
             if sort_by:
                 if sort_by not in self._feature_importances_dict.keys():
-                    raise ValueError('Invalid feature importance type name '
-                                     'to sort with : %s, available : %s' % (
-                                         sort_by,
-                                         self._feature_importances_dict.keys()))
+                    raise ValueError(
+                        "Invalid feature importance type name "
+                        "to sort with : %s, available : %s" % (sort_by, self._feature_importances_dict.keys())
+                    )
                 imp = self._feature_importances_dict[sort_by]
                 indices = np.argsort(imp)[::-1]
             else:
                 indices = np.arange(len(labels))
             labels = labels[indices]
             for i, label in enumerate(labels):
-                result += label + ' ' * (max_label_length - len(label))
+                result += label + " " * (max_label_length - len(label))
                 for crit_name, imp in self._feature_importances_dict.items():
                     imp = imp[indices]
-                    result += '%.2f' % imp[i] + (len(crit_name) ) * ' '
-                result += '\n'
+                    result += "%.2f" % imp[i] + (len(crit_name)) * " "
+                result += "\n"
         return result
 
-    def linear_fit(self, X, y=None, sample_weight=None, output_weight=None,
-                   missing=None, skip_scrub=False):
+    def linear_fit(self, X, y=None, sample_weight=None, output_weight=None, missing=None, skip_scrub=False):
         """
         Solve the final weighted linear system in basis space.
 
         This step computes final coefficients and summary statistics such as
         MSE, GCV, RSQ, and GRSQ.
         """
-    
+
         # Format data
         if not skip_scrub:
-            X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing)
+            X, y, sample_weight, output_weight, missing = self._scrub(X, y, sample_weight, output_weight, missing)
 
         self.coef_ = []
         resid_ = []
-        total_weight = 0.
-        mse0 = 0.
+        total_weight = 0.0
+        mse0 = 0.0
         for i in range(y.shape[1]):
-
             # Figure out the weight column
             if sample_weight.shape[1] > 1:
                 w = sample_weight[:, i]
@@ -577,7 +623,7 @@ class MARS(SurrogateABC):
                 w = sample_weight[:, 0]
 
             # Transform into basis space
-            B = self.transform(X, missing)  # * w[:, None]
+            B = self._transformBasis(X, missing)  # * w[:, None]
             apply_weights_2d(B, w)
 
             # Compute total weight
@@ -588,15 +634,13 @@ class MARS(SurrogateABC):
             weighted_y *= np.sqrt(w[:, np.newaxis])
 
             # Compute the mse0
-            mse0 += np.sum((weighted_y[:, i] -
-                            np.average(weighted_y[:, i])) ** 2)
+            mse0 += np.sum((weighted_y[:, i] - np.average(weighted_y[:, i])) ** 2)
 
             coef, resid = np.linalg.lstsq(B, weighted_y[:, i], rcond=None)[0:2]
             self.coef_.append(coef)
             # `resid` is a numpy array; don't use it as a boolean (DeprecationWarning).
             if resid.size == 0:
-                resid = np.array(
-                    [np.sum((np.dot(B, coef) - weighted_y[:, i]) ** 2)])
+                resid = np.array([np.sum((np.dot(B, coef) - weighted_y[:, i]) ** 2)])
             resid_.append(resid)
         resid_ = np.array(resid_)
         self.coef_ = np.array(self.coef_)
@@ -604,24 +648,24 @@ class MARS(SurrogateABC):
         # pruning scores if the model has been smoothed)
         self.mse_ = np.sum(resid_) / total_weight
         mse0 = mse0 / total_weight
-        self.gcv_ = gcv(self.mse_,
-                        coef.shape[0], X.shape[0],
-                        self.get_penalty())
-        gcv0 = gcv(mse0,
-                   1, X.shape[0],
-                   self.get_penalty())
-        if mse0 != 0.:
+        self.gcv_ = gcv(self.mse_, coef.shape[0], X.shape[0], self.get_penalty())
+        gcv0 = gcv(mse0, 1, X.shape[0], self.get_penalty())
+        if mse0 != 0.0:
             self.rsq_ = 1.0 - (self.mse_ / mse0)
         else:
             self.rsq_ = 1.0
-        if gcv0 != 0.:
+        if gcv0 != 0.0:
             self.grsq_ = 1.0 - (self.gcv_ / gcv0)
         else:
             self.grsq_ = 1.0
 
     def predict_deriv(self, X, variables=None, missing=None):
         """
-        Predict partial derivatives with respect to selected variables.
+        Predict partial derivatives in original input and output units.
+
+        Returns shape (n_samples, n_selected_variables, 1).
+        Affine scalers are supported; polynomial features and custom non-affine
+        scalers raise NotImplementedError.
 
         Args:
             X: Input samples.
@@ -629,105 +673,132 @@ class MARS(SurrogateABC):
             missing: Optional missing-value mask.
         """
 
-        # check_is_fitted(self, "basis_")
+        self.requireFitted("basis", "coef")
+        if self.polyFeature is not None or any(
+            scaler is not None and not isinstance(scaler, _AffineScaler) for scaler in (self.xScaler, self.yScaler)
+        ):
+            raise NotImplementedError("predict_deriv supports affine scalers without polynomial features.")
 
-        if type(variables) in (str, int):
+        nInputs = len(self.xlabels_)
+        if isinstance(variables, (str, int, np.integer)):
             variables = [variables]
         if variables is None:
-            variables_of_interest = list(range(len(self.xlabels_)))
+            selectedVariables = list(range(nInputs))
         else:
-            variables_of_interest = []
-            for var in variables:
-                if isinstance(var, int):
-                    variables_of_interest.append(var)
+            selectedVariables = []
+            for variable in variables:
+                if isinstance(variable, (int, np.integer)):
+                    index = int(variable)
+                    if not 0 <= index < nInputs:
+                        raise ValueError("Derivative variable index is out of range.")
                 else:
-                    variables_of_interest.append(self.xlabels_.index(var))
-        X, missing = self._scrub_x(X, missing)
-        J = np.zeros(shape=(X.shape[0],
-                            len(variables_of_interest),
-                            self.coef_.shape[0]))
-        b = np.empty(shape=X.shape[0])
-        j = np.empty(shape=X.shape[0])
-        self.basis_.transform_deriv(
-            X, missing, b, j, self.coef_, J, variables_of_interest, True)
-        return J
+                    index = self.xlabels_.index(variable)
+                selectedVariables.append(index)
 
-    def score(self, X, y=None, sample_weight=None, output_weight=None,
-              missing=None, skip_scrub=False):
+        X, missing = self._preparePredictInput(X, missing)
+        derivatives = np.zeros((X.shape[0], len(selectedVariables), self.coef_.shape[0]))
+        basisValues = np.empty(X.shape[0])
+        basisDerivatives = np.empty(X.shape[0])
+        self.basis_.transform_deriv(
+            X, missing, basisValues, basisDerivatives, self.coef_, derivatives, selectedVariables, True
+        )
+        # Convert d(y_scaled)/d(x_scaled) back to original input/output units.
+        if self.xScaler is not None:
+            derivatives /= self.xScaler.inverseScale[selectedVariables][None, :, None]
+        if self.yScaler is not None:
+            derivatives *= self.yScaler.inverseScale[None, None, :]
+        return derivatives
+
+    def score(self, X, y=None, sample_weight=None, output_weight=None, missing=None, skip_scrub=False):
         """
         Compute the weighted coefficient of determination on given samples.
         """
-        
-        # check_is_fitted(self, "basis_")
+
+        self.requireFitted("basis", "coef")
+        if y is None and isinstance(X, tuple):
+            y, X = X
+        y_hat = self.predict(X, missing=missing)
         if not skip_scrub:
             X, y, sample_weight, output_weight, missing = self._scrub(
-                X, y, sample_weight, output_weight, missing)
+                X, y, sample_weight, output_weight, missing, checkColumns=False
+            )
         if sample_weight.shape[1] == 1 and y.shape[1] > 1:
             sample_weight = np.repeat(sample_weight, y.shape[1], axis=1)
-        y_hat = self.predict(X)
+        if y.shape != y_hat.shape:
+            raise ValueError("Targets must match the prediction shape.")
         if len(y_hat.shape) == 1:
             y_hat = y_hat[:, None]
 
         residual = y - y_hat
-#         total_weight = np.sum(sample_weight)
-        mse = np.sum(sample_weight * (residual ** 2))
+        #         total_weight = np.sum(sample_weight)
+        mse = np.sum(sample_weight * (residual**2))
         y_avg = np.average(y, weights=sample_weight, axis=0)
 
         mse0 = np.sum(sample_weight * ((y - y_avg) ** 2))
-#         mse0 = np.sum(y_sqr * output_weight) / m
+        #         mse0 = np.sum(y_sqr * output_weight) / m
         return 1 - (mse / mse0)
 
     def score_samples(self, X, y=None, missing=None):
         """
         Return per-sample score values based on relative squared error.
         """
-    
-        X, y, sample_weight, output_weight, missing = self._scrub(
-            X, y, None, None, missing)
+
+        self.requireFitted("basis", "coef")
+        if y is None and isinstance(X, tuple):
+            y, X = X
         y_hat = self.predict(X, missing=missing)
+        y = np.asarray(y, dtype=float)
+        if y.ndim == 1:
+            y = y[:, None]
+        if y.shape != y_hat.shape:
+            raise ValueError("Targets must match the prediction shape.")
         residual = 1 - (y - y_hat) ** 2 / y**2
         return residual
 
     def transform(self, X, missing=None):
         """
-        Transform input samples into the fitted basis-function space.
+        Transform prepared (already preprocessed) inputs into fitted basis space.
         """
 
-        # check_is_fitted(self, "basis_")
+        self.requireFitted("basis", "coef")
+        return self._transformBasis(X, missing)
+
+    def _transformBasis(self, X, missing=None):
         X, missing = self._scrub_x(X, missing)
-        B = np.empty(shape=(X.shape[0], self.basis_.plen()), order='F')
+        B = np.empty(shape=(X.shape[0], self.basis_.plen()), order="F")
         self.basis_.transform(X, missing, B)
         return B
 
     def get_penalty(self):
         """Return the active pruning penalty. Defaults to `3.0`."""
-        if 'penalty' in self.__dict__ and self.penalty is not None:
+        if "penalty" in self.__dict__ and self.penalty is not None:
             return self.penalty
         else:
             return 3.0
 
 
 class EarthTrace(object):
-
     def __init__(self, forward_trace, pruning_trace):
         self.forward_trace = forward_trace
         self.pruning_trace = pruning_trace
 
     def __eq__(self, other):
-        return (self.__class__ is other.__class__ and
-                self.forward_trace == other.forward_trace and
-                self.pruning_trace == other.pruning_trace)
+        return (
+            self.__class__ is other.__class__
+            and self.forward_trace == other.forward_trace
+            and self.pruning_trace == other.pruning_trace
+        )
 
     def __str__(self):
-        result = ''
-        result += 'Forward Pass\n'
+        result = ""
+        result += "Forward Pass\n"
         result += str(self.forward_trace)
-        result += '\n'
+        result += "\n"
         result += self.forward_trace.final_str()
-        result += '\n\n'
-        result += 'Pruning Pass\n'
+        result += "\n\n"
+        result += "Pruning Pass\n"
         result += str(self.pruning_trace)
-        result += '\n'
+        result += "\n"
         result += self.pruning_trace.final_str()
-        result += '\n'
+        result += "\n"
         return result

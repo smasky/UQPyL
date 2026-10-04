@@ -1,8 +1,9 @@
-import numpy as np
 import warnings
 from scipy.stats.qmc import Sobol as QmcSobol
 
 from ..base import Sampler
+from ._sobol import validateSobolSetup
+
 
 class Sobol(Sampler):
     """
@@ -11,7 +12,7 @@ class Sobol(Sampler):
     Examples:
         >>> from UQPyL.problem import Sphere
         >>> problem = Sphere(nInput=4)
-        >>> sampler = Sobol(scramble=True, skipValue=8)
+        >>> sampler = Sobol(scramble=True, skipValue=16)
         >>> X, meta = sampler.sampleWithMeta(problem, 16, seed=7)
         >>> print(X.shape)
         (16, 4)
@@ -25,86 +26,69 @@ class Sobol(Sampler):
         [2] SciPy QMC Sobol engine documentation,
             https://docs.scipy.org/doc/scipy/reference/stats.qmc.html
     """
-    
+
     def __init__(self, scramble: bool = True, skipValue: int = 0):
         """
         Initialize the Sobol sampler.
 
-        :param scramble: Whether to scramble the Sobol sequence.
-        :param skipValue: Number of initial Sobol points to skip.
+        Args:
+            scramble: Whether to scramble the Sobol sequence.
+            skipValue: Number of initial Sobol points to skip.
         """
-        
+
         super().__init__()
-        
+
         self.scramble = scramble
-        
+
         self.skipValue = skipValue
 
     def sampleWithMeta(self, problem, nSamples: int, seed=None, *, output="real"):
         """
         Generate Sobol samples with metadata.
 
-        :param problem: Problem instance.
-        :param nSamples: Number of samples.
-        :param seed: Random seed.
-        :return tuple: ``(X, meta)`` where ``X`` is the sample matrix.
+        Args:
+            problem: Problem instance.
+            nSamples: Number of samples.
+            seed: Random seed.
+
+        Returns:
+            tuple: ``(X, meta)`` where ``X`` is the sample matrix.
         """
         self._validate_sampling_setup(nSamples)
         return super().sampleWithMeta(problem, nSamples, seed=seed, output=output)
 
     def _validate_sampling_setup(self, nSamples: int):
-        if not isinstance(self.skipValue, int):
-            raise TypeError("skipValue must be an integer.")
+        self._validate_sample_count(nSamples)
+        validateSobolSetup(nSamples, self.skipValue)
 
-        if self.skipValue < 0:
-            raise ValueError("skipValue must be greater than or equal to 0.")
-
-        if nSamples < self.skipValue:
-            raise ValueError(
-                f"nSamples must be greater than or equal to skipValue. "
-                f"Received nSamples={nSamples}, skipValue={self.skipValue}."
-            )
-
-        if nSamples > 0 and (nSamples & (nSamples - 1)) != 0:
-            next_power = int(np.power(2, np.ceil(np.log2(nSamples))))
-            warnings.warn(
-                f"Sobol sequences are best balanced when nSamples is a power of 2. "
-                f"Received nSamples={nSamples}; consider using {next_power}.",
-                UserWarning,
-                stacklevel=2,
-            )
-
-        if self.skipValue > 0 and (self.skipValue & (self.skipValue - 1)) != 0:
-            warnings.warn(
-                "Sobol sequences usually use a power-of-2 skipValue for better balance. "
-                f"Received skipValue={self.skipValue}.",
-                UserWarning,
-                stacklevel=2,
-            )
-        
     def _generate(self, nSamples: int, nInput: int):
         """
         Generate unit-space Sobol samples.
 
-        :param nSamples: Number of samples.
-        :param nInput: Number of input variables.
-        :return np.ndarray: Unit-space Sobol samples.
+        Args:
+            nSamples: Number of samples.
+            nInput: Number of input variables.
+
+        Returns:
+            np.ndarray: Unit-space Sobol samples.
         """
         sobol_seed = None
         if self.scramble:
             sobol_seed = self.rng.integers(1, 1000000)
-        
+
         sampler = QmcSobol(d=nInput, scramble=self.scramble, seed=sobol_seed)
-        
+
+        if self.skipValue:
+            sampler.fast_forward(self.skipValue)
         with warnings.catch_warnings():
             warnings.filterwarnings(
                 "ignore",
                 message=r"The balance properties of Sobol' points require n to be a power of 2\.",
                 category=UserWarning,
             )
-            xInit = sampler.random(nSamples + self.skipValue)
-        
-        return xInit[self.skipValue:, :]
+            xInit = sampler.random(nSamples)
+
+        return xInit
 
     def _build_meta(self, problem, nSamples: int, seed=None):
         return {
@@ -113,4 +97,3 @@ class Sobol(Sampler):
             "skipValue": self.skipValue,
             "seed": seed if self.scramble else None,
         }
-

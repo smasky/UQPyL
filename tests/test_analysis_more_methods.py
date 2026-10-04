@@ -52,8 +52,8 @@ def test_fast_sample_and_analyze_smoke():
     with pytest.raises(ValueError):
         FASTDesign(M=4).sampleWithMeta(problem, 10, seed=1)  # too small
 
-    # must be strictly greater than 4*M^2 for stable frequency allocation
-    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+    # Three inputs need N >= 4*M^2*(D-1)+1 to avoid reusing auxiliary frequencies.
+    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 129, seed=123)
     res = fast.analyze(problem, X, Y=None, meta=meta, target="objs", index="all")
     metricNames = {metric.name for metric in res.metrics}
     assert "S1" in metricNames and "S1_norm" in metricNames
@@ -104,7 +104,7 @@ def test_rbd_fast_multi_output_uses_current_output_only():
 def test_fast_constant_output_returns_finite_zero_indices():
     problem = _make_problem(3)
     fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
-    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 129, seed=123)
     Y = np.ones((X.shape[0], 1))
 
     res = fast.analyze(problem, X, Y=Y, meta=meta, target="objs", index="all")
@@ -182,8 +182,7 @@ def test_rbd_fast_bias_correction_is_clipped_to_unit_interval(monkeypatch):
 
 def test_mars_sample_and_analyze_smoke():
     problem = _make_problem(3)
-    if MARS is None:
-        pytest.skip("MARS extension modules are not available in this environment.")
+    assert MARS is not None, "The complete test suite requires the MARS extensions."
     mars = MARS(verboseFlag=False, logFlag=False, saveFlag=False)
 
     X = LHS("classic").sample(problem, 40, seed=123)
@@ -200,7 +199,7 @@ def test_analysis_log_writes_full_metric_table():
         problem.workDir = str(workDir)
         fast = FAST(verboseFlag=False, logFlag=True, saveFlag=False)
 
-        X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+        X, meta = FASTDesign(M=4).sampleWithMeta(problem, 129, seed=123)
         fast.analyze(problem, X, Y=None, meta=meta, target="objs", index="all")
 
         logFiles = list((workDir / "Result").glob("*.log"))
@@ -218,7 +217,7 @@ def test_analysis_log_writes_full_metric_table():
 def test_ana_result_convenience_api():
     problem = _make_problem(3)
     fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
-    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+    X, meta = FASTDesign(M=4).sampleWithMeta(problem, 129, seed=123)
 
     res = fast.analyze(problem, X, Y=None, meta=meta, target="objs", index="all")
 
@@ -435,6 +434,3 @@ def test_analysis_list_runs_includes_filename():
         reader_mod.sqlite3.connect = origConnect
         Path.glob = origGlob
         conn.close()
-
-
-

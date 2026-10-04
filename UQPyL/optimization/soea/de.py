@@ -24,108 +24,133 @@ class DE(AlgorithmABC):
             for global optimization over continuous spaces, Journal of Global Optimization,
             vol. 11, no. 4, pp. 341-359, 1997.
     """
-    
+
     name = "DE"
     alg_type = "EA"
-    
-    def __init__(self, cr: float = 0.9, f: float = 0.5,
-                 nPop: int = 50,
-                 maxFEs: int = 50000, 
-                 maxIters: int = 1000, 
-                 maxTolerates: int = 1000, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool = True,
-                 saveFreq: int = 100, historyFreq: int = 10):
+
+    def __init__(
+        self,
+        cr: float = 0.9,
+        f: float = 0.5,
+        nPop: int = 50,
+        maxFEs: int = 50000,
+        maxIters: int = 1000,
+        maxTolerates: int = 1000,
+        tolerate: float = 1e-6,
+        verboseFlag: bool = True,
+        verboseFreq: int = 10,
+        logFlag: bool = False,
+        saveFlag: bool = True,
+        saveFreq: int = 100,
+        historyFreq: int = 10,
+    ):
         """
         Initialize the algorithm.
 
-        :param cr: Crossover probability.
-        :param f: Differential weight.
-        :param nPop: Population size.
-        :param maxFEs: Maximum number of function evaluations.
-        :param maxIters: Maximum number of iterations.
-        :param maxTolerates: Maximum tolerated non-improving iterations.
-        :param tolerate: Improvement tolerance.
-        :param verboseFlag: Whether to print terminal output.
-        :param verboseFreq: Summary output frequency.
-        :param logFlag: Whether to save full text logs.
-        :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: SQLite snapshot save frequency.
-        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
+        Args:
+            cr: Crossover probability.
+            f: Differential weight.
+            nPop: Population size.
+            maxFEs: Maximum number of function evaluations.
+            maxIters: Maximum number of iterations.
+            maxTolerates: Maximum tolerated non-improving iterations.
+            tolerate: Improvement tolerance.
+            verboseFlag: Whether to print terminal output.
+            verboseFreq: Summary output frequency.
+            logFlag: Whether to save full text logs.
+            saveFlag: Whether to save sqlite results.
+            saveFreq: SQLite snapshot save frequency.
+            historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
-        
-        super().__init__(maxFEs, maxIters, maxTolerates, 
-                            tolerate, verboseFlag, verboseFreq, logFlag, saveFlag, saveFreq, historyFreq=historyFreq)
-        
+
+        super().__init__(
+            maxFEs,
+            maxIters,
+            maxTolerates,
+            tolerate,
+            verboseFlag,
+            verboseFreq,
+            logFlag,
+            saveFlag,
+            saveFreq,
+            historyFreq=historyFreq,
+        )
+
         # Set user-defined parameters
-        self.set('cr', cr)
-        self.set('f', f)
-        self.set('nPop', nPop)
-        
+        self.set("cr", cr)
+        self.set("f", f)
+        self.set("nPop", nPop)
+
     def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
-        :param problem: Problem instance.
-        :param seed: Random seed.
-        :param initialPop: Optional initial population or decision matrix.
-        :return OptResult: Final optimization result.
+        Args:
+            problem: Problem instance.
+            seed: Random seed.
+            initialPop: Optional initial population or decision matrix.
+
+        Returns:
+            OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
-        
+
         # Parameter Setting
-        cr, f = self.get('cr', 'f')
-        nPop = self.get('nPop')
-        
+        cr, f = self.get("cr", "f")
+        nPop = self.get("nPop")
+
         # Population Generation
         pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
-        
+
         # Iterative process
         while self.checkTermination(pop):
-            
             # Select mating pool using tournament selection
             cv = calcConstraintViolation(pop.cons, pop.conWgt)
             feasible = np.zeros((len(pop), 1), dtype=float) if cv is None else (cv > 0).astype(float).reshape(-1, 1)
             violation = np.zeros((len(pop), 1), dtype=float) if cv is None else cv.reshape(-1, 1)
-            matingIdx = tourSelect(2, len(pop)*2, feasible, violation, pop.objs, rng=self.rng)
+            matingIdx = tourSelect(2, len(pop) * 2, feasible, violation, pop.objs, rng=self.rng)
             matingPool = pop[matingIdx]
-            
+
             # Generate offspring using differential evolution operations
-            offspringDecs = self._deOperator(pop.decs, matingPool.decs[:len(pop)], matingPool.decs[len(pop):], cr, f)
+            offspringDecs = self._deOperator(pop.decs, matingPool.decs[: len(pop)], matingPool.decs[len(pop) :], cr, f)
             offspring = Population(offspringDecs)
-            
+
             # Evaluate the offspring
             self.evaluate(offspring)
-            
+
             # Replace inferior individuals in the population with better offspring
             idx = betterMask(offspring.objs, offspring.cons, pop.objs, pop.cons, pop.conWgt)
             pop.replace(idx, offspring[idx])
             self.update(pop, completed=True)
-                    
+
         # Return the final result
         return self.finalize()
-            
+
     def _deOperator(self, popDecs1, popDecs2, popDecs3, cr, f):
         """
         Perform differential evolution operations to generate offspring.
 
-        :param popDecs1: First population.
-        :param popDecs2: Second population.
-        :param popDecs3: Third population.
-        :param cr: Crossover probability.
-        :param f: Differential weight.
+        Args:
+            popDecs1: First population.
+            popDecs2: Second population.
+            popDecs3: Third population.
+            cr: Crossover probability.
+            f: Differential weight.
 
-        :return Population: New population generated by differential evolution.
+        Returns:
+            Population: New population generated by differential evolution.
         """
-        
+
         N, D = len(popDecs1), len(popDecs1[0])
-        
+
         # Differential Evolution operation
         sita = self.rng.random((N, D)) < cr
-        offspringDecs = np.copy(popDecs1)
+        sita[np.arange(N), self.rng.integers(D, size=N)] = True
+        offspringDecs = np.array(popDecs1, dtype=float, copy=True)
         offspringDecs[sita] = popDecs1[sita] + (popDecs2[sita] - popDecs3[sita]) * f
-        
+
         np.clip(offspringDecs, self.searchLb, self.searchUb, out=offspringDecs)
-        
+
         return offspringDecs

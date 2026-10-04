@@ -7,6 +7,7 @@ from ..base import AlgorithmABC
 from ..population import Population
 from ..core.constraint import betterMask
 
+
 class CSA(AlgorithmABC):
     """
     Single-objective cooperative search algorithm.
@@ -21,68 +22,90 @@ class CSA(AlgorithmABC):
             a novel metaheuristic evolutionary intelligence algorithm for numerical optimization
             and engineering optimization problems, Applied Soft Computing, vol. 98, 2021.
     """
-    
+
     name = "CSA"
-    alg_type = "EA" 
-    
-    def __init__(self, alpha: float = 0.10, beta: float = 0.15, M: int = 3,
-                 nPop: int = 25,
-                 maxIters: int=  1000,
-                 maxFEs: int = 50000,
-                 maxTolerates: int = 1000, tolerate: float = 1e-6, 
-                 verboseFlag: bool = True, verboseFreq: int = 10, logFlag: bool = False, saveFlag: bool=True,
-                 saveFreq: int = 100, historyFreq: int = 10):
+    alg_type = "EA"
+
+    def __init__(
+        self,
+        alpha: float = 0.10,
+        beta: float = 0.15,
+        M: int = 3,
+        nPop: int = 25,
+        maxIters: int = 1000,
+        maxFEs: int = 50000,
+        maxTolerates: int = 1000,
+        tolerate: float = 1e-6,
+        verboseFlag: bool = True,
+        verboseFreq: int = 10,
+        logFlag: bool = False,
+        saveFlag: bool = True,
+        saveFreq: int = 100,
+        historyFreq: int = 10,
+    ):
         """
         Initialize the algorithm.
 
-        :param alpha: Team communication coefficient.
-        :param beta: Reflective learning coefficient.
-        :param M: Number of global best solutions to maintain.
-        :param nPop: Population size.
-        :param maxFEs: Maximum number of function evaluations.
-        :param maxIters: Maximum number of iterations.
-        :param maxTolerates: Maximum tolerated non-improving iterations.
-        :param tolerate: Improvement tolerance.
-        :param verboseFlag: Whether to print terminal output.
-        :param verboseFreq: Summary output frequency.
-        :param logFlag: Whether to save full text logs.
-        :param saveFlag: Whether to save sqlite results.
-        :param saveFreq: SQLite snapshot save frequency.
-        :param historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
+        Args:
+            alpha: Team communication coefficient.
+            beta: Reflective learning coefficient.
+            M: Number of global best solutions to maintain.
+            nPop: Population size.
+            maxFEs: Maximum number of function evaluations.
+            maxIters: Maximum number of iterations.
+            maxTolerates: Maximum tolerated non-improving iterations.
+            tolerate: Improvement tolerance.
+            verboseFlag: Whether to print terminal output.
+            verboseFreq: Summary output frequency.
+            logFlag: Whether to save full text logs.
+            saveFlag: Whether to save sqlite results.
+            saveFreq: SQLite snapshot save frequency.
+            historyFreq: Full in-memory snapshot interval; None keeps only the final snapshot.
         """
-        
-        super().__init__(maxFEs = maxFEs, maxIters = maxIters, 
-                         maxTolerates = maxTolerates, tolerate = tolerate, 
-                         verboseFlag = verboseFlag, verboseFreq = verboseFreq, logFlag = logFlag, saveFlag = saveFlag,
-                         saveFreq = saveFreq, historyFreq=historyFreq)
-        
+
+        super().__init__(
+            maxFEs=maxFEs,
+            maxIters=maxIters,
+            maxTolerates=maxTolerates,
+            tolerate=tolerate,
+            verboseFlag=verboseFlag,
+            verboseFreq=verboseFreq,
+            logFlag=logFlag,
+            saveFlag=saveFlag,
+            saveFreq=saveFreq,
+            historyFreq=historyFreq,
+        )
+
         # Set user-defined parameters
-        self.set('alpha', alpha)
-        self.set('beta', beta)
-        self.set('M', M)
-        self.set('nPop', nPop)
-           
-    #------------------Public Function------------------#
+        self.set("alpha", alpha)
+        self.set("beta", beta)
+        self.set("M", M)
+        self.set("nPop", nPop)
+
+    # ------------------Public Function------------------#
     def run(self, problem, seed: Optional[int] = None, initialPop=None):
         """
         Run the algorithm on the given problem.
 
-        :param problem: Problem instance.
-        :param seed: Random seed.
-        :param initialPop: Optional initial population or decision matrix.
-        :return OptResult: Final optimization result.
+        Args:
+            problem: Problem instance.
+            seed: Random seed.
+            initialPop: Optional initial population or decision matrix.
+
+        Returns:
+            OptResult: Final optimization result.
         """
         # setup algorithm
         self.setup(problem, seed)
-        
+
         # Retrieve parameter values
-        alpha, beta, M = self.get('alpha', 'beta', 'M')
-        nPop = self.get('nPop')
-        
+        alpha, beta, M = self.get("alpha", "beta", "M")
+        nPop = self.get("nPop")
+
         # Generate initial population
         pop = self.initPop(nPop, initialPop=initialPop)
         self.update(pop)
-        
+
         # Initial personal best and global best
         pBest = pop.copy()  # Personal Best
         gBest = pBest[pBest.argsort()[:M]]  # Global Best
@@ -91,14 +114,14 @@ class CSA(AlgorithmABC):
             # Team communication operator
             uPopDecs = self._teamCommunicationOperator(pop.decs, pBest.decs, gBest.decs, alpha, beta)
             uPop = Population(uPopDecs)
-            # Reflective learning operator 
+            # Reflective learning operator
             vPopDecs = self._reflectiveLearningOperator(uPop.decs)
             vPop = Population(vPopDecs)
-            
+
             # Internal competition operator
             self.evaluate(uPop)
             self.evaluate(vPop)
-            
+
             chooseU = betterMask(uPop.objs, uPop.cons, vPop.objs, vPop.cons, pop.conWgt).reshape(-1, 1)
             pop = Population(
                 decs=np.where(chooseU, uPop.decs, vPop.decs),
@@ -116,87 +139,93 @@ class CSA(AlgorithmABC):
                 cons=None if pop.cons is None and pBest.cons is None else np.where(choosePop, pop.cons, pBest.cons),
                 conWgt=pop.conWgt,
             )
-           
+
             gBest.add(tmp)
             gBest = gBest[gBest.argsort()[:M]]
             self.update(pop, completed=True)
-            
+
         return self.finalize()
-    
+
     def _reflectiveLearningOperator(self, popDecs):
         """
         Apply the reflective learning operator to the population.
 
-        :param pop: Current population of solutions.
-        
-        :return: Updated population after applying reflective learning.
+        Args:
+            pop: Current population of solutions.
+
+        Returns:
+            Updated population after applying reflective learning.
         """
-        
+
         N, D = popDecs.shape
-        
+
         c = (self.searchUb + self.searchLb) / 2
-        
+
         c_n = np.repeat(c, N, axis=0)
         lb_n = np.repeat(self.searchLb, N, axis=0)
         ub_n = np.repeat(self.searchUb, N, axis=0)
         fai_1 = self.searchUb + self.searchLb - popDecs
-        
+
         gailv = np.abs(popDecs - c) / (self.searchUb - self.searchLb)
         # Calculate r
         t1 = self.rng.random((N, D)) * np.abs(c - fai_1) + np.where(c_n > fai_1, fai_1, c_n)
         t2 = self.rng.random((N, D)) * np.abs(fai_1 - self.searchLb) + np.where(fai_1 > lb_n, lb_n, fai_1)
         seed = self.rng.random((N, D))
         r = np.where(gailv < seed, t1, t2)
-        
+
         # Calculate p
         t3 = self.rng.random((N, D)) * np.abs(fai_1 - c) + np.where(c_n > fai_1, fai_1, c_n)
         t4 = self.rng.random((N, D)) * np.abs(self.searchUb - fai_1) + np.where(fai_1 > ub_n, ub_n, fai_1)
         seed = self.rng.random((N, D))
         p = np.where(gailv < seed, t3, t4)
-        
+
         vPopDecs = np.where(popDecs >= c_n, r, p)
         np.clip(vPopDecs, self.searchLb, self.searchUb, out=vPopDecs)
-              
+
         return vPopDecs
-    
+
     def _teamCommunicationOperator(self, popDecs, pBestDecs, gBestDecs, alpha, beta):
         """
         Apply the team communication operator to the population.
 
-        :param pop: Current population of solutions.
-        :param pBest: Personal best solutions.
-        :param gBest: Global best solutions.
-        :param alpha: Control parameter for team communication.
-        :param beta: Control parameter for reflective learning.
-        
-        :return: Updated population after applying team communication.
+        Args:
+            pop: Current population of solutions.
+            pBest: Personal best solutions.
+            gBest: Global best solutions.
+            alpha: Control parameter for team communication.
+            beta: Control parameter for reflective learning.
+
+        Returns:
+            Updated population after applying team communication.
         """
-                
+
         N, D = popDecs.shape
-        
+
         M, _ = gBestDecs.shape
-        
+
         idx = self.rng.integers(0, M, (N, D))
         A = np.log(1.0 / self.rng.random((N, D))) * (gBestDecs[idx, np.arange(D)] - popDecs)
-        
+
         B = alpha * self.rng.random((N, D)) * (np.mean(gBestDecs, axis=0) - popDecs)
-        
+
         C = beta * self.rng.random((N, D)) * (np.mean(pBestDecs, axis=0) - popDecs)
-        
+
         uPopDecs = popDecs + A + B + C
-        
+
         np.clip(uPopDecs, self.searchLb, self.searchUb, out=uPopDecs)
-        
+
         return uPopDecs
 
     def Phi(self, num1, num2):
         """
         Calculate a value based on two numbers using a random factor.
 
-        :param num1: First number.
-        :param num2: Second number.
-        
-        :return: Calculated value.
+        Args:
+            num1: First number.
+            num2: Second number.
+
+        Returns:
+            Calculated value.
         """
         if num1 < num2:
             o = num1 + self.rng.random(1) * abs(num1 - num2)

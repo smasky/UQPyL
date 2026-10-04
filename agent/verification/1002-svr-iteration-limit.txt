@@ -1,0 +1,8 @@
+local_peak 11 100000 warned fits [7] selected 1 test R2 0.09990825625524613
+local_peak 11 1000000 warned fits [] selected 1 test R2 0.09990825625524613
+local_peak 23 100000 warned fits [7] selected 8 test R2 0.9373051340482704
+local_peak 23 1000000 warned fits [] selected 8 test R2 0.9373051340482704
+local_peak 47 100000 warned fits [7] selected 8 test R2 0.939867043411885
+local_peak 47 1000000 warned fits [] selected 8 test R2 0.939867043411885
+discontinuous 11 100000 warned fits [12] selected 7 test R2 0.8932783971385466
+discontinuous 11 1000000 warned fits [] selected 7 test R2 0.8933699648691564

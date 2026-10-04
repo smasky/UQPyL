@@ -1,5 +1,15 @@
 # Optimization API
 
+Multi-objective optimizers expose `hvFlag=True`, `hvFreq=10`, and `hvSamples=10_000` in their constructors and through `set/get`. HV is recorded at initialization, every `hvFreq` completed iterations, and at completion. Disabled HV or unscheduled history entries are `None`; finalization fills the last entry when enabled and feasible. The reference point is fixed at the first feasible archive, independent of this schedule. An unchanged archive reuses its cached HV at eligible iterations. `historyFreq`, `saveFreq` and HV scheduling are independent; readers preserve missing metrics and their iteration/FE coordinates.
+
+`hvSamples` controls the Monte Carlo budget for four or more objectives; the smaller default trades diagnostic precision for cost. Two/three objectives retain exact HV. Use `hvFreq=1, hvSamples=1_000_000` for the previous automatic diagnostic frequency and sample budget, or `hvFlag=False` to disable it. HV uses an independent fixed seed and cannot consume the search RNG. Results expose `hv_enabled`, `hv_freq`, `hv_samples`, `hv_reference_point` and `hv_normalized` in `extra`; SQLite restores these settings. MOASMO's default inner NSGAII disables unused HV diagnostics. The standalone `HV()` function keeps its own default `nSamples=1_000_000`.
+
+Configure common optimization controls with `set/get` before a run: `maxIters`, `maxFEs`, `maxTolerates`, `tolerate`, output flags/frequencies, `historyFreq`, and `hvRefPoint` use the actual runtime attributes. `maxIters` maps to `maxIter`; `get`, `exportConfig`, logs and saved settings reflect the same configuration. `hvRefPoint` is copied on assignment and retrieval.
+
+MOASMO's `nPop` configures its default NSGAII. A supplied optimizer retains its own population size. Automatically created surrogate ensembles are rebuilt for every run, including changes in input or objective dimensions. Supplied ensembles retain their model instances; `MultiSurrogate` output counts and model lists are checked before objective evaluation. Custom wrappers must provide `fit`/`predict`; expose `n_surrogates` to enable the same early output-count check without an extra model call.
+
+`OptResult.summary()` and `toDict()` carry `run_id`, `method`, `problem_name`, `n_input`, `n_output`, `n_con` and `created_at`, even when SQLite saving is disabled. Metadata is captured in each result, survives subsequent runs/reset, and is restored by `OptReader.load_result()` when saved.
+
 Surrogate-assisted optimization assigns a child seed to each surrogate fit from the outer RNG, including MultiSurrogate children. Built-in models reproduce with identical data, initial configuration and outer seed. History sequences shorter than the smoothing window are returned unchanged. Reader `list_runs()` outputs use `run_id`, `created_at`, `finished_at`, `final_fes`/`final_iters` where applicable, `db_path`, and `file_name`; database column names and internal object fields retain their existing protocols.
 
 MOEAD, NSGAIII and RVEA require at least two objectives and reject single-objective problems before evaluation. The NBI reference-direction helper accepts one objective and returns the sole direction `[1]`; reference-point counts and dimensions must be positive integers.
@@ -499,7 +509,7 @@ Stored `cons` remain raw constraint values. Printed/logged/stored violation summ
 - `bestDecs/bestObjs/bestCons`: historical feasible nondominated archive; empty arrays before feasibility.
 - `candidateDecs/candidateObjs/candidateCons`: up to 10 historical minimum-violation representatives before feasibility; None afterwards.
 - `minViolation`: historical minimum weighted violation, zero after feasibility.
-- `bestMetric`: feasible archive HV with a fixed reference and original scale; None before feasibility.
+- `bestMetric`: feasible archive HV with a fixed reference and original scale; None before feasibility, when disabled, or on an unscheduled intermediate iteration.
 - `appearFEs/appearIters`: most recent archive change, or violation reduction before feasibility.
 - `hvRefPoint`: optional constructor argument of NSGAII, NSGAIII, MOEAD, RVEA, and MOASMO, in original objective directions.
 - `Population.getParetoFront()`: current feasible front; `getInfeasibleCandidates(k=10)`: separate infeasible diagnostics.
@@ -538,3 +548,26 @@ Pre-evaluated `initialPop` must match the problem's objective/constraint dimensi
 
 
 Runtime persistence uses a domain marker; readers reject another module's database and unmarked legacy databases. Every run has a UUID-based identifier shared by its database and log, even when SQLite saving is disabled. All readers support `with` and idempotent `close()`. Internal runtime objects use `state` and `params`; returned result objects retain their documented fields.
+
+## Capabilities, components, and stopping reasons
+
+`AlgorithmClass.getCapabilities()` declares objective counts, variable types, constraint handling, and predictive-variance requirements.
+Single-objective methods require exactly one objective; multiobjective methods require at least two. Invalid combinations fail before model evaluation. Surrogate-assisted methods also check the inner optimizer and explicitly declared variance support.
+`EGO(..., surrogate=model, optimizer=algorithm)` now accepts components directly; defaults remain fresh KRG and GA instances.
+
+EGO/ASMO/MOASMO declare `constraint_handling="evaluation_only"`: true evaluations and result archives account for constraints, while acquisition models objectives only. Constraint-guided acquisition is not implemented, and constrained MOASMO support is not claimed.
+
+`OptResult.stopReason`, `summary()["stop_reason"]`, reader summaries, and final logs expose `max_fes`, `max_iters`, `stagnation`, `user_stop`, `no_novel_candidates`, or `one_step`; generic finalization falls back to `completed`.
+Existing precedence checks maxFEs before maxIters. Evaluation budgets are still checked at iteration boundaries, allowing the last batch to exceed the threshold.
+`no_novel_candidates` does not prove exhaustive search. Exceptions remain failures rather than normal results.
+
+
+## Search state and numerical boundaries
+
+- Single-objective incumbents retain every evaluated candidate, even if survivor selection discards it. `appearFEs` records the completed evaluation batch where it appeared (possibly zero for pre-evaluated initial members); history still commits only at initialization and completed iterations.
+- `SCE_UA` and `ML_SCE_UA` resolve `npg=None`, `nps=None`, and `nspl=None` to `2*nInput+1`, `nInput+1`, and `npg`. Explicit integers are honored: `npg>=2`, `2<=nps<=npg`, `nspl>=1`. Initialization uses `ngs*npg` points. Complexes are re-ranked after each replacement; reflection excludes the worst member from the centroid, and contraction moves toward that centroid before the ML variant's best-member blend.
+- ABC resets failure counts on success and accumulates repeated source failures separately. A positive `employedRate` that rounds to zero uses one employed bee with `RuntimeWarning`; a rate of one is supported. Invalid rates or fewer than two bees are rejected.
+- GA preserves offspring counts for odd and singleton populations and handles fixed coordinates. DE binomial crossover always selects at least one donor coordinate, including when `cr=0`; identical donors can still yield zero displacement.
+- Crowding, reference-direction geometry, GD/IGD, and HV with extreme axis scales use stable calculations. GD/IGD remain arithmetic means of nearest Euclidean distances, preserving relative objective units. A final metric outside floating-point range emits `RuntimeWarning` and returns zero or infinity. An unrepresentable automatic HV reference margin is clipped to finite range with a warning; an explicit reference is preferable for interpreting HV.
+- Missing objectives/required constraints, NaNs, and complex values are rejected. Scalar objectives may use worst-direction infinity as an exclusion penalty (`+inf` for minimization, `-inf` for maximization), without an arbitrary finite replacement. Multi-objective geometry and constraints require finite real values. Surrogate training retains the surrogate's own data requirements.
+- `RVEA(maxFEs=None, maxIters=...)` uses iteration progress for its angle schedule; it requires at least one of these budgets. Corrected search steps may change historical seeded trajectories, while repeated runs of the corrected implementation remain reproducible.

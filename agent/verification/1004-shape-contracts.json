@@ -1,0 +1,572 @@
+[
+  {
+    "case": "problem_x_1_scalar",
+    "value": {
+      "validated_shape": [
+        1,
+        1
+      ],
+      "result": [
+        [
+          1.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_1_vector",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "problem_x_1_row",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "problem_x_1_column",
+    "value": {
+      "validated_shape": [
+        2,
+        1
+      ],
+      "result": [
+        [
+          1.0
+        ],
+        [
+          4.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_1_batch",
+    "value": {
+      "validated_shape": [
+        3,
+        1
+      ],
+      "result": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_1_tensor",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_scalar",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_vector",
+    "value": {
+      "validated_shape": [
+        1,
+        2
+      ],
+      "result": [
+        [
+          5.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_row",
+    "value": {
+      "validated_shape": [
+        1,
+        2
+      ],
+      "result": [
+        [
+          5.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_column",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_batch",
+    "value": {
+      "validated_shape": [
+        3,
+        2
+      ],
+      "result": [
+        [
+          2.0
+        ],
+        [
+          2.0
+        ],
+        [
+          2.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "problem_x_2_tensor",
+    "error": "ValueError",
+    "message": "The input dimension is inconsistent with nInput.",
+    "warnings": []
+  },
+  {
+    "case": "obs_vector",
+    "error": "ValueError",
+    "message": "Observation `obs` must be a 2D array with shape (n_time, n_series).",
+    "warnings": []
+  },
+  {
+    "case": "obs_column",
+    "value": {
+      "obs_shape": [
+        4,
+        1
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "obs_row",
+    "value": {
+      "obs_shape": [
+        1,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "obs_grid",
+    "value": {
+      "obs_shape": [
+        2,
+        2
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "mask_none",
+    "value": {
+      "mask": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "mask_vector",
+    "error": "ValueError",
+    "message": "Mask shape must match obs.shape.",
+    "warnings": []
+  },
+  {
+    "case": "mask_grid",
+    "value": {
+      "mask": [
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "mask_numeric",
+    "value": {
+      "mask": [
+        false,
+        true,
+        true,
+        false
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "sim_grid_nan_False",
+    "value": {
+      "shape": [
+        1,
+        2,
+        2
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_grid_nan_False",
+    "value": {
+      "scores": [
+        0.0,
+        0.0
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "sim_grid_nan_True",
+    "value": {
+      "shape": [
+        1,
+        2,
+        2
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_grid_nan_True",
+    "value": {
+      "scores": [
+        0.0,
+        0.0
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "sim_flat_nan_False",
+    "value": {
+      "shape": [
+        1,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_flat_nan_False",
+    "value": {
+      "scores": [
+        0.0,
+        0.0
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "sim_flat_nan_True",
+    "error": "ValueError",
+    "message": "Simulation output must not contain NaN values.",
+    "warnings": []
+  },
+  {
+    "case": "glue_flat_nan_True",
+    "error": "ValueError",
+    "message": "Simulation output must not contain NaN values.",
+    "warnings": []
+  },
+  {
+    "case": "sim_transposed_grid_nan_False",
+    "value": {
+      "shape": [
+        1,
+        2,
+        2
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_transposed_grid_nan_False",
+    "value": {
+      "scores": [
+        0.5773502691896257,
+        0.5773502691896257
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "sim_transposed_grid_nan_True",
+    "error": "ValueError",
+    "message": "Simulation output must not contain NaN values outside masked positions.",
+    "warnings": []
+  },
+  {
+    "case": "glue_transposed_grid_nan_True",
+    "error": "ValueError",
+    "message": "Simulation output must not contain NaN values outside masked positions.",
+    "warnings": []
+  },
+  {
+    "case": "sim_wrong_count_nan_False",
+    "value": {
+      "shape": [
+        1,
+        3
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_wrong_count_nan_False",
+    "error": "ValueError",
+    "message": "sim.shape[1] must equal obs.size.",
+    "warnings": []
+  },
+  {
+    "case": "sim_wrong_count_nan_True",
+    "value": {
+      "shape": [
+        1,
+        3
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "glue_wrong_count_nan_True",
+    "error": "ValueError",
+    "message": "sim.shape[1] must equal obs.size.",
+    "warnings": []
+  },
+  {
+    "case": "GLUE_reshape_parity_mask_False",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "GLUE_reshape_parity_mask_True",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "SUFI2_reshape_parity_mask_False",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "SUFI2_reshape_parity_mask_True",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "ES_reshape_parity_mask_False",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "ES_reshape_parity_mask_True",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "IES_reshape_parity_mask_False",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "IES_reshape_parity_mask_True",
+    "value": {
+      "identical": true,
+      "obs_shape": [
+        2,
+        2
+      ],
+      "simulation_shape": [
+        24,
+        4
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "ES_masked_R_3",
+    "value": {
+      "shape": [
+        24,
+        1
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "ES_masked_R_4",
+    "error": "ValueError",
+    "message": "Observation error covariance R must have shape (n_valid_obs, n_valid_obs).",
+    "warnings": []
+  },
+  {
+    "case": "IES_masked_R_3",
+    "value": {
+      "shape": [
+        24,
+        1
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "IES_masked_R_4",
+    "error": "ValueError",
+    "message": "Observation error covariance R must have shape (n_valid_obs, n_valid_obs).",
+    "warnings": []
+  },
+  {
+    "case": "surrogate_fit_vector",
+    "value": {
+      "x_train_shape": [
+        3,
+        1
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "surrogate_predict_vector",
+    "error": "ValueError",
+    "message": "matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1 is different from 3)",
+    "warnings": []
+  },
+  {
+    "case": "surrogate_predict_column",
+    "value": {
+      "prediction": [
+        [
+          1.5897880556853773e-17
+        ],
+        [
+          2.0
+        ],
+        [
+          4.0
+        ]
+      ]
+    },
+    "warnings": []
+  },
+  {
+    "case": "documented_masked_objective",
+    "error": "AxisError",
+    "message": "axis 2 is out of bounds for array of dimension 2",
+    "warnings": []
+  },
+  {
+    "case": "sqlite_shapes",
+    "value": {
+      "obs": [
+        2,
+        2
+      ],
+      "mask": [
+        2,
+        2
+      ],
+      "simulations": [
+        24,
+        4
+      ],
+      "n_time": 2,
+      "n_series": 2,
+      "n_obs": 4
+    },
+    "warnings": []
+  }
+]

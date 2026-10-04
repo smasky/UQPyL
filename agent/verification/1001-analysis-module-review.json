@@ -1,0 +1,893 @@
+{
+  "environment": {
+    "python": "3.12.0 | packaged by Anaconda, Inc. | (main, Oct  2 2023, 17:29:18) [GCC 11.2.0]",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1"
+  },
+  "morris": {
+    "dtype_cases": [
+      {
+        "case": "provided_output",
+        "dtype": "float64",
+        "expected": {
+          "mu": 1.5,
+          "mu_star": 1.5,
+          "sigma": 0.0
+        },
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                1.5
+              ]
+            ],
+            "mu_star": [
+              [
+                1.5
+              ]
+            ],
+            "sigma": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "case": "provided_output",
+        "dtype": "uint8",
+        "expected": {
+          "mu": 1.5,
+          "mu_star": 1.5,
+          "sigma": 0.0
+        },
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                -190.5
+              ]
+            ],
+            "mu_star": [
+              [
+                192.0
+              ]
+            ],
+            "sigma": [
+              [
+                205.2566337887419
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "uint8",
+          "warnings": []
+        }
+      },
+      {
+        "case": "provided_output",
+        "dtype": "bool",
+        "expected": {
+          "mu": 1.5,
+          "mu_star": 1.5,
+          "sigma": 0.0
+        },
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                0.0
+              ]
+            ],
+            "mu_star": [
+              [
+                1.5
+              ]
+            ],
+            "sigma": [
+              [
+                1.6035674514745464
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "bool",
+          "warnings": []
+        }
+      },
+      {
+        "case": "evaluated_uint8_output",
+        "expected": {
+          "mu": 1.5,
+          "mu_star": 1.5,
+          "sigma": 0.0
+        },
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                -190.5
+              ]
+            ],
+            "mu_star": [
+              [
+                192.0
+              ]
+            ],
+            "sigma": [
+              [
+                205.2566337887419
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "uint8",
+          "warnings": []
+        }
+      },
+      {
+        "case": "integer_input",
+        "dtype": "float64",
+        "expected_mu": 2.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                2.0
+              ]
+            ],
+            "mu_star": [
+              [
+                2.0
+              ]
+            ],
+            "sigma": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "case": "integer_input",
+        "dtype": "uint8",
+        "expected_mu": 2.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "mu": [
+              [
+                0.9931140960321136
+              ]
+            ],
+            "mu_star": [
+              [
+                1.0068859039678864
+              ]
+            ],
+            "sigma": [
+              [
+                1.0764094185491042
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "uint8",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      }
+    ],
+    "one_trajectory": {
+      "expected": "Sample sigma requires at least two effects; report insufficiency explicitly.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "mu": [
+            [
+              1.0
+            ]
+          ],
+          "mu_star": [
+            [
+              1.0
+            ]
+          ],
+          "sigma": [
+            [
+              "nan"
+            ]
+          ],
+          "S1_norm": [
+            [
+              1.0
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": [
+          {
+            "category": "RuntimeWarning",
+            "message": "Degrees of freedom <= 0 for slice"
+          },
+          {
+            "category": "RuntimeWarning",
+            "message": "invalid value encountered in divide"
+          }
+        ]
+      }
+    }
+  },
+  "rbd_fast": {
+    "fixed_input": [
+      {
+        "permutation_seed": null,
+        "expected_first_index": 0.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.9976287664041714,
+                0.9976287664041714
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 0,
+        "expected_first_index": 0.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0,
+                0.9976287664041712
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 17,
+        "expected_first_index": 0.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0,
+                0.9976287664041714
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 41,
+        "expected_first_index": 0.0,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.03605776197935252,
+                0.9976287664041714
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      }
+    ],
+    "repeated_input": [
+      {
+        "permutation_seed": null,
+        "population_indices": [
+          0,
+          1
+        ],
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.7212770607012927,
+                0.9976333496947892
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 0,
+        "population_indices": [
+          0,
+          1
+        ],
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0,
+                0.9976333496947892
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 17,
+        "population_indices": [
+          0,
+          1
+        ],
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0,
+                0.9976333496947895
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "permutation_seed": 41,
+        "population_indices": [
+          0,
+          1
+        ],
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0,
+                0.9976333496947892
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      }
+    ],
+    "harmonic_budget": [
+      {
+        "samples": 8,
+        "harmonics": 4,
+        "bias_factor": 1.0,
+        "expected": "Reject a singular/nonpositive bias-correction denominator.",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "samples": 8,
+        "harmonics": 5,
+        "bias_factor": 1.25,
+        "expected": "Reject a singular/nonpositive bias-correction denominator.",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "samples": 16,
+        "harmonics": 12,
+        "bias_factor": 1.5,
+        "expected": "Reject a singular/nonpositive bias-correction denominator.",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      }
+    ],
+    "continuous_control": {
+      "status": "returned",
+      "metrics": {
+        "S1": [
+          [
+            0.0,
+            0.9976806697199473
+          ]
+        ]
+      },
+      "input_dtype": "float64",
+      "output_dtype": "float64",
+      "warnings": []
+    }
+  },
+  "rsa": {
+    "output_scaling": [
+      {
+        "factor": 1,
+        "expected_statistic": 0.375,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.375
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "factor": 1e-200,
+        "expected_statistic": 0.375,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.375
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "factor": 1e+308,
+        "expected_statistic": 0.375,
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                0.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": [
+            {
+              "category": "RuntimeWarning",
+              "message": "overflow encountered in subtract"
+            }
+          ]
+        }
+      }
+    ],
+    "invalid_data": [
+      {
+        "case": "nonfinite_output",
+        "value": "nan",
+        "expected": "Explicit rejection/diagnosis",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                0.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      },
+      {
+        "case": "nonfinite_output",
+        "value": "inf",
+        "expected": "Explicit rejection/diagnosis",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                0.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": [
+            {
+              "category": "RuntimeWarning",
+              "message": "invalid value encountered in subtract"
+            }
+          ]
+        }
+      },
+      {
+        "case": "nonfinite_output",
+        "value": "-inf",
+        "expected": "Explicit rejection/diagnosis",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.375
+              ]
+            ],
+            "S1_norm": [
+              [
+                1.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": [
+            {
+              "category": "RuntimeWarning",
+              "message": "invalid value encountered in multiply"
+            }
+          ]
+        }
+      },
+      {
+        "case": "nonfinite_input",
+        "expected": "Explicit rejection/diagnosis",
+        "observed": {
+          "status": "returned",
+          "metrics": {
+            "S1": [
+              [
+                0.0
+              ]
+            ],
+            "S1_norm": [
+              [
+                0.0
+              ]
+            ]
+          },
+          "input_dtype": "float64",
+          "output_dtype": "float64",
+          "warnings": []
+        }
+      }
+    ]
+  },
+  "fast": [
+    {
+      "case": "complete_design",
+      "rows": 258,
+      "expected_indices": [
+        0,
+        1
+      ],
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              6.519639434294922e-08,
+              0.9977065586008493
+            ]
+          ],
+          "S1_norm": [
+            [
+              6.53462578957465e-08,
+              0.999999934653742
+            ]
+          ],
+          "ST": [
+            [
+              0.0003086258657554186,
+              0.9999998968992571
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.00030853067701785384,
+              0.999691469322982
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "missing_rows",
+      "dropped": 1,
+      "rows": 257,
+      "metadata_expected_rows": 258,
+      "expected": "Reject incomplete/inconsistent FAST blocks.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              1.6226591223510233e-05,
+              0.016003855839597507
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0010128906198567315,
+              0.9989871093801433
+            ]
+          ],
+          "ST": [
+            [
+              0.0003122310680816476,
+              0.9998018443073142
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.0003121954542680051,
+              0.999687804545732
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "missing_rows",
+      "dropped": 2,
+      "rows": 256,
+      "metadata_expected_rows": 258,
+      "expected": "Reject incomplete/inconsistent FAST blocks.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              1.6226591223510233e-05,
+              0.016003855839597507
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.0010128906198567315,
+              0.9989871093801433
+            ]
+          ],
+          "ST": [
+            [
+              0.0003122310680816476,
+              0.9998018443073142
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.0003121954542680051,
+              0.999687804545732
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    },
+    {
+      "case": "extra_row",
+      "rows": 259,
+      "metadata_expected_rows": 258,
+      "expected": "Reject inconsistent FAST blocks; do not silently ignore a row.",
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              6.519639434294922e-08,
+              0.9977065586008493
+            ]
+          ],
+          "S1_norm": [
+            [
+              6.53462578957465e-08,
+              0.999999934653742
+            ]
+          ],
+          "ST": [
+            [
+              0.0003086258657554186,
+              0.9999998968992571
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.00030853067701785384,
+              0.999691469322982
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    }
+  ],
+  "sobol": [
+    {
+      "case": "base_variance_zero",
+      "samples_per_base": 16,
+      "seed": 1,
+      "base_variance": 0.0,
+      "all_sample_variance": 0.015380859375,
+      "hybrid_events": 1,
+      "expected": "Explicit insufficient-base-variance diagnosis.",
+      "observed": {
+        "status": "error",
+        "exception_type": "ZeroDivisionError",
+        "exception_message": "float division by zero",
+        "warnings": []
+      }
+    },
+    {
+      "case": "adequate_sample_control",
+      "samples_per_base": 4096,
+      "analytic_first_order": 0.13043478260869568,
+      "analytic_total_order": 0.8695652173913044,
+      "observed": {
+        "status": "returned",
+        "metrics": {
+          "S1": [
+            [
+              0.12231247013855712,
+              0.13417900034747862
+            ]
+          ],
+          "S1_norm": [
+            [
+              0.476867592933139,
+              0.5231324070668611
+            ]
+          ],
+          "ST": [
+            [
+              0.8784259219041829,
+              0.8617469487034705
+            ]
+          ],
+          "ST_norm": [
+            [
+              0.5047923322683706,
+              0.4952076677316294
+            ]
+          ]
+        },
+        "input_dtype": "float64",
+        "output_dtype": "float64",
+        "warnings": []
+      }
+    }
+  ]
+}

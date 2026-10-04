@@ -1,0 +1,1921 @@
+FFFFFFFFFFFFFF..........FF.FFFFFFFFF.......FFFFFFF.FFFF                  [100%]
+=================================== FAILURES ===================================
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-nse] _
+
+name = 'nse', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+sim = array([[1.1e-200, 1.9e-200, 3.2e-200, 3.8e-200],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-r2] _
+
+name = 'r2', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:70: in r2
+    return nse(obs, sim, mask=mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+sim = array([[1.1e-200, 1.9e-200, 3.2e-200, 3.8e-200],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-pbias] _
+
+name = 'pbias', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+sim = array([[1.1e-200, 1.9e-200, 3.2e-200, 3.8e-200],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def pbias(obs, sim, mask=None):
+        """Percent bias for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum(obs)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("PBIAS is undefined when observation sum is zero.")
+E           ValueError: PBIAS is undefined when observation sum is zero.
+
+UQPyL/calibration/util.py:78: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-pearson_r] _
+
+name = 'pearson_r', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+sim = array([[1.1e-200, 1.9e-200, 3.2e-200, 3.8e-200],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-kge] _
+
+name = 'kge', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:101: in kge
+    r = pearson_r(obs, sim)
+        ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+sim = array([[1.1e-200, 1.9e-200, 3.2e-200, 3.8e-200],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-rfactor] _
+
+name = 'rfactor', scale = 1e-200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-200, 2.e-200, 3.e-200, 4.e-200])
+lower = array([8.0e-201, 1.8e-200, 2.8e-200, 3.8e-200])
+upper = array([1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]), mask = None
+
+    def rfactor(obs, lower, upper, mask=None):
+        """Mean width / observation std; reject empty, reversed or zero-std inputs."""
+        obs, lower, upper = _prepareInterval(obs, lower, upper, mask)
+        obs_std = np.std(obs)
+        if np.isclose(obs_std, 0.0):
+>           raise ValueError("RFactor is undefined when observation standard deviation is zero.")
+E           ValueError: RFactor is undefined when observation standard deviation is zero.
+
+UQPyL/calibration/util.py:153: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-nse] _
+
+name = 'nse', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-r2] _
+
+name = 'r2', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:70: in r2
+    return nse(obs, sim, mask=mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-pbias] _
+
+name = 'pbias', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def pbias(obs, sim, mask=None):
+        """Percent bias for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum(obs)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("PBIAS is undefined when observation sum is zero.")
+E           ValueError: PBIAS is undefined when observation sum is zero.
+
+UQPyL/calibration/util.py:78: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-pearson_r] _
+
+name = 'pearson_r', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-kge] _
+
+name = 'kge', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:101: in kge
+    r = pearson_r(obs, sim)
+        ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-rfactor] _
+
+name = 'rfactor', scale = 1e-12
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+lower = array([8.0e-13, 1.8e-12, 2.8e-12, 3.8e-12])
+upper = array([1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]), mask = None
+
+    def rfactor(obs, lower, upper, mask=None):
+        """Mean width / observation std; reject empty, reversed or zero-std inputs."""
+        obs, lower, upper = _prepareInterval(obs, lower, upper, mask)
+        obs_std = np.std(obs)
+        if np.isclose(obs_std, 0.0):
+>           raise ValueError("RFactor is undefined when observation standard deviation is zero.")
+E           ValueError: RFactor is undefined when observation standard deviation is zero.
+
+UQPyL/calibration/util.py:153: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-06-nse] _
+
+name = 'nse', scale = 1e-06
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-06, 2.e-06, 3.e-06, 4.e-06])
+sim = array([[1.1e-06, 1.9e-06, 3.2e-06, 3.8e-06],
+       [1.2e-06, 2.2e-06, 3.2e-06, 4.2e-06]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-06-r2] _
+
+name = 'r2', scale = 1e-06
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:70: in r2
+    return nse(obs, sim, mask=mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-06, 2.e-06, 3.e-06, 4.e-06])
+sim = array([[1.1e-06, 1.9e-06, 3.2e-06, 3.8e-06],
+       [1.2e-06, 2.2e-06, 3.2e-06, 4.2e-06]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-nse] _
+
+name = 'nse', scale = 1e+200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e+200, 2.e+200, 3.e+200, 4.e+200])
+sim = array([[1.1e+200, 1.9e+200, 3.2e+200, 3.8e+200],
+       [1.2e+200, 2.2e+200, 3.2e+200, 4.2e+200]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+>       denom = np.sum((obs - np.mean(obs)) ** 2)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       RuntimeWarning: overflow encountered in square
+
+UQPyL/calibration/util.py:61: RuntimeWarning
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-r2] _
+
+name = 'r2', scale = 1e+200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:70: in r2
+    return nse(obs, sim, mask=mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e+200, 2.e+200, 3.e+200, 4.e+200])
+sim = array([[1.1e+200, 1.9e+200, 3.2e+200, 3.8e+200],
+       [1.2e+200, 2.2e+200, 3.2e+200, 4.2e+200]])
+mask = None
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+>       denom = np.sum((obs - np.mean(obs)) ** 2)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       RuntimeWarning: overflow encountered in square
+
+UQPyL/calibration/util.py:61: RuntimeWarning
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-pearson_r] _
+
+name = 'pearson_r', scale = 1e+200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:86: in pearson_r
+    obs_norm = np.linalg.norm(obs_centered)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = array([-1.5e+200, -5.0e+199,  5.0e+199,  1.5e+200]), ord = None, axis = None
+keepdims = False
+
+    @array_function_dispatch(_norm_dispatcher)
+    def norm(x, ord=None, axis=None, keepdims=False):
+        """
+        Matrix or vector norm.
+    
+        This function is able to return one of eight different matrix norms,
+        or one of an infinite number of vector norms (described below), depending
+        on the value of the ``ord`` parameter.
+    
+        Parameters
+        ----------
+        x : array_like
+            Input array.  If `axis` is None, `x` must be 1-D or 2-D, unless `ord`
+            is None. If both `axis` and `ord` are None, the 2-norm of
+            ``x.ravel`` will be returned.
+        ord : {int, float, inf, -inf, 'fro', 'nuc'}, optional
+            Order of the norm (see table under ``Notes`` for what values are
+            supported for matrices and vectors respectively). inf means numpy's
+            `inf` object. The default is None.
+        axis : {None, int, 2-tuple of ints}, optional.
+            If `axis` is an integer, it specifies the axis of `x` along which to
+            compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+            axes that hold 2-D matrices, and the matrix norms of these matrices
+            are computed.  If `axis` is None then either a vector norm (when `x`
+            is 1-D) or a matrix norm (when `x` is 2-D) is returned. The default
+            is None.
+    
+        keepdims : bool, optional
+            If this is set to True, the axes which are normed over are left in the
+            result as dimensions with size one.  With this option the result will
+            broadcast correctly against the original `x`.
+    
+        Returns
+        -------
+        n : float or ndarray
+            Norm of the matrix or vector(s).
+    
+        See Also
+        --------
+        scipy.linalg.norm : Similar function in SciPy.
+    
+        Notes
+        -----
+        For values of ``ord < 1``, the result is, strictly speaking, not a
+        mathematical 'norm', but it may still be useful for various numerical
+        purposes.
+    
+        The following norms can be calculated:
+    
+        =====  ============================  ==========================
+        ord    norm for matrices             norm for vectors
+        =====  ============================  ==========================
+        None   Frobenius norm                2-norm
+        'fro'  Frobenius norm                --
+        'nuc'  nuclear norm                  --
+        inf    max(sum(abs(x), axis=1))      max(abs(x))
+        -inf   min(sum(abs(x), axis=1))      min(abs(x))
+        0      --                            sum(x != 0)
+        1      max(sum(abs(x), axis=0))      as below
+        -1     min(sum(abs(x), axis=0))      as below
+        2      2-norm (largest sing. value)  as below
+        -2     smallest singular value       as below
+        other  --                            sum(abs(x)**ord)**(1./ord)
+        =====  ============================  ==========================
+    
+        The Frobenius norm is given by [1]_:
+    
+        :math:`||A||_F = [\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
+    
+        The nuclear norm is the sum of the singular values.
+    
+        Both the Frobenius and nuclear norm orders are only defined for
+        matrices and raise a ValueError when ``x.ndim != 2``.
+    
+        References
+        ----------
+        .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
+               Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15
+    
+        Examples
+        --------
+    
+        >>> import numpy as np
+        >>> from numpy import linalg as LA
+        >>> a = np.arange(9) - 4
+        >>> a
+        array([-4, -3, -2, ...,  2,  3,  4])
+        >>> b = a.reshape((3, 3))
+        >>> b
+        array([[-4, -3, -2],
+               [-1,  0,  1],
+               [ 2,  3,  4]])
+    
+        >>> LA.norm(a)
+        7.745966692414834
+        >>> LA.norm(b)
+        7.745966692414834
+        >>> LA.norm(b, 'fro')
+        7.745966692414834
+        >>> LA.norm(a, np.inf)
+        4.0
+        >>> LA.norm(b, np.inf)
+        9.0
+        >>> LA.norm(a, -np.inf)
+        0.0
+        >>> LA.norm(b, -np.inf)
+        2.0
+    
+        >>> LA.norm(a, 1)
+        20.0
+        >>> LA.norm(b, 1)
+        7.0
+        >>> LA.norm(a, -1)
+        -4.6566128774142013e-010
+        >>> LA.norm(b, -1)
+        6.0
+        >>> LA.norm(a, 2)
+        7.745966692414834
+        >>> LA.norm(b, 2)
+        7.3484692283495345
+    
+        >>> LA.norm(a, -2)
+        0.0
+        >>> LA.norm(b, -2)
+        1.8570331885190563e-016 # may vary
+        >>> LA.norm(a, 3)
+        5.8480354764257312 # may vary
+        >>> LA.norm(a, -3)
+        0.0
+    
+        Using the `axis` argument to compute vector norms:
+    
+        >>> c = np.array([[ 1, 2, 3],
+        ...               [-1, 1, 4]])
+        >>> LA.norm(c, axis=0)
+        array([ 1.41421356,  2.23606798,  5.        ])
+        >>> LA.norm(c, axis=1)
+        array([ 3.74165739,  4.24264069])
+        >>> LA.norm(c, ord=1, axis=1)
+        array([ 6.,  6.])
+    
+        Using the `axis` argument to compute matrix norms:
+    
+        >>> m = np.arange(8).reshape(2,2,2)
+        >>> LA.norm(m, axis=(1,2))
+        array([  3.74165739,  11.22497216])
+        >>> LA.norm(m[0, :, :]), LA.norm(m[1, :, :])
+        (3.7416573867739413, 11.224972160321824)
+    
+        """
+        x = asarray(x)
+    
+        if not issubclass(x.dtype.type, (inexact, object_)):
+            x = x.astype(float)
+    
+        # Immediately handle some default, simple, fast, and common cases.
+        if axis is None:
+            ndim = x.ndim
+            if (
+                (ord is None) or
+                (ord in ('f', 'fro') and ndim == 2) or
+                (ord == 2 and ndim == 1)
+            ):
+                x = x.ravel(order='K')
+                if isComplexType(x.dtype.type):
+                    x_real = x.real
+                    x_imag = x.imag
+                    sqnorm = x_real.dot(x_real) + x_imag.dot(x_imag)
+                else:
+>                   sqnorm = x.dot(x)
+                             ^^^^^^^^
+E                   RuntimeWarning: overflow encountered in dot
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/linalg/_linalg.py:2767: RuntimeWarning
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-kge] _
+
+name = 'kge', scale = 1e+200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:101: in kge
+    r = pearson_r(obs, sim)
+        ^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/util.py:86: in pearson_r
+    obs_norm = np.linalg.norm(obs_centered)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = array([-1.5e+200, -5.0e+199,  5.0e+199,  1.5e+200]), ord = None, axis = None
+keepdims = False
+
+    @array_function_dispatch(_norm_dispatcher)
+    def norm(x, ord=None, axis=None, keepdims=False):
+        """
+        Matrix or vector norm.
+    
+        This function is able to return one of eight different matrix norms,
+        or one of an infinite number of vector norms (described below), depending
+        on the value of the ``ord`` parameter.
+    
+        Parameters
+        ----------
+        x : array_like
+            Input array.  If `axis` is None, `x` must be 1-D or 2-D, unless `ord`
+            is None. If both `axis` and `ord` are None, the 2-norm of
+            ``x.ravel`` will be returned.
+        ord : {int, float, inf, -inf, 'fro', 'nuc'}, optional
+            Order of the norm (see table under ``Notes`` for what values are
+            supported for matrices and vectors respectively). inf means numpy's
+            `inf` object. The default is None.
+        axis : {None, int, 2-tuple of ints}, optional.
+            If `axis` is an integer, it specifies the axis of `x` along which to
+            compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+            axes that hold 2-D matrices, and the matrix norms of these matrices
+            are computed.  If `axis` is None then either a vector norm (when `x`
+            is 1-D) or a matrix norm (when `x` is 2-D) is returned. The default
+            is None.
+    
+        keepdims : bool, optional
+            If this is set to True, the axes which are normed over are left in the
+            result as dimensions with size one.  With this option the result will
+            broadcast correctly against the original `x`.
+    
+        Returns
+        -------
+        n : float or ndarray
+            Norm of the matrix or vector(s).
+    
+        See Also
+        --------
+        scipy.linalg.norm : Similar function in SciPy.
+    
+        Notes
+        -----
+        For values of ``ord < 1``, the result is, strictly speaking, not a
+        mathematical 'norm', but it may still be useful for various numerical
+        purposes.
+    
+        The following norms can be calculated:
+    
+        =====  ============================  ==========================
+        ord    norm for matrices             norm for vectors
+        =====  ============================  ==========================
+        None   Frobenius norm                2-norm
+        'fro'  Frobenius norm                --
+        'nuc'  nuclear norm                  --
+        inf    max(sum(abs(x), axis=1))      max(abs(x))
+        -inf   min(sum(abs(x), axis=1))      min(abs(x))
+        0      --                            sum(x != 0)
+        1      max(sum(abs(x), axis=0))      as below
+        -1     min(sum(abs(x), axis=0))      as below
+        2      2-norm (largest sing. value)  as below
+        -2     smallest singular value       as below
+        other  --                            sum(abs(x)**ord)**(1./ord)
+        =====  ============================  ==========================
+    
+        The Frobenius norm is given by [1]_:
+    
+        :math:`||A||_F = [\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
+    
+        The nuclear norm is the sum of the singular values.
+    
+        Both the Frobenius and nuclear norm orders are only defined for
+        matrices and raise a ValueError when ``x.ndim != 2``.
+    
+        References
+        ----------
+        .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
+               Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15
+    
+        Examples
+        --------
+    
+        >>> import numpy as np
+        >>> from numpy import linalg as LA
+        >>> a = np.arange(9) - 4
+        >>> a
+        array([-4, -3, -2, ...,  2,  3,  4])
+        >>> b = a.reshape((3, 3))
+        >>> b
+        array([[-4, -3, -2],
+               [-1,  0,  1],
+               [ 2,  3,  4]])
+    
+        >>> LA.norm(a)
+        7.745966692414834
+        >>> LA.norm(b)
+        7.745966692414834
+        >>> LA.norm(b, 'fro')
+        7.745966692414834
+        >>> LA.norm(a, np.inf)
+        4.0
+        >>> LA.norm(b, np.inf)
+        9.0
+        >>> LA.norm(a, -np.inf)
+        0.0
+        >>> LA.norm(b, -np.inf)
+        2.0
+    
+        >>> LA.norm(a, 1)
+        20.0
+        >>> LA.norm(b, 1)
+        7.0
+        >>> LA.norm(a, -1)
+        -4.6566128774142013e-010
+        >>> LA.norm(b, -1)
+        6.0
+        >>> LA.norm(a, 2)
+        7.745966692414834
+        >>> LA.norm(b, 2)
+        7.3484692283495345
+    
+        >>> LA.norm(a, -2)
+        0.0
+        >>> LA.norm(b, -2)
+        1.8570331885190563e-016 # may vary
+        >>> LA.norm(a, 3)
+        5.8480354764257312 # may vary
+        >>> LA.norm(a, -3)
+        0.0
+    
+        Using the `axis` argument to compute vector norms:
+    
+        >>> c = np.array([[ 1, 2, 3],
+        ...               [-1, 1, 4]])
+        >>> LA.norm(c, axis=0)
+        array([ 1.41421356,  2.23606798,  5.        ])
+        >>> LA.norm(c, axis=1)
+        array([ 3.74165739,  4.24264069])
+        >>> LA.norm(c, ord=1, axis=1)
+        array([ 6.,  6.])
+    
+        Using the `axis` argument to compute matrix norms:
+    
+        >>> m = np.arange(8).reshape(2,2,2)
+        >>> LA.norm(m, axis=(1,2))
+        array([  3.74165739,  11.22497216])
+        >>> LA.norm(m[0, :, :]), LA.norm(m[1, :, :])
+        (3.7416573867739413, 11.224972160321824)
+    
+        """
+        x = asarray(x)
+    
+        if not issubclass(x.dtype.type, (inexact, object_)):
+            x = x.astype(float)
+    
+        # Immediately handle some default, simple, fast, and common cases.
+        if axis is None:
+            ndim = x.ndim
+            if (
+                (ord is None) or
+                (ord in ('f', 'fro') and ndim == 2) or
+                (ord == 2 and ndim == 1)
+            ):
+                x = x.ravel(order='K')
+                if isComplexType(x.dtype.type):
+                    x_real = x.real
+                    x_imag = x.imag
+                    sqnorm = x_real.dot(x_real) + x_imag.dot(x_imag)
+                else:
+>                   sqnorm = x.dot(x)
+                             ^^^^^^^^
+E                   RuntimeWarning: overflow encountered in dot
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/linalg/_linalg.py:2767: RuntimeWarning
+_ testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-rfactor] _
+
+name = 'rfactor', scale = 1e+200
+
+    @pytest.mark.parametrize("name", metricReferences)
+    @pytest.mark.parametrize("scale", [1e-200, 1e-12, 1e-6, 1e6, 1e200])
+    def testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion(name, scale):
+        args = metricInputs(name, scale)
+        original = [value.copy() for value in args]
+>       actual = getattr(util, name)(*args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:151: in rfactor
+    obs_std = np.std(obs)
+              ^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:4066: in std
+    return _methods._std(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:219: in _std
+    ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = array([1.e+200, 2.e+200, 3.e+200, 4.e+200]), axis = None, dtype = None
+out = None, ddof = 0, keepdims = False, where = True, mean = None
+
+    def _var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=False, *,
+             where=True, mean=None):
+        arr = asanyarray(a)
+    
+        rcount = _count_reduce_items(arr, axis, keepdims=keepdims, where=where)
+        # Make this warning show up on top.
+        if ddof >= rcount if where is True else umr_any(ddof >= rcount, axis=None):
+            warnings.warn("Degrees of freedom <= 0 for slice", RuntimeWarning,
+                          stacklevel=2)
+    
+        # Cast bool, unsigned int, and int to float64 by default
+        if dtype is None and issubclass(arr.dtype.type, (nt.integer, nt.bool)):
+            dtype = mu.dtype('f8')
+    
+        if mean is not None:
+            arrmean = mean
+        else:
+            # Compute the mean.
+            # Note that if dtype is not of inexact type then arraymean will
+            # not be either.
+            arrmean = umr_sum(arr, axis, dtype, keepdims=True, where=where)
+            # The shape of rcount has to match arrmean to not change the shape of
+            # out in broadcasting. Otherwise, it cannot be stored back to arrmean.
+            if rcount.ndim == 0:
+                # fast-path for default case when where is True
+                div = rcount
+            else:
+                # matching rcount to arrmean when where is specified as array
+                div = rcount.reshape(arrmean.shape)
+            if isinstance(arrmean, mu.ndarray):
+                arrmean = um.true_divide(arrmean, div, out=arrmean,
+                                         casting='unsafe', subok=False)
+            elif hasattr(arrmean, "dtype"):
+                arrmean = arrmean.dtype.type(arrmean / rcount)
+            else:
+                arrmean = arrmean / rcount
+    
+        # Compute sum of squared deviations from mean
+        # Note that x may not be inexact and that we need it to be an array,
+        # not a scalar.
+        x = um.subtract(arr, arrmean, out=...)
+        if issubclass(arr.dtype.type, (nt.floating, nt.integer)):
+>           x = um.square(x, out=x)
+                ^^^^^^^^^^^^^^^^^^^
+E           RuntimeWarning: overflow encountered in square
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:190: RuntimeWarning
+_____ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[nse] ______
+
+name = 'nse'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = array([False, False, False, False,  True])
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+______ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[r2] ______
+
+name = 'r2'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:70: in r2
+    return nse(obs, sim, mask=mask)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = array([False, False, False, False,  True])
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+____ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[pbias] _____
+
+name = 'pbias'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = array([False, False, False, False,  True])
+
+    def pbias(obs, sim, mask=None):
+        """Percent bias for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum(obs)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("PBIAS is undefined when observation sum is zero.")
+E           ValueError: PBIAS is undefined when observation sum is zero.
+
+UQPyL/calibration/util.py:78: ValueError
+__ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[pearson_r] ___
+
+name = 'pearson_r'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = array([False, False, False, False,  True])
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+_____ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[kge] ______
+
+name = 'kge'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:101: in kge
+    r = pearson_r(obs, sim)
+        ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[1.1e-12, 1.9e-12, 3.2e-12, 3.8e-12],
+       [1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+>           raise ValueError("PearsonR is undefined when observation variance is zero.")
+E           ValueError: PearsonR is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:88: ValueError
+___ testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[rfactor] ____
+
+name = 'rfactor'
+
+    @pytest.mark.parametrize("name", metricReferences)
+    def testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows(name):
+        args = metricInputs(name, 1e-12, masked=True)
+        before = [value.copy() for value in args]
+        mask = np.array([False, False, False, False, True])
+>       actual = getattr(util, name)(*args, mask=mask)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+lower = array([8.0e-13, 1.8e-12, 2.8e-12, 3.8e-12])
+upper = array([1.2e-12, 2.2e-12, 3.2e-12, 4.2e-12])
+mask = array([False, False, False, False,  True])
+
+    def rfactor(obs, lower, upper, mask=None):
+        """Mean width / observation std; reject empty, reversed or zero-std inputs."""
+        obs, lower, upper = _prepareInterval(obs, lower, upper, mask)
+        obs_std = np.std(obs)
+        if np.isclose(obs_std, 0.0):
+>           raise ValueError("RFactor is undefined when observation standard deviation is zero.")
+E           ValueError: RFactor is undefined when observation standard deviation is zero.
+
+UQPyL/calibration/util.py:153: ValueError
+__________ testSmallNonzeroObservationMeanIsNotRejected[pbias-100.0] ___________
+
+name = 'pbias', expected = 100.0
+
+    @pytest.mark.parametrize("name,expected", [("pbias", 100.), ("kge", 0.)])
+    def testSmallNonzeroObservationMeanIsNotRejected(name, expected):
+>       np.testing.assert_allclose(getattr(util, name)([-1., 1., 1e-12], [-1., 1., 2e-12]), [expected], atol=2e-12)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([-1.e+00,  1.e+00,  1.e-12])
+sim = array([[-1.e+00,  1.e+00,  2.e-12]]), mask = None
+
+    def pbias(obs, sim, mask=None):
+        """Percent bias for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum(obs)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("PBIAS is undefined when observation sum is zero.")
+E           ValueError: PBIAS is undefined when observation sum is zero.
+
+UQPyL/calibration/util.py:78: ValueError
+____________ testSmallNonzeroObservationMeanIsNotRejected[kge-0.0] _____________
+
+name = 'kge', expected = 0.0
+
+    @pytest.mark.parametrize("name,expected", [("pbias", 100.), ("kge", 0.)])
+    def testSmallNonzeroObservationMeanIsNotRejected(name, expected):
+>       np.testing.assert_allclose(getattr(util, name)([-1., 1., 1e-12], [-1., 1., 2e-12]), [expected], atol=2e-12)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([-1.e+00,  1.e+00,  1.e-12])
+sim = array([[-1.e+00,  1.e+00,  2.e-12]]), mask = None
+
+    def kge(obs, sim, mask=None):
+        """Kling-Gupta efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        r = pearson_r(obs, sim)
+        obs_mean = np.mean(obs)
+        sim_mean = np.mean(sim, axis=1)
+        obs_std = np.std(obs)
+        sim_std = np.std(sim, axis=1)
+    
+        if np.isclose(obs_mean, 0.0):
+>           raise ValueError("KGE is undefined when observation mean is zero.")
+E           ValueError: KGE is undefined when observation mean is zero.
+
+UQPyL/calibration/util.py:108: ValueError
+_________ testCancellationDoesNotHideANonzeroObservationSum[pbias-0.0] _________
+
+name = 'pbias', expected = 0.0
+
+    @pytest.mark.parametrize("name,expected", [("pbias", 0.), ("kge", 1.)])
+    def testCancellationDoesNotHideANonzeroObservationSum(name, expected):
+        # 精确和为 1；朴素浮点加和会丢失中间项。
+        obs = np.array([1e20, 1., -1e20])
+>       np.testing.assert_allclose(getattr(util, name)(obs, obs), [expected], atol=3e-15)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([ 1.e+20,  1.e+00, -1.e+20])
+sim = array([[ 1.e+20,  1.e+00, -1.e+20]]), mask = None
+
+    def pbias(obs, sim, mask=None):
+        """Percent bias for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum(obs)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("PBIAS is undefined when observation sum is zero.")
+E           ValueError: PBIAS is undefined when observation sum is zero.
+
+UQPyL/calibration/util.py:78: ValueError
+__________ testCancellationDoesNotHideANonzeroObservationSum[kge-1.0] __________
+
+name = 'kge', expected = 1.0
+
+    @pytest.mark.parametrize("name,expected", [("pbias", 0.), ("kge", 1.)])
+    def testCancellationDoesNotHideANonzeroObservationSum(name, expected):
+        # 精确和为 1；朴素浮点加和会丢失中间项。
+        obs = np.array([1e20, 1., -1e20])
+>       np.testing.assert_allclose(getattr(util, name)(obs, obs), [expected], atol=3e-15)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([ 1.e+20,  1.e+00, -1.e+20])
+sim = array([[ 1.e+20,  1.e+00, -1.e+20]]), mask = None
+
+    def kge(obs, sim, mask=None):
+        """Kling-Gupta efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        r = pearson_r(obs, sim)
+        obs_mean = np.mean(obs)
+        sim_mean = np.mean(sim, axis=1)
+        obs_std = np.std(obs)
+        sim_std = np.std(sim, axis=1)
+    
+        if np.isclose(obs_mean, 0.0):
+>           raise ValueError("KGE is undefined when observation mean is zero.")
+E           ValueError: KGE is undefined when observation mean is zero.
+
+UQPyL/calibration/util.py:108: ValueError
+_________ testCorrelationAllowsIndependentSimulationRowScales[1e-200] __________
+
+scale = 1e-200
+
+    @pytest.mark.parametrize("scale", [1e-200, 1e200])
+    def testCorrelationAllowsIndependentSimulationRowScales(scale):
+        obs, sim = metricInputs("pearson_r", 1.)
+        sim[1] *= scale
+>       np.testing.assert_allclose(util.pearson_r(obs, sim), metricReferences["pearson_r"], atol=3e-15)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1., 2., 3., 4.])
+sim = array([[1.1e+000, 1.9e+000, 3.2e+000, 3.8e+000],
+       [1.2e-200, 2.2e-200, 3.2e-200, 4.2e-200]])
+mask = None
+
+    def pearson_r(obs, sim, mask=None):
+        """Pearson correlation coefficient for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        obs_centered = obs - np.mean(obs)
+        obs_norm = np.linalg.norm(obs_centered)
+        if np.isclose(obs_norm, 0.0):
+            raise ValueError("PearsonR is undefined when observation variance is zero.")
+    
+        sim_centered = sim - np.mean(sim, axis=1, keepdims=True)
+        sim_norm = np.linalg.norm(sim_centered, axis=1)
+        if np.any(np.isclose(sim_norm, 0.0)):
+>           raise ValueError("PearsonR is undefined when a simulation variance is zero.")
+E           ValueError: PearsonR is undefined when a simulation variance is zero.
+
+UQPyL/calibration/util.py:93: ValueError
+_________ testCorrelationAllowsIndependentSimulationRowScales[1e+200] __________
+
+scale = 1e+200
+
+    @pytest.mark.parametrize("scale", [1e-200, 1e200])
+    def testCorrelationAllowsIndependentSimulationRowScales(scale):
+        obs, sim = metricInputs("pearson_r", 1.)
+        sim[1] *= scale
+>       np.testing.assert_allclose(util.pearson_r(obs, sim), metricReferences["pearson_r"], atol=3e-15)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:91: in pearson_r
+    sim_norm = np.linalg.norm(sim_centered, axis=1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = array([[-1.4e+000, -6.0e-001,  7.0e-001,  1.3e+000],
+       [-1.5e+200, -5.0e+199,  5.0e+199,  1.5e+200]])
+ord = None, axis = (1,), keepdims = False
+
+    @array_function_dispatch(_norm_dispatcher)
+    def norm(x, ord=None, axis=None, keepdims=False):
+        """
+        Matrix or vector norm.
+    
+        This function is able to return one of eight different matrix norms,
+        or one of an infinite number of vector norms (described below), depending
+        on the value of the ``ord`` parameter.
+    
+        Parameters
+        ----------
+        x : array_like
+            Input array.  If `axis` is None, `x` must be 1-D or 2-D, unless `ord`
+            is None. If both `axis` and `ord` are None, the 2-norm of
+            ``x.ravel`` will be returned.
+        ord : {int, float, inf, -inf, 'fro', 'nuc'}, optional
+            Order of the norm (see table under ``Notes`` for what values are
+            supported for matrices and vectors respectively). inf means numpy's
+            `inf` object. The default is None.
+        axis : {None, int, 2-tuple of ints}, optional.
+            If `axis` is an integer, it specifies the axis of `x` along which to
+            compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+            axes that hold 2-D matrices, and the matrix norms of these matrices
+            are computed.  If `axis` is None then either a vector norm (when `x`
+            is 1-D) or a matrix norm (when `x` is 2-D) is returned. The default
+            is None.
+    
+        keepdims : bool, optional
+            If this is set to True, the axes which are normed over are left in the
+            result as dimensions with size one.  With this option the result will
+            broadcast correctly against the original `x`.
+    
+        Returns
+        -------
+        n : float or ndarray
+            Norm of the matrix or vector(s).
+    
+        See Also
+        --------
+        scipy.linalg.norm : Similar function in SciPy.
+    
+        Notes
+        -----
+        For values of ``ord < 1``, the result is, strictly speaking, not a
+        mathematical 'norm', but it may still be useful for various numerical
+        purposes.
+    
+        The following norms can be calculated:
+    
+        =====  ============================  ==========================
+        ord    norm for matrices             norm for vectors
+        =====  ============================  ==========================
+        None   Frobenius norm                2-norm
+        'fro'  Frobenius norm                --
+        'nuc'  nuclear norm                  --
+        inf    max(sum(abs(x), axis=1))      max(abs(x))
+        -inf   min(sum(abs(x), axis=1))      min(abs(x))
+        0      --                            sum(x != 0)
+        1      max(sum(abs(x), axis=0))      as below
+        -1     min(sum(abs(x), axis=0))      as below
+        2      2-norm (largest sing. value)  as below
+        -2     smallest singular value       as below
+        other  --                            sum(abs(x)**ord)**(1./ord)
+        =====  ============================  ==========================
+    
+        The Frobenius norm is given by [1]_:
+    
+        :math:`||A||_F = [\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
+    
+        The nuclear norm is the sum of the singular values.
+    
+        Both the Frobenius and nuclear norm orders are only defined for
+        matrices and raise a ValueError when ``x.ndim != 2``.
+    
+        References
+        ----------
+        .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
+               Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15
+    
+        Examples
+        --------
+    
+        >>> import numpy as np
+        >>> from numpy import linalg as LA
+        >>> a = np.arange(9) - 4
+        >>> a
+        array([-4, -3, -2, ...,  2,  3,  4])
+        >>> b = a.reshape((3, 3))
+        >>> b
+        array([[-4, -3, -2],
+               [-1,  0,  1],
+               [ 2,  3,  4]])
+    
+        >>> LA.norm(a)
+        7.745966692414834
+        >>> LA.norm(b)
+        7.745966692414834
+        >>> LA.norm(b, 'fro')
+        7.745966692414834
+        >>> LA.norm(a, np.inf)
+        4.0
+        >>> LA.norm(b, np.inf)
+        9.0
+        >>> LA.norm(a, -np.inf)
+        0.0
+        >>> LA.norm(b, -np.inf)
+        2.0
+    
+        >>> LA.norm(a, 1)
+        20.0
+        >>> LA.norm(b, 1)
+        7.0
+        >>> LA.norm(a, -1)
+        -4.6566128774142013e-010
+        >>> LA.norm(b, -1)
+        6.0
+        >>> LA.norm(a, 2)
+        7.745966692414834
+        >>> LA.norm(b, 2)
+        7.3484692283495345
+    
+        >>> LA.norm(a, -2)
+        0.0
+        >>> LA.norm(b, -2)
+        1.8570331885190563e-016 # may vary
+        >>> LA.norm(a, 3)
+        5.8480354764257312 # may vary
+        >>> LA.norm(a, -3)
+        0.0
+    
+        Using the `axis` argument to compute vector norms:
+    
+        >>> c = np.array([[ 1, 2, 3],
+        ...               [-1, 1, 4]])
+        >>> LA.norm(c, axis=0)
+        array([ 1.41421356,  2.23606798,  5.        ])
+        >>> LA.norm(c, axis=1)
+        array([ 3.74165739,  4.24264069])
+        >>> LA.norm(c, ord=1, axis=1)
+        array([ 6.,  6.])
+    
+        Using the `axis` argument to compute matrix norms:
+    
+        >>> m = np.arange(8).reshape(2,2,2)
+        >>> LA.norm(m, axis=(1,2))
+        array([  3.74165739,  11.22497216])
+        >>> LA.norm(m[0, :, :]), LA.norm(m[1, :, :])
+        (3.7416573867739413, 11.224972160321824)
+    
+        """
+        x = asarray(x)
+    
+        if not issubclass(x.dtype.type, (inexact, object_)):
+            x = x.astype(float)
+    
+        # Immediately handle some default, simple, fast, and common cases.
+        if axis is None:
+            ndim = x.ndim
+            if (
+                (ord is None) or
+                (ord in ('f', 'fro') and ndim == 2) or
+                (ord == 2 and ndim == 1)
+            ):
+                x = x.ravel(order='K')
+                if isComplexType(x.dtype.type):
+                    x_real = x.real
+                    x_imag = x.imag
+                    sqnorm = x_real.dot(x_real) + x_imag.dot(x_imag)
+                else:
+                    sqnorm = x.dot(x)
+                ret = sqrt(sqnorm)
+                if keepdims:
+                    ret = ret.reshape(ndim * [1])
+                return ret
+    
+        # Normalize the `axis` argument to a tuple.
+        nd = x.ndim
+        if axis is None:
+            axis = tuple(range(nd))
+        elif not isinstance(axis, tuple):
+            try:
+                axis = int(axis)
+            except Exception as e:
+                raise TypeError(
+                    "'axis' must be None, an integer or a tuple of integers"
+                ) from e
+            axis = (axis,)
+    
+        if len(axis) == 1:
+            if ord == inf:
+                return abs(x).max(axis=axis, keepdims=keepdims, initial=0)
+            elif ord == -inf:
+                return abs(x).min(axis=axis, keepdims=keepdims)
+            elif ord == 0:
+                # Zero norm
+                return (
+                    (x != 0)
+                    .astype(x.real.dtype)
+                    .sum(axis=axis, keepdims=keepdims)
+                )
+            elif ord == 1:
+                # special case for speedup
+                return add.reduce(abs(x), axis=axis, keepdims=keepdims)
+            elif ord is None or ord == 2:
+                # special case for speedup
+>               s = (x.conj() * x).real
+                     ^^^^^^^^^^^^
+E               RuntimeWarning: overflow encountered in multiply
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/linalg/_linalg.py:2803: RuntimeWarning
+__________ testLargeFiniteKgeUsesFiniteRatiosWithoutSquaringOverflow ___________
+
+    def testLargeFiniteKgeUsesFiniteRatiosWithoutSquaringOverflow():
+        obs, sim = metricInputs("kge", 1.)
+        sim[1] *= 1e200
+        expected = 1 - np.hypot(1e200 - 1, 1.08e200 - 1)
+>       np.testing.assert_allclose(util.kge(obs, sim), [metricReferences["kge"][0], expected], rtol=3e-15)
+                                   ^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:101: in kge
+    r = pearson_r(obs, sim)
+        ^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/util.py:91: in pearson_r
+    sim_norm = np.linalg.norm(sim_centered, axis=1)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = array([[-1.4e+000, -6.0e-001,  7.0e-001,  1.3e+000],
+       [-1.5e+200, -5.0e+199,  5.0e+199,  1.5e+200]])
+ord = None, axis = (1,), keepdims = False
+
+    @array_function_dispatch(_norm_dispatcher)
+    def norm(x, ord=None, axis=None, keepdims=False):
+        """
+        Matrix or vector norm.
+    
+        This function is able to return one of eight different matrix norms,
+        or one of an infinite number of vector norms (described below), depending
+        on the value of the ``ord`` parameter.
+    
+        Parameters
+        ----------
+        x : array_like
+            Input array.  If `axis` is None, `x` must be 1-D or 2-D, unless `ord`
+            is None. If both `axis` and `ord` are None, the 2-norm of
+            ``x.ravel`` will be returned.
+        ord : {int, float, inf, -inf, 'fro', 'nuc'}, optional
+            Order of the norm (see table under ``Notes`` for what values are
+            supported for matrices and vectors respectively). inf means numpy's
+            `inf` object. The default is None.
+        axis : {None, int, 2-tuple of ints}, optional.
+            If `axis` is an integer, it specifies the axis of `x` along which to
+            compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+            axes that hold 2-D matrices, and the matrix norms of these matrices
+            are computed.  If `axis` is None then either a vector norm (when `x`
+            is 1-D) or a matrix norm (when `x` is 2-D) is returned. The default
+            is None.
+    
+        keepdims : bool, optional
+            If this is set to True, the axes which are normed over are left in the
+            result as dimensions with size one.  With this option the result will
+            broadcast correctly against the original `x`.
+    
+        Returns
+        -------
+        n : float or ndarray
+            Norm of the matrix or vector(s).
+    
+        See Also
+        --------
+        scipy.linalg.norm : Similar function in SciPy.
+    
+        Notes
+        -----
+        For values of ``ord < 1``, the result is, strictly speaking, not a
+        mathematical 'norm', but it may still be useful for various numerical
+        purposes.
+    
+        The following norms can be calculated:
+    
+        =====  ============================  ==========================
+        ord    norm for matrices             norm for vectors
+        =====  ============================  ==========================
+        None   Frobenius norm                2-norm
+        'fro'  Frobenius norm                --
+        'nuc'  nuclear norm                  --
+        inf    max(sum(abs(x), axis=1))      max(abs(x))
+        -inf   min(sum(abs(x), axis=1))      min(abs(x))
+        0      --                            sum(x != 0)
+        1      max(sum(abs(x), axis=0))      as below
+        -1     min(sum(abs(x), axis=0))      as below
+        2      2-norm (largest sing. value)  as below
+        -2     smallest singular value       as below
+        other  --                            sum(abs(x)**ord)**(1./ord)
+        =====  ============================  ==========================
+    
+        The Frobenius norm is given by [1]_:
+    
+        :math:`||A||_F = [\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
+    
+        The nuclear norm is the sum of the singular values.
+    
+        Both the Frobenius and nuclear norm orders are only defined for
+        matrices and raise a ValueError when ``x.ndim != 2``.
+    
+        References
+        ----------
+        .. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
+               Baltimore, MD, Johns Hopkins University Press, 1985, pg. 15
+    
+        Examples
+        --------
+    
+        >>> import numpy as np
+        >>> from numpy import linalg as LA
+        >>> a = np.arange(9) - 4
+        >>> a
+        array([-4, -3, -2, ...,  2,  3,  4])
+        >>> b = a.reshape((3, 3))
+        >>> b
+        array([[-4, -3, -2],
+               [-1,  0,  1],
+               [ 2,  3,  4]])
+    
+        >>> LA.norm(a)
+        7.745966692414834
+        >>> LA.norm(b)
+        7.745966692414834
+        >>> LA.norm(b, 'fro')
+        7.745966692414834
+        >>> LA.norm(a, np.inf)
+        4.0
+        >>> LA.norm(b, np.inf)
+        9.0
+        >>> LA.norm(a, -np.inf)
+        0.0
+        >>> LA.norm(b, -np.inf)
+        2.0
+    
+        >>> LA.norm(a, 1)
+        20.0
+        >>> LA.norm(b, 1)
+        7.0
+        >>> LA.norm(a, -1)
+        -4.6566128774142013e-010
+        >>> LA.norm(b, -1)
+        6.0
+        >>> LA.norm(a, 2)
+        7.745966692414834
+        >>> LA.norm(b, 2)
+        7.3484692283495345
+    
+        >>> LA.norm(a, -2)
+        0.0
+        >>> LA.norm(b, -2)
+        1.8570331885190563e-016 # may vary
+        >>> LA.norm(a, 3)
+        5.8480354764257312 # may vary
+        >>> LA.norm(a, -3)
+        0.0
+    
+        Using the `axis` argument to compute vector norms:
+    
+        >>> c = np.array([[ 1, 2, 3],
+        ...               [-1, 1, 4]])
+        >>> LA.norm(c, axis=0)
+        array([ 1.41421356,  2.23606798,  5.        ])
+        >>> LA.norm(c, axis=1)
+        array([ 3.74165739,  4.24264069])
+        >>> LA.norm(c, ord=1, axis=1)
+        array([ 6.,  6.])
+    
+        Using the `axis` argument to compute matrix norms:
+    
+        >>> m = np.arange(8).reshape(2,2,2)
+        >>> LA.norm(m, axis=(1,2))
+        array([  3.74165739,  11.22497216])
+        >>> LA.norm(m[0, :, :]), LA.norm(m[1, :, :])
+        (3.7416573867739413, 11.224972160321824)
+    
+        """
+        x = asarray(x)
+    
+        if not issubclass(x.dtype.type, (inexact, object_)):
+            x = x.astype(float)
+    
+        # Immediately handle some default, simple, fast, and common cases.
+        if axis is None:
+            ndim = x.ndim
+            if (
+                (ord is None) or
+                (ord in ('f', 'fro') and ndim == 2) or
+                (ord == 2 and ndim == 1)
+            ):
+                x = x.ravel(order='K')
+                if isComplexType(x.dtype.type):
+                    x_real = x.real
+                    x_imag = x.imag
+                    sqnorm = x_real.dot(x_real) + x_imag.dot(x_imag)
+                else:
+                    sqnorm = x.dot(x)
+                ret = sqrt(sqnorm)
+                if keepdims:
+                    ret = ret.reshape(ndim * [1])
+                return ret
+    
+        # Normalize the `axis` argument to a tuple.
+        nd = x.ndim
+        if axis is None:
+            axis = tuple(range(nd))
+        elif not isinstance(axis, tuple):
+            try:
+                axis = int(axis)
+            except Exception as e:
+                raise TypeError(
+                    "'axis' must be None, an integer or a tuple of integers"
+                ) from e
+            axis = (axis,)
+    
+        if len(axis) == 1:
+            if ord == inf:
+                return abs(x).max(axis=axis, keepdims=keepdims, initial=0)
+            elif ord == -inf:
+                return abs(x).min(axis=axis, keepdims=keepdims)
+            elif ord == 0:
+                # Zero norm
+                return (
+                    (x != 0)
+                    .astype(x.real.dtype)
+                    .sum(axis=axis, keepdims=keepdims)
+                )
+            elif ord == 1:
+                # special case for speedup
+                return add.reduce(abs(x), axis=axis, keepdims=keepdims)
+            elif ord is None or ord == 2:
+                # special case for speedup
+>               s = (x.conj() * x).real
+                     ^^^^^^^^^^^^
+E               RuntimeWarning: overflow encountered in multiply
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/linalg/_linalg.py:2803: RuntimeWarning
+_____________ testTrueConstantSimulationRowStillRaises[pearson_r] ______________
+
+name = 'pearson_r'
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    def testTrueConstantSimulationRowStillRaises(name):
+        obs, sim = metricInputs(name, 1e-12)
+        sim[1] = 3e-12
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'simulation variance'
+E         Actual message: 'PearsonR is undefined when observation variance is zero.'
+
+tests/test_calibration_metric_scaling.py:109: AssertionError
+________________ testTrueConstantSimulationRowStillRaises[kge] _________________
+
+name = 'kge'
+
+    @pytest.mark.parametrize("name", ["pearson_r", "kge"])
+    def testTrueConstantSimulationRowStillRaises(name):
+        obs, sim = metricInputs(name, 1e-12)
+        sim[1] = 3e-12
+>       with pytest.raises(ValueError, match="simulation variance"):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'simulation variance'
+E         Actual message: 'PearsonR is undefined when observation variance is zero.'
+
+tests/test_calibration_metric_scaling.py:109: AssertionError
+________ testNseCalibrationWorkflowIsInvariantToObservationUnits[GLUE] _________
+
+methodClass = <class 'UQPyL.calibration.methods.glue.GLUE'>
+
+    @pytest.mark.parametrize("methodClass", [GLUE, SUFI2])
+    def testNseCalibrationWorkflowIsInvariantToObservationUnits(methodClass):
+        decisions = np.array([[-0.3], [0.], [0.1], [0.4]])
+        results = []
+        for scale in [1., 1e-12]:
+            observations = np.arange(1., 5.).reshape(-1, 1) * scale
+    
+            def simulate(x):
+                return observations[None] + x[:, None, :] * scale
+    
+            problem = ModelProblem(nInput=1, lb=-1, ub=1, obs=observations, simFunc=simulate)
+            kwargs = {"threshold": 0.95} if methodClass is GLUE else {"eliteSize": 2}
+>           result = methodClass(metric="nse", saveFlag=False).run(problem, decisions, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/base.py:125: in run
+    self._runCore(problem, *args, **kwargs)
+UQPyL/calibration/methods/glue.py:63: in _runCore
+    scores = self.score(sim_full)
+             ^^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/base.py:177: in score
+    return np.asarray(self.metric(obs, sim, mask=mask), dtype=float)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[7.0e-13, 1.7e-12, 2.7e-12, 3.7e-12],
+       [1.0e-12, 2.0e-12, 3.0e-12, 4.0e-12],
+       [1.1e-12, 2.1e-12, 3.1e-12, 4.1e-12],
+       [1.4e-12, 2.4e-12, 3.4e-12, 4.4e-12]])
+mask = array([False, False, False, False])
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+________ testNseCalibrationWorkflowIsInvariantToObservationUnits[SUFI2] ________
+
+methodClass = <class 'UQPyL.calibration.methods.sufi2.SUFI2'>
+
+    @pytest.mark.parametrize("methodClass", [GLUE, SUFI2])
+    def testNseCalibrationWorkflowIsInvariantToObservationUnits(methodClass):
+        decisions = np.array([[-0.3], [0.], [0.1], [0.4]])
+        results = []
+        for scale in [1., 1e-12]:
+            observations = np.arange(1., 5.).reshape(-1, 1) * scale
+    
+            def simulate(x):
+                return observations[None] + x[:, None, :] * scale
+    
+            problem = ModelProblem(nInput=1, lb=-1, ub=1, obs=observations, simFunc=simulate)
+            kwargs = {"threshold": 0.95} if methodClass is GLUE else {"eliteSize": 2}
+>           result = methodClass(metric="nse", saveFlag=False).run(problem, decisions, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_calibration_metric_scaling.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/base.py:125: in run
+    self._runCore(problem, *args, **kwargs)
+UQPyL/calibration/methods/sufi2.py:85: in _runCore
+    last = self._runOneIteration(X_cur, eliteSize=eliteSize)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/methods/sufi2.py:128: in _runOneIteration
+    scores = self.score(sim_full)
+             ^^^^^^^^^^^^^^^^^^^^
+UQPyL/calibration/base.py:177: in score
+    return np.asarray(self.metric(obs, sim, mask=mask), dtype=float)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = array([1.e-12, 2.e-12, 3.e-12, 4.e-12])
+sim = array([[7.0e-13, 1.7e-12, 2.7e-12, 3.7e-12],
+       [1.0e-12, 2.0e-12, 3.0e-12, 4.0e-12],
+       [1.1e-12, 2.1e-12, 3.1e-12, 4.1e-12],
+       [1.4e-12, 2.4e-12, 3.4e-12, 4.4e-12]])
+mask = array([False, False, False, False])
+
+    def nse(obs, sim, mask=None):
+        """Nash-Sutcliffe efficiency for one or more simulation rows."""
+        obs, sim = _prepare_obs_sim(obs, sim, mask=mask)
+        denom = np.sum((obs - np.mean(obs)) ** 2)
+        if np.isclose(denom, 0.0):
+>           raise ValueError("NSE is undefined when observation variance is zero.")
+E           ValueError: NSE is undefined when observation variance is zero.
+
+UQPyL/calibration/util.py:63: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-nse]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-r2]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-pbias]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-kge]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-200-rfactor]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-nse]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-r2]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-pbias]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-kge]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-12-rfactor]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-06-nse]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e-06-r2]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-nse]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-r2]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-kge]
+FAILED tests/test_calibration_metric_scaling.py::testDimensionlessMetricsMatchIndependentReferenceAfterUnitConversion[1e+200-rfactor]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[nse]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[r2]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[pbias]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[kge]
+FAILED tests/test_calibration_metric_scaling.py::testSmallUnitsWithMaskedMissingValuesAndMultipleSimulationRows[rfactor]
+FAILED tests/test_calibration_metric_scaling.py::testSmallNonzeroObservationMeanIsNotRejected[pbias-100.0]
+FAILED tests/test_calibration_metric_scaling.py::testSmallNonzeroObservationMeanIsNotRejected[kge-0.0]
+FAILED tests/test_calibration_metric_scaling.py::testCancellationDoesNotHideANonzeroObservationSum[pbias-0.0]
+FAILED tests/test_calibration_metric_scaling.py::testCancellationDoesNotHideANonzeroObservationSum[kge-1.0]
+FAILED tests/test_calibration_metric_scaling.py::testCorrelationAllowsIndependentSimulationRowScales[1e-200]
+FAILED tests/test_calibration_metric_scaling.py::testCorrelationAllowsIndependentSimulationRowScales[1e+200]
+FAILED tests/test_calibration_metric_scaling.py::testLargeFiniteKgeUsesFiniteRatiosWithoutSquaringOverflow
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[pearson_r]
+FAILED tests/test_calibration_metric_scaling.py::testTrueConstantSimulationRowStillRaises[kge]
+FAILED tests/test_calibration_metric_scaling.py::testNseCalibrationWorkflowIsInvariantToObservationUnits[GLUE]
+FAILED tests/test_calibration_metric_scaling.py::testNseCalibrationWorkflowIsInvariantToObservationUnits[SUFI2]
+36 failed, 19 passed in 1.14s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_calibration_metric_scaling.py` failed. (See above for error)

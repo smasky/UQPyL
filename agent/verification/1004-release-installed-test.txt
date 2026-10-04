@@ -1,0 +1,230 @@
+No broken requirements found.
+Installed package: /home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/__init__.py
+All 10 native extensions imported successfully.
+........................................................................ [  2%]
+........................................................................ [  4%]
+........................................................................ [  6%]
+........................................................................ [  9%]
+........................................................................ [ 11%]
+........................................................................ [ 13%]
+........................................................................ [ 16%]
+........................................................................ [ 18%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 25%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 34%]
+........................................................................ [ 37%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 51%]
+........................................................................ [ 53%]
+........................................................................ [ 55%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 67%]
+........................................................................ [ 69%]
+........................................................................ [ 72%]
+........................................................................ [ 74%]
+........................................................................ [ 76%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+........................................................................ [ 90%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 97%]
+......................................................................   [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.0-final-0 ________________
+
+Name                                                                                                                                         Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/__init__.py                                           16      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/__init__.py                                   8      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/base.py                                     133      6     46      6    93%   120, 157, 221, 245, 260, 264
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/__init__.py                          13      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/_variance.py                         55      2     16      2    94%   70, 79
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/delta.py                            201     10     66     11    92%   111, 172, 176, 259, 263, 339, 341, 357, 374, 380, 423->428
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/fast.py                              68      2     24      2    96%   46, 101
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/mars.py                             106      3     38      3    96%   146, 185, 228
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/morris.py                            97      8     36      8    88%   61, 86, 100, 107, 138, 144, 148, 156
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/rbd_fast.py                          62      0     20      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/rsa.py                               82      1     22      1    98%   80
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/methods/sobol.py                            170     11     80     11    91%   49, 79, 126, 128, 155, 160, 205, 211, 213, 264, 270
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/__init__.py                           5      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/reader.py                            44      6      8      2    81%   25, 82-85, 90
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/result.py                            74      1      2      1    97%   59
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/storage.py                           28      2      4      0    94%   20-21
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/analysis/runtime/verbose.py                          117     12     40     11    83%   26-29, 39-41, 64->66, 66->69, 82->84, 105, 121, 122->exit, 128, 132->exit, 139, 150
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/__init__.py                                5      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/base.py                                  118      4     20      3    95%   84, 105, 205, 210
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/__init__.py                        5      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/_ensemble.py                      89      8     32      8    87%   8, 24, 44, 48, 72, 78, 88, 109
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/_uncertainty.py                   23      0      8      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/es.py                             71      4     20      4    91%   54, 108, 114, 124
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/glue.py                           46      2     12      2    93%   65, 67
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/ies.py                           172     11     46      7    91%   95, 97, 99, 105, 189-192, 197, 246, 287
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/methods/sufi2.py                         159      4     52      5    96%   104, 114, 134, 154->156, 275
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/reader.py                                 32      8      6      2    68%   21, 58-65, 68-71, 79
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/runtime.py                               161      7     32      4    93%   157->159, 242-244, 255, 260, 269-270
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/calibration/util.py                                  152      5     48      5    95%   132, 165, 170, 189, 237
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/__init__.py                                       4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/config.py                                        40      3     14      3    89%   24, 27, 33
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/parameter_store.py                               16      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/params.py                                        11      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/runtime.py                                       52      0      8      1    98%   75->77
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/runtime_lifecycle.py                             51      5     16      1    91%   13-17
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/runtime_reader.py                                62      2     20      3    94%   32->exit, 49, 54
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/runtime_session.py                               17      2      0      0    88%   18, 22
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/core/runtime_storage.py                               85      5     20      5    90%   24, 33->38, 37, 87->exit, 94, 106, 109
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/__init__.py                                        3      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/base.py                                           58      5     18      5    87%   89, 92, 138, 142, 145
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/__init__.py                                8      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/_sobol.py                                 11      0      8      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/fast.py                                   46      5     14      5    83%   60, 63, 85, 90, 101
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/full_fact.py                              36      2     10      2    91%   43, 103
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/lhs.py                                    89      1     30      1    98%   145
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/morris.py                                 42      3      8      3    88%   57, 60, 63
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/random.py                                 12      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/saltelli.py                               56      0     12      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/doe/methods/sobol.py                                  28      0      4      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/__init__.py                                  7      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/base.py                                    260     10     90      8    95%   91, 173, 205, 255, 315, 323, 324->326, 379, 382, 464-465
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/chain.py                                    23      0      4      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/diagnostics.py                             106      3     44      3    96%   42, 68, 109
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/__init__.py                          6      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/amh.py                             100      0     36      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/demc.py                             56      0     16      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/dream_zs.py                        178      6     68      6    95%   132, 251->258, 307-309, 329, 336, 355->359
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/mh.py                               57      1     22      1    97%   172
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/methods/mh_gibbs.py                         63      1     22      1    98%   181
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/runtime/__init__.py                          5      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/runtime/reader.py                           45      6     10      2    82%   24, 46-49, 88
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/runtime/result.py                          204      5     36      6    95%   157->159, 209, 215, 221, 227, 305
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/runtime/storage.py                          41      3      6      1    91%   14-15, 111
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/inference/runtime/verbose.py                         186     20     48     16    84%   161-163, 169, 185-186, 189->exit, 201-203, 270, 282, 284, 290, 296, 302, 310, 322, 327, 333, 339
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/__init__.py                               7      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/base.py                                 266      3    112      3    98%   256, 355, 367->370, 374
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/__init__.py                          6      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/constraint.py                       83      9     40      5    87%   9, 14, 35-38, 85, 87, 115
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/crowding_distance.py                46      3     20      3    91%   22, 44, 48
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/ga_operator.py                      65      1      8      1    97%   12
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/non_dominated_sort.py               49      2     26      2    95%   13, 65
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/numerical.py                        31      2      6      2    89%   16, 34
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/tournament.py                       17      0      6      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/core/uniform_point.py                    43      2     18      2    93%   27, 64
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/__init__.py                     4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/_base.py                       57      5     34      7    87%   18, 23, 50, 59, 61, 71->74, 72->71
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/asmo.py                        48      0     10      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/ego.py                         46      0      4      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/expensive/moasmo.py                      90      1     26      1    98%   114
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/metric/__init__.py                        3      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/metric/_distance.py                      43      2     14      2    93%   13, 15
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/metric/gd.py                              3      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/metric/hv.py                            146      4     72      8    94%   17, 26, 28, 91->88, 98, 132->135, 140->143, 163->160
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/metric/igd.py                             3      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/moea/__init__.py                          4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/moea/moea_d.py                           78      1     16      1    98%   122
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/moea/nsga_ii.py                          53      1      6      2    95%   181, 184->190
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/moea/nsga_iii.py                         93      1     14      1    98%   262
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/moea/rvea.py                             89      4     18      3    93%   112, 181-183, 231->228
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/population.py                           171      7     52     14    91%   38, 42, 44, 48, 50, 64, 68->73, 110->112, 113->115, 123->125, 129->131, 132->134, 155, 177->183
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/__init__.py                       4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/reader.py                       158      8     46      8    92%   33, 57, 83, 130, 213, 231, 254, 303
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/result.py                       271      3     80      8    97%   136, 185, 197, 212->219, 277->exit, 282->exit, 322->321, 325->327
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/storage.py                       69      2     24      4    94%   24-25, 70->74, 82->84, 132->135, 135->139
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/runtime/verbose.py                      243     42     56     16    81%   98, 108-122, 125-136, 157-170, 183, 199-201, 205, 212-215, 225-226, 229->exit, 242->244, 247, 286, 326, 334-339, 344, 358, 366, 370, 376, 380, 392
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/__init__.py                          7      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/abc.py                             119      1     18      1    99%   103
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/csa.py                              72      4      4      0    92%   230-234
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/de.py                               41      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/ga.py                               36      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/ml_sce_ua.py                        78      3     20      3    94%   117, 125, 127
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/pso.py                              51      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/optimization/soea/sce_ua.py                           74      2     20      2    96%   114, 122
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/__init__.py                                   17      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/base.py                                      136     13     58      9    88%   68, 121, 133, 147, 155, 158-160, 163, 165, 170, 208, 213
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/decorators.py                                 10      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/eval.py                                       30      4      8      1    87%   16, 30, 34, 38
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/evaluator.py                                  14      0      4      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/evaluator_base.py                             21      2      8      0    93%   7, 13
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/model_evaluator.py                            15      0      4      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/model_problem.py                             161     21     84     16    83%   69->72, 116, 118, 130, 136-141, 146, 160, 181, 186, 197, 204, 208, 213, 240, 243, 245, 250
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/mop/DTLZ.py                                  213      1     32      8    96%   110->exit, 202->exit, 252, 301->exit, 396->exit, 497->exit, 597->exit, 707->exit
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/mop/ZDT.py                                   117      0     10      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/mop/__init__.py                                2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/problem.py                                    65      8     34      4    86%   110, 128-132, 142, 144, 146
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/simulator_base.py                              5      1      0      0    80%   7
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/sop/__init__.py                                2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/sop/single_constraint_problem.py              17      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/sop/single_simple_problem.py                 144      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/problem/space.py                                     171     10     78     11    92%   21, 60, 64, 71->73, 81->91, 112, 123, 129, 160, 206, 209, 220
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/__init__.py                                 22      8      4      0    54%   14-17, 21-24
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/_kernel.py                                 111      6     52      4    94%   49, 54-55, 63, 91, 118
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/_numeric.py                                 15      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/_restart.py                                 32      1     16      1    96%   33
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/auto_tuner.py                              318     11    108     10    95%   132, 160, 165-166, 182, 190, 204, 220->222, 289, 317->319, 331-332, 375
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/base.py                                    304     30    134     20    88%   69, 71, 76, 104-110, 123-125, 137, 163, 165, 179->181, 211, 262, 276, 293, 296, 300, 305-306, 313, 337, 352, 371, 387, 389, 412, 452, 454
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/__init__.py                               2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/gaussian_process.py                     154      4     36      2    97%   78, 127-128, 230
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/__init__.py                        4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/base_kernel.py                    40     13     12      0    60%   11-16, 47-55
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/c_kernel_.py                      16      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/dot_kernel_.py                    17      1      2      1    89%   27
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/matern_kernel.py                  98      3     28      3    95%   136, 146, 159
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/rbf_kernel.py                     23      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/gp/kernel/rq_kernel.py                      27      0      2      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/__init__.py                          2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/__init__.py                   4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/base_kernel.py               21      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/cubic_kernel.py              14      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/exp_kernel.py                14      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kernel/guass_kernel.py              14      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/kriging/kriging.py                         185      9     44      5    94%   112, 129, 139->exit, 146-147, 264-267, 313-314
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/__init__.py                             1      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/core/__init__.py                        4      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/mars/mars.py                               415     85    168     45    76%   240, 265-280, 283, 293->290, 305->302, 313, 332-337, 346, 359, 362, 367, 371, 373, 380, 389, 399, 403, 409, 417, 427, 437, 440, 445, 447, 449, 451, 474, 478, 498, 511-512, 522-523, 536, 543-544, 546, 551, 562->557, 579->600, 584-590, 612, 621, 656, 660, 719, 721->725, 726, 728, 730, 748, 752, 775, 782-783, 786, 793-804
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/metric.py                                   44      0     16      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/poly.py                                     42      3     18      2    92%   17, 32-33
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/__init__.py                              2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/__init__.py                       7      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/base_kernel.py                   45      8      8      0    74%   29-38, 41
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/cubic_kernel.py                  18      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/gaussian_kernel.py               11      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/linear_kernel.py                 16      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/multiquadric_kernel.py           16      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/kernel/thin_plate_spline_kernel.py      22      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/rbf/radial_basis_function.py               103      2     22      5    94%   60->exit, 143->145, 154, 157, 194->197
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/__init__.py                       2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/lasso/__init__.py                 2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/linear_regression.py            138      1     28      2    98%   78, 99->102
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/regression/polynomial_regression.py         84      2     20      5    93%   93, 127->129, 134, 136->139, 145->150
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/scaler.py                                  134      9     32      4    92%   16, 30, 34, 42, 45, 48, 56, 101, 175
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/setting.py                                 222     33     90     16    82%   45->48, 79, 87, 107-117, 131, 155, 162, 170-171, 180, 198, 202, 205, 209->212, 212->215, 259, 279, 284, 319, 335-336, 347-348, 372-375
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/split.py                                    46      2     20      2    94%   10, 18
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/__init__.py                              1      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/core/__init__.py                         2      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/svr/support_vector_machine.py              117      4     34      5    94%   187, 192, 201, 212->222, 221
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/util/__init__.py                             0      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/util/boxmin.py                              99      0     32      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/surrogate/util/lbfgsb.py                              39      0     14      1    98%   62->64
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/__init__.py                                        5      0      0      0   100%
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/analysis.py                                       58     12     24      7    74%   15-21, 44, 46, 54, 56, 60, 89
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/common.py                                         23      2     10      2    88%   20, 22
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/inference.py                                     106     19     40      9    78%   14-20, 61->49, 87->89, 89->102, 94->98, 98->100, 106->83, 140, 168-182
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/optimization.py                                  194     40    108     43    73%   23, 33, 40, 72, 88, 102, 107, 109, 111, 113, 114->116, 116->118, 118->120, 120->122, 149, 156, 158, 164, 168, 175, 185-186, 192-194, 198, 203-204, 210, 212, 214, 216, 217->219, 220, 221->223, 223->225, 254, 272, 277, 279, 281, 283, 299->304, 302, 305-307, 313->315, 316
+/home/wmtsky/projects/UQPyL/.cache/1004-cibw-test-venv/lib/python3.12/site-packages/UQPyL/viz/surrogate.py                                      34      3      6      2    88%   41-42, 46
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                                                        11772    689   3498    515    92%
+Coverage XML written to file /home/wmtsky/projects/UQPyL/.cache/1004-release-installed-test/coverage.xml
+3094 passed in 160.91s (0:02:40)

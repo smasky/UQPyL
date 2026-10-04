@@ -1,0 +1,331 @@
+{
+  "case_count": 7,
+  "records": [
+    {
+      "case": "complete_design",
+      "diagnostic": {
+        "status": "validated",
+        "n_samples": 768,
+        "effective_n": 128,
+        "effective_block_size": 6,
+        "effective_second_order": true,
+        "metrics_available": true,
+        "recovery_basis": "metadata",
+        "issues": []
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.20721715869518526,
+            0.8018215386176553
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.2053609631097627,
+            0.7946390368902373
+          ]
+        ],
+        "ST": [
+          [
+            0.19826353364708743,
+            0.7925430254369639
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.20010317032052316,
+            0.7998968296794767
+          ]
+        ],
+        "S2": [
+          [
+            -0.01790725009619587
+          ]
+        ]
+      },
+      "warning_count": 0
+    },
+    {
+      "case": "whole_block_removed",
+      "diagnostic": {
+        "status": "recovered",
+        "n_samples": 762,
+        "effective_n": 127,
+        "effective_block_size": 6,
+        "effective_second_order": true,
+        "metrics_available": true,
+        "recovery_basis": "sample_structure",
+        "issues": [
+          "N=128 and secondOrder=True require 768 rows; received 762 rows"
+        ]
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.20329251111691765,
+            0.8056306522937031
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.20149454238883382,
+            0.7985054576111661
+          ]
+        ],
+        "ST": [
+          [
+            0.20081839941705296,
+            0.8047746785536337
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.19970145361611852,
+            0.8002985463838814
+          ]
+        ],
+        "S2": [
+          [
+            -0.004948223399729557
+          ]
+        ]
+      },
+      "warning_count": 1
+    },
+    {
+      "case": "wrong_N",
+      "diagnostic": {
+        "status": "recovered",
+        "n_samples": 768,
+        "effective_n": 128,
+        "effective_block_size": 6,
+        "effective_second_order": true,
+        "metrics_available": true,
+        "recovery_basis": "sample_structure",
+        "issues": [
+          "N=1 and secondOrder=True require 6 rows; received 768 rows"
+        ]
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.20721715869518526,
+            0.8018215386176553
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.2053609631097627,
+            0.7946390368902373
+          ]
+        ],
+        "ST": [
+          [
+            0.19826353364708743,
+            0.7925430254369639
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.20010317032052316,
+            0.7998968296794767
+          ]
+        ],
+        "S2": [
+          [
+            -0.01790725009619587
+          ]
+        ]
+      },
+      "warning_count": 1
+    },
+    {
+      "case": "wrong_second_order",
+      "diagnostic": {
+        "status": "recovered",
+        "n_samples": 768,
+        "effective_n": 128,
+        "effective_block_size": 6,
+        "effective_second_order": true,
+        "metrics_available": true,
+        "recovery_basis": "sample_structure",
+        "issues": [
+          "metadata blockSize=6 conflicts with secondOrder=False",
+          "N=128 and secondOrder=False require 512 rows; received 768 rows"
+        ]
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.20721715869518526,
+            0.8018215386176553
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.2053609631097627,
+            0.7946390368902373
+          ]
+        ],
+        "ST": [
+          [
+            0.19826353364708743,
+            0.7925430254369639
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.20010317032052316,
+            0.7998968296794767
+          ]
+        ],
+        "S2": [
+          [
+            -0.01790725009619587
+          ]
+        ]
+      },
+      "warning_count": 1
+    },
+    {
+      "case": "updated_N",
+      "diagnostic": {
+        "status": "validated",
+        "n_samples": 762,
+        "effective_n": 127,
+        "effective_block_size": 6,
+        "effective_second_order": true,
+        "metrics_available": true,
+        "recovery_basis": "metadata",
+        "issues": []
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.20329251111691765,
+            0.8056306522937031
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.20149454238883382,
+            0.7985054576111661
+          ]
+        ],
+        "ST": [
+          [
+            0.20081839941705296,
+            0.8047746785536337
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.19970145361611852,
+            0.8002985463838814
+          ]
+        ],
+        "S2": [
+          [
+            -0.004948223399729557
+          ]
+        ]
+      },
+      "warning_count": 0
+    },
+    {
+      "case": "partial_block_removed",
+      "diagnostic": {
+        "status": "not_estimated",
+        "n_samples": 767,
+        "effective_n": null,
+        "effective_block_size": null,
+        "effective_second_order": null,
+        "metrics_available": false,
+        "recovery_basis": "none",
+        "issues": [
+          "N=128 and secondOrder=True require 768 rows; received 767 rows"
+        ]
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "ST": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "S2": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "warning_count": 1
+    },
+    {
+      "case": "partial_block_added",
+      "diagnostic": {
+        "status": "not_estimated",
+        "n_samples": 769,
+        "effective_n": null,
+        "effective_block_size": null,
+        "effective_second_order": null,
+        "metrics_available": false,
+        "recovery_basis": "none",
+        "issues": [
+          "N=128 and secondOrder=True require 768 rows; received 769 rows"
+        ]
+      },
+      "metrics": {
+        "S1": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "S1_norm": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "ST": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "ST_norm": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "S2": [
+          [
+            0.0
+          ]
+        ]
+      },
+      "warning_count": 1
+    }
+  ]
+}

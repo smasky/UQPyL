@@ -79,7 +79,7 @@ def test_amh_invalid_propdist_raises():
 def test_amh_propdist_else_branch_raises_direct_call():
     # cover the else branch inside AMH.f_prop (invalid propDist)
     p = ConstrainedQuadratic(nInput=2)
-    alg = AMH(nChains=2, warmUp=0, maxIterTimes=2, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = AMH(nChains=2, warmUp=0, maxIters=2, propDist="gauss", verboseFlag=False, logFlag=False, saveFlag=False)
     alg.setup(p, seed=123)
     X_cur = np.zeros((2, 2))
     covs = [np.eye(2), np.eye(2)]
@@ -89,7 +89,7 @@ def test_amh_propdist_else_branch_raises_direct_call():
 
 def test_demc_warmup_branch_and_check_gamma__error_branch():
     p = ConstrainedQuadratic(nInput=2)
-    alg = DEMC(nChains=3, warmUp=1, maxIterTimes=3, verboseFlag=False, logFlag=False, saveFlag=False)
+    alg = DEMC(nChains=3, warmUp=1, maxIters=3, verboseFlag=False, logFlag=False, saveFlag=False)
     res = alg.run(p, gamma=0.05, seed=123)
     assert res.cons.shape == (3, 3, 1)
 

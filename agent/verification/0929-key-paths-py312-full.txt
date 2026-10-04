@@ -1,0 +1,206 @@
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 96%]
+...............................................................          [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.0-final-0 ________________
+
+Name                                                     Stmts   Miss Branch BrPart  Cover
+------------------------------------------------------------------------------------------
+UQPyL/__init__.py                                           16      0      0      0   100%
+UQPyL/analysis/__init__.py                                   8      0      0      0   100%
+UQPyL/analysis/base.py                                     133      6     46      6    93%
+UQPyL/analysis/methods/__init__.py                          13      0      2      0   100%
+UQPyL/analysis/methods/_variance.py                         16      0      6      0   100%
+UQPyL/analysis/methods/delta.py                             95     10     26      4    87%
+UQPyL/analysis/methods/fast.py                              56      2     14      2    94%
+UQPyL/analysis/methods/mars.py                              34      1      6      1    95%
+UQPyL/analysis/methods/morris.py                            66      6     22      6    86%
+UQPyL/analysis/methods/rbd_fast.py                          45      2      8      1    94%
+UQPyL/analysis/methods/rsa.py                               49      0     12      0   100%
+UQPyL/analysis/methods/sobol.py                             90      4     34      4    94%
+UQPyL/analysis/runtime/__init__.py                           5      0      0      0   100%
+UQPyL/analysis/runtime/reader.py                            44      6      8      2    81%
+UQPyL/analysis/runtime/result.py                            74      1      2      1    97%
+UQPyL/analysis/runtime/storage.py                           28      2      4      0    94%
+UQPyL/analysis/runtime/verbose.py                          117     12     40     11    83%
+UQPyL/calibration/__init__.py                                5      0      0      0   100%
+UQPyL/calibration/base.py                                  116      4     20      3    95%
+UQPyL/calibration/methods/__init__.py                        5      0      0      0   100%
+UQPyL/calibration/methods/_ensemble.py                      63      7     28      7    85%
+UQPyL/calibration/methods/es.py                             63      3     16      3    92%
+UQPyL/calibration/methods/glue.py                           26      0      6      0   100%
+UQPyL/calibration/methods/ies.py                            58      3      8      0    92%
+UQPyL/calibration/methods/sufi2.py                          73      2     10      2    95%
+UQPyL/calibration/reader.py                                 32      8      6      2    68%
+UQPyL/calibration/runtime.py                               126      8     24      4    91%
+UQPyL/calibration/util.py                                  101     28     38     16    65%
+UQPyL/core/__init__.py                                       4      0      0      0   100%
+UQPyL/core/config.py                                        40      3     14      3    89%
+UQPyL/core/parameter_store.py                               16      0      0      0   100%
+UQPyL/core/params.py                                        11      0      2      0   100%
+UQPyL/core/runtime.py                                       52      1      8      2    95%
+UQPyL/core/runtime_lifecycle.py                             51      5     16      1    91%
+UQPyL/core/runtime_reader.py                                62      2     20      3    94%
+UQPyL/core/runtime_session.py                               17      2      0      0    88%
+UQPyL/core/runtime_storage.py                               84      5     20      5    90%
+UQPyL/doe/__init__.py                                        3      0      0      0   100%
+UQPyL/doe/base.py                                           58      5     18      5    87%
+UQPyL/doe/methods/__init__.py                                8      0      0      0   100%
+UQPyL/doe/methods/fast.py                                   46      5     14      5    83%
+UQPyL/doe/methods/full_fact.py                              36      2     10      2    91%
+UQPyL/doe/methods/lhs.py                                    82      0     26      0   100%
+UQPyL/doe/methods/morris.py                                 42      3      8      3    88%
+UQPyL/doe/methods/random.py                                 12      0      0      0   100%
+UQPyL/doe/methods/saltelli.py                               62      1     22      1    98%
+UQPyL/doe/methods/sobol.py                                  35      6     12      6    74%
+UQPyL/inference/__init__.py                                  7      0      0      0   100%
+UQPyL/inference/base.py                                    203      8     64      8    94%
+UQPyL/inference/chain.py                                    23      0      4      0   100%
+UQPyL/inference/diagnostics.py                             106      3     44      3    96%
+UQPyL/inference/methods/__init__.py                          6      0      0      0   100%
+UQPyL/inference/methods/amh.py                              79      1     32      1    98%
+UQPyL/inference/methods/demc.py                             63      1     26      1    98%
+UQPyL/inference/methods/dream_zs.py                        157      1     44      2    99%
+UQPyL/inference/methods/mh.py                               63      1     26      1    98%
+UQPyL/inference/methods/mh_gibbs.py                         82     10     34      2    84%
+UQPyL/inference/runtime/__init__.py                          5      0      0      0   100%
+UQPyL/inference/runtime/reader.py                           45      6     10      2    82%
+UQPyL/inference/runtime/result.py                          204      5     36      6    95%
+UQPyL/inference/runtime/storage.py                          41      3      6      1    91%
+UQPyL/inference/runtime/verbose.py                         186     20     48     16    84%
+UQPyL/optimization/__init__.py                               7      0      0      0   100%
+UQPyL/optimization/base.py                                 231      2     84      2    99%
+UQPyL/optimization/core/__init__.py                          6      0      0      0   100%
+UQPyL/optimization/core/constraint.py                       83      9     40      5    87%
+UQPyL/optimization/core/crowding_distance.py                45      4     20      4    88%
+UQPyL/optimization/core/ga_operator.py                      60      0      4      0   100%
+UQPyL/optimization/core/non_dominated_sort.py               45      1     22      1    97%
+UQPyL/optimization/core/tournament.py                       17      0      6      0   100%
+UQPyL/optimization/core/uniform_point.py                    43      2     18      2    93%
+UQPyL/optimization/expensive/__init__.py                     4      0      0      0   100%
+UQPyL/optimization/expensive/_base.py                       57      5     34      7    87%
+UQPyL/optimization/expensive/asmo.py                        48      0     10      0   100%
+UQPyL/optimization/expensive/ego.py                         46      0      4      0   100%
+UQPyL/optimization/expensive/moasmo.py                      92      1     28      1    98%
+UQPyL/optimization/metric/__init__.py                        3      0      0      0   100%
+UQPyL/optimization/metric/gd.py                             13      1      4      1    88%
+UQPyL/optimization/metric/hv.py                            121      4     62      7    94%
+UQPyL/optimization/metric/igd.py                            13      1      4      1    88%
+UQPyL/optimization/moea/__init__.py                          4      0      0      0   100%
+UQPyL/optimization/moea/moea_d.py                           78      1     16      2    97%
+UQPyL/optimization/moea/nsga_ii.py                          53      1      6      2    95%
+UQPyL/optimization/moea/nsga_iii.py                         94      2     16      2    96%
+UQPyL/optimization/moea/rvea.py                             76      1     14      2    97%
+UQPyL/optimization/population.py                           168      7     52     14    90%
+UQPyL/optimization/runtime/__init__.py                       4      0      0      0   100%
+UQPyL/optimization/runtime/reader.py                       158      8     46      8    92%
+UQPyL/optimization/runtime/result.py                       256      2     72      7    97%
+UQPyL/optimization/runtime/storage.py                       69      2     24      4    94%
+UQPyL/optimization/runtime/verbose.py                      243     42     56     16    81%
+UQPyL/optimization/soea/__init__.py                          7      0      0      0   100%
+UQPyL/optimization/soea/abc.py                             109      0     12      0   100%
+UQPyL/optimization/soea/csa.py                              72      4      4      0    92%
+UQPyL/optimization/soea/de.py                               40      0      2      0   100%
+UQPyL/optimization/soea/ga.py                               36      0      2      0   100%
+UQPyL/optimization/soea/ml_sce_ua.py                        72      1     14      1    98%
+UQPyL/optimization/soea/pso.py                              51      0      2      0   100%
+UQPyL/optimization/soea/sce_ua.py                           68      1     14      1    98%
+UQPyL/problem/__init__.py                                   17      0      0      0   100%
+UQPyL/problem/base.py                                      136     13     58      9    88%
+UQPyL/problem/decorators.py                                 10      0      2      0   100%
+UQPyL/problem/eval.py                                       30      4      8      1    87%
+UQPyL/problem/evaluator.py                                  14      0      4      0   100%
+UQPyL/problem/evaluator_base.py                             21      2      8      0    93%
+UQPyL/problem/model_evaluator.py                            15      0      4      0   100%
+UQPyL/problem/model_problem.py                             161     21     84     16    83%
+UQPyL/problem/mop/DTLZ.py                                  213      1     32      8    96%
+UQPyL/problem/mop/ZDT.py                                   117      0     10      0   100%
+UQPyL/problem/mop/__init__.py                                2      0      0      0   100%
+UQPyL/problem/problem.py                                    65      8     34      4    86%
+UQPyL/problem/simulator_base.py                              5      1      0      0    80%
+UQPyL/problem/sop/__init__.py                                2      0      0      0   100%
+UQPyL/problem/sop/single_constraint_problem.py              17      0      0      0   100%
+UQPyL/problem/sop/single_simple_problem.py                 144      0      2      0   100%
+UQPyL/problem/space.py                                     163     14     78     11    89%
+UQPyL/surrogate/__init__.py                                 22      8      4      0    54%
+UQPyL/surrogate/_kernel.py                                 111      6     52      4    94%
+UQPyL/surrogate/_restart.py                                 32      1     16      1    96%
+UQPyL/surrogate/auto_tuner.py                              315     11    106     10    95%
+UQPyL/surrogate/base.py                                    241     31    102     21    84%
+UQPyL/surrogate/gp/__init__.py                               2      0      0      0   100%
+UQPyL/surrogate/gp/gaussian_process.py                     126      4     26      2    96%
+UQPyL/surrogate/gp/kernel/__init__.py                        4      0      0      0   100%
+UQPyL/surrogate/gp/kernel/base_kernel.py                    40     13     12      0    60%
+UQPyL/surrogate/gp/kernel/c_kernel_.py                      16      0      0      0   100%
+UQPyL/surrogate/gp/kernel/dot_kernel_.py                    17      1      2      1    89%
+UQPyL/surrogate/gp/kernel/matern_kernel.py                  98      3     28      3    95%
+UQPyL/surrogate/gp/kernel/rbf_kernel.py                     23      0      2      0   100%
+UQPyL/surrogate/gp/kernel/rq_kernel.py                      27      0      2      0   100%
+UQPyL/surrogate/kriging/__init__.py                          2      0      0      0   100%
+UQPyL/surrogate/kriging/kernel/__init__.py                   4      0      0      0   100%
+UQPyL/surrogate/kriging/kernel/base_kernel.py               21      0      0      0   100%
+UQPyL/surrogate/kriging/kernel/cubic_kernel.py              14      0      0      0   100%
+UQPyL/surrogate/kriging/kernel/exp_kernel.py                14      0      0      0   100%
+UQPyL/surrogate/kriging/kernel/guass_kernel.py              14      0      0      0   100%
+UQPyL/surrogate/kriging/kriging.py                         183      9     44      5    94%
+UQPyL/surrogate/mars/__init__.py                             1      0      0      0   100%
+UQPyL/surrogate/mars/core/__init__.py                        4      0      0      0   100%
+UQPyL/surrogate/mars/mars.py                               417     85    172     45    76%
+UQPyL/surrogate/metric.py                                   40      0     14      0   100%
+UQPyL/surrogate/poly.py                                     42      3     18      2    92%
+UQPyL/surrogate/rbf/__init__.py                              2      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/__init__.py                       7      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/base_kernel.py                   45      8      8      0    74%
+UQPyL/surrogate/rbf/kernel/cubic_kernel.py                  18      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/gaussian_kernel.py               11      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/linear_kernel.py                 16      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/multiquadric_kernel.py           16      0      0      0   100%
+UQPyL/surrogate/rbf/kernel/thin_plate_spline_kernel.py      22      0      0      0   100%
+UQPyL/surrogate/rbf/radial_basis_function.py                63      0     14      2    97%
+UQPyL/surrogate/regression/__init__.py                       2      0      0      0   100%
+UQPyL/surrogate/regression/lasso/__init__.py                 2      0      0      0   100%
+UQPyL/surrogate/regression/linear_regression.py            137      6     28      6    93%
+UQPyL/surrogate/regression/polynomial_regression.py         85      2     20      5    93%
+UQPyL/surrogate/scaler.py                                   96      8     24      3    91%
+UQPyL/surrogate/setting.py                                 222     33     90     16    82%
+UQPyL/surrogate/split.py                                    46      2     20      2    94%
+UQPyL/surrogate/svr/__init__.py                              1      0      0      0   100%
+UQPyL/surrogate/svr/core/__init__.py                         2      0      0      0   100%
+UQPyL/surrogate/svr/support_vector_machine.py              106      3     24      3    95%
+UQPyL/surrogate/util/__init__.py                             0      0      0      0   100%
+UQPyL/surrogate/util/boxmin.py                              99      0     32      0   100%
+UQPyL/surrogate/util/lbfgsb.py                              39      0     14      1    98%
+UQPyL/viz/__init__.py                                        5      0      0      0   100%
+UQPyL/viz/analysis.py                                       48     10     14      4    71%
+UQPyL/viz/common.py                                         23      2     10      2    88%
+UQPyL/viz/inference.py                                     106     23     40     10    73%
+UQPyL/viz/optimization.py                                  168     40     84     36    69%
+UQPyL/viz/surrogate.py                                      34      3      6      2    88%
+------------------------------------------------------------------------------------------
+TOTAL                                                    10523    695   2994    479    91%
+Coverage XML written to file .cache/key-paths-py312/coverage.xml
+1935 passed in 64.16s (0:01:04)

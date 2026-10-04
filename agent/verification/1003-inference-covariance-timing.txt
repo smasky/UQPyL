@@ -1,0 +1,6 @@
+covariance_cost 2000 FullHistoryAMH 
+covariance_cost 2000 AMH 
+covariance_cost 8000 FullHistoryAMH 
+covariance_cost 8000 AMH 
+covariance_cost 16000 FullHistoryAMH 
+covariance_cost 16000 AMH 

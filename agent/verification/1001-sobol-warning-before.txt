@@ -1,0 +1,2706 @@
+...............FFFFFFFFFFFFFFFFFFFFFFFFFFFF..F.                          [100%]
+=================================== FAILURES ===================================
+_ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialMissing-False] _
+
+secondOrder = False, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef794e1cd0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef794e2600>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.74198056],
+       [0.84607292, 0.74198056],
+       [0.5298414 , 0.9577125 ]], shape=(511, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 512 rows for N=128 and blockSize=4; received 511 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = False, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+_ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialMissing-True] __
+
+secondOrder = True, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef795c01a0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef79116ea0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056]], shape=(767, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 768 rows for N=128 and blockSize=6; received 767 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = True, rowChange = 'partialMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+__ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockMissing-False] __
+
+secondOrder = False, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79159610>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef791586e0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.34929664, 0.2389853 ],
+       [0.39341628, 0.38105525],
+       [0.34929664, 0.38105525]], shape=(508, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 512 rows for N=128 and blockSize=4; received 508 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = False, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+__ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockMissing-True] ___
+
+secondOrder = True, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef794a3200>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef791177a0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.39341628, 0.38105525],
+       [0.34929664, 0.2389853 ],
+       [0.34929664, 0.38105525]], shape=(762, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 768 rows for N=128 and blockSize=6; received 762 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = True, rowChange = 'blockMissing'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+__ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialExtra-False] __
+
+secondOrder = False, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79174e30>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef7915b1a0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.9577125 ],
+       [0.52102851, 0.07632863]], shape=(513, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 512 rows for N=128 and blockSize=4; received 513 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = False, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+__ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialExtra-True] ___
+
+secondOrder = True, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79177830>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef791777d0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ],
+       [0.52102851, 0.07632863]], shape=(769, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 768 rows for N=128 and blockSize=6; received 769 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = True, rowChange = 'partialExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+___ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockExtra-False] ___
+
+secondOrder = False, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865e9580>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef865e94f0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       [0.31300884, 0.3259059 ]], shape=(516, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 512 rows for N=128 and blockSize=4; received 516 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = False, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+___ testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockExtra-True] ____
+
+secondOrder = True, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865e94c0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef865ea0c0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.52102851, 0.3259059 ],
+       [0.31300884, 0.07632863],
+       [0.31300884, 0.3259059 ]], shape=(774, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 768 rows for N=128 and blockSize=6; received 774 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+secondOrder = True, rowChange = 'blockExtra'
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    @pytest.mark.parametrize("rowChange", ["partialMissing", "blockMissing", "partialExtra", "blockExtra"])
+    def testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns(secondOrder, rowChange):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 128, seed=17)
+        count = meta["blockSize"] if rowChange.startswith("block") else 1
+        x = x[:-count] if rowChange.endswith("Missing") else np.vstack([x, x[:count]])
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:115: Failed
+____ testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[N-1] ____
+
+key = 'N', value = 1
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+        with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865eb110>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef865eb0e0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ]], shape=(768, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 1, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 6 rows for N=1 and blockSize=6; received 768 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'N', value = 1
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:150: Failed
+_ testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[blockSize-4] _
+
+key = 'blockSize', value = 4
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+        with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865eacf0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef865ea990>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ]], shape=(768, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+>           raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+E           ValueError: Sobol metadata blockSize must equal 6 for nInput=2 and secondOrder=True.
+
+UQPyL/analysis/methods/sobol.py:103: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'blockSize', value = 4
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:150: Failed
+_ testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[secondOrder-False] _
+
+key = 'secondOrder', value = False
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+        with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+>           result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef86618200>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef865e9a60>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ]], shape=(768, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+>           raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+E           ValueError: Sobol metadata blockSize must equal 4 for nInput=2 and secondOrder=False.
+
+UQPyL/analysis/methods/sobol.py:103: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'secondOrder', value = False
+
+    @pytest.mark.parametrize("key,value", [("N", 1), ("blockSize", 4), ("secondOrder", False)])
+    def testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure(key, value):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return samples[:, :1] + 2 * samples[:, 1:2]
+    
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=objective)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        meta[key] = value
+        originalMeta = dict(meta)
+        # All 768 rows are also divisible by the wrong first-order block length 4.
+        assert len(x) % (problem.nInput + 2) == 0
+>       with pytest.warns(RuntimeWarning, match="Sobol") as caught:
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:150: Failed
+_____ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-0] ______
+
+key = 'N', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef86618890>
+meta = {'designType': 'saltelli', 'N': 0, 'secondOrder': True, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+>           raise ValueError("Sobol metadata N must be a positive integer.")
+E           ValueError: Sobol metadata N must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:55: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'N', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+____ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-True] ____
+
+key = 'N', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef866182c0>
+meta = {'designType': 'saltelli', 'N': True, 'secondOrder': True, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+>           raise ValueError("Sobol metadata N must be a positive integer.")
+E           ValueError: Sobol metadata N must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:55: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'N', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+____ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-2.5] _____
+
+key = 'N', value = 2.5
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865e9790>
+meta = {'designType': 'saltelli', 'N': 2.5, 'secondOrder': True, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+>           raise ValueError("Sobol metadata N must be a positive integer.")
+E           ValueError: Sobol metadata N must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:55: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'N', value = 2.5
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+_ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[blockSize-True] _
+
+key = 'blockSize', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79158860>
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': True, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+            raise ValueError("Sobol metadata N must be a positive integer.")
+        if "blockSize" in meta:
+            blockSize = meta["blockSize"]
+            if (
+                not isinstance(blockSize, (int, np.integer))
+                or isinstance(blockSize, (bool, np.bool_))
+                or blockSize <= 0
+            ):
+>               raise ValueError("Sobol metadata blockSize must be a positive integer.")
+E               ValueError: Sobol metadata blockSize must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:63: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'blockSize', value = True
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+_ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[blockSize-6.0] _
+
+key = 'blockSize', value = 6.0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef7915a450>
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': True, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+            raise ValueError("Sobol metadata N must be a positive integer.")
+        if "blockSize" in meta:
+            blockSize = meta["blockSize"]
+            if (
+                not isinstance(blockSize, (int, np.integer))
+                or isinstance(blockSize, (bool, np.bool_))
+                or blockSize <= 0
+            ):
+>               raise ValueError("Sobol metadata blockSize must be a positive integer.")
+E               ValueError: Sobol metadata blockSize must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:63: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'blockSize', value = 6.0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+_ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[secondOrder-0] _
+
+key = 'secondOrder', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef865ebf80>
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': 0, 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+>           raise ValueError("Sobol metadata secondOrder must be a boolean.")
+E           ValueError: Sobol metadata secondOrder must be a boolean.
+
+UQPyL/analysis/methods/sobol.py:52: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'secondOrder', value = 0
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+_ testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[secondOrder-False] _
+
+key = 'secondOrder', value = 'False'
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79177350>
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': 'False', 'skipValue': 0, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+>           raise ValueError("Sobol metadata secondOrder must be a boolean.")
+E           ValueError: Sobol metadata secondOrder must be a boolean.
+
+UQPyL/analysis/methods/sobol.py:52: ValueError
+
+During handling of the above exception, another exception occurred:
+
+key = 'secondOrder', value = 'False'
+
+    @pytest.mark.parametrize(
+        "key,value",
+        [
+            ("N", 0),
+            ("N", True),
+            ("N", 2.5),
+            ("blockSize", True),
+            ("blockSize", 6.0),
+            ("secondOrder", 0),
+            ("secondOrder", "False"),
+        ],
+    )
+    def testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks(key, value):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        meta[key] = value
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{key}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:180: Failed
+__________ testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks[N] __________
+
+missingKey = 'N'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{missingKey}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef7915bd10>
+meta = {'designType': 'saltelli', 'secondOrder': False, 'skipValue': 0, 'scramble': True, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+            raise ValueError("Sobol metadata secondOrder must be a boolean.")
+        n = meta.get("N")
+        if not isinstance(n, (int, np.integer)) or isinstance(n, (bool, np.bool_)) or n <= 0:
+>           raise ValueError("Sobol metadata N must be a positive integer.")
+E           ValueError: Sobol metadata N must be a positive integer.
+
+UQPyL/analysis/methods/sobol.py:55: ValueError
+
+During handling of the above exception, another exception occurred:
+
+missingKey = 'N'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{missingKey}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:194: Failed
+_____ testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks[secondOrder] _____
+
+missingKey = 'secondOrder'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+        with pytest.warns(RuntimeWarning, match=f"Sobol.*{missingKey}"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:130: in analyze
+    self.checkMeta(meta)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79177710>
+meta = {'designType': 'saltelli', 'N': 8, 'skipValue': 0, 'scramble': True, ...}
+
+    def checkMeta(self, meta):
+        if meta.get("designType") != "saltelli":
+            raise ValueError("Sobol.analyze() requires Saltelli metadata with meta['designType'] == 'saltelli'.")
+    
+        secondOrder = meta.get("secondOrder")
+        if not isinstance(secondOrder, (bool, np.bool_)):
+>           raise ValueError("Sobol metadata secondOrder must be a boolean.")
+E           ValueError: Sobol metadata secondOrder must be a boolean.
+
+UQPyL/analysis/methods/sobol.py:52: ValueError
+
+During handling of the above exception, another exception occurred:
+
+missingKey = 'secondOrder'
+
+    @pytest.mark.parametrize("missingKey", ["N", "secondOrder"])
+    def testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks(missingKey):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign().sampleWithMeta(problem, 8, seed=17)
+        del meta[missingKey]
+>       with pytest.warns(RuntimeWarning, match=f"Sobol.*{missingKey}"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:194: Failed
+_____________ testSobolWarnsForWrongMetadataEvenForConstantOutputs _____________
+
+    def testSobolWarnsForWrongMetadataEvenForConstantOutputs():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        with pytest.warns(RuntimeWarning, match="Sobol.*blockSize"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, np.zeros((len(x), 1)), dict(meta, secondOrder=False))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:206: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79176f90>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef79174c80>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ]], shape=(768, 2))
+Y = array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+ ...,
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.]])
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+>           raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+E           ValueError: Sobol metadata blockSize must equal 4 for nInput=2 and secondOrder=False.
+
+UQPyL/analysis/methods/sobol.py:103: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def testSobolWarnsForWrongMetadataEvenForConstantOutputs():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+>       with pytest.warns(RuntimeWarning, match="Sobol.*blockSize"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:205: Failed
+_ testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects[False] _
+
+secondOrder = False
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    def testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects(secondOrder):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1] + 2 * x[:, 1:2])
+        x, originalMeta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 1024, seed=17)
+        meta = {key: value for key, value in originalMeta.items() if key != "blockSize"}
+        meta.update(N=np.int64(1024), secondOrder=np.bool_(secondOrder))
+        result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+        np.testing.assert_allclose(result["S1"].values, [[0.2, 0.8]], atol=0.003, rtol=0)
+        np.testing.assert_allclose(result["ST"].values, [[0.2, 0.8]], atol=0.003, rtol=0)
+        if secondOrder:
+            np.testing.assert_allclose(result["S2"].values, [[0.0]], atol=0.003, rtol=0)
+        assert "blockSize" not in meta
+        assert "blockSize" not in result.meta
+        assert meta["N"] == 1024 and meta["secondOrder"] == secondOrder
+>       assert result.extra["sobol_design"]["status"] == "validated"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'sobol_design'
+
+tests/test_analysis_design_validation.py:227: KeyError
+_ testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects[True] _
+
+secondOrder = True
+
+    @pytest.mark.parametrize("secondOrder", [False, True])
+    def testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects(secondOrder):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1] + 2 * x[:, 1:2])
+        x, originalMeta = SaltelliDesign(secondOrder=secondOrder).sampleWithMeta(problem, 1024, seed=17)
+        meta = {key: value for key, value in originalMeta.items() if key != "blockSize"}
+        meta.update(N=np.int64(1024), secondOrder=np.bool_(secondOrder))
+        result = Sobol(verboseFlag=False).analyze(problem, x, meta=meta)
+        np.testing.assert_allclose(result["S1"].values, [[0.2, 0.8]], atol=0.003, rtol=0)
+        np.testing.assert_allclose(result["ST"].values, [[0.2, 0.8]], atol=0.003, rtol=0)
+        if secondOrder:
+            np.testing.assert_allclose(result["S2"].values, [[0.0]], atol=0.003, rtol=0)
+        assert "blockSize" not in meta
+        assert "blockSize" not in result.meta
+        assert meta["N"] == 1024 and meta["secondOrder"] == secondOrder
+>       assert result.extra["sobol_design"]["status"] == "validated"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'sobol_design'
+
+tests/test_analysis_design_validation.py:227: KeyError
+_________ testSobolAmbiguousConflictingLayoutsWarnAndRemainUnavailable _________
+
+    def testSobolAmbiguousConflictingLayoutsWarnAndRemainUnavailable():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.zeros((12, 2))
+        y = np.arange(12, dtype=float)[:, None]
+        # Both block lengths match these constant inputs; the metadata conflicts.
+        meta = dict(designType="saltelli", N=2, secondOrder=True, blockSize=4)
+        with pytest.warns(RuntimeWarning, match="zero placeholders"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, y, meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef78dad7c0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef78dac680>
+X = array([[0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.],
+       [0., 0.]])
+Y = array([[ 0.],
+       [ 1.],
+       [ 2.],
+       [ 3.],
+       [ 4.],
+       [ 5.],
+       [ 6.],
+       [ 7.],
+       [ 8.],
+       [ 9.],
+       [10.],
+       [11.]])
+meta = {'designType': 'saltelli', 'N': 2, 'secondOrder': True, 'blockSize': 4}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+>           raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+E           ValueError: Sobol metadata blockSize must equal 6 for nInput=2 and secondOrder=True.
+
+UQPyL/analysis/methods/sobol.py:103: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def testSobolAmbiguousConflictingLayoutsWarnAndRemainUnavailable():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.zeros((12, 2))
+        y = np.arange(12, dtype=float)[:, None]
+        # Both block lengths match these constant inputs; the metadata conflicts.
+        meta = dict(designType="saltelli", N=2, secondOrder=True, blockSize=4)
+>       with pytest.warns(RuntimeWarning, match="zero placeholders"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:236: Failed
+_ testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls[False] _
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolUnavailableSelectedOu0')
+provideY = False
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls(tmp_path, provideY):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return np.repeat(samples[:, :1], 3, axis=1)
+    
+        problem = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=objective, objLabels=["first", "second", "third"])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        x = x[:-1]
+        y = np.repeat(x[:, :1], 3, axis=1) if provideY else None
+        with pytest.warns(RuntimeWarning, match="zero placeholders"):
+>           result = Sobol(verboseFlag=False, saveFlag=True).analyze(problem, x, y, meta, index=[2, 0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:261: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef78dacdd0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef78dace90>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       [0.52102851,...98632, 0.69471418],
+       [0.62861187, 0.38604681],
+       [0.62861187, 0.38604681],
+       [0.15098632, 0.69471418]])
+Y = None
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = [2, 0]
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 48 rows for N=8 and blockSize=6; received 47 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolUnavailableSelectedOu0')
+provideY = False
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls(tmp_path, provideY):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return np.repeat(samples[:, :1], 3, axis=1)
+    
+        problem = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=objective, objLabels=["first", "second", "third"])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        x = x[:-1]
+        y = np.repeat(x[:, :1], 3, axis=1) if provideY else None
+>       with pytest.warns(RuntimeWarning, match="zero placeholders"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:260: Failed
+_ testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls[True] _
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolUnavailableSelectedOu1')
+provideY = True
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls(tmp_path, provideY):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return np.repeat(samples[:, :1], 3, axis=1)
+    
+        problem = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=objective, objLabels=["first", "second", "third"])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        x = x[:-1]
+        y = np.repeat(x[:, :1], 3, axis=1) if provideY else None
+        with pytest.warns(RuntimeWarning, match="zero placeholders"):
+>           result = Sobol(verboseFlag=False, saveFlag=True).analyze(problem, x, y, meta, index=[2, 0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:261: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79177fb0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef79177710>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       [0.52102851,...98632, 0.69471418],
+       [0.62861187, 0.38604681],
+       [0.62861187, 0.38604681],
+       [0.15098632, 0.69471418]])
+Y = array([[0.52102851, 0.52102851, 0.52102851],
+       [0.31300884, 0.31300884, 0.31300884],
+       [0.52102851, 0.521028...87, 0.62861187, 0.62861187],
+       [0.62861187, 0.62861187, 0.62861187],
+       [0.15098632, 0.15098632, 0.15098632]])
+meta = {'designType': 'saltelli', 'N': 8, 'secondOrder': True, 'skipValue': 0, ...}
+secondOrder = True, target = 'objs', index = [2, 0]
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 48 rows for N=8 and blockSize=6; received 47 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolUnavailableSelectedOu1')
+provideY = True
+
+    @pytest.mark.parametrize("provideY", [False, True])
+    def testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls(tmp_path, provideY):
+        calls = []
+    
+        def objective(samples):
+            calls.append(len(samples))
+            return np.repeat(samples[:, :1], 3, axis=1)
+    
+        problem = Problem(nInput=2, nObj=3, lb=0, ub=1, objFunc=objective, objLabels=["first", "second", "third"])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 8, seed=17)
+        x = x[:-1]
+        y = np.repeat(x[:, :1], 3, axis=1) if provideY else None
+>       with pytest.warns(RuntimeWarning, match="zero placeholders"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:260: Failed
+______________ testSobolRecoveredDesignAndOriginalMetadataPersist ______________
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolRecoveredDesignAndOri0')
+
+    def testSobolRecoveredDesignAndOriginalMetadataPersist(tmp_path):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1] + 2 * x[:, 1:2])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        wrongMeta = dict(meta, secondOrder=False)
+        with pytest.warns(RuntimeWarning, match="Sobol"):
+>           result = Sobol(verboseFlag=False, saveFlag=True).analyze(problem, x, meta=wrongMeta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:282: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef78dadeb0>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef78daf2f0>
+X = array([[0.52102851, 0.07632863],
+       [0.31300884, 0.07632863],
+       [0.52102851, 0.3259059 ],
+       ...,
+       [0.5298414 , 0.9577125 ],
+       [0.84607292, 0.74198056],
+       [0.84607292, 0.9577125 ]], shape=(768, 2))
+Y = None
+meta = {'designType': 'saltelli', 'N': 128, 'secondOrder': False, 'skipValue': 0, ...}
+secondOrder = False, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+>           raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+E           ValueError: Sobol metadata blockSize must equal 4 for nInput=2 and secondOrder=False.
+
+UQPyL/analysis/methods/sobol.py:103: ValueError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/home/wmtsky/projects/UQPyL/.cache/pytest/tmp/testSobolRecoveredDesignAndOri0')
+
+    def testSobolRecoveredDesignAndOriginalMetadataPersist(tmp_path):
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1] + 2 * x[:, 1:2])
+        problem.workDir = str(tmp_path)
+        x, meta = SaltelliDesign(secondOrder=True).sampleWithMeta(problem, 128, seed=17)
+        wrongMeta = dict(meta, secondOrder=False)
+>       with pytest.warns(RuntimeWarning, match="Sobol"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:281: Failed
+________ testSobolDivisibleRowsWithoutSaltelliStructureAreNotEstimated _________
+
+    def testSobolDivisibleRowsWithoutSaltelliStructureAreNotEstimated():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.random.default_rng(17).random((48, 2))
+        meta = dict(designType="saltelli", N=1, secondOrder=True, blockSize=6)
+        with pytest.warns(RuntimeWarning, match="zero placeholders"):
+>           result = Sobol(verboseFlag=False).analyze(problem, x, x[:, :1], meta)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_design_validation.py:297: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef78dae630>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef78dada00>
+X = array([[0.84507479, 0.16097309],
+       [0.55774455, 0.36807994],
+       [0.21494196, 0.38582404],
+       [0.4281645 ,...26359, 0.26045403],
+       [0.86268496, 0.45567156],
+       [0.62534853, 0.90385094],
+       [0.54497755, 0.15751202]])
+Y = array([[0.84507479],
+       [0.55774455],
+       [0.21494196],
+       [0.4281645 ],
+       [0.73638587],
+       [0.254...[0.54890259],
+       [0.2492315 ],
+       [0.43826359],
+       [0.86268496],
+       [0.62534853],
+       [0.54497755]])
+meta = {'designType': 'saltelli', 'N': 1, 'secondOrder': True, 'blockSize': 6}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 6 rows for N=1 and blockSize=6; received 48 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def testSobolDivisibleRowsWithoutSaltelliStructureAreNotEstimated():
+        problem = Problem(nInput=2, nObj=1, lb=0, ub=1, objFunc=lambda x: x[:, :1])
+        x = np.random.default_rng(17).random((48, 2))
+        meta = dict(designType="saltelli", N=1, secondOrder=True, blockSize=6)
+>       with pytest.warns(RuntimeWarning, match="zero placeholders"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_design_validation.py:296: Failed
+_____________ test_sobol_analyze_divisibility_validation_branches ______________
+
+    def test_sobol_analyze_divisibility_validation_branches():
+        problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
+        sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    
+        # secondOrder=True requires divisible by (2*nInput+2)=8
+        X_bad = np.zeros((7, 3))
+        with pytest.warns(RuntimeWarning, match="Sobol.*rows"):
+>           result = sob.analyze(problem, X_bad, Y=np.zeros((7, 1)), meta={"designType": "saltelli", "N": 1, "secondOrder": True})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_sobol_more.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/core/runtime_lifecycle.py:45: in managedRun
+    result = method(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/analysis/base.py:134: in analyze
+    self._analyzeCore(*call.args, **call.kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.analysis.methods.sobol.Sobol object at 0x74ef79159280>
+problem = <UQPyL.problem.problem.Problem object at 0x74ef7915a030>
+X = array([[0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.],
+       [0., 0., 0.]])
+Y = array([[0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.],
+       [0.]])
+meta = {'designType': 'saltelli', 'N': 1, 'secondOrder': True}
+secondOrder = True, target = 'objs', index = 'all'
+
+    def _analyzeCore(
+        self,
+        problem: Problem,
+        X: np.ndarray,
+        Y: Optional[np.ndarray] = None,
+        meta: Optional[dict] = None,
+        secondOrder: bool = True,
+        target: str = "objs",
+        index: AnaIndex = "all",
+    ) -> None:
+        """
+        Run Sobol' analysis on Saltelli samples.
+    
+        Args:
+            problem: Analysis problem.
+            X: Sample matrix generated for Saltelli/Sobol analysis.
+            Y: Optional output matrix corresponding to `X`.
+            meta: Sampling metadata from `SaltelliDesign.sampleWithMeta`.
+            secondOrder: Placeholder argument; actual behavior is driven by `meta`.
+            target: Semantic label of `Y`, typically `objs` or `cons`.
+            index: Output column selection.
+        """
+    
+        # Set the problem instance for the analysis
+    
+        if meta is None:
+            raise TypeError(
+                "Sobol.analyze() requires metadata. "
+                "Use `X, meta = SaltelliDesign(...).sampleWithMeta(...)` or pass meta explicitly."
+            )
+    
+        secondOrder = bool(meta["secondOrder"])
+        nInput = problem.nInput
+        n = int(meta["N"])
+        blockSize = 2 * nInput + 2 if secondOrder else nInput + 2
+        if "blockSize" in meta and meta["blockSize"] != blockSize:
+            raise ValueError(
+                f"Sobol metadata blockSize must equal {blockSize} for nInput={nInput} and secondOrder={secondOrder}."
+            )
+        expectedRows = n * blockSize
+        if isinstance(X, np.ndarray) and X.ndim == 2 and X.shape[0] != expectedRows:
+>           raise ValueError(
+                f"Sobol requires exactly {expectedRows} rows for N={n} and blockSize={blockSize}; "
+                f"received {X.shape[0]} rows."
+            )
+E           ValueError: Sobol requires exactly 8 rows for N=1 and blockSize=8; received 7 rows.
+
+UQPyL/analysis/methods/sobol.py:108: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_sobol_analyze_divisibility_validation_branches():
+        problem = Problem(nInput=3, nObj=1, ub=1.0, lb=0.0, objFunc=_obj)
+        sob = Sobol(verboseFlag=False, logFlag=False, saveFlag=False)
+    
+        # secondOrder=True requires divisible by (2*nInput+2)=8
+        X_bad = np.zeros((7, 3))
+>       with pytest.warns(RuntimeWarning, match="Sobol.*rows"):
+E       Failed: DID NOT WARN. No warnings of type (<class 'RuntimeWarning'>,) were emitted.
+E        Emitted warnings: [].
+
+tests/test_analysis_sobol_more.py:40: Failed
+=========================== short test summary info ============================
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialMissing-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialMissing-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockMissing-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockMissing-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialExtra-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[partialExtra-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockExtra-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForChangedRowsAndOnlyUsesCompleteDesigns[blockExtra-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[N-1]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[blockSize-4]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsAndRecoversContradictoryMetadataFromSampleStructure[secondOrder-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-0]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[N-2.5]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[blockSize-True]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[blockSize-6.0]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[secondOrder-0]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForInvalidMetadataTypesAndRecoversCompleteBlocks[secondOrder-False]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks[N]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForMissingFieldsAndRecoversCompleteBlocks[secondOrder]
+FAILED tests/test_analysis_design_validation.py::testSobolWarnsForWrongMetadataEvenForConstantOutputs
+FAILED tests/test_analysis_design_validation.py::testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects[False]
+FAILED tests/test_analysis_design_validation.py::testSobolValidNumpyMetadataWithoutOptionalBlockSizeKeepsAnalyticalEffects[True]
+FAILED tests/test_analysis_design_validation.py::testSobolAmbiguousConflictingLayoutsWarnAndRemainUnavailable
+FAILED tests/test_analysis_design_validation.py::testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls[False]
+FAILED tests/test_analysis_design_validation.py::testSobolUnavailableSelectedOutputsAndDiagnosticsPersistWithoutModelCalls[True]
+FAILED tests/test_analysis_design_validation.py::testSobolRecoveredDesignAndOriginalMetadataPersist
+FAILED tests/test_analysis_design_validation.py::testSobolDivisibleRowsWithoutSaltelliStructureAreNotEstimated
+FAILED tests/test_analysis_sobol_more.py::test_sobol_analyze_divisibility_validation_branches
+29 failed, 18 passed in 1.60s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_analysis_design_validation.py tests/test_analysis_sobol_more.py` failed. (See above for error)

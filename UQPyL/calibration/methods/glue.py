@@ -1,6 +1,8 @@
 import numpy as np
+import warnings
 
 from ..base import CalibrationABC
+from ._uncertainty import likelihoodWeights, weightedQuantiles
 
 
 class GLUE(CalibrationABC):
@@ -41,7 +43,7 @@ class GLUE(CalibrationABC):
             metric=metric,
         )
 
-    def _runCore(self, problem, X, threshold: float):
+    def _runCore(self, problem, X, threshold: float, logLikelihood=None, interval: float = 0.95):
         """
         Run one GLUE screening pass on a provided sample set.
 
@@ -53,7 +55,16 @@ class GLUE(CalibrationABC):
                 behavioral means `score >= threshold`. Otherwise it means
                 `score <= threshold`. For `pbias`, use `abs(score) <= threshold`,
                 with a finite nonnegative threshold in percentage points.
+            logLikelihood: Optional callable (obs, behavioralSim, mask=mask)
+                returning one log weight per behavioral sample. None means
+                uniform weights, not an inferred observation noise model.
+            interval: Central weighted empirical-CDF interval probability.
+                Bounds cover unmasked simulation outputs, without adding noise.
         """
+        if np.ndim(interval) or not np.isfinite(interval) or not 0 < interval < 1:
+            raise ValueError("interval must be a finite scalar between 0 and 1.")
+        if logLikelihood is not None and not callable(logLikelihood):
+            raise ValueError("logLikelihood must be callable or None.")
         if self.metricClosestToZero:
             threshold = float(threshold)
             if not np.isfinite(threshold) or threshold < 0:
@@ -69,10 +80,28 @@ class GLUE(CalibrationABC):
             raise ValueError("No behavioral samples found under the given threshold.")
 
         bestIdx = int(np.argmin(normalized))
-        self.recordBest(X[bestIdx:bestIdx + 1], sim_full[bestIdx:bestIdx + 1])
+        self.state.extra["bestIdx"] = bestIdx
+        self.recordBest(X[bestIdx : bestIdx + 1], sim_full[bestIdx : bestIdx + 1])
         self.recordBehavioral(X[behavioralMask], sim_full[behavioralMask])
 
         self.state.diagnostics["threshold"] = float(threshold)
         self.state.diagnostics["scores"] = scores.copy()
         self.state.diagnostics["behavioralMask"] = behavioralMask.copy()
         self.state.diagnostics["behavioralScores"] = scores[behavioralMask].copy()
+        behavioralSims = sim_full[behavioralMask]
+        weights = likelihoodWeights(self.getFlattenedObs(), behavioralSims, self.getFlattenedMask(), logLikelihood)
+        bounds = weightedQuantiles(behavioralSims[:, self.getValidMask()], weights, interval)
+        self.state.diagnostics["behavioralWeights"] = weights
+        self.state.diagnostics["effectiveSampleSize"] = float(1.0 / np.sum(weights**2))
+        lowEss = self.state.diagnostics["effectiveSampleSize"] < 20 * (1 - 64 * np.finfo(float).eps)
+        self.state.diagnostics["uncertaintyStatus"] = "low_effective_sample_size" if lowEss else "estimated"
+        self.state.diagnostics["weighting"] = "uniform" if logLikelihood is None else "log_likelihood"
+        self.state.diagnostics["interval"] = float(interval)
+        self.state.diagnostics["ppuLower"] = bounds[0]
+        self.state.diagnostics["ppuUpper"] = bounds[1]
+        if lowEss and logLikelihood is not None:
+            warnings.warn(
+                "GLUE uncertainty effective sample size is below 20; weighted intervals may be unreliable.",
+                RuntimeWarning,
+                stacklevel=2,
+            )

@@ -1,0 +1,242 @@
+ERROR conda.cli.main_run:execute(148): `conda run python -m pytest -q -W error` failed. (See above for error)
+.............F...F.....FF............................................... [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 34%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 80%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+...................................                                      [100%]
+=================================== FAILURES ===================================
+______________________ test_fast_sample_and_analyze_smoke ______________________
+
+    def test_fast_sample_and_analyze_smoke():
+        problem = _make_problem(3)
+        fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
+    
+        with pytest.raises(ValueError):
+            FASTDesign(M=4).sampleWithMeta(problem, 10, seed=1)  # too small
+    
+        # must be strictly greater than 4*M^2 for stable frequency allocation
+>       X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_more_methods.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/doe/methods/fast.py:51: in sampleWithMeta
+    return super().sampleWithMeta(problem, N, seed=seed, output=output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/doe/base.py:45: in sampleWithMeta
+    U = self._generate(nSamples, nInput)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.doe.methods.fast.FASTDesign object at 0x797a46d71ac0>
+nSamples = 65, nInput = 3
+
+    def _generate(self, nSamples: int, nInput: int):
+        """
+        Generate unit-space FAST samples.
+    
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space FAST samples.
+        """
+    
+        w = np.zeros(nInput)
+        w[0] = np.floor((nSamples - 1) / (2 * self.M))
+        max_wi = np.floor(w[0] / (2 * self.M))  # Saltelli's method
+    
+        if max_wi < 1:
+            raise ValueError(
+                f"N={nSamples} is too small for M={self.M}; the auxiliary FAST frequencies become invalid."
+            )
+    
+        if max_wi < nInput - 1:
+>           warnings.warn(
+                f"FASTDesign will reuse auxiliary frequencies because N={nSamples}, M={self.M}, "
+                f"and nInput={nInput} do not provide enough unique frequencies. "
+                "This configuration is still allowed, but spectral aliasing risk increases.",
+                UserWarning,
+                stacklevel=2,
+            )
+E           UserWarning: FASTDesign will reuse auxiliary frequencies because N=65, M=4, and nInput=3 do not provide enough unique frequencies. This configuration is still allowed, but spectral aliasing risk increases.
+
+UQPyL/doe/methods/fast.py:84: UserWarning
+____________ test_fast_constant_output_returns_finite_zero_indices _____________
+
+    def test_fast_constant_output_returns_finite_zero_indices():
+        problem = _make_problem(3)
+        fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
+>       X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_more_methods.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/doe/methods/fast.py:51: in sampleWithMeta
+    return super().sampleWithMeta(problem, N, seed=seed, output=output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/doe/base.py:45: in sampleWithMeta
+    U = self._generate(nSamples, nInput)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.doe.methods.fast.FASTDesign object at 0x797a46a94bc0>
+nSamples = 65, nInput = 3
+
+    def _generate(self, nSamples: int, nInput: int):
+        """
+        Generate unit-space FAST samples.
+    
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space FAST samples.
+        """
+    
+        w = np.zeros(nInput)
+        w[0] = np.floor((nSamples - 1) / (2 * self.M))
+        max_wi = np.floor(w[0] / (2 * self.M))  # Saltelli's method
+    
+        if max_wi < 1:
+            raise ValueError(
+                f"N={nSamples} is too small for M={self.M}; the auxiliary FAST frequencies become invalid."
+            )
+    
+        if max_wi < nInput - 1:
+>           warnings.warn(
+                f"FASTDesign will reuse auxiliary frequencies because N={nSamples}, M={self.M}, "
+                f"and nInput={nInput} do not provide enough unique frequencies. "
+                "This configuration is still allowed, but spectral aliasing risk increases.",
+                UserWarning,
+                stacklevel=2,
+            )
+E           UserWarning: FASTDesign will reuse auxiliary frequencies because N=65, M=4, and nInput=3 do not provide enough unique frequencies. This configuration is still allowed, but spectral aliasing risk increases.
+
+UQPyL/doe/methods/fast.py:84: UserWarning
+__________________ test_analysis_log_writes_full_metric_table __________________
+
+    def test_analysis_log_writes_full_metric_table():
+        workDir = Path(".cache") / "analysis_log_test" / uuid.uuid4().hex
+        workDir.mkdir(parents=True, exist_ok=True)
+        try:
+            problem = _make_problem(3)
+            problem.workDir = str(workDir)
+            fast = FAST(verboseFlag=False, logFlag=True, saveFlag=False)
+    
+>           X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_more_methods.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/doe/methods/fast.py:51: in sampleWithMeta
+    return super().sampleWithMeta(problem, N, seed=seed, output=output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/doe/base.py:45: in sampleWithMeta
+    U = self._generate(nSamples, nInput)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.doe.methods.fast.FASTDesign object at 0x797a46a951c0>
+nSamples = 65, nInput = 3
+
+    def _generate(self, nSamples: int, nInput: int):
+        """
+        Generate unit-space FAST samples.
+    
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space FAST samples.
+        """
+    
+        w = np.zeros(nInput)
+        w[0] = np.floor((nSamples - 1) / (2 * self.M))
+        max_wi = np.floor(w[0] / (2 * self.M))  # Saltelli's method
+    
+        if max_wi < 1:
+            raise ValueError(
+                f"N={nSamples} is too small for M={self.M}; the auxiliary FAST frequencies become invalid."
+            )
+    
+        if max_wi < nInput - 1:
+>           warnings.warn(
+                f"FASTDesign will reuse auxiliary frequencies because N={nSamples}, M={self.M}, "
+                f"and nInput={nInput} do not provide enough unique frequencies. "
+                "This configuration is still allowed, but spectral aliasing risk increases.",
+                UserWarning,
+                stacklevel=2,
+            )
+E           UserWarning: FASTDesign will reuse auxiliary frequencies because N=65, M=4, and nInput=3 do not provide enough unique frequencies. This configuration is still allowed, but spectral aliasing risk increases.
+
+UQPyL/doe/methods/fast.py:84: UserWarning
+_______________________ test_ana_result_convenience_api ________________________
+
+    def test_ana_result_convenience_api():
+        problem = _make_problem(3)
+        fast = FAST(verboseFlag=False, logFlag=False, saveFlag=False)
+>       X, meta = FASTDesign(M=4).sampleWithMeta(problem, 65, seed=123)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_analysis_more_methods.py:221: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/doe/methods/fast.py:51: in sampleWithMeta
+    return super().sampleWithMeta(problem, N, seed=seed, output=output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UQPyL/doe/base.py:45: in sampleWithMeta
+    U = self._generate(nSamples, nInput)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <UQPyL.doe.methods.fast.FASTDesign object at 0x797a46d73830>
+nSamples = 65, nInput = 3
+
+    def _generate(self, nSamples: int, nInput: int):
+        """
+        Generate unit-space FAST samples.
+    
+        :param nSamples: Base sample size.
+        :param nInput: Number of input variables.
+        :return np.ndarray: Unit-space FAST samples.
+        """
+    
+        w = np.zeros(nInput)
+        w[0] = np.floor((nSamples - 1) / (2 * self.M))
+        max_wi = np.floor(w[0] / (2 * self.M))  # Saltelli's method
+    
+        if max_wi < 1:
+            raise ValueError(
+                f"N={nSamples} is too small for M={self.M}; the auxiliary FAST frequencies become invalid."
+            )
+    
+        if max_wi < nInput - 1:
+>           warnings.warn(
+                f"FASTDesign will reuse auxiliary frequencies because N={nSamples}, M={self.M}, "
+                f"and nInput={nInput} do not provide enough unique frequencies. "
+                "This configuration is still allowed, but spectral aliasing risk increases.",
+                UserWarning,
+                stacklevel=2,
+            )
+E           UserWarning: FASTDesign will reuse auxiliary frequencies because N=65, M=4, and nInput=3 do not provide enough unique frequencies. This configuration is still allowed, but spectral aliasing risk increases.
+
+UQPyL/doe/methods/fast.py:84: UserWarning
+=========================== short test summary info ============================
+FAILED tests/test_analysis_more_methods.py::test_fast_sample_and_analyze_smoke
+FAILED tests/test_analysis_more_methods.py::test_fast_constant_output_returns_finite_zero_indices
+FAILED tests/test_analysis_more_methods.py::test_analysis_log_writes_full_metric_table
+FAILED tests/test_analysis_more_methods.py::test_ana_result_convenience_api
+4 failed, 1687 passed in 42.05s

@@ -1,4 +1,5 @@
 import numpy as np
+from .numerical import shiftedObjectives
 
 
 def crowdingDist(popObjs, frontNo=None):
@@ -26,7 +27,7 @@ def crowdingDist(popObjs, frontNo=None):
             crowdDis[front_idx] = np.inf
             continue
 
-        F = popObjs[front_idx, :]
+        F, _ = shiftedObjectives(popObjs[front_idx, :], perColumn=True)
         fmax = F.max(axis=0)
         fmin = F.min(axis=0)
         denom = fmax - fmin

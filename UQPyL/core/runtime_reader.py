@@ -11,7 +11,7 @@ class BaseReader:
 
     def __init__(self, dbPath):
         self.dbPath = str(dbPath)
-        self.conn = sqlite3.connect(Path(dbPath).resolve().as_uri() + '?mode=rw', uri=True)
+        self.conn = sqlite3.connect(Path(dbPath).resolve().as_uri() + "?mode=rw", uri=True)
         self.conn.row_factory = sqlite3.Row
         try:
             if self.domain is not None:
@@ -38,7 +38,10 @@ class BaseReader:
         return dict(row) if row is not None else None
 
     def get_run_params(self):
-        return {row['name']: row['value'] for row in self.conn.execute('SELECT name, value FROM runParam ORDER BY name')}
+        return {
+            row["name"]: row["value"] for row in self.conn.execute("SELECT name, value FROM runParam ORDER BY name")
+        }
+
     @staticmethod
     def _normalize_result_dir(result_dir) -> Path:
         result_path = Path(result_dir)
@@ -64,9 +67,13 @@ class BaseReader:
             if run is None:
                 continue
             item = dict(run)
-            for internalName, publicName in {"runId": "run_id", "createdAt": "created_at",
-                                             "finishedAt": "finished_at", "finalFEs": "final_fes",
-                                             "finalIters": "final_iters"}.items():
+            for internalName, publicName in {
+                "runId": "run_id",
+                "createdAt": "created_at",
+                "finishedAt": "finished_at",
+                "finalFEs": "final_fes",
+                "finalIters": "final_iters",
+            }.items():
                 if internalName in item:
                     item[publicName] = item.pop(internalName)
             item["db_path"] = str(db_path)

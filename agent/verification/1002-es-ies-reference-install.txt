@@ -1,0 +1,5 @@
+Looking in indexes: https://pypi.tuna.tsinghua.edu.cn/simple
+Collecting iterative-ensemble-smoother==0.2.7
+  Downloading iterative_ensemble_smoother-0.2.7-py3-none-any.whl (40 kB)
+Installing collected packages: iterative-ensemble-smoother
+Successfully installed iterative-ensemble-smoother-0.2.7

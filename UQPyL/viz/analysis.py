@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
+import warnings
 
 from ..analysis.runtime import AnaReader, AnaResult
 
@@ -20,8 +21,18 @@ def _coerce_ana_result(source):
     raise TypeError("source must be AnaResult, AnaReader, or sqlite path.")
 
 
-def plot_sa(source: dict, fontsize=20, width: float = 0.20, color=None, xLabel="Parameters",
-            yLabel="Sensitivity Indices", title: Optional[str] = None):
+def plot_sa(
+    source: dict,
+    fontsize=20,
+    width: float = 0.20,
+    color=None,
+    xLabel="Parameters",
+    yLabel="Sensitivity Indices",
+    title: Optional[str] = None,
+    *,
+    metric: str = "S1",
+    outputIndex: int = 0,
+):
     import matplotlib.pyplot as plt
 
     colorSet = ["#5EABD6", "#E14434", "#03A6A1", "#A7C1A8", "#FFDBB6", "#B7A3E3"]
@@ -29,15 +40,32 @@ def plot_sa(source: dict, fontsize=20, width: float = 0.20, color=None, xLabel="
     nItem = len(source)
     fig, ax = plt.subplots(1, 1, figsize=(16, 8))
 
-    first_metric = None
+    if not source or not colors:
+        raise ValueError("source and colors must be nonempty.")
+    if isinstance(outputIndex, (bool, np.bool_)) or not isinstance(outputIndex, (int, np.integer)) or outputIndex < 0:
+        raise ValueError("outputIndex must be a nonnegative integer.")
+    params = None
     for i, (label, item) in enumerate(source.items()):
         result = _coerce_ana_result(item)
-        metric = result.getMetric("S1")
-        first_metric = metric
-        si = np.asarray(metric.values).reshape(metric.values.shape[0], -1)[0]
-        total = np.sum(si)
-        if total != 0:
-            si = si / total
+        selected = result.getMetric(metric)
+        values = np.asarray(selected.values)
+        labels = list(selected.colLabels)
+        if values.ndim != 2 or outputIndex >= values.shape[0] or len(labels) != values.shape[1]:
+            raise ValueError("Metric dimensions and outputIndex must match the stored result.")
+        if len(set(labels)) != len(labels):
+            raise ValueError("Metric column labels must be unique.")
+        if params is None:
+            params = labels
+        if set(labels) != set(params):
+            raise ValueError("Compared sensitivity metrics must have the same column labels.")
+        si = values[outputIndex, [labels.index(name) for name in params]].astype(float, copy=True)
+        if np.any(~np.isfinite(si)):
+            warnings.warn(
+                f"plot_sa: {label}/{metric} has non-finite values; those bars are omitted.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            si[~np.isfinite(si)] = np.nan
         W = width * nItem + 0.4
         x = np.arange(len(si)) * W
         ax.bar(
@@ -50,16 +78,11 @@ def plot_sa(source: dict, fontsize=20, width: float = 0.20, color=None, xLabel="
             linewidth=1.5,
         )
 
-    if first_metric is None:
-        raise ValueError("source is empty.")
-
-    params = list(first_metric.colLabels)
     W = width * nItem + 0.4
     x = np.arange(len(params)) * W
     ax.set_xlabel(xLabel, fontsize=25, fontweight="bold")
     ax.set_ylabel(yLabel, fontsize=25, fontweight="bold")
     ax.set_xticks(x + W * 0.5, labels=params, fontweight="bold")
-    ax.set_ylim(0, 1.0)
     ax.set_xlim(x[0], x[-1] + W)
     ax.legend(fontsize=int(fontsize * 0.9))
     if title is not None:

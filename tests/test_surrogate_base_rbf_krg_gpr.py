@@ -42,10 +42,10 @@ class DummySurrogate(SurrogateABC):
 
     def predict(self, xPred: np.ndarray):
         xPred = np.atleast_2d(xPred)
-        xPred = self.__X_transform__(xPred)
+        xPred = self._transformX(xPred)
         # simple linear mapping in scaled space
         y = np.sum(xPred, axis=1, keepdims=True)
-        return self.__Y_inverse_transform__(y)
+        return self._inverseTransformY(y)
 
 
 def test_surrogateabc_check_and_scale_errors_and_polyfeature_branch():

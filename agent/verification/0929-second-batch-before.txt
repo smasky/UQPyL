@@ -1,0 +1,262 @@
+....................................FFFF....FF.......................... [ 94%]
+....                                                                     [100%]
+=================================== FAILURES ===================================
+_ testIntervalMetricsRejectInvalidInputs[empty-No valid observations-pfactor] __
+
+metric = <function pfactor at 0x798b9b5d2700>, case = 'empty'
+message = 'No valid observations'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+        with pytest.raises(ValueError, match=message):
+>           metric(obs, lower, upper, mask=mask)
+
+tests/test_calibration_metric_boundaries.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:135: in pfactor
+    return float(np.mean((obs >= lower) & (obs <= upper)))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3862: in mean
+    return _methods._mean(a, axis=axis, dtype=dtype,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = array([], dtype=bool), axis = None, dtype = None, out = None
+keepdims = False, where = True
+
+    def _mean(a, axis=None, dtype=None, out=None, keepdims=False, *, where=True):
+        arr = asanyarray(a)
+    
+        is_float16_result = False
+    
+        rcount = _count_reduce_items(arr, axis, keepdims=keepdims, where=where)
+        if rcount == 0 if where is True else umr_any(rcount == 0, axis=None):
+>           warnings.warn("Mean of empty slice", RuntimeWarning, stacklevel=2)
+E           RuntimeWarning: Mean of empty slice
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:122: RuntimeWarning
+_ testIntervalMetricsRejectInvalidInputs[empty-No valid observations-rfactor] __
+
+metric = <function rfactor at 0x798b9b5d27a0>, case = 'empty'
+message = 'No valid observations'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+        with pytest.raises(ValueError, match=message):
+>           metric(obs, lower, upper, mask=mask)
+
+tests/test_calibration_metric_boundaries.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:156: in rfactor
+    obs_std = np.std(obs)
+              ^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:4066: in std
+    return _methods._std(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:219: in _std
+    ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = array([], dtype=float64), axis = None, dtype = None, out = None, ddof = 0
+keepdims = False, where = True, mean = None
+
+    def _var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=False, *,
+             where=True, mean=None):
+        arr = asanyarray(a)
+    
+        rcount = _count_reduce_items(arr, axis, keepdims=keepdims, where=where)
+        # Make this warning show up on top.
+        if ddof >= rcount if where is True else umr_any(ddof >= rcount, axis=None):
+>           warnings.warn("Degrees of freedom <= 0 for slice", RuntimeWarning,
+                          stacklevel=2)
+E           RuntimeWarning: Degrees of freedom <= 0 for slice
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:155: RuntimeWarning
+_ testIntervalMetricsRejectInvalidInputs[all_masked-No valid observations-pfactor] _
+
+metric = <function pfactor at 0x798b9b5d2700>, case = 'all_masked'
+message = 'No valid observations'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+        with pytest.raises(ValueError, match=message):
+>           metric(obs, lower, upper, mask=mask)
+
+tests/test_calibration_metric_boundaries.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:135: in pfactor
+    return float(np.mean((obs >= lower) & (obs <= upper)))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:3862: in mean
+    return _methods._mean(a, axis=axis, dtype=dtype,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = array([], dtype=bool), axis = None, dtype = None, out = None
+keepdims = False, where = True
+
+    def _mean(a, axis=None, dtype=None, out=None, keepdims=False, *, where=True):
+        arr = asanyarray(a)
+    
+        is_float16_result = False
+    
+        rcount = _count_reduce_items(arr, axis, keepdims=keepdims, where=where)
+        if rcount == 0 if where is True else umr_any(rcount == 0, axis=None):
+>           warnings.warn("Mean of empty slice", RuntimeWarning, stacklevel=2)
+E           RuntimeWarning: Mean of empty slice
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:122: RuntimeWarning
+_ testIntervalMetricsRejectInvalidInputs[all_masked-No valid observations-rfactor] _
+
+metric = <function rfactor at 0x798b9b5d27a0>, case = 'all_masked'
+message = 'No valid observations'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+        with pytest.raises(ValueError, match=message):
+>           metric(obs, lower, upper, mask=mask)
+
+tests/test_calibration_metric_boundaries.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+UQPyL/calibration/util.py:156: in rfactor
+    obs_std = np.std(obs)
+              ^^^^^^^^^^^
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/fromnumeric.py:4066: in std
+    return _methods._std(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:219: in _std
+    ret = _var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+a = array([], dtype=float64), axis = None, dtype = None, out = None, ddof = 0
+keepdims = False, where = True, mean = None
+
+    def _var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=False, *,
+             where=True, mean=None):
+        arr = asanyarray(a)
+    
+        rcount = _count_reduce_items(arr, axis, keepdims=keepdims, where=where)
+        # Make this warning show up on top.
+        if ddof >= rcount if where is True else umr_any(ddof >= rcount, axis=None):
+>           warnings.warn("Degrees of freedom <= 0 for slice", RuntimeWarning,
+                          stacklevel=2)
+E           RuntimeWarning: Degrees of freedom <= 0 for slice
+
+../../anaconda3/envs/py312/lib/python3.12/site-packages/numpy/_core/_methods.py:155: RuntimeWarning
+____ testIntervalMetricsRejectInvalidInputs[reversed-lower.*upper-pfactor] _____
+
+metric = <function pfactor at 0x798b9b5d2700>, case = 'reversed'
+message = 'lower.*upper'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+>       with pytest.raises(ValueError, match=message):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_boundaries.py:72: Failed
+____ testIntervalMetricsRejectInvalidInputs[reversed-lower.*upper-rfactor] _____
+
+metric = <function rfactor at 0x798b9b5d27a0>, case = 'reversed'
+message = 'lower.*upper'
+
+    @pytest.mark.parametrize('metric', [util.pfactor, util.rfactor], ids=lambda metric: metric.__name__)
+    @pytest.mark.parametrize('case,message', [
+        ('empty', 'No valid observations'), ('all_masked', 'No valid observations'),
+        ('length', 'same size'), ('mask', 'mask size'), ('reversed', 'lower.*upper'),
+    ])
+    def testIntervalMetricsRejectInvalidInputs(metric, case, message):
+        obs, lower, upper, mask = [1, 3], [0, 2], [2, 4], None
+        if case == 'empty':
+            obs, lower, upper = [], [], []
+        elif case == 'all_masked':
+            mask = [True, True]
+        elif case == 'length':
+            upper = [2]
+        elif case == 'mask':
+            mask = [True]
+        else:
+            lower = [3, 2]
+>       with pytest.raises(ValueError, match=message):
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_calibration_metric_boundaries.py:72: Failed
+=========================== short test summary info ============================
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[empty-No valid observations-pfactor]
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[empty-No valid observations-rfactor]
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[all_masked-No valid observations-pfactor]
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[all_masked-No valid observations-rfactor]
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[reversed-lower.*upper-pfactor]
+FAILED tests/test_calibration_metric_boundaries.py::testIntervalMetricsRejectInvalidInputs[reversed-lower.*upper-rfactor]
+6 failed, 70 passed in 5.32s
+ERROR conda.cli.main_run:execute(148): `conda run pytest -q -W error tests/test_calibration_metric_boundaries.py tests/test_problem_mop_pf.py tests/test_runtime_common.py` failed. (See above for error)

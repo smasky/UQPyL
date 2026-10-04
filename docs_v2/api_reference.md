@@ -109,7 +109,7 @@ For quick examples, set `verboseFlag=False`, `logFlag=False`, and `saveFlag=Fals
 | `objs` | Objective matrix, usually shape `(n_samples, n_obj)`. |
 | `cons` | Constraint matrix. Values `<= 0` are feasible. |
 | `decs` | Decision/input matrix or sampled decision chains, depending on result object. |
-| `sims` | Simulation output from `ModelProblem`; shape is usually `(n_samples, n_time, n_series)`. |
+| `sims` | Simulation output from `ModelProblem`; shape is usually `(n_samples, n_obs)`. |
 | `bestDecs` | Best decision row or Pareto decision matrix, depending on method type. |
 | `bestObjs` | Objective value(s) associated with `bestDecs`. |
 

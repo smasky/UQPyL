@@ -60,9 +60,7 @@ def test_linear_regression_apply_parameter_values_updates_model_context():
     assert model.isParameterActive("C")
 
 
-def test_linear_regression_lasso_smoke_if_available():
-    # Lasso uses a compiled extension in this repo; skip if not importable.
-    pytest.importorskip("UQPyL.surrogate.regression.lasso")
+def test_linear_regression_lasso_smoke():
 
     problem = Sphere(nInput=2, ub=1.0, lb=-1.0)
     rng = np.random.default_rng(123)
@@ -94,4 +92,3 @@ def test_linear_regression_ridge_matches_simple_linear_trend():
     pred = lr.predict(np.array([[4.0]]))
     assert pred.shape == (1, 1)
     assert np.isclose(pred[0, 0], 9.0, atol=1e-3)
-

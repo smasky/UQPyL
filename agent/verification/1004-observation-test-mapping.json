@@ -1,0 +1,20 @@
+{
+  "reason": "Formal migration from observation grids to explicit vectors; no legacy-layout compatibility",
+  "renamed_functions": {
+    "tests/test_model_problem.py::test_model_problem_accepts_non_3d_sim": "tests/test_model_problem.py::test_model_problem_accepts_2d_sim",
+    "tests/test_model_problem.py::test_model_problem_allows_sim_shape_independent_from_obs": "tests/test_model_problem.py::test_model_problem_rejects_sim_column_count_different_from_obs",
+    "tests/test_model_mask_layouts.py::testMaskedNanMatchesGridAndExplicitFlattening": "tests/test_model_mask_layouts.py::testMaskedNanMatchesExplicitUserFlattening"
+  },
+  "changed_assertions": [
+    "Legacy grid acceptance is replaced by strict vector/matrix requirements and singleton-axis checks",
+    "Explicit source-grid flattening is performed by test callbacks before entering the framework",
+    "Observation labels correspond to each observation coordinate rather than each original series",
+    "Result and SQLite metadata no longer export time/series dimensions",
+    "Documented objectives receive canonical vectors/matrices"
+  ],
+  "added_cases": {
+    "tests/test_observation_vector_contract.py": 53,
+    "tests/test_documented_workflows.py::testDocumentedCalibrationUsesVectorObservations": 3
+  },
+  "numeric_algorithm_assertions": "Existing score, posterior, range, stochastic, optimizer and sensitivity tolerances were not relaxed"
+}

@@ -235,7 +235,7 @@ def test_constraint_evaluation_receives_real_values_without_mutating_unit_popula
     received = []
     def simulate(X):
         received.append(X.copy())
-        return np.sum(X, axis=1, keepdims=True)
+        return (np.sum(X, axis=1, keepdims=True)).reshape(len(X), -1)
     problem = ModelProblem(nInput=3, nObj=1, nCon=1, lb=[100, 2, -7], ub=[200, 5, 8],
                            varType=[0, 1, 2], varSet={2: [10, 20, 70]}, simFunc=simulate,
                            objFunc=lambda X, context: context.sims,

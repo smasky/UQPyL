@@ -15,18 +15,22 @@ class Matern(BaseKernel):
     0.5, 1.5, 2.5 and np.inf. General orders use the Bessel formula with
     a slower integral fallback for large orders or intermediate overflow.
     """
+
     name = "Matern"
 
-    def __init__(self, length_scale: Union[float, np.ndarray] = 1.0,
-                 length_attr: dict = {'ub': 1e5, 'lb': 1, 'type': 'float', 'log': True},
-                 nu: float = 1.5,
-                 optimize_nu: bool = False,
-                 heterogeneous: bool = False):
+    def __init__(
+        self,
+        length_scale: Union[float, np.ndarray] = 1.0,
+        length_attr: dict = {"ub": 1e5, "lb": 0.01, "type": "float", "log": True},
+        nu: float = 1.5,
+        optimize_nu: bool = False,
+        heterogeneous: bool = False,
+    ):
 
         super().__init__()
-        
+
         self.heterogeneous = heterogeneous
-        
+
         self._setKernelParameter("l", length_scale, length_attr)
 
         self._validateParameter("nu", nu)
@@ -36,57 +40,51 @@ class Matern(BaseKernel):
             choices = [0.5, 1.5, 2.5, np.inf]
             if nu not in choices:
                 raise ValueError("Optimized nu must be one of 0.5, 1.5, 2.5, np.inf.")
-            nu_attr = {'ub': 1, 'lb': 0, 'type': 'discrete', 'log': False, 'set': choices}
+            nu_attr = {"ub": 1, "lb": 0, "type": "discrete", "log": False, "set": choices}
             # Setting stores numeric discrete values as bin coordinates.
             nu = (choices.index(nu) + 0.5) / len(choices)
         else:
             nu_attr = None
-            
+
         self.setting.set("nu", nu, nu_attr)
-        
+
     def diag(self, X):
         self._validateInputs(X)
         return np.ones(len(X))
 
-    def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray]=None):
+    def __call__(self, xTrain1: np.ndarray, xTrain2: Optional[np.ndarray] = None):
         self._validateInputs(xTrain1, xTrain2)
-        
+
         length_scale = self.setting.get("l")
-        
+
         nu = self.setting.get("nu")
-        
+
         if xTrain2 is None:
-            dists = pdist(xTrain1/length_scale, metric="euclidean")
+            dists = pdist(xTrain1 / length_scale, metric="euclidean")
         else:
-            dists = cdist(xTrain1/length_scale, xTrain2/length_scale, metric="euclidean")
-        
-        if nu==0.5:
-            
-            K=np.exp(-dists)
-            
-        elif nu==1.5:
-            
-            K=dists*np.sqrt(3)
-            K=(1.0+K)* np.exp(-K)
-            
-        elif nu==2.5:
-            
-            K=dists*np.sqrt(5)
-            K=(1.0+K+K**2/3.0) * np.exp(-K)
-            
-        elif nu==np.inf:
-            
-            K=np.exp(-0.5*dists**2)
-            
+            dists = cdist(xTrain1 / length_scale, xTrain2 / length_scale, metric="euclidean")
+
+        if nu == 0.5:
+            K = np.exp(-dists)
+
+        elif nu == 1.5:
+            K = dists * np.sqrt(3)
+            K = (1.0 + K) * np.exp(-K)
+
+        elif nu == 2.5:
+            K = dists * np.sqrt(5)
+            K = (1.0 + K + K**2 / 3.0) * np.exp(-K)
+
+        elif nu == np.inf:
+            K = np.exp(-0.5 * dists**2)
+
         else:
-            
             K = self._generalCorrelation(dists, nu)
 
         if xTrain2 is None:
-            
             K = squareform(K)
-            np.fill_diagonal(K,1.0)
-        
+            np.fill_diagonal(K, 1.0)
+
         return K
 
     @staticmethod
@@ -105,9 +103,13 @@ class Matern(BaseKernel):
         if nu < 50:
             scaledDist = np.sqrt(nu) * np.sqrt(2.0) * distances
             with np.errstate(over="ignore", under="ignore", invalid="ignore"):
-                values = np.exp((1 - nu) * np.log(2.0) - sp.gammaln(nu)
-                                + nu * np.log(scaledDist)
-                                + np.log(sp.kve(nu, scaledDist)) - scaledDist)
+                values = np.exp(
+                    (1 - nu) * np.log(2.0)
+                    - sp.gammaln(nu)
+                    + nu * np.log(scaledDist)
+                    + np.log(sp.kve(nu, scaledDist))
+                    - scaledDist
+                )
         fallback = ~np.isfinite(values)
         # Repeated distances share the relatively expensive quadrature.
         uniqueDist, inverse = np.unique(distances[fallback], return_inverse=True)
@@ -136,22 +138,19 @@ class Matern(BaseKernel):
         if nu >= 16:
             # Stirling's remainder avoids subtracting O(nu*log(nu)) terms.
             invNu = 1.0 / nu
-            correction = invNu * (1/12 + invNu**2 *
-                                  (-1/360 + invNu**2 * (1/1260 - invNu**2/1680)))
+            correction = invNu * (1 / 12 + invNu**2 * (-1 / 360 + invNu**2 * (1 / 1260 - invNu**2 / 1680)))
             relativeB = b / nu
-            logTerm = (b * (1 - relativeB/2 + relativeB**2/3)
-                       if relativeB < 1e-5 else nu * np.log1p(relativeB))
-            logPrefactor = (logTerm - 2*b - 0.5*np.log(ratio)
-                            - 0.5*np.log(2*np.pi) - correction)
+            logTerm = b * (1 - relativeB / 2 + relativeB**2 / 3) if relativeB < 1e-5 else nu * np.log1p(relativeB)
+            logPrefactor = logTerm - 2 * b - 0.5 * np.log(ratio) - 0.5 * np.log(2 * np.pi) - correction
         else:
-            logPrefactor = (nu*np.log(nu+b) - nu - 2*b
-                            - sp.gammaln(nu) - np.log(width))
+            logPrefactor = nu * np.log(nu + b) - nu - 2 * b - sp.gammaln(nu) - np.log(width)
 
         def expResidual(value):
             # exp(value)-1-value without cancellation at small arguments.
             if abs(value) < 0.01:
-                return value**2 * (0.5 + value * (1/6 + value *
-                       (1/24 + value * (1/120 + value * (1/720 + value/5040)))))
+                return value**2 * (
+                    0.5 + value * (1 / 6 + value * (1 / 24 + value * (1 / 120 + value * (1 / 720 + value / 5040))))
+                )
             return np.expm1(value) - value
 
         def integrand(value):
@@ -161,7 +160,7 @@ class Matern(BaseKernel):
             positive = expResidual(u)
             negative = expResidual(-u)
             with np.errstate(over="ignore", under="ignore"):
-                return np.exp(-nu*positive - b*(positive + negative))
+                return np.exp(-nu * positive - b * (positive + negative))
 
         left = quad(integrand, -np.inf, 0.0, epsabs=1e-12, epsrel=1e-12)[0]
         right = quad(integrand, 0.0, np.inf, epsabs=1e-12, epsrel=1e-12)[0]

@@ -1,0 +1,43 @@
+........................................................................ [ 16%]
+........................................................................ [ 33%]
+........................................................................ [ 50%]
+............F........................................................... [ 67%]
+........................................................................ [ 84%]
+....................................................................     [100%]
+=================================== FAILURES ===================================
+___ test_rvea_singleton_keeps_reference_scale_and_diverse_feasible_solutions ___
+
+    def test_rvea_singleton_keeps_reference_scale_and_diverse_feasible_solutions():
+        alg = RVEA(**QUIET)
+        vectors = np.array([[1., 0.], [.5, .5], [0., 1.]])
+        scaled = alg.updateReferenceVector(np.array([[1., 1.]]), vectors)
+        np.testing.assert_array_equal(scaled, vectors)
+        objs = np.array([[0., 2.], [1., 1.], [2., 0.]])
+        with np.errstate(divide='raise', invalid='raise'):
+            keep = alg.environmentSelection(objs, scaled, .5, np.zeros((3, 1)))
+        assert set(keep) == {0, 1, 2}
+        alg.updateReferenceVector(np.array([[0., 0.], [2., 3.]]), vectors)
+        scaled = alg.updateReferenceVector(np.array([[1., 1.]]), vectors)
+>       np.testing.assert_allclose(scaled, vectors * [2, 3])
+E       AssertionError: 
+E       Not equal to tolerance rtol=1e-07, atol=0
+E       
+E       Mismatched elements: 4 / 6 (66.7%)
+E       Mismatch at indices:
+E        [0, 0]: 0.5 (ACTUAL), 2.0 (DESIRED)
+E        [1, 0]: 0.25 (ACTUAL), 1.0 (DESIRED)
+E        [1, 1]: 0.375 (ACTUAL), 1.5 (DESIRED)
+E        [2, 1]: 0.75 (ACTUAL), 3.0 (DESIRED)
+E       Max absolute difference among violations: 2.25
+E       Max relative difference among violations: 0.75
+E        ACTUAL: array([[0.5  , 0.   ],
+E              [0.25 , 0.375],
+E              [0.   , 0.75 ]])
+E        DESIRED: array([[2. , 0. ],
+E              [1. , 1.5],
+E              [0. , 3. ]])
+
+tests/test_optimization_multiobjective_regressions.py:173: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_optimization_multiobjective_regressions.py::test_rvea_singleton_keeps_reference_scale_and_diverse_feasible_solutions
+1 failed, 427 passed in 12.49s

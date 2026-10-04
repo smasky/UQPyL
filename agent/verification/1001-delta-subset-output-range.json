@@ -1,0 +1,46 @@
+[
+  {
+    "output_factor": 1,
+    "selected": [
+      "x_1"
+    ],
+    "active_label": "x_1",
+    "subset_objectives": [
+      0.0003021994716571763,
+      0.759888970814903,
+      0.009802545363925268
+    ],
+    "warnings": []
+  },
+  {
+    "output_factor": 1e-200,
+    "selected": [
+      "x_2"
+    ],
+    "active_label": "x_1",
+    "subset_objectives": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "warnings": []
+  },
+  {
+    "output_factor": 1e+200,
+    "selected": [],
+    "active_label": "x_1",
+    "subset_objectives": [
+      "inf",
+      "inf",
+      "inf"
+    ],
+    "warnings": [
+      "overflow encountered in square",
+      "overflow encountered in square",
+      "overflow encountered in square",
+      "overflow encountered in square",
+      "overflow encountered in square",
+      "overflow encountered in square"
+    ]
+  }
+]

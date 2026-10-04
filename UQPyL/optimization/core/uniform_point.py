@@ -6,9 +6,9 @@ from scipy.special import comb
 
 
 def validateDimensions(N, M):
-    for name, value in [('N', N), ('M', M)]:
+    for name, value in [("N", N), ("M", M)]:
         if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or value <= 0:
-            raise ValueError(f'{name} must be a positive integer.')
+            raise ValueError(f"{name} must be a positive integer.")
 
 
 def grid(N: int, M: int):
@@ -29,13 +29,12 @@ def NBI(N: int, M: int):
     while comb(H1 + M, M - 1) <= N:
         H1 += 1
 
-    W = np.array(list(combinations(range(1, H1 + M), M - 1))) - np.tile(
-        np.arange(M - 1), (comb(H1 + M - 1, M - 1).astype(int), 1)
-    ) - 1
     W = (
-        np.hstack([W, np.zeros((W.shape[0], 1)) + H1])
-        - np.hstack([np.zeros((W.shape[0], 1)), W])
-    ) / H1
+        np.array(list(combinations(range(1, H1 + M), M - 1)))
+        - np.tile(np.arange(M - 1), (comb(H1 + M - 1, M - 1).astype(int), 1))
+        - 1
+    )
+    W = (np.hstack([W, np.zeros((W.shape[0], 1)) + H1]) - np.hstack([np.zeros((W.shape[0], 1)), W])) / H1
 
     if H1 < M:
         H2 = 0
@@ -43,13 +42,12 @@ def NBI(N: int, M: int):
             H2 += 1
 
         if H2 > 0:
-            W2 = np.array(list(combinations(range(1, H2 + M), M - 1))) - np.tile(
-                np.arange(M - 1), (comb(H2 + M - 1, M - 1).astype(int), 1)
-            ) - 1
             W2 = (
-                np.hstack([W2, np.zeros((W2.shape[0], 1)) + H2])
-                - np.hstack([np.zeros((W2.shape[0], 1)), W2])
-            ) / H2
+                np.array(list(combinations(range(1, H2 + M), M - 1)))
+                - np.tile(np.arange(M - 1), (comb(H2 + M - 1, M - 1).astype(int), 1))
+                - 1
+            )
+            W2 = (np.hstack([W2, np.zeros((W2.shape[0], 1)) + H2]) - np.hstack([np.zeros((W2.shape[0], 1)), W2])) / H2
             W = np.vstack([W, W2 / 2 + 1 / (2 * M)])
 
     W = np.maximum(W, 1e-6)

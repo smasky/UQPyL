@@ -1,0 +1,74 @@
+[
+  {
+    "kind": "covariance_cost",
+    "draws": 2000,
+    "method": "FullHistoryAMH",
+    "seconds": [
+      0.07809407007880509,
+      0.07674051099456847,
+      0.07627624715678394
+    ],
+    "median_seconds": 0.07674051099456847,
+    "max_abs_error": 0.0
+  },
+  {
+    "kind": "covariance_cost",
+    "draws": 2000,
+    "method": "AMH",
+    "seconds": [
+      0.01864667097106576,
+      0.0181685839779675,
+      0.01828900189138949
+    ],
+    "median_seconds": 0.01828900189138949,
+    "max_abs_error": 1.9984014443252818e-15
+  },
+  {
+    "kind": "covariance_cost",
+    "draws": 8000,
+    "method": "FullHistoryAMH",
+    "seconds": [
+      0.8118103400338441,
+      0.8057320320513099,
+      0.8250125700142235
+    ],
+    "median_seconds": 0.8118103400338441,
+    "max_abs_error": 0.0
+  },
+  {
+    "kind": "covariance_cost",
+    "draws": 8000,
+    "method": "AMH",
+    "seconds": [
+      0.07347557507455349,
+      0.07289576693437994,
+      0.07272090413607657
+    ],
+    "median_seconds": 0.07289576693437994,
+    "max_abs_error": 2.220446049250313e-15
+  },
+  {
+    "kind": "covariance_cost",
+    "draws": 16000,
+    "method": "FullHistoryAMH",
+    "seconds": [
+      3.0845132030081004,
+      3.478313629049808,
+      3.4907240360043943
+    ],
+    "median_seconds": 3.478313629049808,
+    "max_abs_error": 0.0
+  },
+  {
+    "kind": "covariance_cost",
+    "draws": 16000,
+    "method": "AMH",
+    "seconds": [
+      0.17284159292466938,
+      0.17939974297769368,
+      0.173228019149974
+    ],
+    "median_seconds": 0.173228019149974,
+    "max_abs_error": 7.549516567451064e-15
+  }
+]

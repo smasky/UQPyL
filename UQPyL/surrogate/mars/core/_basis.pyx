@@ -1107,7 +1107,12 @@ cdef class Basis:
                 for bf_idx in range(n_bfs):
                     bf = self.order[bf_idx]
                     variables = bf.variables()
-                    if (variables and var not in variables) or bf.is_pruned():
+                    if bf.is_pruned():
+                        continue
+                    if variables and var not in variables:
+                        # Coefficients include every unpruned basis function,
+                        # even when its derivative for this variable is zero.
+                        coef_idx += 1
                         continue
                     bf.apply_deriv(X, missing, b, j, var)
                     for i in range(m):

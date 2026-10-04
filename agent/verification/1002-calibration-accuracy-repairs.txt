@@ -1,0 +1,4 @@
+records 130
+nonlinear_monotone {'mean_error': 0.03223463420000089, 'variance_relative_error': 0.07543643466260397, 'center_mass': 0.087890625, 'old_variance_relative_error': 0.08401183807433601, 'old_center_mass': 0.083984375} warnings 0
+nonlinear_bimodal {'mean_error': 0.03687868983487781, 'variance_relative_error': 0.04224576111882995, 'center_mass': 0.0, 'old_variance_relative_error': 0.38250826218354184, 'old_center_mass': 0.306640625} warnings 0
+coverage 98 /100 median width 1.7514485296081805 mean error 0.005158765192567657 variance error 0.002813388851923379

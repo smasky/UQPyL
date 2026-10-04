@@ -12,15 +12,14 @@ def test_es_updates_ensemble_towards_observation_in_single_pass():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     problem = ModelProblem(
         nInput=2,
         ub=3.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 
@@ -50,7 +49,7 @@ def test_es_supports_custom_metric_callable():
         sim = np.zeros((X.shape[0], 2, 1))
         sim[:, 0, 0] = X[:, 0]
         sim[:, 1, 0] = X[:, 1]
-        return sim
+        return (sim).reshape(len(X), -1)
 
     def mean_bias(obs_vec, sim_mat, mask=None):
         if mask is not None:
@@ -64,8 +63,7 @@ def test_es_supports_custom_metric_callable():
         ub=3.0,
         lb=0.0,
         simFunc=simf,
-        obs=obs,
-        seriesLabels=["Q"],
+        obs=(obs).reshape(-1),
         name="ToyModel",
     )
 

@@ -4,6 +4,7 @@ from typing import Optional
 
 from ..problem import ProblemABC as Problem
 
+
 class Sampler(metaclass=abc.ABCMeta):
     """
     Base class for DOE samplers.
@@ -12,29 +13,51 @@ class Sampler(metaclass=abc.ABCMeta):
     def __init__(self):
         self.rng = None
 
-    def sample(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None, *, output="real"):
+    def sample(
+        self,
+        problem: Problem,
+        nSamples: Optional[int] = None,
+        seed: Optional[int] = None,
+        nt: Optional[int] = None,
+        *,
+        output="real",
+    ):
         """
         Generate samples in the problem space.
 
-        :param problem: Problem instance.
-        :param nSamples: Number of samples.
-        :param seed: Random seed.
-        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
-        :return np.ndarray: Samples in the selected coordinate space.
+        Args:
+            problem: Problem instance.
+            nSamples: Number of samples.
+            seed: Random seed.
+            output: "real" for decoded samples (default), or "unit" for unit coordinates.
+
+        Returns:
+            np.ndarray: Samples in the selected coordinate space.
         """
         nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
         X, _ = self.sampleWithMeta(problem, nSamples, seed=seed, output=output)
         return X
 
-    def sampleWithMeta(self, problem: Problem, nSamples: Optional[int] = None, seed: Optional[int] = None, nt: Optional[int] = None, *, output="real"):
+    def sampleWithMeta(
+        self,
+        problem: Problem,
+        nSamples: Optional[int] = None,
+        seed: Optional[int] = None,
+        nt: Optional[int] = None,
+        *,
+        output="real",
+    ):
         """
         Generate samples with metadata.
 
-        :param problem: Problem instance.
-        :param nSamples: Number of samples.
-        :param seed: Random seed.
-        :param output: "real" for decoded samples (default), or "unit" for unit coordinates.
-        :return tuple: ``(X, meta)`` with the output space recorded in metadata.
+        Args:
+            problem: Problem instance.
+            nSamples: Number of samples.
+            seed: Random seed.
+            output: "real" for decoded samples (default), or "unit" for unit coordinates.
+
+        Returns:
+            tuple: ``(X, meta)`` with the output space recorded in metadata.
         """
         nSamples = self._resolve_sample_count(nSamples=nSamples, nt=nt)
         self._validate_problem(problem)
@@ -75,19 +98,25 @@ class Sampler(metaclass=abc.ABCMeta):
         """
         Generate unit-space samples.
 
-        :param nSamples: Number of samples.
-        :param nInput: Number of input variables.
-        :return np.ndarray: Unit-space samples.
+        Args:
+            nSamples: Number of samples.
+            nInput: Number of input variables.
+
+        Returns:
+            np.ndarray: Unit-space samples.
         """
 
     def _build_meta(self, problem: Problem, nSamples: int, seed: Optional[int] = None):
         """
         Build sample metadata.
 
-        :param problem: Problem instance.
-        :param nSamples: Number of samples.
-        :param seed: Random seed.
-        :return dict: Sampling metadata.
+        Args:
+            problem: Problem instance.
+            nSamples: Number of samples.
+            seed: Random seed.
+
+        Returns:
+            dict: Sampling metadata.
         """
         return {}
 
@@ -95,9 +124,12 @@ class Sampler(metaclass=abc.ABCMeta):
         """
         Return the expected unit-space shape.
 
-        :param nSamples: Number of samples.
-        :param nInput: Number of input variables.
-        :return tuple: Expected sample shape.
+        Args:
+            nSamples: Number of samples.
+            nInput: Number of input variables.
+
+        Returns:
+            tuple: Expected sample shape.
         """
         return (nSamples, nInput)
 
@@ -116,9 +148,12 @@ class Sampler(metaclass=abc.ABCMeta):
         """
         Validate the generated unit-space samples.
 
-        :param X: Generated samples.
-        :param expected_shape: Expected array shape.
-        :return np.ndarray: Validated samples.
+        Args:
+            X: Generated samples.
+            expected_shape: Expected array shape.
+
+        Returns:
+            np.ndarray: Validated samples.
         """
         X = np.asarray(X)
 
@@ -126,4 +161,3 @@ class Sampler(metaclass=abc.ABCMeta):
             raise ValueError(f"The generated sample shape must be {expected_shape}.")
 
         return X
-
