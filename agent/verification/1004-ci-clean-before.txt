@@ -1,0 +1,293 @@
+173 files already formatted
+
+All checks passed!
+
+EEEEEEEEEEEEEEEE......EEE                                                [100%]
+==================================== ERRORS ====================================
+____________________ ERROR at setup of testCompleteRelease _____________________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+___________ ERROR at setup of testRejectWrongIdentity[version-2.1.6] ___________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_ ERROR at setup of testRejectWrongIdentity[sha-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb] _
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_____________ ERROR at setup of testRejectWrongIdentity[runId-43] ______________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_______ ERROR at setup of testRejectWrongIdentity[repository-other/repo] _______
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_______________ ERROR at setup of testMissingDistribution[wheel] _______________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_______________ ERROR at setup of testMissingDistribution[sdist] _______________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+___________________ ERROR at setup of testChangedWheelBytes ____________________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_________________ ERROR at setup of testChangedEmbeddedVersion _________________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+______________________ ERROR at setup of testUnknownFile _______________________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+____________________ ERROR at setup of testDuplicateTarget _____________________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_____ ERROR at setup of testUnpublishableOrUnplannedPlatform[linux_x86_64] _____
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_________ ERROR at setup of testUnpublishableOrUnplannedPlatform[any] __________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_ ERROR at setup of testUnpublishableOrUnplannedPlatform[macosx_11_0_universal2] _
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+________ ERROR at setup of testUnpublishableOrUnplannedPlatform[win32] _________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_______________ ERROR at setup of testDualManylinuxTagsCountOnce _______________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_ ERROR at setup of testDriverUsesOneInstallationAndAnExternalTestDirectory[False] _
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_ ERROR at setup of testDriverUsesOneInstallationAndAnExternalTestDirectory[True] _
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+_________ ERROR at setup of testNoWheelFailsBeforeEnvironmentCreation __________
+
+self = PosixPath('/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/tmp/uqpyl-clean-ci-7l7bkazp/.cache/pytest/release-gates'
+
+/home/wmtsky/anaconda3/envs/py312/lib/python3.12/pathlib.py:1312: FileNotFoundError
+=========================== short test summary info ============================
+ERROR .github/tests/test_release_artifacts.py::testCompleteRelease - FileNotF...
+ERROR .github/tests/test_release_artifacts.py::testRejectWrongIdentity[version-2.1.6]
+ERROR .github/tests/test_release_artifacts.py::testRejectWrongIdentity[sha-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]
+ERROR .github/tests/test_release_artifacts.py::testRejectWrongIdentity[runId-43]
+ERROR .github/tests/test_release_artifacts.py::testRejectWrongIdentity[repository-other/repo]
+ERROR .github/tests/test_release_artifacts.py::testMissingDistribution[wheel]
+ERROR .github/tests/test_release_artifacts.py::testMissingDistribution[sdist]
+ERROR .github/tests/test_release_artifacts.py::testChangedWheelBytes - FileNo...
+ERROR .github/tests/test_release_artifacts.py::testChangedEmbeddedVersion - F...
+ERROR .github/tests/test_release_artifacts.py::testUnknownFile - FileNotFound...
+ERROR .github/tests/test_release_artifacts.py::testDuplicateTarget - FileNotF...
+ERROR .github/tests/test_release_artifacts.py::testUnpublishableOrUnplannedPlatform[linux_x86_64]
+ERROR .github/tests/test_release_artifacts.py::testUnpublishableOrUnplannedPlatform[any]
+ERROR .github/tests/test_release_artifacts.py::testUnpublishableOrUnplannedPlatform[macosx_11_0_universal2]
+ERROR .github/tests/test_release_artifacts.py::testUnpublishableOrUnplannedPlatform[win32]
+ERROR .github/tests/test_release_artifacts.py::testDualManylinuxTagsCountOnce
+ERROR .github/tests/test_wheel_driver.py::testDriverUsesOneInstallationAndAnExternalTestDirectory[False]
+ERROR .github/tests/test_wheel_driver.py::testDriverUsesOneInstallationAndAnExternalTestDirectory[True]
+ERROR .github/tests/test_wheel_driver.py::testNoWheelFailsBeforeEnvironmentCreation
+6 passed, 19 errors in 0.28s
