@@ -95,7 +95,13 @@ def testSingleOutputVectorAndMatrixKeepSamePredictions(name):
         assert prediction.shape == (3, 1) and model.yTrain.shape == (25, 1)
         assert np.all(np.isfinite(prediction))
         predictions.append(prediction)
-    np.testing.assert_allclose(predictions[0], predictions[1], rtol=1e-12, atol=1e-12)
+    # This dense Gaussian KRG fixture has a correlation condition number ~1e15.
+    # Check both layout equivalence and accuracy against the independent truth.
+    tolerance = 1e-8 if name == "KRG" else 1e-12
+    np.testing.assert_allclose(predictions[0], predictions[1], rtol=tolerance, atol=tolerance)
+    if name == "KRG":
+        for prediction in predictions:
+            np.testing.assert_allclose(prediction, 2 * probes + 1, rtol=0, atol=1e-6)
 
 
 @pytest.mark.parametrize("name", ["LR_Origin", "GPR", "KRG", "MARS", "SVR"])

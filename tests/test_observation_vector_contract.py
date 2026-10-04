@@ -1,6 +1,7 @@
 """Observation coordinates stay explicit from model evaluation to persisted results."""
 
 import sqlite3
+from contextlib import closing
 
 import numpy as np
 import pytest
@@ -164,7 +165,7 @@ def testVectorMetadataRoundTripsThroughSqlite(methodClass, tmp_path):
 
 def testReaderRejectsOldObservationSchema(tmp_path):
     path = tmp_path / "legacy.sqlite3"
-    with sqlite3.connect(path) as conn:
+    with closing(sqlite3.connect(path)) as conn, conn:
         conn.execute("CREATE TABLE runtimeMeta (name TEXT, value TEXT)")
         conn.execute("INSERT INTO runtimeMeta VALUES ('domain', 'calibration')")
     with pytest.raises(ValueError, match="1D observation.*new run"):

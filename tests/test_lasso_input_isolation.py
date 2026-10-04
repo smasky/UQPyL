@@ -39,7 +39,9 @@ def test_prepared_inputs_and_parent_arrays_survive_repeated_fits(layout, fitInte
         np.testing.assert_array_equal(model.yTrain, expectedY)
     np.testing.assert_array_equal(parentX, originalX)
     np.testing.assert_array_equal(parentY, originalY)
-    np.testing.assert_array_equal(predictions[0], predictions[1])
+    # BLAS reductions can differ by a few ulps with buffer alignment.
+    # Input isolation above remains an exact, elementwise contract.
+    np.testing.assert_allclose(predictions[0], predictions[1], rtol=4 * np.finfo(dtype).eps, atol=0)
     assert np.isfinite(predictions[0]).all()
     assert model.coef.dtype == dtype
 

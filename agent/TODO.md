@@ -1,5 +1,7 @@
 # UQPyL TODO
 
+2026-10-04 CI #44：style/sdist 通过，20 wheel 中 11 个失败。已修复观测测试 SQLite 连接未关闭（3.13+ ResourceWarning），并校正 macOS Intel 上 Lasso/KRG 的浮点重复计算断言，新增 KRG 独立真值精度检查；保留严格输入隔离、随机流检查及 -W error。py312 全量 **3175 passed，107.96秒**，见[修复与证据](1004-ci-portability-fix.md)。远程修复后完整矩阵待验收，尚未发布。
+
 2026-10-04 GitHub CI #43 在 style 的 pytest 临时目录初始化失败（6 passed、19 errors），未进入wheel矩阵；已补 .github/tests/conftest.py 创建basetemp父目录。干净 git archive 副本复现，修复后25 Python+13 JS与Ruff全部通过。见[原因与修复](1004-ci-clean-checkout-fix.md)。生产代码未改，远程完整矩阵仍待修复提交验收。
 
 2026-10-04 按用户明确范围删除 obsLabels：构造参数、CalResult 字段、result/reader 摘要与中英文示例已清理，其它标签保留。42 个校准基线数组完全不变；完整 py312 **3175 passed，109.94秒，-W error**。总数减少3项来自4项标签校验替换为1项移除接口检查，存储往返补齐无标签断言。见[删除记录](1004-remove-observation-labels.md)。未推送/重建包/发布；下方 obsLabels 描述为历史。

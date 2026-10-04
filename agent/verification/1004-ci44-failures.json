@@ -1,0 +1,98 @@
+[
+  {
+    "job": 111444333189,
+    "name": "Wheel cp311 / macos-x86_64",
+    "failures": [
+      "2026-10-04T13:28:10.1307490Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-C] - AssertionError: ",
+      "2026-10-04T13:28:10.1319910Z FAILED tests/test_surrogate_single_output_contract.py::testSingleOutputVectorAndMatrixKeepSamePredictions[KRG] - AssertionError: ",
+      "2026-10-04T13:28:10.1329360Z 2 failed, 3173 passed in 252.82s (0:04:12)"
+    ]
+  },
+  {
+    "job": 111444333201,
+    "name": "Wheel cp312 / macos-x86_64",
+    "failures": [
+      "2026-10-04T13:31:29.3441440Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float32-False-view] - AssertionError: ",
+      "2026-10-04T13:31:29.3460520Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-C] - AssertionError: ",
+      "2026-10-04T13:31:29.3473780Z 2 failed, 3173 passed in 320.68s (0:05:20)"
+    ]
+  },
+  {
+    "job": 111444333214,
+    "name": "Wheel cp313 / linux-x86_64",
+    "failures": [
+      "2026-10-04T13:21:04.6314941Z ERROR tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[ML_SCE_UA]"
+    ]
+  },
+  {
+    "job": 111444333219,
+    "name": "Wheel cp314 / windows-amd64",
+    "failures": [
+      "2026-10-04T13:20:21.0331865Z FAILED tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[SCE_UA] - pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x00000200D190B100>: None\r",
+      "2026-10-04T13:20:21.0332470Z 1 failed, 3174 passed in 90.27s (0:01:30)\r"
+    ]
+  },
+  {
+    "job": 111444333221,
+    "name": "Wheel cp314 / macos-arm64",
+    "failures": [
+      "2026-10-04T13:20:52.3488270Z FAILED tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[SCE_UA] - pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x117f1a980>: None",
+      "2026-10-04T13:20:52.3490920Z 1 failed, 3174 passed in 100.08s (0:01:40)"
+    ]
+  },
+  {
+    "job": 111444333237,
+    "name": "Wheel cp314 / linux-x86_64",
+    "failures": [
+      "2026-10-04T13:20:10.9390514Z FAILED tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[SCE_UA]",
+      "2026-10-04T13:20:10.9391120Z 1 failed, 3174 passed in 101.23s (0:01:41)"
+    ]
+  },
+  {
+    "job": 111444333246,
+    "name": "Wheel cp310 / macos-x86_64",
+    "failures": [
+      "2026-10-04T13:31:10.3282930Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-F] - AssertionError: ",
+      "2026-10-04T13:31:10.3290350Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-readonly] - AssertionError: ",
+      "2026-10-04T13:31:10.3299160Z FAILED tests/test_surrogate_randomness_and_failures.py::testMultiSurrogatePropagatesIndependentReproducibleStreams - AssertionError: ",
+      "2026-10-04T13:31:10.3306930Z 3 failed, 3172 passed in 285.41s (0:04:45)"
+    ]
+  },
+  {
+    "job": 111444333250,
+    "name": "Wheel cp313 / macos-arm64",
+    "failures": [
+      "2026-10-04T13:19:53.6461500Z ERROR tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[ML_SCE_UA] - pytest.PytestUnraisableExceptionWarning: Exception ignored in: <sqlite3.Connection object at 0x1040b08b0>"
+    ]
+  },
+  {
+    "job": 111444333252,
+    "name": "Wheel cp313 / macos-x86_64",
+    "failures": [
+      "2026-10-04T13:26:58.8978620Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float32-False-view] - AssertionError: ",
+      "2026-10-04T13:26:58.8989020Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-C] - AssertionError: ",
+      "2026-10-04T13:26:58.8999590Z FAILED tests/test_optimization_algorithms_smoke.py::test_nsga2_run_smoke_small_budget - pytest.PytestUnraisableExceptionWarning: Exception ignored in: <sqlite3.Connection object at 0x11116bc40>",
+      "2026-10-04T13:26:58.9004150Z FAILED tests/test_surrogate_randomness_and_failures.py::testMultiSurrogatePropagatesIndependentReproducibleStreams - AssertionError: ",
+      "2026-10-04T13:26:58.9015410Z FAILED tests/test_surrogate_single_output_contract.py::testSingleOutputVectorAndMatrixKeepSamePredictions[KRG] - AssertionError: ",
+      "2026-10-04T13:26:58.9023770Z 5 failed, 3170 passed in 207.76s (0:03:27)"
+    ]
+  },
+  {
+    "job": 111444333253,
+    "name": "Wheel cp314 / macos-x86_64",
+    "failures": [
+      "2026-10-04T13:26:35.8184030Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float32-False-view] - AssertionError: ",
+      "2026-10-04T13:26:35.8193870Z FAILED tests/test_lasso_input_isolation.py::test_prepared_inputs_and_parent_arrays_survive_repeated_fits[float64-False-readonly] - AssertionError: ",
+      "2026-10-04T13:26:35.8204600Z FAILED tests/test_optimization_asmo_reproducibility.py::testAsmoSeedControlsActualKrgFitsAndEvaluations - pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x10e5dff10>: None",
+      "2026-10-04T13:26:35.8207290Z FAILED tests/test_surrogate_randomness_and_failures.py::testMultiSurrogatePropagatesIndependentReproducibleStreams - AssertionError: ",
+      "2026-10-04T13:26:35.8217130Z 4 failed, 3171 passed in 154.78s (0:02:34)"
+    ]
+  },
+  {
+    "job": 111444333255,
+    "name": "Wheel cp313 / windows-amd64",
+    "failures": [
+      "2026-10-04T13:24:21.8538307Z ERROR tests/test_optimization_capabilities_and_stop_reasons.py::testUnsupportedObjectiveCountRejectedBeforeEvaluation[ML_SCE_UA] - pytest.PytestUnraisableExceptionWarning: Exception ignored in: <sqlite3.Connection object at 0x0000020A1310C220>\r"
+    ]
+  }
+]

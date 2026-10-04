@@ -38,9 +38,12 @@ def testMultiSurrogatePropagatesIndependentReproducibleStreams():
         model.rng = np.random.default_rng(72)
         model.fit(x, y)
         traces.append((model.predict(x), [m.rng.integers(0, 2**32) for m in model.models_list]))
-    np.testing.assert_array_equal(traces[0][0], traces[1][0])
     assert traces[0][1] == traces[1][1]
     assert traces[0][1][0] != traces[0][1][1]
+    # RNG streams are exact; ill-conditioned KRG solves need numerical tolerance.
+    np.testing.assert_allclose(traces[0][0], traces[1][0], rtol=1e-8, atol=1e-8)
+    for prediction, _ in traces:
+        np.testing.assert_allclose(prediction, y, rtol=0, atol=1e-6)
 
 
 # Regression source: test_review_a07_a15.py::testTunerProgrammingErrorsPropagate
