@@ -58,7 +58,8 @@ def testStartsSelectionAndReproducibility(family, log, count):
         assert model.fitState['objective'] == pytest.approx(min(probe.values))
         runs.append((probe.starts, model.predict(x)))
     np.testing.assert_array_equal(runs[0][0], runs[1][0])
-    np.testing.assert_array_equal(runs[0][1], runs[1][1])
+    # Restart points above are exact; separate fitted buffers may round differently.
+    np.testing.assert_allclose(runs[0][1], runs[1][1], rtol=1e-10, atol=1e-12)
     after = np.random.get_state()
     np.testing.assert_array_equal(globalState[1], after[1])
     assert globalState[2:] == after[2:]

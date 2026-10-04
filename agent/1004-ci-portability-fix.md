@@ -15,3 +15,11 @@
 conda py312 专项 182 passed（2.68 秒，`-W error`）；Ruff 与差异检查通过。完整回归 **3175 passed，107.96 秒，`-W error --strict-markers`**，见 [全量日志](verification/1004-ci-portability-full.txt)。远程新矩阵待修复提交后验收；不能把本地通过当成 macOS/Windows 通过。
 
 SQLite 官方说明：https://docs.python.org/3.13/library/sqlite3.html （Connection context manager 不自动关闭；3.13 新增未关闭连接 ResourceWarning）。
+
+## CI #45 后续核查
+
+运行：https://github.com/smasky/UQPyL/actions/runs/37206439214 ，提交 e3391de。此前三处浮点比较与 SQLite 清理已在多平台通过；Intel macOS Python 3.14 全部 3175 项通过。Intel macOS Python 3.11 新暴露 ASMO 测试末尾 KRG 预测逐位比较（差 1.64e-11），实际评价点与最优目标值精确一致。
+
+后续只将该预测比较设为 rtol/atol=1e-8，保留选点与最优值精确检查。检查所有引用 KRG 的测试发现重启测试也对两次拟合预测作逐位比较，改为 rtol=1e-10/atol=1e-12；重启起点/种子精确检查保留。同一模型未重新拟合的状态隔离精确检查不变。专项 **45 passed，1.07 秒，-W error**，见[日志](verification/1004-ci-asmo-followup.txt)；Ruff 通过。未修改生产源码，不重复本地全量，修复提交后的远程完整矩阵仍须验收。
+
+CI #45 最终 18/20 wheel 通过；Intel macOS 3.10 与 3.11 均仅 ASMO 同一预测断言失败（各 3174 passed、1 failed），candidate 因此跳过。没有其它失败。

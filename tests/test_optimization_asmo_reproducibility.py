@@ -33,5 +33,8 @@ def testAsmoSeedControlsActualKrgFitsAndEvaluations():
         )
         result = alg.run(problem, seed=12)
         records.append((np.vstack(evaluated), result.bestObjs, alg.surrogate.predict(np.array([[0.25], [0.75]]))))
-    for a, b in zip(*records):
+    # The seed must reproduce actual evaluations and the best objective exactly.
+    for a, b in zip(records[0][:2], records[1][:2]):
         np.testing.assert_array_equal(a, b)
+    # KRG's floating-point solve can vary slightly with BLAS buffer alignment.
+    np.testing.assert_allclose(records[0][2], records[1][2], rtol=1e-8, atol=1e-8)
